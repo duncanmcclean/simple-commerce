@@ -1,0 +1,13 @@
+title: 'Product Category'
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: title
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Title
+          validate: required|string

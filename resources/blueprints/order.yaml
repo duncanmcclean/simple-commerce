@@ -1,0 +1,60 @@
+title: Order
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: status
+        field:
+          options:
+            created: Created
+            paid: Paid
+            cancelled: Cancelled
+            fulfilled: Fulfilled
+            returned: Returned
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          type: select
+          localizable: false
+          display: Status
+      -
+        handle: total
+        field:
+          type: integer
+          localizable: false
+          display: Total
+          validate: required|integer
+      -
+        handle: shipping_address
+        field:
+          type: textarea
+          localizable: false
+          display: 'Shipping Address'
+          validate: required|string
+      -
+        handle: coupon
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Coupon
+          validate: string
+      -
+        handle: stripe_order_id
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Stripe Order ID'
+          validate: required|string
+      -
+        handle: stripe_customer_id
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Stripe Customer ID'
+          validate: required

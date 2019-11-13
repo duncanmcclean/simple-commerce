@@ -1,0 +1,59 @@
+title: Customer
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: name
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Name
+          validate: required|string
+      -
+        handle: email
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Email
+          validate: required|email
+      -
+        handle: address
+        field:
+          type: textarea
+          localizable: false
+          display: Address
+          validate: string
+      -
+        handle: currency
+        field:
+          options:
+            gpb: 'Pound Sterling'
+            usd: 'United States Dollar'
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          type: select
+          localizable: false
+          display: Currency
+          validate: required|string
+      -
+        handle: stripe_customer_id
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Stripe Customer ID'
+          validate: required|string
+      -
+        handle: user
+        field:
+          max_items: 1
+          mode: select
+          type: users
+          localizable: false
+          display: User

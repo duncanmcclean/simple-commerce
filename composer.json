@@ -1,0 +1,42 @@
+{
+    "name": "damcclean/commerce",
+    "type": "statamic-addon",
+    "description": "A simple eCommerce addon for Statamic",
+    "authors": [
+        {
+            "name": "Duncan McClean",
+            "email": "duncan@littlepenguin.dev",
+            "homepage": "http://duncanm.dev",
+            "role": "Developer at Little Penguin"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Damcclean\\Commerce\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Damcclean\\Commerce\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Commerce",
+            "description": "A simple eCommerce addon for Statamic"
+        },
+        "laravel": {
+            "providers": [
+                "Damcclean\\Commerce\\ServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "stripe/stripe-php": "^7.7",
+        "statamic/cms": "dev-master"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0"
+    },
+    "minimum-stability": "dev"
+}
