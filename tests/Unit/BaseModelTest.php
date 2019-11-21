@@ -10,7 +10,7 @@ class BaseModelTest extends TestCase
     /** @test */
     public function can_get_attributes()
     {
-        $attributes = (new BaseModel())->attributes(__DIR__ . '/stubs/content/commerce/product/star-wars.md');
+        $attributes = (new BaseModel())->attributes(__DIR__ . '/../stubs/content/commerce/product/star-wars.md');
 
         dd($attributes);
     }
