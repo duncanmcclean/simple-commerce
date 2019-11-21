@@ -12,7 +12,8 @@ class BaseModelTest extends TestCase
     {
         $attributes = (new BaseModel())->attributes(__DIR__ . '/../stubs/content/commerce/product/star-wars.md');
 
-        dd($attributes);
+        $this->assertIsArray($attributes);
+        $this->assertSame('Star Wars', $attributes['title']);
     }
 
     /** @test */
