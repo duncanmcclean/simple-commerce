@@ -11,7 +11,21 @@
     </div>
 
     <commerce-listing
-        items='@json($products)'
         model="products"
+        cols='{{ json_encode([
+            [
+                'label' => 'Title',
+                'field' => 'title',
+            ],
+            [
+                'label' => 'Slug',
+                'field' => 'slug'
+            ],
+            [
+                'label' => 'Price',
+                'field' => 'price'
+            ]
+        ]) }}'
+        items='@json($products)'
     />
 @endsection

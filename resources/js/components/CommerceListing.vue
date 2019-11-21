@@ -1,13 +1,13 @@
 <template>
     <div>
         <data-list
-            :rows="rows"
-            :columns="columns"
-            :search="false"
-            :search-query="search"
-            :sort="false"
-            :sort-colunm="sortColumn"
-            :sort-direction="sortDirection"
+                :rows="rows"
+                :columns="columns"
+                :search="false"
+                :search-query="search"
+                :sort="false"
+                :sort-colunm="sortColumn"
+                :sort-direction="sortDirection"
         >
             <div slot-scope="{ hasSelections }">
                 <div class="card p-0">
@@ -18,8 +18,8 @@
                     <div v-show="items.length === 0" class="p-3 text-center text-grey-50" v-text="__('No results')" />
 
                     <data-list-table
-                        v-show="items.length"
-                        @sorted="sorted"
+                            v-show="items.length"
+                            @sorted="sorted"
                     >
                         <template slot="cell-title" slot-scope="{ row: product }">
                             <div class="flex items-center">
@@ -47,18 +47,15 @@
 <script>
     export default {
         props: {
-            items: String,
-            model: String
+            model: String,
+            cols: String,
+            items: String
         },
 
         data() {
             return {
                 rows: JSON.parse(this.items),
-                columns: [
-                    { label: 'Title', field: 'title' },
-                    { label: 'Slug', field: 'slug' },
-                    { label: 'Price', field: 'price' },
-                ],
+                columns: JSON.parse(this.cols),
 
                 search: '',
                 sortColumn: 'title',
