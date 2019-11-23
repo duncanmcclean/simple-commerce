@@ -11,7 +11,7 @@ class ProductController extends CpController
 {
     public function index()
     {
-        return view('commerce::products.index', [
+        return view('commerce::cp.products.index', [
             'products' => Product::all()
         ]);
     }
@@ -24,7 +24,7 @@ class ProductController extends CpController
         $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
-        return view('commerce::products.create', [
+        return view('commerce::cp.products.create', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
@@ -52,7 +52,7 @@ class ProductController extends CpController
         $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
-        return view('commerce::products.edit', [
+        return view('commerce::cp.products.edit', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $product,
             'meta'      => $fields->meta(),
