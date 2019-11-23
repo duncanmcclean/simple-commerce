@@ -3,6 +3,7 @@
 namespace Damcclean\Commerce\Http\Controllers;
 
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
+use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
 use Facades\Damcclean\Commerce\Models\Product;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -59,9 +60,9 @@ class ProductController extends CpController
         ]);
     }
 
-    public function update(Request $request, $product)
+    public function update(ProductUpdateRequest $request, $product)
     {
-        $validation = []; // WIP
+        $validation = $request->validated();
 
         $product = Product::update($product, $request->all());
 
