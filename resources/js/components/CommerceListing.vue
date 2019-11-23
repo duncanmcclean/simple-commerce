@@ -15,10 +15,10 @@
                         <data-list-search v-model="search" />
                     </div>
 
-                    <div v-show="items.length === 0" class="p-3 text-center text-grey-50" v-text="__('No results')" />
+                    <div v-if="rows.length === 0" class="p-3 text-center text-grey-50" v-text="__('No results')" />
 
                     <data-list-table
-                            v-show="items.length"
+                            v-else
                             @sorted="sorted"
                     >
                         <template slot="cell-title" slot-scope="{ row: product }">
