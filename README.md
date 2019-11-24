@@ -20,7 +20,7 @@ $ composer require damcclean/commerce
 * [ ] Store Dashboard
 * [ ] Widgets
 * [ ] Fix search on listings
-* [ ] Install command
+* [x] Install command
 
 ### Addon Dev Questions
 

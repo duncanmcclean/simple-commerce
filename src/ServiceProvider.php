@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce;
 
+use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -19,31 +20,40 @@ class ServiceProvider extends AddonServiceProvider
         $this
             ->publishes([
                 __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
-            ]);
+            ], 'config');
 
         $this
             ->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
 
+        $this
+            ->commands([
+                SetupCommerceCommand::class
+            ]);
+
         Nav::extend(function ($nav) {
-            $nav->create('Products')
+            $nav
+                ->create('Products')
                 ->section('Commerce')
                 ->route('products.index');
         });
 
         Nav::extend(function ($nav) {
-            $nav->create('Orders')
+            $nav
+                ->create('Orders')
                 ->section('Commerce')
                 ->route('orders.index');
         });
 
         Nav::extend(function ($nav) {
-            $nav->create('Customers')
+            $nav
+                ->create('Customers')
                 ->section('Commerce')
                 ->route('customers.index');
         });
 
         Nav::extend(function ($nav) {
-            $nav->create('Coupons')
+            $nav
+                ->create('Coupons')
                 ->section('Commerce')
                 ->route('coupons.index');
         });
