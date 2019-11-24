@@ -26,6 +26,11 @@ class CustomerController extends CpController
         //
     }
 
+    public function update()
+    {
+        //
+    }
+
     public function destroy()
     {
         //
