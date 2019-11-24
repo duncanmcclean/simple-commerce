@@ -4,7 +4,7 @@ namespace Damcclean\Commerce\Models;
 
 class Coupon extends BaseModel
 {
-    protected $name = 'Coupon';
-    protected $slug = 'coupon';
-    protected $route = 'coupons';
+    public $name = 'Coupon';
+    public $slug = 'coupon';
+    public $route = 'coupons';
 }

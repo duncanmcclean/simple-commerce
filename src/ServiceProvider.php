@@ -27,8 +27,13 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav->create('Products')
                 ->section('Commerce')
-                ->route('products.index')
-                ->icon('shopping-cart');
+                ->route('products.index');
+        });
+
+        Nav::extend(function ($nav) {
+            $nav->create('Coupons')
+                ->section('Commerce')
+                ->route('coupons.index');
         });
 
         Statamic::script('commerce', 'cp.js');

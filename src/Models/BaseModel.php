@@ -3,20 +3,23 @@
 namespace Damcclean\Commerce\Models;
 
 use Illuminate\Filesystem\Filesystem;
-use Statamic\Yaml\Yaml;
+use Statamic\Facades\YAML;
 
 class BaseModel
 {
-    protected $name;
-    protected $slug;
-    protected $route;
+    public $name;
+    public $slug;
+    public $route;
 
-    public function __construct()
+    public function __construct($path = null)
     {
-        $this->yaml = new Yaml();
         $this->filesystem = new Filesystem();
 
-        $this->path = base_path().'/content/commerce/'.$this->slug;
+        if ($path == null) {
+            $this->path = base_path().'/content/commerce/'.$this->slug;
+        } else {
+            $this->path = $path;
+        }
 
         if (! file_exists($this->path)) {
             (new Filesystem())->makeDirectory($this->path, 0755, true, true);
@@ -25,7 +28,8 @@ class BaseModel
 
     public function attributes($file)
     {
-        $attributes = $this->yaml->parse(file_get_contents($file));
+        $attributes = Yaml::parse(file_get_contents($file));
+        $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
         $attributes['edit_url'] = $this->editRoute($attributes['slug']);
         $attributes['delete_url'] = $this->deleteRoute($attributes['slug']);
 
@@ -68,7 +72,7 @@ class BaseModel
 
     public function save(string $slug, array $data)
     {
-        $contents = $this->yaml->dumpFrontMatter($data, null);
+        $contents = Yaml::dumpFrontMatter($data, null);
 
         file_put_contents($this->path.'/'.$slug.'.md', $contents);
 
@@ -77,7 +81,7 @@ class BaseModel
 
     public function update(string $slug, array $data)
     {
-        $contents = $this->yaml->dumpFrontMatter($data, null);
+        $contents = Yaml::dumpFrontMatter($data, null);
 
         file_get_contents($this->path.'/'.$slug.'.md', $contents);
 

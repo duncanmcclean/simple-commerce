@@ -4,7 +4,7 @@ namespace Damcclean\Commerce\Models;
 
 class Customer extends BaseModel
 {
-    protected $name = 'Customer';
-    protected $slug = 'customer';
-    protected $route = 'customers';
+    public $name = 'Customer';
+    public $slug = 'customer';
+    public $route = 'customers';
 }
