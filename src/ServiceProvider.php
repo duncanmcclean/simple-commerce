@@ -3,6 +3,7 @@
 namespace Damcclean\Commerce;
 
 use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
+use Damcclean\Commerce\Tags\ProductTags;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -10,7 +11,13 @@ use Statamic\Statamic;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $routes = [
-        'cp' => __DIR__ . '/../routes/cp.php'
+        'actions' => __DIR__.'/../routes/actions.php',
+        'cp' => __DIR__.'/../routes/cp.php',
+        'web' => __DIR__.'/../routes/web.php',
+    ];
+
+    protected $tags = [
+        ProductTags::class
     ];
 
     public function boot()
