@@ -25,3 +25,4 @@ $ composer require damcclean/commerce
 ### Addon Dev Questions
 
 * How can I add my own SVG icons for the Control Panel nav or is there an icon pack I can choose from?
+* How can I fix the `A facade root has not been set.` issue with the Yaml facade?
