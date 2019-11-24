@@ -11,12 +11,15 @@ $ composer require damcclean/commerce
 * Then publish config from service provider
 * Then publish blueprints to `resources/blueprints`
 
-### Features
+### To Do
 
-* [ ] Control Panel (CRUD interface)
+* [x] Control Panel (CRUD interface)
 * [ ] Example front-end shop
 * [ ] Order processing (Stripe stuff)
 * [ ] Notifications
+* [ ] Store Dashboard
+* [ ] Widgets
+* [ ] Fix search on listings
 
 ### Addon Dev Questions
 
