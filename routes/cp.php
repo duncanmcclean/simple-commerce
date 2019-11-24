@@ -30,7 +30,7 @@ Route::prefix('coupons')->as('coupons')->group(function() {
     Route::get('/delete/{coupon}', 'Http\Controllers\CouponController@destroy')->name('.destroy');
 });
 
-Route::prefix('customer')->as('customers')->group(function() {
+Route::prefix('customers')->as('customers')->group(function() {
     Route::get('/', 'Http\Controllers\CustomerController@index')->name('.index');
     //Route::get('/search', 'Http\Controllers\CustomerSearchController')->name('.search');
     Route::get('/create', 'Http\Controllers\CustomerController@create')->name('.create');

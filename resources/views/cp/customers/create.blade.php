@@ -1,10 +1,10 @@
 @extends('statamic::layout')
-@section('title', 'Edit Order')
+@section('title', 'Create Customer')
 
 @section('content')
     <publish-form
-            title="{{ $values->stripe_order_id }}"
-            action="{{ cp_route('orders.store') }}"
+            title="Create Customer"
+            action="{{ cp_route('customers.store') }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
             :values='@json($values)'
