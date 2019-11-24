@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers;
+namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Facades\Damcclean\Commerce\Models\Product;
 use Statamic\Http\Controllers\CP\CpController;

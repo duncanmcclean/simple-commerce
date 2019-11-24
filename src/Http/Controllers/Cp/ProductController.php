@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers;
+namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
