@@ -1,8 +1,14 @@
 <?php
 
+use Damcclean\Commerce\Tags\CartTags;
 use Statamic\View\View;
 use Facades\Damcclean\Commerce\Models\Product;
 use Illuminate\Http\Request;
+use Stripe\Charge;
+use Stripe\Customer;
+use Stripe\PaymentIntent;
+use Stripe\PaymentMethod;
+use Stripe\Stripe;
 
 Route::get('/products', function() {
     return (new View)
@@ -60,7 +66,31 @@ Route::get('/checkout', function() {
 });
 
 Route::post('/checkout', function(Request $request) {
-    dd($request->all());
+    Stripe::setApiKey(config('commerce.stripe.secret'));
+
+    $customer = \Stripe\Customer::create([
+        'name' => $request->name,
+        'email' => $request->email
+    ]);
+
+    $paymentMethod = PaymentMethod::retrieve($request->payment_method);
+    $paymentMethod->attach([
+        'customer' => $customer->id
+    ]);
+
+    $items = (new CartTags())->index();
+    $total = 0;
+
+    foreach ($items as $item) {
+        $total = $item['price'];
+    }
+
+    $charge = Charge::create([
+        'amount' => $total,
+        'currency' => $request->currency,
+        'source' => 'card',
+        'description' => 'Order on '.now()->diffForHumans()
+    ]);
 
     // process the payment information to create stripe order & customer
     // create order and customer in addon

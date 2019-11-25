@@ -19,4 +19,14 @@ class PaymentGateway
             'currency' => config('commerce.currency'),
         ]);
     }
+
+    public function createCustomer()
+    {
+        //
+    }
+
+    public function createOrder()
+    {
+        //
+    }
 }
