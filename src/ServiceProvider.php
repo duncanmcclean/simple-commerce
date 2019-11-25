@@ -3,6 +3,8 @@
 namespace Damcclean\Commerce;
 
 use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
+use Damcclean\Commerce\Tags\CartTags;
+use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
@@ -17,7 +19,9 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $tags = [
-        ProductTags::class
+        CartTags::class,
+        CommerceTags::class,
+        ProductTags::class,
     ];
 
     public function boot()

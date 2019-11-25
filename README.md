@@ -21,6 +21,8 @@ $ composer require damcclean/commerce
 * [ ] Widgets
 * [ ] Fix search on listings
 * [x] Install command
+* [ ] Get front-end assets in a way they can be published
+* [ ] Fix issue after saving assets from publish form (not being formatted properly in yaml)
 
 ### Addon Dev Questions
 

@@ -15,4 +15,10 @@ class ProductTags extends Tags
 
         return $products;
     }
+
+    public function count()
+    {
+        $items = Product::all();
+        return collect($items)->count();
+    }
 }

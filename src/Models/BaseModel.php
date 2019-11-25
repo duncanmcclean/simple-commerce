@@ -47,6 +47,8 @@ class BaseModel
             ->map(function ($item) {
                 return $this->attributes($item);
             });
+
+        // WIP reject here if item is disabled
     }
 
     public function get(string $slug)
