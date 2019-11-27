@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
+use Facades\Damcclean\Commerce\Models\Coupon;
 use Facades\Damcclean\Commerce\Models\Order;
 use Facades\Damcclean\Commerce\Models\Customer;
 use Damcclean\Commerce\Tags\CartTags;
@@ -24,10 +25,12 @@ class CheckoutController extends Controller
     {
         Stripe::setApiKey(config('commerce.stripe.secret'));
 
+        $total = (new CartTags())->total()*100;
+
         // WIP change the total amount based on coupons
 
         $intent = PaymentIntent::create([
-            'amount' => (new CartTags())->total()*100,
+            'amount' => $total,
             'currency' => config('commerce.currency'),
             'payment_method_types' => ['card'],
             'metadata' => []
@@ -45,7 +48,7 @@ class CheckoutController extends Controller
         // WIP use real stripe order ID (or something better than this)
         $commerceOrder = Order::save('ord_'.uniqid(), [
             'status' => 'created',
-            'total' => (new CartTags())->total(),
+            'total' => $total,
             'shipping_address' => $request->address,
             'coupon' => '',
             'stripe_customer_id' => '' // WIP use real stripe customer id here too
