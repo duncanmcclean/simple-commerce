@@ -2,8 +2,9 @@
 
 namespace Damcclean\Commerce\Tags;
 
-use Damcclean\Commerce\PaymentGateway;
 use Statamic\Tags\Tags;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class CommerceTags extends Tags
 {
@@ -26,6 +27,11 @@ class CommerceTags extends Tags
 
     public function paymentIntent()
     {
-        return (new PaymentGateway())->paymentIntent($this->getParam('amount'))['client_secret'];
+        Stripe::setApiKey(config('commerce.stripe.secret'));
+
+        return PaymentIntent::create([
+            'amount' => $this->getParam('amount'),
+            'currency' => config('commerce.currency'),
+        ]);
     }
 }

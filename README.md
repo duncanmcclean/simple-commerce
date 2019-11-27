@@ -29,6 +29,8 @@ $ composer require damcclean/commerce
 * [ ] If product is deleted while in cart then the user will get error
 * [ ] Dont allow users to add out of stock items to their cart
 * [ ] Make sure Strong Customer Authentication is implemented correctly
+* [ ] Clear cart button in checkout
+* [ ] Don't show the checkout flow if there are no items to buy
 * [ ] Stripe webhooks
 * [ ] Product variations
 * [ ] Tax and shipping
