@@ -32,6 +32,6 @@ class CommerceTags extends Tags
         return PaymentIntent::create([
             'amount' => $this->getParam('amount'),
             'currency' => config('commerce.currency'),
-        ]);
+        ])['client_intent'];
     }
 }
