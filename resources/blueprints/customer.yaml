@@ -49,11 +49,3 @@ sections:
           localizable: false
           display: 'Stripe Customer ID'
           validate: required|string
-      -
-        handle: user
-        field:
-          max_items: 1
-          mode: select
-          type: users
-          localizable: false
-          display: User

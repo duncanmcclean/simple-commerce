@@ -2,6 +2,8 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
+use Facades\Damcclean\Commerce\Models\Order;
+use Facades\Damcclean\Commerce\Models\Customer;
 use Damcclean\Commerce\Tags\CartTags;
 use Illuminate\Http\Request;
 use Statamic\View\View;
@@ -22,6 +24,8 @@ class CheckoutController extends Controller
     {
         Stripe::setApiKey(config('commerce.stripe.secret'));
 
+        // WIP change the total amount based on coupons
+
         $intent = PaymentIntent::create([
             'amount' => (new CartTags())->total()*100,
             'currency' => config('commerce.currency'),
@@ -29,12 +33,30 @@ class CheckoutController extends Controller
             'metadata' => []
         ]);
 
-        return 'Yahoo! Payment done.';
+        // WIP use real stripe customer id as filename here
+        $commerceCustomer = Customer::save('cus_'.uniqid(), [
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'currency' => config('commerce.currency'),
+            'stripe_customer_id' => '',
+        ]);
 
-        // process the payment information to create stripe order & customer
-        // create order and customer in addon
-        // Send a notification to the customer and the store owner
-        // clear the users cart
-        // Present user with success message
+        // WIP use real stripe order ID (or something better than this)
+        $commerceOrder = Order::save('ord_'.uniqid(), [
+            'status' => 'created',
+            'total' => (new CartTags())->total(),
+            'shipping_address' => $request->address,
+            'coupon' => '',
+            'stripe_customer_id' => '' // WIP use real stripe customer id here too
+        ]);
+
+        // WIP Send notification to customer
+        // WIP Send notification to store admin
+        // WIP take quantity of order off the stock number for all products purchased
+
+        $request->session()->forget('cart');
+
+        return redirect('/thanks');
     }
 }

@@ -21,6 +21,7 @@ $ composer require damcclean/commerce
 * [ ] Store Dashboard
 * [ ] Widgets
 * [ ] Customise the routing
+* [ ] Split address into multiple fields
 * [ ] Fix search on listings
 * [ ] Receipts
 * [ ] Events
