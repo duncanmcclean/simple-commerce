@@ -14,15 +14,23 @@ $ composer require damcclean/commerce
 ### To Do
 
 * [x] Control Panel (CRUD interface)
-* [ ] Example front-end shop
+* [x] Example front-end shop
 * [ ] Order processing (Stripe stuff)
 * [ ] Notifications
+* [ ] Fix PaymentMethod & PaymentIntent issues (in the checkout flow)
 * [ ] Store Dashboard
 * [ ] Widgets
+* [ ] Customise the routing
 * [ ] Fix search on listings
 * [x] Install command
 * [ ] Get front-end assets in a way they can be published
 * [ ] Fix issue after saving assets from publish form (not being formatted properly in yaml)
+* [ ] If product is deleted while in cart then the user will get error
+* [ ] Dont allow users to add out of stock items to their cart
+* [ ] Product variations
+* [ ] Tax and shipping
+* [ ] Documentation
+* [ ] 🚀 Launch for beta testers!
 
 ### Addon Dev Questions
 
