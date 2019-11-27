@@ -23,6 +23,7 @@ $ composer require damcclean/commerce
 * [ ] Customise the routing
 * [ ] Fix search on listings
 * [ ] Receipts
+* [ ] Events
 * [x] Install command
 * [ ] Get front-end assets in a way they can be published
 * [ ] Fix issue after saving assets from publish form (not being formatted properly in yaml)
@@ -31,6 +32,7 @@ $ composer require damcclean/commerce
 * [ ] Make sure Strong Customer Authentication is implemented correctly
 * [ ] Clear cart button in checkout
 * [ ] Don't show the checkout flow if there are no items to buy
+* [ ] Make use of action routes for front-end post stuff
 * [ ] Stripe webhooks
 * [ ] Product variations
 * [ ] Tax and shipping
