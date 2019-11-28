@@ -7,4 +7,5 @@ class Product extends BaseModel
     public $name = 'Product';
     public $slug = 'product';
     public $route = 'products';
+    public $primaryColumn = 'title';
 }

@@ -12,6 +12,7 @@ class BaseModel
     public $name;
     public $slug;
     public $route;
+    public $primaryColumn;
 
     public function __construct($path = null)
     {
@@ -54,6 +55,10 @@ class BaseModel
                 return $this->attributes($item);
             })
             ->reject(function ($item) use ($options) {
+                if (! array_key_exists('enabled', $item)) {
+                    return false;
+                }
+
                 if (array_key_exists('showDisabled', $options)) {
                     if ($options['showDisabled'] == true) {
                         return false;
@@ -73,7 +78,9 @@ class BaseModel
 
     public function search($query)
     {
-        $everything = $this->all();
+        $everything = $this->all([
+            'showDisabled' => true
+        ]);
 
         if (! $query) {
             return $everything;
@@ -81,7 +88,7 @@ class BaseModel
 
         return $everything
             ->filter(function ($item) use ($query) {
-                return false !== stristr($item['title'], $query);
+                return false !== stristr($item["$this->primaryColumn"], $query);
             });
     }
 

@@ -12,7 +12,7 @@ Route::prefix('products')->as('products')->group(function() {
 
 Route::prefix('orders')->as('orders')->group(function() {
     Route::get('/', 'Http\Controllers\Cp\OrderController@index')->name('.index');
-    //Route::get('/search', 'Http\Controllers\Cp\OrderSearchController')->name('.search');
+    Route::get('/search', 'Http\Controllers\Cp\OrderSearchController')->name('.search');
     Route::get('/create', 'Http\Controllers\Cp\OrderController@create')->name('.create');
     Route::post('/create', 'Http\Controllers\Cp\OrderController@store')->name('.store');
     Route::get('/edit/{order}', 'Http\Controllers\Cp\OrderController@edit')->name('.edit');
@@ -22,7 +22,7 @@ Route::prefix('orders')->as('orders')->group(function() {
 
 Route::prefix('coupons')->as('coupons')->group(function() {
     Route::get('/', 'Http\Controllers\Cp\CouponController@index')->name('.index');
-    //Route::get('/search', 'Http\Controllers\Cp\CouponSearchController')->name('.search');
+    Route::get('/search', 'Http\Controllers\Cp\CouponSearchController')->name('.search');
     Route::get('/create', 'Http\Controllers\Cp\CouponController@create')->name('.create');
     Route::post('/create', 'Http\Controllers\Cp\CouponController@store')->name('.store');
     Route::get('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@edit')->name('.edit');
@@ -32,7 +32,7 @@ Route::prefix('coupons')->as('coupons')->group(function() {
 
 Route::prefix('customers')->as('customers')->group(function() {
     Route::get('/', 'Http\Controllers\Cp\CustomerController@index')->name('.index');
-    //Route::get('/search', 'Http\Controllers\Cp\CustomerSearchController')->name('.search');
+    Route::get('/search', 'Http\Controllers\Cp\CustomerSearchController')->name('.search');
     Route::get('/create', 'Http\Controllers\Cp\CustomerController@create')->name('.create');
     Route::post('/create', 'Http\Controllers\Cp\CustomerController@store')->name('.store');
     Route::get('/edit/{customer}', 'Http\Controllers\Cp\CustomerController@edit')->name('.edit');
