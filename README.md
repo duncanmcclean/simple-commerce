@@ -41,6 +41,7 @@ $ composer require damcclean/commerce
 * [ ] Tax and shipping
 * [ ] Documentation
 * [ ] 🚀 Launch for beta testers!
+* [ ] Document the codebase
 
 ### Addon Dev Questions
 

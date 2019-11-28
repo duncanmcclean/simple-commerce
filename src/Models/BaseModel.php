@@ -29,7 +29,7 @@ class BaseModel
         }
     }
 
-    public function attributes(SplFileInfo $file)
+    public function attributes($file)
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
