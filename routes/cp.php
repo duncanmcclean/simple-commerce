@@ -1,5 +1,7 @@
 <?php
 
+Route::get('/commerce-dashboard', 'Http\Controllers\Cp\DashboardController')->name('commerce.dashboard');
+
 Route::prefix('products')->as('products')->group(function() {
     Route::get('/', 'Http\Controllers\Cp\ProductController@index')->name('.index');
     Route::get('/search', 'Http\Controllers\Cp\ProductSearchController')->name('.search');

@@ -23,7 +23,7 @@ $ composer require damcclean/commerce
 * [ ] Widgets
 * [ ] Customise the routing
 * [ ] Split address into multiple fields
-* [ ] Fix search on listings
+* [x] Fix search on listings
 * [ ] Receipts
 * [ ] Events
 * [x] Install command
@@ -37,6 +37,7 @@ $ composer require damcclean/commerce
 * [ ] Make use of action routes for front-end post stuff
 * [ ] Stripe webhooks
 * [ ] Product variations
+* [ ] Translation
 * [ ] Tax and shipping
 * [ ] Documentation
 * [ ] 🚀 Launch for beta testers!
