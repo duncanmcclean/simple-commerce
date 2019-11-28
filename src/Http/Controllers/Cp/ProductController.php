@@ -13,7 +13,9 @@ class ProductController extends CpController
     public function index()
     {
         return view('commerce::cp.products.index', [
-            'products' => Product::all()
+            'products' => Product::all([
+                'showDisabled' => true
+            ])
         ]);
     }
 

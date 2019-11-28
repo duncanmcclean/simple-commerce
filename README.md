@@ -19,6 +19,7 @@ $ composer require damcclean/commerce
 * [ ] Notifications
 * [ ] Fix PaymentMethod & PaymentIntent issues (in the checkout flow)
 * [ ] Store Dashboard
+* [ ] Use the stache to cache content
 * [ ] Widgets
 * [ ] Customise the routing
 * [ ] Split address into multiple fields
@@ -44,3 +45,4 @@ $ composer require damcclean/commerce
 
 * How can I add my own SVG icons for the Control Panel nav or is there an icon pack I can choose from?
 * How can I fix the `A facade root has not been set.` issue with the Yaml facade?
+* Can I use the stache to cache stuff in my addon?

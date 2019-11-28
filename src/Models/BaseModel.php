@@ -3,7 +3,9 @@
 namespace Damcclean\Commerce\Models;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use Statamic\Facades\YAML;
+use Symfony\Component\Finder\SplFileInfo;
 
 class BaseModel
 {
@@ -36,19 +38,30 @@ class BaseModel
         return $attributes;
     }
 
-    public function all()
+    public function all(array $options = [])
     {
-        $items = glob(
-            $this->path.'/*.md',
-            GLOB_BRACE
-        );
+        $files = File::allFiles($this->path);
 
-        return collect($items)
+        return collect($files)
+            ->reject(function (SplFileInfo $item) {
+                if ($item->getExtension() == 'md') {
+                    return false;
+                }
+
+                return true;
+            })
             ->map(function ($item) {
                 return $this->attributes($item);
-            });
+            })
+            ->reject(function ($item) use ($options) {
+                if (array_key_exists('showDisabled', $options)) {
+                    if ($options['showDisabled'] == true) {
+                        return false;
+                    }
+                }
 
-        // WIP reject here if item is disabled
+                return !$item['enabled'];
+            });
     }
 
     public function get(string $slug)
