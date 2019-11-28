@@ -29,7 +29,7 @@ class BaseModel
         }
     }
 
-    public function attributes($file)
+    public function attributes(SplFileInfo $file)
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
@@ -44,8 +44,8 @@ class BaseModel
         $files = File::allFiles($this->path);
 
         return collect($files)
-            ->reject(function (SplFileInfo $item) {
-                if ($item->getExtension() == 'md') {
+            ->reject(function (SplFileInfo $file) {
+                if ($file->getExtension() == 'md') {
                     return false;
                 }
 
@@ -76,7 +76,7 @@ class BaseModel
         return json_decode(collect($this->attributes($path))->toJson());
     }
 
-    public function search($query)
+    public function search(string $query)
     {
         $everything = $this->all([
             'showDisabled' => true
@@ -114,19 +114,19 @@ class BaseModel
         return collect($data);
     }
 
-    public function delete($slug)
+    public function delete(string $slug)
     {
         return $this->filesystem->delete($this->path.'/'.$slug.'.md');
     }
 
-    public function editRoute($slug)
+    public function editRoute(string $slug)
     {
         return cp_route("$this->route.edit", [
             "$this->slug" => $slug
         ]);
     }
 
-    public function deleteRoute($slug)
+    public function deleteRoute(string $slug)
     {
         return cp_route("$this->route.destroy", [
             "$this->slug" => $slug
