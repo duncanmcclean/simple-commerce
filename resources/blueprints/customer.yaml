@@ -11,6 +11,7 @@ sections:
           localizable: false
           display: Name
           validate: required|string
+          width: 50
       -
         handle: email
         field:
@@ -19,6 +20,13 @@ sections:
           localizable: false
           display: Email
           validate: required|email
+          width: 50
+      -
+        handle: address_section
+        field:
+          type: section
+          localizable: false
+          display: Address
       -
         handle: address
         field:
@@ -26,6 +34,42 @@ sections:
           localizable: false
           display: Address
           validate: string
+      -
+        handle: country
+        field:
+          options:
+            uk: 'United Kingdom'
+            us: 'United States'
+            ca: Canada
+            fr: France
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          type: select
+          localizable: false
+          width: 50
+          display: Country
+      -
+        handle: zip_code
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          width: 50
+          display: 'Zip Code'
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: stripe_customer_id
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Stripe Customer ID'
+          validate: required|string
       -
         handle: currency
         field:
@@ -40,12 +84,4 @@ sections:
           type: select
           localizable: false
           display: Currency
-          validate: required|string
-      -
-        handle: stripe_customer_id
-        field:
-          character_limit: 0
-          type: text
-          localizable: false
-          display: 'Stripe Customer ID'
           validate: required|string

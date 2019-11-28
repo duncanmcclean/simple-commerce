@@ -41,6 +41,8 @@ class CheckoutController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'address' => $request->address,
+            'country' => $request->country,
+            'zip_code' => $request->zip_code,
             'currency' => config('commerce.currency'),
             'stripe_customer_id' => '',
         ]);
