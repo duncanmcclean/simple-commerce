@@ -76,7 +76,7 @@ class BaseModel
         return json_decode(collect($this->attributes($path))->toJson());
     }
 
-    public function search(string $query)
+    public function search($query)
     {
         $everything = $this->all([
             'showDisabled' => true
