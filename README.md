@@ -1,4 +1,4 @@
-## Commerce
+# Commerce
 
 > An eCommerce addon for Statamic v3
 
@@ -9,15 +9,15 @@
 * Notifications
 * Strong Customer Authentication (SCA) support
 
-### 📄 Documentation
+## 📄 Documentation
 
 Documentation coming soon.
 
-### Contributing
+## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-#### Security
+### Security
 
 If you discover any security related issues, please email [duncan@mcclean.co.uk](mailto:duncan@mcclean.co.uk) instead of using the issue tracker.
 
