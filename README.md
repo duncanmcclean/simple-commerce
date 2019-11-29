@@ -8,6 +8,6 @@ An eCommerce addon for Statamic v3.
 $ composer require damcclean/commerce
 ```
 
-``
+```
 $ php please commerce:setup
-``
+```
