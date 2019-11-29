@@ -24,6 +24,10 @@ class ServiceProvider extends AddonServiceProvider
         ProductTags::class,
     ];
 
+    protected $scripts = [
+        __DIR__.'/../dist/js/cp.js'
+    ];
+
     public function boot()
     {
         parent::boot();
@@ -75,7 +79,5 @@ class ServiceProvider extends AddonServiceProvider
                 ->section('Commerce')
                 ->route('coupons.index');
         });
-
-        Statamic::script('commerce', 'cp.js');
     }
 }
