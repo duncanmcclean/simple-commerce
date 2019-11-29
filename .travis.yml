@@ -1,9 +1,9 @@
 language: php
 
 php:
-  - 7.2
+  - 7.3
 
 install:
-  - travis_retry composer install --no-interaction
+  - composer install --no-interaction
 
 script: vendor/bin/phpunit -v
