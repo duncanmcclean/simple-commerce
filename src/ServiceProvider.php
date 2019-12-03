@@ -6,9 +6,10 @@ use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
+use ProductRepository;
+use Statamic\Contracts\Entries\EntryRepository;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
-use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -79,5 +80,10 @@ class ServiceProvider extends AddonServiceProvider
                 ->section('Commerce')
                 ->route('coupons.index');
         });
+    }
+
+    public function register()
+    {
+        $this->app->bind(ProductRepository::class, EntryRepository::class);
     }
 }
