@@ -5,7 +5,8 @@ namespace Damcclean\Commerce\Stache\Repositories;
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use Statamic\Facades\File;
+use SplFileInfo;
+use Illuminate\Support\Facades\File;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stache;
 
@@ -20,15 +21,15 @@ class FileProductRepository implements Contract
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route("$this->route.edit", ['product' => $attributes['slug']]);
-        $attributes['delete_url'] = cp_route("$this->route.destroy", ['product' => $attributes['slug']]);
+        $attributes['edit_url'] = cp_route('products.edit', ['product' => $attributes['slug']]);
+        $attributes['delete_url'] = cp_route('products.destroy', ['product' => $attributes['slug']]);
 
-        return $attributes;
+        return collect($attributes);
     }
 
     public function all(): Collection
     {
-        return $this->query()->get();
+        return $this->query();
     }
 
     public function find($id): Collection
@@ -43,27 +44,33 @@ class FileProductRepository implements Contract
 
     public function save($entry)
     {
-        dd($entry);
-
-        if (! $entry->id()) {
-            $entry->id((new Stache())->generateId());
+        if (! isset($entry['id'])) {
+            $entry['id'] = (new Stache())->generateId();
         }
 
         $contents = Yaml::dumpFrontMatter($entry, null);
-        return file_put_contents($this->path.'/'.$entry->slug.'.md', $contents);
+        file_put_contents($this->path.'/'.$entry['slug'].'.md', $contents);
+
+        return $entry;
     }
 
     public function delete($entry)
     {
-        dd($entry);
         return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
     }
 
     public function query()
     {
-        $files = File::getFilesByType($this->path, 'md');
+        $files = File::allFiles($this->path);
 
         return collect($files)
+            ->reject(function (SplFileInfo $file) {
+                if ($file->getExtension() == 'md') {
+                    return false;
+                }
+
+                return true;
+            })
             ->map(function ($file) {
                 return $this->attributes($file);
             });
