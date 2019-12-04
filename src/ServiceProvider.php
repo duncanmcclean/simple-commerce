@@ -3,11 +3,11 @@
 namespace Damcclean\Commerce;
 
 use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
+use Damcclean\Commerce\Contracts\ProductRepository;
+use Damcclean\Commerce\Stache\Repositories\FileProductRepository;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
-use ProductRepository;
-use Statamic\Contracts\Entries\EntryRepository;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 
@@ -84,6 +84,6 @@ class ServiceProvider extends AddonServiceProvider
 
     public function register()
     {
-        $this->app->bind(ProductRepository::class, EntryRepository::class);
+        $this->app->bind(ProductRepository::class, FileProductRepository::class);
     }
 }
