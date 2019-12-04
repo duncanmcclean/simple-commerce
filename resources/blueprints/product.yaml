@@ -12,6 +12,36 @@ sections:
           display: Title
           validate: required|string
       -
+        handle: description
+        field:
+          restrict: false
+          automatic_line_breaks: true
+          automatic_links: false
+          escape_markup: true
+          smartypants: false
+          type: markdown
+          localizable: false
+          display: Description
+      -
+        handle: free_shipping
+        field:
+          type: toggle
+          localizable: false
+          display: 'Free Shipping'
+          width: 50
+      -
+        handle: shipping_price
+        field:
+          type: integer
+          localizable: false
+          display: 'Shipping Price'
+          unless:
+            free_shipping: 'equals true'
+          width: 50
+  sidebar:
+    display: Sidebar
+    fields:
+      -
         handle: publish_date
         field:
           time_enabled: true
@@ -42,25 +72,6 @@ sections:
           localizable: false
           display: 'Expiry Date'
           width: 50
-      -
-        handle: free_shipping
-        field:
-          type: toggle
-          localizable: false
-          display: 'Free Shipping'
-          width: 50
-      -
-        handle: shipping_price
-        field:
-          type: integer
-          localizable: false
-          display: 'Shipping Price'
-          unless:
-            free_shipping: 'equals true'
-          width: 50
-  sidebar:
-    display: Sidebar
-    fields:
       -
         handle: slug
         field:
