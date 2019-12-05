@@ -4,10 +4,13 @@ namespace Damcclean\Commerce;
 
 use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
 use Damcclean\Commerce\Contracts\CouponRepository;
+use Damcclean\Commerce\Contracts\CustomerRepository;
 use Damcclean\Commerce\Contracts\ProductRepository;
 use Damcclean\Commerce\Facades\Coupon;
+use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
+use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
 use Damcclean\Commerce\Stache\Repositories\FileProductRepository;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
@@ -89,9 +92,11 @@ class ServiceProvider extends AddonServiceProvider
     public function register()
     {
         $this->app->bind(ProductRepository::class, FileProductRepository::class);
+        $this->app->bind(CustomerRepository::class, FileCustomerRepository::class);
         $this->app->bind(CouponRepository::class, FileCouponRepository::class);
 
         $this->app->bind('product', Product::class);
+        $this->app->bind('customer', Customer::class);
         $this->app->bind('coupon', Coupon::class);
     }
 }

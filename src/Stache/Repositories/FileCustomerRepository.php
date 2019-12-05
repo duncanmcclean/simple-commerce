@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Stache\Repositories;
 
-use Damcclean\Commerce\Contracts\CouponRepository as Contract;
+use Damcclean\Commerce\Contracts\CustomerRepository as Contract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -10,19 +10,19 @@ use SplFileInfo;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stache;
 
-class FileCouponRepository implements Contract
+class FileCustomerRepository implements Contract
 {
     public function __construct()
     {
-        $this->path = base_path().'/content/commerce/coupons';
+        $this->path = base_path().'/content/commerce/customers';
     }
 
     public function attributes($file): Collection
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route('coupons.edit', ['coupon' => $attributes['slug']]);
-        $attributes['delete_url'] = cp_route('coupons.destroy', ['coupon' => $attributes['slug']]);
+        $attributes['edit_url'] = cp_route('customers.edit', ['customer' => $attributes['stripe_customer_id']]);
+        $attributes['delete_url'] = cp_route('customers.destroy', ['customer' => $attributes['stripe_customer_id']]);
 
         return collect($attributes);
     }
@@ -40,6 +40,16 @@ class FileCouponRepository implements Contract
     public function findBySlug(string $slug): Collection
     {
         return $this->query()->where('slug', $slug)->first();
+    }
+
+    public function findByEmail(string $email): Collection
+    {
+        return $this->query()->where('email', $email)->first();
+    }
+
+    public function findByStripeId(string $stripeId): Collection
+    {
+        return $this->query()->where('stripe_custimer_id', $stripeId)->first();
     }
 
     public function save($entry)
@@ -84,26 +94,26 @@ class FileCouponRepository implements Contract
     public function createRules($collection)
     {
         return [
-            'title' => 'required|string',
-            'description' => 'sometimes|string',
-            'enabled' => 'boolean',
-            'effect' => 'required|in:percentage,fixed,amount',
-            'amount' => 'required|integer',
-            'start_date' => '',
-            'end_date' => ''
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'address' => 'sometimes|string',
+            'country' => 'sometimes|string',
+            'zip_code' => 'sometimes|string',
+            'stripe_customer_id' => 'required|string',
+            'currency' => 'required|string'
         ];
     }
 
     public function updateRules($collection, $entry)
     {
         return [
-            'title' => 'required|string',
-            'description' => 'sometimes|string',
-            'enabled' => 'boolean',
-            'effect' => 'required|in:percentage,fixed,amount',
-            'amount' => 'required|integer',
-            'start_date' => '',
-            'end_date' => ''
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'address' => 'sometimes|string',
+            'country' => 'sometimes|string',
+            'zip_code' => 'sometimes|string',
+            'stripe_customer_id' => 'required|string',
+            'currency' => 'required|string'
         ];
     }
 }
