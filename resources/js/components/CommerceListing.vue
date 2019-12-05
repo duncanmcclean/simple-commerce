@@ -21,21 +21,21 @@
                             v-else
                             @sorted="sorted"
                     >
-                        <template slot="cell-title" slot-scope="{ row: product }">
+                        <template slot="cell-title" slot-scope="{ row: item }">
                             <div class="flex items-center">
-                                <div class="little-dot mr-1" :class="[product.enabled ? 'bg-green' : 'bg-grey-40']"></div>
-                                <a @click.stop="redirect(product.edit_url)">{{ product.title }}</a>
+                                <div class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>
+                                <a @click.stop="redirect(item.edit_url)">{{ item.title }}</a>
                             </div>
                         </template>
 
-                        <template slot="cell-slug" slot-scope="{ row : product }">
-                            <span class="font-mono text-2xs">{{ product.slug }}</span>
+                        <template slot="cell-slug" slot-scope="{ row : item }">
+                            <span class="font-mono text-2xs">{{ item.slug }}</span>
                         </template>
 
-                        <template slot="actions" slot-scope="{ row : product, index }">
+                        <template slot="actions" slot-scope="{ row : item, index }">
                             <dropdown-list>
-                                <dropdown-item :text="__('Edit')" :redirect="product.edit_url"></dropdown-item>
-                                <dropdown-item :text="__('Delete')" :redirect="product.delete_url"></dropdown-item>
+                                <dropdown-item :text="__('Edit')" :redirect="item.edit_url"></dropdown-item>
+                                <dropdown-item :text="__('Delete')" :redirect="item.delete_url"></dropdown-item>
                             </dropdown-list>
                         </template>
                     </data-list-table>
@@ -63,6 +63,10 @@
 
                 requestUrl: cp_url(this.model+'/search')
             }
+        },
+
+        mounted() {
+            console.log('hey')
         },
 
         methods: {
