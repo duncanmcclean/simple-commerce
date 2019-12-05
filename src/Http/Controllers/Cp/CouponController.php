@@ -74,7 +74,7 @@ class CouponController extends CpController
 
     public function destroy($coupon)
     {
-        $coupon = Coupon::delete($coupon);
+        $coupon = Coupon::delete(Coupon::find($coupon)['slug']);
 
         return redirect(cp_route('coupons.index'));
     }

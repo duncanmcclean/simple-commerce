@@ -21,8 +21,8 @@ class FileProductRepository implements Contract
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route('products.edit', ['product' => $attributes['slug']]);
-        $attributes['delete_url'] = cp_route('products.destroy', ['product' => $attributes['slug']]);
+        $attributes['edit_url'] = cp_route('products.edit', ['product' => $attributes['id']]);
+        $attributes['delete_url'] = cp_route('products.destroy', ['product' => $attributes['id']]);
 
         return collect($attributes);
     }
@@ -46,6 +46,10 @@ class FileProductRepository implements Contract
     {
         if (! isset($entry['id'])) {
             $entry['id'] = (new Stache())->generateId();
+        }
+
+        if (! isset($entry['slug'])) {
+            $entry['slug'] = str_slug($entry['title']);
         }
 
         $contents = Yaml::dumpFrontMatter($entry, null);

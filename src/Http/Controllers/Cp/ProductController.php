@@ -39,13 +39,13 @@ class ProductController extends CpController
         $product = Product::save($request->all());
 
         return array_merge($product, [
-            'redirect' => cp_route('products.edit', ['product' => $product['slug']])
+            'redirect' => cp_route('products.edit', ['product' => $product['id']])
         ]);
     }
 
     public function edit($product)
     {
-        $product = Product::findBySlug($product);
+        $product = Product::find($product);
 
         $blueprint = Blueprint::find('product');
 
@@ -64,14 +64,14 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        $product = Product::update($product, $request->all());
+        $product = Product::update(Product::find($product)['slug'], $request->all());
 
-        return $product->toArray();
+        return $product;
     }
 
     public function destroy($product)
     {
-        $product = Product::delete($product);
+        $product = Product::delete(Product::find($product)['slug']);
 
         return redirect(cp_route('products.index'));
     }

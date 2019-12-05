@@ -60,7 +60,7 @@ class FileCouponRepository implements Contract
 
     public function delete($entry)
     {
-        return (new Filesystem())->delete($this->path.'/'.$this->find($entry)['slug'].'.md');
+        return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
     }
 
     public function query()
