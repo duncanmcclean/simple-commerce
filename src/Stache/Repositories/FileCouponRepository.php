@@ -21,8 +21,8 @@ class FileCouponRepository implements Contract
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route('coupons.edit', ['coupon' => $attributes['slug']]);
-        $attributes['delete_url'] = cp_route('coupons.destroy', ['coupon' => $attributes['slug']]);
+        $attributes['edit_url'] = cp_route('coupons.edit', ['coupon' => $attributes['id']]);
+        $attributes['delete_url'] = cp_route('coupons.destroy', ['coupon' => $attributes['id']]);
 
         return collect($attributes);
     }
@@ -48,6 +48,10 @@ class FileCouponRepository implements Contract
             $entry['id'] = (new Stache())->generateId();
         }
 
+        if (! isset($entry['slug'])) {
+            $entry['slug'] = str_slug($entry['title']);
+        }
+
         $contents = Yaml::dumpFrontMatter($entry, null);
         file_put_contents($this->path.'/'.$entry['slug'].'.md', $contents);
 
@@ -56,7 +60,7 @@ class FileCouponRepository implements Contract
 
     public function delete($entry)
     {
-        return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
+        return (new Filesystem())->delete($this->path.'/'.$this->find($entry)['slug'].'.md');
     }
 
     public function query()
