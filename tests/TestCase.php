@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Tests;
 
-use Damcclean\Commerce\ServiceProvider;
+use Damcclean\Commerce\CommerceServiceProvider;
 use Statamic\Providers\StatamicServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Statamic;
@@ -13,7 +13,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         return [
             StatamicServiceProvider::class,
-            ServiceProvider::class,
+            CommerceServiceProvider::class,
         ];
     }
 
