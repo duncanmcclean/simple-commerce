@@ -2,12 +2,13 @@
 
 namespace Damcclean\Commerce\Stache\Repositories;
 
+use Damcclean\Commerce\Contracts\CouponRepository as Contract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
 use Statamic\Facades\YAML;
 
-class FileCouponRepository
+class FileCouponRepository implements Contract
 {
     public function __construct()
     {
