@@ -18,13 +18,16 @@ sections:
           localizable: false
           display: Description
       -
-        handle: enabled
+        handle: code
         field:
-          type: toggle
+          character_limit: 0
+          type: text
+          instructions: 'This is the code your customers use to redeem this coupon.'
           localizable: false
-          display: 'Enabled?'
+          display: Code
+          validate: required
   affect:
-    display: Effect
+    display: Affect
     fields:
       -
         handle: effect
@@ -51,6 +54,12 @@ sections:
   sidebar:
     display: Sidebar
     fields:
+      -
+        handle: enabled
+        field:
+          type: toggle
+          localizable: false
+          display: 'Enabled?'
       -
         handle: start_date
         field:
