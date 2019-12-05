@@ -49,7 +49,7 @@ class FileCustomerRepository implements Contract
 
     public function findByStripeId(string $stripeId): Collection
     {
-        return $this->query()->where('stripe_custimer_id', $stripeId)->first();
+        return $this->query()->where('stripe_customer_id', $stripeId)->first();
     }
 
     public function save($entry)
