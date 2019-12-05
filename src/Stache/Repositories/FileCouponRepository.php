@@ -2,27 +2,24 @@
 
 namespace Damcclean\Commerce\Stache\Repositories;
 
-use Damcclean\Commerce\Contracts\ProductRepository as Contract;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use SplFileInfo;
 use Illuminate\Support\Facades\File;
+use SplFileInfo;
 use Statamic\Facades\YAML;
-use Statamic\Stache\Stache;
 
-class FileProductRepository implements Contract
+class FileCouponRepository
 {
     public function __construct()
     {
-        $this->path = base_path().'/content/commerce/products';
+        $this->path = base_path().'/content/commerce/coupons';
     }
 
     public function attributes($file): Collection
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route('products.edit', ['product' => $attributes['slug']]);
-        $attributes['delete_url'] = cp_route('products.destroy', ['product' => $attributes['slug']]);
+        $attributes['edit_url'] = cp_route('coupons.edit', ['coupon' => $attributes['slug']]);
+        $attributes['delete_url'] = cp_route('coupons.destroy', ['coupon' => $attributes['slug']]);
 
         return collect($attributes);
     }
@@ -86,14 +83,11 @@ class FileProductRepository implements Contract
         return [
             'title' => 'required|string',
             'description' => 'sometimes|string',
-            'slug' => 'required|string',
-            'publish_date' => '',
-            'expiry_date' => '',
             'enabled' => 'boolean',
-            'free_shipping' => 'boolean',
-            'price' => 'required|integer',
-            'shipping_price' => 'sometimes|integer',
-            'stock_number' => 'sometimes|integer'
+            'effect' => 'required|in:percentage,fixed,amount',
+            'amount' => 'required|integer',
+            'start_date' => '',
+            'end_date' => ''
         ];
     }
 
@@ -102,14 +96,11 @@ class FileProductRepository implements Contract
         return [
             'title' => 'required|string',
             'description' => 'sometimes|string',
-            'slug' => 'required|string',
-            'publish_date' => '',
-            'expiry_date' => '',
             'enabled' => 'boolean',
-            'free_shipping' => 'boolean',
-            'price' => 'required|integer',
-            'shipping_price' => 'sometimes|integer',
-            'stock_number' => 'sometimes|integer'
+            'effect' => 'required|in:percentage,fixed,amount',
+            'amount' => 'required|integer',
+            'start_date' => '',
+            'end_date' => ''
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
-use Facades\Damcclean\Commerce\Models\Coupon;
+use Damcclean\Commerce\Facades\Coupon;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -35,18 +35,16 @@ class CouponController extends CpController
     {
         $validated = []; // WIP
 
-        $slug = str_slug($request->title);
-
-        $coupon = Coupon::save($slug, $request->all());
+        $coupon = Coupon::save($request->all());
 
         return array_merge($coupon->toArray(), [
-            'redirect' => cp_route('coupons.edit', ['coupon' => $slug])
+            'redirect' => cp_route('coupons.edit', ['coupon' => $coupon['slug']])
         ]);
     }
 
     public function edit($product)
     {
-        $coupon = Coupon::get($product);
+        $coupon = Coupon::findBySlug($product);
 
         $blueprint = Blueprint::find('coupon');
 
