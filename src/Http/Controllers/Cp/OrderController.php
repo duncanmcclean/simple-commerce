@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
-use Facades\Damcclean\Commerce\Models\Order;
+use Damcclean\Commerce\Facades\Order;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -35,18 +35,16 @@ class OrderController extends CpController
     {
         $validated = []; // WIP
 
-        $slug = $request->stripe_order_id;
-
-        $order = Order::save($slug, $request->all());
+        $order = Order::save($request->all());
 
         return array_merge($order->toArray(), [
-            'redirect' => cp_route('orders.edit', ['order' => $slug])
+            'redirect' => cp_route('orders.edit', ['order' => $order['slug']])
         ]);
     }
 
     public function edit($order)
     {
-        $order = Order::get($order);
+        $order = Order::getBySlug($order);
 
         $blueprint = Blueprint::find('order');
 

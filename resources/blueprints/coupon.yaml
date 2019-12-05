@@ -24,7 +24,7 @@ sections:
           localizable: false
           display: 'Enabled?'
   affect:
-    display: Affect
+    display: Effect
     fields:
       -
         handle: effect
@@ -79,12 +79,3 @@ sections:
           type: date
           localizable: false
           display: 'End Date'
-      -
-        handle: products
-        field:
-          max_items: 0
-          mode: default
-          type: entries
-          instructions: 'Which products should this promotion apply to?'
-          localizable: false
-          display: Products

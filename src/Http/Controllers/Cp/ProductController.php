@@ -4,7 +4,7 @@ namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
-use Facades\Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Facades\Product;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -13,9 +13,7 @@ class ProductController extends CpController
     public function index()
     {
         return view('commerce::cp.products.index', [
-            'products' => Product::all([
-                'showDisabled' => true
-            ])
+            'products' => Product::all()
         ]);
     }
 
@@ -38,18 +36,16 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        $slug = str_slug($request->title);
+        $product = Product::save($request->all());
 
-        $product = Product::save($slug, $request->all());
-
-        return array_merge($product->toArray(), [
-            'redirect' => cp_route('products.edit', ['product' => $slug])
+        return array_merge($product, [
+            'redirect' => cp_route('products.edit', ['product' => $product['slug']])
         ]);
     }
 
     public function edit($product)
     {
-        $product = Product::get($product);
+        $product = Product::findBySlug($product);
 
         $blueprint = Blueprint::find('product');
 
@@ -69,12 +65,6 @@ class ProductController extends CpController
         $validation = $request->validated();
 
         $product = Product::update($product, $request->all());
-
-        if ($request->slug != $product) {
-            return array_merge($product->toArray(), [
-                'redirect' => cp_route('products.edit', ['product' => $request->slug])
-            ]);
-        }
 
         return $product->toArray();
     }

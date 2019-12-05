@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Tags;
 
-use Facades\Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Facades\Product;
 use Statamic\Tags\Tags;
 
 class CartTags extends Tags
@@ -15,7 +15,7 @@ class CartTags extends Tags
 
         return collect($items)
             ->map(function ($item) {
-                $product = (array) Product::get($item['slug']);
+                $product = (array) Product::findBySlug($item['slug']);
                 $product['quantity'] = $item['quantity'];
                 $product['price'] = $product['price'] * $product['quantity'];
 

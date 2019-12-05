@@ -2,14 +2,23 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
-use Facades\Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Facades\Product;
 use Statamic\Http\Controllers\CP\CpController;
 
 class ProductSearchController extends CpController
 {
     public function __invoke()
     {
-        $results = Product::search(request()->input('search'));
+        $query = request()->input('search');
+
+        if (! $query) {
+            $results = Product::all();
+        } else {
+            $results = Product::all()
+                ->filter(function ($item) use ($query) {
+                    return false !== stristr((string) $item['title'], $query);
+                });
+        }
 
         return response()->json([
             'data' => $results,

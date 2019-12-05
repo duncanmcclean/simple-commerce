@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Tags;
 
-use Facades\Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Facades\Product;
 use Statamic\Tags\Tags;
 
 class ProductTags extends Tags
@@ -11,14 +11,11 @@ class ProductTags extends Tags
 
     public function index()
     {
-        $products = Product::all();
-
-        return $products;
+        return Product::all();
     }
 
     public function count()
     {
-        $items = Product::all();
-        return collect($items)->count();
+        return collect(Product::all())->count();
     }
 }

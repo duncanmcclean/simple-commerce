@@ -2,8 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
-use Facades\Damcclean\Commerce\Models\Coupon;
-use Facades\Damcclean\Commerce\Models\Customer;
+use Damcclean\Commerce\Facades\Customer;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -36,9 +35,7 @@ class CustomerController extends CpController
     {
         $validated = []; // WIP
 
-        $slug = $request->stripe_customer_id;
-
-        $customer = Customer::save($slug, $request->all());
+        $customer = Customer::save($request->all());
 
         return array_merge($customer->toArray(), [
             'redirect' => cp_route('customers.edit', ['customer' => $slug])
@@ -47,7 +44,7 @@ class CustomerController extends CpController
 
     public function edit($customer)
     {
-        $customer = Customer::get($customer);
+        $customer = Customer::findByStripeId($customer);
 
         $blueprint = Blueprint::find('customer');
 

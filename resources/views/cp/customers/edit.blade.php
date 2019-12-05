@@ -3,7 +3,7 @@
 
 @section('content')
     <publish-form
-            title="{{ $values->name }}"
+            title="{{ $values['name'] }}"
             action="{{ cp_route('customers.store') }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
