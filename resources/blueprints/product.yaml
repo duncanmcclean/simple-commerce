@@ -4,6 +4,15 @@ sections:
     display: Main
     fields:
       -
+        handle: gallery
+        field:
+          mode: grid
+          restrict: false
+          allow_uploads: true
+          type: assets
+          localizable: false
+          display: Gallery
+      -
         handle: title
         field:
           character_limit: 0
@@ -22,6 +31,9 @@ sections:
           type: markdown
           localizable: false
           display: Description
+  shipping:
+    display: Shipping
+    fields:
       -
         handle: free_shipping
         field:
@@ -41,6 +53,19 @@ sections:
   sidebar:
     display: Sidebar
     fields:
+      -
+        handle: enabled
+        field:
+          type: toggle
+          localizable: false
+          display: 'Enabled?'
+      -
+        handle: slug
+        field:
+          generate: true
+          type: slug
+          localizable: false
+          display: Slug
       -
         handle: publish_date
         field:
@@ -72,19 +97,6 @@ sections:
           localizable: false
           display: 'Expiry Date'
           width: 50
-      -
-        handle: slug
-        field:
-          generate: true
-          type: slug
-          localizable: false
-          display: Slug
-      -
-        handle: enabled
-        field:
-          type: toggle
-          localizable: false
-          display: 'Enabled?'
       -
         handle: price
         field:
