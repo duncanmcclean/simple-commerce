@@ -89,6 +89,7 @@ class FileCouponRepository implements Contract
     {
         return [
             'title' => 'required|string',
+            'code' => 'required|string',
             'description' => 'sometimes|string',
             'enabled' => 'boolean',
             'effect' => 'required|in:percentage,fixed,amount',
@@ -102,6 +103,7 @@ class FileCouponRepository implements Contract
     {
         return [
             'title' => 'required|string',
+            'code' => 'required|string',
             'description' => 'sometimes|string',
             'enabled' => 'boolean',
             'effect' => 'required|in:percentage,fixed,amount',
