@@ -36,11 +36,7 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        $product = Product::save($request->all());
-
-        return array_merge($product, [
-            'redirect' => cp_route('products.edit', ['product' => $product->data['id']])
-        ]);
+        return Product::save($request->all())->data;
     }
 
     public function edit($product)

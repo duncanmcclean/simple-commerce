@@ -35,8 +35,6 @@ class FileProductRepository implements Contract
 
     public function find($id)
     {
-        //dd($this->query()->where('id', $id)->first());
-
         return $this->query()->where('id', $id)->first();
     }
 
@@ -63,8 +61,6 @@ class FileProductRepository implements Contract
 
     public function delete($entry)
     {
-        //return (new ProductItem([], ))->deleteFile();
-
         $entry = $this->findBySlug($entry);
 
         return (new ProductItem([], $entry['slug']))->deleteFile();
