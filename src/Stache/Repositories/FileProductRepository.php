@@ -3,6 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
+use Damcclean\Commerce\ProductItem;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use SplFileInfo;
@@ -32,8 +33,10 @@ class FileProductRepository implements Contract
         return $this->query();
     }
 
-    public function find($id): Collection
+    public function find($id)
     {
+        //dd($this->query()->where('id', $id)->first());
+
         return $this->query()->where('id', $id)->first();
     }
 
@@ -52,15 +55,19 @@ class FileProductRepository implements Contract
             $entry['slug'] = str_slug($entry['title']);
         }
 
-        $contents = Yaml::dumpFrontMatter($entry, null);
-        file_put_contents($this->path.'/'.$entry['slug'].'.md', $contents);
+        $item = new ProductItem($entry, $entry['slug']);
+        $item->writeFile();
 
-        return $entry;
+        return $item;
     }
 
     public function delete($entry)
     {
-        return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
+        //return (new ProductItem([], ))->deleteFile();
+
+        $entry = $this->findBySlug($entry);
+
+        return (new ProductItem([], $entry['slug']))->deleteFile();
     }
 
     public function query()
@@ -69,7 +76,7 @@ class FileProductRepository implements Contract
 
         return collect($files)
             ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'md') {
+                if ($file->getExtension() == 'md' || $file->getExtension() == 'yaml') {
                     return false;
                 }
 

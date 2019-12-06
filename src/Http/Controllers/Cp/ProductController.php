@@ -39,7 +39,7 @@ class ProductController extends CpController
         $product = Product::save($request->all());
 
         return array_merge($product, [
-            'redirect' => cp_route('products.edit', ['product' => $product['id']])
+            'redirect' => cp_route('products.edit', ['product' => $product->data['id']])
         ]);
     }
 
