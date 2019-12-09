@@ -6,6 +6,7 @@ use Damcclean\Commerce\Events\CheckoutComplete;
 use Damcclean\Commerce\Events\ProductOutOfStock;
 use Damcclean\Commerce\Events\ProductStockRunningLow;
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Tags\CartTags;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 use Stripe\PaymentIntent;
@@ -22,43 +23,18 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-//        Stripe::setApiKey(config('commerce.stripe.secret'));
-//
-//        $total = (new CartTags())->total()*100;
-//
-//        // WIP change the total amount based on coupons
-        // fire the correct event when a coupon is used
-//
-//        $intent = PaymentIntent::create([
-//            'amount' => $total,
-//            'currency' => config('commerce.currency.code'),
-//            'payment_method_types' => ['card'],
-//            'metadata' => []
-//        ]);
-//
-//        // WIP use real stripe customer id as filename here
-//        $customer = Customer::save('cus_'.uniqid(), [
-//            'name' => $request->name,
-//            'email' => $request->email,
-//            'address' => $request->address,
-//            'country' => $request->country,
-//            'zip_code' => $request->zip_code,
-//            'currency' => config('commerce.currency.code'),
-//            'stripe_customer_id' => '',
-//        ]);
+        Stripe::setApiKey(config('commerce.stripe.secret'));
 
-        // if customer is new, fire that event
-        // if customer is returning, fire that event
+        $total = (new CartTags())->total() * 100;
 
-//
-//        // WIP use real stripe order ID (or something better than this)
-//        $order = Order::save('ord_'.uniqid(), [
-//            'status' => 'created',
-//            'total' => $total,
-//            'shipping_address' => $request->address,
-//            'coupon' => '',
-//            'stripe_customer_id' => '' // WIP use real stripe customer id here too
-//        ]);
+        // WIP allow user to use coupons
+            // WIP fire the event when a coupon is used
+
+        // process the payment
+
+        // create/find a commerce customer
+            // if customer is new, fire that event
+            // if customer is returning, fire that event
 
         collect($request->session()->get('cart'))
             ->each(function ($cartProduct) {
@@ -76,7 +52,6 @@ class CheckoutController extends Controller
                 }
             });
 
-        // WIP Send notification to customer
         // WIP Send notification to store admin
         //event(new CheckoutComplete($order, $customer));
 
