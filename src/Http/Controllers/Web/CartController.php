@@ -31,6 +31,24 @@ class CartController extends Controller
 
         return redirect()
             ->back()
-            ->with('message', 'Added product to Cart');
+            ->with('message', 'Added product to cart.');
+    }
+
+    public function destroy(Request $request)
+    {
+        $cart = collect($request->session()->get('cart'))
+            ->reject(function ($product) use ($request) {
+                if ($product['slug'] == $request->slug) {
+                    return true;
+                }
+
+                return false;
+            });
+
+        $request->session()->put('cart', $cart);
+
+        return redirect()
+            ->back()
+            ->with('message', 'Removed product from cart.');
     }
 }

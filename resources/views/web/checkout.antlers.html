@@ -1,69 +1,83 @@
 <div class="bg-white rounded-lg w-2/3 px-4 py-6">
     <h2 class="text-4xl font-bold mb-2 text-gray-800">Checkout</h2>
 
-    <div class="flex flex-col">
-        {{ cart }}
-            <a class="w-full bg-gray-100 my-1 p-4 flex flex-row items-center justify-between" href="/products/{{ slug }}">
-                <h2 class="text-xl font-bold text-gray-800">{{ quantity }} X {{ title }}</h2>
-                <h3 class="text-lg font-semibold">£{{ price }}</h3>
-            </a>
-        {{ /cart }}
+    {{ if cart:count == 0 }}
+        <p>There's nothing in your cart. <a class="border-b-2 border-blue-600 text-blue-600 font-semibold" href="/products">Browse products</a>.</p>
+    {{ else }}
+        <div class="flex flex-col">
+            {{ cart }}
+                <a class="w-full bg-gray-100 my-1 p-4 flex flex-row items-center justify-between" href="/products/{{ slug }}">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">{{ quantity }} X {{ title }}</h2>
 
-        <div class="w-full flex flex-row items-center justify-between p-4">
-            <h2 class="text-lg font-bold text-gray-800">Total</h2>
-            <p>£{{ cart:total }}</p>
+                        <form action="/cart/delete" method="post">
+                            <input type="hidden" name="slug" value="{{ slug }}">
+                            {{ csrf_field }}
+
+                            <button class="border-b-2 border-red-600 text-red-600 font-semibold text-xs">Remove</button>
+                        </form>
+                    </div>
+
+                    <h3 class="text-lg font-semibold">£{{ price }}</h3>
+                </a>
+            {{ /cart }}
+
+            <div class="w-full flex flex-row items-center justify-between p-4">
+                <h2 class="text-lg font-bold text-gray-800">Total</h2>
+                <p>£{{ cart:total }}</p>
+            </div>
+
+            <form id="payment-form" class="mt-8" action="/checkout" method="post">
+                <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
+
+                <input type="hidden" name="payment_method" required>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Name</label>
+                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="name" placeholder="Jon Smith" required>
+                </div>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Email</label>
+                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="email" name="email" placeholder="jon.smith@example.com" required>
+                </div>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Address</label>
+                    <textarea class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" name="address" required></textarea>
+                </div>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Address</label>
+                    <select class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" name="country" required>
+                        <option value="uk" selected>United Kingdom</option>
+                        <option value="us">United States</option>
+                        <option value="ca">Canada</option>
+                        <option value="fr">France</option>
+                    </select>
+                </div>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Zip code</label>
+                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="zip_code" placeholder="99501" required>
+                </div>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Name on Card</label>
+                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="name_on_card" placeholder="Mr J Smith" required>
+                </div>
+
+                <div class="bg-gray-100 flex flex-row items-center p-2">
+                    <label class="w-1/3 text-gray-800 font-bold">Card Details</label>
+                    <div id="card-element" class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800"></div>
+                </div>
+
+                <div id="card-errors" role="alert"></div>
+            </form>
+
+            <div class="w-1/2 mx-auto">
+                <button id="submit" class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full">Pay</button>
+            </div>
         </div>
-
-        <form id="payment-form" class="mt-8" action="/checkout" method="post">
-            <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
-
-            <input type="hidden" name="payment_method" required>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Name</label>
-                <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="name" placeholder="Jon Smith" required>
-            </div>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Email</label>
-                <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="email" name="email" placeholder="jon.smith@example.com" required>
-            </div>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Address</label>
-                <textarea class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" name="address" required></textarea>
-            </div>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Address</label>
-                <select class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" name="country" required>
-                    <option value="uk" selected>United Kingdom</option>
-                    <option value="us">United States</option>
-                    <option value="ca">Canada</option>
-                    <option value="fr">France</option>
-                </select>
-            </div>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Zip code</label>
-                <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="zip_code" placeholder="99501" required>
-            </div>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Name on Card</label>
-                <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="name_on_card" placeholder="Mr J Smith" required>
-            </div>
-
-            <div class="bg-gray-100 flex flex-row items-center p-2">
-                <label class="w-1/3 text-gray-800 font-bold">Card Details</label>
-                <div id="card-element" class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800"></div>
-            </div>
-
-            <div id="card-errors" role="alert"></div>
-        </form>
-
-        <div class="w-1/2 mx-auto">
-            <button id="submit" class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full">Pay</button>
-        </div>
-    </div>
+    {{ /if }}
 </div>
