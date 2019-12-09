@@ -11,7 +11,10 @@ class ProductTags extends Tags
 
     public function index()
     {
-        return Product::all();
+        return Product::all()
+            ->reject(function ($product) {
+                return !$product['enabled'];
+            });
     }
 
     public function count()

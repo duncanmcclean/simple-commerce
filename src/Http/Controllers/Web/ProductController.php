@@ -16,13 +16,15 @@ class ProductController extends Controller
 
     public function show($product)
     {
-        // WIP don't allow here if the product is not enabled
-
         $product = Product::findBySlug($product);
+
+        if ($product['enabled'] == false) {
+            abort(404);
+        }
 
         return (new View)
             ->template('commerce.product')
             ->layout('layout')
-            ->with((array) $product);
+            ->with($product->toArray());
     }
 }
