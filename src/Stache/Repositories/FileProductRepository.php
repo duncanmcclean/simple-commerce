@@ -4,7 +4,6 @@ namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
 use Damcclean\Commerce\ProductItem;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use SplFileInfo;
 use Illuminate\Support\Facades\File;
@@ -118,5 +117,15 @@ class FileProductRepository implements Contract
             'shipping_price' => 'sometimes|integer',
             'stock_number' => 'sometimes|integer'
         ];
+    }
+
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new ProductItem($entry->toArray(), $slug);
+        $item->writeFile();
+
+        return $item;
     }
 }

@@ -15,7 +15,8 @@ class CartTags extends Tags
 
         return collect($items)
             ->map(function ($item) {
-                $product = (array) Product::findBySlug($item['slug']);
+                $product = Product::findBySlug($item['slug'])->toArray();
+
                 $product['quantity'] = $item['quantity'];
                 $product['price'] = $product['price'] * $product['quantity'];
 

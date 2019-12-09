@@ -58,11 +58,10 @@ class CheckoutController extends Controller
 
         collect($request->session()->get('cart'))
             ->each(function ($cartProduct) {
-                $product = Product::getBySlug($cartProduct['slug']);
-                $product->stock_number -= $cartProduct['quantity'];
-                $product->save();
+                $product = Product::findBySlug($cartProduct['slug']);
+                $product['stock_number'] -= $cartProduct['quantity'];
 
-                Product::update($product->slug, (array) $product);
+                Product::update($product['id'], $product);
             });
 
         $request->session()->forget('cart');

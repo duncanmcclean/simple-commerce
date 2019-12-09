@@ -13,4 +13,5 @@ interface ProductRepository
     public function delete($entry);
     public function createRules($collection);
     public function updateRules($collection, $entry);
+    public function update($id, $entry);
 }
