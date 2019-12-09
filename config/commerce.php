@@ -9,11 +9,12 @@ return [
      */
 
     'company' => [
-        'name' => 'Callister & Co Limited',
+        'name' => '',
         'address' => '',
         'city' => '',
         'country' => '',
-        'postal_code' => ''
+        'zip_code' => '',
+        'email' => ''
     ],
 
     /**
@@ -25,7 +26,10 @@ return [
      * See: https://stripe.com/docs/currencies
      */
 
-    'currency' => env('COMMERCE_CURRENCY', 'gbp'),
+    'currency' => [
+        'code' => env('COMMERCE_CURRENCY', 'gbp'),
+        'symbol' => env('COMMERCE_CURRENCY_SYMBOL', '£'),
+    ],
 
     /**
      * Stripe
