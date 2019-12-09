@@ -1,7 +1,7 @@
 <div class="bg-white rounded-lg w-2/3 px-4 py-6">
     <h2 class="text-4xl font-bold mb-2 text-gray-800">Checkout</h2>
 
-    {{ if cart:count == 0 }}
+    {{ if {cart:count} == 0 }}
         <p>There's nothing in your cart. <a class="border-b-2 border-blue-600 text-blue-600 font-semibold" href="/products">Browse products</a>.</p>
     {{ else }}
         <div class="flex flex-col">
@@ -18,13 +18,13 @@
                         </form>
                     </div>
 
-                    <h3 class="text-lg font-semibold">{{ config('commerce.currency.symbol') }}{{ price }}</h3>
+                    <h3 class="text-lg font-semibold">{{ commerce:currency_symbol }}{{ price }}</h3>
                 </a>
             {{ /cart }}
 
             <div class="w-full flex flex-row items-center justify-between p-4">
                 <h2 class="text-lg font-bold text-gray-800">Total</h2>
-                <p>{{ config('commerce.currency.symbol') }}{{ cart:total }}</p>
+                <p>{{ commerce:currency_symbol }}{{ cart:total }}</p>
             </div>
 
             <form id="payment-form" class="mt-8" action="/checkout" method="post">

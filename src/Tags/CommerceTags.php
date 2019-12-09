@@ -10,9 +10,14 @@ class CommerceTags extends Tags
 {
     protected static $handle = 'commerce';
 
-    public function currency()
+    public function currencyCode()
     {
         return config('commerce.currency.code');
+    }
+
+    public function currencySymbol()
+    {
+        return config('commerce.currency.symbol');
     }
 
     public function stripeKey()

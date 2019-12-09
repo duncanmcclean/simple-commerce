@@ -5,7 +5,7 @@
         {{ products }}
             <a class="w-full bg-gray-100 my-1 p-4 flex flex-row items-center justify-between" href="/products/{{ slug }}">
                 <h2 class="text-xl font-bold text-gray-800">{{ title }}</h2>
-                <h3 class="text-lg font-semibold">{{ config('commerce.currency.symbol') }}{{ price }}</h3>
+                <h3 class="text-lg font-semibold">{{ commerce:currency_symbol }}{{ price }}</h3>
             </a>
         {{ /products }}
     </div>
