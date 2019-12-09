@@ -20,43 +20,5 @@
         <div class="flex flex-col items-center justify-center h-screen w-full">
             {{ template_content }}
         </div>
-
-        <script src="https://js.stripe.com/v3/"></script>
-        <script>
-            var stripe = Stripe('{{ commerce:stripe_key }}');
-            var elements = stripe.elements();
-
-            var card = elements.create("card", {});
-            card.mount("#card-element");
-
-            card.addEventListener('change', ({error}) => {
-                const displayError = document.getElementById('card-errors');
-
-                if (error) {
-                    displayError.textContent = error.message;
-                } else {
-                    displayError.textContent = '';
-                }
-            });
-
-            var submitButton = document.getElementById('submit');
-
-            submitButton.addEventListener('click', function(ev) {
-                stripe.confirmCardPayment('{{ commerce:payment_intent amount="2000" }}', {
-                    payment_method: {card: card}
-                }).then(function(result) {
-                    if (result.error) {
-                        console.log(result.error.message);
-                    } else {
-                        if (result.paymentIntent.status === 'succeeded') {
-                            var paymentMethod = document.getElementsByName('payment_method')[0];
-                            paymentMethod.value = result.paymentIntent.payment_method;
-
-                            document.getElementById('payment-form').submit()
-                        }
-                    }
-                });
-            });
-        </script>
     </body>
 </html>

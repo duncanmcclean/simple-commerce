@@ -8,7 +8,6 @@ interface CustomerRepository
     public function find($id);
     public function findBySlug(string $slug);
     public function findByEmail(string $email);
-    public function findByStripeId(string $stripeId);
     public function make();
     public function query();
     public function save($entry);

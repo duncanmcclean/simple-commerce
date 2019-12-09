@@ -3,7 +3,7 @@
 
 @section('content')
     <publish-form
-            title="{{ $values->stripe_order_id }}"
+            title="{{ $values['slug'] }}"
             action="{{ cp_route('orders.store') }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'

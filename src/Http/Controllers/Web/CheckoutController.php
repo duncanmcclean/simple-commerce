@@ -3,38 +3,89 @@
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
 use Damcclean\Commerce\Events\CheckoutComplete;
+use Damcclean\Commerce\Events\NewCustomerCreated;
 use Damcclean\Commerce\Events\ProductOutOfStock;
 use Damcclean\Commerce\Events\ProductStockRunningLow;
+use Damcclean\Commerce\Events\ReturnCustomer;
+use Damcclean\Commerce\Facades\Customer;
+use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Tags\CartTags;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 use Stripe\PaymentIntent;
+use Stripe\PaymentMethod;
 use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
+    public function __construct()
+    {
+        Stripe::setApiKey(config('commerce.stripe.secret'));
+    }
+
     public function show()
     {
+        $intent = PaymentIntent::create([
+            'amount' => (new CartTags())->total() * 100,
+            'currency' => config('commerce.currency.code'),
+        ]);
+
         return (new View)
             ->template('commerce::web.checkout')
-            ->layout('commerce::web.layout');
+            ->layout('commerce::web.layout')
+            ->with([
+                'intent' => $intent->client_secret
+            ]);
     }
 
     public function store(Request $request)
     {
-        Stripe::setApiKey(config('commerce.stripe.secret'));
+        $paymentMethod = PaymentMethod::retrieve($request->payment_method);
 
-        $total = (new CartTags())->total() * 100;
+        if (isset(Customer::findByEmail($request->email)['id'])) {
+            $customer = Customer::findByEmail($request->email);
 
-        // WIP allow user to use coupons
-            // WIP fire the event when a coupon is used
+            if ($paymentMethod->card->last4 != $customer['card_last_four']) {
+                $customer = Customer::save(array_merge($customer, [
+                    'card_brand' => $paymentMethod->card->brand,
+                    'card_country' => $paymentMethod->card->country,
+                    'card_expiry_month' => $paymentMethod->card->expiry_month,
+                    'card_expiry_year' => $paymentMethod->card->expiry_year,
+                    'card_last_four' => $paymentMethod->card->last4,
+                ]));
+            }
 
-        // process the payment
+            event(new ReturnCustomer($customer));
+        } else {
+            $customer = Customer::save([
+                'slug' => uniqid().'-'.str_slug($request->name),
+                'name' => $request->name,
+                'email' => $request->email,
+                'address' => $request->address ?? '',
+                'country' => $request->country ?? '',
+                'zip_code' => $request->zip_code ?? '',
+                'card_brand' => $paymentMethod->card->brand,
+                'card_country' => $paymentMethod->card->country,
+                'card_expiry_month' => $paymentMethod->card->expiry_month,
+                'card_expiry_year' => $paymentMethod->card->expiry_year,
+                'card_last_four' => $paymentMethod->card->last4,
+                'currency' => $request->currency ?? config('commerce.currency.code'),
+            ]);
 
-        // create/find a commerce customer
-            // if customer is new, fire that event
-            // if customer is returning, fire that event
+            event(new NewCustomerCreated($customer));
+        }
+
+        $order = Order::save([
+            'slug' => $customer['id'].'-'.uniqid(),
+            'status' => 'paid', // WIP make 100% sure the payment method has actually paid this order
+            'total' => (new CartTags())->total(),
+            'shipping_address' => "$request->address, \n$request->country, \n$request->zip_code",
+            'coupon' => null, // WIP make sure that we use the coupon(s) thing here
+            'customer' => $customer['id'],
+        ]);
+
+        event(new CheckoutComplete($order, $customer));
 
         collect($request->session()->get('cart'))
             ->each(function ($cartProduct) {
@@ -51,9 +102,6 @@ class CheckoutController extends Controller
                     event(new ProductStockRunningLow($product));
                 }
             });
-
-        // WIP Send notification to store admin
-        //event(new CheckoutComplete($order, $customer));
 
         $request->session()->forget('cart');
 

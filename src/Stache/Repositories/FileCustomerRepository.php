@@ -21,8 +21,8 @@ class FileCustomerRepository implements Contract
     {
         $attributes = Yaml::parse(file_get_contents($file));
         $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route('customers.edit', ['customer' => $attributes['stripe_customer_id']]);
-        $attributes['delete_url'] = cp_route('customers.destroy', ['customer' => $attributes['stripe_customer_id']]);
+        $attributes['edit_url'] = cp_route('customers.edit', ['customer' => $attributes['id']]);
+        $attributes['delete_url'] = cp_route('customers.destroy', ['customer' => $attributes['id']]);
 
         return collect($attributes);
     }
@@ -42,14 +42,9 @@ class FileCustomerRepository implements Contract
         return $this->query()->where('slug', $slug)->first();
     }
 
-    public function findByEmail(string $email): Collection
+    public function findByEmail(string $email)
     {
         return $this->query()->where('email', $email)->first();
-    }
-
-    public function findByStripeId(string $stripeId): Collection
-    {
-        return $this->query()->where('stripe_customer_id', $stripeId)->first();
     }
 
     public function save($entry)

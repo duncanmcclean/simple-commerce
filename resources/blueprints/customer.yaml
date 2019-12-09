@@ -21,12 +21,9 @@ sections:
           display: Email
           validate: required|email
           width: 50
-      -
-        handle: address_section
-        field:
-          type: section
-          localizable: false
-          display: Address
+  address:
+    display: Address
+    fields:
       -
         handle: address
         field:
@@ -59,17 +56,50 @@ sections:
           localizable: false
           width: 50
           display: 'Zip Code'
-  sidebar:
-    display: Sidebar
+  payment_details:
+    display: 'Payment Details'
     fields:
       -
-        handle: stripe_customer_id
+        handle: card_brand
         field:
           character_limit: 0
           type: text
           localizable: false
-          display: 'Stripe Customer ID'
-          validate: required|string
+          width: 50
+          display: 'Card Brand'
+      -
+        handle: card_country
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          width: 50
+          display: 'Card Country'
+      -
+        handle: card_expiry_month
+        field:
+          type: integer
+          localizable: false
+          width: 50
+          display: 'Card Expiry Month'
+      -
+        handle: card_expiry_year
+        field:
+          type: integer
+          localizable: false
+          width: 50
+          display: 'Card Expiry Year'
+      -
+        handle: card_last_four
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          width: 50
+          display: 'Card Last Four'
+  sidebar:
+    display: Sidebar
+    fields:
       -
         handle: currency
         field:

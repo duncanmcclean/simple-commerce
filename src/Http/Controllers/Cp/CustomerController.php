@@ -37,14 +37,14 @@ class CustomerController extends CpController
 
         $customer = Customer::save($request->all());
 
-        return array_merge($customer->toArray(), [
-            'redirect' => cp_route('customers.edit', ['customer' => $slug])
+        return array_merge($customer, [
+            'redirect' => cp_route('customers.edit', ['customer' => $customer['id']])
         ]);
     }
 
     public function edit($customer)
     {
-        $customer = Customer::findByStripeId($customer);
+        $customer = Customer::find($customer);
 
         $blueprint = Blueprint::find('customer');
 
@@ -63,18 +63,18 @@ class CustomerController extends CpController
     {
         $validated = []; // wip
 
-        $customer = Coupon::update($customer, $request->all());
+        $customer = Customer::update($customer, $request->all());
 
         if ($request->slug != $customer) {
-            return array_merge($customer->toArray(), [
-                'redirect' => cp_route('customers.edit', ['customer' => $customer->slug])
+            return array_merge($customer, [
+                'redirect' => cp_route('customers.edit', ['customer' => $customer['slug']])
             ]);
         }
     }
 
     public function destroy($customer)
     {
-        $customer = Coupon::delete($customer);
+        $customer = Customer::delete($customer);
 
         return redirect(cp_route('customers.index'));
     }
