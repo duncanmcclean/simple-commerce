@@ -2,6 +2,8 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
+use Damcclean\Commerce\Events\AddedToCart;
+use Damcclean\Commerce\Facades\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -28,6 +30,8 @@ class CartController extends Controller
         ];
 
         $request->session()->put('cart', $items);
+
+        event(new AddedToCart(Product::findBySlug($slug)));
 
         return redirect()
             ->back()

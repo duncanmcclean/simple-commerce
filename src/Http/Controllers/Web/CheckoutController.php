@@ -2,6 +2,9 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
+use Damcclean\Commerce\Events\CheckoutComplete;
+use Damcclean\Commerce\Events\ProductOutOfStock;
+use Damcclean\Commerce\Events\ProductStockRunningLow;
 use Damcclean\Commerce\Facades\Product;
 use Illuminate\Http\Request;
 use Statamic\View\View;
@@ -24,6 +27,7 @@ class CheckoutController extends Controller
 //        $total = (new CartTags())->total()*100;
 //
 //        // WIP change the total amount based on coupons
+        // fire the correct event when a coupon is used
 //
 //        $intent = PaymentIntent::create([
 //            'amount' => $total,
@@ -33,7 +37,7 @@ class CheckoutController extends Controller
 //        ]);
 //
 //        // WIP use real stripe customer id as filename here
-//        $commerceCustomer = Customer::save('cus_'.uniqid(), [
+//        $customer = Customer::save('cus_'.uniqid(), [
 //            'name' => $request->name,
 //            'email' => $request->email,
 //            'address' => $request->address,
@@ -42,9 +46,13 @@ class CheckoutController extends Controller
 //            'currency' => config('commerce.currency'),
 //            'stripe_customer_id' => '',
 //        ]);
+
+        // if customer is new, fire that event
+        // if customer is returning, fire that event
+
 //
 //        // WIP use real stripe order ID (or something better than this)
-//        $commerceOrder = Order::save('ord_'.uniqid(), [
+//        $order = Order::save('ord_'.uniqid(), [
 //            'status' => 'created',
 //            'total' => $total,
 //            'shipping_address' => $request->address,
@@ -52,17 +60,25 @@ class CheckoutController extends Controller
 //            'stripe_customer_id' => '' // WIP use real stripe customer id here too
 //        ]);
 
-        // WIP Send notification to customer
-        // WIP Send notification to store admin
-        // WIP take quantity of order off the stock number for all products purchased
-
         collect($request->session()->get('cart'))
             ->each(function ($cartProduct) {
                 $product = Product::findBySlug($cartProduct['slug']);
                 $product['stock_number'] -= $cartProduct['quantity'];
 
                 Product::update($product['id'], $product);
+
+                if ($product['stock_number'] == 0) {
+                    event(new ProductOutOfStock($product));
+                }
+
+                if ($product['stock_number'] <= 5) {
+                    event(new ProductStockRunningLow($product));
+                }
             });
+
+        // WIP Send notification to customer
+        // WIP Send notification to store admin
+        //event(new CheckoutComplete($order, $customer));
 
         $request->session()->forget('cart');
 

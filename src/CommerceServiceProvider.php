@@ -7,6 +7,14 @@ use Damcclean\Commerce\Contracts\CouponRepository;
 use Damcclean\Commerce\Contracts\CustomerRepository;
 use Damcclean\Commerce\Contracts\OrderRepository;
 use Damcclean\Commerce\Contracts\ProductRepository;
+use Damcclean\Commerce\Events\AddedToCart;
+use Damcclean\Commerce\Events\CheckoutComplete;
+use Damcclean\Commerce\Events\CouponUsed;
+use Damcclean\Commerce\Events\NewCustomerCreated;
+use Damcclean\Commerce\Events\OrderStatusUpdated;
+use Damcclean\Commerce\Events\ProductOutOfStock;
+use Damcclean\Commerce\Events\ProductStockRunningLow;
+use Damcclean\Commerce\Events\ReturnCustomer;
 use Damcclean\Commerce\Facades\Coupon;
 use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
@@ -36,7 +44,18 @@ class CommerceServiceProvider extends AddonServiceProvider
     ];
 
     protected $scripts = [
-        __DIR__.'/../dist/js/cp.js'
+        __DIR__.'/../dist/js/cp.js',
+    ];
+
+    protected $listen = [
+        AddedToCart::class => [],
+        CheckoutComplete::class => [],
+        CouponUsed::class => [],
+        NewCustomerCreated::class => [],
+        OrderStatusUpdated::class => [],
+        ProductOutOfStock::class => [],
+        ProductStockRunningLow::class => [],
+        ReturnCustomer::class => [],
     ];
 
     public function boot()
@@ -53,7 +72,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         $this
             ->commands([
-                SetupCommerceCommand::class
+                SetupCommerceCommand::class,
             ]);
 
         Nav::extend(function ($nav) {
