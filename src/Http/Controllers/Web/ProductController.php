@@ -14,12 +14,14 @@ class ProductController extends Controller
             ->layout('layout');
     }
 
-    public function show($product)
+    public function show(string $product)
     {
         $product = Product::findBySlug($product);
 
-        if ($product['enabled'] == false) {
-            abort(404);
+        if (isset($product['enabled']) == false) {
+            if (auth()->check() == false) {
+                abort(404);
+            }
         }
 
         return (new View)
