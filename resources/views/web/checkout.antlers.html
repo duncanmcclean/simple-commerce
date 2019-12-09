@@ -88,7 +88,9 @@
     var stripe = Stripe('{{ commerce:stripe_key }}');
     var elements = stripe.elements();
 
-    var card = elements.create("card", {});
+    var card = elements.create("card", {
+        hidePostalCode: true
+    });
     card.mount("#card-element");
 
     card.addEventListener('change', ({error}) => {
