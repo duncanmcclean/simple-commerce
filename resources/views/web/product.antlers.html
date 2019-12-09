@@ -17,7 +17,7 @@
         </div>
 
         <div class="w-1/3">
-            <h2 class="text-center text-2xl font-semibold">£{{ price }}</h2>
+            <h2 class="text-center text-2xl font-semibold">{{ config('commerce.currency.symbol') }}{{ price }}</h2>
 
             <div class="my-4">
                 <div class="bg-gray-100 flex flex-row p-2">
@@ -31,7 +31,7 @@
                     {{ if free_shipping || shipping_price == 0 }}
                         <span class="w-1/2 text-green-600">Free shipping</span>
                     {{ else }}
-                        <span class="w-1/2">£{{ shipping_price }}</span>
+                        <span class="w-1/2">{{ config('commerce.currency.symbol') }}{{ shipping_price }}</span>
                     {{ /if }}
                 </div>
             </div>

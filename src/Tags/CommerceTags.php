@@ -12,7 +12,7 @@ class CommerceTags extends Tags
 
     public function currency()
     {
-        return config('commerce.currency');
+        return config('commerce.currency.code');
     }
 
     public function stripeKey()
@@ -31,7 +31,7 @@ class CommerceTags extends Tags
 
         return PaymentIntent::create([
             'amount' => $this->getParam('amount'),
-            'currency' => config('commerce.currency'),
+            'currency' => config('commerce.currency.code'),
         ])->client_secret;
     }
 }

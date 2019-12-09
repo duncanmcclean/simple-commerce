@@ -31,7 +31,7 @@ class CheckoutController extends Controller
 //
 //        $intent = PaymentIntent::create([
 //            'amount' => $total,
-//            'currency' => config('commerce.currency'),
+//            'currency' => config('commerce.currency.code'),
 //            'payment_method_types' => ['card'],
 //            'metadata' => []
 //        ]);
@@ -43,7 +43,7 @@ class CheckoutController extends Controller
 //            'address' => $request->address,
 //            'country' => $request->country,
 //            'zip_code' => $request->zip_code,
-//            'currency' => config('commerce.currency'),
+//            'currency' => config('commerce.currency.code'),
 //            'stripe_customer_id' => '',
 //        ]);
 

@@ -18,13 +18,13 @@
                         </form>
                     </div>
 
-                    <h3 class="text-lg font-semibold">£{{ price }}</h3>
+                    <h3 class="text-lg font-semibold">{{ config('commerce.currency.symbol') }}{{ price }}</h3>
                 </a>
             {{ /cart }}
 
             <div class="w-full flex flex-row items-center justify-between p-4">
                 <h2 class="text-lg font-bold text-gray-800">Total</h2>
-                <p>£{{ cart:total }}</p>
+                <p>{{ config('commerce.currency.symbol') }}{{ cart:total }}</p>
             </div>
 
             <form id="payment-form" class="mt-8" action="/checkout" method="post">
