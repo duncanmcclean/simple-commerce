@@ -28,6 +28,7 @@ use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
 use Statamic\Facades\Nav;
+use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 
 class CommerceServiceProvider extends AddonServiceProvider
@@ -77,6 +78,42 @@ class CommerceServiceProvider extends AddonServiceProvider
             ->commands([
                 SetupCommerceCommand::class,
             ]);
+
+        Permission::register('view coupons', function ($permission) {
+            $permission->children([
+                Permission::make('edit coupons')->children([
+                    Permission::make('create coupons'),
+                    Permission::make('delete coupons'),
+                ])
+            ]);
+        });
+
+        Permission::register('view customers', function ($permission) {
+            $permission->children([
+                Permission::make('edit customers')->children([
+                    Permission::make('create customers'),
+                    Permission::make('delete customers'),
+                ])
+            ]);
+        });
+
+        Permission::register('view orders', function ($permission) {
+            $permission->children([
+                Permission::make('edit orders')->children([
+                    Permission::make('create orders'),
+                    Permission::make('delete orders'),
+                ])
+            ]);
+        });
+
+        Permission::register('view products', function ($permission) {
+            $permission->children([
+                Permission::make('edit products')->children([
+                    Permission::make('create products'),
+                    Permission::make('delete products'),
+                ])
+            ]);
+        });
 
         Nav::extend(function ($nav) {
             $nav
