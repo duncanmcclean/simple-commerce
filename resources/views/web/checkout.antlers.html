@@ -12,7 +12,7 @@
 
                         <form action="/cart/delete" method="post">
                             <input type="hidden" name="slug" value="{{ slug }}">
-                            {{ csrf_field }}
+                            {{ page:csrf_field }}
 
                             <button class="border-b-2 border-red-600 text-red-600 font-semibold text-xs">Remove</button>
                         </form>
