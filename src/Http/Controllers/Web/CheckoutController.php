@@ -50,8 +50,8 @@ class CheckoutController extends Controller
                 $customer = Customer::save(array_merge($customer, [
                     'card_brand' => $paymentMethod->card->brand,
                     'card_country' => $paymentMethod->card->country,
-                    'card_expiry_month' => $paymentMethod->card->expiry_month,
-                    'card_expiry_year' => $paymentMethod->card->expiry_year,
+                    'card_expiry_month' => $paymentMethod->card->exp_month,
+                    'card_expiry_year' => $paymentMethod->card->exp_year,
                     'card_last_four' => $paymentMethod->card->last4,
                 ]));
             }
@@ -67,8 +67,8 @@ class CheckoutController extends Controller
                 'zip_code' => $request->zip_code ?? '',
                 'card_brand' => $paymentMethod->card->brand,
                 'card_country' => $paymentMethod->card->country,
-                'card_expiry_month' => $paymentMethod->card->expiry_month,
-                'card_expiry_year' => $paymentMethod->card->expiry_year,
+                'card_expiry_month' => $paymentMethod->card->exp_month,
+                'card_expiry_year' => $paymentMethod->card->exp_year,
                 'card_last_four' => $paymentMethod->card->last4,
                 'currency' => $request->currency ?? config('commerce.currency.code'),
             ]);
