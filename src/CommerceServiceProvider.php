@@ -19,6 +19,7 @@ use Damcclean\Commerce\Facades\Coupon;
 use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
 use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
 use Damcclean\Commerce\Stache\Repositories\FileOrderRepository;
@@ -49,7 +50,9 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     protected $listen = [
         AddedToCart::class => [],
-        CheckoutComplete::class => [],
+        CheckoutComplete::class => [
+            SendOrderSuccessfulNotification::class,
+        ],
         CouponUsed::class => [],
         NewCustomerCreated::class => [],
         OrderStatusUpdated::class => [],
