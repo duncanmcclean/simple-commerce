@@ -1,0 +1,12 @@
+<div class="bg-white rounded-lg w-2/3 px-4 py-6">
+    <h2 class="text-4xl font-bold mb-2 text-gray-800">Products</h2>
+
+    <div class="flex flex-col">
+        {{ products }}
+            <a class="w-full bg-gray-100 my-1 p-4 flex flex-row items-center justify-between" href="/products/{{ slug }}">
+                <h2 class="text-xl font-bold text-gray-800">{{ title }}</h2>
+                <h3 class="text-lg font-semibold">£{{ price }}</h3>
+            </a>
+        {{ /products }}
+    </div>
+</div>

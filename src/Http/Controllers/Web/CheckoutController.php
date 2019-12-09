@@ -13,9 +13,8 @@ class CheckoutController extends Controller
     public function show()
     {
         return (new View)
-            ->template('commerce.checkout')
-            ->layout('layout')
-            ->with([]);
+            ->template('commerce::web.checkout')
+            ->layout('commerce::web.layout');
     }
 
     public function store(Request $request)

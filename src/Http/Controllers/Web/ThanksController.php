@@ -9,8 +9,7 @@ class ThanksController
     public function __invoke()
     {
         return (new View)
-            ->template('commerce.thanks')
-            ->layout('layout')
-            ->with([]);
+            ->template('commerce::web.thanks')
+            ->layout('commerce::web.layout');
     }
 }
