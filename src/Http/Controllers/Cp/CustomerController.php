@@ -61,12 +61,12 @@ class CustomerController extends CpController
     {
         $validated = []; // wip
 
-        return Customer::update($customer, $request->all());
+        return Customer::update(Customer::find($customer)->toArray()['id'], $request->all());
     }
 
     public function destroy($customer)
     {
-        $customer = Customer::delete($customer);
+        $customer = Customer::delete(Customer::find($customer)['slug']);
 
         return redirect(cp_route('customers.index'));
     }

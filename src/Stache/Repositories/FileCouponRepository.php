@@ -3,7 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\CouponRepository as Contract;
-use Illuminate\Filesystem\Filesystem;
+use Damcclean\Commerce\Models\File\Coupon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
@@ -52,15 +52,17 @@ class FileCouponRepository implements Contract
             $entry['slug'] = str_slug($entry['title']);
         }
 
-        $contents = Yaml::dumpFrontMatter($entry, null);
-        file_put_contents($this->path.'/'.$entry['slug'].'.md', $contents);
+        $item = new Coupon($entry, $entry['slug']);
+        $item->writeFile();
 
-        return $entry;
+        return $item;
     }
 
     public function delete($entry)
     {
-        return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
+        $entry = $this->findBySlug($entry);
+
+        return (new Coupon([], $entry['slug']))->deleteFile();
     }
 
     public function query()
@@ -69,7 +71,7 @@ class FileCouponRepository implements Contract
 
         return collect($files)
             ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'md') {
+                if ($file->getExtension() == 'yaml') {
                     return false;
                 }
 
@@ -80,20 +82,15 @@ class FileCouponRepository implements Contract
             });
     }
 
-    public function make(): Collection
-    {
-        //
-    }
-
     public function createRules($collection)
     {
         return [
             'title' => 'required|string',
-            'code' => 'required|string',
             'description' => 'sometimes|string',
-            'enabled' => 'boolean',
+            'code' => 'required|string',
             'effect' => 'required|in:percentage,fixed,amount',
             'amount' => 'required|integer',
+            'enabled' => 'boolean',
             'start_date' => '',
             'end_date' => ''
         ];
@@ -103,13 +100,23 @@ class FileCouponRepository implements Contract
     {
         return [
             'title' => 'required|string',
-            'code' => 'required|string',
             'description' => 'sometimes|string',
-            'enabled' => 'boolean',
+            'code' => 'required|string',
             'effect' => 'required|in:percentage,fixed,amount',
             'amount' => 'required|integer',
+            'enabled' => 'boolean',
             'start_date' => '',
             'end_date' => ''
         ];
+    }
+
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new Coupon($entry, $slug);
+        $item->writeFile();
+
+        return $item->data;
     }
 }

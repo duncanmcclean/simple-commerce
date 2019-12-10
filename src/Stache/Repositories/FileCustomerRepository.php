@@ -3,7 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\CustomerRepository as Contract;
-use Illuminate\Filesystem\Filesystem;
+use Damcclean\Commerce\Facades\Customer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
@@ -53,15 +53,21 @@ class FileCustomerRepository implements Contract
             $entry['id'] = (new Stache())->generateId();
         }
 
-        $contents = Yaml::dumpFrontMatter($entry, null);
-        file_put_contents($this->path.'/'.$entry['slug'].'.md', $contents);
+        if (! isset($entry['slug'])) {
+            $entry['slug'] = str_slug($entry['title']);
+        }
 
-        return $entry;
+        $item = new Customer($entry, $entry['slug']);
+        $item->writeFile();
+
+        return $item;
     }
 
     public function delete($entry)
     {
-        return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
+        $entry = $this->findBySlug($entry);
+
+        return (new Customer([], $entry['slug']))->deleteFile();
     }
 
     public function query()
@@ -70,7 +76,7 @@ class FileCustomerRepository implements Contract
 
         return collect($files)
             ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'md') {
+                if ($file->getExtension() == 'yaml') {
                     return false;
                 }
 
@@ -81,11 +87,6 @@ class FileCustomerRepository implements Contract
             });
     }
 
-    public function make(): Collection
-    {
-        //
-    }
-
     public function createRules($collection)
     {
         return [
@@ -94,7 +95,11 @@ class FileCustomerRepository implements Contract
             'address' => 'sometimes|string',
             'country' => 'sometimes|string',
             'zip_code' => 'sometimes|string',
-            'stripe_customer_id' => 'required|string',
+            'card_brand' => 'string',
+            'card_country' => 'string',
+            'card_expiry_month' => 'string',
+            'card_expiry_year' => 'string',
+            'card_last_four' => 'string',
             'currency' => 'required|string'
         ];
     }
@@ -107,8 +112,22 @@ class FileCustomerRepository implements Contract
             'address' => 'sometimes|string',
             'country' => 'sometimes|string',
             'zip_code' => 'sometimes|string',
-            'stripe_customer_id' => 'required|string',
+            'card_brand' => 'string',
+            'card_country' => 'string',
+            'card_expiry_month' => 'string',
+            'card_expiry_year' => 'string',
+            'card_last_four' => 'string',
             'currency' => 'required|string'
         ];
+    }
+
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new Customer($entry, $slug);
+        $item->writeFile();
+
+        return $item->data;
     }
 }

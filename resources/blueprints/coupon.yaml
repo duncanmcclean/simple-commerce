@@ -27,7 +27,7 @@ sections:
           display: Code
           validate: required
   affect:
-    display: Affect
+    display: Effect
     fields:
       -
         handle: effect
