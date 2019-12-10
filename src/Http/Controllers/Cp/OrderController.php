@@ -37,7 +37,7 @@ class OrderController extends CpController
 
         $order = Order::save($request->all());
 
-        return ['redirect' => cp_route('orders.edit', ['order' => $order['id']])];
+        return ['redirect' => cp_route('orders.edit', ['order' => $order->data['id']])];
     }
 
     public function edit($order)

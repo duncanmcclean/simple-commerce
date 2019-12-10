@@ -37,7 +37,7 @@ class CouponController extends CpController
 
         $coupon = Coupon::save($request->all());
 
-        return ['redirect' => cp_route('coupons.edit', ['coupon' => $coupon['id']])];
+        return ['redirect' => cp_route('coupons.edit', ['coupon' => $coupon->data['id']])];
     }
 
     public function edit($product)

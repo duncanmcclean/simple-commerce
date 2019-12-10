@@ -37,7 +37,7 @@ class CustomerController extends CpController
 
         $customer = Customer::save($request->all());
 
-        return ['redirect' => cp_route('customers.edit', ['customer' => $customer['id']])];
+        return ['redirect' => cp_route('customers.edit', ['customer' => $customer->data['id']])];
     }
 
     public function edit($customer)

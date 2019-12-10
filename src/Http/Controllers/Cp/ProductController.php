@@ -36,9 +36,9 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        $product = Product::save($request->all())->data;
+        $product = Product::save($request->all());
 
-        return ['redirect' => cp_route('products.edit', ['product' => $product['id']])];
+        return ['redirect' => cp_route('products.edit', ['product' => $product->data['id']])];
     }
 
     public function edit($product)
