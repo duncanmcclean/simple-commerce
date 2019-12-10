@@ -17,27 +17,7 @@ class Product
         $this->data = $data;
         $this->filename = $filename;
     }
-
-    public function id($id = null)
-    {
-        //
-    }
-
-    public function blueprint()
-    {
-        return Blueprint::find('product');
-    }
-
-    public function editUrl()
-    {
-        //
-    }
-
-    public function updateUrl()
-    {
-        //
-    }
-
+    
     public function path()
     {
         return base_path().'/content/commerce/products/'.$this->filename.'.yaml';
