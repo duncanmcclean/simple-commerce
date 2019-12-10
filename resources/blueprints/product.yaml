@@ -47,6 +47,7 @@ sections:
           type: text
           localizable: false
           display: 'Shipping Price'
+          placeholder: '00.00'
           unless:
             free_shipping: 'equals true'
           width: 50

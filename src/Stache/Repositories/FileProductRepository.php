@@ -91,8 +91,8 @@ class FileProductRepository implements Contract
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'shipping_price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
-            'price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
+            'shipping_price' => ['regex:/^\d*(\.\d{2})?$/'],
+            'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer'
         ];
     }
@@ -106,8 +106,8 @@ class FileProductRepository implements Contract
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'shipping_price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
-            'price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
+            'shipping_price' => ['regex:/^\d*(\.\d{2})?$/'],
+            'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer'
         ];
     }
@@ -116,9 +116,9 @@ class FileProductRepository implements Contract
     {
         $slug = $this->find($id)['slug'];
 
-        $item = new Product($entry->toArray(), $slug);
+        $item = new Product($entry, $slug);
         $item->writeFile();
 
-        return $item;
+        return $item->data;
     }
 }
