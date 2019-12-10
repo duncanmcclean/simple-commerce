@@ -49,7 +49,7 @@ class FileOrderRepository implements Contract
         }
 
         if (! isset($entry['slug'])) {
-            $entry['slug'] = str_slug($entry['title']);
+            $entry['slug'] = uniqid();
         }
 
         $item = (new Order($entry, $entry['slug']));
@@ -86,7 +86,7 @@ class FileOrderRepository implements Contract
     {
         return [
             'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
-            'total' => 'required|integer',
+            'total' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'shipping_address' => 'sometimes|address',
             'coupon' => 'sometimes|string',
             'stripe_customer_id' => 'required|string'
@@ -97,7 +97,7 @@ class FileOrderRepository implements Contract
     {
         return [
             'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
-            'total' => 'required|integer',
+            'total' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'shipping_address' => 'sometimes|address',
             'coupon' => 'sometimes|string',
             'stripe_customer_id' => 'required|string'

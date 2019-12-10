@@ -4,26 +4,9 @@ sections:
     display: Main
     fields:
       -
-        handle: status
-        field:
-          options:
-            created: Created
-            paid: Paid
-            cancelled: Cancelled
-            fulfilled: Fulfilled
-            returned: Returned
-          clearable: false
-          multiple: false
-          searchable: true
-          taggable: false
-          push_tags: false
-          type: select
-          localizable: false
-          display: Status
-      -
         handle: total
         field:
-          type: integer
+          type: text
           localizable: false
           display: Total
           validate: required|integer
@@ -48,5 +31,26 @@ sections:
           character_limit: 0
           type: text
           localizable: false
-          display: 'Customer'
+          display: Customer
           validate: required
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: status
+        field:
+          options:
+            created: Created
+            paid: Paid
+            cancelled: Cancelled
+            fulfilled: Fulfilled
+            returned: Returned
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          type: select
+          localizable: false
+          display: Status
+          placeholder: created
