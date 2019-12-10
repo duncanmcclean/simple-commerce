@@ -36,7 +36,9 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        return Product::save($request->all())->data;
+        $product = Product::save($request->all())->data;
+
+        return ['redirect' => cp_route('products.edit', ['product' => $product['id']])];
     }
 
     public function edit($product)
@@ -60,9 +62,7 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        $product = Product::update(Product::find($product)['slug'], $request->all());
-
-        return $product;
+        return Product::update(Product::find($product)->toArray()['id'], $request->all());
     }
 
     public function destroy($product)
