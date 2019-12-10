@@ -37,19 +37,9 @@ class FileOrderRepository implements Contract
         return $this->query()->where('id', $id)->first();
     }
 
-    public function findBySlug(string $slug): Collection
+    public function findBySlug(string $slug)
     {
         return $this->query()->where('slug', $slug)->first();
-    }
-
-    public function findByEmail(string $email): Collection
-    {
-        return $this->query()->where('email', $email)->first();
-    }
-
-    public function findByStripeId(string $stripeId): Collection
-    {
-        return $this->query()->where('stripe_customer_id', $stripeId)->first();
     }
 
     public function save($entry)

@@ -44,7 +44,7 @@ class OrderController extends CpController
 
     public function edit($order)
     {
-        $order = Order::getBySlug($order);
+        $order = Order::findBySlug($order);
 
         $blueprint = Blueprint::find('order');
 

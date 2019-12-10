@@ -30,6 +30,7 @@
             <form id="payment-form" class="mt-8" action="/checkout" method="post">
                 <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
 
+                <input type="hidden" name="currency" value="{{ commerce:currency_code }}">
                 <input type="hidden" name="payment_method" required>
 
                 <div class="bg-gray-100 flex flex-row items-center p-2">
@@ -81,3 +82,48 @@
         </div>
     {{ /if }}
 </div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ commerce:stripe_key }}');
+    var elements = stripe.elements();
+
+    var card = elements.create("card", {
+        hidePostalCode: true
+    });
+    card.mount("#card-element");
+
+    card.addEventListener('change', ({error}) => {
+        const displayError = document.getElementById('card-errors');
+
+        if (error) {
+            displayError.textContent = error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    var submitButton = document.getElementById('submit');
+
+    submitButton.addEventListener('click', function(ev) {
+        submitButton.setAttribute('disabled', 'disabled');
+
+        stripe.confirmCardPayment('{{ intent }}', {
+            payment_method: {
+                card: card
+            }
+        }).then(function(result) {
+            if (result.error) {
+                submitButton.removeAttribute('disabled');
+                alert(result.error.message);
+            } else {
+                if (result.paymentIntent.status === 'succeeded') {
+                    var paymentMethod = document.getElementsByName('payment_method')[0];
+                    paymentMethod.value = result.paymentIntent.payment_method;
+
+                    document.getElementById('payment-form').submit()
+                }
+            }
+        });
+    });
+</script>

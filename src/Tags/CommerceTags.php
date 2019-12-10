@@ -24,19 +24,4 @@ class CommerceTags extends Tags
     {
         return config('commerce.stripe.key');
     }
-
-    public function stripeSecret()
-    {
-        return config('commerce.stripe.secret');
-    }
-
-    public function paymentIntent()
-    {
-        Stripe::setApiKey(config('commerce.stripe.secret'));
-
-        return PaymentIntent::create([
-            'amount' => $this->getParam('amount'),
-            'currency' => config('commerce.currency.code'),
-        ])->client_secret;
-    }
 }

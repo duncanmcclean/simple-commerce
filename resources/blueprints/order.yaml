@@ -43,10 +43,10 @@ sections:
           display: Coupon
           validate: string
       -
-        handle: stripe_customer_id
+        handle: customer
         field:
           character_limit: 0
           type: text
           localizable: false
-          display: 'Stripe Customer ID'
+          display: 'Customer'
           validate: required
