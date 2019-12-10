@@ -44,7 +44,7 @@ sections:
       -
         handle: shipping_price
         field:
-          type: integer
+          type: text
           localizable: false
           display: 'Shipping Price'
           unless:
@@ -100,7 +100,7 @@ sections:
       -
         handle: price
         field:
-          type: integer
+          type: text
           localizable: false
           display: Price
       -

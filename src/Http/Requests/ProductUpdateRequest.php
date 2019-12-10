@@ -20,8 +20,8 @@ class ProductUpdateRequest extends FormRequest
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'price' => 'required|integer',
-            'shipping_price' => 'sometimes|integer',
+            'shipping_price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
+            'price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer'
         ];
     }
