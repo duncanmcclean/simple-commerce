@@ -4,6 +4,8 @@ Commerce for Statamic is a flexible e-commerce platform for [Statamic](https://s
 
 The aim for Commerce is to give developers an easy way of creating e-commerce stores for their clients using their favourite content management system, Statamic without having to build everything by hand. It also makes lives easier for the people at the other end - the content managers who can make updates to products and coupons through the Control Panel.
 
+PS. I have no idea why I named all the files in uppercase.
+
 ## A little notice
 
 Everything is still in early stages so things may change without notice. Right now, I would advise that **you shouldn't be using this in production**.
