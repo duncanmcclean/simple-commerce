@@ -17,7 +17,7 @@ class Product
         $this->data = $data;
         $this->filename = $filename;
     }
-    
+
     public function path()
     {
         return base_path().'/content/commerce/products/'.$this->filename.'.yaml';
