@@ -108,9 +108,9 @@ class FileOrderRepository implements Contract
     {
         $slug = $this->find($id)['slug'];
 
-        $item = new Order($entry->toArray(), $slug);
+        $item = new Order($entry, $slug);
         $item->writeFile();
 
-        return $item;
+        return $item->data;
     }
 }

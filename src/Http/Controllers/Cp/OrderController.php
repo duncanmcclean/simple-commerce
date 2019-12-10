@@ -61,12 +61,12 @@ class OrderController extends CpController
     {
         $validated = []; // wip
 
-        return Order::update($order, $request->all());
+        return Order::update(Order::find($order)->toArray()['id'], $request->all());
     }
 
     public function destroy($order)
     {
-        $coupon = Order::delete($order);
+        $order = Order::delete(Order::find($order)['slug']);
 
         return redirect(cp_route('orders.index'));
     }
