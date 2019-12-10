@@ -37,9 +37,7 @@ class CustomerController extends CpController
 
         $customer = Customer::save($request->all());
 
-        return array_merge($customer, [
-            'redirect' => cp_route('customers.edit', ['customer' => $customer['id']])
-        ]);
+        return ['redirect' => cp_route('customers.edit', ['customer' => $customer['id']])];
     }
 
     public function edit($customer)
@@ -63,13 +61,7 @@ class CustomerController extends CpController
     {
         $validated = []; // wip
 
-        $customer = Customer::update($customer, $request->all());
-
-        if ($request->slug != $customer) {
-            return array_merge($customer, [
-                'redirect' => cp_route('customers.edit', ['customer' => $customer['slug']])
-            ]);
-        }
+        return Customer::update($customer, $request->all());
     }
 
     public function destroy($customer)

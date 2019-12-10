@@ -37,9 +37,7 @@ class CouponController extends CpController
 
         $coupon = Coupon::save($request->all());
 
-        return array_merge($coupon, [
-            'redirect' => cp_route('coupons.edit', ['coupon' => $coupon['id']])
-        ]);
+        return ['redirect' => cp_route('coupons.edit', ['coupon' => $coupon['id']])];
     }
 
     public function edit($product)
@@ -63,13 +61,7 @@ class CouponController extends CpController
     {
         $validated = []; // wip
 
-        $coupon = Coupon::update(Coupon::find($coupon)['slug'], $request->all());
-
-        if ($request->slug != $coupon) {
-            return array_merge($coupon->toArray(), [
-                'redirect' => cp_route('coupons.edit', ['coupon' => $coupon['id']])
-            ]);
-        }
+        return Coupon::update(Coupon::find($coupon)['slug'], $request->all());
     }
 
     public function destroy($coupon)

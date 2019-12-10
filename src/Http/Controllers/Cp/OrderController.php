@@ -37,9 +37,7 @@ class OrderController extends CpController
 
         $order = Order::save($request->all());
 
-        return array_merge($order->toArray(), [
-            'redirect' => cp_route('orders.edit', ['order' => $order['slug']])
-        ]);
+        return ['redirect' => cp_route('orders.edit', ['order' => $order['id']])];
     }
 
     public function edit($order)
@@ -63,13 +61,7 @@ class OrderController extends CpController
     {
         $validated = []; // wip
 
-        $order = Order::update($order, $request->all());
-
-        if ($request->stripe_order_id != $order) {
-            return array_merge($order->toArray(), [
-                'redirect' => cp_route('orders.edit', ['order' => $order])
-            ]);
-        }
+        return Order::update($order, $request->all());
     }
 
     public function destroy($order)
