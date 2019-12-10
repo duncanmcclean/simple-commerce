@@ -1,11 +1,10 @@
 <?php
 
-namespace Damcclean\Commerce\Models;
+namespace Damcclean\Commerce\Models\File;
 
 use Statamic\Data\ExistsAsFile;
-use Statamic\Facades\Blueprint;
 
-class Product
+class Order
 {
     use ExistsAsFile;
 
@@ -20,7 +19,7 @@ class Product
 
     public function path()
     {
-        return base_path().'/content/commerce/products/'.$this->filename.'.yaml';
+        return base_path().'/content/commerce/orders/'.$this->filename.'.yaml';
     }
 
     public function fileData()

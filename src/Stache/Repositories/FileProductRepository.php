@@ -3,7 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
-use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\File\Product;
 use Illuminate\Support\Collection;
 use SplFileInfo;
 use Illuminate\Support\Facades\File;
@@ -71,7 +71,7 @@ class FileProductRepository implements Contract
 
         return collect($files)
             ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'md' || $file->getExtension() == 'yaml') {
+                if ($file->getExtension() == 'yaml') {
                     return false;
                 }
 
@@ -82,39 +82,32 @@ class FileProductRepository implements Contract
             });
     }
 
-    public function make(): Collection
-    {
-        //
-    }
-
-    public function createRules($collection)
+    public function createRules()
     {
         return [
             'title' => 'required|string',
-            'description' => 'sometimes|string',
             'slug' => 'required|string',
             'publish_date' => '',
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'price' => 'required|integer',
-            'shipping_price' => 'sometimes|integer',
+            'shipping_price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
+            'price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer'
         ];
     }
 
-    public function updateRules($collection, $entry)
+    public function updateRules($entry)
     {
         return [
             'title' => 'required|string',
-            'description' => 'sometimes|string',
             'slug' => 'required|string',
             'publish_date' => '',
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'price' => 'required|integer',
-            'shipping_price' => 'sometimes|integer',
+            'shipping_price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
+            'price' => ['sometimes', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer'
         ];
     }

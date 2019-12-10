@@ -3,7 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\OrderRepository as Contract;
-use Illuminate\Filesystem\Filesystem;
+use Damcclean\Commerce\Models\File\Order;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
@@ -48,15 +48,21 @@ class FileOrderRepository implements Contract
             $entry['id'] = (new Stache())->generateId();
         }
 
-        $contents = Yaml::dumpFrontMatter($entry, null);
-        file_put_contents($this->path.'/'.$entry['slug'].'.md', $contents);
+        if (! isset($entry['slug'])) {
+            $entry['slug'] = str_slug($entry['title']);
+        }
 
-        return $entry;
+        $item = (new Order($entry, $entry['slug']));
+        $item->writeFile();
+
+        return $item;
     }
 
     public function delete($entry)
     {
-        return (new Filesystem())->delete($this->path.'/'.$entry.'.md');
+        $entry = $this->findBySlug($entry);
+
+        return (new Order([], $entry['slug']))->deleteFile();
     }
 
     public function query()
@@ -65,7 +71,7 @@ class FileOrderRepository implements Contract
 
         return collect($files)
             ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'md') {
+                if ($file->getExtension() == 'yaml') {
                     return false;
                 }
 
@@ -76,12 +82,7 @@ class FileOrderRepository implements Contract
             });
     }
 
-    public function make(): Collection
-    {
-        //
-    }
-
-    public function createRules($collection)
+    public function createRules()
     {
         return [
             'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
@@ -92,7 +93,7 @@ class FileOrderRepository implements Contract
         ];
     }
 
-    public function updateRules($collection, $entry)
+    public function updateRules($entry)
     {
         return [
             'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
@@ -101,5 +102,15 @@ class FileOrderRepository implements Contract
             'coupon' => 'sometimes|string',
             'stripe_customer_id' => 'required|string'
         ];
+    }
+
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new Order($entry->toArray(), $slug);
+        $item->writeFile();
+
+        return $item;
     }
 }
