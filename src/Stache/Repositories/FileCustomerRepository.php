@@ -3,7 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\CustomerRepository as Contract;
-use Damcclean\Commerce\Facades\Customer;
+use Damcclean\Commerce\Models\File\Customer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
@@ -54,7 +54,7 @@ class FileCustomerRepository implements Contract
         }
 
         if (! isset($entry['slug'])) {
-            $entry['slug'] = str_slug($entry['title']);
+            $entry['slug'] = str_slug($entry['name']);
         }
 
         $item = new Customer($entry, $entry['slug']);
