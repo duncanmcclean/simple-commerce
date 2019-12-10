@@ -3,7 +3,7 @@
 namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
-use Damcclean\Commerce\ProductItem;
+use Damcclean\Commerce\Models\Product;
 use Illuminate\Support\Collection;
 use SplFileInfo;
 use Illuminate\Support\Facades\File;
@@ -52,7 +52,7 @@ class FileProductRepository implements Contract
             $entry['slug'] = str_slug($entry['title']);
         }
 
-        $item = new ProductItem($entry, $entry['slug']);
+        $item = new Product($entry, $entry['slug']);
         $item->writeFile();
 
         return $item;
@@ -62,7 +62,7 @@ class FileProductRepository implements Contract
     {
         $entry = $this->findBySlug($entry);
 
-        return (new ProductItem([], $entry['slug']))->deleteFile();
+        return (new Product([], $entry['slug']))->deleteFile();
     }
 
     public function query()
@@ -123,7 +123,7 @@ class FileProductRepository implements Contract
     {
         $slug = $this->find($id)['slug'];
 
-        $item = new ProductItem($entry->toArray(), $slug);
+        $item = new Product($entry->toArray(), $slug);
         $item->writeFile();
 
         return $item;

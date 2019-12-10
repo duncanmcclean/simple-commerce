@@ -1,11 +1,11 @@
 <?php
 
-namespace Damcclean\Commerce;
+namespace Damcclean\Commerce\Models;
 
 use Statamic\Data\ExistsAsFile;
 use Statamic\Facades\Blueprint;
 
-class ProductItem
+class Product
 {
     use ExistsAsFile;
 
