@@ -19,6 +19,7 @@ use Damcclean\Commerce\Facades\Coupon;
 use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Fieldtypes\Price;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
 use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
@@ -112,6 +113,8 @@ class CommerceServiceProvider extends AddonServiceProvider
                 ->section('Commerce')
                 ->route('coupons.index');
         });
+
+        Price::register();
     }
 
     public function register()
