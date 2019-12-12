@@ -25,5 +25,6 @@
             ]
         ]) }}'
         items='@json($products)'
+        primary='title'
     />
 @endsection

@@ -12,4 +12,5 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/js/cp.js', 'dist/js/cp.js')
+    .copy('dist/js/cp.js', '../../../public/vendor/damcclean/commerce/js/cp.js')
     .setPublicPath('dist');

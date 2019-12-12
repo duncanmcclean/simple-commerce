@@ -9,8 +9,8 @@
     </div>
 
     <commerce-listing
-            model="coupons"
-            cols='{{ json_encode([
+        model="coupons"
+        cols='{{ json_encode([
             [
                 'label' => 'Title',
                 'field' => 'title',
@@ -20,6 +20,6 @@
                 'field' => 'description'
             ]
         ]) }}'
-            items='@json($coupons)'
+        items='@json($coupons)'
     />
 @endsection

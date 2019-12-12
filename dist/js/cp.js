@@ -141,11 +141,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     model: String,
     cols: String,
-    items: String
+    items: String,
+    primary: String
   },
   data: function data() {
     return {
@@ -157,18 +165,13 @@ __webpack_require__.r(__webpack_exports__);
       requestUrl: cp_url(this.model + '/search')
     };
   },
-  mounted: function mounted() {
-    console.log('hey');
-  },
   methods: {
     redirect: function redirect(url) {
       location.href = url;
       return;
     },
-    actionStarted: function actionStarted() {//
-    },
-    actionCompleted: function actionCompleted() {//
-    },
+    actionStarted: function actionStarted() {},
+    actionCompleted: function actionCompleted() {},
     sorted: function sorted(column, direction) {
       this.sortColumn = column;
       this.sortDirection = direction;
@@ -247,7 +250,7 @@ var render = function() {
           search: false,
           "search-query": _vm.search,
           sort: false,
-          "sort-colunm": _vm.sortColumn,
+          "sort-column": _vm.sortColumn,
           "sort-direction": _vm.sortDirection
         },
         scopedSlots: _vm._u([
@@ -278,12 +281,11 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _vm.rows.length === 0
-                      ? _c("div", {
-                          staticClass: "p-3 text-center text-grey-50",
-                          domProps: {
-                            textContent: _vm._s(_vm.__("No results"))
-                          }
-                        })
+                      ? _c(
+                          "div",
+                          { staticClass: "p-3 text-center text-grey-50" },
+                          [_vm._v("No results")]
+                        )
                       : _c("data-list-table", {
                           on: { sorted: _vm.sorted },
                           scopedSlots: _vm._u(
@@ -292,50 +294,84 @@ var render = function() {
                                 key: "cell-title",
                                 fn: function(ref) {
                                   var item = ref.row
-                                  return [
-                                    _c(
-                                      "div",
-                                      { staticClass: "flex items-center" },
-                                      [
-                                        _c("div", {
-                                          staticClass: "little-dot mr-1",
-                                          class: [
-                                            item.enabled
-                                              ? "bg-green"
-                                              : "bg-grey-40"
-                                          ]
-                                        }),
-                                        _vm._v(" "),
+                                  return _vm.primary == "title"
+                                    ? [
                                         _c(
-                                          "a",
-                                          {
-                                            on: {
-                                              click: function($event) {
-                                                $event.stopPropagation()
-                                                return _vm.redirect(
-                                                  item.edit_url
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [_vm._v(_vm._s(item.title))]
+                                          "div",
+                                          { staticClass: "flex items-center" },
+                                          [
+                                            item.enabled != null
+                                              ? _c("div", {
+                                                  staticClass:
+                                                    "little-dot mr-1",
+                                                  class: [
+                                                    item.enabled
+                                                      ? "bg-green"
+                                                      : "bg-grey-40"
+                                                  ]
+                                                })
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            _c(
+                                              "a",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.stopPropagation()
+                                                    return _vm.redirect(
+                                                      item.edit_url
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v(_vm._s(item.title))]
+                                            )
+                                          ]
                                         )
                                       ]
-                                    )
-                                  ]
+                                    : undefined
                                 }
                               },
                               {
                                 key: "cell-slug",
                                 fn: function(ref) {
                                   var item = ref.row
-                                  return [
-                                    _c(
-                                      "span",
-                                      { staticClass: "font-mono text-2xs" },
-                                      [_vm._v(_vm._s(item.slug))]
-                                    )
-                                  ]
+                                  return _vm.primary == "slug"
+                                    ? [
+                                        _c(
+                                          "div",
+                                          { staticClass: "flex items-center" },
+                                          [
+                                            item.enabled != null
+                                              ? _c("div", {
+                                                  staticClass:
+                                                    "little-dot mr-1",
+                                                  class: [
+                                                    item.enabled
+                                                      ? "bg-green"
+                                                      : "bg-grey-40"
+                                                  ]
+                                                })
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            _c(
+                                              "a",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.stopPropagation()
+                                                    return _vm.redirect(
+                                                      item.edit_url
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v(_vm._s(item.slug))]
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    : undefined
                                 }
                               },
                               {
@@ -575,9 +611,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_CommerceListing_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/CommerceListing.vue */ "./resources/js/components/CommerceListing.vue");
+/* harmony import */ var _components_CommerceListing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/CommerceListing */ "./resources/js/components/CommerceListing.vue");
 
-Statamic.$components.register('commerce-listing', _components_CommerceListing_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
+Statamic.$components.register('commerce-listing', _components_CommerceListing__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 

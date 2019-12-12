@@ -1,3 +1,3 @@
-import ProductListing from './components/CommerceListing.vue';
+import CommerceListing from "./components/CommerceListing";
 
-Statamic.$components.register('commerce-listing', ProductListing);
+Statamic.$components.register('commerce-listing', CommerceListing);

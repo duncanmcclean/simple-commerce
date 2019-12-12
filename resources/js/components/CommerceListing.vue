@@ -1,13 +1,13 @@
 <template>
     <div>
         <data-list
-                :rows="rows"
-                :columns="columns"
-                :search="false"
-                :search-query="search"
-                :sort="false"
-                :sort-colunm="sortColumn"
-                :sort-direction="sortDirection"
+            :rows="rows"
+            :columns="columns"
+            :search="false"
+            :search-query="search"
+            :sort="false"
+            :sort-column="sortColumn"
+            :sort-direction="sortDirection"
         >
             <div slot-scope="{ hasSelections }">
                 <div class="card p-0">
@@ -15,20 +15,27 @@
                         <data-list-search v-model="search" />
                     </div>
 
-                    <div v-if="rows.length === 0" class="p-3 text-center text-grey-50" v-text="__('No results')" />
+                    <div v-if="rows.length === 0" class="p-3 text-center text-grey-50">No results</div>
 
                     <data-list-table
                             v-else
                             @sorted="sorted"
                     >
-                        <template slot="cell-title" slot-scope="{ row: item }">
+                        <template v-if="primary == 'title'" slot="cell-title" slot-scope="{ row: item }">
                             <div class="flex items-center">
-                                <div class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>
+                                <div v-if="item.enabled != null" class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>
                                 <a @click.stop="redirect(item.edit_url)">{{ item.title }}</a>
                             </div>
                         </template>
 
-                        <template slot="cell-slug" slot-scope="{ row : item }">
+                        <template v-if="primary == 'slug'" slot="cell-slug" slot-scope="{ row: item }">
+                            <div class="flex items-center">
+                                <div v-if="item.enabled != null" class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>
+                                <a @click.stop="redirect(item.edit_url)">{{ item.slug }}</a>
+                            </div>
+                        </template>
+
+                        <template v-else slot="cell-slug" slot-scope="{ row : item }">
                             <span class="font-mono text-2xs">{{ item.slug }}</span>
                         </template>
 
@@ -49,7 +56,8 @@
         props: {
             model: String,
             cols: String,
-            items: String
+            items: String,
+            primary: String
         },
 
         data() {
@@ -65,23 +73,14 @@
             }
         },
 
-        mounted() {
-            console.log('hey')
-        },
-
         methods: {
             redirect(url) {
                 location.href = url;
                 return;
             },
 
-            actionStarted() {
-                //
-            },
-
-            actionCompleted() {
-                //
-            },
+            actionStarted() {},
+            actionCompleted() {},
 
             sorted(column, direction) {
                 this.sortColumn = column;
@@ -117,6 +116,7 @@
         watch: {
             parameters: {
                 deep: true,
+
                 handler(after, before) {
                     // A change to the search query would trigger both watchers.
                     // We only want the searchQuery one to kick in.

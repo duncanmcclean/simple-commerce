@@ -9,17 +9,18 @@
     </div>
 
     <commerce-listing
-            model="orders"
-            cols='{{ json_encode([
+        model="orders"
+        cols='{{ json_encode([
             [
                 'label' => 'Order ID',
                 'field' => 'slug',
             ],
             [
-                'label' => 'Customer',
-                'field' => 'stripe_customer_id'
+                'label' => 'Total',
+                'field' => 'total'
             ]
         ]) }}'
-            items='@json($orders)'
+        items='@json($orders)'
+        primary='slug'
     />
 @endsection
