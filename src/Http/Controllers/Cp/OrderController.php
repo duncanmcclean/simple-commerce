@@ -4,6 +4,8 @@ namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Damcclean\Commerce\Events\OrderStatusUpdated;
 use Damcclean\Commerce\Facades\Order;
+use Damcclean\Commerce\Http\Requests\OrderStoreRequest;
+use Damcclean\Commerce\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -32,9 +34,9 @@ class OrderController extends CpController
         ]);
     }
 
-    public function store(Request $request)
+    public function store(OrderStoreRequest $request)
     {
-        $validated = []; // WIP
+        $validated = $request->validate();
 
         $order = Order::save($request->all());
 
@@ -58,9 +60,9 @@ class OrderController extends CpController
         ]);
     }
 
-    public function update(Request $request, $order)
+    public function update(OrderUpdateRequest $request, $order)
     {
-        $validated = []; // wip
+        $validated = $request->validate();
 
         $order = Order::find($order)->toArray();
 
