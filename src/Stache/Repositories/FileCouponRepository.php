@@ -114,7 +114,7 @@ class FileCouponRepository implements Contract
     {
         $slug = $this->find($id)['slug'];
 
-        $item = new Coupon($entry, $slug);
+        $item = new Coupon($entry->toArray(), $slug);
         $item->writeFile();
 
         return $item->data;

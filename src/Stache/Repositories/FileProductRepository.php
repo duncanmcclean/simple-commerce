@@ -116,7 +116,7 @@ class FileProductRepository implements Contract
     {
         $slug = $this->find($id)['slug'];
 
-        $item = new Product($entry, $slug);
+        $item = new Product($entry->toArray(), $slug);
         $item->writeFile();
 
         return $item->data;
