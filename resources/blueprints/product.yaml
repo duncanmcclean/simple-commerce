@@ -44,13 +44,12 @@ sections:
       -
         handle: shipping_price
         field:
-          type: text
+          type: money
           localizable: false
           display: 'Shipping Price'
-          placeholder: '00.00'
+          width: 50
           unless:
             free_shipping: 'equals true'
-          width: 50
   sidebar:
     display: Sidebar
     fields:
@@ -101,7 +100,7 @@ sections:
       -
         handle: price
         field:
-          type: text
+          type: money
           localizable: false
           display: Price
       -

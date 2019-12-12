@@ -19,7 +19,7 @@ use Damcclean\Commerce\Facades\Coupon;
 use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
-use Damcclean\Commerce\Fieldtypes\Price;
+use Damcclean\Commerce\Fieldtypes\Money;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
 use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
@@ -30,6 +30,7 @@ use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
+use Statamic\Statamic;
 
 class CommerceServiceProvider extends AddonServiceProvider
 {
@@ -79,6 +80,11 @@ class CommerceServiceProvider extends AddonServiceProvider
                 SetupCommerceCommand::class,
             ]);
 
+        Statamic::provideToScript([
+            'commerceCurrencyCode' => config('commerce.currency.code'),
+            'commerceCurrencySymbol' => config('commerce.currency.symbol')
+        ]);
+
         Nav::extend(function ($nav) {
             $nav
                 ->create('Dashboard')
@@ -114,7 +120,7 @@ class CommerceServiceProvider extends AddonServiceProvider
                 ->route('coupons.index');
         });
 
-        Price::register();
+        Money::register();
     }
 
     public function register()

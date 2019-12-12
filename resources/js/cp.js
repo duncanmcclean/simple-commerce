@@ -1,5 +1,5 @@
 import CommerceListing from "./components/CommerceListing";
-import PriceFieldtype from "./components/PriceFieldtype";
+import MoneyFieldtype from "./components/MoneyFieldtype";
 
 Statamic.$components.register('commerce-listing', CommerceListing);
-Statamic.$components.register('price-fieldtype', PriceFieldtype);
+Statamic.$components.register('money-fieldtype', MoneyFieldtype);

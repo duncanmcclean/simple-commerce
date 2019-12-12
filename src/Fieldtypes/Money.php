@@ -4,7 +4,7 @@ namespace Damcclean\Commerce\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
 
-class Price extends Fieldtype
+class Money extends Fieldtype
 {
     public function defaultValue()
     {

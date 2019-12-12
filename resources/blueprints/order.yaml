@@ -6,12 +6,12 @@ sections:
       -
         handle: total
         field:
-          type: text
+          type: money
           localizable: false
           display: Total
           validate: required
           character_limit: 0
-          width: 33
+          width: 50
       -
         handle: notes
         field:

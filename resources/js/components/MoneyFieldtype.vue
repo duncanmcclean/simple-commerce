@@ -1,6 +1,6 @@
 <template>
     <div>
-        <text-input :type="inputType" :value="value" prepend="£" @input="update" />
+        <text-input :type="inputType" :value="value" :prepend="symbol" placeholder="00.00" @input="update" />
     </div>
 </template>
 
@@ -10,7 +10,7 @@
 
         data() {
             return {
-                //
+                symbol: Statamic.$config.get('commerceCurrencySymbol')
             }
         },
 
