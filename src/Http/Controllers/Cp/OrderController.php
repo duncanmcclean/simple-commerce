@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
+use Damcclean\Commerce\Events\OrderStatusUpdated;
 use Damcclean\Commerce\Facades\Order;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
@@ -61,7 +62,13 @@ class OrderController extends CpController
     {
         $validated = []; // wip
 
-        return Order::update(Order::find($order)->toArray()['id'], $request->all());
+        $order = Order::find($order)->toArray();
+
+        if ($request->status != $order['status']) {
+            event(new OrderStatusUpdated($order));
+        }
+
+        return Order::update($order['id'], $request->all());
     }
 
     public function destroy($order)
