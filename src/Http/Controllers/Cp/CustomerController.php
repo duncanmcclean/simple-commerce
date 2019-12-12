@@ -3,6 +3,8 @@
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Damcclean\Commerce\Facades\Customer;
+use Damcclean\Commerce\Http\Requests\CustomerStoreRequest;
+use Damcclean\Commerce\Http\Requests\CustomerUpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -31,9 +33,9 @@ class CustomerController extends CpController
         ]);
     }
 
-    public function store(Request $request)
+    public function store(CustomerStoreRequest $request)
     {
-        $validated = []; // WIP
+        $validated = $request->validated();
 
         $customer = Customer::save($request->all());
 
@@ -57,9 +59,9 @@ class CustomerController extends CpController
         ]);
     }
 
-    public function update(Request $request, $customer)
+    public function update(CustomerUpdateRequest $request, $customer)
     {
-        $validated = []; // wip
+        $validated = $request->validated();
 
         return Customer::update(Customer::find($customer)->toArray()['id'], $request->all());
     }
