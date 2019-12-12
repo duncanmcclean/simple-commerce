@@ -36,7 +36,7 @@ class OrderController extends CpController
 
     public function store(OrderStoreRequest $request)
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
         $order = Order::save($request->all());
 
@@ -62,7 +62,7 @@ class OrderController extends CpController
 
     public function update(OrderUpdateRequest $request, $order)
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
         $order = Order::find($order)->toArray();
 

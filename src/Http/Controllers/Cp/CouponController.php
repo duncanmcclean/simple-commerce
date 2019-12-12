@@ -3,6 +3,8 @@
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Damcclean\Commerce\Facades\Coupon;
+use Damcclean\Commerce\Http\Requests\CouponStoreRequest;
+use Damcclean\Commerce\Http\Requests\CouponUpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -31,9 +33,9 @@ class CouponController extends CpController
         ]);
     }
 
-    public function store(Request $request)
+    public function store(CouponStoreRequest $request)
     {
-        $validated = []; // WIP
+        $validated = $request->validated();
 
         $coupon = Coupon::save($request->all());
 
@@ -57,9 +59,9 @@ class CouponController extends CpController
         ]);
     }
 
-    public function update(Request $request, $coupon)
+    public function update(CouponUpdateRequest $request, $coupon)
     {
-        $validated = []; // wip
+        $validated = $request->validated();
 
         return Coupon::update(Coupon::find($coupon)->toArray()['id'], $request->all());
     }
