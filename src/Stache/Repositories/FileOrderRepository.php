@@ -93,7 +93,8 @@ class FileOrderRepository implements Contract
 
             'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
             'coupon' => 'sometimes|string',
-            'customer' => 'required|string'
+            'customer' => 'required|string',
+            'order_date' => 'required',
         ];
     }
 
@@ -108,7 +109,8 @@ class FileOrderRepository implements Contract
 
             'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
             'coupon' => 'sometimes|string',
-            'customer' => 'required|string'
+            'customer' => 'required|string',
+            'order_date' => 'required',
         ];
     }
 

@@ -90,3 +90,18 @@ sections:
           localizable: false
           display: Customer
           validate: required
+      -
+        handle: order_date
+        field:
+          time_enabled: true
+          time_required: true
+          earliest_date: '1900-01-01'
+          full_width: false
+          inline: false
+          columns: 1
+          rows: 1
+          mode: single
+          type: date
+          localizable: false
+          display: 'Order Date'
+          validate: required
