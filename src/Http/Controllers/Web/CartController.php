@@ -4,14 +4,15 @@ namespace Damcclean\Commerce\Http\Controllers\Web;
 
 use Damcclean\Commerce\Events\AddedToCart;
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Http\Requests\CartDeleteRequest;
+use Damcclean\Commerce\Http\Requests\CartStoreRequest;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function store(Request $request)
+    public function store(CartStoreRequest $request)
     {
-        // WIP probs need some sort of csrf checking here
-        // WIP and some validation
+        $validate = $request->validated();
 
         $slug = $request->slug;
         $quantity = $request->quantity;
@@ -38,8 +39,10 @@ class CartController extends Controller
             ->with('message', 'Added product to cart.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(CartDeleteRequest $request)
     {
+        $validate = $request->validated();
+
         $cart = collect($request->session()->get('cart'))
             ->reject(function ($product) use ($request) {
                 if ($product['slug'] == $request->slug) {
