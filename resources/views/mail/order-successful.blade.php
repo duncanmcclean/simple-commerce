@@ -22,7 +22,7 @@
         {{ $customer['zip_code'] }}
     @endcomponent
 
-    If you have any questions about your order, simply reach out to {{ config('commerce.company.email') }}
+    If you have any questions about your order, simply reach out to {{ config('commerce.company.email') }}.
 
     Thanks,<br>
     {{ config('commerce.company.name') }}
