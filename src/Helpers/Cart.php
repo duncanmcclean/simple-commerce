@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class Cart
 {
-    public function all(): Collection
+    public function all()
     {
         return collect(request()->session()->get('cart'))
             ->map(function ($item) {
@@ -61,7 +61,7 @@ class Cart
         return $total * 100;
     }
 
-    public function count(): Collection
+    public function count()
     {
         return $this->all()->count();
     }
