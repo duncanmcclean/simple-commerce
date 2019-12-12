@@ -85,22 +85,30 @@ class FileOrderRepository implements Contract
     public function createRules()
     {
         return [
-            'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
             'total' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
-            'shipping_address' => 'sometimes|address',
+
+            'address' => 'sometimes|string',
+            'country' => 'sometimes|string',
+            'zip_code' => 'sometimes|string',
+
+            'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
             'coupon' => 'sometimes|string',
-            'stripe_customer_id' => 'required|string'
+            'customer' => 'required|string'
         ];
     }
 
     public function updateRules($entry)
     {
         return [
-            'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
             'total' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
-            'shipping_address' => 'sometimes|address',
+
+            'address' => 'sometimes|string',
+            'country' => 'sometimes|string',
+            'zip_code' => 'sometimes|string',
+
+            'status' => 'required|in:created,paid,cancelled,fulfilled,returned',
             'coupon' => 'sometimes|string',
-            'stripe_customer_id' => 'required|string'
+            'customer' => 'required|string'
         ];
     }
 

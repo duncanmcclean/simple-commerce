@@ -9,30 +9,50 @@ sections:
           type: text
           localizable: false
           display: Total
-          validate: required|integer
+          validate: required
+          character_limit: 0
+          width: 33
       -
-        handle: shipping_address
+        handle: notes
         field:
           type: textarea
           localizable: false
-          display: 'Shipping Address'
-          validate: required|string
+          display: Notes
+  shipping_address:
+    display: 'Shipping Address'
+    fields:
       -
-        handle: coupon
+        handle: address
         field:
-          character_limit: 0
-          type: text
+          type: textarea
           localizable: false
-          display: Coupon
+          display: Address
           validate: string
       -
-        handle: customer
+        handle: country
+        field:
+          options:
+            uk: 'United Kingdom'
+            us: 'United States'
+            ca: Canada
+            fr: France
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          type: select
+          localizable: false
+          width: 50
+          display: Country
+      -
+        handle: zip_code
         field:
           character_limit: 0
           type: text
           localizable: false
-          display: Customer
-          validate: required
+          width: 50
+          display: 'Zip Code'
   sidebar:
     display: Sidebar
     fields:
@@ -54,3 +74,19 @@ sections:
           localizable: false
           display: Status
           placeholder: created
+      -
+        handle: coupon
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Coupon
+          validate: string
+      -
+        handle: customer
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Customer
+          validate: required
