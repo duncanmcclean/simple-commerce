@@ -10,6 +10,7 @@ use Damcclean\Commerce\Events\ReturnCustomer;
 use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Helpers\Cart;
 use Damcclean\Commerce\Tags\CartTags;
 use Illuminate\Http\Request;
 use Statamic\View\View;
@@ -22,12 +23,14 @@ class CheckoutController extends Controller
     public function __construct()
     {
         Stripe::setApiKey(config('commerce.stripe.secret'));
+
+        $this->cart = new Cart();
     }
 
     public function show()
     {
         $intent = PaymentIntent::create([
-            'amount' => (new CartTags())->total() * 100,
+            'amount' => $this->cart->total(),
             'currency' => config('commerce.currency.code'),
         ]);
 
@@ -90,7 +93,7 @@ class CheckoutController extends Controller
 
         event(new CheckoutComplete($order, $customer));
 
-        collect($request->session()->get('cart'))
+        collect($this->cart->all())
             ->each(function ($cartProduct) {
                 $product = Product::findBySlug($cartProduct['slug']);
                 $product['stock_number'] -= $cartProduct['quantity'];
@@ -106,7 +109,7 @@ class CheckoutController extends Controller
                 }
             });
 
-        $request->session()->forget('cart');
+        $this->cart->clear();
 
         return redirect('/thanks');
     }

@@ -10,29 +10,29 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function __construct()
+    {
+        $this->cart = new Cart();
+    }
+
     public function store(CartStoreRequest $request)
     {
         $validate = $request->validated();
 
-        $slug = $request->slug;
-        $quantity = $request->quantity;
-
-        $items = $request->session()->get('cart');
-
-        collect($items)
-            ->where('slug', $slug)
+        $items = $this->cart->all()
+            ->where('slug', $request->slug)
             ->each(function ($item, $quantity) {
                 $item['quantity'] = $quantity;
             });
 
         $items[] = [
-            'slug' => $slug,
-            'quantity' => $quantity,
+            'slug' => $request->slug,
+            'quantity' => $request->quantity,
         ];
 
-        $request->session()->put('cart', $items);
+        $this->cart->replace($items);
 
-        event(new AddedToCart(Product::findBySlug($slug)));
+        event(new AddedToCart(Product::findBySlug($request->slug)));
 
         return redirect()
             ->back()
@@ -43,16 +43,7 @@ class CartController extends Controller
     {
         $validate = $request->validated();
 
-        $cart = collect($request->session()->get('cart'))
-            ->reject(function ($product) use ($request) {
-                if ($product['slug'] == $request->slug) {
-                    return true;
-                }
-
-                return false;
-            });
-
-        $request->session()->put('cart', $cart);
+        $this->cart->remove($request->slug);
 
         return redirect()
             ->back()

@@ -3,41 +3,30 @@
 namespace Damcclean\Commerce\Tags;
 
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Helpers\Cart;
 use Statamic\Tags\Tags;
 
 class CartTags extends Tags
 {
     protected static $handle = 'cart';
 
+    public function __construct()
+    {
+        $this->cart = new Cart();
+    }
+
     public function index()
     {
-        $items = request()->session()->get('cart');
-
-        return collect($items)
-            ->map(function ($item) {
-                $product = Product::findBySlug($item['slug'])->toArray();
-
-                $product['quantity'] = $item['quantity'];
-                $product['price'] = $product['price'] * $product['quantity'];
-
-                return collect($product);
-            });
+        return $this->cart->all();
     }
 
     public function count()
     {
-        return $this->index()->count();
+        return $this->cart->count();
     }
 
     public function total()
     {
-        $items = $this->index();
-        $total = 0;
-
-        foreach ($items as $item) {
-            $total = $item['price'];
-        }
-
-        return $total;
+        return $this->cart->total();
     }
 }
