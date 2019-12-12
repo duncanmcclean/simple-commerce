@@ -125,7 +125,7 @@ class FileCustomerRepository implements Contract
     {
         $slug = $this->find($id)['slug'];
 
-        $item = new Customer($entry->toArray(), $slug);
+        $item = new Customer(collect($entry)->toArray(), $slug);
         $item->writeFile();
 
         return $item->data;
