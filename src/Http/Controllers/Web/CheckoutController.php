@@ -77,12 +77,12 @@ class CheckoutController extends Controller
         }
 
         $order = Order::save([
-            'slug' => $customer['id'].'-'.uniqid(),
+            'slug' => uniqid(),
             'status' => 'paid', // WIP make 100% sure the payment method has actually paid this order
             'total' => (new CartTags())->total(),
             'shipping_address' => "$request->address, \n$request->country, \n$request->zip_code",
             'coupon' => null, // WIP make sure that we use the coupon(s) thing here
-            'customer' => $customer['id'],
+            'customer' => $customer->toArray()['id'],
         ]);
 
         event(new CheckoutComplete($order, $customer));
