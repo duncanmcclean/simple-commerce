@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Http\Controllers\Web;
 
 use Damcclean\Commerce\Events\AddedToCart;
 use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Helpers\Cart;
 use Damcclean\Commerce\Http\Requests\CartDeleteRequest;
 use Damcclean\Commerce\Http\Requests\CartStoreRequest;
 use Illuminate\Http\Request;
