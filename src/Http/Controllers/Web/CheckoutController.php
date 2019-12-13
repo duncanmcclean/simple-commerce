@@ -80,7 +80,7 @@ class CheckoutController extends Controller
         }
 
         $order = Order::save([
-            'slug' => uniqid(),
+            'slug' => now()->year.'-'.now()->month.'-'.now()->day.'-'.mt_rand(),
             'total' => (new CartTags())->total(),
             'address' => $request->shipping_address ?? $request->address,
             'country' => $request->shipping_country ?? $request->country,
