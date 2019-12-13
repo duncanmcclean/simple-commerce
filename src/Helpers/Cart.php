@@ -3,7 +3,6 @@
 namespace Damcclean\Commerce\Helpers;
 
 use Damcclean\Commerce\Facades\Product;
-use Illuminate\Support\Collection;
 
 class Cart
 {

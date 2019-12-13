@@ -3,8 +3,6 @@
 namespace Damcclean\Commerce\Tags;
 
 use Statamic\Tags\Tags;
-use Stripe\PaymentIntent;
-use Stripe\Stripe;
 
 class CommerceTags extends Tags
 {
