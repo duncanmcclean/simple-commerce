@@ -21,5 +21,6 @@
             ]
         ]) }}'
         items='@json($customers)'
+        primary="name"
     />
 @endsection

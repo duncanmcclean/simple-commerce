@@ -28,6 +28,13 @@
                             </div>
                         </template>
 
+                        <template v-if="primary == 'name'" slot="cell-slug" slot-scope="{ row: item }">
+                            <div class="flex items-center">
+                                <div v-if="item.enabled != null" class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>
+                                <a @click.stop="redirect(item.edit_url)">{{ item.name }}</a>
+                            </div>
+                        </template>
+
                         <template v-if="primary == 'slug'" slot="cell-slug" slot-scope="{ row: item }">
                             <div class="flex items-center">
                                 <div v-if="item.enabled != null" class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>

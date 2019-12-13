@@ -21,5 +21,6 @@
             ]
         ]) }}'
         items='@json($coupons)'
+        primary="title"
     />
 @endsection
