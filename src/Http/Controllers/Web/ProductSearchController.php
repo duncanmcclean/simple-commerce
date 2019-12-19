@@ -3,6 +3,7 @@
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
 use Damcclean\Commerce\Facades\Product;
+use Illuminate\Http\Request;
 use Statamic\View\View;
 
 class ProductSearchController
@@ -14,9 +15,9 @@ class ProductSearchController
             ->layout('commerce::web.layout');
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        $query = request()->input('search');
+        $query = $request->input('query');
 
         if (! $query) {
             $results = Product::all();
