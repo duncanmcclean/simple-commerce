@@ -11,7 +11,7 @@
 
 ## 📄 Documentation
 
-Documentation coming soon.
+Our documentation is in the [`docs`](./docs) folder of this repository.
 
 ## Contributing
 
