@@ -1,9 +1,5 @@
 # Customers
 
-Customers are people who have purchased products in your Commerce store.
+Customers are the people who have bought something from your store.
 
-When someone goes through the checkout flow, it will check if a customer already exists with the same email, if yes, an existing customer is used and if no, a new customer is created.
-
-> Currently, customers can't be assosiated with Statamic users, however we could add this feature later.
-
-WIP
+When someone goes through the checkout flow, Commerce will check if a customer already exists with the same email. If so, an existing customer will be linked to the order, if not, Commerce will create one.
