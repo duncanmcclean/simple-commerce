@@ -18,9 +18,9 @@ class CommerceInstallCommand extends Command
 
     public function handle()
     {
-        $this->info('⚙️ First things first, let\'s publish your config file...');
+        $this->info('First, publish all the things... (config file, views)');
         $this->callSilent('vendor:publish', [
-            '--tag' => 'config'
+            '--provider' => 'Damcclean\Commerce\CommerceServiceProvider'
         ]);
         $this->line('');
 
