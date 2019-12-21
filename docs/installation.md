@@ -6,13 +6,20 @@
 
 ## Testing steps
 
-During testing steps, Commerce for Statamic won't be installable via Composer but instead it requires quite a bit of manual installation.
+During testing, Commerce for Statamic won't be installable via Composer but instead it requires quite a bit of manual installation.
 
-1. clone this repository to `./addons/damcclean/commerce`
-2. install composer dependencies inside `commerce` directory `composer install`
-3. add repository to main `composer.json`
+1. Clone this repository to `./addons/damcclean/commerce` - `git clone git@github.com:damcclean/commerce addons/damcclean/commerce`
+2. Run `composer install` inside the `./addons/damcclean/commerce` folder.
+3. In your site's main `composer.json` file, add the following few lines:
 
 ```json
+  "require": {
+      ...
+      "damcclean/commerce": "dev-master"
+  }
+  
+  ...
+
   "repositories": [
         {
             "type": "path",
@@ -21,13 +28,7 @@ During testing steps, Commerce for Statamic won't be installable via Composer bu
     ]
 ```
 
-4. Add `damcclean/commerce` as a dependency in your `composer.json` file.
-
-```json
-    "require": {
-      "damcclean/commerce": "dev-master",
-    }
-```
+4. Run `composer install`
 
 5. Run the install command and follow the setup guide
 
