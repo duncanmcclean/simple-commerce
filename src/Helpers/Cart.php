@@ -3,6 +3,10 @@
 namespace Damcclean\Commerce\Helpers;
 
 use Damcclean\Commerce\Facades\Product;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\DecimalMoneyFormatter;
+use Money\Money;
 
 class Cart
 {
@@ -57,7 +61,10 @@ class Cart
                 $total += $item['price'];
             });
 
-        return $total * 100;
+        $amount = Money::GBP($total * 100);
+        $currencies = new ISOCurrencies();
+        $moneyFormatter = new DecimalMoneyFormatter($currencies);
+        return $moneyFormatter->format($amount);
     }
 
     public function count()

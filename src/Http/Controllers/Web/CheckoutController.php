@@ -29,6 +29,12 @@ class CheckoutController extends Controller
 
     public function show()
     {
+        if ($this->cart->total() == '0.00') {
+            return (new View())
+                ->template('commerce::web.checkout')
+                ->layout('commerce::web.layout');
+        }
+
         $intent = PaymentIntent::create([
             'amount' => $this->cart->total(),
             'currency' => config('commerce.currency.code'),
