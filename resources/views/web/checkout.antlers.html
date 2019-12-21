@@ -27,6 +27,12 @@
                 <p>{{ commerce:currency_symbol }}{{ cart:total }}</p>
             </div>
 
+            <div class="w-full flex flex-row items-center">
+                <form action="/cart/clear" method="post">
+                    <button class="font-semibold text-red-600 text-sm">Clear Cart</button>
+                </form>
+            </div>
+
             <form id="payment-form" class="mt-8" action="/checkout" method="post">
                 <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
 
