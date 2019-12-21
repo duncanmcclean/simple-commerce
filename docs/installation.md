@@ -30,8 +30,22 @@ During testing, Commerce for Statamic won't be installable via Composer but inst
 
 4. Run `composer install`
 
-5. Run the install command, it'll guide you through the rest of the process.
+5. Run the install command, it'll copy over things like blueprints and config files.
 
 ```shell script
 php artisan commerce:install
 ```
+
+6. Another thing you'll want to do before things start working is to add some URLs into your app's `VerifyCsrfToken.php` file. There's a statamic bug meaning we can't use csrf tokens in some places. We'll hopefully have this fixed before we launch.
+
+```php
+<?php
+
+...
+
+protected $except = [
+        '/cart', '/cart/*', '/checkout', '/products/search',
+];
+```
+
+7. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.
