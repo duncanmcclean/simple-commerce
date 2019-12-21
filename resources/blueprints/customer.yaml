@@ -115,3 +115,17 @@ sections:
           localizable: false
           display: Currency
           validate: required|string
+      -
+        handle: customer_since
+        field:
+          time_enabled: true
+          time_required: false
+          earliest_date: '1900-01-01'
+          full_width: false
+          inline: false
+          columns: 1
+          rows: 1
+          mode: single
+          type: date
+          localizable: false
+          display: 'Customer Since'

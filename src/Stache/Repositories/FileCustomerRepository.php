@@ -106,6 +106,7 @@ class FileCustomerRepository implements Contract
             'card_expiry_year' => 'string',
             'card_last_four' => 'string',
             'currency' => 'required|string',
+            'customer_since' => 'required',
         ];
     }
 
@@ -123,6 +124,7 @@ class FileCustomerRepository implements Contract
             'card_expiry_year' => 'string',
             'card_last_four' => 'string',
             'currency' => 'required|string',
+            'customer_since' => 'required',
         ];
     }
 

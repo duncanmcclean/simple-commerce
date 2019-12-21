@@ -80,6 +80,7 @@ class CheckoutController extends Controller
                 'card_expiry_year' => $paymentMethod->card->exp_year,
                 'card_last_four' => $paymentMethod->card->last4,
                 'currency' => $request->currency ?? config('commerce.currency.code'),
+                'customer_since' => now()->toDateTimeString(),
             ]);
 
             event(new NewCustomerCreated($customer));
