@@ -4,3 +4,4 @@ vendor
 .phpunit.result.cache
 node_modules
 package-lock.json
+.php_cs.cache
