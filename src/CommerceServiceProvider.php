@@ -29,6 +29,7 @@ use Damcclean\Commerce\Stache\Repositories\FileProductRepository;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
+use Illuminate\Filesystem\Filesystem;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -124,6 +125,10 @@ class CommerceServiceProvider extends AddonServiceProvider
         });
 
         Money::register();
+
+        if (! file_exists(base_path().'/content/commerce')) {
+            (new Filesystem())->makeDirectory(base_path().'/content/commerce');
+        }
     }
 
     public function register()
