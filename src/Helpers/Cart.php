@@ -46,7 +46,7 @@ class Cart
 
     public function remove($slug)
     {
-        $items = collect($this->cart->all())
+        $items = collect($this->all())
             ->reject(function ($product) use ($slug) {
                 if ($product['slug'] == $slug) {
                     return true;
