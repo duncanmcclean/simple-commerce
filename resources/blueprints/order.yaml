@@ -18,6 +18,30 @@ sections:
           type: textarea
           localizable: false
           display: Notes
+      -
+        handle: products
+        field:
+          fields:
+            -
+              handle: id
+              field:
+                character_limit: 0
+                type: text
+                localizable: false
+                display: Product
+            -
+              handle: quantity
+              field:
+                type: integer
+                localizable: false
+                display: Quantity
+          mode: table
+          max_rows: 0
+          min_rows: 0
+          reorderable: true
+          type: grid
+          localizable: false
+          display: Products
   shipping_address:
     display: 'Shipping Address'
     fields:
