@@ -27,7 +27,7 @@
         },
         "laravel": {
             "providers": [
-                "Damcclean\\Commerce\\ServiceProvider"
+                "Damcclean\\Commerce\\CommerceServiceProvider"
             ]
         }
     },
