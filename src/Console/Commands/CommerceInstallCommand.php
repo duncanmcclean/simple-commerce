@@ -5,7 +5,7 @@ namespace Damcclean\Commerce\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class SetupCommerceCommand extends Command
+class CommerceInstallCommand extends Command
 {
     protected $signature = 'commerce:install';
     protected $description = 'Guides you through the installation of Commerce for Statamic.';

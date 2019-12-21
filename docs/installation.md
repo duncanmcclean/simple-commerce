@@ -30,8 +30,8 @@ During testing, Commerce for Statamic won't be installable via Composer but inst
 
 4. Run `composer install`
 
-5. Run the install command and follow the setup guide
+5. Run the install command, it'll guide you through the rest of the process.
 
 ```shell script
-php please commerce:install
+php artisan commerce:install
 ```

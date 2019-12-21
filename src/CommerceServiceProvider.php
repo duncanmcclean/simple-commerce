@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce;
 
-use Damcclean\Commerce\Console\Commands\SetupCommerceCommand;
+use Damcclean\Commerce\Console\Commands\CommerceInstallCommand;
 use Damcclean\Commerce\Contracts\CouponRepository;
 use Damcclean\Commerce\Contracts\CustomerRepository;
 use Damcclean\Commerce\Contracts\OrderRepository;
@@ -80,7 +80,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         $this
             ->commands([
-                SetupCommerceCommand::class,
+                CommerceInstallCommand::class,
             ]);
 
         Statamic::provideToScript([
