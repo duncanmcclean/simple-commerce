@@ -15,6 +15,10 @@ class FileCustomerRepository implements Contract
     public function __construct()
     {
         $this->path = base_path().'/content/commerce/customers';
+
+        if (! file_exists($this->path)) {
+            (new Filesystem())->makeDirectory($this->path);
+        }
     }
 
     public function attributes($file): Collection

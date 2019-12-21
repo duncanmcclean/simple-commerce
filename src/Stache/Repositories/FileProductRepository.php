@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
 use Damcclean\Commerce\Models\File\Product;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
@@ -15,6 +16,10 @@ class FileProductRepository implements Contract
     public function __construct()
     {
         $this->path = base_path().'/content/commerce/products';
+
+        if (! file_exists($this->path)) {
+            (new Filesystem())->makeDirectory($this->path);
+        }
     }
 
     public function attributes($file): Collection

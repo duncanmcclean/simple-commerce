@@ -15,6 +15,10 @@ class FileOrderRepository implements Contract
     public function __construct()
     {
         $this->path = base_path().'/content/commerce/orders';
+
+        if (! file_exists($this->path)) {
+            (new Filesystem())->makeDirectory($this->path);
+        }
     }
 
     public function attributes($file): Collection
