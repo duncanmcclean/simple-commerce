@@ -61,7 +61,7 @@ class Cart
                 $total += $item['price'];
             });
 
-        $amount = Money::GBP($total * 100);
+        $amount = Money::{strtoupper(config('commerce.currency.code'))}($total * 100);
         $currencies = new ISOCurrencies();
         $moneyFormatter = new DecimalMoneyFormatter($currencies);
         return $moneyFormatter->format($amount);

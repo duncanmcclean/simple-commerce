@@ -36,7 +36,7 @@ class CheckoutController extends Controller
         }
 
         $intent = PaymentIntent::create([
-            'amount' => $this->cart->total(),
+            'amount' => (number_format($this->cart->total(), 2, '.', '') * 100),
             'currency' => config('commerce.currency.code'),
         ]);
 
