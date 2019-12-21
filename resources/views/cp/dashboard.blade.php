@@ -11,7 +11,7 @@
                     <div class="flex flex-col">
                         @foreach($orders as $order)
                             <div class="flex flex-row items-center justify-between py-2">
-                                <a href="{{ cp_route('orders.edit', ['order' => $order['slug']]) }}">{{ $order['slug'] }}</a>
+                                <a href="{{ cp_route('orders.edit', ['order' => $order['id']]) }}">{{ $order['slug'] }}</a>
                                 <span>{{ \Carbon\Carbon::parse($order['order_date'])->toFormattedDateString() }}</span>
                             </div>
                         @endforeach
@@ -30,7 +30,7 @@
                     <div class="flex flex-col">
                         @foreach($customers as $customer)
                             <div class="flex flex-row items-center justify-between py-2">
-                                <a href="{{ cp_route('customers.edit', ['customer' => $customer['slug']]) }}">{{ $customer['name'] }}</a>
+                                <a href="{{ cp_route('customers.edit', ['customer' => $customer['id']]) }}">{{ $customer['name'] }}</a>
                                 <span>{{ \Carbon\Carbon::parse($customer['customer_since'])->toFormattedDateString() }}</span>
                             </div>
                         @endforeach
