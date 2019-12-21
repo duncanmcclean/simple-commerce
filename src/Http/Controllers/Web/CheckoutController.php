@@ -117,6 +117,6 @@ class CheckoutController extends Controller
 
         $this->cart->clear();
 
-        return redirect('/thanks');
+        return redirect(config('commerce.routes.thanks'));
     }
 }

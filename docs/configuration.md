@@ -64,7 +64,7 @@ return [
 
 ## Stripe
 
-Commerce uses Stripe as its payment gateway. In order for you to get your money, you'll need to setup your Stripe keys, which **should** be entered in your `.env` file.
+Commerce uses [Stripe](./stripe.md) as its payment gateway. In order for you to get your money, you'll need to setup your Stripe keys, which **should** be entered in your `.env` file.
 
 You can get your Stripe API keys from  the Developer section of their Dashboard.
 
@@ -96,3 +96,70 @@ return [
     ],
 ];
 ```
+
+## Routes
+
+We give you the option of changing the structure of any front-end route that Commerce provides.
+
+```php
+<?php
+
+return [
+    ...
+
+    /**
+         * Routes
+         *
+         * Commerce provides a set of web routes to make your store
+         * function. You can change these routes if you have other
+         * preferences.
+         */
+    
+        'routes' => [
+    
+            /**
+             * Cart
+             *
+             * - (add) Adds an item to the customers' cart.
+             * - (clear) Clears all items from the customers' cart.
+             * - (delete) Removes an item from the customers' cart.
+             */
+    
+            'cart' => [
+                'add' => '/cart',
+                'clear' => '/cart/clear',
+                'delete' => '/cart/delete',
+            ],
+    
+            /**
+             * Checkout
+             *
+             * - (show) Displays the checkout view to the user
+             * - (store) Processes the users' order
+             */
+    
+            'checkout' => [
+                'show' => '/checkout',
+                'store' => '/checkout',
+            ],
+    
+            /**
+             * Products
+             *
+             * - (index) Displays all products
+             * - (search) Displays a product search to the user
+             * - (show) Displays a product page
+             */
+    
+            'products' => [
+                'index' => '/products',
+                'search' => '/products/search',
+                'show' => '/products/{product}',
+            ],
+    
+            'thanks' => '/thanks', // Page user is redirected to once order has been processed.
+        ],
+];
+```
+
+For example, if you wanted to change the checkout URL from being `/checkout` (the default) to `/pay-here`, you'd just change the value of `checkout.store`.

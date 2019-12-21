@@ -10,7 +10,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-gray-800">{{ quantity }} X {{ title }}</h2>
 
-                        <form action="/cart/delete" method="post">
+                        <form action="{{ commerce:route key='cart.delete' }}" method="post">
                             <input type="hidden" name="slug" value="{{ slug }}">
                             {{ page:csrf_field }}
 
@@ -28,7 +28,7 @@
             </div>
 
             <div class="w-full flex flex-row items-center">
-                <form action="/cart/clear" method="post">
+                <form action="{{ commerce:route key='cart.clear' }}" method="post">
                     <button class="font-semibold text-red-600 text-sm">Clear Cart</button>
                 </form>
             </div>

@@ -22,4 +22,9 @@ class CommerceTags extends Tags
     {
         return config('commerce.stripe.key');
     }
+
+    public function route()
+    {
+        return config("commerce.routes.{$this->getParam('key')}");
+    }
 }

@@ -13,7 +13,7 @@
     {{ else }}
         <h2 class="text-4xl font-bold mb-2 text-gray-800">Search</h2>
 
-        <form action="/products/search/results" method="get">
+        <form action="{{ commerce:route key='products.search' }}/results" method="get">
             <div class="bg-gray-100 flex flex-row items-center p-2">
                 <label class="w-1/3 text-gray-800 font-bold">Search</label>
                 <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="query" placeholder="Rich Tea Biscuits" required>

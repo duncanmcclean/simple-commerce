@@ -10,8 +10,8 @@ Sometimes, you may need to add your own fields to blueprints. It's actually real
 
 ## Routing
 
-By default, Commerce gives you a [front-end boilerplate](./front-end.md). So you can see those front-end view we also register our [own routes](https://github.com/damcclean/commerce/blob/master/routes/web.php). But sometimes you may want to custimise how those routes look.
+By default, Commerce gives you a [front-end boilerplate](./front-end.md). So you can see those front-end view we also register our [own routes](https://github.com/damcclean/commerce/blob/master/routes/web.php). But sometimes you might want to customise how those routes look.
 
-You can change the way your routes look by updating your site's `routes/web.php` file and point the routes to our controllers.
+We've made it easy so that you can change any of the routes we give you. All you need to do is change the format of the URLs in your `config/commerce.php` file.
 
-Bearing in mind, you'll also need to change the routes for the views of our front-end boilerplate as some of the URLs for `<form>` tags are hard coded in.
+Note that any routes you define as Commerce routes will override any routes for pages or other collections.
