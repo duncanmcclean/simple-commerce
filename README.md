@@ -2,12 +2,14 @@
 
 > An eCommerce addon for Statamic v3
 
-* Stripe Payment Gateway
-* Front-end boilerplate
-* Coupons
-* Widgets
-* Notifications
-* Strong Customer Authentication (SCA) support
+* [Stripe Payment Gateway](./docs/stripe.md)
+* [Front-end boilerplate](./docs/front-end.md)
+* [Strong Customer Authentication support](./docs/stripe.md#strong-customer-authentication-sca)
+* [Notifications](./docs/notifications.md) for customers and store staff
+* [Coupons](./docs/coupons.md) (partially implemented)
+
+* *Tax & Shipping* (still to be implemented)
+* *Product variations* (still to be implemented)
 
 ## 📄 Documentation
 
