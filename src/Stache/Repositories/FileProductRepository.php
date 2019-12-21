@@ -96,7 +96,7 @@ class FileProductRepository implements Contract
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'shipping_price' => ['sometimes', 'required_if:free_shipping,false', 'regex:/^\d*(\.\d{2})?$/'],
+            'shipping_price' => ['nullable', 'required_if:free_shipping,false', 'regex:/^\d*(\.\d{2})?$/'],
             'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer',
         ];
@@ -111,7 +111,7 @@ class FileProductRepository implements Contract
             'expiry_date' => '',
             'enabled' => 'boolean',
             'free_shipping' => 'boolean',
-            'shipping_price' => ['regex:/^\d*(\.\d{2})?$/'],
+            'shipping_price' => ['nullable', 'required_if:free_shipping,false', 'regex:/^\d*(\.\d{2})?$/'],
             'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer',
         ];
