@@ -12,15 +12,21 @@ class Cart
 {
     public function all()
     {
+        $currencies = new ISOCurrencies();
+        $moneyFormatter = new DecimalMoneyFormatter($currencies);
+
         return collect(request()->session()->get('cart'))
-            ->map(function ($item) {
+            ->map(function ($item) use ($currencies, $moneyFormatter) {
                 $product = Product::findBySlug($item['slug'])->toArray();
 
                 $product['quantity'] = $item['quantity'];
                 $product['price'] = $product['price'] * $product['quantity'];
 
+                $product['price'] = $moneyFormatter->format(Money::{strtoupper(config('commerce.currency.code'))}(($product['price'] * 100) * $product['quantity']));
+
                 return collect($product);
             });
+
     }
 
 //    public function get()

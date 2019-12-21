@@ -20,11 +20,7 @@ class CartController extends Controller
     {
         $validate = $request->validated();
 
-        $items = $this->cart->all()
-            ->where('slug', $request->slug)
-            ->each(function ($item, $quantity) {
-                $item['quantity'] = $quantity;
-            });
+        $items = $this->cart->all();
 
         $items[] = [
             'slug' => $request->slug,
