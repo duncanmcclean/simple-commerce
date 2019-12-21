@@ -26,7 +26,7 @@ class CouponSearchController extends CpController
             'meta' => [
                 'path' => cp_route('coupons.search'),
                 'sortColumn' => 'title',
-            ]
+            ],
         ]);
     }
 }

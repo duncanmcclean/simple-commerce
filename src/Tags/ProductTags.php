@@ -13,7 +13,7 @@ class ProductTags extends Tags
     {
         return Product::all()
             ->reject(function ($product) {
-                return !$product['enabled'];
+                return ! $product['enabled'];
             });
     }
 

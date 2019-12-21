@@ -26,7 +26,7 @@ class CustomerSearchController extends CpController
             'meta' => [
                 'path' => cp_route('customers.search'),
                 'sortColumn' => 'title',
-            ]
+            ],
         ]);
     }
 }

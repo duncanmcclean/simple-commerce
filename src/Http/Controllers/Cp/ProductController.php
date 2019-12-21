@@ -2,9 +2,9 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
+use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
-use Damcclean\Commerce\Facades\Product;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -13,7 +13,7 @@ class ProductController extends CpController
     public function index()
     {
         return view('commerce::cp.products.index', [
-            'products' => Product::all()
+            'products' => Product::all(),
         ]);
     }
 

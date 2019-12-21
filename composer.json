@@ -38,5 +38,10 @@
     "require-dev": {
         "orchestra/testbench": "^4.0"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "scripts": {
+        "lint": [
+            "php-cs-fixer fix ./src"
+        ]
+    }
 }

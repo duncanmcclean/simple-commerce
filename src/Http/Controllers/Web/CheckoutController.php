@@ -38,7 +38,7 @@ class CheckoutController extends Controller
             ->template('commerce::web.checkout')
             ->layout('commerce::web.layout')
             ->with([
-                'intent' => $intent->client_secret
+                'intent' => $intent->client_secret,
             ]);
     }
 
@@ -88,7 +88,7 @@ class CheckoutController extends Controller
             'status' => 'paid',
             'coupon' => null, // WIP when coupons happen
             'customer' => collect($customer)->toArray()['id'],
-            'order_date' => now()->toDateTimeString()
+            'order_date' => now()->toDateTimeString(),
         ]);
 
         event(new CheckoutComplete($order, $customer));

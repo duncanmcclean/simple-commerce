@@ -14,7 +14,7 @@ class CouponController extends CpController
     public function index()
     {
         return view('commerce::cp.coupons.index', [
-            'coupons' => Coupon::all()
+            'coupons' => Coupon::all(),
         ]);
     }
 

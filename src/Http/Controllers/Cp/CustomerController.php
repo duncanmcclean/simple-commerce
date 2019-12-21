@@ -14,7 +14,7 @@ class CustomerController extends CpController
     public function index()
     {
         return view('commerce::cp.customers.index', [
-            'customers' => Customer::all()
+            'customers' => Customer::all(),
         ]);
     }
 

@@ -53,7 +53,7 @@ class Cart
         $total = 0;
 
         $this->all()
-            ->each(function ($item) use(&$total) {
+            ->each(function ($item) use (&$total) {
                 $total += $item['price'];
             });
 

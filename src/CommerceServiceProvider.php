@@ -85,7 +85,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         Statamic::provideToScript([
             'commerceCurrencyCode' => config('commerce.currency.code'),
-            'commerceCurrencySymbol' => config('commerce.currency.symbol')
+            'commerceCurrencySymbol' => config('commerce.currency.symbol'),
         ]);
 
         Nav::extend(function ($nav) {

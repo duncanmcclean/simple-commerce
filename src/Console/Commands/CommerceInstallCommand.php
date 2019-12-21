@@ -20,7 +20,7 @@ class CommerceInstallCommand extends Command
     {
         $this->info('First, publish all the things... (config file, views)');
         $this->callSilent('vendor:publish', [
-            '--provider' => 'Damcclean\Commerce\CommerceServiceProvider'
+            '--provider' => 'Damcclean\Commerce\CommerceServiceProvider',
         ]);
         $this->line('');
 

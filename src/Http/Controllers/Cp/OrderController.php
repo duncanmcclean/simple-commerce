@@ -15,7 +15,7 @@ class OrderController extends CpController
     public function index()
     {
         return view('commerce::cp.orders.index', [
-            'orders' => Order::all()
+            'orders' => Order::all(),
         ]);
     }
 

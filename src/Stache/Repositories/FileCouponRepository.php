@@ -92,7 +92,7 @@ class FileCouponRepository implements Contract
             'amount' => 'required|integer',
             'enabled' => 'boolean',
             'start_date' => '',
-            'end_date' => ''
+            'end_date' => '',
         ];
     }
 
@@ -106,7 +106,7 @@ class FileCouponRepository implements Contract
             'amount' => 'required|integer',
             'enabled' => 'boolean',
             'start_date' => '',
-            'end_date' => ''
+            'end_date' => '',
         ];
     }
 

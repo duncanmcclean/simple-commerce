@@ -5,8 +5,8 @@ namespace Damcclean\Commerce\Stache\Repositories;
 use Damcclean\Commerce\Contracts\ProductRepository as Contract;
 use Damcclean\Commerce\Models\File\Product;
 use Illuminate\Support\Collection;
-use SplFileInfo;
 use Illuminate\Support\Facades\File;
+use SplFileInfo;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stache;
 
@@ -93,7 +93,7 @@ class FileProductRepository implements Contract
             'free_shipping' => 'boolean',
             'shipping_price' => ['regex:/^\d*(\.\d{2})?$/'],
             'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
-            'stock_number' => 'sometimes|integer'
+            'stock_number' => 'sometimes|integer',
         ];
     }
 
@@ -108,7 +108,7 @@ class FileProductRepository implements Contract
             'free_shipping' => 'boolean',
             'shipping_price' => ['regex:/^\d*(\.\d{2})?$/'],
             'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
-            'stock_number' => 'sometimes|integer'
+            'stock_number' => 'sometimes|integer',
         ];
     }
 

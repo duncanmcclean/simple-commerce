@@ -26,7 +26,7 @@ class OrderSearchController extends CpController
             'meta' => [
                 'path' => cp_route('orders.search'),
                 'sortColumn' => 'title',
-            ]
+            ],
         ]);
     }
 }
