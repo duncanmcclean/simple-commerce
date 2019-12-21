@@ -86,6 +86,18 @@ class CheckoutController extends Controller
             event(new NewCustomerCreated($customer));
         }
 
+        $products = [];
+
+        collect($this->cart->all())
+            ->each(function ($cartProduct) use (&$products) {
+                $product = Product::findBySlug($cartProduct['slug']);
+
+                $products[] = [
+                    'id' => $product['id'],
+                    'quantity' => $cartProduct['quantity']
+                ];
+            });
+
         $order = Order::save([
             'slug' => now()->year.'-'.now()->month.'-'.now()->day.'-'.mt_rand(),
             'total' => (new CartTags())->total(),
@@ -96,6 +108,7 @@ class CheckoutController extends Controller
             'coupon' => null, // WIP when coupons happen
             'customer' => collect($customer)->toArray()['id'],
             'order_date' => now()->toDateTimeString(),
+            'products' => $products
         ]);
 
         event(new CheckoutComplete($order, $customer));
