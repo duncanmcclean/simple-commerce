@@ -2,11 +2,14 @@
 @section('title', 'Create Product')
 
 @section('content')
-    <publish-form
-            title="Create Product"
-            action="{{ cp_route('products.store') }}"
-            :blueprint='@json($blueprint)'
-            :meta='@json($meta)'
-            :values='@json($values)'
-    ></publish-form>
+    <commerce-create-form inline-template>
+        <publish-form
+                title="Create Product"
+                action="{{ cp_route('products.store') }}"
+                :blueprint='@json($blueprint)'
+                :meta='@json($meta)'
+                :values='@json($values)'
+                @saved="redirect"
+        ></publish-form>
+    </commerce-create-form>
 @endsection
