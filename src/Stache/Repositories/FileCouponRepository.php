@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\CouponRepository as Contract;
 use Damcclean\Commerce\Models\File\Coupon;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;

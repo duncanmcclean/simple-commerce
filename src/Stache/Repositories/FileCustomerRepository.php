@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Stache\Repositories;
 
 use Damcclean\Commerce\Contracts\CustomerRepository as Contract;
 use Damcclean\Commerce\Models\File\Customer;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
