@@ -7,8 +7,8 @@ use Illuminate\Filesystem\Filesystem;
 
 class SetupCommerceCommand extends Command
 {
-    protected $signature = 'commerce:setup';
-    protected $description = 'Guides you through the setup of Commerce.';
+    protected $signature = 'commerce:install';
+    protected $description = 'Guides you through the installation of Commerce for Statamic.';
 
     public function handle()
     {
