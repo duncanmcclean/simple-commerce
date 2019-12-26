@@ -20,7 +20,7 @@ use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Fieldtypes\Money;
-use Damcclean\Commerce\Fieldtypes\OrderProducts;
+use Damcclean\Commerce\Fieldtypes\Product as ProductFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Tags\CartTags;
@@ -29,6 +29,7 @@ use Damcclean\Commerce\Tags\ProductTags;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
+use Damcclean\Commerce\Fieldtypes\Customer as CustomerFieldtype;
 
 class CommerceServiceProvider extends AddonServiceProvider
 {
@@ -126,8 +127,8 @@ class CommerceServiceProvider extends AddonServiceProvider
         });
 
         Money::register();
-        OrderProducts::register();
-        \Damcclean\Commerce\Fieldtypes\Customer::register();
+        ProductFieldtype::register();
+        CustomerFieldtype::register();
     }
 
     public function register()

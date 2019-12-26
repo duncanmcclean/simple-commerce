@@ -2,11 +2,11 @@
 
 namespace Damcclean\Commerce\Fieldtypes;
 
-use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Facades\Product as ProductFacade;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 
-class OrderProducts extends Relationship
+class Product extends Relationship
 {
     public function formatProducts($products)
     {
@@ -22,7 +22,7 @@ class OrderProducts extends Relationship
 
     public function getIndexItems($request)
     {
-        return $this->formatProducts(Product::all());
+        return $this->formatProducts(ProductFacade::all());
     }
 
     public function getColumns()
