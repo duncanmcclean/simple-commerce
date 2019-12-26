@@ -5,7 +5,7 @@ namespace Damcclean\Commerce\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class CommerceInstallCommand extends Command
+class InstallCommand extends Command
 {
     protected $signature = 'commerce:install';
     protected $description = 'Guides you through the installation of Commerce for Statamic.';
@@ -26,6 +26,10 @@ class CommerceInstallCommand extends Command
 
         $this->info('And publish the blueprints');
         $this->filesystem->copyDirectory(realpath(__DIR__.'/../../../resources/blueprints'), resource_path('blueprints'));
+        $this->line('');
+
+        $this->info('Create file structure');
+        $this->filesystem->makeDirectory(realpath(base_path().'/content/commerce'));
         $this->line('');
 
         $this->info('All that\'s left for you to do now is update your store\'s configuration in config/commerce.php');

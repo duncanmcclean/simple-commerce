@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce;
 
-use Damcclean\Commerce\Console\Commands\CommerceInstallCommand;
+use Damcclean\Commerce\Console\Commands\InstallCommand;
 use Damcclean\Commerce\Contracts\CouponRepository;
 use Damcclean\Commerce\Contracts\CustomerRepository;
 use Damcclean\Commerce\Contracts\OrderRepository;
@@ -77,7 +77,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         $this
             ->commands([
-                CommerceInstallCommand::class,
+                InstallCommand::class,
             ]);
 
         Statamic::provideToScript([
@@ -121,10 +121,6 @@ class CommerceServiceProvider extends AddonServiceProvider
         });
 
         Money::register();
-
-        if (! file_exists(base_path().'/content/commerce')) {
-            (new Filesystem())->makeDirectory(base_path().'/content/commerce');
-        }
     }
 
     public function register()
