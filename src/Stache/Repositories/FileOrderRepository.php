@@ -91,6 +91,9 @@ class FileOrderRepository implements Contract
     {
         return [
             'total' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
+            'notes' => '',
+            'products.*.product' => 'required',
+            'products.*.quantity' => 'required',
 
             'address' => 'sometimes|string',
             'country' => 'sometimes|string',
@@ -107,6 +110,9 @@ class FileOrderRepository implements Contract
     {
         return [
             'total' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
+            'notes' => '',
+            'products.*.product' => 'required',
+            'products.*.quantity' => 'required',
 
             'address' => 'sometimes|string',
             'country' => 'sometimes|string',
