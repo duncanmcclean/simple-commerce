@@ -76,6 +76,6 @@ class InstallCommandTest extends TestCase
 
         $command->assertExitCode(0);
 
-        $this->assertDirectoryExists(base_path('content/commerce'));
+        $this->assertDirectoryExists(base_path().'/content/commerce');
     }
 }

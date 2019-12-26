@@ -30,7 +30,7 @@ class InstallCommand extends Command
 
         if (! file_exists(realpath(base_path('content/commerce')))) {
             $this->info('Create file structure');
-            $this->filesystem->makeDirectory(base_path('content/commerce'), 0755, false, true);
+            $this->filesystem->makeDirectory(base_path().'/content/commerce', 0755, false, true);
             $this->line('');
         }
 
