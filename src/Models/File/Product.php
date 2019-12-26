@@ -19,7 +19,7 @@ class Product
 
     public function path()
     {
-        return base_path().'/content/commerce/products/'.$this->filename.'.yaml';
+        return config('commerce.storage.products.files').'/'.$this->filename.'.yaml';
     }
 
     public function fileData()

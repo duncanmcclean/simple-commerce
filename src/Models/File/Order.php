@@ -19,7 +19,7 @@ class Order
 
     public function path()
     {
-        return base_path().'/content/commerce/orders/'.$this->filename.'.yaml';
+        return config('commerce.storage.orders.files').'/'.$this->filename.'.yaml';
     }
 
     public function fileData()

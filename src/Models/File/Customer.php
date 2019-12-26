@@ -19,7 +19,7 @@ class Customer
 
     public function path()
     {
-        return base_path().'/content/commerce/customers/'.$this->filename.'.yaml';
+        return config('commerce.storage.customers.files').'/'.$this->filename.'.yaml';
     }
 
     public function fileData()

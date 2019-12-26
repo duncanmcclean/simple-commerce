@@ -19,7 +19,7 @@ class Coupon
 
     public function path()
     {
-        return base_path().'/content/commerce/coupons/'.$this->filename.'.yaml';
+        return config('commerce.storage.coupons.files').'/'.$this->filename.'.yaml';
     }
 
     public function fileData()
