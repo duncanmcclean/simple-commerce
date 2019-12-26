@@ -39,4 +39,29 @@ abstract class TestCase extends OrchestraTestCase
 
         $app['config']->set('commerce', require(__DIR__.'/../config/commerce.php'));
     }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+
+        $app['config']->set('statamic.sites', [
+            'default' => 'en',
+            'sites' => [
+                'en' => ['name' => 'English', 'locale' => 'en_US', 'url' => 'http://localhost/',]
+            ]
+        ]);
+
+        $app['config']->set('auth.providers.users.driver', 'statamic');
+        $app['config']->set('statamic.stache.watcher', false);
+        $app['config']->set('statamic.users.repository', 'file');
+        $app['config']->set('statamic.stache.stores.users', [
+            'class' => \Statamic\Stache\Stores\UsersStore::class,
+            'directory' => __DIR__.'/__fixtures__/users'
+        ]);
+
+        $app['config']->set('commerce.storage.coupons.files', __DIR__.'/__fixtures__/content/commerce/coupons');
+        $app['config']->set('commerce.storage.customers.files', __DIR__.'/__fixtures__/content/commerce/customers');
+        $app['config']->set('commerce.storage.orders.files', __DIR__.'/__fixtures__/content/commerce/orders');
+        $app['config']->set('commerce.storage.products.files', __DIR__.'/__fixtures__/content/commerce/products');
+    }
 }
