@@ -29,15 +29,17 @@ class Cart
 
     }
 
-//    public function get()
-//    {
-//
-//    }
-//
-//    public function put()
-//    {
-//
-//    }
+    public function add(string $slug, int $quantity)
+    {
+        $items = $this->all();
+
+        $items[] = [
+            'slug' => $slug,
+            'quantity' => $quantity,
+        ];
+
+        return $this->replace($items);
+    }
 
     public function replace($items)
     {

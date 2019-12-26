@@ -66,6 +66,7 @@ abstract class TestCase extends OrchestraTestCase
             'directory' => __DIR__.'/__fixtures__/users'
         ]);
 
+        $app['config']->set('app.key', 'base64:xRIcDp1ReW8Y8rd9V9D7hOVV4TI7ThCF3FKxRg01Rm8=');
         $app->setBasePath(realpath(__DIR__.'/__fixtures__'));
 
         $app['config']->set('commerce.storage.coupons.files', __DIR__.'/__fixtures__/content/commerce/coupons');

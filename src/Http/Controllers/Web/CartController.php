@@ -20,14 +20,7 @@ class CartController extends Controller
     {
         $validate = $request->validated();
 
-        $items = $this->cart->all();
-
-        $items[] = [
-            'slug' => $request->slug,
-            'quantity' => $request->quantity,
-        ];
-
-        $this->cart->replace($items);
+        $cart = $this->cart->add($request->slug, $request->quantity);
 
         event(new AddedToCart(Product::findBySlug($request->slug)));
 
