@@ -23,13 +23,6 @@ sections:
         field:
           fields:
             -
-              handle: quantity
-              field:
-                type: integer
-                localizable: false
-                display: Quantity
-                validate: required
-            -
               handle: product
               field:
                 max_items: 1
@@ -37,13 +30,23 @@ sections:
                 type: product
                 localizable: false
                 display: Product
+                width: 50
+            -
+              handle: quantity
+              field:
+                type: integer
+                localizable: false
+                display: Quantity
+                validate: required
+                width: 50
           mode: table
           max_rows: 0
-          min_rows: 0
-          reorderable: true
+          min_rows: 1
+          reorderable: false
           type: grid
           localizable: false
           display: Products
+          add_row: 'Add to Order'
   shipping_address:
     display: 'Shipping Address'
     fields:
