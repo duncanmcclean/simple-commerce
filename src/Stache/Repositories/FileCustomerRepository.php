@@ -15,7 +15,7 @@ class FileCustomerRepository implements Contract
 {
     public function __construct()
     {
-        $this->path = base_path().'/content/commerce/customers';
+        $this->path = config('commerce.storage.coupons.files');
 
         if (! file_exists($this->path)) {
             (new Filesystem())->makeDirectory($this->path);

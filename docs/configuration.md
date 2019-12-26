@@ -94,6 +94,8 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET')
     ],
+    
+    ...
 ];
 ```
 
@@ -159,7 +161,56 @@ return [
     
             'thanks' => '/thanks', // Page user is redirected to once order has been processed.
         ],
+
+    ...
 ];
 ```
 
 For example, if you wanted to change the checkout URL from being `/checkout` (the default) to `/pay-here`, you'd just change the value of `checkout.store`.
+
+## Storage
+
+Sometimes you might need more than just files, you might need a database. Commerce has been built in such a way where it's easy to swap out our filesystem for your own Eloquent driver.
+
+What's even better is: you can swap out storage of products to a database while keeping your customers in flat files.
+
+```php
+<?php
+
+return [
+    ...
+
+    /**
+         * Storage
+         *
+         * By default, Commerce stores your files in yaml files but if you
+         * want to use a database, swap the repo out for an Eloquent one.
+         */
+    
+        'storage' => [
+    
+            'coupons' => [
+                'repository' => FileCouponRepository::class,
+                'files' => base_path().'/content/commerce/coupons',
+            ],
+    
+            'customers' => [
+                'repository' => FileCustomerRepository::class,
+                'files' => base_path().'/content/commerce/customers',
+            ],
+    
+            'order' => [
+                'repository' => FileOrderRepository::class,
+                'files' => base_path().'/content/commerce/orders',
+            ],
+    
+            'products' => [
+                'repository' => FileProductRepository::class,
+                'files' => base_path().'/content/commerce/products',
+            ],
+    
+        ],
+];
+```
+
+> If you don't use the file repository, there's no need for the `files` key.

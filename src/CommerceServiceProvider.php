@@ -22,10 +22,6 @@ use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Fieldtypes\Money;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
-use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
-use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
-use Damcclean\Commerce\Stache\Repositories\FileOrderRepository;
-use Damcclean\Commerce\Stache\Repositories\FileProductRepository;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
@@ -133,14 +129,20 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     public function register()
     {
-        $this->app->bind(ProductRepository::class, FileProductRepository::class);
-        $this->app->bind(CustomerRepository::class, FileCustomerRepository::class);
-        $this->app->bind(OrderRepository::class, FileOrderRepository::class);
-        $this->app->bind(CouponRepository::class, FileCouponRepository::class);
-
-        $this->app->bind('product', Product::class);
-        $this->app->bind('customer', Customer::class);
-        $this->app->bind('order', Order::class);
+        // Coupons
+        $this->app->bind(CouponRepository::class, config('commerce.storage.coupons.repository'));
         $this->app->bind('coupon', Coupon::class);
+
+        // Customers
+        $this->app->bind(CustomerRepository::class, config('commerce.storage.customers.repository'));
+        $this->app->bind('customer', Customer::class);
+
+        // Orders
+        $this->app->bind(OrderRepository::class, config('commerce.storage.orders.repository'));
+        $this->app->bind('order', Order::class);
+
+        // Products
+        $this->app->bind(ProductRepository::class, config('commerce.storage.products.repository'));
+        $this->app->bind('product', Product::class);
     }
 }

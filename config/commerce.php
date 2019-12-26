@@ -1,5 +1,10 @@
 <?php
 
+use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
+use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
+use Damcclean\Commerce\Stache\Repositories\FileOrderRepository;
+use Damcclean\Commerce\Stache\Repositories\FileProductRepository;
+
 return [
 
     /**
@@ -96,5 +101,36 @@ return [
         ],
 
         'thanks' => '/thanks', // Page user is redirected to once order has been processed.
+    ],
+
+    /**
+     * Storage
+     *
+     * By default, Commerce stores your files in yaml files but if you
+     * want to use a database, swap the repo out for an Eloquent one.
+     */
+
+    'storage' => [
+
+        'coupons' => [
+            'repository' => FileCouponRepository::class,
+            'files' => base_path().'/content/commerce/coupons',
+        ],
+
+        'customers' => [
+            'repository' => FileCustomerRepository::class,
+            'files' => base_path().'/content/commerce/customers',
+        ],
+
+        'order' => [
+            'repository' => FileOrderRepository::class,
+            'files' => base_path().'/content/commerce/orders',
+        ],
+
+        'products' => [
+            'repository' => FileProductRepository::class,
+            'files' => base_path().'/content/commerce/products',
+        ],
+
     ],
 ];
