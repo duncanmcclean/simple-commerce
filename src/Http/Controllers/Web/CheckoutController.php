@@ -106,7 +106,7 @@ class CheckoutController extends Controller
             'coupon' => null, // WIP when coupons happen
             'customer' => collect($customer)->toArray()['id'],
             'order_date' => now()->toDateTimeString(),
-            'products' => $products
+            'products' => $products,
         ]);
 
         event(new CheckoutComplete($order, $customer));

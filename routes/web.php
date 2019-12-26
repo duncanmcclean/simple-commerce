@@ -1,22 +1,20 @@
 <?php
 
 /**
- * Cart
+ * Cart.
  */
-
 Route::post(config('commerce.routes.cart.add'), 'Http\Controllers\Web\CartController@store')->name('cart.add');
 Route::post(config('commerce.routes.cart.clear'), 'Http\Controllers\Web\ClearCartController')->name('cart.clear');
 Route::post(config('commerce.routes.cart.delete'), 'Http\Controllers\Web\CartController@destroy')->name('cart.delete');
 
-/**
+/*
  * Checkout
  */
 
 Route::get(config('commerce.routes.checkout.show'), 'Http\Controllers\Web\CheckoutController@show')->name('checkout.show');
 Route::post(config('commerce.routes.checkout.store'), 'Http\Controllers\Web\CheckoutController@store')->name('checkout.store');
 
-
-/**
+/*
  * Products
  */
 

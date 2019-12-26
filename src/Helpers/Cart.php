@@ -26,7 +26,6 @@ class Cart
 
                 return collect($product);
             });
-
     }
 
     public function add(string $slug, int $quantity)
@@ -72,6 +71,7 @@ class Cart
         $amount = Money::{strtoupper(config('commerce.currency.code'))}($total * 100);
         $currencies = new ISOCurrencies();
         $moneyFormatter = new DecimalMoneyFormatter($currencies);
+
         return $moneyFormatter->format($amount);
     }
 

@@ -3,15 +3,15 @@
 namespace Damcclean\Commerce\Tests;
 
 use Damcclean\Commerce\CommerceServiceProvider;
-use Statamic\Providers\StatamicServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
     protected function setUp(): void
     {
-        require_once(__DIR__.'/ExceptionHandler.php');
+        require_once __DIR__.'/ExceptionHandler.php';
 
         parent::setUp();
     }
@@ -27,7 +27,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Statamic' => Statamic::class
+            'Statamic' => Statamic::class,
         ];
     }
 
@@ -37,7 +37,7 @@ abstract class TestCase extends OrchestraTestCase
 
         $configs = [
             'assets', 'cp', 'forms', 'routes', 'static_caching',
-            'sites', 'stache', 'system', 'users'
+            'sites', 'stache', 'system', 'users',
         ];
 
         foreach ($configs as $config) {
@@ -54,8 +54,8 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.sites', [
             'default' => 'en',
             'sites' => [
-                'en' => ['name' => 'English', 'locale' => 'en_US', 'url' => 'http://localhost/',]
-            ]
+                'en' => ['name' => 'English', 'locale' => 'en_US', 'url' => 'http://localhost/'],
+            ],
         ]);
 
         $app['config']->set('auth.providers.users.driver', 'statamic');
@@ -63,7 +63,7 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.users.repository', 'file');
         $app['config']->set('statamic.stache.stores.users', [
             'class' => \Statamic\Stache\Stores\UsersStore::class,
-            'directory' => __DIR__.'/__fixtures__/users'
+            'directory' => __DIR__.'/__fixtures__/users',
         ]);
 
         $app['config']->set('app.key', 'base64:xRIcDp1ReW8Y8rd9V9D7hOVV4TI7ThCF3FKxRg01Rm8=');
