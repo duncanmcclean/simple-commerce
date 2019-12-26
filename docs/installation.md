@@ -28,7 +28,7 @@ During testing, Commerce for Statamic won't be installable via Composer but inst
     ]
 ```
 
-4. Run `composer install`
+4. Run `composer install && composer update`
 
 5. Run the install command, it'll copy over things like blueprints and config files.
 
