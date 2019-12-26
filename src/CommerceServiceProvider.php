@@ -127,6 +127,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         Money::register();
         OrderProducts::register();
+        \Damcclean\Commerce\Fieldtypes\Customer::register();
     }
 
     public function register()
