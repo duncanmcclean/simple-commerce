@@ -68,12 +68,17 @@ class CommerceServiceProvider extends AddonServiceProvider
         parent::boot();
 
         $this
+            ->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
+
+        $this
             ->publishes([
                 __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
             ], 'config');
 
         $this
-            ->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
+            ->publishes([
+                __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce'),
+            ], 'config');
 
         $this
             ->commands([

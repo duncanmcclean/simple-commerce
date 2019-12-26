@@ -28,9 +28,11 @@ class InstallCommand extends Command
         $this->filesystem->copyDirectory(realpath(__DIR__.'/../../../resources/blueprints'), resource_path('blueprints'));
         $this->line('');
 
-        $this->info('Create file structure');
-        $this->filesystem->makeDirectory(realpath(base_path().'/content/commerce'));
-        $this->line('');
+        if (! file_exists(realpath(base_path('content/commerce')))) {
+            $this->info('Create file structure');
+            $this->filesystem->makeDirectory(base_path('content/commerce'));
+            $this->line('');
+        }
 
         $this->info('All that\'s left for you to do now is update your store\'s configuration in config/commerce.php');
     }
