@@ -86,15 +86,13 @@ class CheckoutController extends Controller
             event(new NewCustomerCreated($customer));
         }
 
-        $products = [];
-
-        collect($this->cart->all())
-            ->each(function ($cartProduct) use (&$products) {
+        $products = collect($this->cart->all())
+            ->map(function ($cartProduct) {
                 $product = Product::findBySlug($cartProduct['slug']);
 
-                $products[] = [
+                return [
                     'id' => $product['id'],
-                    'quantity' => $cartProduct['quantity']
+                    'quantity' => $cartProduct['quantity'],
                 ];
             });
 
