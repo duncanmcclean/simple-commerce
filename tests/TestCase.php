@@ -23,4 +23,20 @@ abstract class TestCase extends OrchestraTestCase
             'Statamic' => Statamic::class
         ];
     }
+
+    protected function resolveApplicationConfiguration($app)
+    {
+        parent::resolveApplicationConfiguration($app);
+
+        $configs = [
+            'assets', 'cp', 'forms', 'routes', 'static_caching',
+            'sites', 'stache', 'system', 'users'
+        ];
+
+        foreach ($configs as $config) {
+            $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
+        }
+
+        $app['config']->set('commerce', require(__DIR__.'/../config/commerce.php'));
+    }
 }
