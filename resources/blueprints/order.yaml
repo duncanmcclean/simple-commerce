@@ -23,18 +23,20 @@ sections:
         field:
           fields:
             -
-              handle: id
-              field:
-                character_limit: 0
-                type: text
-                localizable: false
-                display: Product
-            -
               handle: quantity
               field:
                 type: integer
                 localizable: false
                 display: Quantity
+                validate: required
+            -
+              handle: product
+              field:
+                max_items: 1
+                mode: select
+                type: product
+                localizable: false
+                display: Product
           mode: table
           max_rows: 0
           min_rows: 0
@@ -109,11 +111,11 @@ sections:
       -
         handle: customer
         field:
-          character_limit: 0
-          type: text
+          max_items: 1
+          mode: select
+          type: customer
           localizable: false
           display: Customer
-          validate: required
       -
         handle: order_date
         field:
