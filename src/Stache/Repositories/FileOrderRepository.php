@@ -15,7 +15,7 @@ class FileOrderRepository implements Contract
 {
     public function __construct()
     {
-        $this->path = config('commerce.storage.coupons.files');
+        $this->path = config('commerce.storage.orders.files');
 
         if (! file_exists($this->path)) {
             (new Filesystem())->makeDirectory($this->path);

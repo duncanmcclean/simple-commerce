@@ -1,10 +1,5 @@
 <?php
 
-use Damcclean\Commerce\Stache\Repositories\FileCouponRepository;
-use Damcclean\Commerce\Stache\Repositories\FileCustomerRepository;
-use Damcclean\Commerce\Stache\Repositories\FileOrderRepository;
-use Damcclean\Commerce\Stache\Repositories\FileProductRepository;
-
 return [
 
     /**
@@ -101,6 +96,7 @@ return [
         ],
 
         'thanks' => '/thanks', // Page user is redirected to once order has been processed.
+
     ],
 
     /**
@@ -113,22 +109,22 @@ return [
     'storage' => [
 
         'coupons' => [
-            'repository' => FileCouponRepository::class,
+            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCouponRepository',
             'files' => base_path().'/content/commerce/coupons',
         ],
 
         'customers' => [
-            'repository' => FileCustomerRepository::class,
+            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCustomerRepository',
             'files' => base_path().'/content/commerce/customers',
         ],
 
-        'order' => [
-            'repository' => FileOrderRepository::class,
+        'orders' => [
+            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileOrderRepository',
             'files' => base_path().'/content/commerce/orders',
         ],
 
         'products' => [
-            'repository' => FileProductRepository::class,
+            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileProductRepository',
             'files' => base_path().'/content/commerce/products',
         ],
 

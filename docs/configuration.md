@@ -160,6 +160,7 @@ return [
             ],
     
             'thanks' => '/thanks', // Page user is redirected to once order has been processed.
+
         ],
 
     ...
@@ -190,24 +191,24 @@ return [
         'storage' => [
     
             'coupons' => [
-                'repository' => FileCouponRepository::class,
-                'files' => base_path().'/content/commerce/coupons',
-            ],
-    
-            'customers' => [
-                'repository' => FileCustomerRepository::class,
-                'files' => base_path().'/content/commerce/customers',
-            ],
-    
-            'order' => [
-                'repository' => FileOrderRepository::class,
-                'files' => base_path().'/content/commerce/orders',
-            ],
-    
-            'products' => [
-                'repository' => FileProductRepository::class,
-                'files' => base_path().'/content/commerce/products',
-            ],
+                        'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCouponRepository',
+                        'files' => base_path().'/content/commerce/coupons',
+                    ],
+            
+                    'customers' => [
+                        'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCustomerRepository',
+                        'files' => base_path().'/content/commerce/customers',
+                    ],
+            
+                    'orders' => [
+                        'repository' => 'Damcclean\Commerce\Stache\Repositories\FileOrderRepository',
+                        'files' => base_path().'/content/commerce/orders',
+                    ],
+            
+                    'products' => [
+                        'repository' => 'Damcclean\Commerce\Stache\Repositories\FileProductRepository',
+                        'files' => base_path().'/content/commerce/products',
+                    ],
     
         ],
 ];
