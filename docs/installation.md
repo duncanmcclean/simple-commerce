@@ -8,7 +8,7 @@
 
 During testing, Commerce for Statamic won't be installable via Composer but instead it requires quite a bit of manual installation.
 
-1. Clone this repository to `./addons/damcclean/commerce` - `git clone git@github.com:damcclean/commerce addons/damcclean/commerce`
+1. Clone this repository to `./addons/damcclean/commerce` - `git clone git@github.com:damcclean/commerce.git addons/damcclean/commerce`
 2. Run `composer install` inside the `./addons/damcclean/commerce` folder.
 3. In your site's main `composer.json` file, add the following few lines:
 
