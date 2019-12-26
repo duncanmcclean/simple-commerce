@@ -20,12 +20,12 @@ use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Fieldtypes\Money;
+use Damcclean\Commerce\Fieldtypes\OrderProducts;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
-use Illuminate\Filesystem\Filesystem;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -126,6 +126,7 @@ class CommerceServiceProvider extends AddonServiceProvider
         });
 
         Money::register();
+        OrderProducts::register();
     }
 
     public function register()
