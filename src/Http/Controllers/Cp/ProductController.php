@@ -15,6 +15,7 @@ class ProductController extends CpController
         $products = Product::all()
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
+                    'price' => config('commerce.currency.symbol').$product['price'],
                     'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
                     'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
                 ]);

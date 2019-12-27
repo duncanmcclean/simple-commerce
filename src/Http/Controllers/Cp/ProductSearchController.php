@@ -15,6 +15,7 @@ class ProductSearchController extends CpController
             $results = Product::all()
                 ->map(function ($product) {
                     return array_merge($product->toArray(), [
+                        'price' => config('commerce.currency.symbol').$product['price'],
                         'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
                         'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
                     ]);
@@ -26,6 +27,7 @@ class ProductSearchController extends CpController
                 })
                 ->map(function ($product) {
                     return array_merge($product->toArray(), [
+                        'price' => config('commerce.currency.symbol').$product['price'],
                         'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
                         'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
                     ]);
