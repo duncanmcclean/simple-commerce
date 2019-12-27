@@ -12,11 +12,23 @@ class ProductSearchController extends CpController
         $query = request()->input('search');
 
         if (! $query) {
-            $results = Product::all();
+            $results = Product::all()
+                ->map(function ($product) {
+                    return array_merge($product->toArray(), [
+                        'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
+                        'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
+                    ]);
+                });
         } else {
             $results = Product::all()
                 ->filter(function ($item) use ($query) {
                     return false !== stristr((string) $item['title'], $query);
+                })
+                ->map(function ($product) {
+                    return array_merge($product->toArray(), [
+                        'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
+                        'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
+                    ]);
                 });
         }
 

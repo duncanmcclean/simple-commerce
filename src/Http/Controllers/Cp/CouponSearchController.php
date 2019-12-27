@@ -12,11 +12,23 @@ class CouponSearchController extends CpController
         $query = request()->input('search');
 
         if (! $query) {
-            $results = Coupon::all();
+            $results = Coupon::all()
+                ->map(function ($coupon) {
+                    return array_merge($coupon->toArray(), [
+                        'edit_url' => cp_route('coupons.edit', ['coupon' => $coupon['id']]),
+                        'delete_url' => cp_route('coupons.destroy', ['coupon' => $coupon['id']]),
+                    ]);
+                });
         } else {
             $results = Coupon::all()
                 ->filter(function ($item) use ($query) {
-                    return false !== stristr((string) $item['title'], $query);
+                    return false !== stristr((string) $item['slug'], $query);
+                })
+                ->map(function ($coupon) {
+                    return array_merge($coupon->toArray(), [
+                        'edit_url' => cp_route('coupons.edit', ['coupon' => $coupon['id']]),
+                        'delete_url' => cp_route('coupons.destroy', ['coupon' => $coupon['id']]),
+                    ]);
                 });
         }
 

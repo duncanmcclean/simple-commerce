@@ -12,8 +12,16 @@ class ProductController extends CpController
 {
     public function index()
     {
+        $products = Product::all()
+            ->map(function ($product) {
+                return array_merge($product->toArray(), [
+                    'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
+                    'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
+                ]);
+            });
+
         return view('commerce::cp.products.index', [
-            'products' => Product::all(),
+            'products' => $products,
         ]);
     }
 

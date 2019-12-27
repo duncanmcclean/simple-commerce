@@ -12,11 +12,23 @@ class CustomerSearchController extends CpController
         $query = request()->input('search');
 
         if (! $query) {
-            $results = Customer::all();
+            $results = Customer::all()
+                ->map(function ($customer) {
+                    return array_merge($customer->toArray(), [
+                        'edit_url' => cp_route('customers.edit', ['customer' => $customer['id']]),
+                        'delete_url' => cp_route('customers.destroy', ['customer' => $customer['id']]),
+                    ]);
+                });
         } else {
             $results = Customer::all()
                 ->filter(function ($item) use ($query) {
                     return false !== stristr((string) $item['name'], $query);
+                })
+                ->map(function ($customer) {
+                    return array_merge($customer->toArray(), [
+                        'edit_url' => cp_route('customers.edit', ['customer' => $customer['id']]),
+                        'delete_url' => cp_route('customers.destroy', ['customer' => $customer['id']]),
+                    ]);
                 });
         }
 

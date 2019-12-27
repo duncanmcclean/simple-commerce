@@ -22,16 +22,6 @@ class FileCouponRepository implements Contract
         }
     }
 
-    public function attributes($file): Collection
-    {
-        $attributes = Yaml::parse(file_get_contents($file));
-        $attributes['slug'] = isset($attributes['slug']) ? $attributes['slug'] : str_replace('.md', '', basename($file));
-        $attributes['edit_url'] = cp_route('coupons.edit', ['coupon' => $attributes['id']]);
-        $attributes['delete_url'] = cp_route('coupons.destroy', ['coupon' => $attributes['id']]);
-
-        return collect($attributes);
-    }
-
     public function all(): Collection
     {
         return $this->query();
@@ -83,7 +73,7 @@ class FileCouponRepository implements Contract
                 return true;
             })
             ->map(function ($file) {
-                return $this->attributes($file);
+                return collect(Yaml::parse(file_get_contents($file)));
             });
     }
 

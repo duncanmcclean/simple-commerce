@@ -13,8 +13,16 @@ class CustomerController extends CpController
 {
     public function index()
     {
+        $customers = Customer::all()
+            ->map(function ($customer) {
+                return array_merge($customer->toArray(), [
+                    'edit_url' => cp_route('customers.edit', ['customer' => $customer['id']]),
+                    'delete_url' => cp_route('customers.destroy', ['customer' => $customer['id']]),
+                ]);
+            });
+
         return view('commerce::cp.customers.index', [
-            'customers' => Customer::all(),
+            'customers' => $customers,
         ]);
     }
 

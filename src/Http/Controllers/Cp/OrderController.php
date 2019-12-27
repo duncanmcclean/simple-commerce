@@ -14,8 +14,16 @@ class OrderController extends CpController
 {
     public function index()
     {
+        $orders = Order::all()
+            ->map(function ($order) {
+                return array_merge($order->toArray(), [
+                    'edit_url' => cp_route('orders.edit', ['order' => $order['id']]),
+                    'delete_url' => cp_route('orders.destroy', ['order' => $order['id']]),
+                ]);
+            });
+
         return view('commerce::cp.orders.index', [
-            'orders' => Order::all(),
+            'orders' => $orders,
         ]);
     }
 

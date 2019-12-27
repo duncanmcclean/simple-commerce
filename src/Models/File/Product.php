@@ -21,9 +21,4 @@ class Product
     {
         return config('commerce.storage.products.files').'/'.$this->filename.'.yaml';
     }
-
-    public function fileData()
-    {
-        return $this->data;
-    }
 }

@@ -13,8 +13,16 @@ class CouponController extends CpController
 {
     public function index()
     {
+        $coupons = Coupon::all()
+            ->map(function ($coupon) {
+                return array_merge($coupon->toArray(), [
+                    'edit_url' => cp_route('coupons.edit', ['coupon' => $coupon['id']]),
+                    'delete_url' => cp_route('coupons.destroy', ['coupon' => $coupon['id']]),
+                ]);
+            });
+
         return view('commerce::cp.coupons.index', [
-            'coupons' => Coupon::all(),
+            'coupons' => $coupons,
         ]);
     }
 

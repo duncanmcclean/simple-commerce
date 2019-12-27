@@ -12,11 +12,23 @@ class OrderSearchController extends CpController
         $query = request()->input('search');
 
         if (! $query) {
-            $results = Order::all();
+            $results = Order::all()
+                ->map(function ($order) {
+                    return array_merge($order->toArray(), [
+                        'edit_url' => cp_route('orders.edit', ['order' => $order['id']]),
+                        'delete_url' => cp_route('orders.destroy', ['order' => $order['id']]),
+                    ]);
+                });
         } else {
             $results = Order::all()
                 ->filter(function ($item) use ($query) {
-                    return false !== stristr((string) $item['title'], $query);
+                    return false !== stristr((string) $item['slug'], $query);
+                })
+                ->map(function ($order) {
+                    return array_merge($order->toArray(), [
+                        'edit_url' => cp_route('orders.edit', ['order' => $order['id']]),
+                        'delete_url' => cp_route('orders.destroy', ['order' => $order['id']]),
+                    ]);
                 });
         }
 
