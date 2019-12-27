@@ -68,23 +68,19 @@ class CommerceServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
-        $this
-            ->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
+        $this->publishes([
+            __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
+        ], 'commerce-config');
 
-        $this
-            ->publishes([
-                __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
-            ], 'config');
+        $this->publishes([
+            __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce'),
+        ], 'commerce-views');
 
-        $this
-            ->publishes([
-                __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce'),
-            ], 'config');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
 
-        $this
-            ->commands([
-                InstallCommand::class,
-            ]);
+        $this->commands([
+            InstallCommand::class,
+        ]);
 
         Statamic::provideToScript([
             'commerceCurrencyCode' => config('commerce.currency.code'),
@@ -148,5 +144,9 @@ class CommerceServiceProvider extends AddonServiceProvider
         // Products
         $this->app->bind(ProductRepository::class, config('commerce.storage.products.repository'));
         $this->app->bind('product', Product::class);
+
+        if (! $this->app->configurationIsCached()) {
+            $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
+        }
     }
 }
