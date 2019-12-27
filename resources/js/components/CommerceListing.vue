@@ -49,7 +49,7 @@
                         <template slot="actions" slot-scope="{ row : item, index }">
                             <dropdown-list>
                                 <dropdown-item :text="__('Edit')" :redirect="item.edit_url"></dropdown-item>
-                                <dropdown-item :text="__('Delete')" :redirect="item.delete_url"></dropdown-item>
+                                <dropdown-item class="warning" :text="__('Delete')" :redirect="item.delete_url"></dropdown-item>
                             </dropdown-list>
                         </template>
                     </data-list-table>
