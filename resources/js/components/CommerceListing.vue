@@ -18,8 +18,8 @@
                     <div v-if="rows.length === 0" class="p-3 text-center text-grey-50">No results</div>
 
                     <data-list-table
-                            v-else
-                            @sorted="sorted"
+                        v-else
+                        @sorted="sorted"
                     >
                         <template v-if="primary === 'title'" slot="cell-title" slot-scope="{ row: item }">
                             <div class="flex items-center">
@@ -33,7 +33,7 @@
                             </div>
                         </template>
 
-                        <template v-if="primary === 'name'" slot="cell-slug" slot-scope="{ row: item }">
+                        <template v-else-if="primary === 'name'" slot="cell-title" slot-scope="{ row: item }">
                             <div class="flex items-center">
                                 <div
                                         v-if="item.enabled != null"
@@ -45,7 +45,7 @@
                             </div>
                         </template>
 
-                        <template v-if="primary === 'slug'" slot="cell-slug" slot-scope="{ row: item }">
+                        <template v-else-if="primary === 'slug'" slot="cell-title" slot-scope="{ row: item }">
                             <div class="flex items-center">
                                 <div
                                         v-if="item.status != null"

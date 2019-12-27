@@ -443,59 +443,6 @@ var render = function() {
                                 }
                               },
                               {
-                                key: "cell-slug",
-                                fn: function(ref) {
-                                  var item = ref.row
-                                  return _vm.primary === "slug"
-                                    ? [
-                                        _c(
-                                          "div",
-                                          { staticClass: "flex items-center" },
-                                          [
-                                            item.status != null
-                                              ? _c("div", {
-                                                  staticClass:
-                                                    "little-dot mr-1",
-                                                  class: [
-                                                    item.status === "created"
-                                                      ? "bg-blue"
-                                                      : item.status === "paid"
-                                                      ? "bg-orange"
-                                                      : item.status ===
-                                                        "cancelled"
-                                                      ? "bg-red"
-                                                      : item.status ===
-                                                        "fulfilled"
-                                                      ? "bg-green"
-                                                      : item.status ===
-                                                        "returned"
-                                                      ? "bg-yellow"
-                                                      : "bg-grey-40"
-                                                  ]
-                                                })
-                                              : _vm._e(),
-                                            _vm._v(" "),
-                                            _c(
-                                              "a",
-                                              {
-                                                on: {
-                                                  click: function($event) {
-                                                    $event.stopPropagation()
-                                                    return _vm.redirect(
-                                                      item.edit_url
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v(_vm._s(item.slug))]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    : undefined
-                                }
-                              },
-                              {
                                 key: "actions",
                                 fn: function(ref) {
                                   var item = ref.row
