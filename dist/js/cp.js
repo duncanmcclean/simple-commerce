@@ -181,6 +181,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     model: String,
@@ -430,13 +442,24 @@ var render = function() {
                                           "div",
                                           { staticClass: "flex items-center" },
                                           [
-                                            item.enabled != null
+                                            item.status != null
                                               ? _c("div", {
                                                   staticClass:
                                                     "little-dot mr-1",
                                                   class: [
-                                                    item.enabled
+                                                    item.status === "created"
+                                                      ? "bg-blue"
+                                                      : item.status === "paid"
+                                                      ? "bg-orange"
+                                                      : item.status ===
+                                                        "cancelled"
+                                                      ? "bg-red"
+                                                      : item.status ===
+                                                        "fulfilled"
                                                       ? "bg-green"
+                                                      : item.status ===
+                                                        "returned"
+                                                      ? "bg-yellow"
                                                       : "bg-grey-40"
                                                   ]
                                                 })

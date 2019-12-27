@@ -37,7 +37,19 @@
 
                         <template v-if="primary === 'slug'" slot="cell-slug" slot-scope="{ row: item }">
                             <div class="flex items-center">
-                                <div v-if="item.enabled != null" class="little-dot mr-1" :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"></div>
+                                <div
+                                        v-if="item.status != null"
+                                        class="little-dot mr-1"
+                                        :class="[
+                                            item.status === 'created' ? 'bg-blue' :
+                                            item.status === 'paid' ? 'bg-orange' :
+                                            item.status === 'cancelled' ? 'bg-red' :
+                                            item.status === 'fulfilled' ? 'bg-green' :
+                                            item.status === 'returned' ? 'bg-yellow' :
+                                            'bg-grey-40'
+                                        ]"
+                                ></div>
+
                                 <a @click.stop="redirect(item.edit_url)">{{ item.slug }}</a>
                             </div>
                         </template>
