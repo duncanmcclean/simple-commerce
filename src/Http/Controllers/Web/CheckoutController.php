@@ -104,7 +104,7 @@ class CheckoutController extends Controller
             'zip_code' => $request->shipping_zip_code ?? $request->zip_code,
             'status' => 'paid',
             'coupon' => null, // WIP when coupons happen
-            'customer' => collect($customer)->toArray()['id'],
+            'customer' => [collect($customer)->toArray()['id']],
             'order_date' => now()->toDateTimeString(),
             'products' => $products,
         ]);
