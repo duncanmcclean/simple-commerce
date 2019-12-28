@@ -2,6 +2,12 @@
 @section('title', __('Dashboard'))
 
 @section('content')
+    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
+
+    <div class="flex mb-3">
+        <h1 class="flex-1">Dashboard</h1>
+    </div>
+
     <div class="widgets flex flex-wrap -mx-2 py-1">
         <div class="widget w-full  mb-4 px-2">
             <div class="card p-0 content">

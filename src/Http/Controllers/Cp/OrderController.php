@@ -7,6 +7,7 @@ use Damcclean\Commerce\Facades\Order;
 use Damcclean\Commerce\Http\Requests\OrderStoreRequest;
 use Damcclean\Commerce\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
+use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -14,6 +15,10 @@ class OrderController extends CpController
 {
     public function index()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+        ]);
+
         $orders = Order::all()
             ->map(function ($order) {
                 return array_merge($order->toArray(), [
@@ -24,11 +29,17 @@ class OrderController extends CpController
 
         return view('commerce::cp.orders.index', [
             'orders' => $orders,
+            'crumbs' => $crumbs,
         ]);
     }
 
     public function create()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Orders', 'url' => '/orders'],
+        ]);
+
         $blueprint = Blueprint::find('order');
 
         $fields = $blueprint->fields();
@@ -39,6 +50,7 @@ class OrderController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 
@@ -53,6 +65,11 @@ class OrderController extends CpController
 
     public function edit($order)
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Orders', 'url' => '/orders'],
+        ]);
+
         $order = Order::find($order);
 
         $blueprint = Blueprint::find('order');
@@ -65,6 +82,7 @@ class OrderController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $order,
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 

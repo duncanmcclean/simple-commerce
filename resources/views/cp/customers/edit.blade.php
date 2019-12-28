@@ -2,6 +2,8 @@
 @section('title', 'Edit Customer')
 
 @section('content')
+    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
+
     <publish-form
             title="{{ $values['name'] }}"
             action="{{ cp_route('customers.update', ['customer' => $values['id']]) }}"

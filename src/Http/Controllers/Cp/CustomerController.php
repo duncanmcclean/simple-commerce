@@ -6,6 +6,7 @@ use Damcclean\Commerce\Facades\Customer;
 use Damcclean\Commerce\Http\Requests\CustomerStoreRequest;
 use Damcclean\Commerce\Http\Requests\CustomerUpdateRequest;
 use Illuminate\Http\Request;
+use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -13,6 +14,10 @@ class CustomerController extends CpController
 {
     public function index()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+        ]);
+
         $customers = Customer::all()
             ->map(function ($customer) {
                 return array_merge($customer->toArray(), [
@@ -23,11 +28,17 @@ class CustomerController extends CpController
 
         return view('commerce::cp.customers.index', [
             'customers' => $customers,
+            'crumbs' => $crumbs,
         ]);
     }
 
     public function create()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Customers', 'url' => '/customers'],
+        ]);
+
         $blueprint = Blueprint::find('customer');
 
         $fields = $blueprint->fields();
@@ -38,6 +49,7 @@ class CustomerController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 
@@ -52,6 +64,11 @@ class CustomerController extends CpController
 
     public function edit($customer)
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Customers', 'url' => '/customers'],
+        ]);
+
         $customer = Customer::find($customer);
 
         $blueprint = Blueprint::find('customer');
@@ -64,6 +81,7 @@ class CustomerController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $customer,
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 

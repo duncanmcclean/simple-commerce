@@ -5,6 +5,7 @@ namespace Damcclean\Commerce\Http\Controllers\Cp;
 use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
+use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -12,6 +13,10 @@ class ProductController extends CpController
 {
     public function index()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+        ]);
+
         $products = Product::all()
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
@@ -23,11 +28,17 @@ class ProductController extends CpController
 
         return view('commerce::cp.products.index', [
             'products' => $products,
+            'crumbs' => $crumbs,
         ]);
     }
 
     public function create()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Products', 'url' => '/products'],
+        ]);
+
         $blueprint = Blueprint::find('product');
 
         $fields = $blueprint->fields();
@@ -38,6 +49,7 @@ class ProductController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 
@@ -52,6 +64,11 @@ class ProductController extends CpController
 
     public function edit($product)
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Products', 'url' => '/products'],
+        ]);
+
         $product = Product::find($product);
 
         $blueprint = Blueprint::find('product');
@@ -64,6 +81,7 @@ class ProductController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $product,
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 

@@ -6,6 +6,7 @@ use Damcclean\Commerce\Facades\Coupon;
 use Damcclean\Commerce\Http\Requests\CouponStoreRequest;
 use Damcclean\Commerce\Http\Requests\CouponUpdateRequest;
 use Illuminate\Http\Request;
+use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -13,6 +14,10 @@ class CouponController extends CpController
 {
     public function index()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+        ]);
+
         $coupons = Coupon::all()
             ->map(function ($coupon) {
                 return array_merge($coupon->toArray(), [
@@ -23,11 +28,17 @@ class CouponController extends CpController
 
         return view('commerce::cp.coupons.index', [
             'coupons' => $coupons,
+            'crumbs' => $crumbs,
         ]);
     }
 
     public function create()
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Coupons', 'url' => '/coupons'],
+        ]);
+
         $blueprint = Blueprint::find('coupon');
 
         $fields = $blueprint->fields();
@@ -38,6 +49,7 @@ class CouponController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 
@@ -52,6 +64,11 @@ class CouponController extends CpController
 
     public function edit($product)
     {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Coupons', 'url' => '/coupons'],
+        ]);
+
         $coupon = Coupon::find($product);
 
         $blueprint = Blueprint::find('coupon');
@@ -64,6 +81,7 @@ class CouponController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $coupon,
             'meta'      => $fields->meta(),
+            'crumbs'    => $crumbs,
         ]);
     }
 

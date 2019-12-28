@@ -2,6 +2,8 @@
 @section('title', 'Create Product')
 
 @section('content')
+    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
+
     <commerce-create-form inline-template>
         <publish-form
                 title="Create Product"

@@ -2,6 +2,8 @@
 @section('title', 'Customers')
 
 @section('content')
+    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
+
     <div class="flex mb-3">
         <h1 class="flex-1">Customers</h1>
 

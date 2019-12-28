@@ -2,6 +2,8 @@
 @section('title', 'Edit Coupon')
 
 @section('content')
+    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
+
     <publish-form
             title="{{ $values['title'] }}"
             action="{{ cp_route('coupons.update', ['coupon' => $values['id']]) }}"
