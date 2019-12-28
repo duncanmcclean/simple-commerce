@@ -3,6 +3,7 @@
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
 use Damcclean\Commerce\Facades\Product;
+use Statamic\Facades\Asset;
 use Statamic\View\View;
 
 class ProductController extends Controller
@@ -22,6 +23,13 @@ class ProductController extends Controller
             if (auth()->check() == false) {
                 abort(404);
             }
+        }
+
+        if (isset($product['gallery'][0])) {
+            $product['gallery'] = collect($product['gallery'])
+                ->map(function ($asset) {
+                    return Asset::findById($asset)->url();
+                });
         }
 
         return (new View)
