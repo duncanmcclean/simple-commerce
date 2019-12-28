@@ -32,7 +32,7 @@ During testing, Commerce for Statamic won't be installable via Composer but inst
 
 5. Run `php artisan vendor:publish` and select the option `Damcclean\Commerce\CommerceServiceProvider`.
 
-6. You'll also need to run our migrations which will create the required database tables for Commerce `php artisan migrate`
+6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan db:seed`
 
 7. Another thing you'll want to do before things start working is to add some URLs into your app's `VerifyCsrfToken.php` file. There's a statamic bug meaning we can't use csrf tokens in some places. We'll hopefully have this fixed before we launch.
 
