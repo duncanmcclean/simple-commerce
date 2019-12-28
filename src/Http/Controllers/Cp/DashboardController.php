@@ -12,7 +12,7 @@ class DashboardController extends CpController
     public function __invoke()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url', '/commerce'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
         ]);
 
         $orders = Order::all()

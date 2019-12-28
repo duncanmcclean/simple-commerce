@@ -15,7 +15,7 @@ class CouponController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
         ]);
 
         $coupons = Coupon::all()
@@ -35,8 +35,8 @@ class CouponController extends CpController
     public function create()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '/commerce'],
-            ['text' => 'Coupons', 'url' => '/coupons'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Coupons', 'url' => cp_route('coupons.index')],
         ]);
 
         $blueprint = Blueprint::find('coupon');
@@ -65,8 +65,8 @@ class CouponController extends CpController
     public function edit($product)
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '/commerce'],
-            ['text' => 'Coupons', 'url' => '/coupons'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Coupons', 'url' => cp_route('coupons.index')],
         ]);
 
         $coupon = Coupon::find($product);

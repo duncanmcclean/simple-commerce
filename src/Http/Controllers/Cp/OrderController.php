@@ -16,7 +16,7 @@ class OrderController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '/commerce'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
         ]);
 
         $orders = Order::all()
@@ -36,8 +36,8 @@ class OrderController extends CpController
     public function create()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '/commerce'],
-            ['text' => 'Orders', 'url' => '/orders'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Orders', 'url' => cp_route('orders.index')],
         ]);
 
         $blueprint = Blueprint::find('order');
@@ -66,8 +66,8 @@ class OrderController extends CpController
     public function edit($order)
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '/commerce'],
-            ['text' => 'Orders', 'url' => '/orders'],
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Orders', 'url' => cp_route('orders.index')],
         ]);
 
         $order = Order::find($order);
