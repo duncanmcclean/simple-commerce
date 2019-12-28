@@ -24,21 +24,21 @@ class InstallCommandTest extends TestCase
     /** @test */
     public function install_command_can_publish_vendor_views()
     {
-        (new Filesystem())->deleteDirectory(resource_path('views/vendor/commerce'));
-        $this->assertDirectoryNotExists(resource_path('views/vendor/commerce'));
+        (new Filesystem())->deleteDirectory(resource_path('views/vendor/commerce/web'));
+        $this->assertDirectoryNotExists(resource_path('views/vendor/commerce/web'));
 
         $command = $this->artisan('commerce:install');
         $command->run();
 
         $command->assertExitCode(0);
 
-        $this->assertDirectoryExists(resource_path('views/vendor/commerce'));
-        $this->assertFileExists(resource_path('views/vendor/commerce').'/checkout.antlers.html');
-        $this->assertFileExists(resource_path('views/vendor/commerce').'/layout.antlers.html');
-        $this->assertFileExists(resource_path('views/vendor/commerce').'/product.antlers.html');
-        $this->assertFileExists(resource_path('views/vendor/commerce').'/products.antlers.html');
-        $this->assertFileExists(resource_path('views/vendor/commerce').'/search.antlers.html');
-        $this->assertFileExists(resource_path('views/vendor/commerce').'/thanks.antlers.html');
+        $this->assertDirectoryExists(resource_path('views/vendor/commerce/web'));
+        $this->assertFileExists(resource_path('views/vendor/commerce/web').'/checkout.antlers.html');
+        $this->assertFileExists(resource_path('views/vendor/commerce/web').'/layout.antlers.html');
+        $this->assertFileExists(resource_path('views/vendor/commerce/web').'/product.antlers.html');
+        $this->assertFileExists(resource_path('views/vendor/commerce/web').'/products.antlers.html');
+        $this->assertFileExists(resource_path('views/vendor/commerce/web').'/search.antlers.html');
+        $this->assertFileExists(resource_path('views/vendor/commerce/web').'/thanks.antlers.html');
     }
 
     /** @test */
