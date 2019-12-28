@@ -90,7 +90,7 @@ class CustomerController extends CpController
     {
         $validated = $request->validated();
 
-        return Customer::update(Customer::find($customer)->toArray()['id'], $request->all());
+        return Customer::update($customer, $request->all());
     }
 
     public function destroy($customer)

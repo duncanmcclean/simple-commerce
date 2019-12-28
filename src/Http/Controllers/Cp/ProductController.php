@@ -89,7 +89,7 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        return Product::update(Product::find($product)->toArray()['id'], $request->all());
+        return Product::update($product, $request->all());
     }
 
     public function destroy($product)

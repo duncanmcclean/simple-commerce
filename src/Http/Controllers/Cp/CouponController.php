@@ -89,7 +89,7 @@ class CouponController extends CpController
     {
         $validated = $request->validated();
 
-        return Coupon::update(Coupon::find($coupon)->toArray()['id'], $request->all());
+        return Coupon::update($coupon, $request->all());
     }
 
     public function destroy($coupon)
