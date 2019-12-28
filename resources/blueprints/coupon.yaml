@@ -35,7 +35,7 @@ sections:
           options:
             percentage: 'Subtract the product price by a percentage'
             fixed: 'Set the products to a fixed price'
-            amount: 'Subtract the product price by an ammount'
+            amount: 'Subtract the product price by an amount'
           clearable: false
           multiple: false
           searchable: true
