@@ -2,9 +2,9 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
+use Damcclean\Commerce\Models\Product;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -20,9 +20,8 @@ class ProductController extends CpController
         $products = Product::all()
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
-                    'price' => config('commerce.currency.symbol').$product['price'],
-                    'edit_url' => cp_route('products.edit', ['product' => $product['id']]),
-                    'delete_url' => cp_route('products.destroy', ['product' => $product['id']]),
+                    'edit_url' => cp_route('products.edit', ['product' => $product->id]),
+                    'delete_url' => cp_route('products.destroy', ['product' => $product->id]),
                 ]);
             });
 
@@ -57,9 +56,13 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        $product = Product::save($request->all());
+        $product = new Product();
+        $product->title = $request->title;
+        $product->slug = $request->slug;
+        $product->product_category_id = $request->category;
+        $product->save();
 
-        return ['redirect' => cp_route('products.edit', ['product' => $product->data['id']])];
+        return ['redirect' => cp_route('products.edit', ['product' => $product->id])];
     }
 
     public function edit($product)
@@ -89,12 +92,17 @@ class ProductController extends CpController
     {
         $validation = $request->validated();
 
-        return Product::update($product, $request->all());
+        $product->title = $request->title;
+        $product->slug = $request->slug;
+        $product->product_category_id = $request->category;
+        $product->save();
+
+        return $product;
     }
 
     public function destroy($product)
     {
-        $product = Product::delete(Product::find($product)['slug']);
+        $product = Product::delete($product);
 
         return redirect(cp_route('products.index'));
     }

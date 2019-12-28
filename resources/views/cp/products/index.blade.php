@@ -21,10 +21,6 @@
                 'label' => 'Slug',
                 'field' => 'slug'
             ],
-            [
-                'label' => 'Price',
-                'field' => 'price'
-            ]
         ]) }}'
         items='@json($products)'
         primary='title'

@@ -2,8 +2,8 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Facades\Customer;
-use Damcclean\Commerce\Facades\Order;
+use Damcclean\Commerce\Models\Customer;
+use Damcclean\Commerce\Models\Order;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -16,20 +16,20 @@ class DashboardController extends CpController
         ]);
 
         $orders = Order::all()
-            ->sortByDesc('order_date')
+            ->sortByDesc('created_at')
             ->take(5)
             ->map(function ($order) {
                 return array_merge($order->toArray(), [
-                    'edit_url' => cp_route('orders.edit', ['order' => $order['id']]),
+                    'edit_url' => cp_route('orders.edit', ['order' => $order->id]),
                 ]);
             });
 
         $customers = Customer::all()
-            ->sortByDesc('customer_since')
+            ->sortByDesc('created_at')
             ->take(5)
             ->map(function ($customer) {
                 return array_merge($customer->toArray(), [
-                    'edit_url' => cp_route('customers.edit', ['customer' => $customer['id']]),
+                    'edit_url' => cp_route('customers.edit', ['customer' => $customer->id]),
                 ]);
             });
 
