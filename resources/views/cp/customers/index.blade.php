@@ -14,8 +14,8 @@
             model="customers"
             cols='{{ json_encode([
             [
-                'label' => ' Full Name',
-                'field' => 'name',
+                'label' => 'Name',
+                'field' => 'title',
             ],
             [
                 'label' => 'Email',
@@ -23,6 +23,6 @@
             ]
         ]) }}'
             items='@json($customers)'
-            primary='name'
+            primary='title'
     />
 @endsection

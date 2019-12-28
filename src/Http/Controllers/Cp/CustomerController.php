@@ -21,6 +21,7 @@ class CustomerController extends CpController
         $customers = Customer::all()
             ->map(function ($customer) {
                 return array_merge($customer->toArray(), [
+                    'title' => $customer['name'],
                     'edit_url' => cp_route('customers.edit', ['customer' => $customer['id']]),
                     'delete_url' => cp_route('customers.destroy', ['customer' => $customer['id']]),
                 ]);
