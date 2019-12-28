@@ -47,7 +47,6 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     protected $scripts = [
         __DIR__.'/../dist/js/cp.js',
-        __DIR__.'/../dist/js/web.js',
     ];
 
     protected $listen = [
@@ -75,6 +74,10 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         $this->publishes([
             __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce/web'),
+        ], 'commerce-views');
+
+        $this->publishes([
+            __DIR__.'/../dist/js/web.js' => resource_path('js/web.js'),
         ], 'commerce-views');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
