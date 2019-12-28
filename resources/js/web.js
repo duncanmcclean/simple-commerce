@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import axios from 'axios';
 
 var stripe = Stripe(window.stripeKey);
 var elements = stripe.elements();
@@ -12,6 +13,8 @@ new Vue({
             card: elements.create('card', {
                 hidePostalCode: true
             }),
+
+            coupon: '',
 
             isCouponModalOpen: false,
             isSubmitting: false
@@ -36,6 +39,27 @@ new Vue({
 
                     document.getElementById('payment-form').submit();
                 }
+            })
+        },
+
+        redeemCoupon() {
+            this.isSubmitting = true;
+
+            axios.post(window.redeemCouponEndpoint, {
+                code: this.coupon
+            }).then(response => {
+                if (response.data.error === true) {
+                    this.isSubmitting = false;
+                    alert(response.data.message);
+                } else {
+                    this.isSubmitting = false;
+                    alert(response.data.message);
+
+                    window.paymentIntent = response.data.intent;
+                    // change the price of the cart in the dom
+                }
+            }).catch(error => {
+                this.isSubmitting = false;
             })
         }
     },

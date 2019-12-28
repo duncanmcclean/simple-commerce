@@ -54,6 +54,11 @@ class FileCouponRepository implements Contract
         return $this->query()->where('slug', $slug)->first();
     }
 
+    public function findByCode(string $code)
+    {
+        return $this->query()->where('code', $code)->first();
+    }
+
     public function save($entry)
     {
         if (! isset($entry['id'])) {

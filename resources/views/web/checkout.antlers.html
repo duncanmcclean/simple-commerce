@@ -12,7 +12,6 @@
 
                         <form action="{{ commerce:route key='cart.delete' }}" method="post">
                             <input type="hidden" name="slug" value="{{ slug }}">
-                            {{ page:csrf_field }}
 
                             <button class="border-b-2 border-red-600 text-red-600 font-semibold text-xs">Remove</button>
                         </form>
@@ -37,7 +36,7 @@
                 </form>
             </div>
 
-            <form id="payment-form" class="mt-8" action="/checkout" method="post">
+            <form id="payment-form" class="mt-8" action="/checkout" method="post" @submit.prevent="submitCheckout">
                 <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
 
                 <input type="hidden" name="currency" value="{{ commerce:currency_code }}">
@@ -87,7 +86,7 @@
             </form>
 
             <div class="w-1/2 mx-auto">
-                <button class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full" @click="submitCheckout()">Pay</button>
+                <button class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full" type="submit" :disabled="isSubmitting">Pay</button>
             </div>
         </div>
     {{ /if }}
@@ -108,11 +107,11 @@
             <div class="p-6">
                 <div class="flex flex-row items-center p-2">
                     <label class="w-1/3 text-gray-800 font-bold">Coupon</label>
-                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="coupon" required>
+                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" v-model="coupon" required>
                 </div>
 
                 <div class="w-1/2 mx-auto mt-4">
-                    <button class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full">Redeem</button>
+                    <button class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full" type="button" @click="redeemCoupon" :disabled="isSubmitting">Redeem</button>
                 </div>
             </div>
         </div>

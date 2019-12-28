@@ -12,6 +12,8 @@ interface CouponRepository
 
     public function findBySlug(string $slug);
 
+    public function findByCode(string $code);
+
     public function save($entry);
 
     public function update($id, $entry);
