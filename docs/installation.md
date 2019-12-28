@@ -1,8 +1,8 @@
 # Installation Guide
 
-## Pre-install checks
+## Prerequisites
 
-1. Check that you have the latest version of the Statamic 3 beta installed. You can update by using `composer update statamic/cms`
+Before installing Commerce you'll want to check you're running the latest version of Statamic 3 and you'll also want to have [your database](https://laravel.com/docs/5.8/database) setup.
 
 ## Testing steps
 
@@ -30,13 +30,11 @@ During testing, Commerce for Statamic won't be installable via Composer but inst
 
 4. Run `composer install && composer update`
 
-5. Run the install command, it'll copy over things like blueprints and config files.
+5. Run `php artisan vendor:publish` and select the option `Damcclean\Commerce\CommerceServiceProvider`.
 
-```shell script
-php artisan commerce:install
-```
+6. You'll also need to run our migrations which will create the required database tables for Commerce `php artisan migrate`
 
-6. Another thing you'll want to do before things start working is to add some URLs into your app's `VerifyCsrfToken.php` file. There's a statamic bug meaning we can't use csrf tokens in some places. We'll hopefully have this fixed before we launch.
+7. Another thing you'll want to do before things start working is to add some URLs into your app's `VerifyCsrfToken.php` file. There's a statamic bug meaning we can't use csrf tokens in some places. We'll hopefully have this fixed before we launch.
 
 ```php
 <?php
@@ -48,4 +46,4 @@ protected $except = [
 ];
 ```
 
-7. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.
+8. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.

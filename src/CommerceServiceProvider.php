@@ -2,7 +2,6 @@
 
 namespace Damcclean\Commerce;
 
-use Damcclean\Commerce\Console\Commands\InstallCommand;
 use Damcclean\Commerce\Contracts\CouponRepository;
 use Damcclean\Commerce\Contracts\CustomerRepository;
 use Damcclean\Commerce\Contracts\OrderRepository;
@@ -78,13 +77,17 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         $this->publishes([
             __DIR__.'/../dist/js/web.js' => resource_path('js/web.js'),
-        ], 'commerce-views');
+        ], 'commerce-scripts');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'commerce-migrations');
+
+        $this->publishes([
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints')
+        ], 'commerce-blueprints');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
-
-        $this->commands([
-            InstallCommand::class,
-        ]);
 
         Statamic::provideToScript([
             'commerceCurrencyCode' => config('commerce.currency.code'),
