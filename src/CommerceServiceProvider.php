@@ -73,7 +73,7 @@ class CommerceServiceProvider extends AddonServiceProvider
         ], 'commerce-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce'),
+            __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce/web'),
         ], 'commerce-views');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
