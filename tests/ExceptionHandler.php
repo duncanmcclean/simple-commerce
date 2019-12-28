@@ -13,7 +13,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
  * Statamic extends the Laravel app's exception handler.
  * In a test environment, there would be no such file, so here it is.
  */
-class ExceptionHandler extends ExceptionHandler
+class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
