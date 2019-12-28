@@ -19,12 +19,10 @@ class Cart
             ->map(function ($item) use ($currencies, $moneyFormatter) {
                 $product = Product::findBySlug($item['slug']);
 
-                $product['quantity'] = $item['quantity'];
-                $product['price'] = $product['price'] * $product['quantity'];
-
-                $product['price'] = $moneyFormatter->format(Money::{strtoupper(config('commerce.currency.code'))}(($product['price'] * 100) * $product['quantity']));
-
-                return collect($product);
+                return array_merge(collect($product)->toArray(), [
+                    'quantity' => $item['quantity'],
+                    'price' => $moneyFormatter->format(Money::{strtoupper(config('commerce.currency.code'))}(($product['price'] * 100) * $item['quantity']))
+                ]);
             });
     }
 
@@ -62,7 +60,7 @@ class Cart
 
     public function remove($slug)
     {
-        $items = collect($this->all())
+        $items = collect($this->query())
             ->reject(function ($product) use ($slug) {
                 if ($product['slug'] == $slug) {
                     return true;
