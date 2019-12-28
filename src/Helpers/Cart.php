@@ -10,14 +10,14 @@ use Money\Money;
 
 class Cart
 {
-    public function all()
+    public function query()
     {
         $currencies = new ISOCurrencies();
         $moneyFormatter = new DecimalMoneyFormatter($currencies);
 
         return collect(request()->session()->get('cart'))
             ->map(function ($item) use ($currencies, $moneyFormatter) {
-                $product = Product::findBySlug($item['slug'])->toArray();
+                $product = Product::findBySlug($item['slug']);
 
                 $product['quantity'] = $item['quantity'];
                 $product['price'] = $product['price'] * $product['quantity'];
@@ -28,9 +28,24 @@ class Cart
             });
     }
 
+    public function all()
+    {
+        return $this->query();
+    }
+
     public function add(string $slug, int $quantity)
     {
         $items = $this->all();
+
+        foreach ($items as $item) {
+            // TODO: Refactor this using collections
+
+            if ($item['slug'] == $slug) {
+                $item['quantity'] += $quantity;
+
+                return $this->replace($items);
+            }
+        }
 
         $items[] = [
             'slug' => $slug,
@@ -77,7 +92,7 @@ class Cart
 
     public function count()
     {
-        return $this->all()->count();
+        return $this->query()->count();
     }
 
     public function clear()
