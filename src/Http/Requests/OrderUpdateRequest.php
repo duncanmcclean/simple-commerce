@@ -14,6 +14,6 @@ class OrderUpdateRequest extends FormRequest
 
     public function rules()
     {
-        return Order::updateRules([]);
+        return Order::updateRules();
     }
 }
