@@ -22,6 +22,23 @@ class FileProductRepository implements Contract
         }
     }
 
+    public function query()
+    {
+        $files = File::allFiles($this->path);
+
+        return collect($files)
+            ->reject(function (SplFileInfo $file) {
+                if ($file->getExtension() == 'yaml') {
+                    return false;
+                }
+
+                return true;
+            })
+            ->map(function (SplFileInfo $file) {
+                return collect(Yaml::parse(file_get_contents($file)));
+            });
+    }
+
     public function all(): Collection
     {
         return $this->query();
@@ -53,28 +70,21 @@ class FileProductRepository implements Contract
         return $item;
     }
 
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new Product(collect($entry)->toArray(), $slug);
+        $item->writeFile();
+
+        return $item->data;
+    }
+
     public function delete($entry)
     {
         $entry = $this->findBySlug($entry);
 
         return (new Product([], $entry['slug']))->deleteFile();
-    }
-
-    public function query()
-    {
-        $files = File::allFiles($this->path);
-
-        return collect($files)
-            ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'yaml') {
-                    return false;
-                }
-
-                return true;
-            })
-            ->map(function (SplFileInfo $file) {
-                return collect(Yaml::parse(file_get_contents($file)));
-            });
     }
 
     public function createRules()
@@ -105,15 +115,5 @@ class FileProductRepository implements Contract
             'price' => ['required', 'regex:/^\d*(\.\d{2})?$/'],
             'stock_number' => 'sometimes|integer',
         ];
-    }
-
-    public function update($id, $entry)
-    {
-        $slug = $this->find($id)['slug'];
-
-        $item = new Product(collect($entry)->toArray(), $slug);
-        $item->writeFile();
-
-        return $item->data;
     }
 }

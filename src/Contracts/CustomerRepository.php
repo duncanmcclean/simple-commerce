@@ -4,6 +4,8 @@ namespace Damcclean\Commerce\Contracts;
 
 interface CustomerRepository
 {
+    public function query();
+
     public function all();
 
     public function find($id);
@@ -12,15 +14,13 @@ interface CustomerRepository
 
     public function findByEmail(string $email);
 
-    public function query();
-
     public function save($entry);
+
+    public function update($id, $entry);
 
     public function delete($entry);
 
     public function createRules();
 
     public function updateRules($entry);
-
-    public function update($id, $entry);
 }

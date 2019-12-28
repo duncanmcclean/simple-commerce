@@ -22,6 +22,23 @@ class FileCouponRepository implements Contract
         }
     }
 
+    public function query()
+    {
+        $files = File::allFiles($this->path);
+
+        return collect($files)
+            ->reject(function (SplFileInfo $file) {
+                if ($file->getExtension() == 'yaml') {
+                    return false;
+                }
+
+                return true;
+            })
+            ->map(function ($file) {
+                return collect(Yaml::parse(file_get_contents($file)));
+            });
+    }
+
     public function all(): Collection
     {
         return $this->query();
@@ -53,28 +70,21 @@ class FileCouponRepository implements Contract
         return $item;
     }
 
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new Coupon(collect($entry)->toArray(), $slug);
+        $item->writeFile();
+
+        return $item->data;
+    }
+
     public function delete($entry)
     {
         $entry = $this->findBySlug($entry);
 
         return (new Coupon([], $entry['slug']))->deleteFile();
-    }
-
-    public function query()
-    {
-        $files = File::allFiles($this->path);
-
-        return collect($files)
-            ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'yaml') {
-                    return false;
-                }
-
-                return true;
-            })
-            ->map(function ($file) {
-                return collect(Yaml::parse(file_get_contents($file)));
-            });
     }
 
     public function createRules()
@@ -103,15 +113,5 @@ class FileCouponRepository implements Contract
             'start_date' => '',
             'end_date' => '',
         ];
-    }
-
-    public function update($id, $entry)
-    {
-        $slug = $this->find($id)['slug'];
-
-        $item = new Coupon(collect($entry)->toArray(), $slug);
-        $item->writeFile();
-
-        return $item->data;
     }
 }

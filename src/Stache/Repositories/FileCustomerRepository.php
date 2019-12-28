@@ -22,6 +22,23 @@ class FileCustomerRepository implements Contract
         }
     }
 
+    public function query()
+    {
+        $files = File::allFiles($this->path);
+
+        return collect($files)
+            ->reject(function (SplFileInfo $file) {
+                if ($file->getExtension() == 'yaml') {
+                    return false;
+                }
+
+                return true;
+            })
+            ->map(function ($file) {
+                return collect(Yaml::parse(file_get_contents($file)));
+            });
+    }
+
     public function all(): Collection
     {
         return $this->query();
@@ -58,28 +75,21 @@ class FileCustomerRepository implements Contract
         return $item;
     }
 
+    public function update($id, $entry)
+    {
+        $slug = $this->find($id)['slug'];
+
+        $item = new Customer(collect($entry)->toArray(), $slug);
+        $item->writeFile();
+
+        return $item->data;
+    }
+
     public function delete($entry)
     {
         $entry = $this->findBySlug($entry);
 
         return (new Customer([], $entry['slug']))->deleteFile();
-    }
-
-    public function query()
-    {
-        $files = File::allFiles($this->path);
-
-        return collect($files)
-            ->reject(function (SplFileInfo $file) {
-                if ($file->getExtension() == 'yaml') {
-                    return false;
-                }
-
-                return true;
-            })
-            ->map(function ($file) {
-                return collect(Yaml::parse(file_get_contents($file)));
-            });
     }
 
     public function createRules()
@@ -116,15 +126,5 @@ class FileCustomerRepository implements Contract
             'currency' => 'required|string',
             'customer_since' => 'required',
         ];
-    }
-
-    public function update($id, $entry)
-    {
-        $slug = $this->find($id)['slug'];
-
-        $item = new Customer(collect($entry)->toArray(), $slug);
-        $item->writeFile();
-
-        return $item->data;
     }
 }
