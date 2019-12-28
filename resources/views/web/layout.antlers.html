@@ -8,17 +8,29 @@
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-200">
-        <header class="px-4 py-4 flex flex-row items-center justify-between w-full">
-            <a class="text-xl font-semibold text-gray-800" href="{{ commerce:route key='products.index' }}">{{ site_name }}</a>
+        <div id="app">
+            <header class="px-4 py-4 flex flex-row items-center justify-between w-full">
+                <a class="text-xl font-semibold text-gray-800" href="{{ commerce:route key='products.index' }}">{{ site_name }}</a>
 
-            <nav class="flex flex-row items-center">
-                <span class="font-semibold text-gray-800 mx-4">{{ cart:count }} items in cart</span>
-                <a class="mx-4 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg" href="/checkout">Go to Checkout</a>
-            </nav>
-        </header>
+                <nav class="flex flex-row items-center">
+                    <span class="font-semibold text-gray-800 mx-4">{{ cart:count }} items in cart</span>
+                    <a class="mx-4 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg" href="/checkout">Go to Checkout</a>
+                </nav>
+            </header>
 
-        <div class="flex flex-col items-center justify-center h-screen w-full">
-            {{ template_content }}
+            <div class="flex flex-col items-center justify-center h-screen w-full">
+                {{ template_content }}
+            </div>
         </div>
+
+        <script>
+            window.stripeKey = '{{ commerce:stripe_key }}';
+
+            {{ if intent }}
+                window.paymentIntent = '{{ intent }}';
+            {{ /if }}
+        </script>
+        <script src="https://js.stripe.com/v3/"></script>
+        <script src="/vendor/damcclean/commerce/js/web.js"></script>
     </body>
 </html>

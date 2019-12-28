@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "axios": "^0.19.0",
     "cross-env": "^6.0.3",
-    "laravel-mix": "^5.0.0"
+    "laravel-mix": "^5.0.0",
+    "vue": "^2.6.11"
   },
   "scripts": {
     "dev": "npm run development",

@@ -47,6 +47,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     protected $scripts = [
         __DIR__.'/../dist/js/cp.js',
+        __DIR__.'/../dist/js/web.js',
     ];
 
     protected $listen = [
