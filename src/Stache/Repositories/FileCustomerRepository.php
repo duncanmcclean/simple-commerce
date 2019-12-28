@@ -82,7 +82,7 @@ class FileCustomerRepository implements Contract
             });
     }
 
-    public function createRules($collection)
+    public function createRules()
     {
         return [
             'name' => 'required|string',
@@ -100,7 +100,7 @@ class FileCustomerRepository implements Contract
         ];
     }
 
-    public function updateRules($collection, $entry)
+    public function updateRules($entry)
     {
         return [
             'name' => 'required|string',

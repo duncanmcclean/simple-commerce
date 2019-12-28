@@ -77,7 +77,7 @@ class FileCouponRepository implements Contract
             });
     }
 
-    public function createRules($collection)
+    public function createRules()
     {
         return [
             'title' => 'required|string',
@@ -91,7 +91,7 @@ class FileCouponRepository implements Contract
         ];
     }
 
-    public function updateRules($collection, $entry)
+    public function updateRules($entry)
     {
         return [
             'title' => 'required|string',

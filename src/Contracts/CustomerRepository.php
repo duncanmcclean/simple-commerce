@@ -18,9 +18,9 @@ interface CustomerRepository
 
     public function delete($entry);
 
-    public function createRules($collection);
+    public function createRules();
 
-    public function updateRules($collection, $entry);
+    public function updateRules($entry);
 
     public function update($id, $entry);
 }
