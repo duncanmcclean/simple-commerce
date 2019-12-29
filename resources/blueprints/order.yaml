@@ -11,7 +11,7 @@ sections:
           display: Total
           validate: required
           character_limit: 0
-          width: 50
+          instructions: 'This is the final order total, after any coupons, sales, tax and shipping conditions have been applied.'
       -
         handle: notes
         field:

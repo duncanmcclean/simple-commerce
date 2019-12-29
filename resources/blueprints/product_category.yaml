@@ -1,4 +1,4 @@
-title: Product
+title: 'Product Category'
 sections:
   main:
     display: Main
@@ -17,10 +17,3 @@ sections:
           type: slug
           localizable: false
           display: Slug
-      -
-        handle: category
-        field:
-          character_limit: 0
-          type: text
-          localizable: false
-          display: 'Product Category'

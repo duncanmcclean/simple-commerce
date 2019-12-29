@@ -21,111 +21,112 @@ sections:
           display: Email
           validate: required|email
           width: 50
-  address:
-    display: Address
+  billing_address:
+    display: 'Billing Address'
     fields:
       -
-        handle: address
-        field:
-          type: textarea
-          localizable: false
-          display: Address
-          validate: string
-      -
-        handle: country
-        field:
-          options:
-            uk: 'United Kingdom'
-            us: 'United States'
-            ca: Canada
-            fr: France
-          clearable: false
-          multiple: false
-          searchable: true
-          taggable: false
-          push_tags: false
-          type: select
-          localizable: false
-          width: 50
-          display: Country
-      -
-        handle: zip_code
+        handle: billing_address_1
         field:
           character_limit: 0
           type: text
           localizable: false
+          display: 'Address 1'
+      -
+        handle: billing_address_2
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 2'
           width: 50
+      -
+        handle: billing_address_3
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 3'
+          width: 50
+      -
+        handle: billing_city
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: City
+          width: 75
+      -
+        handle: billing_zip_code
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
           display: 'Zip Code'
-  payment_details:
-    display: 'Payment Details'
+          width: 25
+      -
+        handle: billing_country
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Country
+          width: 50
+      -
+        handle: billing_state
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: State
+          width: 50
+  shipping_address:
+    display: 'Shipping Address'
     fields:
-      -
-        handle: card_brand
+      - handle: shipping_address_1
         field:
           character_limit: 0
           type: text
           localizable: false
-          width: 50
-          display: 'Card Brand'
-      -
-        handle: card_country
+          display: 'Address 1'
+      - handle: shipping_address_2
         field:
           character_limit: 0
           type: text
           localizable: false
+          display: 'Address 2'
           width: 50
-          display: 'Card Country'
-      -
-        handle: card_expiry_month
-        field:
-          type: integer
-          localizable: false
-          width: 50
-          display: 'Card Expiry Month'
-      -
-        handle: card_expiry_year
-        field:
-          type: integer
-          localizable: false
-          width: 50
-          display: 'Card Expiry Year'
-      -
-        handle: card_last_four
+      - handle: shipping_address_3
         field:
           character_limit: 0
           type: text
           localizable: false
+          display: 'Address 3'
           width: 50
-          display: 'Card Last Four'
-  sidebar:
-    display: Sidebar
-    fields:
-      -
-        handle: currency
+      - handle: shipping_city
         field:
-          options:
-            gpb: 'Pound Sterling'
-            usd: 'United States Dollar'
-          clearable: false
-          multiple: false
-          searchable: true
-          taggable: false
-          push_tags: false
-          type: select
+          character_limit: 0
+          type: text
           localizable: false
-          display: Currency
-          validate: required|string
-      -
-        handle: customer_since
+          display: City
+          width: 75
+      - handle: shipping_zip_code
         field:
-          time_enabled: true
-          time_required: false
-          earliest_date: '1900-01-01'
-          full_width: false
-          inline: false
-          columns: 1
-          rows: 1
-          mode: single
-          type: date
+          character_limit: 0
+          type: text
           localizable: false
-          display: 'Customer Since'
+          display: 'Zip Code'
+          width: 25
+      - handle: shipping_country
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: Country
+          width: 50
+      - handle: shipping_state
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: State
+          width: 50

@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Fieldtypes;
 
-use Damcclean\Commerce\Facades\Product as ProductFacade;
+use Damcclean\Commerce\Models\Product as ProductModel;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 
@@ -22,14 +22,13 @@ class Product extends Relationship
 
     public function getIndexItems($request)
     {
-        return $this->formatProducts(ProductFacade::all());
+        return $this->formatProducts(ProductModel::all());
     }
 
     public function getColumns()
     {
         return [
             Column::make('title'),
-            Column::make('stock'),
         ];
     }
 
