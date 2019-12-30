@@ -102,14 +102,10 @@ class CommerceServiceProvider extends AddonServiceProvider
             $nav
                 ->create('Products')
                 ->section('Commerce')
-                ->route('products.index');
-        });
-
-        Nav::extend(function ($nav) {
-            $nav
-                ->create('Product Categories')
-                ->section('Commerce')
-                ->route('product-categories.index');
+                ->route('products.index')
+                ->children([
+                    'Categories' => cp_route('product-categories.index')
+                ]);
         });
 
         Nav::extend(function ($nav) {
