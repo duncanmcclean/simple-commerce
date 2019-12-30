@@ -203,6 +203,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     model: String,
@@ -422,20 +424,35 @@ var render = function() {
                                                 })
                                               : _vm._e(),
                                             _vm._v(" "),
-                                            _c(
-                                              "a",
-                                              {
-                                                on: {
-                                                  click: function($event) {
-                                                    $event.stopPropagation()
-                                                    return _vm.redirect(
-                                                      item.edit_url
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v(_vm._s(item.title))]
-                                            )
+                                            item.view_url
+                                              ? _c(
+                                                  "a",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        $event.stopPropagation()
+                                                        return _vm.redirect(
+                                                          item.view_url
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(item.title))]
+                                                )
+                                              : _c(
+                                                  "a",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        $event.stopPropagation()
+                                                        return _vm.redirect(
+                                                          item.edit_url
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [_vm._v(_vm._s(item.title))]
+                                                )
                                           ]
                                         )
                                       ]
@@ -451,6 +468,15 @@ var render = function() {
                                     _c(
                                       "dropdown-list",
                                       [
+                                        item.view_url
+                                          ? _c("dropdown-item", {
+                                              attrs: {
+                                                text: _vm.__("View"),
+                                                redirect: item.view_url
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
                                         _c("dropdown-item", {
                                           attrs: {
                                             text: _vm.__("Edit"),

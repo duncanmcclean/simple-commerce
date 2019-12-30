@@ -17,6 +17,7 @@ Route::prefix('product-categories')->as('product-categories')->group(function ()
     Route::get('/search', 'Http\Controllers\Cp\ProductCategorySearchController')->name('.search');
     Route::get('/create', 'Http\Controllers\Cp\ProductCategoryController@create')->name('.create');
     Route::post('/create', 'Http\Controllers\Cp\ProductCategoryController@store')->name('.store');
+    Route::get('/{category}', 'Http\Controllers\Cp\ProductCategoryController@show')->name('.show');
     Route::get('/edit/{category}', 'Http\Controllers\Cp\ProductCategoryController@edit')->name('.edit');
     Route::post('/edit/{category}', 'Http\Controllers\Cp\ProductCategoryController@update')->name('.update');
     Route::get('/delete/{category}', 'Http\Controllers\Cp\ProductCategoryController@destroy')->name('.destroy');

@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Http\Controllers\Cp;
 
 use Damcclean\Commerce\Http\Requests\ProductCategoryStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductCategoryUpdateRequest;
+use Damcclean\Commerce\Models\Product;
 use Damcclean\Commerce\Models\ProductCategory;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
@@ -21,6 +22,7 @@ class ProductCategoryController extends CpController
         $categories = ProductCategory::all()
             ->map(function ($category) {
                 return array_merge($category->toArray(), [
+                    'view_url' => cp_route('product-categories.show', ['category' => $category->uid]),
                     'edit_url' => cp_route('product-categories.edit', ['category' => $category->uid]),
                     'delete_url' => cp_route('product-categories.destroy', ['category' => $category->uid]),
                 ]);
@@ -64,6 +66,28 @@ class ProductCategoryController extends CpController
         $category->save();
 
         return ['redirect' => cp_route('product-categories.edit', ['category' => $category->uid])];
+    }
+
+    public function show(ProductCategory $category)
+    {
+        $crumbs = Breadcrumbs::make([
+            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
+        ]);
+
+        $products = Product::all()
+            ->where('product_category_id', $category->id)
+            ->map(function ($product) {
+                return array_merge($product->toArray(), [
+                    'edit_url' => cp_route('products.edit', ['product' => $product->uid]),
+                    'delete_url' => cp_route('products.destroy', ['product' => $product->uid]),
+                ]);
+            });
+
+        return view('commerce::cp.products.index', [
+            'products' => $products,
+            'crumbs' => $crumbs,
+        ]);
     }
 
     public function edit(ProductCategory $category)

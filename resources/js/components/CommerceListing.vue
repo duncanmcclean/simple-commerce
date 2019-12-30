@@ -29,7 +29,8 @@
                                         :class="[item.enabled ? 'bg-green' : 'bg-grey-40']"
                                 ></div>
 
-                                <a @click.stop="redirect(item.edit_url)">{{ item.title }}</a>
+                                <a v-if="item.view_url" @click.stop="redirect(item.view_url)">{{ item.title }}</a>
+                                <a v-else @click.stop="redirect(item.edit_url)">{{ item.title }}</a>
                             </div>
                         </template>
 
@@ -70,6 +71,7 @@
 
                         <template slot="actions" slot-scope="{ row : item, index }">
                             <dropdown-list>
+                                <dropdown-item v-if="item.view_url" :text="__('View')" :redirect="item.view_url"></dropdown-item>
                                 <dropdown-item :text="__('Edit')" :redirect="item.edit_url"></dropdown-item>
                                 <dropdown-item class="warning" :text="__('Delete')" :redirect="item.delete_url"></dropdown-item>
                             </dropdown-list>
