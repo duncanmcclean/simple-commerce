@@ -61,7 +61,7 @@ class ProductController extends CpController
         $product->uid = (new Stache())->generateId();
         $product->title = $request->title;
         $product->slug = $request->slug;
-        $product->product_category_id = $request->category;
+        $product->product_category_id = $request->category[0] ?? null;
         $product->save();
 
         return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];

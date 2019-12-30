@@ -2,10 +2,6 @@
 
 namespace Damcclean\Commerce;
 
-use Damcclean\Commerce\Contracts\CouponRepository;
-use Damcclean\Commerce\Contracts\CustomerRepository;
-use Damcclean\Commerce\Contracts\OrderRepository;
-use Damcclean\Commerce\Contracts\ProductRepository;
 use Damcclean\Commerce\Events\AddedToCart;
 use Damcclean\Commerce\Events\CheckoutComplete;
 use Damcclean\Commerce\Events\CouponUsed;
@@ -14,12 +10,9 @@ use Damcclean\Commerce\Events\OrderStatusUpdated;
 use Damcclean\Commerce\Events\ProductOutOfStock;
 use Damcclean\Commerce\Events\ProductStockRunningLow;
 use Damcclean\Commerce\Events\ReturnCustomer;
-use Damcclean\Commerce\Facades\Coupon;
-use Damcclean\Commerce\Facades\Customer;
-use Damcclean\Commerce\Facades\Order;
-use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Fieldtypes\Money;
 use Damcclean\Commerce\Fieldtypes\Product as ProductFieldtype;
+use Damcclean\Commerce\Fieldtypes\ProductCategory as ProductCategoryFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Tags\CartTags;
@@ -143,6 +136,7 @@ class CommerceServiceProvider extends AddonServiceProvider
         Money::register();
         ProductFieldtype::register();
         CustomerFieldtype::register();
+        ProductCategoryFieldtype::register();
     }
 
     public function register()
