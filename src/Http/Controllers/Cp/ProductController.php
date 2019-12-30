@@ -74,6 +74,8 @@ class ProductController extends CpController
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
 
+        $product = Product::where('uid', $product)->first();
+
         $blueprint = Blueprint::find('product');
 
         $fields = $blueprint->fields();
