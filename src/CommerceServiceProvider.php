@@ -95,7 +95,8 @@ class CommerceServiceProvider extends AddonServiceProvider
             $nav
                 ->create('Dashboard')
                 ->section('Commerce')
-                ->route('commerce.dashboard');
+                ->route('commerce.dashboard')
+                ->icon('charts');
         });
 
         Nav::extend(function ($nav) {
@@ -103,6 +104,7 @@ class CommerceServiceProvider extends AddonServiceProvider
                 ->create('Products')
                 ->section('Commerce')
                 ->route('products.index')
+                ->icon('entries')
                 ->children([
                     'Categories' => cp_route('product-categories.index')
                 ]);
@@ -112,14 +114,16 @@ class CommerceServiceProvider extends AddonServiceProvider
             $nav
                 ->create('Orders')
                 ->section('Commerce')
-                ->route('orders.index');
+                ->route('orders.index')
+                ->icon('list');
         });
 
         Nav::extend(function ($nav) {
             $nav
                 ->create('Customers')
                 ->section('Commerce')
-                ->route('customers.index');
+                ->route('customers.index')
+                ->icon('user');
         });
 
 //        Nav::extend(function ($nav) {
