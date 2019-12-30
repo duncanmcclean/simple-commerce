@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     protected $fillable = [
-        'iso', 'primary',
+        'iso', 'primary', 'uid',
     ];
 
     protected $casts = [
         'primary' => 'boolean',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uid';
+    }
 
     public function orders()
     {

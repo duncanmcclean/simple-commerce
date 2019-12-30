@@ -8,6 +8,7 @@ use Damcclean\Commerce\Models\ProductCategory;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
+use Statamic\Stache\Stache;
 
 class ProductCategoryController extends CpController
 {
@@ -20,8 +21,8 @@ class ProductCategoryController extends CpController
         $categories = ProductCategory::all()
             ->map(function ($category) {
                 return array_merge($category->toArray(), [
-                    'edit_url' => cp_route('product-categories.edit', ['category' => $category->id]),
-                    'delete_url' => cp_route('product-categories.destroy', ['category' => $category->id]),
+                    'edit_url' => cp_route('product-categories.edit', ['category' => $category->uid]),
+                    'delete_url' => cp_route('product-categories.destroy', ['category' => $category->uid]),
                 ]);
             });
 
@@ -57,11 +58,12 @@ class ProductCategoryController extends CpController
         $validation = $request->validated();
 
         $category = new ProductCategory();
+        $category->uid = (new Stache())->generateId();
         $category->title = $request->title;
         $category->slug = $request->slug;
         $category->save();
 
-        return ['redirect' => cp_route('product-categories.edit', ['category' => $category->id])];
+        return ['redirect' => cp_route('product-categories.edit', ['category' => $category->uid])];
     }
 
     public function edit(ProductCategory $category)

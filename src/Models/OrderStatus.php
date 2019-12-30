@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class OrderStatus extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'description', 'color', 'primary',
+        'name', 'slug', 'description', 'color', 'primary', 'uid',
     ];
 
     protected $casts = [
         'primary' => 'boolean',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uid';
+    }
 
     public function orders()
     {

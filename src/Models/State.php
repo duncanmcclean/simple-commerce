@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class State extends Model
 {
     protected $fillable = [
-        'name', 'abbreviation', 'country_id',
+        'name', 'abbreviation', 'country_id', 'uid',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uid';
+    }
 
     public function addresses()
     {

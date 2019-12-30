@@ -8,6 +8,7 @@ use Damcclean\Commerce\Models\Product;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
+use Statamic\Stache\Stache;
 
 class ProductController extends CpController
 {
@@ -20,8 +21,8 @@ class ProductController extends CpController
         $products = Product::all()
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
-                    'edit_url' => cp_route('products.edit', ['product' => $product->id]),
-                    'delete_url' => cp_route('products.destroy', ['product' => $product->id]),
+                    'edit_url' => cp_route('products.edit', ['product' => $product->uid]),
+                    'delete_url' => cp_route('products.destroy', ['product' => $product->uid]),
                 ]);
             });
 
@@ -57,12 +58,13 @@ class ProductController extends CpController
         $validation = $request->validated();
 
         $product = new Product();
+        $product->uid = (new Stache())->generateId();
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->product_category_id = $request->category;
         $product->save();
 
-        return ['redirect' => cp_route('products.edit', ['product' => $product->id])];
+        return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];
     }
 
     public function edit($product)

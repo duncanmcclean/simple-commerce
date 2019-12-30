@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     protected $fillable = [
-        'name', 'email', 'default_billing_address_id', 'default_shipping_address_id',
+        'name', 'email', 'default_billing_address_id', 'default_shipping_address_id', 'uid',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uid';
+    }
 
     public function addresses()
     {

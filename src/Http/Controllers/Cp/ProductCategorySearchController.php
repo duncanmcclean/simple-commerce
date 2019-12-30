@@ -15,8 +15,8 @@ class ProductCategorySearchController extends CpController
             $results = ProductCategory::all()
                 ->map(function ($category) {
                     return array_merge($category->toArray(), [
-                        'edit_url' => cp_route('product-categories.edit', ['category' => $category->id]),
-                        'delete_url' => cp_route('product-categories.destroy', ['category' => $category->id]),
+                        'edit_url' => cp_route('product-categories.edit', ['category' => $category->uid]),
+                        'delete_url' => cp_route('product-categories.destroy', ['category' => $category->uid]),
                     ]);
                 });
 
@@ -29,8 +29,8 @@ class ProductCategorySearchController extends CpController
             })
             ->map(function ($category) {
                 return array_merge($category->toArray(), [
-                    'edit_url' => cp_route('product-categories.edit', ['category' => $category->id]),
-                    'delete_url' => cp_route('product-categories.destroy', ['category' => $category->id]),
+                    'edit_url' => cp_route('product-categories.edit', ['category' => $category->uid]),
+                    'delete_url' => cp_route('product-categories.destroy', ['category' => $category->uid]),
                 ]);
             });
 
