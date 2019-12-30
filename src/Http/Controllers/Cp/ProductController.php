@@ -67,14 +67,12 @@ class ProductController extends CpController
         return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];
     }
 
-    public function edit($product)
+    public function edit(Product $product)
     {
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
-
-        $product = Product::where('uid', $product)->first();
 
         $blueprint = Blueprint::find('product');
 
@@ -90,7 +88,7 @@ class ProductController extends CpController
         ]);
     }
 
-    public function update(ProductUpdateRequest $request, $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
         $validation = $request->validated();
 
@@ -102,7 +100,7 @@ class ProductController extends CpController
         return $product;
     }
 
-    public function destroy($product)
+    public function destroy(Product $product)
     {
         $product = Product::delete($product);
 
