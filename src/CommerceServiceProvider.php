@@ -126,12 +126,12 @@ class CommerceServiceProvider extends AddonServiceProvider
                 ->route('customers.index');
         });
 
-        Nav::extend(function ($nav) {
-            $nav
-                ->create('Coupons')
-                ->section('Commerce')
-                ->route('coupons.index');
-        });
+//        Nav::extend(function ($nav) {
+//            $nav
+//                ->create('Coupons')
+//                ->section('Commerce')
+//                ->route('coupons.index');
+//        });
 
         Money::register();
         ProductFieldtype::register();
@@ -140,22 +140,6 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     public function register()
     {
-        // Coupons
-        $this->app->bind(CouponRepository::class, config('commerce.storage.coupons.repository'));
-        $this->app->bind('coupon', Coupon::class);
-
-        // Customers
-        $this->app->bind(CustomerRepository::class, config('commerce.storage.customers.repository'));
-        $this->app->bind('customer', Customer::class);
-
-        // Orders
-        $this->app->bind(OrderRepository::class, config('commerce.storage.orders.repository'));
-        $this->app->bind('order', Order::class);
-
-        // Products
-        $this->app->bind(ProductRepository::class, config('commerce.storage.products.repository'));
-        $this->app->bind('product', Product::class);
-
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
         }

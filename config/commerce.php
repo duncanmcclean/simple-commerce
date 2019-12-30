@@ -100,34 +100,4 @@ return [
 
     ],
 
-    /**
-     * Storage
-     *
-     * By default, Commerce stores your files in yaml files but if you
-     * want to use a database, swap the repo out for an Eloquent one.
-     */
-
-    'storage' => [
-
-        'coupons' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCouponRepository',
-            'files' => base_path().'/content/commerce/coupons',
-        ],
-
-        'customers' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCustomerRepository',
-            'files' => base_path().'/content/commerce/customers',
-        ],
-
-        'orders' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileOrderRepository',
-            'files' => base_path().'/content/commerce/orders',
-        ],
-
-        'products' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileProductRepository',
-            'files' => base_path().'/content/commerce/products',
-        ],
-
-    ],
 ];

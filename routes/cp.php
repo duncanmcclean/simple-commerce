@@ -22,15 +22,15 @@ Route::prefix('orders')->as('orders')->group(function () {
     Route::get('/delete/{order}', 'Http\Controllers\Cp\OrderController@destroy')->name('.destroy');
 });
 
-Route::prefix('coupons')->as('coupons')->group(function () {
-    Route::get('/', 'Http\Controllers\Cp\CouponController@index')->name('.index');
-    Route::get('/search', 'Http\Controllers\Cp\CouponSearchController')->name('.search');
-    Route::get('/create', 'Http\Controllers\Cp\CouponController@create')->name('.create');
-    Route::post('/create', 'Http\Controllers\Cp\CouponController@store')->name('.store');
-    Route::get('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@edit')->name('.edit');
-    Route::post('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@update')->name('.update');
-    Route::get('/delete/{coupon}', 'Http\Controllers\Cp\CouponController@destroy')->name('.destroy');
-});
+//Route::prefix('coupons')->as('coupons')->group(function () {
+//    Route::get('/', 'Http\Controllers\Cp\CouponController@index')->name('.index');
+//    Route::get('/search', 'Http\Controllers\Cp\CouponSearchController')->name('.search');
+//    Route::get('/create', 'Http\Controllers\Cp\CouponController@create')->name('.create');
+//    Route::post('/create', 'Http\Controllers\Cp\CouponController@store')->name('.store');
+//    Route::get('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@edit')->name('.edit');
+//    Route::post('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@update')->name('.update');
+//    Route::get('/delete/{coupon}', 'Http\Controllers\Cp\CouponController@destroy')->name('.destroy');
+//});
 
 Route::prefix('customers')->as('customers')->group(function () {
     Route::get('/', 'Http\Controllers\Cp\CustomerController@index')->name('.index');

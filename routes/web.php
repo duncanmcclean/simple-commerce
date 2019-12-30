@@ -1,7 +1,7 @@
 <?php
 
 Route::get(config('commerce.routes.thanks'), 'Http\Controllers\Web\ThanksController')->name('thanks');
-Route::post(config('commerce.routes.redeem_coupon'), 'Http\Controllers\Web\RedeemCouponController')->name('coupon.redeem');
+//Route::post(config('commerce.routes.redeem_coupon'), 'Http\Controllers\Web\RedeemCouponController')->name('coupon.redeem');
 
 /**
  * Cart
