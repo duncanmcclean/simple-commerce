@@ -20,7 +20,7 @@ class DashboardController extends CpController
             ->take(5)
             ->map(function ($order) {
                 return array_merge($order->toArray(), [
-                    'edit_url' => cp_route('orders.edit', ['order' => $order->id]),
+                    'edit_url' => cp_route('orders.edit', ['order' => $order->uid]),
                 ]);
             });
 
@@ -29,7 +29,7 @@ class DashboardController extends CpController
             ->take(5)
             ->map(function ($customer) {
                 return array_merge($customer->toArray(), [
-                    'edit_url' => cp_route('customers.edit', ['customer' => $customer->id]),
+                    'edit_url' => cp_route('customers.edit', ['customer' => $customer->uid]),
                 ]);
             });
 
