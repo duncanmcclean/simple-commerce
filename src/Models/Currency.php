@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     protected $fillable = [
-        'iso', 'primary', 'uid',
+        'iso', 'primary', 'uid', 'symbol', 'name',
     ];
 
     protected $casts = [
