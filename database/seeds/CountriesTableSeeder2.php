@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CountriesTableSeeder extends Seeder
+class CountriesTableSeeder2 extends Seeder
 {
     public function run()
     {

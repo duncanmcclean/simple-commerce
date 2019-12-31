@@ -6,7 +6,7 @@
 
     <publish-form
             title="{{ $values['name'] }}"
-            action="{{ cp_route('customers.update', ['customer' => $values['id']]) }}"
+            action="{{ cp_route('customers.update', ['customer' => $values['uid']]) }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
             :values='@json($values)'

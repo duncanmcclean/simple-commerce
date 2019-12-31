@@ -3,8 +3,9 @@
 use Damcclean\Commerce\Models\Country;
 use Damcclean\Commerce\Models\State;
 use Illuminate\Database\Seeder;
+use Statamic\Stache\Stache;
 
-class StatesTableSeeder extends Seeder
+class StatesTableSeeder2 extends Seeder
 {
     public function run()
     {
@@ -62,11 +63,14 @@ class StatesTableSeeder extends Seeder
             ['name' => 'Wyoming', 'abbreviation' => 'WY'],
         ];
 
+        dd('hi');
+
         foreach ($usa as $state) {
             $item = new State();
+            $item->uid = (new Stache())->generateId();
             $item->name = $state['name'];
             $item->abbreviation = $state['abbreviation'];
-            $item->country_id = Country::where('iso', 'US')->id;
+            $item->country_id = (Country::where('iso', 'US')->first())->id;
             $item->save();
         }
     }

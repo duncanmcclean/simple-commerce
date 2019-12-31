@@ -10,6 +10,7 @@ use Damcclean\Commerce\Events\OrderStatusUpdated;
 use Damcclean\Commerce\Events\ProductOutOfStock;
 use Damcclean\Commerce\Events\ProductStockRunningLow;
 use Damcclean\Commerce\Events\ReturnCustomer;
+use Damcclean\Commerce\Fieldtypes\CountryFieldtype;
 use Damcclean\Commerce\Fieldtypes\Money;
 use Damcclean\Commerce\Fieldtypes\Product as ProductFieldtype;
 use Damcclean\Commerce\Fieldtypes\ProductCategory as ProductCategoryFieldtype;
@@ -137,6 +138,7 @@ class CommerceServiceProvider extends AddonServiceProvider
         ProductFieldtype::register();
         CustomerFieldtype::register();
         ProductCategoryFieldtype::register();
+        CountryFieldtype::register();
     }
 
     public function register()
