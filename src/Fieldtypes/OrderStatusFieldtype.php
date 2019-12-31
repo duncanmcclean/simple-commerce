@@ -21,7 +21,7 @@ class OrderStatusFieldtype extends Relationship
     public function getColumns()
     {
         return [
-            Column::make('name')
+            Column::make('name'),
         ];
     }
 }
