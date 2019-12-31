@@ -5,11 +5,11 @@ use Damcclean\Commerce\Models\State;
 use Illuminate\Database\Seeder;
 use Statamic\Stache\Stache;
 
-class StatesTableSeeder2 extends Seeder
+class StatesTableSeeder extends Seeder
 {
     public function run()
     {
-        $usa = [
+        $states = [
             ['name' => 'Alabama', 'abbreviation' => 'AL'],
             ['name' => 'Alaska', 'abbreviation' => 'AK'],
             ['name' => 'Arizona', 'abbreviation' => 'AZ'],
@@ -63,9 +63,7 @@ class StatesTableSeeder2 extends Seeder
             ['name' => 'Wyoming', 'abbreviation' => 'WY'],
         ];
 
-        dd('hi');
-
-        foreach ($usa as $state) {
+        foreach ($states as $state) {
             $item = new State();
             $item->uid = (new Stache())->generateId();
             $item->name = $state['name'];

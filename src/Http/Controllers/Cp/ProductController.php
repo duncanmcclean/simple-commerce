@@ -102,7 +102,7 @@ class ProductController extends CpController
 
     public function destroy(Product $product)
     {
-        $product = Product::delete($product);
+        $product->delete();
 
         return redirect(cp_route('products.index'));
     }

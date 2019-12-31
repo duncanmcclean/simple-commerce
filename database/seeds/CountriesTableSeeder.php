@@ -1,14 +1,14 @@
 <?php
 
+use Damcclean\Commerce\Models\Country;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Statamic\Stache\Stache;
 
-class CountriesTableSeeder2 extends Seeder
+class CountriesTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('countries')->delete();
-
         $countries = [
             ['iso' => 'US', 'name' => 'United States'],
             ['iso' => 'CA', 'name' => 'Canada'],
@@ -254,6 +254,12 @@ class CountriesTableSeeder2 extends Seeder
             ['iso' => 'ZW', 'name' => 'Zimbabwe'],
         ];
 
-        DB::table('countries')->insert($countries);
+        foreach ($countries as $country) {
+            $item = new Country();
+            $item->uid = (new Stache())->generateId();
+            $item->name = $country['name'];
+            $item->iso = $country['iso'];
+            $item->save();
+        }
     }
 }
