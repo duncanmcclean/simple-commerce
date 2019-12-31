@@ -46,8 +46,13 @@ class Order extends Model
         return $this->belongsTo(Currency::class);
     }
 
-    public function setItemsAttribute(array $value)
+    public function setItemsAttribute($value)
     {
-        return json_encode($value);
+        $this->attributes['items'] = json_encode($value);
+    }
+
+    public function getItemsAttribute($value)
+    {
+        return json_decode($value);
     }
 }
