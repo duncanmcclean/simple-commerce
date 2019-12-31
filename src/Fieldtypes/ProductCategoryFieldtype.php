@@ -2,11 +2,11 @@
 
 namespace Damcclean\Commerce\Fieldtypes;
 
-use Damcclean\Commerce\Models\ProductCategory as ProductCategoryModel;
+use Damcclean\Commerce\Models\ProductCategory;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 
-class ProductCategory extends Relationship
+class ProductCategoryFieldtype extends Relationship
 {
     protected function toItemArray($id)
     {
@@ -15,7 +15,7 @@ class ProductCategory extends Relationship
 
     public function getIndexItems($request)
     {
-        return ProductCategoryModel::all();
+        return ProductCategory::all();
     }
 
     public function getColumns()

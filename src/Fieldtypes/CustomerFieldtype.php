@@ -4,9 +4,9 @@ namespace Damcclean\Commerce\Fieldtypes;
 
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
-use Damcclean\Commerce\Models\Customer as CustomerModel;
+use Damcclean\Commerce\Models\Customer;
 
-class Customer extends Relationship
+class CustomerFieldtype extends Relationship
 {
     protected $canCreate = false;
     protected $canEdit = false;
@@ -21,7 +21,7 @@ class Customer extends Relationship
     {
         return $request->search
             ? $this->formatCustomers($this->searchCustomers($request->search))
-            : $this->formatCustomers(CustomerModel::all());
+            : $this->formatCustomers(Customer::all());
     }
 
     public function formatCustomers($customers)
@@ -46,7 +46,7 @@ class Customer extends Relationship
 
     public function searchCustomers($query)
     {
-        return $results = CustomerModel::all()
+        return $results = Customer::all()
             ->filter(function ($item) use ($query) {
                 return false !== stristr((string) $item['name'], $query);
             });

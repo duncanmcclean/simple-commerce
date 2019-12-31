@@ -12,10 +12,10 @@ use Damcclean\Commerce\Events\ProductStockRunningLow;
 use Damcclean\Commerce\Events\ReturnCustomer;
 use Damcclean\Commerce\Fieldtypes\CountryFieldtype;
 use Damcclean\Commerce\Fieldtypes\CurrencyFieldtype;
-use Damcclean\Commerce\Fieldtypes\Money;
+use Damcclean\Commerce\Fieldtypes\MoneyFieldtype;
 use Damcclean\Commerce\Fieldtypes\OrderStatusFieldtype;
-use Damcclean\Commerce\Fieldtypes\Product as ProductFieldtype;
-use Damcclean\Commerce\Fieldtypes\ProductCategory as ProductCategoryFieldtype;
+use Damcclean\Commerce\Fieldtypes\ProductFieldtype;
+use Damcclean\Commerce\Fieldtypes\ProductCategoryFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Tags\CartTags;
@@ -24,7 +24,7 @@ use Damcclean\Commerce\Tags\ProductTags;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
-use Damcclean\Commerce\Fieldtypes\Customer as CustomerFieldtype;
+use Damcclean\Commerce\Fieldtypes\CustomerFieldtype;
 
 class CommerceServiceProvider extends AddonServiceProvider
 {
@@ -136,14 +136,13 @@ class CommerceServiceProvider extends AddonServiceProvider
 //                ->route('coupons.index');
 //        });
 
-        Money::register();
-        ProductFieldtype::register();
-        CustomerFieldtype::register();
-        ProductCategoryFieldtype::register();
-
         CountryFieldtype::register();
         CurrencyFieldtype::register();
+        CustomerFieldtype::register();
+        MoneyFieldtype::register();
         OrderStatusFieldtype::register();
+        ProductCategoryFieldtype::register();
+        ProductFieldtype::register();
     }
 
     public function register()
