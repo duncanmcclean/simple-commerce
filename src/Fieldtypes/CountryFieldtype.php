@@ -8,6 +8,16 @@ use Statamic\Fieldtypes\Relationship;
 
 class CountryFieldtype extends Relationship
 {
+    protected $categories = ['commerce'];
+    protected $icon = 'earth';
+
+    public function __construct()
+    {
+        $this->defaultValue = [
+            Country::where('iso', 'US')->first()->id
+        ];
+    }
+
     protected function toItemArray($id)
     {
         // TODO: Implement toItemArray() method.
@@ -23,5 +33,10 @@ class CountryFieldtype extends Relationship
         return [
             Column::make('name'),
         ];
+    }
+
+    public static function title()
+    {
+        return 'Country';
     }
 }

@@ -8,6 +8,9 @@ use Statamic\Fieldtypes\Relationship;
 
 class CurrencyFieldtype extends Relationship
 {
+    protected $categories = ['commerce'];
+    protected $icon = 'generic';
+
     protected function toItemArray($id)
     {
         // TODO: Implement toItemArray() method.
@@ -23,5 +26,10 @@ class CurrencyFieldtype extends Relationship
         return [
             Column::make('name'),
         ];
+    }
+
+    public static function title()
+    {
+        return 'Currency';
     }
 }

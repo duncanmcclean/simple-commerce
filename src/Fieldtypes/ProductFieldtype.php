@@ -8,6 +8,9 @@ use Statamic\Fieldtypes\Relationship;
 
 class ProductFieldtype extends Relationship
 {
+    protected $categories = ['commerce'];
+    protected $icon = 'entries';
+
     public function formatProducts($products)
     {
         return collect($products)
@@ -35,5 +38,10 @@ class ProductFieldtype extends Relationship
     public function toItemArray($id)
     {
         // TODO: Implement toItemArray() method.
+    }
+
+    public static function title()
+    {
+        return 'Product';
     }
 }

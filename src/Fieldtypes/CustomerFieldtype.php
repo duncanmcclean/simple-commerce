@@ -8,14 +8,11 @@ use Damcclean\Commerce\Models\Customer;
 
 class CustomerFieldtype extends Relationship
 {
+    protected $categories = ['commerce'];
     protected $canCreate = false;
     protected $canEdit = false;
     protected $taggable = false;
-
-    protected function toItemArray($id)
-    {
-        dd($id);
-    }
+    protected $icon = 'user';
 
     public function getIndexItems($request)
     {
@@ -50,5 +47,15 @@ class CustomerFieldtype extends Relationship
             ->filter(function ($item) use ($query) {
                 return false !== stristr((string) $item['name'], $query);
             });
+    }
+
+    protected function toItemArray($id)
+    {
+        // TODO: Implement toItemArray() method.
+    }
+
+    public static function title()
+    {
+        return 'Customer';
     }
 }
