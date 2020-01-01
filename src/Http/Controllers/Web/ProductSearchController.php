@@ -2,7 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Facades\Product;
+use Damcclean\Commerce\Models\Product;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 
@@ -12,7 +12,8 @@ class ProductSearchController
     {
         return (new View)
             ->template('commerce::web.search')
-            ->layout('commerce::web.layout');
+            ->layout('commerce::web.layout')
+            ->with(['title' => 'Search']);
     }
 
     public function show(Request $request)

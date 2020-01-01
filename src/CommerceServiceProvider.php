@@ -37,7 +37,6 @@ class CommerceServiceProvider extends AddonServiceProvider
     protected $tags = [
         CartTags::class,
         CommerceTags::class,
-        ProductTags::class,
     ];
 
     protected $scripts = [
