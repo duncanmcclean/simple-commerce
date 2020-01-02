@@ -10,16 +10,6 @@ class CommerceTags extends Tags
 {
     protected static $handle = 'commerce';
 
-    public function currencyCode()
-    {
-        return config('commerce.currency.code');
-    }
-
-    public function currencySymbol()
-    {
-        return config('commerce.currency.symbol');
-    }
-
     public function stripeKey()
     {
         return config('commerce.stripe.key');
@@ -32,7 +22,13 @@ class CommerceTags extends Tags
 
     public function categories()
     {
-        return ProductCategory::all()
+        $categories = ProductCategory::all();
+
+        if ($this->getParam('count')) {
+            return $categories->count();
+        }
+
+        return $categories
             ->map(function ($category) {
                 return $category;
             })
@@ -41,11 +37,19 @@ class CommerceTags extends Tags
 
     public function products()
     {
-        if ($this->getParam('count')) {
-            return Product::all()->count();
+        $products = Product::all();
+
+        if ($categorySlug = $this->getParam('category')) {
+            $category = ProductCategory::where('slug', $categorySlug)->first();
+
+            $products = Product::where('product_category_id', $category);
         }
 
-        return Product::all()
+        if ($this->getParam('count')) {
+            return $products->count();
+        }
+
+        return $products
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
                     'url' => route('products.show', ['product' => $product['slug']]),

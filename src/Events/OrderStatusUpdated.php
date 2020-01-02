@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce\Events;
 
+use Damcclean\Commerce\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -11,7 +12,7 @@ class OrderStatusUpdated
 
     public $order;
 
-    public function __construct($order)
+    public function __construct(Order $order)
     {
         $this->order = $order;
     }

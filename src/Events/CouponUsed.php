@@ -14,5 +14,7 @@ class CouponUsed
     public function __construct($coupon)
     {
         $this->coupon = $coupon;
+
+        // TODO: implement the coupon model thing here (Coupon $coupon)
     }
 }
