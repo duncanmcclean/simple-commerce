@@ -18,20 +18,6 @@ return [
     ],
 
     /**
-     * Currency
-     *
-     * Commerce can only sell your products in a single currency.
-     * By default, the currency used is Pound Sterling. You can
-     * change it to any currency code supported by Stripe.
-     * See: https://stripe.com/docs/currencies
-     */
-
-    'currency' => [
-        'code' => env('COMMERCE_CURRENCY', 'gbp'),
-        'symbol' => env('COMMERCE_CURRENCY_SYMBOL', '£'),
-    ],
-
-    /**
      * Stripe
      *
      * We need these keys so your customers can purchase
