@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'slug' => 'product_category_id', 'uid',
+        'title', 'slug' => 'product_category_id', 'uid', 'is_enabled',
+    ];
+
+    protected $casts = [
+        'is_enabled' => 'boolean'
     ];
 
     public function getRouteKeyName()

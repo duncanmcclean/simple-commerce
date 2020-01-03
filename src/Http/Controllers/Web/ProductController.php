@@ -19,6 +19,10 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)->first();
 
+        if ($product->is_enabled === false) {
+            abort(404);
+        }
+
         return (new View)
             ->template('commerce::web.product')
             ->layout('commerce::web.layout')
