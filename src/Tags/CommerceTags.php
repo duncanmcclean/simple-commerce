@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce\Tags;
 
+use Damcclean\Commerce\Models\Currency;
 use Damcclean\Commerce\Models\Product;
 use Damcclean\Commerce\Models\ProductCategory;
 use Statamic\Tags\Tags;
@@ -9,6 +10,16 @@ use Statamic\Tags\Tags;
 class CommerceTags extends Tags
 {
     protected static $handle = 'commerce';
+
+    public function currencyCode()
+    {
+        return Currency::where('primary', true)->first()->iso;
+    }
+
+    public function currencySymbol()
+    {
+        return Currency::where('primary', true)->first()->symbol;
+    }
 
     public function stripeKey()
     {
