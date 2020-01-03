@@ -14,6 +14,9 @@ class ProductCategoryController extends Controller
 
         $products = Product::all()
             ->where('product_category_id', $category->id)
+            ->reject(function ($product) {
+                return ! $product->is_enabled;
+            })
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
                     'url' => route('products.show', ['product' => $product['slug']]),

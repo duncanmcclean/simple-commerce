@@ -237,6 +237,10 @@ Display all products within a certain product category.
 
 You can get the number of products available in your store by using `{{ commerce:products count='true' }}`.
 
+##### Show Disabled
+
+By default, disabled products aren't shown, however if you'd like to show them, use the attribute `show_displayed='true'`.
+
 ### Product Categories
 
 Product Categories are like taxonomies. They can be attached to products and they help to organise your store and define product URLs.

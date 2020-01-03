@@ -60,6 +60,13 @@ class CommerceTags extends Tags
             return $products->count();
         }
 
+        if (! $this->getParam('show_disabled')) {
+            $products = $products
+                ->reject(function ($product) {
+                    return ! $product->is_enabled;
+                });
+        }
+
         return $products
             ->map(function ($product) {
                 return array_merge($product->toArray(), [

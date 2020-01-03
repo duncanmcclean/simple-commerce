@@ -22,6 +22,9 @@ class ProductSearchController
 
         if (! $query) {
             $results = Product::all()
+                ->reject(function ($product) {
+                    return ! $product->is_enabled;
+                })
                 ->map(function ($product) {
                     return array_merge($product->toArray(), [
                         'url' => route('products.show', ['product' => $product['slug']]),
@@ -31,6 +34,9 @@ class ProductSearchController
                 });
         } else {
             $results = Product::all()
+                ->reject(function ($product) {
+                    return ! $product->is_enabled;
+                })
                 ->filter(function ($item) use ($query) {
                     return false !== stristr((string) $item['title'], $query);
                 })
