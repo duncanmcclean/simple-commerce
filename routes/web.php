@@ -2,7 +2,7 @@
 
 Route::get(config('commerce.routes.thanks'), 'Http\Controllers\Web\ThanksController')->name('thanks');
 //Route::post(config('commerce.routes.redeem_coupon'), 'Http\Controllers\Web\RedeemCouponController')->name('coupon.redeem');
-Route::get('/{category}', 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
+//Route::get('/{category}', 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
 
 /**
  * Cart
