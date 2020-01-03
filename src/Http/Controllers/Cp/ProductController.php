@@ -61,7 +61,9 @@ class ProductController extends CpController
         $product->uid = (new Stache())->generateId();
         $product->title = $request->title;
         $product->slug = $request->slug;
+        $product->description = $request->description;
         $product->product_category_id = $request->category[0] ?? null;
+        $product->is_enabled = $request->is_enabled;
         $product->save();
 
         return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];
@@ -94,7 +96,9 @@ class ProductController extends CpController
 
         $product->title = $request->title;
         $product->slug = $request->slug;
+        $product->description = $request->description;
         $product->product_category_id = $request->category;
+        $product->is_enabled = $request->is_enabled;
         $product->save();
 
         return $product;
