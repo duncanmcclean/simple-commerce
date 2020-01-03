@@ -1,7 +1,7 @@
 <div class="flex flex-row items-center justify-between">
     <h1 class="text-5xl font-bold mb-2 text-gray-800">Products</h1>
 
-    <form id="search-form" action="{{ commerce:route key='products.search' }}/results" method="post">
+    <form id="search-form" action="{{ commerce:route key='products.search' }}/results" method="get">
         {{ csrf_field }}
         <input class="border border-gray-500 focus:outline-none rounded-sm p-1 text-semibold text-gray-800" type="text" name="query" placeholder="Search Products" onsubmit="this.parentElement.submit()" required>
     </form>
