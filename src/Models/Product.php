@@ -28,4 +28,19 @@ class Product extends Model
     {
         return $this->hasMany(Variant::class);
     }
+
+    public function updateUrl()
+    {
+        return cp_route('products.update', ['product' => $this->uid]);
+    }
+
+    public function publishUrl()
+    {
+        return $this->updateUrl();
+    }
+
+    public function absoluteUrl()
+    {
+        return route('products.show', ['product' => $this->slug]);
+    }
 }

@@ -31,12 +31,16 @@ class ProductsTableSeeder extends Seeder
             [
                 'title' => 'T-shirt',
                 'slug' => 't-shirt',
+                'description' => '',
                 'category' => 'clothing',
+                'enabled' => true,
             ],
             [
                 'title' => 'Waterproof Jacket',
                 'slug' => 'waterproof-jacket',
+                'description' => '',
                 'category' => 'clothing',
+                'enabled' => true,
             ],
         ];
 
@@ -45,7 +49,9 @@ class ProductsTableSeeder extends Seeder
             $item->uid = (new Stache())->generateId();
             $item->title = $product['title'];
             $item->slug = $product['slug'];
+            $item->description = $product['description'];
             $item->product_category_id = (ProductCategory::where('slug', $product['category'])->first())->id;
+            $item->is_enabled = $product['enabled'];
             $item->save();
         }
 

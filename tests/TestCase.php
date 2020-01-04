@@ -65,13 +65,5 @@ abstract class TestCase extends OrchestraTestCase
             'class' => \Statamic\Stache\Stores\UsersStore::class,
             'directory' => __DIR__.'/__fixtures__/users',
         ]);
-
-        $app['config']->set('app.key', 'base64:xRIcDp1ReW8Y8rd9V9D7hOVV4TI7ThCF3FKxRg01Rm8=');
-        $app->setBasePath(realpath(__DIR__.'/__fixtures__'));
-
-        $app['config']->set('commerce.storage.coupons.files', __DIR__.'/__fixtures__/content/commerce/coupons');
-        $app['config']->set('commerce.storage.customers.files', __DIR__.'/__fixtures__/content/commerce/customers');
-        $app['config']->set('commerce.storage.orders.files', __DIR__.'/__fixtures__/content/commerce/orders');
-        $app['config']->set('commerce.storage.products.files', __DIR__.'/__fixtures__/content/commerce/products');
     }
 }

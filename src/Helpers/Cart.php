@@ -2,99 +2,78 @@
 
 namespace Damcclean\Commerce\Helpers;
 
-use Damcclean\Commerce\Facades\Product;
-use Money\Currencies\ISOCurrencies;
-use Money\Currency;
-use Money\Formatter\DecimalMoneyFormatter;
-use Money\Money;
+use Damcclean\Commerce\Models\Cart as CartModel;
+use Damcclean\Commerce\Models\CartItem;
+use Statamic\Stache\Stache;
 
 class Cart
 {
-    public function query()
+    public function create()
     {
-        $currencies = new ISOCurrencies();
-        $moneyFormatter = new DecimalMoneyFormatter($currencies);
+        $cart = new CartModel();
+        $cart->uid = (new Stache())->generateId();
+        $cart->total = 00.00;
+        $cart->save();
 
-        return collect(request()->session()->get('cart'))
-            ->map(function ($item) use ($currencies, $moneyFormatter) {
-                $product = Product::findBySlug($item['slug']);
-
-                return array_merge(collect($product)->toArray(), [
-                    'quantity' => $item['quantity'],
-                    'price' => $moneyFormatter->format(Money::{strtoupper(config('commerce.currency.code'))}(($product['price'] * 100) * $item['quantity']))
-                ]);
-            });
+        return $cart->uid;
     }
 
-    public function all()
+    public function exists($uid)
     {
-        return $this->query();
-    }
-
-    public function add(string $slug, int $quantity)
-    {
-        $items = $this->all();
-
-        foreach ($items as $item) {
-            // TODO: Refactor this using collections
-
-            if ($item['slug'] == $slug) {
-                $item['quantity'] += $quantity;
-
-                return $this->replace($items);
-            }
+        if ($cart = CartModel::where('uid', $uid)->first()) {
+            return true;
         }
 
-        $items[] = [
-            'slug' => $slug,
-            'quantity' => $quantity,
-        ];
-
-        return $this->replace($items);
+        return false;
     }
 
-    public function replace($items)
+    public function count($uid)
     {
-        return request()->session()->put('cart', $items);
+        $cart = CartModel::where('uid', $uid)->first();
+
+        return collect($cart->items)->count();
     }
 
-    public function remove($slug)
+    public function get($uid)
     {
-        $items = collect($this->query())
-            ->reject(function ($product) use ($slug) {
-                if ($product['slug'] == $slug) {
-                    return true;
-                }
+        $cart = CartModel::where('uid', $uid)->first();
 
-                return false;
+        return collect($cart->items);
+    }
+
+    public function add($uid, $data)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        $item = new CartItem();
+        $item->uid = (new Stache())->generateId();
+        $item->product_id = $data['product'];
+        $item->variant_id = $data['variant'];
+        $item->quantity = $data['quantity'];
+        $item->cart_id = $cart->id;
+        $item->save();
+
+        return collect($cart->items);
+    }
+
+    public function remove($uid, $itemUid)
+    {
+        $item = CartItem::where('uid', $itemUid)->first();
+
+        $item->delete();
+
+        return (Cart::where('uid', $uid)->first())->items;
+    }
+
+    public function clear($uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        collect($cart->items)
+            ->each(function ($item) {
+                $item->delete();
             });
 
-        return $this->replace($items);
-    }
-
-    public function total()
-    {
-        $total = 0;
-
-        $this->all()
-            ->each(function ($item) use (&$total) {
-                $total += $item['price'];
-            });
-
-        $amount = Money::{strtoupper(config('commerce.currency.code'))}($total * 100);
-        $currencies = new ISOCurrencies();
-        $moneyFormatter = new DecimalMoneyFormatter($currencies);
-
-        return $moneyFormatter->format($amount);
-    }
-
-    public function count()
-    {
-        return $this->query()->count();
-    }
-
-    public function clear()
-    {
-        return request()->session()->forget('cart');
+        $cart->delete();
     }
 }

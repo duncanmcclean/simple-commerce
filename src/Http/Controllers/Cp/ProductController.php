@@ -87,6 +87,14 @@ class ProductController extends CpController
             'values'    => $product,
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
+
+            'editing' => true,
+            'actions' => [
+                'save' => $product->updateUrl(),
+                'publish' => $product->publishUrl(),
+                'unpublish' => $product->publishUrl(),
+            ],
+            'permalink' => $product->absoluteUrl(),
         ]);
     }
 
