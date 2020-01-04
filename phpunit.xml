@@ -13,23 +13,17 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+    </filter>
     <php>
-<!--        <env name="APP_ENV" value="testing"/>-->
-<!--        <env name="APP_KEY" value="base64:yk+bUVuZa1p86Dqjk9OjVK2R1pm6XHxC6xEKFq8utH0="/>-->
-<!--        <env name="CACHE_DRIVER" value="array"/>-->
-<!--        <env name="QUEUE_CONNECTION" value="sync"/>-->
-<!--        <env name="SESSION_DRIVER" value="array"/>-->
-<!--        <env name="DB_CONNECTION" value="sqlite" force="true"/>-->
-<!--        <env name="DB_DATABASE" value=":memory:" force="true"/>-->
-<!--        <env name="DB_DRIVER" value="sqlite" force="true"/>-->
-
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="APP_URL" value="http://localhost" />
-        <env name="APP_KEY" value="base64:QeU8nSJFKtBB3Y9SdxH0U4xH/1rsFd4zNfOLTeK/DUw=" />
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+<!--        <env name="DB_CONNECTION" value="sqlite"/>-->
+<!--        <env name="DB_DATABASE" value=":memory:"/>-->
     </php>
 </phpunit>

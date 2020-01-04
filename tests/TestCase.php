@@ -65,5 +65,12 @@ abstract class TestCase extends OrchestraTestCase
             'class' => \Statamic\Stache\Stores\UsersStore::class,
             'directory' => __DIR__.'/__fixtures__/users',
         ]);
+
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', __DIR__.'/__fixtures__/database.sqlite'),
+            'prefix' => '',
+        ]);
     }
 }
