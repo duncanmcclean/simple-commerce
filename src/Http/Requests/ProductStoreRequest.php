@@ -17,7 +17,16 @@ class ProductStoreRequest extends FormRequest
             'title' => 'required|string',
             'slug' => 'required|string',
             'description' => '',
-            'category' => ''
+            'category' => '',
+
+            'variants.*.name' => 'required|string',
+            'variants.*.sku' => 'required|string',
+            'variants.*.price' => ['nullable', 'required_if:free_shipping,false', 'regex:/^\d*(\.\d{2})?$/'],
+            'variants.*.stock_number' => 'required',
+            'variants.*.unlimited_stock' => 'required|boolean',
+            'variants.*.max_quantity' => '',
+            'variants.*.description' => '',
+            'variants.*.attributes' => '',
         ];
     }
 }

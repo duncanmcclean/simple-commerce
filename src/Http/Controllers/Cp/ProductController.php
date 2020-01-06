@@ -5,6 +5,7 @@ namespace Damcclean\Commerce\Http\Controllers\Cp;
 use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
 use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
 use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\Variant;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -55,6 +56,8 @@ class ProductController extends CpController
 
     public function store(ProductStoreRequest $request)
     {
+        dd($request->all());
+
         $validation = $request->validated();
 
         $product = new Product();
@@ -63,8 +66,24 @@ class ProductController extends CpController
         $product->slug = $request->slug;
         $product->description = $request->description;
         $product->product_category_id = $request->category[0] ?? null;
-        $product->is_enabled = $request->is_enabled;
+        $product->is_enabled = true;
         $product->save();
+
+        collect($request->variants)
+            ->each(function ($variant) use ($product) {
+                $item = new Variant();
+                $item->uid = (new Stache())->generateId();
+                $item->name = $variant['name'];
+                $item->sku = $variant['sku'];
+                $item->price = $variant['price'];
+                $item->stock = $variant['stock_number'];
+                $item->unlimited_stock = $variant['unlimited_stock'];
+                $item->max_quantity = $variant['max_quantity'];
+                $item->description = $variant['description'];
+                $item->variant_attributes = $variant['attributes'];
+                $item->product_id = $product->id;
+                $item->save();
+            });
 
         return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];
     }
@@ -82,9 +101,18 @@ class ProductController extends CpController
         $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
+        $values = array_merge($product->toArray(), [
+            'variants' => $product->variants->map(function (Variant $variant) {
+                return array_merge($variant->toArray(), [
+                    '_id' => 'row-'.$variant['id'],
+                    'attributes' => $variant['variant_attributes'],
+                ]);
+            })->toArray()
+        ]);
+
         return view('commerce::cp.products.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $product,
+            'values'    => $values,
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
 

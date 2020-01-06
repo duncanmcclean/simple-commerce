@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Variant extends Model
 {
     protected $fillable = [
-        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uid', 'description', 'variant_attributes',
+        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uid', 'description', 'variant_attributes', 'name',
     ];
 
     public function getRouteKeyName()
@@ -27,6 +27,6 @@ class Variant extends Model
 
     public function getVariantAttributesAttribute($value)
     {
-        return json_decode($value);
+        return json_decode($value, true);
     }
 }

@@ -59,7 +59,8 @@ class ProductsTableSeeder extends Seeder
         $variants = [
             [
                 'sku' => 'TSHRSMA',
-                'description' => 'Small t-shirt',
+                'name' => 'Small t-shirt',
+                'description' => 'A small version of the generic t-shirt that we sell.',
                 'attributes' => [
                     'size' => 'Small',
                 ],
@@ -71,7 +72,8 @@ class ProductsTableSeeder extends Seeder
             ],
             [
                 'sku' => 'TSHRMED',
-                'description' => 'Medium t-shirt',
+                'name' => 'Medium t-shirt',
+                'description' => 'A medium version of the generic t-shirt that we sell.',
                 'attributes' => [
                     'size' => 'Medium',
                 ],
@@ -83,7 +85,8 @@ class ProductsTableSeeder extends Seeder
             ],
             [
                 'sku' => 'TSHRLAR',
-                'description' => 'Large t-shirt',
+                'name' => 'Large t-shirt',
+                'description' => 'A large version of the generic t-shirt that we sell.',
                 'attributes' => [
                     'size' => 'Large',
                 ],
@@ -95,7 +98,8 @@ class ProductsTableSeeder extends Seeder
             ],
             [
                 'sku' => 'WATJAKORN',
-                'description' => 'Orange',
+                'title' => 'Orange',
+                'description' => 'An orange version of the jackets that we sell.',
                 'attributes' => [
                     'color' => 'Orange',
                 ],
@@ -107,7 +111,8 @@ class ProductsTableSeeder extends Seeder
             ],
             [
                 'sku' => 'WATJAKBLA',
-                'description' => 'Black',
+                'title' => 'Black',
+                'description' => 'An black version of the jackets that we sell.',
                 'attributes' => [
                     'color' => 'Black',
                 ],
@@ -119,7 +124,8 @@ class ProductsTableSeeder extends Seeder
             ],
             [
                 'sku' => 'WATJAKGRE',
-                'description' => 'Green',
+                'title' => 'Green',
+                'description' => 'An green version of the jackets that we sell.',
                 'attributes' => [
                     'color' => 'Green',
                 ],
@@ -135,6 +141,7 @@ class ProductsTableSeeder extends Seeder
             $item = new Variant();
             $item->uid = (new Stache())->generateId();
             $item->sku = $variant['sku'];
+            $item->name = $variant['name'];
             $item->description = $variant['description'];
             $item->variant_attributes = $variant['attributes'];
             $item->price = $variant['price'];
