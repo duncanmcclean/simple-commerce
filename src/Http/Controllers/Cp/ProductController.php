@@ -88,12 +88,16 @@ class ProductController extends CpController
         return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];
     }
 
-    public function edit(Product $product)
+    public function edit($product)
     {
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
+
+        $product = Product::where('uid', $product)
+            ->with('variants')
+            ->first();
 
         $blueprint = Blueprint::find('product');
 
@@ -101,22 +105,14 @@ class ProductController extends CpController
         $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
-        $values = array_merge($product->toArray(), [
-            'variants' => $product->variants->map(function (Variant $variant) {
-                return array_merge($variant->toArray(), [
-                    '_id' => 'row-'.$variant['id'],
-                    'attributes' => $variant['variant_attributes'],
-                ]);
-            })->toArray()
-        ]);
-
         return view('commerce::cp.products.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $values,
+            'values'    => $product,
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
 
             'editing' => true,
+
             'actions' => [
                 'save' => $product->updateUrl(),
                 'publish' => $product->publishUrl(),
