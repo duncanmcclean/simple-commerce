@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CartTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, DatabaseMigrations;
 
     public function setUp(): void
     {
