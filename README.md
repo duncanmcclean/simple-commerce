@@ -4,6 +4,10 @@ Commerce is a powerful e-commerce solution for Statamic (v3) sites. It gives dev
 
 > Please learn how to use Statamic first before using Commerce.
 
+## Database vs flat-file
+
+Unlike Statamic itself using flat-files, **Commerce uses a MySQL database**. There are a variety of advantages a *real* database gives us. Things like relationships, security, speed. We initially tried to make Commerce work just on files but it ended up being near enough impossible, especially if we want it to scale to more than just a few products.
+
 ## Installing
 
 ### Server Requirements
