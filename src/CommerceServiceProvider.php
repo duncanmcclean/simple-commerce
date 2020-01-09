@@ -21,6 +21,7 @@ use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
+use Damcclean\Commerce\Widgets\NewCustomersWidget;
 use Damcclean\Commerce\Widgets\RecentOrdersWidget;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
@@ -61,6 +62,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     protected $widgets = [
         RecentOrdersWidget::class,
+        NewCustomersWidget::class,
     ];
 
     public function boot()
