@@ -35,7 +35,7 @@
         "stripe/stripe-php": "^7.7",
         "statamic/cms": "3.0.*@beta",
         "moneyphp/money": "^3.0@dev",
-        "doctrine/dbal": "^3.0@dev"
+        "doctrine/dbal": "2.10.x-dev"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0"
