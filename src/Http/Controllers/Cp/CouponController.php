@@ -15,7 +15,7 @@ class CouponController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
         ]);
 
         $coupons = Coupon::all()
@@ -35,7 +35,7 @@ class CouponController extends CpController
     public function create()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Coupons', 'url' => cp_route('coupons.index')],
         ]);
 
@@ -65,7 +65,7 @@ class CouponController extends CpController
     public function edit($product)
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Coupons', 'url' => cp_route('coupons.index')],
         ]);
 
