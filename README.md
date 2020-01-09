@@ -373,6 +373,30 @@ On the front-end, Commerce uses lots of form request to do things like adding to
 * `/cart/delete` - Removes an item from the user's cart
 * `/checkout` - Processes the user's information, charges the customer and creates an order
 
+## Widgets
+
+Commerce provides a few widgets that you can add to the Dashboard of your Control Panel that displays key store information at a glance.
+
+* `new_customers`
+* `recent_orders`
+
+You can add them to your Dashboard, by updating the list in your `cp.php` config file.
+
+```php
+<?php
+
+return [
+    ...
+
+    'widgets' => [
+        'new_customers',
+        'recent_orders',
+    ],
+    
+    ...
+];
+```
+
 ## Resources
 
 * [Commerce Discord for testers](https://discord.gg/P3ACYf9)
