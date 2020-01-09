@@ -1,5 +1,7 @@
 <?php
 
+namespace Damcclean\Commerce\Tests;
+
 use Damcclean\Commerce\Helpers\Cart;
 use Damcclean\Commerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
