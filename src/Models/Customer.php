@@ -34,4 +34,9 @@ class Customer extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function updateUrl()
+    {
+        return cp_route('customers.edit', ['customer' => $this->uid]);
+    }
 }

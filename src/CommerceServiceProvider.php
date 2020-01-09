@@ -21,6 +21,8 @@ use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
+use Damcclean\Commerce\Widgets\NewCustomersWidget;
+use Damcclean\Commerce\Widgets\RecentOrdersWidget;
 use Statamic\Facades\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -58,6 +60,11 @@ class CommerceServiceProvider extends AddonServiceProvider
         ReturnCustomer::class => [],
     ];
 
+    protected $widgets = [
+        RecentOrdersWidget::class,
+        NewCustomersWidget::class,
+    ];
+
     public function boot()
     {
         parent::boot();
@@ -92,14 +99,6 @@ class CommerceServiceProvider extends AddonServiceProvider
             'commerceCurrencyCode' => config('commerce.currency.code'),
             'commerceCurrencySymbol' => config('commerce.currency.symbol'),
         ]);
-
-        Nav::extend(function ($nav) {
-            $nav
-                ->create('Dashboard')
-                ->section('Commerce')
-                ->route('commerce.dashboard')
-                ->icon('charts');
-        });
 
         Nav::extend(function ($nav) {
             $nav

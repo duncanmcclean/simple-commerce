@@ -16,7 +16,7 @@ class ProductController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
         ]);
 
         $products = Product::all()
@@ -36,7 +36,7 @@ class ProductController extends CpController
     public function create()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
 
@@ -91,7 +91,7 @@ class ProductController extends CpController
     public function edit($product)
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
 
