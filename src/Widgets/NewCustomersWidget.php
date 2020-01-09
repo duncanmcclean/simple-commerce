@@ -11,15 +11,10 @@ class NewCustomersWidget extends Widget
     {
         $customers = Customer::all()
             ->sortByDesc('created_at')
-            ->take(5)
-            ->map(function ($customer) {
-                return array_merge($customer->toArray(), [
-                    'edit_url' => cp_route('customers.edit', ['customer' => $customer->uid]),
-                ]);
-            });
+            ->take(5);
 
         return view('commerce::widgets.new-customers', [
-            'customers' => $customers->toArray(),
+            'customers' => $customers,
         ]);
     }
 }

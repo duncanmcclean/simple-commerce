@@ -29,7 +29,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ $order->customer->updateUrl() }}">{{ $order->customer->email }}</a>
+                            <a href="{{ $order->customer->updateUrl() }}">{{ $order->customer->name }}</a>
                         </td>
                     </tr>
                 @endforeach
