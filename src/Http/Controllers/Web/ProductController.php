@@ -17,11 +17,16 @@ class ProductController extends Controller
 
     public function show(string $slug)
     {
-        $product = Product::where('slug', $slug)->first();
+        $product = Product::where('slug', $slug)
+            ->with('variants')
+            ->first();
 
         if ($product->is_enabled === false) {
             abort(404);
         }
+
+        // TODO: this is temporary until we make product variations work on the front-end
+        return $product;
 
         return (new View)
             ->template('commerce::web.product')

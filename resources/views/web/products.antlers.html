@@ -9,11 +9,11 @@
 
 <div class="flex flex-row flex-wrap items-center">
     {{ commerce:products }}
-        <div class="shadow-sm w-full md:w-1/4 mb-4 px-2">
+        <a class="shadow-sm w-full md:w-1/4 mb-4 px-2" href="/products/{{ slug }}">
             <div class="px-2 py-4 bg-gray-200">
                 <h2 class="font-gray-800 font-bold text-xl mb-1">{{ title }}</h2>
                 <h3 class="font-gray-600 font-medium text-normal">{{ commerce:currency_symbol }}{{ from_price }}</h3>
             </div>
-        </div>
+        </a>
     {{ /commerce:products }}
 </div>
