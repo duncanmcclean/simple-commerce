@@ -16,7 +16,7 @@ class ProductCategoryController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
         ]);
 
         $categories = ProductCategory::all()
@@ -37,7 +37,7 @@ class ProductCategoryController extends CpController
     public function create()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
@@ -71,7 +71,7 @@ class ProductCategoryController extends CpController
     public function show(ProductCategory $category)
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
@@ -93,7 +93,7 @@ class ProductCategoryController extends CpController
     public function edit(ProductCategory $category)
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => cp_route('commerce.dashboard')],
+            ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
