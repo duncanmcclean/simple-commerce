@@ -102,14 +102,6 @@ class CommerceServiceProvider extends AddonServiceProvider
 
         Nav::extend(function ($nav) {
             $nav
-                ->create('Dashboard')
-                ->section('Commerce')
-                ->route('commerce.dashboard')
-                ->icon('charts');
-        });
-
-        Nav::extend(function ($nav) {
-            $nav
                 ->create('Products')
                 ->section('Commerce')
                 ->route('products.index')
