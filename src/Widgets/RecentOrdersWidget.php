@@ -11,15 +11,10 @@ class RecentOrdersWidget extends Widget
     {
         $orders = Order::all()
             ->sortByDesc('created_at')
-            ->take(5)
-            ->map(function ($order) {
-                return array_merge($order->toArray(), [
-                    'edit_url' => cp_route('orders.edit', ['order' => $order->uid]),
-                ]);
-            });
+            ->take(5);
 
         return view('commerce::widgets.recent-orders', [
-            'orders' => $orders->toArray(),
+            'orders' => $orders,
         ]);
     }
 }
