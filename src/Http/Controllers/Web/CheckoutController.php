@@ -7,10 +7,11 @@ use Damcclean\Commerce\Events\NewCustomerCreated;
 use Damcclean\Commerce\Events\ProductOutOfStock;
 use Damcclean\Commerce\Events\ProductStockRunningLow;
 use Damcclean\Commerce\Events\ReturnCustomer;
-use Damcclean\Commerce\Facades\Customer;
-use Damcclean\Commerce\Facades\Order;
-use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Helpers\Cart;
+use Damcclean\Commerce\Helpers\Currency;
+use Damcclean\Commerce\Models\Customer;
+use Damcclean\Commerce\Models\Order;
+use Damcclean\Commerce\Models\Product;
 use Damcclean\Commerce\Tags\CartTags;
 use Illuminate\Http\Request;
 use Statamic\View\View;
@@ -25,25 +26,35 @@ class CheckoutController extends Controller
         Stripe::setApiKey(config('commerce.stripe.secret'));
 
         $this->cart = new Cart();
+
+        if (! session()->get('commerce_cart_id')) {
+            session()->put('commerce_cart_id', $this->cart->create());
+        }
+
+        $this->cartId = session()->get('commerce_cart_id');
     }
 
     public function show()
     {
-        if ($this->cart->total() == '0.00') {
+        if ($this->cart->total($this->cartId) === '0') {
             return (new View())
                 ->template('commerce::web.checkout')
-                ->layout('commerce::web.layout');
+                ->layout('commerce::web.layout')
+                ->with([
+                    'title' => 'Checkout',
+                ]);
         }
 
         $intent = PaymentIntent::create([
-            'amount' => (number_format($this->cart->total(), 2, '.', '') * 100),
-            'currency' => config('commerce.currency.code'),
+            'amount' => (number_format($this->cart->total($this->cartId), 2, '.', '') * 100),
+            'currency' => (new Currency())->primary()->iso,
         ]);
 
         return (new View)
             ->template('commerce::web.checkout')
             ->layout('commerce::web.layout')
             ->with([
+                'title' => 'Checkout',
                 'intent' => $intent->client_secret,
             ]);
     }
@@ -127,7 +138,7 @@ class CheckoutController extends Controller
                 }
             });
 
-        $this->cart->clear();
+        $this->cart->clear($this->cartId);
 
         return redirect(config('commerce.routes.thanks'));
     }

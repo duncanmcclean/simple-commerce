@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Helpers;
 
 use Damcclean\Commerce\Models\Cart as CartModel;
 use Damcclean\Commerce\Models\CartItem;
+use Damcclean\Commerce\Models\Variant;
 use Statamic\Stache\Stache;
 
 class Cart
@@ -18,7 +19,7 @@ class Cart
         return $cart->uid;
     }
 
-    public function exists($uid)
+    public function exists(string $uid)
     {
         if ($cart = CartModel::where('uid', $uid)->first()) {
             return true;
@@ -27,21 +28,21 @@ class Cart
         return false;
     }
 
-    public function count($uid)
+    public function count(string $uid)
     {
         $cart = CartModel::where('uid', $uid)->first();
 
         return collect($cart->items)->count();
     }
 
-    public function get($uid)
+    public function get(string $uid)
     {
         $cart = CartModel::where('uid', $uid)->first();
 
         return collect($cart->items);
     }
 
-    public function add($uid, $data)
+    public function add(string $uid, array $data)
     {
         $cart = CartModel::where('uid', $uid)->first();
 
@@ -53,10 +54,14 @@ class Cart
         $item->cart_id = $cart->id;
         $item->save();
 
+        $cart = CartModel::where('uid', $uid)->first();
+        $cart->total += (Variant::find($data['variant'])->price) * $data['quantity'];
+        $cart->save();
+
         return collect($cart->items);
     }
 
-    public function remove($uid, $itemUid)
+    public function remove(string $uid, string $itemUid)
     {
         $item = CartItem::where('uid', $itemUid)->first();
 
@@ -65,7 +70,7 @@ class Cart
         return (Cart::where('uid', $uid)->first())->items;
     }
 
-    public function clear($uid)
+    public function clear(string $uid)
     {
         $cart = CartModel::where('uid', $uid)->first();
 
@@ -75,5 +80,12 @@ class Cart
             });
 
         $cart->delete();
+    }
+
+    public function total(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        return $cart->total;
     }
 }
