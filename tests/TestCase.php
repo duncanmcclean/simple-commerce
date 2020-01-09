@@ -42,7 +42,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::getEnvironmentSetUp($app);
 
-        $app->make(\Statamic\Extend\Management\Manifest::class)->manifest = [
+        $app->make(\Statamic\Extend\Manifest::class)->manifest = [
             'damcclean/commerce' => [
                 'id' => 'damcclean/commerce',
                 'namespace' => 'Damcclean\\Commerce\\',
