@@ -11,4 +11,8 @@
             :meta='@json($meta)'
             :values='@json($values)'
     ></publish-form>
+
+    <script>
+        window.customerId = '{{ $values['id'] }}'; // this is needed for the order component
+    </script>
 @endsection

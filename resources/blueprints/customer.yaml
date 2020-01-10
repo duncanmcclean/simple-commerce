@@ -139,3 +139,12 @@ sections:
           localizable: false
           display: State
           width: 50
+  orders:
+    display: Orders
+    fields:
+      -
+        handle: orders
+        field:
+          type: customer_orders
+          localizable: false
+          display: Orders

@@ -45,3 +45,5 @@ Route::prefix('customers')->as('customers')->group(function () {
     Route::post('/edit/{customer}', 'Http\Controllers\Cp\CustomerController@update')->name('.update');
     Route::get('/delete/{customer}', 'Http\Controllers\Cp\CustomerController@destroy')->name('.destroy');
 });
+
+Route::post('/customer-order', 'Http\Controllers\Cp\CustomerOrderController@index')->name('customer-order');
