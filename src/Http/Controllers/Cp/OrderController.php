@@ -38,6 +38,8 @@ class OrderController extends CpController
 
     public function create()
     {
+        $this->authorize('create', Order::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Orders', 'url' => cp_route('orders.index')],
@@ -59,6 +61,8 @@ class OrderController extends CpController
 
     public function store(OrderStoreRequest $request)
     {
+        $this->authorize('create', Order::class);
+
         $validated = $request->validated();
 
         $order = new Order();
@@ -105,6 +109,8 @@ class OrderController extends CpController
 
     public function edit(Order $order)
     {
+        $this->authorize('update', Order::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Orders', 'url' => cp_route('orders.index')],
@@ -128,6 +134,8 @@ class OrderController extends CpController
 
     public function update(OrderUpdateRequest $request, Order $order)
     {
+        $this->authorize('update', Order::class);
+
         $validated = $request->validated();
 
         $order = Order::find($order)->first();
@@ -136,13 +144,15 @@ class OrderController extends CpController
             event(new OrderStatusUpdated($order));
         }
 
-        //
+        // TODO: actually update the entry
 
         return $order;
     }
 
     public function destroy(Order $order)
     {
+        $this->authorize('delete', Order::class);
+
         $order->delete();
 
         return redirect(cp_route('orders.index'));
