@@ -19,18 +19,12 @@ class ProductCategoryController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $categories = ProductCategory::all()
-            ->map(function ($category) {
-                return array_merge($category->toArray(), [
-                    'view_url' => cp_route('product-categories.show', ['category' => $category->uid]),
-                    'edit_url' => cp_route('product-categories.edit', ['category' => $category->uid]),
-                    'delete_url' => cp_route('product-categories.destroy', ['category' => $category->uid]),
-                ]);
-            });
+        $categories = ProductCategory::all();
 
         return view('commerce::cp.product-categories.index', [
             'crumbs' => $crumbs,
             'categories' => $categories,
+            'createUrl' => (new ProductCategory())->createUrl(),
         ]);
     }
 
@@ -84,17 +78,12 @@ class ProductCategoryController extends CpController
         ]);
 
         $products = Product::all()
-            ->where('product_category_id', $category->id)
-            ->map(function ($product) {
-                return array_merge($product->toArray(), [
-                    'edit_url' => cp_route('products.edit', ['product' => $product->uid]),
-                    'delete_url' => cp_route('products.destroy', ['product' => $product->uid]),
-                ]);
-            });
+            ->where('product_category_id', $category->id);
 
         return view('commerce::cp.products.index', [
-            'products' => $products,
             'crumbs' => $crumbs,
+            'products' => $products,
+            'createUrl' => (new Product())->createUrl(),
         ]);
     }
 

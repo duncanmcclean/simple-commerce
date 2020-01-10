@@ -56,8 +56,23 @@ class Order extends Model
         return json_decode($value);
     }
 
-    public function updateUrl()
+    public function createUrl()
+    {
+        return cp_route('orders.create');
+    }
+
+    public function editUrl()
     {
         return cp_route('orders.edit', ['order' => $this->uid]);
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('orders.update', ['order' => $this->uid]);
+    }
+
+    public function deleteUrl()
+    {
+        return cp_route('orders.destroy', ['order' => $this->uid]);
     }
 }

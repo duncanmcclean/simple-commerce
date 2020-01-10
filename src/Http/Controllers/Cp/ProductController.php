@@ -19,17 +19,12 @@ class ProductController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $products = Product::all()
-            ->map(function ($product) {
-                return array_merge($product->toArray(), [
-                    'edit_url' => cp_route('products.edit', ['product' => $product->uid]),
-                    'delete_url' => cp_route('products.destroy', ['product' => $product->uid]),
-                ]);
-            });
+        $products = Product::all();
 
         return view('commerce::cp.products.index', [
-            'products' => $products,
             'crumbs' => $crumbs,
+            'products' => $products,
+            'createUrl' => (new Product())->createUrl(),
         ]);
     }
 

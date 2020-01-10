@@ -29,18 +29,23 @@ class Product extends Model
         return $this->hasMany(Variant::class);
     }
 
+    public function createUrl()
+    {
+        return cp_route('products.create');
+    }
+
+    public function editUrl()
+    {
+        return cp_route('products.edit', ['product' => $this->uid]);
+    }
+
     public function updateUrl()
     {
         return cp_route('products.update', ['product' => $this->uid]);
     }
 
-    public function publishUrl()
+    public function deleteUrl()
     {
-        return $this->updateUrl();
-    }
-
-    public function absoluteUrl()
-    {
-        return route('products.show', ['product' => $this->slug]);
+        return cp_route('products.destroy', ['product' => $this->uid]);
     }
 }

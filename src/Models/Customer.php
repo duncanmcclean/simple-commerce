@@ -35,8 +35,23 @@ class Customer extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function updateUrl()
+    public function createUrl()
+    {
+        return cp_route('customers.create');
+    }
+
+    public function editUrl()
     {
         return cp_route('customers.edit', ['customer' => $this->uid]);
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('customers.update', ['customer' => $this->uid]);
+    }
+
+    public function deleteUrl()
+    {
+        return cp_route('customers.destroy', ['customer' => $this->uid]);
     }
 }

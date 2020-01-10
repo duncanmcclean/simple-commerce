@@ -11,6 +11,7 @@
                     <th>Order ID</th>
                     <th>Order Date</th>
                     <th>Customer</th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -20,7 +21,7 @@
                         <td>
                             <div class="flex items-center">
                                 <div class="little-dot mr-1 bg-{{ $order->orderStatus->color }}"></div>
-                                <a href="{{ $order->updateUrl() }}">Order #{{ $order->id }}</a>
+                                <a href="{{ $order->editUrl() }}">Order #{{ $order->id }}</a>
                             </div>
                         </td>
 
@@ -30,6 +31,13 @@
 
                         <td>
                             <a href="{{ $order->customer->updateUrl() }}">{{ $order->customer->name }}</a>
+                        </td>
+
+                        <td class="flex justify-end">
+                            <dropdown-list>
+                                <dropdown-item text="Edit" redirect="{{ $order->editUrl() }}"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" redirect="{{ $order->deleteUrl() }}"></dropdown-item>
+                            </dropdown-list>
                         </td>
                     </tr>
                 @endforeach
