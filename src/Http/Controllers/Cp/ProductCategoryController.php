@@ -36,6 +36,8 @@ class ProductCategoryController extends CpController
 
     public function create()
     {
+        $this->authorize('create', ProductCategory::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
@@ -57,6 +59,8 @@ class ProductCategoryController extends CpController
 
     public function store(ProductCategoryStoreRequest $request)
     {
+        $this->authorize('create', ProductCategory::class);
+
         $validation = $request->validated();
 
         $category = new ProductCategory();
@@ -70,6 +74,8 @@ class ProductCategoryController extends CpController
 
     public function show(ProductCategory $category)
     {
+        $this->authorize('view', ProductCategory::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
@@ -92,6 +98,8 @@ class ProductCategoryController extends CpController
 
     public function edit(ProductCategory $category)
     {
+        $this->authorize('edit', ProductCategory::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
@@ -113,6 +121,8 @@ class ProductCategoryController extends CpController
 
     public function update(ProductCategoryUpdateRequest $request, ProductCategory $category)
     {
+        $this->authorize('update', ProductCategory::class);
+
         $validated = $request->validated();
 
         $category->title = $request->title;
@@ -124,6 +134,8 @@ class ProductCategoryController extends CpController
 
     public function destroy(ProductCategory $category)
     {
+        $this->authorize('delete', ProductCategory::class);
+
         $category->delete();
 
         return redirect(cp_route('product-categories.index'));

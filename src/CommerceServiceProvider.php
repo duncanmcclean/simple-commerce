@@ -19,6 +19,8 @@ use Damcclean\Commerce\Fieldtypes\ProductCategoryFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
 use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\ProductCategory;
+use Damcclean\Commerce\Policies\ProductCategoryPolicy;
 use Damcclean\Commerce\Policies\ProductPolicy;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
@@ -70,6 +72,7 @@ class CommerceServiceProvider extends AddonServiceProvider
 
     protected $policies = [
         Product::class => ProductPolicy::class,
+        ProductCategory::class => ProductCategoryPolicy::class,
     ];
 
     public function boot()
@@ -155,6 +158,15 @@ class CommerceServiceProvider extends AddonServiceProvider
                     Permission::make('edit products')->children([
                         Permission::make('create products'),
                         Permission::make('delete products'),
+                    ])
+                ]);
+            });
+
+            Permission::register('view product categories', function ($permission) {
+                $permission->children([
+                    Permission::make('edit product categories')->children([
+                        Permission::make('create product categories'),
+                        Permission::make('delete product categories'),
                     ])
                 ]);
             });
