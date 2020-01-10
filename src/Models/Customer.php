@@ -20,12 +20,12 @@ class Customer extends Model
         return $this->hasMany(Address::class);
     }
 
-    public function defaultBillingAddress()
+    public function billingAddress()
     {
         return $this->hasOne(Address::class);
     }
 
-    public function defaultShippingAddress()
+    public function shippingAddress()
     {
         return $this->hasOne(Address::class);
     }
