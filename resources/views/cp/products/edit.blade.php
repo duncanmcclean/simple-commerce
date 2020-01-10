@@ -9,6 +9,6 @@
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
             :values='@json($values)'
-            action="{{ json_encode($actions) }}"
+            action="{{ $action }}"
     ></publish-form>
 @endsection
