@@ -10,7 +10,7 @@
         </h1>
 
         <a class="btn btn-primary" href="{{ $createUrl }}">
-            Create Product Category
+            Create Category
         </a>
     </div>
 
