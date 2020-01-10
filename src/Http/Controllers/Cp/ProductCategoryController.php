@@ -67,6 +67,8 @@ class ProductCategoryController extends CpController
         $category->uid = (new Stache())->generateId();
         $category->title = $request->title;
         $category->slug = $request->slug;
+        $category->category_route = $request->category_route;
+        $category->product_route = $request->product_route;
         $category->save();
 
         return ['redirect' => cp_route('product-categories.edit', ['category' => $category->uid])];
@@ -74,7 +76,7 @@ class ProductCategoryController extends CpController
 
     public function show(ProductCategory $category)
     {
-        $this->authorize('view', ProductCategory::class);
+        $this->authorize('view', $category);
 
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
@@ -98,7 +100,7 @@ class ProductCategoryController extends CpController
 
     public function edit(ProductCategory $category)
     {
-        $this->authorize('edit', ProductCategory::class);
+        $this->authorize('edit', $category);
 
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
@@ -121,12 +123,14 @@ class ProductCategoryController extends CpController
 
     public function update(ProductCategoryUpdateRequest $request, ProductCategory $category)
     {
-        $this->authorize('update', ProductCategory::class);
+        $this->authorize('update', $category);
 
         $validated = $request->validated();
 
         $category->title = $request->title;
         $category->slug = $request->slug;
+        $category->category_route = $request->category_route;
+        $category->product_route = $request->product_route;
         $category->save();
 
         return $category;
@@ -134,7 +138,7 @@ class ProductCategoryController extends CpController
 
     public function destroy(ProductCategory $category)
     {
-        $this->authorize('delete', ProductCategory::class);
+        $this->authorize('delete', $category);
 
         $category->delete();
 

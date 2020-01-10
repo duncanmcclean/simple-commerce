@@ -1,8 +1,19 @@
 <?php
 
+use Damcclean\Commerce\Models\ProductCategory;
+
 Route::get(config('commerce.routes.thanks'), 'Http\Controllers\Web\ThanksController')->name('thanks');
 //Route::post(config('commerce.routes.redeem_coupon'), 'Http\Controllers\Web\RedeemCouponController')->name('coupon.redeem');
-Route::get(config('commerce.routes.category'), 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
+//Route::get(config('commerce.routes.category'), 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
+
+collect(ProductCategory::all())
+    ->each(function ($category) {
+        Route::get($category->category_route, 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
+    });
+
+//foreach (ProductCategory::all() as $category) {
+//    Route::get(str_replace('{category}', $category->slug, '$category->category_route'), 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
+//}
 
 /**
  * Cart
