@@ -1,7 +1,7 @@
 <template>
     <div>
         <section class="bg-grey-20 rounded w-full mt-2">
-            <table class="bg-white data-table">
+            <table v-if="hasItems" class="bg-white data-table">
                 <thead>
                     <tr>
                         <th>Order ID</th>
@@ -11,11 +11,11 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="order in meta" :key="order.id">
+                    <tr v-for="order in orders" :key="order.id">
                         <td>
                             <div class="flex items-center">
                                 <div class="little-dot mr-1" :class="'bg-'+order.order_status.color"></div>
-                                <a href="#">Order #{{ order.id }}</a>
+                                <a :href="order.edit_url">Order #{{ order.id }}</a>
                             </div>
                         </td>
 
@@ -25,18 +25,22 @@
 
                         <td class="flex justify-end">
                             <dropdown-list>
-                                <dropdown-item text="Edit" redirect="#"></dropdown-item>
-                                <dropdown-item class="warning" text="Delete" redirect="#"></dropdown-item>
+                                <dropdown-item text="Edit" :redirect="order.edit_url"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" :redirect="order.delete_url"></dropdown-item>
                             </dropdown-list>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <p v-else class="mx-2 my-4">This customer has not ordered anything yet.</p>
         </section>
     </div>
 </template>
 
 <script>
+    import axios from 'axios'
+
     export default {
         name: "CustomerOrdersFieldtype",
 
@@ -46,7 +50,23 @@
             'meta', 'value',
         ],
 
-        //
+        data() {
+            return {
+                orders: [],
+                hasItems: false
+            }
+        },
+
+        mounted() {
+            axios.post(this.meta, {
+                customer: window.customerId
+            }).then(response => {
+                this.orders = response.data;
+                this.hasItems = true;
+            }).catch(error => {
+                this.$toast.error(error);
+            })
+        }
     }
 </script>
 

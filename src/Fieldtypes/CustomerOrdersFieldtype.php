@@ -12,8 +12,7 @@ class CustomerOrdersFieldtype extends Fieldtype
 
     public function preload()
     {
-        return Order::with('orderStatus')
-            ->get();
+        return cp_route('customer-order');
     }
 
     public function preProcess($data)
