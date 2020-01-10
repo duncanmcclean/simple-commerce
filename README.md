@@ -52,7 +52,7 @@ During development, here's how you install Commerce for Statamic:
     ...
 
     protected $except = [
-            '/cart', '/cart/*', '/checkout', '/products/search',
+            '/cart', '/cart/*', '/checkout',
     ];
 ```
 
