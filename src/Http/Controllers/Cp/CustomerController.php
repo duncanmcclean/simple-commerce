@@ -20,7 +20,7 @@ class CustomerController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $customers = Customer::all();
+        $customers = Customer::paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.customers.index', [
             'crumbs' => $crumbs,

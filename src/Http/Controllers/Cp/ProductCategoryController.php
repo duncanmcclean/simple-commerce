@@ -19,7 +19,7 @@ class ProductCategoryController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $categories = ProductCategory::all();
+        $categories = ProductCategory::paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.product-categories.index', [
             'crumbs' => $crumbs,

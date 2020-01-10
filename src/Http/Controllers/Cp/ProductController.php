@@ -19,7 +19,7 @@ class ProductController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $products = Product::all();
+        $products = Product::paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.products.index', [
             'crumbs' => $crumbs,

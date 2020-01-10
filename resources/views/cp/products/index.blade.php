@@ -17,12 +17,12 @@
     @if ($products->count())
         <table class="bg-white data-table">
             <thead>
-            <tr>
-                <th>Title</th>
-                <th>Variants</th>
-                <th>Category</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Variants</th>
+                    <th>Category</th>
+                    <th></th>
+                </tr>
             </thead>
 
             <tbody>
@@ -53,6 +53,38 @@
                 @endforeach
             </tbody>
         </table>
+
+        @if($products->hasMorePages())
+            <div class="w-full flex mt-3">
+                <div class="flex-1"></div>
+
+                <ul class="flex justify-center items-center list-reset">
+                    @if($products->previousPageUrl())
+                        <li class="mx-1">
+                            <a href="{{ $products->previousPageUrl() }}"><span>&laquo;</span></a>
+                        </li>
+                    @endif
+
+                    @foreach($products->links()->elements[0] as $number => $link)
+                        <li class="mx-1 @if($number === $products->currentPage()) font-bold @endif">
+                            <a href="{{ $link }}">{{ $number }}</a>
+                        </li>
+                    @endforeach
+
+                    @if($products->nextPageUrl())
+                        <li class="mx-1">
+                            <a href="{{ $products->nextPageUrl() }}">
+                                <span>»</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+
+                <div class="flex flex-1">
+                    <div class="flex-1"></div>
+                </div>
+            </div>
+        @endif
     @else
         @component('statamic::partials.create-first', [
             'resource' => 'Product',

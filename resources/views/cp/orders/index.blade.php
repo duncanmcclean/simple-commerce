@@ -53,6 +53,38 @@
                 @endforeach
             </tbody>
         </table>
+
+        @if($orders->hasMorePages())
+            <div class="w-full flex mt-3">
+                <div class="flex-1"></div>
+
+                <ul class="flex justify-center items-center list-reset">
+                    @if($orders->previousPageUrl())
+                        <li class="mx-1">
+                            <a href="{{ $orders->previousPageUrl() }}"><span>&laquo;</span></a>
+                        </li>
+                    @endif
+
+                    @foreach($orders->links()->elements[0] as $number => $link)
+                        <li class="mx-1 @if($number === $orders->currentPage()) font-bold @endif">
+                            <a href="{{ $link }}">{{ $number }}</a>
+                        </li>
+                    @endforeach
+
+                    @if($orders->nextPageUrl())
+                        <li class="mx-1">
+                            <a href="{{ $orders->nextPageUrl() }}">
+                                <span>»</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+
+                <div class="flex flex-1">
+                    <div class="flex-1"></div>
+                </div>
+            </div>
+        @endif
     @else
         @component('statamic::partials.create-first', [
             'resource' => 'Order',
