@@ -24,6 +24,7 @@ class OrderController extends CpController
         $orders = Order::all()
             ->map(function ($order) {
                 return array_merge($order->toArray(), [
+                    'order_id' => "Order #{$order['id']}",
                     'edit_url' => cp_route('orders.edit', ['order' => $order['uid']]),
                     'delete_url' => cp_route('orders.destroy', ['order' => $order['uid']]),
                 ]);
