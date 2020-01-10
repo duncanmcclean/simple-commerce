@@ -72,13 +72,11 @@ return [
          *
          * - (index) Displays all products
          * - (search) Displays a product search to the user
-         * - (show) Displays a product page
          */
 
         'products' => [
             'index' => '/products',
             'search' => '/products/search',
-            'show' => '/products/{product}',
         ],
 
         'thanks' => '/thanks', // Page user is redirected to once order has been processed.

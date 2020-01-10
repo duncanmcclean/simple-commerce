@@ -1,5 +1,6 @@
 <?php
 
+use Damcclean\Commerce\Models\Product;
 use Damcclean\Commerce\Models\ProductCategory;
 
 Route::get(config('commerce.routes.thanks'), 'Http\Controllers\Web\ThanksController')->name('thanks');
@@ -18,9 +19,15 @@ Route::post(config('commerce.routes.checkout.store'), 'Http\Controllers\Web\Chec
 Route::get(config('commerce.routes.products.index'), 'Http\Controllers\Web\ProductController@index')->name('products.index');
 Route::get(config('commerce.routes.products.search'), 'Http\Controllers\Web\ProductSearchController@index')->name('products.search');
 Route::get(config('commerce.routes.products.search').'/results', 'Http\Controllers\Web\ProductSearchController@show')->name('products.search.results');
-Route::get(config('commerce.routes.products.show'), 'Http\Controllers\Web\ProductController@show')->name('products.show');
 
 collect(ProductCategory::all())
     ->each(function ($category) {
         Route::get($category->category_route, 'Http\Controllers\Web\ProductCategoryController@show')->name('categories.show');
+
+        $products = Product::where('product_category_id', $category->od);
+
+        collect($products)
+            ->each(function ($product) use ($category) {
+                Route::get($category->product_route, 'Http\Controllers\Web\ProductController@show')->name('products.show');
+            });
     });
