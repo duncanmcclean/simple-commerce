@@ -80,9 +80,10 @@ class ProductCategoryController extends CpController
         $products = Product::all()
             ->where('product_category_id', $category->id);
 
-        return view('commerce::cp.products.index', [
+        return view('commerce::cp.product-categories.show', [
             'crumbs' => $crumbs,
             'products' => $products,
+            'category' => $category,
             'createUrl' => (new Product())->createUrl(),
         ]);
     }
