@@ -38,9 +38,7 @@ class ProductController extends CpController
         ]);
 
         $blueprint = Blueprint::find('product');
-
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.products.create', [
@@ -101,7 +99,6 @@ class ProductController extends CpController
         $blueprint = Blueprint::find('product');
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.products.edit', [
