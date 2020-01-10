@@ -41,7 +41,9 @@ class CommerceTags extends Tags
 
         return $categories
             ->map(function ($category) {
-                return $category;
+                return array_merge($category->toArray(), [
+                    'url' => route('categories.show', ['category' => $category->slug])
+                ]);
             })
             ->toArray();
     }
