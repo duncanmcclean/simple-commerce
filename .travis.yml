@@ -8,6 +8,5 @@ install:
 
 script: vendor/bin/phpunit -v
 
-branches:
-  except:
-    - develop
+notifications:
+  email: false
