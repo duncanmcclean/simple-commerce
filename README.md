@@ -44,19 +44,7 @@ During development, here's how you install Commerce for Statamic:
 
 6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan db:seed`
 
-7. Another thing you'll want to do before things start working is to add some URLs into your app's `VerifyCsrfToken.php` file. There's a statamic bug meaning we can't use csrf tokens in some places. We'll hopefully have this fixed before we launch.
-
-```php
-<?php
-
-    ...
-
-    protected $except = [
-            '/cart', '/cart/*', '/checkout',
-    ];
-```
-
-8. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.
+7. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.
 
 ## Configuration
 

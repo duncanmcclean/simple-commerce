@@ -37,6 +37,8 @@
             </div>
 
             <form id="payment-form" class="mt-8" action="/checkout" method="post" @submit.prevent="submitCheckout">
+                {{ csrf_field }}
+
                 <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
 
                 <input type="hidden" name="currency" value="{{ commerce:currency_code }}">
