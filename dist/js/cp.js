@@ -197,14 +197,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     model: String,
@@ -406,53 +398,35 @@ var render = function() {
                                 key: "cell-title",
                                 fn: function(ref) {
                                   var item = ref.row
-                                  return _vm.primary === "title"
+                                  return _vm.primary === "order_id"
                                     ? [
                                         _c(
                                           "div",
                                           { staticClass: "flex items-center" },
                                           [
-                                            item.enabled != null
-                                              ? _c("div", {
-                                                  staticClass:
-                                                    "little-dot mr-1",
-                                                  class: [
-                                                    item.enabled
-                                                      ? "bg-green"
-                                                      : "bg-grey-40"
-                                                  ]
-                                                })
-                                              : _vm._e(),
+                                            _c("div", {
+                                              staticClass: "little-dot mr-1",
+                                              class: "bg-" + item.status_color
+                                            }),
                                             _vm._v(" "),
-                                            item.view_url
-                                              ? _c(
-                                                  "a",
-                                                  {
-                                                    on: {
-                                                      click: function($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.redirect(
-                                                          item.view_url
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  [_vm._v(_vm._s(item.title))]
+                                            _c(
+                                              "a",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.stopPropagation()
+                                                    return _vm.redirect(
+                                                      item.edit_url
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(item.order_id) + "llll"
                                                 )
-                                              : _c(
-                                                  "a",
-                                                  {
-                                                    on: {
-                                                      click: function($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.redirect(
-                                                          item.edit_url
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  [_vm._v(_vm._s(item.title))]
-                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ]

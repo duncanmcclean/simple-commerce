@@ -21,7 +21,18 @@
                         v-else
                         @sorted="sorted"
                     >
-                        <template v-if="primary === 'title'" slot="cell-title" slot-scope="{ row: item }">
+                        <template v-if="primary === 'order_id'" slot="cell-title" slot-scope="{ row: item }">
+                            <div class="flex items-center">
+                                <div
+                                        class="little-dot mr-1"
+                                        :class="'bg-'+item.status_color"
+                                ></div>
+
+                                <a @click.stop="redirect(item.edit_url)">{{ item.order_id }}llll</a>
+                            </div>
+                        </template>
+
+                        <template v-else-if="primary === 'title'" slot="cell-title" slot-scope="{ row: item }">
                             <div class="flex items-center">
                                 <div
                                         v-if="item.enabled != null"
@@ -46,27 +57,8 @@
                             </div>
                         </template>
 
-                        <template v-else-if="primary === 'slug'" slot="cell-title" slot-scope="{ row: item }">
-                            <div class="flex items-center">
-                                <div
-                                        v-if="item.status != null"
-                                        class="little-dot mr-1"
-                                        :class="[
-                                            item.status === 'created' ? 'bg-blue' :
-                                            item.status === 'paid' ? 'bg-orange' :
-                                            item.status === 'cancelled' ? 'bg-red' :
-                                            item.status === 'fulfilled' ? 'bg-green' :
-                                            item.status === 'returned' ? 'bg-yellow' :
-                                            'bg-grey-40'
-                                        ]"
-                                ></div>
-
-                                <a @click.stop="redirect(item.edit_url)">{{ item.slug }}</a>
-                            </div>
-                        </template>
-
                         <template v-else slot="cell-slug" slot-scope="{ row : item }">
-                            <span class="font-mono text-2xs">{{ item.slug }}</span>
+                            <span class="font-mono text-2xs">{{ item.slug }}zzz</span>
                         </template>
 
                         <template slot="actions" slot-scope="{ row : item, index }">

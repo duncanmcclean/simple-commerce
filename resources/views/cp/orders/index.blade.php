@@ -23,6 +23,6 @@
             ]
         ]) }}'
         items='@json($orders)'
-        primary='slug'
+        primary="order_id"
     />
 @endsection
