@@ -18,6 +18,8 @@ use Damcclean\Commerce\Fieldtypes\ProductFieldtype;
 use Damcclean\Commerce\Fieldtypes\ProductCategoryFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
+use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Policies\ProductPolicy;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
 use Damcclean\Commerce\Tags\ProductTags;
@@ -64,6 +66,10 @@ class CommerceServiceProvider extends AddonServiceProvider
     protected $widgets = [
         RecentOrdersWidget::class,
         NewCustomersWidget::class,
+    ];
+
+    protected $policies = [
+        Product::class => ProductPolicy::class,
     ];
 
     public function boot()
@@ -159,6 +165,10 @@ class CommerceServiceProvider extends AddonServiceProvider
     {
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
+        }
+
+        foreach ($this->policies as $key => $value) {
+            Gate::policy($key, $value);
         }
     }
 }
