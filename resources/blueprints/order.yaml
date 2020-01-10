@@ -47,70 +47,144 @@ sections:
           localizable: false
           display: Products
           add_row: 'Add to Order'
-  shipping_address:
-    display: 'Shipping Address'
+  billing_address:
+    display: 'Billing Address'
     fields:
       -
-        handle: address
-        field:
-          type: textarea
-          localizable: false
-          display: Address
-          validate: string
-      -
-        handle: country
-        field:
-          options:
-            uk: 'United Kingdom'
-            us: 'United States'
-            ca: Canada
-            fr: France
-          clearable: false
-          multiple: false
-          searchable: true
-          taggable: false
-          push_tags: false
-          type: select
-          localizable: false
-          width: 50
-          display: Country
-      -
-        handle: zip_code
+        handle: billing_address_1
         field:
           character_limit: 0
           type: text
           localizable: false
+          display: 'Address 1'
+      -
+        handle: billing_address_2
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 2'
           width: 50
+      -
+        handle: billing_address_3
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 3'
+          width: 50
+      -
+        handle: billing_city
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: City
+          width: 75
+      -
+        handle: billing_zip_code
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
           display: 'Zip Code'
+          width: 25
+      -
+        handle: billing_country
+        field:
+          max_items: 1
+          mode: default
+          type: country
+          localizable: false
+          width: 50
+          display: Country
+      -
+        handle: billing_state
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: State
+          width: 50
+  shipping_address:
+    display: 'Shipping Address'
+    fields:
+      -
+        handle: shipping_address_1
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 1'
+      -
+        handle: shipping_address_2
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 2'
+          width: 50
+      -
+        handle: shipping_address_3
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Address 3'
+          width: 50
+      -
+        handle: shipping_city
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: City
+          width: 75
+      -
+        handle: shipping_zip_code
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: 'Zip Code'
+          width: 25
+      -
+        handle: shipping_country
+        field:
+          max_items: 1
+          mode: default
+          type: country
+          localizable: false
+          width: 50
+          display: Country
+      -
+        handle: shipping_state
+        field:
+          character_limit: 0
+          type: text
+          localizable: false
+          display: State
+          width: 50
   sidebar:
     display: Sidebar
     fields:
       -
         handle: status
         field:
-          options:
-            created: Created
-            paid: Paid
-            cancelled: Cancelled
-            fulfilled: Fulfilled
-            returned: Returned
-          clearable: false
-          multiple: false
-          searchable: true
-          taggable: false
-          push_tags: false
-          type: select
+          max_items: 1
+          mode: select
+          type: order_status
           localizable: false
           display: Status
-          placeholder: created
       -
-        handle: coupon
+        handle: currency
         field:
-          character_limit: 0
-          type: text
+          max_items: 1
+          mode: default
+          type: currency
           localizable: false
-          display: Coupon
-          validate: string
+          display: Currency
+          validate: required
       -
         handle: customer
         field:
@@ -119,18 +193,3 @@ sections:
           type: customer
           localizable: false
           display: Customer
-      -
-        handle: order_date
-        field:
-          time_enabled: true
-          time_required: true
-          earliest_date: '1900-01-01'
-          full_width: false
-          inline: false
-          columns: 1
-          rows: 1
-          mode: single
-          type: date
-          localizable: false
-          display: 'Order Date'
-          validate: required
