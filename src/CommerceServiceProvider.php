@@ -159,57 +159,71 @@ class CommerceServiceProvider extends AddonServiceProvider
         ProductFieldtype::register();
 
         $this->app->booted(function() {
+            //Permission::group('commerce', 'commerce');
+
             Permission::register('view customers', function ($permission) {
                 $permission->children([
                     Permission::make('edit customers')
                         ->label('Edit customers')
+                        ->group('Commerce')
                         ->children([
                             Permission::make('create customers')
-                                ->label('Create Customers'),
+                                ->label('Create Customers')
+                                ->group('Commerce'),
                             Permission::make('delete customers')
-                                ->label('Delete Customers'),
+                                ->label('Delete Customers')
+                                ->group('Commerce'),
                         ])
                 ]);
-            })->label('View Customers');
+            })->label('View Customers')->group('Commerce');
 
             Permission::register('view orders', function ($permission) {
                 $permission->children([
                     Permission::make('edit orders')
+                        ->label('Edit Orders')
+                        ->group('Commerce')
                         ->children([
                             Permission::make('create orders')
-                                ->label('Create Orders'),
+                                ->label('Create Orders')
+                                ->group('Commerce'),
                             Permission::make('delete orders')
-                                ->label('Delete Orders'),
+                                ->label('Delete Orders')
+                                ->group('Commerce'),
                         ])
-                        ->label('Edit Orders')
                 ]);
-            })->label('View Orders');
+            })->label('View Orders')->group('commerce');
 
             Permission::register('view products', function ($permission) {
                 $permission->children([
                     Permission::make('edit products')
+                        ->label('Edit Products')
+                        ->group('Commerce')
                         ->children([
                             Permission::make('create products')
-                                ->label('Create Products'),
+                                ->label('Create Products')
+                                ->group('Commerce'),
                             Permission::make('delete products')
-                                ->label('Delete Products'),
+                                ->label('Delete Products')
+                                ->group('Commerce'),
                         ])
-                        ->label('Edit Products')
                 ]);
-            })->label('View Products');
+            })->label('View Products')->group('Commerce');
 
             Permission::register('view product categories', function ($permission) {
                 $permission->children([
                     Permission::make('edit product categories')
+                        ->label('Edit Product Categories')
+                        ->group('Commerce')
                         ->children([
                             Permission::make('create product categories')
-                                ->label('Create Product Categories'),
+                                ->label('Create Product Categories')
+                                ->group('Commerce'),
                             Permission::make('delete product categories')
-                                ->label('Delete Product Categories'),
+                                ->label('Delete Product Categories')
+                                ->group('Commerce'),
                         ])
-                        ->label('Edit Product Categories')
                 ]);
-            })->label('View Product Categories');
+            })->label('View Product Categories')->group('commerce');
         });
     }
 
