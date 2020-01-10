@@ -10,11 +10,8 @@ Route::post(config('commerce.routes.cart.add'), 'Http\Controllers\Web\CartContro
 Route::post(config('commerce.routes.cart.clear'), 'Http\Controllers\Web\ClearCartController')->name('cart.clear');
 Route::post(config('commerce.routes.cart.delete'), 'Http\Controllers\Web\CartController@destroy')->name('cart.delete');
 
-
-
 Route::get(config('commerce.routes.checkout.show'), 'Http\Controllers\Web\CheckoutController@show')->name('checkout.show');
 Route::post(config('commerce.routes.checkout.store'), 'Http\Controllers\Web\CheckoutController@store')->name('checkout.store');
-
 
 Route::get(config('commerce.routes.products.index'), 'Http\Controllers\Web\ProductController@index')->name('products.index');
 Route::get(config('commerce.routes.products.search'), 'Http\Controllers\Web\ProductSearchController@index')->name('products.search');
