@@ -35,6 +35,8 @@ class ProductController extends CpController
 
     public function create()
     {
+        $this->authorize('create', Product::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Products', 'url' => cp_route('products.index')],
@@ -56,7 +58,7 @@ class ProductController extends CpController
 
     public function store(ProductStoreRequest $request)
     {
-        dd($request->all());
+        $this->authorize('create', Product::class);
 
         $validation = $request->validated();
 
@@ -90,6 +92,8 @@ class ProductController extends CpController
 
     public function edit($product)
     {
+        $this->authorize('update', $product);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Products', 'url' => cp_route('products.index')],
@@ -124,6 +128,8 @@ class ProductController extends CpController
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
+        $this->authorize('update', $product);
+
         $validation = $request->validated();
 
         $product->title = $request->title;
@@ -138,6 +144,8 @@ class ProductController extends CpController
 
     public function destroy(Product $product)
     {
+        $this->authorize('delete', $product);
+
         $product->delete();
 
         return redirect(cp_route('products.index'));

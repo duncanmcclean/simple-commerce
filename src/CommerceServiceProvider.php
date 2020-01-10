@@ -24,6 +24,7 @@ use Damcclean\Commerce\Tags\ProductTags;
 use Damcclean\Commerce\Widgets\NewCustomersWidget;
 use Damcclean\Commerce\Widgets\RecentOrdersWidget;
 use Statamic\Facades\Nav;
+use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 use Damcclean\Commerce\Fieldtypes\CustomerFieldtype;
@@ -141,6 +142,17 @@ class CommerceServiceProvider extends AddonServiceProvider
         OrderStatusFieldtype::register();
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
+
+        $this->app->booted(function() {
+            Permission::register('view products', function ($permission) {
+                $permission->children([
+                    Permission::make('edit products')->children([
+                        Permission::make('create products'),
+                        Permission::make('delete products'),
+                    ])
+                ]);
+            });
+        });
     }
 
     public function register()
