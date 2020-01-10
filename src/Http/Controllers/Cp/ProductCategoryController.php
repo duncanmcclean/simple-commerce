@@ -130,6 +130,10 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('delete', $category);
 
+        if (ProductCategory::count() === 1) {
+            return back()->with('success', 'You can\'t delete the only category.');
+        }
+
         $category->delete();
 
         return redirect(cp_route('product-categories.index'));
