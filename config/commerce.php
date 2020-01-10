@@ -83,7 +83,7 @@ return [
 
         'thanks' => '/thanks', // Page user is redirected to once order has been processed.
         'redeem_coupon' => '/redeem-coupon', // Endpoint where we check if a coupon provided by the customer is valid
-        'category' => '/{category}', // Index page for a product category
+        'category' => '/category/category}', // Index page for a product category
 
     ],
 
