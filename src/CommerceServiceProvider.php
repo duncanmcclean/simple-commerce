@@ -161,39 +161,55 @@ class CommerceServiceProvider extends AddonServiceProvider
         $this->app->booted(function() {
             Permission::register('view customers', function ($permission) {
                 $permission->children([
-                    Permission::make('edit customers')->children([
-                        Permission::make('create customers'),
-                        Permission::make('delete customers'),
-                    ])
+                    Permission::make('edit customers')
+                        ->label('Edit customers')
+                        ->children([
+                            Permission::make('create customers')
+                                ->label('Create Customers'),
+                            Permission::make('delete customers')
+                                ->label('Delete Customers'),
+                        ])
                 ]);
-            });
+            })->label('View Customers');
 
             Permission::register('view orders', function ($permission) {
                 $permission->children([
-                    Permission::make('edit orders')->children([
-                        Permission::make('create orders'),
-                        Permission::make('delete orders'),
-                    ])
+                    Permission::make('edit orders')
+                        ->children([
+                            Permission::make('create orders')
+                                ->label('Create Orders'),
+                            Permission::make('delete orders')
+                                ->label('Delete Orders'),
+                        ])
+                        ->label('Edit Orders')
                 ]);
-            });
+            })->label('View Orders');
 
             Permission::register('view products', function ($permission) {
                 $permission->children([
-                    Permission::make('edit products')->children([
-                        Permission::make('create products'),
-                        Permission::make('delete products'),
-                    ])
+                    Permission::make('edit products')
+                        ->children([
+                            Permission::make('create products')
+                                ->label('Create Products'),
+                            Permission::make('delete products')
+                                ->label('Delete Products'),
+                        ])
+                        ->label('Edit Products')
                 ]);
-            });
+            })->label('View Products');
 
             Permission::register('view product categories', function ($permission) {
                 $permission->children([
-                    Permission::make('edit product categories')->children([
-                        Permission::make('create product categories'),
-                        Permission::make('delete product categories'),
-                    ])
+                    Permission::make('edit product categories')
+                        ->children([
+                            Permission::make('create product categories')
+                                ->label('Create Product Categories'),
+                            Permission::make('delete product categories')
+                                ->label('Delete Product Categories'),
+                        ])
+                        ->label('Edit Product Categories')
                 ]);
-            });
+            })->label('View Product Categories');
         });
     }
 
