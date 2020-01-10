@@ -37,6 +37,8 @@ class CustomerController extends CpController
 
     public function create()
     {
+        $this->authorize('create', Customer::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
@@ -58,6 +60,8 @@ class CustomerController extends CpController
 
     public function store(CustomerStoreRequest $request)
     {
+        $this->authorize('create', Customer::class);
+
         $validated = $request->validated();
 
         $customer = new Customer();
@@ -101,6 +105,8 @@ class CustomerController extends CpController
 
     public function edit(Customer $customer)
     {
+        $this->authorize('update', $customer);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
@@ -145,6 +151,8 @@ class CustomerController extends CpController
 
     public function update(CustomerUpdateRequest $request, Customer $customer)
     {
+        $this->authorize('update', $customer);
+
         $validated = $request->validated();
 
         $customer->name = $request->name;
@@ -180,6 +188,8 @@ class CustomerController extends CpController
 
     public function destroy(Customer $customer)
     {
+        $this->authorize('delete', $customer);
+
         $customer->delete();
 
         return redirect(cp_route('customers.index'));

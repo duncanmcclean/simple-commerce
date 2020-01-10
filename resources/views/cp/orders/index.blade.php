@@ -15,7 +15,7 @@
         cols='{{ json_encode([
             [
                 'label' => 'Order ID',
-                'field' => 'slug',
+                'field' => 'order_id',
             ],
             [
                 'label' => 'Total',

@@ -18,12 +18,21 @@ use Damcclean\Commerce\Fieldtypes\ProductFieldtype;
 use Damcclean\Commerce\Fieldtypes\ProductCategoryFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
+use Damcclean\Commerce\Models\Customer;
+use Damcclean\Commerce\Models\Order;
+use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\ProductCategory;
+use Damcclean\Commerce\Policies\CustomerPolicy;
+use Damcclean\Commerce\Policies\OrderPolicy;
+use Damcclean\Commerce\Policies\ProductCategoryPolicy;
+use Damcclean\Commerce\Policies\ProductPolicy;
 use Damcclean\Commerce\Tags\CartTags;
 use Damcclean\Commerce\Tags\CommerceTags;
-use Damcclean\Commerce\Tags\ProductTags;
 use Damcclean\Commerce\Widgets\NewCustomersWidget;
 use Damcclean\Commerce\Widgets\RecentOrdersWidget;
+use Illuminate\Support\Facades\Gate;
 use Statamic\Facades\Nav;
+use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 use Damcclean\Commerce\Fieldtypes\CustomerFieldtype;
@@ -63,6 +72,13 @@ class CommerceServiceProvider extends AddonServiceProvider
     protected $widgets = [
         RecentOrdersWidget::class,
         NewCustomersWidget::class,
+    ];
+
+    protected $policies = [
+        Customer::class => CustomerPolicy::class,
+        Order::class => OrderPolicy::class,
+        Product::class => ProductPolicy::class,
+        ProductCategory::class => ProductCategoryPolicy::class,
     ];
 
     public function boot()
@@ -141,12 +157,70 @@ class CommerceServiceProvider extends AddonServiceProvider
         OrderStatusFieldtype::register();
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
+
+        $this->app->booted(function() {
+            Permission::register('view customers', function ($permission) {
+                $permission->children([
+                    Permission::make('edit customers')
+                        ->label('Edit customers')
+                        ->children([
+                            Permission::make('create customers')
+                                ->label('Create Customers'),
+                            Permission::make('delete customers')
+                                ->label('Delete Customers'),
+                        ])
+                ]);
+            })->label('View Customers');
+
+            Permission::register('view orders', function ($permission) {
+                $permission->children([
+                    Permission::make('edit orders')
+                        ->children([
+                            Permission::make('create orders')
+                                ->label('Create Orders'),
+                            Permission::make('delete orders')
+                                ->label('Delete Orders'),
+                        ])
+                        ->label('Edit Orders')
+                ]);
+            })->label('View Orders');
+
+            Permission::register('view products', function ($permission) {
+                $permission->children([
+                    Permission::make('edit products')
+                        ->children([
+                            Permission::make('create products')
+                                ->label('Create Products'),
+                            Permission::make('delete products')
+                                ->label('Delete Products'),
+                        ])
+                        ->label('Edit Products')
+                ]);
+            })->label('View Products');
+
+            Permission::register('view product categories', function ($permission) {
+                $permission->children([
+                    Permission::make('edit product categories')
+                        ->children([
+                            Permission::make('create product categories')
+                                ->label('Create Product Categories'),
+                            Permission::make('delete product categories')
+                                ->label('Delete Product Categories'),
+                        ])
+                        ->label('Edit Product Categories')
+                ]);
+            })->label('View Product Categories');
+        });
     }
 
     public function register()
     {
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
+        }
+
+        foreach ($this->policies as $key => $value) {
+            Gate::policy($key, $value);
         }
     }
 }
