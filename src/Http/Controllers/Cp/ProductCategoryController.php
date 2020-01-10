@@ -134,6 +134,8 @@ class ProductCategoryController extends CpController
             return back()->with('success', 'You can\'t delete the only category.');
         }
 
+        // TODO: decide what we should do with products in this category
+
         $category->delete();
 
         return redirect(cp_route('product-categories.index'));
