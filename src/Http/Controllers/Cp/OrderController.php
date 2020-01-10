@@ -21,10 +21,12 @@ class OrderController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $orders = Order::all()
+        $orders = Order::with('orderStatus')
+            ->get()
             ->map(function ($order) {
                 return array_merge($order->toArray(), [
                     'order_id' => "Order #{$order['id']}",
+                    'status_color' => $order['orderStatus']['color'],
                     'edit_url' => cp_route('orders.edit', ['order' => $order['uid']]),
                     'delete_url' => cp_route('orders.destroy', ['order' => $order['uid']]),
                 ]);
