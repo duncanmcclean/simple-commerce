@@ -8,6 +8,7 @@ use Damcclean\Commerce\Helpers\Cart;
 use Damcclean\Commerce\Http\Requests\CartDeleteRequest;
 use Damcclean\Commerce\Http\Requests\CartStoreRequest;
 use Illuminate\Http\Request;
+use Statamic\View\View;
 
 class CartController extends Controller
 {
@@ -16,6 +17,16 @@ class CartController extends Controller
     public function __construct(Request $request)
     {
         $this->cart = new Cart();
+    }
+
+    public function index()
+    {
+        return (new View())
+            ->template('commerce::web.cart')
+            ->layout('commerce::web.layout')
+            ->with([
+                'title' => 'Cart',
+            ]);
     }
 
     public function store(CartStoreRequest $request)

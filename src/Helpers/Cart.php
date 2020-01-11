@@ -41,7 +41,10 @@ class Cart
     {
         $cart = CartModel::where('uid', $uid)->first();
 
-        return collect($cart->items);
+        return CartItem::where('cart_id', $cart->id)
+            ->with('variant')
+            ->with('product')
+            ->get();
     }
 
     public function add(string $uid, array $data)

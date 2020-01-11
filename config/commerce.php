@@ -44,12 +44,14 @@ return [
         /**
          * Cart
          *
+         * - (index) Displays items in the customers' cart.
          * - (add) Adds an item to the customers' cart.
          * - (clear) Clears all items from the customers' cart.
          * - (delete) Removes an item from the customers' cart.
          */
 
         'cart' => [
+            'index' => '/cart',
             'add' => '/cart',
             'clear' => '/cart/clear',
             'delete' => '/cart/delete',

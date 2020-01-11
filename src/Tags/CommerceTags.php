@@ -2,9 +2,11 @@
 
 namespace Damcclean\Commerce\Tags;
 
+use Damcclean\Commerce\Models\Country;
 use Damcclean\Commerce\Models\Currency;
 use Damcclean\Commerce\Models\Product;
 use Damcclean\Commerce\Models\ProductCategory;
+use Damcclean\Commerce\Models\State;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -77,5 +79,30 @@ class CommerceTags extends Tags
                     'from_price' => $product->variants->sortByDesc('price')->first()->price,
                 ]);
             });
+    }
+
+    public function countries()
+    {
+        return Country::all();
+    }
+
+    public function states()
+    {
+        $states = State::all();
+
+        if ($this->getParam('country')) {
+            $states = $states->where('country_id', Country::where('iso', $this->getParam('country')))->get();
+        }
+
+        if ($this->getParam('count')) {
+            return $states->count();
+        }
+
+        return $states;
+    }
+
+    public function currencies()
+    {
+        return Currency::all();
     }
 }

@@ -1,0 +1,84 @@
+<h1 class="text-gray-800 font-bold text-4xl mb-4">Your Cart</h1>
+
+<table class="table-auto overflow-x-scroll w-full">
+    <thead>
+        <tr class="w-full border-t-2 border-b-2 text-gray-900 font-bold">
+            <th class="px-4 py-2 text-left">Product</th>
+            <th class="px-4 py-2 text-left">Qty</th>
+            <th class="px-4 py-2 text-right float-right">Price</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{ cart:items }}
+            <tr class="py-4 px-4 border-b w-full text-gray-800">
+                <td class="px-4 py-6 text-left">
+                    <strong>{{ product:title }}</strong><br>
+                    ({{ variant:sku }})
+                </td>
+
+                <td class="px-4 py-6 text-left">
+                    {{ quantity }}
+                </td>
+
+                <td class="px-4 py-6 text-right">
+                    Price: $15.00
+                </td>
+            </tr>
+        {{ /cart:items }}
+
+        <tr class="py-4 px-4 border-b w-full text-gray-800">
+            <td class="px-4 py-6 text-left">
+                <form class="bg-gray-100 py-6 px-4" action="/cart/update" method="post">
+                    <div class="flex flex-row items-center mb-4">
+                        <h2 class="w-2/5 font-bold mb-2">Coupon</h2>
+                        <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="coupon" placeholder="Coupon Code">
+                    </div>
+
+                    <div class="flex flex-row items-center mb-4">
+                        <h2 class="w-2/5 font-bold mb-2">Country</h2>
+
+                        <select class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" name="country">
+                            {{ commerce:countries }}
+                                <option value="{{ iso }}">{{ name }}</option>
+                            {{ /commerce:countries }}
+                        </select>
+                    </div>
+
+                    <div class="flex justify-end mb-4">
+                        <button class="border rounded hover:bg-white px-2 py-1 text-center text-black" type="submit">Update Cart</button>
+                    </div>
+                </form>
+            </td>
+
+            <td class="px-4 py-6 text-left">
+
+            </td>
+
+            <td class="px-4 py-6 text-right">
+                <p class="mb-6">Item Sub Total: $15.00</p>
+                <p>Total Discount: $0.00</p>
+                <p>Total Shipping: $0.00</p>
+                <p>Total Tax: $0.00</p>
+                <p>Total Tax (inc): $0.00</p>
+                <p class="mt-6"><strong>Total Price: $15.00</strong></p>
+            </td>
+        </tr>
+
+        <tr class="py-4 px-4 border-b w-full text-gray-800">
+            <td class="px-4 py-6 text-left">
+
+            </td>
+
+            <td class="px-4 py-6 text-left">
+
+            </td>
+
+            <td class="px-4 py-6 text-right">
+                <div class="flex justify-end">
+                    <a class="rounded bg-red-700 hover:bg-red-800 px-2 py-1 text-center font-bold text-white" href="/checkout">Checkout</a>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
