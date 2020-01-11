@@ -19,6 +19,7 @@ use Damcclean\Commerce\Fieldtypes\ProductFieldtype;
 use Damcclean\Commerce\Fieldtypes\ProductCategoryFieldtype;
 use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
 use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
+use Damcclean\Commerce\Models\Currency;
 use Damcclean\Commerce\Models\Customer;
 use Damcclean\Commerce\Models\Order;
 use Damcclean\Commerce\Models\Product;
@@ -113,8 +114,8 @@ class CommerceServiceProvider extends AddonServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
 
         Statamic::provideToScript([
-            'commerceCurrencyCode' => config('commerce.currency.code'),
-            'commerceCurrencySymbol' => config('commerce.currency.symbol'),
+            'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
+            'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
         ]);
 
         Nav::extend(function ($nav) {

@@ -1,43 +1,39 @@
 <!doctype html>
 <html lang="{{ site_short_locale }}">
     <head>
-        <title>{{ title }} | {{ site_name }}</title>
+        <title>{{ title }} - {{ site_name }}</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body class="bg-gray-200">
+    <body>
         <div id="app">
-            <header class="bg-white w-full py-4 shadow-lg mb-12">
+            <header class="bg-gray-200 w-full py-6 mb-6">
                 <div class="container mx-auto flex flex-row items-center justify-between">
-                    <a class="text-lg font-medium" href="{{ commerce:route key='products.index' }}">
-                        {{ site_name }}
-                    </a>
+                    <a class="text-gray-900 font-bold text-xl" href="/products">The Trading Post</a>
 
-                    <nav>
-                        {{ commerce:categories }}
-                            <a class="font-normal text-normal mx-2" href="{{ url }}">
-                                {{ title }}
-                            </a>
-                        {{ /commerce:categories }}
-
-                        <a class="font-semibold text-normal mx-2" href="{{ commerce:route key='checkout.show' }}">
-                            Cart ({{ cart:count }})
-                        </a>
+                    <nav class="flex flex-row items-center">
+                        <a href="/products" class="text-gray-800 font-medium mx-4">Products</a>
+                        <a href="/cart" class="text-gray-800 font-medium mx-4">Cart ({{ cart:count }})</a>
                     </nav>
                 </div>
             </header>
 
             <div class="container mx-auto">
-                <div class="bg-white shadow-lg p-8 rounded-sm">
-                    {{ template_content }}
-                </div>
+                {{ template_content }}
             </div>
 
-            <footer class="bg-gray-100 w-full mt-12 py-6">
-                <p class="text-gray-900 font-semibold text-center text-lg">{{ site_name }} &copy {{ now format='Y' }}</p>
-                <p class="text-gray-700 font-medium text-center text-sm">Site built with Statamic Commerce.</p>
+            <footer class="bg-gray-200 w-full py-6 mt-6">
+                <div class="container mx-auto">
+                    <h2 class="text-gray-800 font-bold text-2xl mb-2">Resources</h2>
+
+                    <ul class="list-disc">
+                        <li><a class="text-blue-700 hover:text-blue-800 font-bold" href="https://discord.gg/P3ACYf9">Discord for Commerce testers</a></li>
+                        <li><a class="text-blue-700 hover:text-blue-800 font-bold" href="https://github.com/damcclean/commerce">Repo & Documentation</a></li>
+                        <li><a class="text-blue-700 hover:text-blue-800 font-bold" href="https://github.com/damcclean/commerce/issues">Issue Tracker</a></li>
+                    </ul>
+                </div>
             </footer>
         </div>
 

@@ -2,8 +2,10 @@
 
 namespace Damcclean\Commerce\Helpers;
 
+use Damcclean\Commerce\Events\AddedToCart;
 use Damcclean\Commerce\Models\Cart as CartModel;
 use Damcclean\Commerce\Models\CartItem;
+use Damcclean\Commerce\Models\Product;
 use Damcclean\Commerce\Models\Variant;
 use Statamic\Stache\Stache;
 
@@ -48,15 +50,16 @@ class Cart
 
         $item = new CartItem();
         $item->uid = (new Stache())->generateId();
-        $item->product_id = $data['product'];
-        $item->variant_id = $data['variant'];
+        $item->product_id = Product::where('uid', $data['product'])->first()->id;
+        $item->variant_id = Variant::where('uid', $data['variant'])->first()->id;
         $item->quantity = $data['quantity'];
         $item->cart_id = $cart->id;
         $item->save();
 
-        $cart = CartModel::where('uid', $uid)->first();
-        $cart->total += (Variant::find($data['variant'])->price) * $data['quantity'];
+        $cart->total += (Variant::where('uid', $data['variant'])->first()->price) * $data['quantity'];
         $cart->save();
+
+        event(new AddedToCart($cart, $item));
 
         return collect($cart->items);
     }

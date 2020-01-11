@@ -21,16 +21,15 @@ class ProductController extends Controller
             ->with('variants')
             ->first();
 
-        if ($product->is_enabled === false) {
+        if (! $product->is_enabled) {
             abort(404);
         }
-
-        // TODO: this is temporary until we make product variations work on the front-end
-        return $product;
 
         return (new View)
             ->template('commerce::web.product')
             ->layout('commerce::web.layout')
-            ->with($product->toArray());
+            ->with(array_merge($product->toArray(), [
+                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price
+            ]));
     }
 }

@@ -292,7 +292,7 @@ Commerce provides a few events which you can hook into in your `EventServiceProv
 
 ### [`AddedToCart`](https://github.com/damcclean/commerce/blob/master/src/Events/AddedToCart.php)
 
-Every time the user adds a product variant to their cart, this event is dispatched with the `product` and `variant` that are added.
+Every time the user adds a product variant to their cart, this event is dispatched with the user's `Cart` and the `CartItem` that was added.
 
 ### [`CheckoutComplete`](https://github.com/damcclean/commerce/blob/master/src/Events/CheckoutComplete.php)
 
