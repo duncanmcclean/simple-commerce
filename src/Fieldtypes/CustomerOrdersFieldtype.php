@@ -2,7 +2,6 @@
 
 namespace Damcclean\Commerce\Fieldtypes;
 
-use Damcclean\Commerce\Models\Order;
 use Statamic\Fields\Fieldtype;
 
 class CustomerOrdersFieldtype extends Fieldtype
@@ -12,7 +11,7 @@ class CustomerOrdersFieldtype extends Fieldtype
 
     public function preload()
     {
-        return cp_route('customer-order');
+        return cp_route('commerce-api.customer-order');
     }
 
     public function preProcess($data)
