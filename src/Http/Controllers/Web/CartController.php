@@ -7,6 +7,7 @@ use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Helpers\Cart;
 use Damcclean\Commerce\Http\Requests\CartDeleteRequest;
 use Damcclean\Commerce\Http\Requests\CartStoreRequest;
+use Damcclean\Commerce\Models\CartItem;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 
@@ -42,18 +43,19 @@ class CartController extends Controller
         ]);
 
         return back()
-            ->with('success', 'Added to cart.');
+            ->with('success', 'Added item to cart.');
     }
 
     public function destroy(CartDeleteRequest $request)
     {
+        $this->createCart($request);
+
         $validate = $request->validated();
 
-        $this->cart->remove($request->slug);
+        $this->cart->remove($this->cartId, $request->item_id);
 
-        return redirect()
-            ->back()
-            ->with('message', 'Removed product from cart.');
+        return back()
+            ->with('success', 'Removed product from cart.');
     }
 
     protected function createCart(Request $request)

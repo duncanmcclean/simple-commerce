@@ -34,7 +34,7 @@ class Cart
     {
         $cart = CartModel::where('uid', $uid)->first();
 
-        return collect($cart->items)->count();
+        return CartItem::where('cart_id', $cart->id)->count();
     }
 
     public function get(string $uid)
@@ -67,20 +67,23 @@ class Cart
         return collect($cart->items);
     }
 
-    public function remove(string $uid, string $itemUid)
+    public function remove(string $cartUid, string $itemUid)
     {
-        $item = CartItem::where('uid', $itemUid)->first();
+        $cart = CartModel::where('uid', $cartUid)->first();
 
+        $item = CartItem::where('uid', $itemUid)->first();
         $item->delete();
 
-        return (Cart::where('uid', $uid)->first())->items;
+        // TODO: actually remove the amount from the cart total
+
+        return CartItem::where('cart_id', $cart->id)->get();
     }
 
     public function clear(string $uid)
     {
         $cart = CartModel::where('uid', $uid)->first();
 
-        collect($cart->items)
+        CartItem::where('cart_id', $cart->id)
             ->each(function ($item) {
                 $item->delete();
             });
