@@ -106,7 +106,13 @@ class ProductController extends CpController
                     'sku' => $variant->sku,
                     'stock_number' => $variant->stock_number,
                     'unlimited_stock' => $variant->unlimited_stock,
-                    'variant_attributes' => $variant->variant_attributes,
+                    'variant_attributes' => collect($variant->variant_attributes)->map(function ($attribute, $key) {
+                        return [
+                            '_id' => 'row-'.$key,
+                            'key' => $attribute['key'],
+                            'value' => $attribute['value'],
+                        ];
+                    })->toArray(),
                 ];
             })->toArray()
         ]);
