@@ -62,7 +62,11 @@ class ProductsTableSeeder extends Seeder
                 'name' => 'Small t-shirt',
                 'description' => 'A small version of the generic t-shirt that we sell.',
                 'attributes' => [
-                    'size' => 'Small',
+                    [
+                        '_id' => 'row-1',
+                        'key' => 'Size',
+                        'value' => 'Small',
+                    ],
                 ],
                 'price' => '1500',
                 'stock' => '25',
@@ -75,7 +79,11 @@ class ProductsTableSeeder extends Seeder
                 'name' => 'Medium t-shirt',
                 'description' => 'A medium version of the generic t-shirt that we sell.',
                 'attributes' => [
-                    'size' => 'Medium',
+                    [
+                        '_id' => 'row-1',
+                        'key' => 'Size',
+                        'value' => 'Medium',
+                    ],
                 ],
                 'price' => '1500',
                 'stock' => '40',
@@ -88,7 +96,11 @@ class ProductsTableSeeder extends Seeder
                 'name' => 'Large t-shirt',
                 'description' => 'A large version of the generic t-shirt that we sell.',
                 'attributes' => [
-                    'size' => 'Large',
+                    [
+                        '_id' => 'row-1',
+                        'key' => 'Size',
+                        'value' => 'Large',
+                    ],
                 ],
                 'price' => '1500',
                 'stock' => '15',
@@ -101,7 +113,11 @@ class ProductsTableSeeder extends Seeder
                 'title' => 'Orange',
                 'description' => 'An orange version of the jackets that we sell.',
                 'attributes' => [
-                    'color' => 'Orange',
+                    [
+                        '_id' => 'row-1',
+                        'key' => 'Color',
+                        'value' => 'Orange',
+                    ],
                 ],
                 'price' => '400',
                 'stock' => '50',
@@ -114,7 +130,11 @@ class ProductsTableSeeder extends Seeder
                 'title' => 'Black',
                 'description' => 'An black version of the jackets that we sell.',
                 'attributes' => [
-                    'color' => 'Black',
+                    [
+                        '_id' => 'row-1',
+                        'key' => 'Color',
+                        'value' => 'Black',
+                    ],
                 ],
                 'price' => '400',
                 'stock' => '50',
@@ -127,7 +147,11 @@ class ProductsTableSeeder extends Seeder
                 'title' => 'Green',
                 'description' => 'An green version of the jackets that we sell.',
                 'attributes' => [
-                    'color' => 'Green',
+                    [
+                        '_id' => 'row-1',
+                        'key' => 'Color',
+                        'value' => 'Green',
+                    ],
                 ],
                 'price' => '400',
                 'stock' => '50',
