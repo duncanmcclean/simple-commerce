@@ -92,9 +92,24 @@ class ProductController extends CpController
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
 
-        $product = Product::where('uid', $product)
-            ->with('variants')
-            ->first();
+        $product = Product::where('uid', $product)->first();
+        $variants = Variant::where('product_id', $product->id)->get();
+
+        $values = array_merge($product->toArray(), [
+            'variants' => $variants->map(function (Variant $variant, $key) {
+                return [
+                    '_id' => 'row-'.$key,
+                    'description' => $variant->description,
+                    'max_quantity' => $variant->max_quantity,
+                    'name' => $variant->name,
+                    'price' => $variant->price,
+                    'sku' => $variant->sku,
+                    'stock_number' => $variant->stock_number,
+                    'unlimited_stock' => $variant->unlimited_stock,
+                    'variant_attributes' => $variant->variant_attributes,
+                ];
+            })->toArray()
+        ]);
 
         $blueprint = Blueprint::find('product');
 
@@ -104,7 +119,7 @@ class ProductController extends CpController
         return view('commerce::cp.products.edit', [
             'crumbs'    => $crumbs,
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $product,
+            'values'    => $values,
             'meta'      => $fields->meta(),
             'action' => $product->updateUrl(),
         ]);

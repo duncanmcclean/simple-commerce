@@ -5,7 +5,7 @@
     <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
 
     <publish-form
-            title="{{ $values->title }}"
+            title="{{ $values['title'] }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
             :values='@json($values)'
