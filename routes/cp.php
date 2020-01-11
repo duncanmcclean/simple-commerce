@@ -48,4 +48,5 @@ Route::prefix('customers')->as('customers')->group(function () {
 
 Route::prefix('commerce-api')->as('commerce-api')->group(function () {
     Route::post('/customer-order', 'Http\Controllers\Cp\CustomerOrderController@index')->name('.customer-order');
+    Route::get('/refund-order/{order}', 'Http\Controllers\Cp\RefundOrderController@store')->name('.refund-order');
 });
