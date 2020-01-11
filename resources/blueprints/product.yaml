@@ -75,7 +75,7 @@ sections:
                 localizable: false
                 display: Description
             -
-              handle: attributes
+              handle: variant_attributes
               field:
                 fields:
                   -

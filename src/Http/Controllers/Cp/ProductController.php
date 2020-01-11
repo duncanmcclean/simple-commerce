@@ -75,7 +75,7 @@ class ProductController extends CpController
                 $item->unlimited_stock = $variant['unlimited_stock'];
                 $item->max_quantity = $variant['max_quantity'];
                 $item->description = $variant['description'];
-                $item->variant_attributes = $variant['attributes'];
+                $item->variant_attributes = $variant['variant_attributes'];
                 $item->product_id = $product->id;
                 $item->save();
             });
