@@ -7,8 +7,8 @@ use Damcclean\Commerce\Events\CheckoutComplete;
 use Damcclean\Commerce\Events\CouponUsed;
 use Damcclean\Commerce\Events\NewCustomerCreated;
 use Damcclean\Commerce\Events\OrderStatusUpdated;
-use Damcclean\Commerce\Events\ProductOutOfStock;
-use Damcclean\Commerce\Events\ProductStockRunningLow;
+use Damcclean\Commerce\Events\VariantOutOfStock;
+use Damcclean\Commerce\Events\VariantStockRunningLow;
 use Damcclean\Commerce\Events\ReturnCustomer;
 use Damcclean\Commerce\Fieldtypes\CountryFieldtype;
 use Damcclean\Commerce\Fieldtypes\CurrencyFieldtype;
@@ -66,8 +66,8 @@ class CommerceServiceProvider extends AddonServiceProvider
         OrderStatusUpdated::class => [
             SendOrderStatusUpdatedNotification::class,
         ],
-        ProductOutOfStock::class => [],
-        ProductStockRunningLow::class => [],
+        VariantOutOfStock::class => [],
+        VariantStockRunningLow::class => [],
         ReturnCustomer::class => [],
     ];
 

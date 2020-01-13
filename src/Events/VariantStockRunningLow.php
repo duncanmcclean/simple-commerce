@@ -3,20 +3,20 @@
 namespace Damcclean\Commerce\Events;
 
 use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\Variant;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class ProductStockRunningLow
+class VariantStockRunningLow
 {
     use Dispatchable, InteractsWithSockets;
 
     public $product;
+    public $variant;
 
-    public function __construct(Product $product)
+    public function __construct(Product $product, Variant $variant)
     {
         $this->product = $product;
-
-        // TODO: possibly change the name of this class to do with variants
-        // TODO: pass in the variant
+        $this->variant = $variant;
     }
 }

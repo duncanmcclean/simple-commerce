@@ -52,7 +52,6 @@
         <script>
             window.csrfToken = '{{ csrf_token }}';
             window.stripeKey = '{{ commerce:stripe_key }}';
-            window.redeemCouponEndpoint = '{{ commerce:route key="redeem_coupon" }}';
             {{ if intent }}window.paymentIntent = '{{ intent }}';{{ /if }}
         </script>
         <script src="https://js.stripe.com/v3/"></script>

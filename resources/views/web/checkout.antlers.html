@@ -5,6 +5,8 @@
 {{ else }}
     <div class="flex flex-row">
         <form id="payment-form" class="md:w-2/3 mx-2" action="/checkout" method="post" @submit.prevent="submitCheckout">
+            {{ csrf_field }}
+
             <fieldset class="border-b mb-6">
                 <h2 class="text-3xl mb-4 font-medium">Contact Information</h2>
 
@@ -129,10 +131,10 @@
             <fieldset class="border-b mb-6">
                 <h2 class="text-3xl mb-4 font-medium">Payment</h2>
 
-                <div class="flex flex-row items-center mb-4">
-                    <h2 class="w-2/5 font-bold mb-2">Cardholder Name</h2>
-                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="name" placeholder="Joe Bloggs" required>
-                </div>
+<!--                <div class="flex flex-row items-center mb-4">-->
+<!--                    <h2 class="w-2/5 font-bold mb-2">Cardholder Name</h2>-->
+<!--                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="cardholder_name" placeholder="Joe Bloggs" required>-->
+<!--                </div>-->
 
                 <div class="flex flex-row items-center mb-4">
                     <h2 class="w-2/5 font-bold mb-2">Card Details</h2>
@@ -143,7 +145,7 @@
             </fieldset>
 
             <div class="flex flex-row justify-center mb-6">
-                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Pay {{ commerce:currency_symbol }}{{ cart:total }}</button>
+                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit" :disabled="isSubmitting">Pay {{ commerce:currency_symbol }}{{ cart:total }}</button>
             </div>
         </form>
 

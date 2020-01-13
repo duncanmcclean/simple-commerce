@@ -95,6 +95,6 @@ class Cart
     {
         $cart = CartModel::where('uid', $uid)->first();
 
-        return $cart->total;
+        return number_format($cart->total, 2);
     }
 }

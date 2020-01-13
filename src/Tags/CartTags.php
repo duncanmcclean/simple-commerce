@@ -36,7 +36,7 @@ class CartTags extends Tags
 
     public function total()
     {
-        return number_format($this->cart->total($this->cartId), 2);
+        return $this->cart->total($this->cartId);
     }
 
     protected function createCart()

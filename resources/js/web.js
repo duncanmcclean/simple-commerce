@@ -49,9 +49,7 @@ new Vue({
                 const displayError = document.getElementById('card-errors');
 
                 if (error) {
-                    displayError.textContent = error.message;
-                } else {
-                    displayError.textContent = '';
+                    alert(error.message);
                 }
             });
         }
