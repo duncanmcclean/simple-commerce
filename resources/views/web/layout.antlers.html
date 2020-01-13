@@ -1,36 +1,58 @@
 <!doctype html>
 <html lang="{{ site_short_locale }}">
     <head>
+        <title>{{ title }} - {{ site_name }}</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ site_name }}</title>
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body class="bg-gray-200">
+    <body>
         <div id="app">
-            <header class="px-4 py-4 flex flex-row items-center justify-between w-full">
-                <a class="text-xl font-semibold text-gray-800" href="{{ commerce:route key='products.index' }}">{{ site_name }}</a>
+            {{ if success }}
+                <div class="w-full bg-green-400 text-center font-semibold py-2 text-white">
+                    {{ success }}
+                </div>
+            {{ /if }}
 
-                <nav class="flex flex-row items-center">
-                    <span class="font-semibold text-gray-800 mx-4">{{ cart:count }} items in cart</span>
-                    <a class="mx-4 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg" href="/checkout">Go to Checkout</a>
-                </nav>
+            {{ if error }}
+                <div class="w-full bg-red-600 text-center font-semibold py-2 text-white">
+                    {{ error }}
+                </div>
+            {{ /if }}
+
+            <header class="bg-gray-200 w-full py-6 mb-6">
+                <div class="container mx-auto flex flex-row items-center justify-between">
+                    <a class="text-gray-900 font-bold text-xl" href="/products">The Trading Post</a>
+
+                    <nav class="flex flex-row items-center">
+                        <a href="/products" class="text-gray-800 font-medium mx-4">Products</a>
+                        <a href="/cart" class="text-gray-800 font-medium mx-4">Cart ({{ cart:count }})</a>
+                    </nav>
+                </div>
             </header>
 
-            <div class="flex flex-col items-center justify-center h-screen w-full">
+            <div class="container mx-auto">
                 {{ template_content }}
             </div>
+
+            <footer class="bg-gray-200 w-full py-6 mt-6">
+                <div class="container mx-auto">
+                    <h2 class="text-gray-800 font-bold text-2xl mb-2">Resources</h2>
+
+                    <ul class="list-disc">
+                        <li><a class="text-blue-700 hover:text-blue-800 font-bold" href="https://discord.gg/P3ACYf9">Discord for Commerce testers</a></li>
+                        <li><a class="text-blue-700 hover:text-blue-800 font-bold" href="https://github.com/damcclean/commerce">Repo & Documentation</a></li>
+                        <li><a class="text-blue-700 hover:text-blue-800 font-bold" href="https://github.com/damcclean/commerce/issues">Issue Tracker</a></li>
+                    </ul>
+                </div>
+            </footer>
         </div>
 
         <script>
             window.csrfToken = '{{ csrf_token }}';
             window.stripeKey = '{{ commerce:stripe_key }}';
-            window.redeemCouponEndpoint = '{{ commerce:route key="redeem_coupon" }}';
-
-            {{ if intent }}
-                window.paymentIntent = '{{ intent }}';
-            {{ /if }}
+            {{ if intent }}window.paymentIntent = '{{ intent }}';{{ /if }}
         </script>
         <script src="https://js.stripe.com/v3/"></script>
         <script src="/vendor/damcclean/commerce/js/web.js"></script>

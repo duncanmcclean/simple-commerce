@@ -18,20 +18,6 @@ return [
     ],
 
     /**
-     * Currency
-     *
-     * Commerce can only sell your products in a single currency.
-     * By default, the currency used is Pound Sterling. You can
-     * change it to any currency code supported by Stripe.
-     * See: https://stripe.com/docs/currencies
-     */
-
-    'currency' => [
-        'code' => env('COMMERCE_CURRENCY', 'gbp'),
-        'symbol' => env('COMMERCE_CURRENCY_SYMBOL', '£'),
-    ],
-
-    /**
      * Stripe
      *
      * We need these keys so your customers can purchase
@@ -46,6 +32,17 @@ return [
     ],
 
     /**
+     * Currency
+     *
+     * Currently, Commerce only supports the use of one currency
+     * for making purchases. Please choose which currency you want
+     * to use. You can find a list of the currencies here.
+     * https://github.com/damcclean/commerce/blob/master/database/seeds/CurrenciesTableSeeder.php
+     */
+
+    'currency' => 'USD',
+
+    /**
      * Routes
      *
      * Commerce provides a set of web routes to make your store
@@ -58,12 +55,14 @@ return [
         /**
          * Cart
          *
+         * - (index) Displays items in the customers' cart.
          * - (add) Adds an item to the customers' cart.
          * - (clear) Clears all items from the customers' cart.
          * - (delete) Removes an item from the customers' cart.
          */
 
         'cart' => [
+            'index' => '/cart',
             'add' => '/cart',
             'clear' => '/cart/clear',
             'delete' => '/cart/delete',
@@ -86,48 +85,17 @@ return [
          *
          * - (index) Displays all products
          * - (search) Displays a product search to the user
-         * - (show) Displays a product page
          */
 
         'products' => [
             'index' => '/products',
             'search' => '/products/search',
-            'show' => '/products/{product}',
         ],
 
         'thanks' => '/thanks', // Page user is redirected to once order has been processed.
         'redeem_coupon' => '/redeem-coupon', // Endpoint where we check if a coupon provided by the customer is valid
+        'category' => '/category/category}', // Index page for a product category
 
     ],
 
-    /**
-     * Storage
-     *
-     * By default, Commerce stores your files in yaml files but if you
-     * want to use a database, swap the repo out for an Eloquent one.
-     */
-
-    'storage' => [
-
-        'coupons' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCouponRepository',
-            'files' => base_path().'/content/commerce/coupons',
-        ],
-
-        'customers' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCustomerRepository',
-            'files' => base_path().'/content/commerce/customers',
-        ],
-
-        'orders' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileOrderRepository',
-            'files' => base_path().'/content/commerce/orders',
-        ],
-
-        'products' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileProductRepository',
-            'files' => base_path().'/content/commerce/products',
-        ],
-
-    ],
 ];

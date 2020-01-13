@@ -4,15 +4,21 @@ namespace Damcclean\Commerce\Http\Controllers\Web;
 
 use Damcclean\Commerce\Events\CheckoutComplete;
 use Damcclean\Commerce\Events\NewCustomerCreated;
-use Damcclean\Commerce\Events\ProductOutOfStock;
-use Damcclean\Commerce\Events\ProductStockRunningLow;
+use Damcclean\Commerce\Events\VariantOutOfStock;
+use Damcclean\Commerce\Events\VariantStockRunningLow;
 use Damcclean\Commerce\Events\ReturnCustomer;
-use Damcclean\Commerce\Facades\Customer;
-use Damcclean\Commerce\Facades\Order;
-use Damcclean\Commerce\Facades\Product;
 use Damcclean\Commerce\Helpers\Cart;
-use Damcclean\Commerce\Tags\CartTags;
+use Damcclean\Commerce\Helpers\Currency;
+use Damcclean\Commerce\Models\Address;
+use Damcclean\Commerce\Models\Country;
+use Damcclean\Commerce\Models\Currency as CurrencyModel;
+use Damcclean\Commerce\Models\Customer;
+use Damcclean\Commerce\Models\Order;
+use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\State;
+use Damcclean\Commerce\Models\Variant;
 use Illuminate\Http\Request;
+use Statamic\Stache\Stache;
 use Statamic\View\View;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -20,6 +26,8 @@ use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
+    public $cartId;
+
     public function __construct()
     {
         Stripe::setApiKey(config('commerce.stripe.secret'));
@@ -29,106 +37,126 @@ class CheckoutController extends Controller
 
     public function show()
     {
-        if ($this->cart->total() == '0.00') {
+        $this->createCart();
+
+        if ($this->cart->total($this->cartId) == '0') {
             return (new View())
                 ->template('commerce::web.checkout')
-                ->layout('commerce::web.layout');
+                ->layout('commerce::web.layout')
+                ->with([
+                    'title' => 'Checkout',
+                ]);
         }
 
         $intent = PaymentIntent::create([
-            'amount' => (number_format($this->cart->total(), 2, '.', '') * 100),
-            'currency' => config('commerce.currency.code'),
+            'amount' => ($this->cart->total($this->cartId) * 100),
+            'currency' => (new Currency())->primary()->iso,
         ]);
 
         return (new View)
             ->template('commerce::web.checkout')
             ->layout('commerce::web.layout')
             ->with([
+                'title' => 'Checkout',
                 'intent' => $intent->client_secret,
             ]);
     }
 
     public function store(Request $request)
     {
+        $this->createCart();
+
         $paymentMethod = PaymentMethod::retrieve($request->payment_method);
 
-        if (isset(Customer::findByEmail($request->email)['id'])) {
-            $customer = Customer::findByEmail($request->email);
-
-            if ($paymentMethod->card->last4 != $customer['card_last_four']) {
-                $customer = Customer::save(array_merge($customer, [
-                    'card_brand' => $paymentMethod->card->brand,
-                    'card_country' => $paymentMethod->card->country,
-                    'card_expiry_month' => $paymentMethod->card->exp_month,
-                    'card_expiry_year' => $paymentMethod->card->exp_year,
-                    'card_last_four' => $paymentMethod->card->last4,
-                ]));
-            }
-
+        if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));
         } else {
-            $customer = Customer::save([
-                'slug' => uniqid().'-'.str_slug($request->name),
-                'name' => $request->name,
-                'email' => $request->email,
-                'address' => $request->address ?? '',
-                'country' => $request->country ?? '',
-                'zip_code' => $request->zip_code ?? '',
-                'card_brand' => $paymentMethod->card->brand,
-                'card_country' => $paymentMethod->card->country,
-                'card_expiry_month' => $paymentMethod->card->exp_month,
-                'card_expiry_year' => $paymentMethod->card->exp_year,
-                'card_last_four' => $paymentMethod->card->last4,
-                'currency' => $request->currency ?? config('commerce.currency.code'),
-                'customer_since' => now()->toDateTimeString(),
-            ]);
+            $customer = new Customer();
+            $customer->uid = (new Stache())->generateId();
+            $customer->name = $request->name;
+            $customer->email = $request->email;
+            $customer->save();
 
             event(new NewCustomerCreated($customer));
         }
 
-        $products = collect($this->cart->all())
-            ->map(function ($cartProduct) {
-                $product = Product::findBySlug($cartProduct['slug']);
+        $shippingAddress = new Address();
+        $shippingAddress->uid = (new Stache())->generateId();
+        $shippingAddress->name = $customer->name;
+        $shippingAddress->address1 = $request->shipping_address_1;
+        $shippingAddress->address2 = $request->shipping_address_2;
+        $shippingAddress->address3 = $request->shipping_address_3;
+        $shippingAddress->city = $request->shipping_city;
+        $shippingAddress->zip_code = $request->shipping_zip_code;
+        $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
+        $shippingAddress->state_id = State::first()->id; // TODO: deal with this as we can only display states for the us
+        $shippingAddress->customer_id = $customer->id;
+        $shippingAddress->save();
 
-                return [
-                    'id' => $product['id'],
-                    'quantity' => $cartProduct['quantity'],
-                ];
-            });
+        if ($request->use_shipping_address_for_billing === 'on') {
+            $billingAddress = $shippingAddress;
+        } else {
+            $billingAddress = new Address();
+            $billingAddress->uid = (new Stache())->generateId();
+            $billingAddress->name = $customer->name;
+            $billingAddress->address1 = $request->billing_address_1;
+            $billingAddress->address2 = $request->billing_address_2;
+            $billingAddress->address3 = $request->billing_address_3;
+            $billingAddress->city = $request->billing_city;
+            $billingAddress->zip_code = $request->billing_zip_code;
+            $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
+            $billingAddress->state_id = State::first()->id; // TODO: deal with this as we can only display states for the us
+            $billingAddress->customer_id = $customer->id;
+            $billingAddress->save();
+        }
 
-        $order = Order::save([
-            'slug' => now()->year.'-'.now()->month.'-'.now()->day.'-'.mt_rand(),
-            'total' => (new CartTags())->total(),
-            'address' => $request->shipping_address ?? $request->address,
-            'country' => $request->shipping_country ?? $request->country,
-            'zip_code' => $request->shipping_zip_code ?? $request->zip_code,
-            'status' => 'paid',
-            'coupon' => null, // WIP when coupons happen
-            'customer' => [collect($customer)->toArray()['id']],
-            'order_date' => now()->toDateTimeString(),
-            'products' => $products,
-        ]);
+        $customer->default_shipping_address_id = $shippingAddress->id;
+        $customer->default_billing_address_id = $billingAddress->id;
+        $customer->save();
+
+        $order = new Order();
+        $order->uid = (new Stache())->generateId();
+        $order->payment_intent = $request->payment_method;
+        $order->billing_address_id = $billingAddress->id;
+        $order->shipping_address_id = $shippingAddress->id;
+        $order->customer_id = $customer->id;
+        $order->order_status_id = 1; // TODO: use a configuration option for this
+        $order->items = null; // TODO: work on this from the cart
+        $order->total = $this->cart->total($this->cartId);
+        $order->currency_id = CurrencyModel::where('iso', config('commerce.currency'))->first()->id;
+        $order->save();
 
         event(new CheckoutComplete($order, $customer));
 
-        collect($this->cart->all())
-            ->each(function ($cartProduct) {
-                $product = Product::findBySlug($cartProduct['slug']);
-                $product['stock_number'] -= $cartProduct['quantity'];
+        collect($this->cart->get($this->cartId))
+            ->each(function ($cartItem) {
+                $product = Product::find($cartItem->product_id);
 
-                Product::update($product['id'], $product);
+                $variant = Variant::find($cartItem->variant_id);
+                $variant->stock -= $cartItem->quantity;
+                $variant->save();
 
-                if ($product['stock_number'] == 0) {
-                    event(new ProductOutOfStock($product));
+                if ($variant->stock === 0) {
+                    event(new VariantOutOfStock($product, $variant));
                 }
 
-                if ($product['stock_number'] <= 5) {
-                    event(new ProductStockRunningLow($product));
+                if ($variant->stock <= 5) { // TODO: maybe make this configurable
+                    event(new VariantStockRunningLow($product, $variant));
                 }
             });
 
-        $this->cart->clear();
+        $this->cart->clear($this->cartId);
 
         return redirect(config('commerce.routes.thanks'));
+    }
+
+    protected function createCart()
+    {
+        if (! request()->session()->get('commerce_cart_id')) {
+            request()->session()->put('commerce_cart_id', $this->cart->create());
+            request()->session()->save();
+        }
+
+        $this->cartId = request()->session()->get('commerce_cart_id');
     }
 }

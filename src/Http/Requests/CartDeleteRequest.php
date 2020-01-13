@@ -14,7 +14,7 @@ class CartDeleteRequest extends FormRequest
     public function rules()
     {
         return [
-            'slug' => 'required|string',
+            'item_id' => 'required|string',
         ];
     }
 }

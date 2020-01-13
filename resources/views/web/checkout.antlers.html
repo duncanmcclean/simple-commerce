@@ -1,119 +1,168 @@
-<div class="bg-white rounded-lg w-2/3 px-4 py-6">
-    <h2 class="text-4xl font-bold mb-2 text-gray-800">Checkout</h2>
+<h1 class="text-gray-800 font-bold text-4xl mb-4">Checkout</h1>
 
-    {{ if {cart:count} == 0 }}
-        <p>There's nothing in your cart. <a class="border-b-2 border-blue-600 text-blue-600 font-semibold" href="/products">Browse products</a>.</p>
-    {{ else }}
-        <div class="flex flex-col">
-            {{ cart }}
-                <a class="w-full bg-gray-100 my-1 p-4 flex flex-row items-center justify-between" href="/products/{{ slug }}">
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-800">{{ quantity }} X {{ title }}</h2>
+{{ if {cart:count} == 0 }}
+    <p>There are no items in your cart.</p>
+{{ else }}
+    <div class="flex flex-row">
+        <form id="payment-form" class="md:w-2/3 mx-2" action="/checkout" method="post" @submit.prevent="submitCheckout">
+            {{ csrf_field }}
 
-                        <form action="{{ commerce:route key='cart.delete' }}" method="post">
-                            <input type="hidden" name="slug" value="{{ slug }}">
+            <fieldset class="border-b mb-6">
+                <h2 class="text-3xl mb-4 font-medium">Contact Information</h2>
 
-                            <button class="border-b-2 border-red-600 text-red-600 font-semibold text-xs">Remove</button>
-                        </form>
+                <div class="flex flex-row items-center mb-4">
+                    <h2 class="w-2/5 font-bold mb-2">Full Name</h2>
+                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="name" placeholder="Joe Bloggs" required>
+                </div>
+
+                <div class="flex flex-row items-center mb-6">
+                    <h2 class="w-2/5 font-bold mb-2">Email</h2>
+                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="email" name="email" placeholder="joebloggs@example.com" required>
+                </div>
+            </fieldset>
+
+            <fieldset class="border-b mb-6">
+                <h2 class="text-3xl mb-2 font-medium">Addresses</h2>
+
+                <h3 class="text-xl mb-4 font-medium">Shipping Address</h3>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 1</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_address_1" required>
                     </div>
 
-                    <h3 class="text-lg font-semibold">{{ commerce:currency_symbol }}{{ price }}</h3>
-                </a>
-            {{ /cart }}
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 2</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_address_2">
+                    </div>
+                </div>
 
-            <div class="w-full flex flex-row items-center justify-between p-4">
-                <h2 class="text-lg font-bold text-gray-800">Total</h2>
-                <p>{{ commerce:currency_symbol }}{{ cart:total }}</p>
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 3</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_address_3">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">City</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_city" required>
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">State</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_state">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Zip Code</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_zip_code" required>
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Country</h2>
+                        <select class="w-full bg-white rounded border py-1 px-2 text-gray-800" name="shipping_country" required>
+                            {{ commerce:countries }}
+                            <option value="{{ iso }}">{{ name }}</option>
+                            {{ /commerce:countries }}
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="text-xl mb-2 font-medium">Billing Address</h3>
+
+                <label class="flex flex-row items-center mb-4">
+                    <input class="mr-2" v-model="useShippingAsBilling" name="use_shipping_address_for_billing" type="checkbox" value="on" checked>
+                    Use the same address as shipping address.
+                </label>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 1</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_address_1">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 2</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_address_2">
+                    </div>
+                </div>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 3</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_address_3">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">City</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_city">
+                    </div>
+                </div>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">State</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_state">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Zip Code</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_zip_code">
+                    </div>
+                </div>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Country</h2>
+                        <select class="w-full bg-white rounded border py-1 px-2 text-gray-800" name="billing_country">
+                            {{ commerce:countries }}
+                            <option value="{{ iso }}">{{ name }}</option>
+                            {{ /commerce:countries }}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border-b mb-6">
+                <h2 class="text-3xl mb-4 font-medium">Payment</h2>
+
+<!--                <div class="flex flex-row items-center mb-4">-->
+<!--                    <h2 class="w-2/5 font-bold mb-2">Cardholder Name</h2>-->
+<!--                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="cardholder_name" placeholder="Joe Bloggs" required>-->
+<!--                </div>-->
+
+                <div class="flex flex-row items-center mb-4">
+                    <h2 class="w-2/5 font-bold mb-2">Card Details</h2>
+                    <div class="w-3/5 bg-white rounded border py-2 px-2 text-gray-800" id="card-element"></div>
+                </div>
+
+                <input type="hidden" name="payment_method">
+            </fieldset>
+
+            <div class="flex flex-row justify-center mb-6">
+                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit" :disabled="isSubmitting">Pay {{ commerce:currency_symbol }}{{ cart:total }}</button>
             </div>
+        </form>
 
-            <div class="w-full flex flex-row items-center justify-between mt-4">
-                <div>
-                    <button class="font-semibold text-gray-800 text-sm" @click="isCouponModalOpen = true">Redeem coupon</button>
+        <div class="md:w-1/3 sticky mx-2">
+            <h2 class="text-2xl font-medium mb-4">Items</h2>
+
+            {{ cart:items }}
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>{{ quantity}}x {{ title }}</p>
+                    <p>$15.00</p>
                 </div>
+            {{ /cart:items }}
 
-                <form action="{{ commerce:route key='cart.clear' }}" method="post">
-                    <button class="font-semibold text-red-600 text-sm">Clear Cart</button>
-                </form>
-            </div>
-
-            <form id="payment-form" class="mt-8" action="/checkout" method="post" @submit.prevent="submitCheckout">
-                <h3 class="text-3xl font-bold mb-2 text-gray-800">Pay Now</h3>
-
-                <input type="hidden" name="currency" value="{{ commerce:currency_code }}">
-                <input type="hidden" name="payment_method" required>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Name</label>
-                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="name" placeholder="Jon Smith" required>
-                </div>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Email</label>
-                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="email" name="email" placeholder="jon.smith@example.com" required>
-                </div>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Address</label>
-                    <textarea class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" name="address" required></textarea>
-                </div>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Address</label>
-                    <select class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" name="country" required>
-                        <option value="uk" selected>United Kingdom</option>
-                        <option value="us">United States</option>
-                        <option value="ca">Canada</option>
-                        <option value="fr">France</option>
-                    </select>
-                </div>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Zip code</label>
-                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="zip_code" placeholder="99501" required>
-                </div>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Name on Card</label>
-                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="name_on_card" placeholder="Mr J Smith" required>
-                </div>
-
-                <div class="bg-gray-100 flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Card Details</label>
-                    <div id="card-element" class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800"></div>
-                </div>
-
-                <div id="card-errors" role="alert"></div>
-            </form>
-
-            <div class="w-1/2 mx-auto">
-                <button class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full" type="submit" :disabled="isSubmitting">Pay</button>
-            </div>
-        </div>
-    {{ /if }}
-
-    <div
-            v-if="isCouponModalOpen"
-            class="fixed top-0 bottom-0 left-0 right-0 overflow-auto h-screen flex"
-    >
-        <div class="fixed top-0 bottom-0 left-0 right-0 z-50 bg-gray-900 opacity-75 h-screen"></div>
-
-        <button class="fixed top-0 right-0 text-white font-bold text-xl m-4 z-50" @click="isCouponModalOpen = !isCouponModalOpen">Close</button>
-
-        <div class="relative opacity-100 z-50 bg-white w-full max-w-md m-auto flex flex-col">
-            <header class="text-2xl font-medium text-center bg-gray-100 w-full py-2 px-6 border-b">
-                Redeem a coupon
-            </header>
-
-            <div class="p-6">
-                <div class="flex flex-row items-center p-2">
-                    <label class="w-1/3 text-gray-800 font-bold">Coupon</label>
-                    <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" v-model="coupon" required>
-                </div>
-
-                <div class="w-1/2 mx-auto mt-4">
-                    <button class="mt-2 bg-blue-600 px-6 py-2 hover:bg-blue-800 text-white font-semibold text-center text-lg w-full" type="button" @click="redeemCoupon" :disabled="isSubmitting">Redeem</button>
-                </div>
+            <div class="flex flex-row items-center justify-between mt-4 mb-2">
+                <p><strong>Total:</strong></p>
+                <p>$15.00</p>
             </div>
         </div>
     </div>
-</div>
+{{ /if }}

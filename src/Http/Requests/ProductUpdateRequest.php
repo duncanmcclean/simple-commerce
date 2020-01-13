@@ -2,7 +2,6 @@
 
 namespace Damcclean\Commerce\Http\Requests;
 
-use Damcclean\Commerce\Facades\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductUpdateRequest extends FormRequest
@@ -14,6 +13,11 @@ class ProductUpdateRequest extends FormRequest
 
     public function rules()
     {
-        return Product::updateRules();
+        return [
+            'title' => 'required|string',
+            'slug' => 'required|string',
+            'description' => '',
+            'category' => ''
+        ];
     }
 }

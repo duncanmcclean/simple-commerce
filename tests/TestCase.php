@@ -35,15 +35,6 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::resolveApplicationConfiguration($app);
 
-        $configs = [
-            'assets', 'cp', 'forms', 'routes', 'static_caching',
-            'sites', 'stache', 'system', 'users',
-        ];
-
-        foreach ($configs as $config) {
-            $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
-        }
-
         $app['config']->set('commerce', require(__DIR__.'/../config/commerce.php'));
     }
 
@@ -51,27 +42,11 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::getEnvironmentSetUp($app);
 
-        $app['config']->set('statamic.sites', [
-            'default' => 'en',
-            'sites' => [
-                'en' => ['name' => 'English', 'locale' => 'en_US', 'url' => 'http://localhost/'],
+        $app->make(\Statamic\Extend\Manifest::class)->manifest = [
+            'damcclean/commerce' => [
+                'id' => 'damcclean/commerce',
+                'namespace' => 'Damcclean\\Commerce\\',
             ],
-        ]);
-
-        $app['config']->set('auth.providers.users.driver', 'statamic');
-        $app['config']->set('statamic.stache.watcher', false);
-        $app['config']->set('statamic.users.repository', 'file');
-        $app['config']->set('statamic.stache.stores.users', [
-            'class' => \Statamic\Stache\Stores\UsersStore::class,
-            'directory' => __DIR__.'/__fixtures__/users',
-        ]);
-
-        $app['config']->set('app.key', 'base64:xRIcDp1ReW8Y8rd9V9D7hOVV4TI7ThCF3FKxRg01Rm8=');
-        $app->setBasePath(realpath(__DIR__.'/__fixtures__'));
-
-        $app['config']->set('commerce.storage.coupons.files', __DIR__.'/__fixtures__/content/commerce/coupons');
-        $app['config']->set('commerce.storage.customers.files', __DIR__.'/__fixtures__/content/commerce/customers');
-        $app['config']->set('commerce.storage.orders.files', __DIR__.'/__fixtures__/content/commerce/orders');
-        $app['config']->set('commerce.storage.products.files', __DIR__.'/__fixtures__/content/commerce/products');
+        ];
     }
 }

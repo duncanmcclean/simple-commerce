@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+    /**
      * Company information
      *
      * This will be shown on any receipts sent to customers.
@@ -14,24 +14,10 @@ return [
         'city' => '',
         'country' => '',
         'zip_code' => '',
-        'email' => '',
+        'email' => ''
     ],
 
-    /*
-     * Currency
-     *
-     * Commerce can only sell your products in a single currency.
-     * By default, the currency used is Pound Sterling. You can
-     * change it to any currency code supported by Stripe.
-     * See: https://stripe.com/docs/currencies
-     */
-
-    'currency' => [
-        'code' => env('COMMERCE_CURRENCY', 'gbp'),
-        'symbol' => env('COMMERCE_CURRENCY_SYMBOL', '£'),
-    ],
-
-    /*
+    /**
      * Stripe
      *
      * We need these keys so your customers can purchase
@@ -42,10 +28,10 @@ return [
 
     'stripe' => [
         'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
+        'secret' => env('STRIPE_SECRET')
     ],
 
-    /*
+    /**
      * Routes
      *
      * Commerce provides a set of web routes to make your store
@@ -55,7 +41,7 @@ return [
 
     'routes' => [
 
-        /*
+        /**
          * Cart
          *
          * - (add) Adds an item to the customers' cart.
@@ -69,7 +55,7 @@ return [
             'delete' => '/cart/delete',
         ],
 
-        /*
+        /**
          * Checkout
          *
          * - (show) Displays the checkout view to the user
@@ -81,7 +67,7 @@ return [
             'store' => '/checkout',
         ],
 
-        /*
+        /**
          * Products
          *
          * - (index) Displays all products
@@ -96,37 +82,9 @@ return [
         ],
 
         'thanks' => '/thanks', // Page user is redirected to once order has been processed.
+        'redeem_coupon' => '/redeem-coupon', // Endpoint where we check if a coupon provided by the customer is valid
+        'category' => '/{category}', // Index page for a product category
 
     ],
 
-    /*
-     * Storage
-     *
-     * By default, Commerce stores your files in yaml files but if you
-     * want to use a database, swap the repo out for an Eloquent one.
-     */
-
-    'storage' => [
-
-        'coupons' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCouponRepository',
-            'files' => base_path().'/content/commerce/coupons',
-        ],
-
-        'customers' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileCustomerRepository',
-            'files' => base_path().'/content/commerce/customers',
-        ],
-
-        'orders' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileOrderRepository',
-            'files' => base_path().'/content/commerce/orders',
-        ],
-
-        'products' => [
-            'repository' => 'Damcclean\Commerce\Stache\Repositories\FileProductRepository',
-            'files' => base_path().'/content/commerce/products',
-        ],
-
-    ],
 ];

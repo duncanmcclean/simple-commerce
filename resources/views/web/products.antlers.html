@@ -1,12 +1,23 @@
-<div class="bg-white rounded-lg w-2/3 px-4 py-6">
-    <h2 class="text-4xl font-bold mb-2 text-gray-800">Products</h2>
+<h1 class="text-gray-800 font-bold text-4xl mb-4">Products</h1>
 
-    <div class="flex flex-col">
-        {{ products }}
-            <a class="w-full bg-gray-100 my-1 p-4 flex flex-row items-center justify-between" href="/products/{{ slug }}">
-                <h2 class="text-xl font-bold text-gray-800">{{ title }}</h2>
-                <h3 class="text-lg font-semibold">{{ commerce:currency_symbol }}{{ price }}</h3>
-            </a>
-        {{ /products }}
+{{ commerce:products }}
+    <div class="mb-6 border-b w-full">
+        <h2 class="text-3xl"><a class="text-blue-700 hover:text-blue-800 font-bold" href="{{ url }}">{{ title }}</a></h2>
+
+        <form class="flex flex-row items-center my-4" action="/cart" method="post">
+            {{ csrf_field }}
+
+            <input type="hidden" name="product" value="{{ uid }}">
+
+            <select name="variant" required>
+                {{ variants }}
+                    <option value="{{ uid }}">{{ name }} {{ commerce:currency_symbol }}{{ from_price }}</option>
+                {{ /variants }}
+            </select>
+
+            <input class="bg-gray-100 rounded px-2 py-1 mx-2" type="number" name="quantity" max="{{ variants }}{{ if first }}{{ max_quantity }}{{ /if }}{{ /variants }}" value="1" required>
+
+            <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>
+        </form>
     </div>
-</div>
+{{ /commerce:products }}

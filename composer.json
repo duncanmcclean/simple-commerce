@@ -1,13 +1,13 @@
 {
     "name": "damcclean/commerce",
     "type": "statamic-addon",
-    "description": "A simple eCommerce addon for Statamic",
+    "description": "Powerful e-commerce addon for Statamic",
     "authors": [
         {
             "name": "Duncan McClean",
-            "email": "duncan@littlepenguin.dev",
+            "email": "duncan@doublethree.digital",
             "homepage": "http://duncanm.dev",
-            "role": "Developer at Little Penguin"
+            "role": "Founder of Double Three Digital"
         }
     ],
     "autoload": {
@@ -23,7 +23,7 @@
     "extra": {
         "statamic": {
             "name": "Commerce",
-            "description": "A simple eCommerce addon for Statamic"
+            "description": "Powerful e-commerce addon for Statamic"
         },
         "laravel": {
             "providers": [
@@ -33,8 +33,9 @@
     },
     "require": {
         "stripe/stripe-php": "^7.7",
-        "statamic/cms": "3.0.*@beta",
-        "moneyphp/money": "^3.0@dev"
+        "statamic/cms": "dev-master",
+        "moneyphp/money": "^3.0@dev",
+        "doctrine/dbal": "2.10.x-dev"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0"

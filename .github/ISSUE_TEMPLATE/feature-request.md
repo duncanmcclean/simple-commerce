@@ -1,7 +1,7 @@
 ---
 name: Feature Request
 title: "✨ "
-labels: enhancement
+labels: feature
 assignees: damcclean
 about: Suggest a new feature
 ---

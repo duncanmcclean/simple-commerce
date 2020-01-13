@@ -2,8 +2,7 @@
 
 namespace Damcclean\Commerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Facades\Product;
-use Statamic\Facades\Asset;
+use Damcclean\Commerce\Models\Product;
 use Statamic\View\View;
 
 class ProductController extends Controller
@@ -12,29 +11,25 @@ class ProductController extends Controller
     {
         return (new View)
             ->template('commerce::web.products')
-            ->layout('commerce::web.layout');
+            ->layout('commerce::web.layout')
+            ->with(['title' => 'Products']);
     }
 
-    public function show(string $product)
+    public function show(string $slug)
     {
-        $product = Product::findBySlug($product);
+        $product = Product::where('slug', $slug)
+            ->with('variants')
+            ->first();
 
-        if (isset($product['enabled']) == false) {
-            if (auth()->check() == false) {
-                abort(404);
-            }
-        }
-
-        if (isset($product['gallery'][0])) {
-            $product['gallery'] = collect($product['gallery'])
-                ->map(function ($asset) {
-                    return Asset::findById($asset)->url();
-                });
+        if (! $product->is_enabled) {
+            abort(404);
         }
 
         return (new View)
             ->template('commerce::web.product')
             ->layout('commerce::web.layout')
-            ->with($product->toArray());
+            ->with(array_merge($product->toArray(), [
+                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price
+            ]));
     }
 }

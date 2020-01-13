@@ -9,47 +9,20 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Console">
-            <directory suffix="Test.php">./tests/Console</directory>
-        </testsuite>
-        <testsuite name="Contracts">
-            <directory suffix="Test.php">./tests/Contracts</directory>
-        </testsuite>
-        <testsuite name="Events">
-            <directory suffix="Test.php">./tests/Events</directory>
-        </testsuite>
-        <testsuite name="Facades">
-            <directory suffix="Test.php">./tests/Facades</directory>
-        </testsuite>
-        <testsuite name="Fieldtypes">
-            <directory suffix="Test.php">./tests/Fieldtypes</directory>
-        </testsuite>
-        <testsuite name="Helpers">
-            <directory suffix="Test.php">./tests/Helpers</directory>
-        </testsuite>
-        <testsuite name="Http">
-            <directory suffix="Test.php">./tests/Http</directory>
-        </testsuite>
-        <testsuite name="Listeners">
-            <directory suffix="Test.php">./tests/Listeners</directory>
-        </testsuite>
-        <testsuite name="Models">
-            <directory suffix="Test.php">./tests/Models</directory>
-        </testsuite>
-        <testsuite name="Notifications">
-            <directory suffix="Test.php">./tests/Notifications</directory>
-        </testsuite>
-        <testsuite name="Stache">
-            <directory suffix="Test.php">./tests/Stache</directory>
-        </testsuite>
-        <testsuite name="Tags">
-            <directory suffix="Test.php">./tests/Tags</directory>
+        <testsuite name="Test Suite">
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+    </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:x2SHH01+2R+vwv09YcrvXqdFJ+bbqgT9gW4njcYLjDE="/>
         <env name="CACHE_DRIVER" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
     </php>
 </phpunit>

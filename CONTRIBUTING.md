@@ -8,7 +8,7 @@ This is a guide for contributing to the Commerce addon for Statamic.
 
 Like Statamic itself, this Commerce addon is open-source but it's **not free*. To use this addon in production, you **must** purchase it through the Statamic marketplace.
 
-If you're looking for official help with this addon (and you have purchased this addon), then please [email us](mailto:hello@littlepenguin.dev). You may also ask for help on the [Statamic discord](https://statamic.om/disocrd) (use the #third-party channel).
+If you're looking for official help with this addon (and you have purchased this addon), then please [email us](mailto:hello@doublethree.digital). You may also ask for help on the [Statamic discord](https://statamic.com/disocrd) (use the #third-party channel).
 
 To report a bug with this addon or request a feature, then please create an issue.
 
@@ -26,7 +26,7 @@ If you have a feature request for the addon, please check if it already exists. 
 
 ### Security disclosures
 
-If you discover a security vulnrability with the addon, please [email us](mailto:hello@littlepenguin.dev). We will review the issue and deal with it.
+If you discover a security vulnrability with the addon, please [email us](mailto:hello@doublethree.digital). We will review the issue and deal with it.
 
 ### Compiled assets
 

@@ -7,3 +7,6 @@ install:
   - composer install --no-interaction
 
 script: vendor/bin/phpunit -v
+
+notifications:
+  email: false

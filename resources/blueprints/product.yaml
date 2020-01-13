@@ -4,61 +4,112 @@ sections:
     display: Main
     fields:
       -
-        handle: gallery
-        field:
-          mode: grid
-          restrict: false
-          allow_uploads: true
-          type: assets
-          localizable: false
-          display: Gallery
-      -
         handle: title
         field:
           character_limit: 0
           type: text
           localizable: false
           display: Title
-          validate: required|string
       -
         handle: description
         field:
-          restrict: false
-          automatic_line_breaks: true
-          automatic_links: false
-          escape_markup: true
-          smartypants: false
-          type: markdown
+          type: textarea
           localizable: false
           display: Description
-  shipping:
-    display: Shipping
-    fields:
       -
-        handle: free_shipping
+        handle: variants
         field:
-          type: toggle
+          fields:
+            -
+              handle: name
+              field:
+                character_limit: 0
+                type: text
+                localizable: false
+                width: 50
+                display: Name
+            -
+              handle: price
+              field:
+                type: money
+                localizable: false
+                width: 25
+                display: Price
+            -
+              handle: sku
+              field:
+                generate: true
+                type: slug
+                localizable: false
+                width: 25
+                display: SKU
+            -
+              handle: max_quantity
+              field:
+                type: integer
+                instructions: 'How many of these can a customer buy at once?'
+                localizable: false
+                width: 33
+                display: 'Max Quantity'
+            -
+              handle: stock_number
+              field:
+                type: integer
+                localizable: false
+                width: 33
+                display: 'Stock Number'
+                unless:
+                  unlimited_stock: 'equals true'
+                instructions: 'After every purchase, this number will be deducted from.'
+            -
+              handle: unlimited_stock
+              field:
+                type: toggle
+                localizable: false
+                width: 33
+                display: 'Unlimited stock?'
+            -
+              handle: description
+              field:
+                type: textarea
+                localizable: false
+                display: Description
+            -
+              handle: variant_attributes
+              field:
+                fields:
+                  -
+                    handle: key
+                    field:
+                      character_limit: 0
+                      type: text
+                      localizable: false
+                      display: Key
+                  -
+                    handle: value
+                    field:
+                      character_limit: 0
+                      type: text
+                      localizable: false
+                      display: Value
+                mode: table
+                max_rows: 0
+                min_rows: 0
+                reorderable: true
+                type: grid
+                localizable: false
+                display: Attributes
+          mode: stacked
+          max_rows: 0
+          min_rows: 1
+          add_row: 'New Variant'
+          reorderable: true
+          type: grid
           localizable: false
-          display: 'Free Shipping'
-          width: 50
-      -
-        handle: shipping_price
-        field:
-          type: money
-          localizable: false
-          display: 'Shipping Price'
-          width: 50
-          unless:
-            free_shipping: 'equals true'
+          display: Variants
   sidebar:
     display: Sidebar
     fields:
-      -
-        handle: enabled
-        field:
-          type: toggle
-          localizable: false
-          display: 'Enabled?'
       -
         handle: slug
         field:
@@ -67,45 +118,10 @@ sections:
           localizable: false
           display: Slug
       -
-        handle: publish_date
+        handle: category
         field:
-          time_enabled: true
-          time_required: false
-          earliest_date: '2019-01-01'
-          full_width: false
-          inline: false
-          columns: 1
-          rows: 1
-          mode: single
-          type: date
+          max_items: 1
+          mode: default
+          type: product_category
           localizable: false
-          display: 'Publish Date'
-          validate: required
-          width: 50
-      -
-        handle: expiry_date
-        field:
-          time_enabled: true
-          time_required: false
-          earliest_date: '2019-01-01'
-          full_width: false
-          inline: false
-          columns: 1
-          rows: 1
-          mode: single
-          type: date
-          localizable: false
-          display: 'Expiry Date'
-          width: 50
-      -
-        handle: price
-        field:
-          type: money
-          localizable: false
-          display: Price
-      -
-        handle: stock_number
-        field:
-          type: integer
-          localizable: false
-          display: 'Stock Number'
+          display: 'Product Category'

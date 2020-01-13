@@ -5,8 +5,8 @@
     <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
 
     <publish-form
-            title="{{ $values['slug'] }}"
-            action="{{ cp_route('orders.update', ['order' => $values['id']]) }}"
+            title="Order #{{ $values['id'] }}"
+            action="{{ cp_route('orders.update', ['order' => $values['uid']]) }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
             :values='@json($values)'

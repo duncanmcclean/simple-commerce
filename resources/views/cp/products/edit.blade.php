@@ -6,9 +6,9 @@
 
     <publish-form
             title="{{ $values['title'] }}"
-            action="{{ cp_route('products.update', ['product' => $values['id']]) }}"
             :blueprint='@json($blueprint)'
             :meta='@json($meta)'
             :values='@json($values)'
+            action="{{ $action }}"
     ></publish-form>
 @endsection

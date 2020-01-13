@@ -10,6 +10,7 @@ class ThanksController
     {
         return (new View)
             ->template('commerce::web.thanks')
-            ->layout('commerce::web.layout');
+            ->layout('commerce::web.layout')
+            ->with(['success', 'Your order has been placed successfully.']);
     }
 }

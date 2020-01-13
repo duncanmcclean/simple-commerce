@@ -2,6 +2,8 @@
 
 namespace Damcclean\Commerce\Events;
 
+use Damcclean\Commerce\Models\Cart;
+use Damcclean\Commerce\Models\CartItem;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -9,10 +11,12 @@ class AddedToCart
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $product;
+    public $cart;
+    public $cartItem;
 
-    public function __construct($product)
+    public function __construct(Cart $cart, CartItem $cartItem)
     {
-        $this->product = $product;
+        $this->cart = $cart;
+        $this->cartItem = $cartItem;
     }
 }
