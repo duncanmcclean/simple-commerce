@@ -15,12 +15,12 @@ class CommerceTags extends Tags
 
     public function currencyCode()
     {
-        return Currency::where('primary', true)->first()->iso;
+        return Currency::where('iso', config('commerce.currency'))->first()->iso;
     }
 
     public function currencySymbol()
     {
-        return Currency::where('primary', true)->first()->symbol;
+        return Currency::where('iso', config('commerce.currency'))->first()->symbol;
     }
 
     public function stripeKey()

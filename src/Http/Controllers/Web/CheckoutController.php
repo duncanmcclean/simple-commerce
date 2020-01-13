@@ -86,7 +86,7 @@ class CheckoutController extends Controller
         $order->order_status_id = 1; // TODO: use a configuration option for this
         $order->items = null; // TODO: work on this from the cart
         $order->total = $this->cart->total($this->cartId);
-        $order->currency_id = null; // TODO: use a configuration option for this
+        $order->currency_id = Currency::where('iso', config('commerce.currency'))->first()->id;
         $order->save();
 
         event(new CheckoutComplete($order, $customer));
