@@ -53,19 +53,21 @@
         data() {
             return {
                 orders: [],
-                hasItems: false
+                hasItems: false,
             }
         },
 
         mounted() {
-            axios.post(this.meta, {
-                customer: window.customerId
-            }).then(response => {
-                this.orders = response.data;
-                this.hasItems = true;
-            }).catch(error => {
-                this.$toast.error(error);
-            })
+            if (window.customerId) {
+                axios.post(this.meta, {
+                    customer: window.customerId
+                }).then(response => {
+                    this.orders = response.data;
+                    this.hasItems = true;
+                }).catch(error => {
+                    this.$toast.error(error);
+                })
+            }
         }
     }
 </script>
