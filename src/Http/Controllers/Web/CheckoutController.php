@@ -10,11 +10,13 @@ use Damcclean\Commerce\Events\ReturnCustomer;
 use Damcclean\Commerce\Helpers\Cart;
 use Damcclean\Commerce\Helpers\Currency;
 use Damcclean\Commerce\Models\Address;
+use Damcclean\Commerce\Models\Country;
+use Damcclean\Commerce\Models\Currency as CurrencyModel;
 use Damcclean\Commerce\Models\Customer;
 use Damcclean\Commerce\Models\Order;
 use Damcclean\Commerce\Models\Product;
+use Damcclean\Commerce\Models\State;
 use Damcclean\Commerce\Models\Variant;
-use Damcclean\Commerce\Tags\CartTags;
 use Illuminate\Http\Request;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
@@ -86,8 +88,8 @@ class CheckoutController extends Controller
         $shippingAddress->address3 = $request->shipping_address_3;
         $shippingAddress->city = $request->shipping_city;
         $shippingAddress->zip_code = $request->shipping_zip_code;
-        $shippingAddress->country_id = $request->shipping_country;
-        $shippingAddress->state_id = $request->shipping_state;
+        $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
+        $shippingAddress->state_id = State::first()->id; // TODO: deal with this as we can only display states for the us
         $shippingAddress->customer_id = $customer->id;
         $shippingAddress->save();
 
@@ -102,8 +104,8 @@ class CheckoutController extends Controller
             $billingAddress->address3 = $request->billing_address_3;
             $billingAddress->city = $request->billing_city;
             $billingAddress->zip_code = $request->billing_zip_code;
-            $billingAddress->country_id = $request->billing_country;
-            $billingAddress->state_id = $request->billing_state;
+            $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
+            $billingAddress->state_id = State::first()->id; // TODO: deal with this as we can only display states for the us
             $billingAddress->customer_id = $customer->id;
             $billingAddress->save();
         }
@@ -121,12 +123,12 @@ class CheckoutController extends Controller
         $order->order_status_id = 1; // TODO: use a configuration option for this
         $order->items = null; // TODO: work on this from the cart
         $order->total = $this->cart->total($this->cartId);
-        $order->currency_id = Currency::where('iso', config('commerce.currency'))->first()->id;
+        $order->currency_id = CurrencyModel::where('iso', config('commerce.currency'))->first()->id;
         $order->save();
 
         event(new CheckoutComplete($order, $customer));
 
-        collect($this->cart->get())
+        collect($this->cart->get($this->cartId))
             ->each(function ($cartItem) {
                 $product = Product::find($cartItem->product_id);
 
