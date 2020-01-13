@@ -78,35 +78,39 @@ class CheckoutController extends Controller
             event(new NewCustomerCreated($customer));
         }
 
-        $billingAddress = new Address();
-        $billingAddress->uid = (new Stache())->generateId();
-        $billingAddress->name = $customer->name;
-        $billingAddress->address1 = $request->billing_address_1;
-        $billingAddress->address2 = $request->billing_address_2;
-        $billingAddress->address3 = $request->billing_address_3;
-        $billingAddress->city = $request->billing_city;
-        $billingAddress->zip_code = $request->billing_zip_code;
-        $billingAddress->country_id = $request->billing_country;
-        $billingAddress->state_id = $request->billing_state;
-        $billingAddress->customer_id = $customer->id;
-        $billingAddress->save();
+        $shippingAddress = new Address();
+        $shippingAddress->uid = (new Stache())->generateId();
+        $shippingAddress->name = $customer->name;
+        $shippingAddress->address1 = $request->shipping_address_1;
+        $shippingAddress->address2 = $request->shipping_address_2;
+        $shippingAddress->address3 = $request->shipping_address_3;
+        $shippingAddress->city = $request->shipping_city;
+        $shippingAddress->zip_code = $request->shipping_zip_code;
+        $shippingAddress->country_id = $request->shipping_country;
+        $shippingAddress->state_id = $request->shipping_state;
+        $shippingAddress->customer_id = $customer->id;
+        $shippingAddress->save();
 
         if ($request->use_shipping_address_for_billing === 'on') {
-            $shippingAddress = $billingAddress;
+            $billingAddress = $shippingAddress;
         } else {
-            $shippingAddress = new Address();
-            $shippingAddress->uid = (new Stache())->generateId();
-            $shippingAddress->name = $customer->name;
-            $shippingAddress->address1 = $request->shipping_address_1;
-            $shippingAddress->address2 = $request->shipping_address_2;
-            $shippingAddress->address3 = $request->shipping_address_3;
-            $shippingAddress->city = $request->shipping_city;
-            $shippingAddress->zip_code = $request->shipping_zip_code;
-            $shippingAddress->country_id = $request->shipping_country;
-            $shippingAddress->state_id = $request->shipping_state;
-            $shippingAddress->customer_id = $customer->id;
-            $shippingAddress->save();
+            $billingAddress = new Address();
+            $billingAddress->uid = (new Stache())->generateId();
+            $billingAddress->name = $customer->name;
+            $billingAddress->address1 = $request->billing_address_1;
+            $billingAddress->address2 = $request->billing_address_2;
+            $billingAddress->address3 = $request->billing_address_3;
+            $billingAddress->city = $request->billing_city;
+            $billingAddress->zip_code = $request->billing_zip_code;
+            $billingAddress->country_id = $request->billing_country;
+            $billingAddress->state_id = $request->billing_state;
+            $billingAddress->customer_id = $customer->id;
+            $billingAddress->save();
         }
+
+        $customer->default_shipping_address_id = $shippingAddress->id;
+        $customer->default_billing_address_id = $billingAddress->id;
+        $customer->save();
 
         $order = new Order();
         $order->uid = (new Stache())->generateId();
