@@ -4,6 +4,7 @@ namespace Damcclean\Commerce\Tests;
 
 use Damcclean\Commerce\CommerceServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Statamic\Extend\Manifest;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
@@ -42,7 +43,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::getEnvironmentSetUp($app);
 
-        $app->make(\Statamic\Extend\Manifest::class)->manifest = [
+        $app->make(Manifest::class)->manifest = [
             'damcclean/commerce' => [
                 'id' => 'damcclean/commerce',
                 'namespace' => 'Damcclean\\Commerce\\',
