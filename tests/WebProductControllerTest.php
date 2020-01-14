@@ -2,8 +2,13 @@
 
 namespace Damcclean\Commerce\Tests;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 class WebProductControllerTest extends TestCase
 {
+    use RefreshDatabase, DatabaseMigrations;
+
     /** @test */
     public function can_get_index_of_products()
     {

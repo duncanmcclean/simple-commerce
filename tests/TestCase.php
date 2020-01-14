@@ -3,7 +3,6 @@
 namespace Damcclean\Commerce\Tests;
 
 use Damcclean\Commerce\CommerceServiceProvider;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Providers\StatamicServiceProvider;
@@ -11,8 +10,6 @@ use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
-    use DatabaseMigrations;
-
     protected function setUp(): void
     {
         require_once(__DIR__.'/ExceptionHandler.php');
@@ -60,9 +57,8 @@ abstract class TestCase extends OrchestraTestCase
             $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
         }
 
-        // Setting the user repository to the default flat file system
         $app['config']->set('statamic.users.repository', 'file');
-
+        $app['config']->set('database', require(__DIR__.'/database.php'));
         $app['config']->set('commerce', require(__DIR__.'/../config/commerce.php'));
     }
 }
