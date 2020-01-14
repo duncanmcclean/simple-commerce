@@ -258,7 +258,7 @@ You can get the number of product categories available in your store by using `{
 
 It [doesn't support all countries and currencies](https://stripe.com/global). In which case, it might not be best fit to use Commerce if you need your store to support a country or currency not yet supported by Stripe.
 
-### How the Checkout flow work
+### How the Checkout flow works
 
 If you want to understand how you get from the checkout page to having money being deducted from a customer's bank account, here's how that works (from a technical perspective).
 
@@ -282,6 +282,12 @@ Originally, SCA was meant to come into force on the 14th of September but it's b
 ### Test Cards
 
 While in Stripe test mode, you can use [test cards](https://stripe.com/docs/testing#cards) to make sure the checkout flow works properly.
+
+## Blueprints
+
+Commerce provides its own blueprints for each of the publish forms. For example, we have blueprints for products, orders, customers and product categories.
+
+During installation, the blueprints will be copied over from `vendor/damcclean/commerce/resources/blueprints` to your site's `resources/blueprints` directory. Because the blueprints are copied over, you can actually edit them to fit the site you're building. However, because Commerce uses a database to store data, we can't just make columns up on the fly like you can when using flat files. // TODO: add a config to add custom attributes here
 
 ## Events
 
