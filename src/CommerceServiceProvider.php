@@ -117,6 +117,7 @@ class CommerceServiceProvider extends AddonServiceProvider
         ], 'commerce-blueprints');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         Statamic::provideToScript([
             'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
