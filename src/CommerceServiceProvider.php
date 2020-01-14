@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce;
 
+use Damcclean\Commerce\Console\Commands\SeederCommand;
 use Damcclean\Commerce\Events\AddedToCart;
 use Damcclean\Commerce\Events\CheckoutComplete;
 use Damcclean\Commerce\Events\CouponUsed;
@@ -81,6 +82,10 @@ class CommerceServiceProvider extends AddonServiceProvider
         Order::class => OrderPolicy::class,
         Product::class => ProductPolicy::class,
         ProductCategory::class => ProductCategoryPolicy::class,
+    ];
+
+    protected $commands = [
+        SeederCommand::class,
     ];
 
     public function boot()
