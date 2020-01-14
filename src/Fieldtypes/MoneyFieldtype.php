@@ -23,4 +23,9 @@ class MoneyFieldtype extends Fieldtype
     {
         return 'Money';
     }
+    
+    public function component(): string
+    {
+        return 'money';
+    }
 }
