@@ -24,11 +24,8 @@ During development, here's how you install Commerce for Statamic:
 
 ```json
   "require": {
-      ...
       "damcclean/commerce": "dev-master"
-  }
-  
-  ...
+  },
 
   "repositories": [
         {
