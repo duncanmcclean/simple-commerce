@@ -98,4 +98,11 @@ return [
 
     ],
 
+    /**
+     * How long should we keep your customers' cart in the
+     * database for? (in days)
+     */
+
+    'cart-retention' => 30
+
 ];

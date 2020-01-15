@@ -2,6 +2,7 @@
 
 namespace Damcclean\Commerce;
 
+use Damcclean\Commerce\Console\Commands\CartDeletionCommand;
 use Damcclean\Commerce\Console\Commands\SeederCommand;
 use Damcclean\Commerce\Events\AddedToCart;
 use Damcclean\Commerce\Events\CheckoutComplete;
@@ -85,6 +86,7 @@ class CommerceServiceProvider extends AddonServiceProvider
     ];
 
     protected $commands = [
+        CartDeletionCommand::class,
         SeederCommand::class,
     ];
 

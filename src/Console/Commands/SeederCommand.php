@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 class SeederCommand extends Command
 {
     protected $signature = 'commerce:seed';
+    protected $description = 'Seed the database with a whole load of useful things, like countries, states, currencies.';
 
     public function handle()
     {
