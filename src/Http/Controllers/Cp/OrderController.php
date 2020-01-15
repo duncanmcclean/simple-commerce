@@ -21,7 +21,8 @@ class OrderController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
         ]);
 
-        $orders = Order::with('orderStatus')->paginate(config('statamic.cp.pagination_size'));
+        $orders = Order::with('orderStatus')
+            ->paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.orders.index', [
             'crumbs' => $crumbs,
