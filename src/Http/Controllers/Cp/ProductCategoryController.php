@@ -1,11 +1,11 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Cp;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Http\Requests\ProductCategoryStoreRequest;
-use Damcclean\Commerce\Http\Requests\ProductCategoryUpdateRequest;
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductCategoryStoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductCategoryUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;

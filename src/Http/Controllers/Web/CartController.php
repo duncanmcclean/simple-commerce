@@ -1,13 +1,13 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Events\AddedToCart;
-use Damcclean\Commerce\Facades\Product;
-use Damcclean\Commerce\Helpers\Cart;
-use Damcclean\Commerce\Http\Requests\CartDeleteRequest;
-use Damcclean\Commerce\Http\Requests\CartStoreRequest;
-use Damcclean\Commerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartDeleteRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartStoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Widgets;
+namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 
-use Damcclean\Commerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use Statamic\Widgets\Widget;
 
 class NewCustomersWidget extends Widget

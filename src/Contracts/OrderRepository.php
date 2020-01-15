@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Contracts;
+namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 interface OrderRepository
 {

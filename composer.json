@@ -1,7 +1,7 @@
 {
-    "name": "damcclean/commerce",
+    "name": "doublethreedigital/simplecommerce",
     "type": "statamic-addon",
-    "description": "Powerful e-commerce addon for Statamic",
+    "description": "A perfectly simple e-commerce solution for Statamic",
     "authors": [
         {
             "name": "Duncan McClean",
@@ -12,22 +12,22 @@
     ],
     "autoload": {
         "psr-4": {
-            "Damcclean\\Commerce\\": "src"
+            "DoubleThreeDigital\\SimpleCommerce\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Damcclean\\Commerce\\Tests\\": "tests"
+            "DoubleThreeDigital\\SimpleCommerce\\Tests\\": "tests"
         }
     },
     "extra": {
         "statamic": {
             "name": "Commerce",
-            "description": "Powerful e-commerce addon for Statamic"
+            "description": "A perfectly simple e-commerce solution for Statamic"
         },
         "laravel": {
             "providers": [
-                "Damcclean\\Commerce\\CommerceServiceProvider"
+                "DoubleThreeDigital\\SimpleCommerce\\ServiceProvider"
             ]
         }
     },

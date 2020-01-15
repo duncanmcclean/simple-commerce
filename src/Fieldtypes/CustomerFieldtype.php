@@ -1,10 +1,10 @@
 <?php
 
-namespace Damcclean\Commerce\Fieldtypes;
+namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
-use Damcclean\Commerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 
 class CustomerFieldtype extends Relationship
 {

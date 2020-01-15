@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Console\Commands;
+namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
-use Damcclean\Commerce\Models\Cart;
-use Damcclean\Commerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Cart;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use Illuminate\Console\Command;
 
 class CartDeletionCommand extends Command

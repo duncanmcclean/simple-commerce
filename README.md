@@ -1,6 +1,6 @@
-# Commerce for Statamic
+# Simple Commerce
 
-Commerce is a powerful e-commerce solution for Statamic (v3) sites. It gives developers best of both worlds - A fantasic CMS and a fantastic e-commerce addon. For content editors, this means they get to use the beautiful Statamic Control Panel.
+Simple Commerce is a perfectly simple e-commerce solution for Statamic. It's simple for developers and simple for end-users. 
 
 > Please learn how to use Statamic first before using Commerce.
 
@@ -37,7 +37,7 @@ During development, here's how you install Commerce for Statamic:
 
 4. Run `composer install && composer update`
 
-5. Run `php artisan vendor:publish` and select the option `Damcclean\Commerce\CommerceServiceProvider`.
+5. Run `php artisan vendor:publish` and select the option `DoubleThreeDigital\SimpleCommerce\CommerceServiceProvider`.
 
 6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan db:seed`
 

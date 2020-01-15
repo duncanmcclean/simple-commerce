@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Fieldtypes;
+namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Damcclean\Commerce\Models\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 

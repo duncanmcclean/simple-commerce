@@ -1,12 +1,12 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Cp;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Events\OrderStatusUpdated;
-use Damcclean\Commerce\Models\Address;
-use Damcclean\Commerce\Models\Order;
-use Damcclean\Commerce\Http\Requests\OrderStoreRequest;
-use Damcclean\Commerce\Http\Requests\OrderUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;

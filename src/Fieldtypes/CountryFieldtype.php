@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Fieldtypes;
+namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Damcclean\Commerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 

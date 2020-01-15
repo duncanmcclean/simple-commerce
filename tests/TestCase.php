@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Tests;
+namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
-use Damcclean\Commerce\CommerceServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Providers\StatamicServiceProvider;
@@ -21,7 +21,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         return [
             StatamicServiceProvider::class,
-            CommerceServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 

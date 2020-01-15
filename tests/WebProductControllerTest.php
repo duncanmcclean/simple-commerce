@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Tests;
+namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;

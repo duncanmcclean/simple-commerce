@@ -1,12 +1,12 @@
 <?php
 
-namespace Damcclean\Commerce\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
-use Damcclean\Commerce\Events\AddedToCart;
-use Damcclean\Commerce\Models\Cart as CartModel;
-use Damcclean\Commerce\Models\CartItem;
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Stache\Stache;
 
 class Cart

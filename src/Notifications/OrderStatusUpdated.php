@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Notifications;
+namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

@@ -1,47 +1,47 @@
 <?php
 
-namespace Damcclean\Commerce;
+namespace DoubleThreeDigital\SimpleCommerce;
 
-use Damcclean\Commerce\Console\Commands\CartDeletionCommand;
-use Damcclean\Commerce\Console\Commands\SeederCommand;
-use Damcclean\Commerce\Events\AddedToCart;
-use Damcclean\Commerce\Events\CheckoutComplete;
-use Damcclean\Commerce\Events\CouponUsed;
-use Damcclean\Commerce\Events\NewCustomerCreated;
-use Damcclean\Commerce\Events\OrderStatusUpdated;
-use Damcclean\Commerce\Events\VariantOutOfStock;
-use Damcclean\Commerce\Events\VariantStockRunningLow;
-use Damcclean\Commerce\Events\ReturnCustomer;
-use Damcclean\Commerce\Fieldtypes\CountryFieldtype;
-use Damcclean\Commerce\Fieldtypes\CurrencyFieldtype;
-use Damcclean\Commerce\Fieldtypes\CustomerOrdersFieldtype;
-use Damcclean\Commerce\Fieldtypes\MoneyFieldtype;
-use Damcclean\Commerce\Fieldtypes\OrderStatusFieldtype;
-use Damcclean\Commerce\Fieldtypes\ProductFieldtype;
-use Damcclean\Commerce\Fieldtypes\ProductCategoryFieldtype;
-use Damcclean\Commerce\Listeners\SendOrderStatusUpdatedNotification;
-use Damcclean\Commerce\Listeners\SendOrderSuccessfulNotification;
-use Damcclean\Commerce\Models\Currency;
-use Damcclean\Commerce\Models\Customer;
-use Damcclean\Commerce\Models\Order;
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\ProductCategory;
-use Damcclean\Commerce\Policies\CustomerPolicy;
-use Damcclean\Commerce\Policies\OrderPolicy;
-use Damcclean\Commerce\Policies\ProductCategoryPolicy;
-use Damcclean\Commerce\Policies\ProductPolicy;
-use Damcclean\Commerce\Tags\CartTags;
-use Damcclean\Commerce\Tags\CommerceTags;
-use Damcclean\Commerce\Widgets\NewCustomersWidget;
-use Damcclean\Commerce\Widgets\RecentOrdersWidget;
+use DoubleThreeDigital\SimpleCommerce\Console\Commands\CartDeletionCommand;
+use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
+use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
+use DoubleThreeDigital\SimpleCommerce\Events\CouponUsed;
+use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
+use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
+use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
+use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
+use DoubleThreeDigital\SimpleCommerce\Policies\ProductPolicy;
+use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
+use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
+use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
 use Illuminate\Support\Facades\Gate;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
-use Damcclean\Commerce\Fieldtypes\CustomerFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 
-class CommerceServiceProvider extends AddonServiceProvider
+class ServiceProvider extends AddonServiceProvider
 {
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',

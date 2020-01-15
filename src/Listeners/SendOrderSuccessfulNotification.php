@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Listeners;
+namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use Damcclean\Commerce\Events\CheckoutComplete;
-use Damcclean\Commerce\Notifications\OrderSuccessful;
+use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
+use DoubleThreeDigital\SimpleCommerce\Notifications\OrderSuccessful;
 use Illuminate\Support\Facades\Notification;
 
 class SendOrderSuccessfulNotification

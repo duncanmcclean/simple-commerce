@@ -1,10 +1,10 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Cp;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Facades\Coupon;
-use Damcclean\Commerce\Http\Requests\CouponStoreRequest;
-use Damcclean\Commerce\Http\Requests\CouponUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CouponStoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CouponUpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;

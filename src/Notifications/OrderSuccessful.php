@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Notifications;
+namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
-use Damcclean\Commerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Money\Currencies\ISOCurrencies;

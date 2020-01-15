@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Models;
+namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

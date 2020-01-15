@@ -1,11 +1,11 @@
 <?php
 
-namespace Damcclean\Commerce\Console\Commands;
+namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
-use Damcclean\Commerce\Models\Country;
-use Damcclean\Commerce\Models\Currency;
-use Damcclean\Commerce\Models\OrderStatus;
-use Damcclean\Commerce\Models\State;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Illuminate\Console\Command;
 
 class SeederCommand extends Command

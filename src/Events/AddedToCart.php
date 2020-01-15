@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Events;
+namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use Damcclean\Commerce\Models\Cart;
-use Damcclean\Commerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Cart;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 

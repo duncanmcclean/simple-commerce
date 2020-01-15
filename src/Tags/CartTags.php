@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Tags;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use Damcclean\Commerce\Facades\Product;
-use Damcclean\Commerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use Statamic\Tags\Tags;
 
 class CartTags extends Tags

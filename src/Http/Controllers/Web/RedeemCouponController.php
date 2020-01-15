@@ -1,10 +1,10 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Facades\Coupon;
-use Damcclean\Commerce\Helpers\Cart;
-use Damcclean\Commerce\Http\Requests\RedeemCouponRequest;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\RedeemCouponRequest;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
