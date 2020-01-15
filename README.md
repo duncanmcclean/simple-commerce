@@ -351,9 +351,9 @@ Include disabled products in your results.
 {{ commerce:products count='true' }}
 ```
 
-#### Countries
+#### `{{ commerce:countries }}`
 
-Returns all countries
+Returns an array of countries.
 
 ```html
 <select name="country">
@@ -363,7 +363,7 @@ Returns all countries
 </select>
 ```
 
-#### States
+#### `{{ commerce:states }}`
 
 ##### All States
 
@@ -377,9 +377,9 @@ Returns all countries
 
 ##### States in country
 
-Get all the states in a country.
+Returns an array of states in a country.
 
-`country` should be the ISO code of the country you want to get states for.
+* `country` should be the ISO code of the country you want to get states for.
 
 ```html
 <select name="state">
@@ -395,7 +395,9 @@ Get all the states in a country.
 {{ commerce:states count='true' }}
 ```
 
-#### Currencies
+#### `{{ commerce:currencies }}`
+
+Returns an array of currencies.
 
 ```html
 <p>We support these currencies:</p>
