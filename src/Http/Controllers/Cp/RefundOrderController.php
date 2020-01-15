@@ -19,6 +19,8 @@ class RefundOrderController extends CpController
 
     public function store(Order $order)
     {
+        $this->authorize('refund', $order);
+
         if (! $order->payment_intent) {
             return back()->with('error', 'Refund failed because there is no PaymentIntent.');
         }

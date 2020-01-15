@@ -29,4 +29,9 @@ class OrderPolicy
     {
         return $user->hasPermission('delete orders');
     }
+
+    public function refund(User $user, Order $order)
+    {
+        return $user->hasPermission('refund orders');
+    }
 }

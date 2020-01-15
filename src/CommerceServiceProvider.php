@@ -197,6 +197,9 @@ class CommerceServiceProvider extends AddonServiceProvider
                             Permission::make('create orders')
                                 ->label('Create Orders')
                                 ->group('Commerce'),
+                            Permission::make('refund orders')
+                                ->label('Refund Orders')
+                                ->group('Commerce'),
                             Permission::make('delete orders')
                                 ->label('Delete Orders')
                                 ->group('Commerce'),
