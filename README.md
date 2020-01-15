@@ -257,7 +257,7 @@ When a user completes an order, we look to see if the customer is new or already
 
 ### [`OrderStatusUpdated`](https://github.com/damcclean/commerce/blob/master/src/Events/OrderStatusUpdated.php)
 
-When the status of an order is changed from the Control Panel, then this event is dispatched with the `order`.
+When the status of an order is changed from the Control Panel, then this event is dispatched with the `order` and the `customer`.
 
 ### [`VariantOutOfStock`](https://github.com/damcclean/commerce/blob/master/src/Events/ProductOutOfStock.php)
 
