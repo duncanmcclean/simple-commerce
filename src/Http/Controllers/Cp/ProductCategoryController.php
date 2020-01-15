@@ -77,8 +77,8 @@ class ProductCategoryController extends CpController
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
-        $products = Product::all()
-            ->where('product_category_id', $category->id);
+        $products = Product::where('product_category_id', $category->id)
+            ->paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.product-categories.show', [
             'crumbs' => $crumbs,
