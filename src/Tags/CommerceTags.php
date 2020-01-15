@@ -60,15 +60,15 @@ class CommerceTags extends Tags
             $products = Product::where('product_category_id', $category);
         }
 
-        if ($this->getParam('count')) {
-            return $products->count();
-        }
-
-        if (! $this->getParam('show_disabled')) {
+        if (! $this->getParam('include_disabled')) {
             $products = $products
                 ->reject(function ($product) {
                     return ! $product->is_enabled;
                 });
+        }
+
+        if ($this->getParam('count')) {
+            return $products->count();
         }
 
         return $products

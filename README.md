@@ -194,63 +194,9 @@ For example, you might have one t-shirt product but it might be available in dif
 
 Each product, will also have a default variant, this is the one that will be displayed as the product price in the front-end, unless you change it to be otherwise.
 
-#### Templating
-
-##### All products
-
-Display all available products in your store.
-
-```html
-{{ commerce:products }}
-    <a href="{{ url }}">
-        <h2>{{ title }}</h2>
-        <h4>{{ price }}</h4>
-    </a>
-{{ /commerce:products }}
-```
-
-##### Products in a category
-
-Display all products within a certain product category.
-
-```html
-{{ commerce:products category='clothing' }}
-    <a href="{{ url }}">
-        <h2>{{ title }}</h2>
-        <h4>{{ price }}</h4>
-    </a>
-{{ /commerce:products }}
-```
-
-##### Count
-
-You can get the number of products available in your store by using `{{ commerce:products count='true' }}`.
-
-##### Show Disabled
-
-By default, disabled products aren't shown, however if you'd like to show them, use the attribute `show_displayed='true'`.
-
 ### Product Categories
 
 Product Categories are like taxonomies. They can be attached to products and they help to organise your store and define product URLs.
-
-#### Templating
-
-##### All categories
-
-Display all product categories.
-
-```html
-{{ commerce:categories }}
-    <a href="{{ url }}">
-        {{ title }}
-    </a>
-{{ /commerce:categories }}
-```
-
-##### Count
-
-You can get the number of product categories available in your store by using `{{ commerce:categories count='true' }}`.
 
 ## Stripe (Payment Gateway)
 
@@ -333,29 +279,135 @@ The boilerplate should get published to your `resources/views/vendor` directory 
 
 ### Tags
 
-#### `{{ commerce }}`
+#### `{{ commerce:currencyCode }}`
 
-#### `{{ commerce:stripeKEY }}`
+Returns the code of your chosen currency.
 
-Outputs the Stripe public key.
+#### `{{ commerce:currencySymbol }}`
+
+Returns the symbol of your chosen currency.
+
+#### `{{ commerce:stripKey }}`
+
+Returns your Stripe key from your `.env` file.
 
 #### `{{ commerce:route }}`
 
-Provides a route helper for Commerce routes. The key matches up with the configuration values.
+Returns Commerce URLs using the route key.
 
 ```html
-{{ commerce:route key='products.index' }}
+<a href="{{ commerce:route key='products.index' }}">All Products</a> 
 ```
 
 #### `{{ commerce:categories }}`
 
-Provides an array of product categories, you can find more documentation here.
+##### All Categories
+
+```html
+{{ commerce:categories }}
+    <h2>{{ title }}</h2>
+{{ /commerce:categories }}
+```
+
+##### Count
+
+```html
+{{ commerce:categories count='true' }}
+```
 
 #### `{{ commerce:products }}`
 
-Provides an array of products, you can find more documentation here.
+##### All Products
 
-### Form Endpoints
+```html
+{{ commerce:products }}
+    <h2>{{ title }}</h2>
+{{ /commerce:products }}
+```
+
+##### Product in Category
+
+`category` should be the `slug` of the category you want to get products of.
+
+```html
+{{ commerce:products category='clothing' }}
+    <h2>{{ title }}</h2>
+{{ /commerce:products }}
+```
+
+##### Include Disabled
+
+Include disabled products in your results.
+
+```html
+{{ commerce:products include_disabled='true' }}
+    <h2>{{ title }}</h2>
+{{ /commerce:products }}
+```
+
+##### Count
+
+```html
+{{ commerce:products count='true' }}
+```
+
+#### Countries
+
+Returns all countries
+
+```html
+<select name="country">
+    {{ commerce:countries }}
+        <option value="{{ iso }}">{{ name }}</option>
+    {{ /commerce:countries }}
+</select>
+```
+
+#### States
+
+##### All States
+
+```html
+<select name="state">
+    {{ commerce:states }}
+        <option value="{{ abreviation }}">{{ name }}</option>
+    {{ /commerce:states }}
+</select>
+```
+
+##### States in country
+
+Get all the states in a country.
+
+`country` should be the ISO code of the country you want to get states for.
+
+```html
+<select name="state">
+    {{ commerce:states country='USD' }}
+        <option value="{{ abreviation }}">{{ name }}</option>
+    {{ /commerce:states }}
+</select>
+```
+
+##### Count
+
+```html
+{{ commerce:states count='true' }}
+```
+
+#### Currencies
+
+```html
+<p>We support these currencies:</p>
+
+<ul>
+    {{ commerce:currencies }}
+        <li>{{ name }}</li>
+    {{ /commerce:currencies }}
+</ul>
+```
+
+## Form Endpoints
 
 On the front-end, Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
 
