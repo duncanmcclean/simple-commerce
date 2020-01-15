@@ -45,7 +45,10 @@
 
                         <td class="flex justify-end">
                             <dropdown-list>
-                                <dropdown-item text="Refund" redirect="{{ cp_route('commerce-api.refund-order', ['order' => $order->uid]) }}"></dropdown-item>
+                                @if(auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
+                                    <dropdown-item text="Refund" redirect="{{ cp_route('commerce-api.refund-order', ['order' => $order->uid]) }}"></dropdown-item>
+                                @endif
+
                                 <dropdown-item text="Edit" redirect="{{ $order->editUrl() }}"></dropdown-item>
                                 <dropdown-item class="warning" text="Delete" redirect="{{ $order->deleteUrl() }}"></dropdown-item>
                             </dropdown-list>
