@@ -2,11 +2,11 @@
 
 ✨ Before getting started with Commerce, please take the time to read through this guide ✨
 
-This is a guide for contributing to the Commerce addon for Statamic.
+This is a guide for contributing to the Simple Commerce addon for Statamic.
 
 ## What you should know before contributing
 
-Like Statamic itself, this Commerce addon is open-source but it's **not free*. To use this addon in production, you **must** purchase it through the Statamic marketplace.
+Like Statamic itself, this Simple Commerce addon is open-source but it's **not free**. To use this addon in production, you **must** purchase it through the Statamic marketplace.
 
 If you're looking for official help with this addon (and you have purchased this addon), then please [email us](mailto:hello@doublethree.digital). You may also ask for help on the [Statamic discord](https://statamic.com/disocrd) (use the #third-party channel).
 

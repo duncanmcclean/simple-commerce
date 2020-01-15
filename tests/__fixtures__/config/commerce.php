@@ -34,7 +34,7 @@ return [
     /**
      * Routes
      *
-     * Commerce provides a set of web routes to make your store
+     * Simple Commerce provides a set of web routes to make your store
      * function. You can change these routes if you have other
      * preferences.
      */
