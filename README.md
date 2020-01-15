@@ -407,6 +407,32 @@ Get all the states in a country.
 </ul>
 ```
 
+#### `{{ cart:items }}`
+
+Get all items in the customers' cart. `cart` by itself is an alias of this.
+
+```html
+{{ cart:items }}
+    <h2>{{ product:title }}</h2>
+{{ /cart:items }}
+```
+
+#### `{{ cart:count }}`
+
+Get a count of the items in the customers' cart.
+
+```html
+<p>There are {{ cart:count }} items in your cart.</p>
+```
+
+#### `{{ cart:total }}`
+
+Returns the total amount of the customers' cart.
+
+```html
+<p>The total of your cart {{ commerce:currency_symbol }}{{ cart:count }}.</p>
+```
+
 ## Form Endpoints
 
 On the front-end, Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
