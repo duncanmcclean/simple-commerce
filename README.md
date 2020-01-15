@@ -18,26 +18,26 @@ Simple Commerce requires that you have Statamic 3 already installed [(with all o
 
 During development, here's how you install Simple Commerce for Statamic:
 
-1. Clone this repository to `./addons/damcclean/commerce` - `git clone git@github.com:damcclean/commerce.git addons/damcclean/commerce`
-2. Run `composer install` inside the `./addons/damcclean/commerce` folder.
+1. Clone this repository to `./addons/doublethreedigital/simplecommerce` - `git clone git@github.com:damcclean/simple-commerce.git addons/doublethreedigital/simplecommerce`
+2. Run `composer install` inside the `./addons/doublethreedigital/simplecommerce` folder.
 3. In your site's main `composer.json` file, add the following few lines:
 
 ```json
   "require": {
-      "damcclean/commerce": "dev-master"
+      "doublethreedigital/simple-commerce": "dev-master"
   },
 
   "repositories": [
         {
             "type": "path",
-            "url": "addons/damcclean/commerce"
+            "url": "addons/doublethreedigital/simple-commerce"
         }
     ]
 ```
 
 4. Run `composer install && composer update`
 
-5. Run `php artisan vendor:publish` and select the option `DoubleThreeDigital\SimpleCommerce\CommerceServiceProvider`.
+5. Run `php artisan vendor:publish` and select the option `DoubleThreeDigital\SimpleCommerce\ServiceProvider`.
 
 6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan db:seed`
 
