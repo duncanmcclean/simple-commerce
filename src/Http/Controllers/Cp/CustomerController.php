@@ -174,7 +174,7 @@ class CustomerController extends CpController
     {
         $this->authorize('delete', $customer);
 
-        $customer->delete();
+        $customer->delete(); // TODO: what will happen with their orders? we might want to delete them
 
         return redirect(cp_route('customers.index'));
     }
