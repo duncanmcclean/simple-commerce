@@ -114,7 +114,7 @@ class ProductController extends CpController
                         ];
                     })->toArray(),
                 ];
-            })->toArray()
+            })->toArray(),
         ]);
 
         $blueprint = Blueprint::find('product');

@@ -17,7 +17,7 @@ class ProductUpdateRequest extends FormRequest
             'title' => 'required|string',
             'slug' => 'required|string',
             'description' => '',
-            'category' => ''
+            'category' => '',
         ];
     }
 }

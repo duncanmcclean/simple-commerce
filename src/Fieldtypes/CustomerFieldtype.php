@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 
 class CustomerFieldtype extends Relationship
 {

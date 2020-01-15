@@ -9,16 +9,17 @@ use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponUsed;
 use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
-use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -39,7 +40,6 @@ use Statamic\Facades\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -115,7 +115,7 @@ class ServiceProvider extends AddonServiceProvider
         ], 'commerce-seeders');
 
         $this->publishes([
-            __DIR__.'/../resources/blueprints' => resource_path('blueprints')
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
         ], 'commerce-blueprints');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
@@ -135,7 +135,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->route('products.index')
                 ->icon('entries')
                 ->children([
-                    'Categories' => cp_route('product-categories.index')
+                    'Categories' => cp_route('product-categories.index'),
                 ]);
         });
 
@@ -171,7 +171,7 @@ class ServiceProvider extends AddonServiceProvider
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
 
-        $this->app->booted(function() {
+        $this->app->booted(function () {
             //Permission::group('commerce', 'commerce');
 
             Permission::register('view customers', function ($permission) {
@@ -186,7 +186,7 @@ class ServiceProvider extends AddonServiceProvider
                             Permission::make('delete customers')
                                 ->label('Delete Customers')
                                 ->group('Commerce'),
-                        ])
+                        ]),
                 ]);
             })->label('View Customers')->group('Commerce');
 
@@ -205,7 +205,7 @@ class ServiceProvider extends AddonServiceProvider
                             Permission::make('delete orders')
                                 ->label('Delete Orders')
                                 ->group('Commerce'),
-                        ])
+                        ]),
                 ]);
             })->label('View Orders')->group('commerce');
 
@@ -221,7 +221,7 @@ class ServiceProvider extends AddonServiceProvider
                             Permission::make('delete products')
                                 ->label('Delete Products')
                                 ->group('Commerce'),
-                        ])
+                        ]),
                 ]);
             })->label('View Products')->group('Commerce');
 
@@ -237,7 +237,7 @@ class ServiceProvider extends AddonServiceProvider
                             Permission::make('delete product categories')
                                 ->label('Delete Product Categories')
                                 ->group('Commerce'),
-                        ])
+                        ]),
                 ]);
             })->label('View Product Categories')->group('commerce');
         });

@@ -15,7 +15,7 @@ class ProductCategoryStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'slug' => 'required|string'
+            'slug' => 'required|string',
         ];
     }
 }

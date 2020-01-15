@@ -14,7 +14,7 @@ class RedeemCouponRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|string'
+            'code' => 'required|string',
         ];
     }
 }

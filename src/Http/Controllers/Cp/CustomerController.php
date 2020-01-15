@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Address;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;

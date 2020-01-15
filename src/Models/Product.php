@@ -11,7 +11,7 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'is_enabled' => 'boolean'
+        'is_enabled' => 'boolean',
     ];
 
     public function getRouteKeyName()

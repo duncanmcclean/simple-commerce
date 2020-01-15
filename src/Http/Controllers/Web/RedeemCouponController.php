@@ -43,7 +43,7 @@ class RedeemCouponController extends Controller
             'intent' => PaymentIntent::create([
                 'amount' => (number_format($this->cart->total(), 2, '.', '') * 100),
                 'currency' => config('commerce.currency.code'),
-            ])->client_secret
+            ])->client_secret,
         ]);
     }
 

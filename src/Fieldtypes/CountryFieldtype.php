@@ -14,7 +14,7 @@ class CountryFieldtype extends Relationship
     public function __construct()
     {
         $this->defaultValue = [
-            Country::where('iso', 'US')->first()->id
+            Country::where('iso', 'US')->first()->id,
         ];
     }
 

@@ -30,7 +30,7 @@ class OrderStoreRequest extends FormRequest
 
             'status' => 'required',
             'customer' => 'required',
-            'order_date' => 'required'
+            'order_date' => 'required',
         ];
     }
 }

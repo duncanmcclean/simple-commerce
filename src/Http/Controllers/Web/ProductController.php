@@ -29,7 +29,7 @@ class ProductController extends Controller
             ->template('commerce::web.product')
             ->layout('commerce::web.layout')
             ->with(array_merge($product->toArray(), [
-                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price
+                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price,
             ]));
     }
 }
