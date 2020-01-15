@@ -2,7 +2,7 @@
 
 Simple Commerce is a perfectly simple e-commerce solution for Statamic. It's simple for developers and simple for end-users. 
 
-> Please learn how to use Statamic first before using Commerce.
+> Please learn how to use Statamic first before using Simple Commerce.
 
 ## Database vs flat-file
 
