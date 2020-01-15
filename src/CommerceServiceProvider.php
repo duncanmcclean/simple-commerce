@@ -119,10 +119,12 @@ class CommerceServiceProvider extends AddonServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        Statamic::provideToScript([
-            'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
-            'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
-        ]);
+        $this->app->boot(function () {
+            Statamic::provideToScript([
+                'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
+                'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
+            ]);
+        });
 
         Nav::extend(function ($nav) {
             $nav
