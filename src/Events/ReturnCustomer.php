@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Events;
+namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use Damcclean\Commerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 

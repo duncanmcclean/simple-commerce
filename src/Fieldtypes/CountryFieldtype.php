@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Fieldtypes;
+namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Damcclean\Commerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 
@@ -14,7 +14,7 @@ class CountryFieldtype extends Relationship
     public function __construct()
     {
         $this->defaultValue = [
-            Country::where('iso', 'US')->first()->id
+            Country::where('iso', 'US')->first()->id,
         ];
     }
 

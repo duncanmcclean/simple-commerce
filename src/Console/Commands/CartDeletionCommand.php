@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Console\Commands;
+namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
-use Damcclean\Commerce\Models\Cart;
-use Damcclean\Commerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Cart;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use Illuminate\Console\Command;
 
 class CartDeletionCommand extends Command
@@ -23,15 +23,15 @@ class CartDeletionCommand extends Command
 
         Cart::where('updated_at', now()->subDays(config('commerce.cart-retention'))->get())
             ->each(function (Cart $cart) {
-                 $items = CartItem::where('cart_id', $cart->id)
+                $items = CartItem::where('cart_id', $cart->id)
                      ->get();
 
-                 collect($items)
+                collect($items)
                      ->each(function (CartItem $item) {
                          $item->delete();
                      });
 
-                 $cart->delete();
+                $cart->delete();
             });
 
         $this->comment('Complete');

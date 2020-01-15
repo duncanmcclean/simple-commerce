@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use Illuminate\Http\Request;
 
 class ClearCartController extends Controller

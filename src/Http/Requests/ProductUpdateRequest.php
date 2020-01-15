@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Requests;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -17,7 +17,7 @@ class ProductUpdateRequest extends FormRequest
             'title' => 'required|string',
             'slug' => 'required|string',
             'description' => '',
-            'category' => ''
+            'category' => '',
         ];
     }
 }

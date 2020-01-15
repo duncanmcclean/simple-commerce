@@ -1,10 +1,10 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Facades\Coupon;
-use Damcclean\Commerce\Helpers\Cart;
-use Damcclean\Commerce\Http\Requests\RedeemCouponRequest;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\RedeemCouponRequest;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -43,7 +43,7 @@ class RedeemCouponController extends Controller
             'intent' => PaymentIntent::create([
                 'amount' => (number_format($this->cart->total(), 2, '.', '') * 100),
                 'currency' => config('commerce.currency.code'),
-            ])->client_secret
+            ])->client_secret,
         ]);
     }
 

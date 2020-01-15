@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Listeners;
+namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use Damcclean\Commerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use Illuminate\Support\Facades\Notification;
 
 class SendOrderStatusUpdatedNotification

@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Requests;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

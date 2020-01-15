@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Models;
+namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +21,6 @@ class Currency extends Model
 
     public function orders()
     {
-        return $this->hasMany(Currency::class);
+        return $this->hasMany(self::class);
     }
 }

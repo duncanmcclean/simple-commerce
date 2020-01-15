@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Cp;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Http\Request;
 use Statamic\Http\Controllers\CP\CpController;
 

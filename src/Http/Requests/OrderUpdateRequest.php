@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Requests;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
-use Damcclean\Commerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderUpdateRequest extends FormRequest
@@ -31,7 +31,7 @@ class OrderUpdateRequest extends FormRequest
 
             'status' => 'required',
             'customer' => 'required',
-            'order_date' => 'required'
+            'order_date' => 'required',
         ];
     }
 }

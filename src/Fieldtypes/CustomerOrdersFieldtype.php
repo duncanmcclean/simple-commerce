@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Fieldtypes;
+namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
 

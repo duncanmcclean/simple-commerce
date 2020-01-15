@@ -1,22 +1,22 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Events\CheckoutComplete;
-use Damcclean\Commerce\Events\NewCustomerCreated;
-use Damcclean\Commerce\Events\VariantOutOfStock;
-use Damcclean\Commerce\Events\VariantStockRunningLow;
-use Damcclean\Commerce\Events\ReturnCustomer;
-use Damcclean\Commerce\Helpers\Cart;
-use Damcclean\Commerce\Helpers\Currency;
-use Damcclean\Commerce\Models\Address;
-use Damcclean\Commerce\Models\Country;
-use Damcclean\Commerce\Models\Currency as CurrencyModel;
-use Damcclean\Commerce\Models\Customer;
-use Damcclean\Commerce\Models\Order;
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\State;
-use Damcclean\Commerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
+use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
+use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\State;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
 use Statamic\Stache\Stache;
 use Statamic\View\View;

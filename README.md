@@ -1,22 +1,22 @@
-# Commerce for Statamic
+# Simple Commerce
 
-Commerce is a powerful e-commerce solution for Statamic (v3) sites. It gives developers best of both worlds - A fantasic CMS and a fantastic e-commerce addon. For content editors, this means they get to use the beautiful Statamic Control Panel.
+Simple Commerce is a perfectly simple e-commerce solution for Statamic. It's simple for developers and simple for end-users. 
 
 > Please learn how to use Statamic first before using Commerce.
 
 ## Database vs flat-file
 
-Unlike Statamic itself using flat-files, **Commerce uses a MySQL database**. There are a variety of advantages a *real* database gives us. Things like relationships, security, speed. We initially tried to make Commerce work just on files but it ended up being near enough impossible, especially if we want it to scale to more than just a few products.
+Unlike Statamic itself using flat-files, **Simple Commerce uses a MySQL database**. There are a variety of advantages a *real* database gives us. Things like relationships, security, speed. We initially tried to make Commerce work just on files but it ended up being near enough impossible, especially if we want it to scale to more than just a few products.
 
 ## Installing
 
 ### Server Requirements
 
-Commerce requires that you have Statamic 3 already installed [(with all of its requirements)](https://statamic.dev/requirements) and that you setup a [MySQL database](https://laravel.com/docs/5.8/database) (this is where Commerce products, orders and customers will live).
+Simple Commerce requires that you have Statamic 3 already installed [(with all of its requirements)](https://statamic.dev/requirements) and that you setup a [MySQL database](https://laravel.com/docs/5.8/database) (this is where Commerce products, orders and customers will live).
 
 ### Installation
 
-During development, here's how you install Commerce for Statamic:
+During development, here's how you install Simple Commerce for Statamic:
 
 1. Clone this repository to `./addons/damcclean/commerce` - `git clone git@github.com:damcclean/commerce.git addons/damcclean/commerce`
 2. Run `composer install` inside the `./addons/damcclean/commerce` folder.
@@ -37,7 +37,7 @@ During development, here's how you install Commerce for Statamic:
 
 4. Run `composer install && composer update`
 
-5. Run `php artisan vendor:publish` and select the option `Damcclean\Commerce\CommerceServiceProvider`.
+5. Run `php artisan vendor:publish` and select the option `DoubleThreeDigital\SimpleCommerce\CommerceServiceProvider`.
 
 6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan db:seed`
 
@@ -45,7 +45,7 @@ During development, here's how you install Commerce for Statamic:
 
 ## Configuration
 
-All of the configuration options for Commerce live in the `config/commerce.php` file. In there you can set things like the address of your store, stripe settings and routes.
+All of the configuration options for Simple Commerce live in the `config/commerce.php` file. In there you can set things like the address of your store, stripe settings and routes.
 
 ### Company Information
 
@@ -96,7 +96,7 @@ return [
     ],
 ```
 
-This is where Commerce gets the API credentials for your Stripe account, you'll need to enter this or you can't make any payments. Remember to use your test API keys in development and staging and your live ones in production.
+This is where Simple Commerce gets the API credentials for your Stripe account, you'll need to enter this or you can't make any payments. Remember to use your test API keys in development and staging and your live ones in production.
 
 ### Routes
 
@@ -110,7 +110,7 @@ return [
     /**
      * Routes
      *
-     * Commerce provides a set of web routes to make your store
+     * Simple Commerce provides a set of web routes to make your store
      * function. You can change these routes if you have other
      * preferences.
      */
@@ -165,7 +165,7 @@ return [
     ...
 ```
 
-We give the option of changing the structure of the routes that Commerce provides. For example, if you wanted to change the checkout URL from being `/checkout` (the default) to `/pay-here`, you'd just change the value of `checkout.store`.
+We give the option of changing the structure of the routes that Simple Commerce provides. For example, if you wanted to change the checkout URL from being `/checkout` (the default) to `/pay-here`, you'd just change the value of `checkout.store`.
 
 ## Concepts
 
@@ -200,9 +200,9 @@ Product Categories are like taxonomies. They can be attached to products and the
 
 ## Stripe (Payment Gateway)
 
-[Stripe](https://stripe.com/) is one of the most popular payment gateways available which is why it's a first class citizen of Commerce for Statamic.
+[Stripe](https://stripe.com/) is one of the most popular payment gateways available which is why it's a first class citizen of Simple Commerce for Statamic.
 
-It [doesn't support all countries and currencies](https://stripe.com/global). In which case, it might not be best fit to use Commerce if you need your store to support a country or currency not yet supported by Stripe.
+It [doesn't support all countries and currencies](https://stripe.com/global). In which case, it might not be best fit to use Simple Commerce if you need your store to support a country or currency not yet supported by Stripe.
 
 ### How the Checkout flow works
 
@@ -231,13 +231,13 @@ While in Stripe test mode, you can use [test cards](https://stripe.com/docs/test
 
 ## Blueprints
 
-Commerce provides its own blueprints for each of the publish forms. For example, we have blueprints for products, orders, customers and product categories.
+Simple Commerce provides its own blueprints for each of the publish forms. For example, we have blueprints for products, orders, customers and product categories.
 
-During installation, the blueprints will be copied over from `vendor/damcclean/commerce/resources/blueprints` to your site's `resources/blueprints` directory. Because the blueprints are copied over, you can actually edit them to fit the site you're building. However, because Commerce uses a database to store data, we can't just make columns up on the fly like you can when using flat files. // TODO: add a config to add custom attributes here
+During installation, the blueprints will be copied over from `vendor/damcclean/commerce/resources/blueprints` to your site's `resources/blueprints` directory. Because the blueprints are copied over, you can actually edit them to fit the site you're building. However, because Simple Commerce uses a database to store data, we can't just make columns up on the fly like you can when using flat files. // TODO: add a config to add custom attributes here
 
 ## Events
 
-Commerce provides a few events which you can hook into in your `EventServiceProvider`.
+Simple Commerce provides a few events which you can hook into in your `EventServiceProvider`.
 
 ### [`AddedToCart`](https://github.com/damcclean/commerce/blob/master/src/Events/AddedToCart.php)
 
@@ -273,7 +273,7 @@ When a user completes an order, we will look to see if the customer is new or al
 
 ## Front-end
 
-By default, Commerce provides you with a boilerplate front-end. We wouldn't recommend using this boilerplate in product but only as an example of how things work together.
+By default, Simple Commerce provides you with a boilerplate front-end. We wouldn't recommend using this boilerplate in product but only as an example of how things work together.
 
 The boilerplate should get published to your `resources/views/vendor` directory during installation, but you can also find them [on Github](https://github.com/damcclean/commerce/tree/master/resources/views/web).
 
@@ -293,7 +293,7 @@ Returns your Stripe key from your `.env` file.
 
 #### `{{ commerce:route }}`
 
-Returns Commerce URLs using the route key.
+Returns Simple Commerce URLs using the route key.
 
 ```html
 <a href="{{ commerce:route key='products.index' }}">All Products</a> 
@@ -437,7 +437,7 @@ Returns the total amount of the customers' cart.
 
 ## Form Endpoints
 
-On the front-end, Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
+On the front-end, Simple Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
 
 * `/cart` - Adds an item to the user's cart
 * `/cart/clear` - Clears the user's cart
@@ -446,7 +446,7 @@ On the front-end, Commerce uses lots of form request to do things like adding to
 
 ## Widgets
 
-Commerce provides a few widgets that you can add to the Dashboard of your Control Panel that displays key store information at a glance.
+Simple Commerce provides a few widgets that you can add to the Dashboard of your Control Panel that displays key store information at a glance.
 
 * `new_customers`
 * `recent_orders`
@@ -470,13 +470,13 @@ return [
 
 ## Permissions
 
-You might want certain people to only be able to access a certain part of Commerce. For example, you might want your marketing team to only access sales or products or you might want your fulfilment staff to only be able to access orders and customers. Commerce allows for this.
+You might want certain people to only be able to access a certain part of Commerce. For example, you might want your marketing team to only access sales or products or you might want your fulfilment staff to only be able to access orders and customers. Simple Commerce allows for this.
 
 When choosing roles for Roles in Statamic, you can add granular control over what your users can access.
 
 ## Resources
 
-* [Commerce Discord for testers](https://discord.gg/P3ACYf9)
+* [Simple Commerce Discord](https://discord.gg/P3ACYf9)
 * [Contributors Guide](./CONTRIBUTING.md)
 * [Github Issues](https://github.com/damcclean/commerce/issues)
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;

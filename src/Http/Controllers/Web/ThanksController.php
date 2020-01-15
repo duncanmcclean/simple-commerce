@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
 use Statamic\View\View;
 

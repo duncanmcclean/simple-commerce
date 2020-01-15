@@ -1,11 +1,11 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Cp;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use Damcclean\Commerce\Http\Requests\ProductStoreRequest;
-use Damcclean\Commerce\Http\Requests\ProductUpdateRequest;
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductStoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -114,7 +114,7 @@ class ProductController extends CpController
                         ];
                     })->toArray(),
                 ];
-            })->toArray()
+            })->toArray(),
         ]);
 
         $blueprint = Blueprint::find('product');

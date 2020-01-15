@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use Statamic\View\View;
 
 class ProductController extends Controller
@@ -29,7 +29,7 @@ class ProductController extends Controller
             ->template('commerce::web.product')
             ->layout('commerce::web.layout')
             ->with(array_merge($product->toArray(), [
-                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price
+                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price,
             ]));
     }
 }

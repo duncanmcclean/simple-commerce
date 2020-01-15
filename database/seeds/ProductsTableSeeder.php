@@ -1,8 +1,8 @@
 <?php
 
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\ProductCategory;
-use Damcclean\Commerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Database\Seeder;
 use Statamic\Stache\Stache;
 

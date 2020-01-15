@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Widgets;
+namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 
-use Damcclean\Commerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Statamic\Widgets\Widget;
 
 class RecentOrdersWidget extends Widget

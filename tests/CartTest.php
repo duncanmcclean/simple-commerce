@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Tests;
+namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
-use Damcclean\Commerce\Helpers\Cart;
-use Damcclean\Commerce\Tests\TestCase;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

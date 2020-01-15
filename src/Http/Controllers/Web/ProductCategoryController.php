@@ -1,9 +1,9 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use Statamic\View\View;
 
 class ProductCategoryController extends Controller

@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Policies;
+namespace DoubleThreeDigital\SimpleCommerce\Policies;
 
-use Damcclean\Commerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Statamic\Auth\User;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Damcclean\Commerce\Tags;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use Damcclean\Commerce\Models\Country;
-use Damcclean\Commerce\Models\Currency;
-use Damcclean\Commerce\Models\Product;
-use Damcclean\Commerce\Models\ProductCategory;
-use Damcclean\Commerce\Models\State;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -44,7 +44,7 @@ class CommerceTags extends Tags
         return $categories
             ->map(function ($category) {
                 return array_merge($category->toArray(), [
-                    'url' => route('categories.show', ['category' => $category->slug])
+                    'url' => route('categories.show', ['category' => $category->slug]),
                 ]);
             })
             ->toArray();

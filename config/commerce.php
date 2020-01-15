@@ -34,7 +34,7 @@ return [
     /**
      * Currency
      *
-     * Currently, Commerce only supports the use of one currency
+     * Currently, Simple Commerce only supports the use of one currency
      * for making purchases. Please choose which currency you want
      * to use. You can find a list of the currencies here.
      * https://github.com/damcclean/commerce/blob/master/database/seeds/CurrenciesTableSeeder.php
@@ -45,7 +45,7 @@ return [
     /**
      * Routes
      *
-     * Commerce provides a set of web routes to make your store
+     * Simple Commerce provides a set of web routes to make your store
      * function. You can change these routes if you have other
      * preferences.
      */

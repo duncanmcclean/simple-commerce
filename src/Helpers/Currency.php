@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
-use Damcclean\Commerce\Models\Currency as CurrencyModel;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
 
 class Currency
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Damcclean\Commerce\Http\Controllers\Web;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use Damcclean\Commerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 

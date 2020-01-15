@@ -1,6 +1,6 @@
 <?php
 
-namespace Damcclean\Commerce\Fieldtypes;
+namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
 
@@ -23,7 +23,7 @@ class MoneyFieldtype extends Fieldtype
     {
         return 'Money';
     }
-    
+
     public function component(): string
     {
         return 'money';
