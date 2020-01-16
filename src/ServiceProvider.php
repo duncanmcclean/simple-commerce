@@ -131,7 +131,7 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav
                 ->create('Products')
-                ->section('Commerce')
+                ->section('Simple Commerce')
                 ->route('products.index')
                 ->icon('entries')
                 ->children([
@@ -142,7 +142,7 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav
                 ->create('Orders')
-                ->section('Commerce')
+                ->section('Simple Commerce')
                 ->route('orders.index')
                 ->icon('list');
         });
@@ -150,17 +150,18 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav
                 ->create('Customers')
-                ->section('Commerce')
+                ->section('Simple Commerce')
                 ->route('customers.index')
                 ->icon('user');
         });
 
-//        Nav::extend(function ($nav) {
-//            $nav
-//                ->create('Coupons')
-//                ->section('Commerce')
-//                ->route('coupons.index');
-//        });
+        Nav::extend(function ($nav) {
+            $nav
+                ->create('Settings')
+                ->section('Simple Commerce')
+                ->route('settings.edit')
+                ->icon('cogs');
+        });
 
         CountryFieldtype::register();
         CurrencyFieldtype::register();
@@ -172,74 +173,64 @@ class ServiceProvider extends AddonServiceProvider
         ProductFieldtype::register();
 
         $this->app->booted(function () {
-            //Permission::group('commerce', 'commerce');
+            Permission::group('simple-commerce', 'Simple Commerce', function () {
+                Permission::register('edit settings')
+                    ->label('Edit Commerce Settings');
 
-            Permission::register('view customers', function ($permission) {
-                $permission->children([
-                    Permission::make('edit customers')
-                        ->label('Edit customers')
-                        ->group('Commerce')
-                        ->children([
-                            Permission::make('create customers')
-                                ->label('Create Customers')
-                                ->group('Commerce'),
-                            Permission::make('delete customers')
-                                ->label('Delete Customers')
-                                ->group('Commerce'),
-                        ]),
-                ]);
-            })->label('View Customers')->group('Commerce');
+                Permission::register('view customers', function ($permission) {
+                    $permission->children([
+                        Permission::make('edit customers')
+                            ->label('Edit customers')
+                            ->children([
+                                Permission::make('create customers')
+                                    ->label('Create Customers'),
+                                Permission::make('delete customers')
+                                    ->label('Delete Customers'),
+                            ]),
+                    ]);
+                })->label('View Customers');
 
-            Permission::register('view orders', function ($permission) {
-                $permission->children([
-                    Permission::make('edit orders')
-                        ->label('Edit Orders')
-                        ->group('Commerce')
-                        ->children([
-                            Permission::make('create orders')
-                                ->label('Create Orders')
-                                ->group('Commerce'),
-                            Permission::make('refund orders')
-                                ->label('Refund Orders')
-                                ->group('Commerce'),
-                            Permission::make('delete orders')
-                                ->label('Delete Orders')
-                                ->group('Commerce'),
-                        ]),
-                ]);
-            })->label('View Orders')->group('commerce');
+                Permission::register('view orders', function ($permission) {
+                    $permission->children([
+                        Permission::make('edit orders')
+                            ->label('Edit Orders')
+                            ->children([
+                                Permission::make('create orders')
+                                    ->label('Create Orders'),
+                                Permission::make('refund orders')
+                                    ->label('Refund Orders'),
+                                Permission::make('delete orders')
+                                    ->label('Delete Orders'),
+                            ]),
+                    ]);
+                })->label('View Orders');
 
-            Permission::register('view products', function ($permission) {
-                $permission->children([
-                    Permission::make('edit products')
-                        ->label('Edit Products')
-                        ->group('Commerce')
-                        ->children([
-                            Permission::make('create products')
-                                ->label('Create Products')
-                                ->group('Commerce'),
-                            Permission::make('delete products')
-                                ->label('Delete Products')
-                                ->group('Commerce'),
-                        ]),
-                ]);
-            })->label('View Products')->group('Commerce');
+                Permission::register('view products', function ($permission) {
+                    $permission->children([
+                        Permission::make('edit products')
+                            ->label('Edit Products')
+                            ->children([
+                                Permission::make('create products')
+                                    ->label('Create Products'),
+                                Permission::make('delete products')
+                                    ->label('Delete Products'),
+                            ]),
+                    ]);
+                })->label('View Products');
 
-            Permission::register('view product categories', function ($permission) {
-                $permission->children([
-                    Permission::make('edit product categories')
-                        ->label('Edit Product Categories')
-                        ->group('Commerce')
-                        ->children([
-                            Permission::make('create product categories')
-                                ->label('Create Product Categories')
-                                ->group('Commerce'),
-                            Permission::make('delete product categories')
-                                ->label('Delete Product Categories')
-                                ->group('Commerce'),
-                        ]),
-                ]);
-            })->label('View Product Categories')->group('commerce');
+                Permission::register('view product categories', function ($permission) {
+                    $permission->children([
+                        Permission::make('edit product categories')
+                            ->label('Edit Product Categories')
+                            ->children([
+                                Permission::make('create product categories')
+                                    ->label('Create Product Categories'),
+                                Permission::make('delete product categories')
+                                    ->label('Delete Product Categories'),
+                            ]),
+                    ]);
+                })->label('View Product Categories');
+            });
         });
     }
 
@@ -249,6 +240,8 @@ class ServiceProvider extends AddonServiceProvider
             $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
         }
 
+        // We can remove this if my pull request gets merged
+        // https://github.com/statamic/cms/pull/1190
         foreach ($this->policies as $key => $value) {
             Gate::policy($key, $value);
         }
