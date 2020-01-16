@@ -39,7 +39,8 @@ Route::namespace('Http\Controllers\Cp')->group(function () {
     });
 
     Route::prefix('settings')->as('settings')->group(function () {
-        Route::get('/', 'SettingsController@index')->name('.index');
+        Route::get('/', 'SettingsController@edit')->name('.edit');
+        Route::post('/', 'SettingsController@update')->name('.update');
     });
 
     Route::prefix('commerce-api')->as('commerce-api')->group(function () {

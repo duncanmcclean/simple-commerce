@@ -159,7 +159,7 @@ class ServiceProvider extends AddonServiceProvider
             $nav
                 ->create('Settings')
                 ->section('Simple Commerce')
-                ->route('settings.index')
+                ->route('settings.edit')
                 ->icon('cogs');
         });
 

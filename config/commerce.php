@@ -10,11 +10,12 @@ return [
      * appear on customers' receipts.
      */
 
-    'address1' => '',
-    'address2' => '',
-    'address3' => '',
+    'address_1' => '',
+    'address_2' => '',
+    'address_3' => '',
     'city' => '',
     'country' => '',
+    'state' => '',
     'zip_code' => '',
 
     /**
@@ -65,6 +66,6 @@ return [
      * database for? (in days)
      */
 
-    'cart-retention' => 30,
+    'cart_retention' => 30,
 
 ];

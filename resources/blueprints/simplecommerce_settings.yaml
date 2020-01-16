@@ -1,0 +1,202 @@
+title: 'Simple Commerce Settings'
+sections:
+  general:
+    display: General
+    fields:
+      -
+        handle: address
+        field:
+          type: section
+          instructions: 'This is where your business is based. Tax and shipping prices will be generated from here. This address will also appear on customers'' receipts.'
+          localizable: false
+          display: Address
+      -
+        handle: address_1
+        field:
+          type: text
+          localizable: false
+          display: 'Address 1'
+      -
+        handle: address_2
+        field:
+          type: text
+          localizable: false
+          width: 25
+          display: 'Address 2'
+      -
+        handle: address_3
+        field:
+          type: text
+          localizable: false
+          width: 25
+          display: 'Address 3'
+      -
+        handle: city
+        field:
+          type: text
+          localizable: false
+          width: 50
+          display: City
+      -
+        handle: country
+        field:
+          mode: default
+          type: country
+          localizable: false
+          width: 50
+          display: Country
+      -
+        handle: state
+        field:
+          type: text
+          localizable: false
+          width: 25
+          display: State
+      -
+        handle: zip_code
+        field:
+          type: text
+          localizable: false
+          display: 'Zip Code'
+          width: 25
+      -
+        handle: currency_section
+        field:
+          type: section
+          instructions: 'Set how your prices and currencies will be displayed throughout Simple Commerce.'
+          localizable: false
+          display: Currency
+      -
+        handle: currency
+        field:
+          mode: select
+          type: currency
+          localizable: false
+          display: Currency
+      -
+        handle: currency_position
+        field:
+          options:
+            left: Left
+            right: Right
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          type: select
+          localizable: false
+          width: 50
+          display: 'Currency Position'
+      -
+        handle: currency_separator
+        field:
+          type: text
+          localizable: false
+          display: 'Currency Separator'
+          width: 50
+  routing:
+    display: Routing
+    fields:
+      -
+        handle: cart
+        field:
+          type: section
+          localizable: false
+          display: Cart
+      -
+        handle: cart_index
+        field:
+          placeholder: /cart
+          type: text
+          localizable: false
+          width: 50
+          display: 'Cart Index'
+      -
+        handle: cart_store
+        field:
+          placeholder: /cart/add
+          type: text
+          localizable: false
+          width: 50
+          display: 'Add to Cart'
+      -
+        handle: cart_clear
+        field:
+          placeholder: /cart/clear
+          type: text
+          localizable: false
+          width: 50
+          display: 'Clear Cart'
+      -
+        handle: cart_remove
+        field:
+          placeholder: /cart/remove
+          type: text
+          localizable: false
+          width: 50
+          display: 'Remove from Cart'
+      -
+        handle: checkout
+        field:
+          type: section
+          localizable: false
+          display: Checkout
+      -
+        handle: checkout_show
+        field:
+          placeholder: /checkout
+          type: text
+          localizable: false
+          width: 50
+          display: 'Show Checkout'
+      -
+        handle: checkout_store
+        field:
+          placeholder: /checkout/store
+          type: text
+          localizable: false
+          width: 50
+          display: 'Submit Checkout'
+      -
+        handle: checkout_redirect
+        field:
+          placeholder: /thank-you
+          type: text
+          instructions: 'Where should we redirect users when they have completed the checkout process?'
+          localizable: false
+          display: 'Checkout Redirect'
+      -
+        handle: products
+        field:
+          type: section
+          instructions: 'Routes for your product pages are defined on a category basis.'
+          localizable: false
+          display: Products
+      -
+        handle: product_index
+        field:
+          placeholder: /products
+          type: text
+          localizable: false
+          width: 50
+          display: 'Product Index'
+      -
+        handle: product_search
+        field:
+          placeholder: /products/search
+          type: text
+          localizable: false
+          width: 50
+          display: 'Product Search'
+  miscellaneous:
+    display: Miscellaneous
+    fields:
+      -
+        handle: cart_retention
+        field:
+          placeholder: '30'
+          type: text
+          instructions: 'How many days should carts be kept in the system for?'
+          localizable: false
+          display: 'Cart Retention'
