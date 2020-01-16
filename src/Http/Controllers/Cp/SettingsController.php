@@ -42,7 +42,7 @@ class SettingsController extends CpController
         }
 
         foreach ($request->all() as $key => $value) {
-            Config::set("commerce.{$key}", $value);
+            Config::set("commerce.{$key}", $value); // setting like this doesn't actually write back to the file
         }
 
         return back();
