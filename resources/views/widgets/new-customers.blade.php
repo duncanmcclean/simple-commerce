@@ -11,6 +11,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Customer Since</th>
+                <th></th>
             </tr>
             </thead>
 
@@ -29,6 +30,13 @@
 
                         <td>
                             {{ $customer->created_at->toFormattedDateString() }}
+                        </td>
+
+                        <td class="flex justify-end">
+                            <dropdown-list>
+                                <dropdown-item text="Edit" redirect="{{ $customer->editUrl() }}"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" redirect="{{ $customer->deleteUrl() }}"></dropdown-item>
+                            </dropdown-list>
                         </td>
                     </tr>
                 @endforeach
