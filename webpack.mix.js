@@ -12,7 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/js/cp.js', 'dist/js/cp.js')
-    .copy('dist/js/cp.js', '../../../public/vendor/damcclean/commerce/js/cp.js')
+    .copy('dist/js/cp.js', '../../../public/vendor/doublethreedigital/simple-commerce/js/cp.js')
     .js('resources/js/web.js', 'dist/js/web.js')
-    .copy('dist/js/web.js', '../../../public/vendor/damcclean/commerce/js/web.js')
+    .copy('dist/js/web.js', '../../../public/vendor/doublethreedigital/simple-commerce/js/web.js')
     .setPublicPath('dist');

@@ -147,7 +147,7 @@ class CheckoutController extends Controller
 
         $this->cart->clear($this->cartId);
 
-        return redirect(config('commerce.checkout-redirect'));
+        return redirect(config('commerce.checkout_redirect'));
     }
 
     protected function createCart()

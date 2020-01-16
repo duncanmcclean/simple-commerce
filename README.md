@@ -296,7 +296,7 @@ Returns your Stripe key from your `.env` file.
 Returns Simple Commerce URLs using the route key.
 
 ```html
-<a href="{{ commerce:route key='products.index' }}">All Products</a> 
+<a href="{{ commerce:route key='product_index' }}">All Products</a> 
 ```
 
 #### `{{ commerce:categories }}`

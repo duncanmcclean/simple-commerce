@@ -30,7 +30,7 @@ class CommerceTags extends Tags
 
     public function route()
     {
-        return config("commerce.routes.{$this->getParam('key')}");
+        return config("commerce.{$this->getParam('key')}");
     }
 
     public function categories()

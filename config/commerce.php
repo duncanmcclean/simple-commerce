@@ -3,19 +3,30 @@
 return [
 
     /**
-     * Company information
+     * Address
      *
-     * This will be shown on any receipts sent to customers.
+     * This is where your business is located. Tax and shipping
+     * prices will be generated from here. This address will also
+     * appear on customers' receipts.
      */
 
-    'company' => [
-        'name' => '',
-        'address' => '',
-        'city' => '',
-        'country' => '',
-        'zip_code' => '',
-        'email' => ''
-    ],
+    'address1' => '',
+    'address2' => '',
+    'address3' => '',
+    'city' => '',
+    'country' => '',
+    'zip_code' => '',
+
+    /**
+     * Prices
+     *
+     * Set how your prices and currencies will be displayed
+     * throughout Simple Commerce.
+     */
+
+    'currency' => 'USD',
+    'currency_position' => 'left', // Options: 'left', 'right'
+    'currency_separator' => '.',
 
     /**
      * Stripe
@@ -32,17 +43,6 @@ return [
     ],
 
     /**
-     * Currency
-     *
-     * Currently, Simple Commerce only supports the use of one currency
-     * for making purchases. Please choose which currency you want
-     * to use. You can find a list of the currencies here.
-     * https://github.com/damcclean/commerce/blob/master/database/seeds/CurrenciesTableSeeder.php
-     */
-
-    'currency' => 'USD',
-
-    /**
      * Routes
      *
      * Simple Commerce provides a set of web routes to make your store
@@ -50,49 +50,15 @@ return [
      * preferences.
      */
 
-    'routes' => [
-
-        /**
-         * Cart
-         *
-         * - (index) Displays items in the customers' cart.
-         * - (add) Adds an item to the customers' cart.
-         * - (clear) Clears all items from the customers' cart.
-         * - (delete) Removes an item from the customers' cart.
-         */
-
-        'cart' => [
-            'index' => '/cart',
-            'add' => '/cart',
-            'clear' => '/cart/clear',
-            'delete' => '/cart/delete',
-        ],
-
-        /**
-         * Checkout
-         *
-         * - (show) Displays the checkout view to the user
-         * - (store) Processes the users' order
-         */
-
-        'checkout' => [
-            'show' => '/checkout',
-            'store' => '/checkout',
-        ],
-
-        /**
-         * Products
-         *
-         * - (index) Displays all products
-         * - (search) Displays a product search to the user
-         */
-
-        'products' => [
-            'index' => '/products',
-            'search' => '/products/search',
-        ],
-
-    ],
+    'cart_index' => '/cart',
+    'cart_store' => '/cart/add',
+    'cart_clear' => '/cart/clear',
+    'cart_remove' => '/cart/remove',
+    'checkout_show' => '/checkout',
+    'checkout_store' => '/checkout/store',
+    'checkout_redirect' => '/thank-you',
+    'product_index' => '/products',
+    'product_search' => '/products/search',
 
     /**
      * How long should we keep your customers' cart in the
@@ -100,11 +66,5 @@ return [
      */
 
     'cart-retention' => 30,
-
-    /**
-     * Where should we redirect customers after purchase?
-     */
-
-    'checkout-redirect' => '/thank-you'
 
 ];

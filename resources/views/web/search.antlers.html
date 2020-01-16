@@ -14,7 +14,7 @@
 {{ else }}
     <h1 class="text-5xl font-bold mb-2 text-gray-800">Search Products</h1>
 
-    <form class="mt-6" action="{{ commerce:route key='products.search' }}/results" method="get">
+    <form class="mt-6" action="{{ commerce:route key='product_search' }}/results" method="get">
         <div class="flex flex-row items-center">
             <label class="flex-1 font-medium text-gray-800">Query</label>
             <input class="w-2/3 border border-gray-600 p-1 text-semibold text-gray-800" type="text" name="query" placeholder="Rich Tea Biscuits" required>

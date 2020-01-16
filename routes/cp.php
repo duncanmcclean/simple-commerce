@@ -1,52 +1,50 @@
 <?php
 
-Route::prefix('products')->as('products')->group(function () {
-    Route::get('/', 'Http\Controllers\Cp\ProductController@index')->name('.index');
-    Route::get('/create', 'Http\Controllers\Cp\ProductController@create')->name('.create');
-    Route::post('/create', 'Http\Controllers\Cp\ProductController@store')->name('.store');
-    Route::get('/edit/{product}', 'Http\Controllers\Cp\ProductController@edit')->name('.edit');
-    Route::post('/edit/{product}', 'Http\Controllers\Cp\ProductController@update')->name('.update');
-    Route::get('/delete/{product}', 'Http\Controllers\Cp\ProductController@destroy')->name('.destroy');
-});
+Route::namespace('Http\Controllers\Cp')->group(function () {
+    Route::prefix('products')->as('products')->group(function () {
+        Route::get('/', 'ProductController@index')->name('.index');
+        Route::get('/create', 'ProductController@create')->name('.create');
+        Route::post('/create', 'ProductController@store')->name('.store');
+        Route::get('/edit/{product}', 'ProductController@edit')->name('.edit');
+        Route::post('/edit/{product}', 'ProductController@update')->name('.update');
+        Route::get('/delete/{product}', 'ProductController@destroy')->name('.destroy');
+    });
 
-Route::prefix('product-categories')->as('product-categories')->group(function () {
-    Route::get('/', 'Http\Controllers\Cp\ProductCategoryController@index')->name('.index');
-    Route::get('/create', 'Http\Controllers\Cp\ProductCategoryController@create')->name('.create');
-    Route::post('/create', 'Http\Controllers\Cp\ProductCategoryController@store')->name('.store');
-    Route::get('/{category}', 'Http\Controllers\Cp\ProductCategoryController@show')->name('.show');
-    Route::get('/edit/{category}', 'Http\Controllers\Cp\ProductCategoryController@edit')->name('.edit');
-    Route::post('/edit/{category}', 'Http\Controllers\Cp\ProductCategoryController@update')->name('.update');
-    Route::get('/delete/{category}', 'Http\Controllers\Cp\ProductCategoryController@destroy')->name('.destroy');
-});
+    Route::prefix('product-categories')->as('product-categories')->group(function () {
+        Route::get('/', 'ProductCategoryController@index')->name('.index');
+        Route::get('/create', 'ProductCategoryController@create')->name('.create');
+        Route::post('/create', 'ProductCategoryController@store')->name('.store');
+        Route::get('/{category}', 'ProductCategoryController@show')->name('.show');
+        Route::get('/edit/{category}', 'ProductCategoryController@edit')->name('.edit');
+        Route::post('/edit/{category}', 'ProductCategoryController@update')->name('.update');
+        Route::get('/delete/{category}', 'ProductCategoryController@destroy')->name('.destroy');
+    });
 
-Route::prefix('orders')->as('orders')->group(function () {
-    Route::get('/', 'Http\Controllers\Cp\OrderController@index')->name('.index');
-    Route::get('/create', 'Http\Controllers\Cp\OrderController@create')->name('.create');
-    Route::post('/create', 'Http\Controllers\Cp\OrderController@store')->name('.store');
-    Route::get('/edit/{order}', 'Http\Controllers\Cp\OrderController@edit')->name('.edit');
-    Route::post('/edit/{order}', 'Http\Controllers\Cp\OrderController@update')->name('.update');
-    Route::get('/delete/{order}', 'Http\Controllers\Cp\OrderController@destroy')->name('.destroy');
-});
+    Route::prefix('orders')->as('orders')->group(function () {
+        Route::get('/', 'OrderController@index')->name('.index');
+        Route::get('/create', 'OrderController@create')->name('.create');
+        Route::post('/create', 'OrderController@store')->name('.store');
+        Route::get('/edit/{order}', 'OrderController@edit')->name('.edit');
+        Route::post('/edit/{order}', 'OrderController@update')->name('.update');
+        Route::get('/delete/{order}', 'OrderController@destroy')->name('.destroy');
+    });
 
-//Route::prefix('coupons')->as('coupons')->group(function () {
-//    Route::get('/', 'Http\Controllers\Cp\CouponController@index')->name('.index');
-//    Route::get('/create', 'Http\Controllers\Cp\CouponController@create')->name('.create');
-//    Route::post('/create', 'Http\Controllers\Cp\CouponController@store')->name('.store');
-//    Route::get('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@edit')->name('.edit');
-//    Route::post('/edit/{coupon}', 'Http\Controllers\Cp\CouponController@update')->name('.update');
-//    Route::get('/delete/{coupon}', 'Http\Controllers\Cp\CouponController@destroy')->name('.destroy');
-//});
+    Route::prefix('customers')->as('customers')->group(function () {
+        Route::get('/', 'CustomerController@index')->name('.index');
+        Route::get('/create', 'CustomerController@create')->name('.create');
+        Route::post('/create', 'CustomerController@store')->name('.store');
+        Route::get('/edit/{customer}', 'CustomerController@edit')->name('.edit');
+        Route::post('/edit/{customer}', 'CustomerController@update')->name('.update');
+        Route::get('/delete/{customer}', 'CustomerController@destroy')->name('.destroy');
+    });
 
-Route::prefix('customers')->as('customers')->group(function () {
-    Route::get('/', 'Http\Controllers\Cp\CustomerController@index')->name('.index');
-    Route::get('/create', 'Http\Controllers\Cp\CustomerController@create')->name('.create');
-    Route::post('/create', 'Http\Controllers\Cp\CustomerController@store')->name('.store');
-    Route::get('/edit/{customer}', 'Http\Controllers\Cp\CustomerController@edit')->name('.edit');
-    Route::post('/edit/{customer}', 'Http\Controllers\Cp\CustomerController@update')->name('.update');
-    Route::get('/delete/{customer}', 'Http\Controllers\Cp\CustomerController@destroy')->name('.destroy');
-});
+    Route::prefix('settings')->as('settings')->group(function () {
+        Route::get('/', 'SettingsController@index')->name('.index');
+    });
 
-Route::prefix('commerce-api')->as('commerce-api')->group(function () {
-    Route::post('/customer-order', 'Http\Controllers\Cp\CustomerOrderController@index')->name('.customer-order');
-    Route::get('/refund-order/{order}', 'Http\Controllers\Cp\RefundOrderController@store')->name('.refund-order');
+    Route::prefix('commerce-api')->as('commerce-api')->group(function () {
+        Route::post('/customer-order', 'CustomerOrderController@index')->name('.customer-order');
+        Route::get('/refund-order/{order}', 'RefundOrderController@store')->name('.refund-order');
+    });
+
 });
