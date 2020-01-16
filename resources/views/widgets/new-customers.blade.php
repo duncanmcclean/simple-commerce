@@ -7,12 +7,12 @@
     @if($customers->count())
         <table class="data-table">
             <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Customer Since</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Customer Since</th>
+                    <th></th>
+                </tr>
             </thead>
 
             <tbody>
