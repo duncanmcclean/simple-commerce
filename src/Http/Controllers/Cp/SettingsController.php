@@ -42,9 +42,7 @@ class SettingsController extends CpController
         }
 
         foreach ($request->all() as $key => $value) {
-            //Config::set("commerce.{$key}", $value);
-
-            app()['config']->set("commerce.{$key}", $value);
+            Config::set("commerce.{$key}", $value);
         }
 
         return back();
