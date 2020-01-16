@@ -3,9 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 
-Route::get(config('commerce.routes.thanks'), 'Http\Controllers\Web\ThanksController')->name('thanks');
-//Route::post(config('commerce.routes.redeem_coupon'), 'Http\Controllers\Web\RedeemCouponController')->name('coupon.redeem');
-
 Route::get(config('commerce.routes.cart.index'), 'Http\Controllers\Web\CartController@index')->name('cart.index');
 Route::post(config('commerce.routes.cart.add'), 'Http\Controllers\Web\CartController@store')->name('cart.add');
 Route::post(config('commerce.routes.cart.clear'), 'Http\Controllers\Web\ClearCartController')->name('cart.clear');

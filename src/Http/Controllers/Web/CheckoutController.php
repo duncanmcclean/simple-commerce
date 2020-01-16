@@ -89,7 +89,7 @@ class CheckoutController extends Controller
         $shippingAddress->city = $request->shipping_city;
         $shippingAddress->zip_code = $request->shipping_zip_code;
         $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
-        $shippingAddress->state_id = State::first()->id; // TODO: deal with this as we can only display states for the us
+        $shippingAddress->state_id = $request->billing_state ?? null;
         $shippingAddress->customer_id = $customer->id;
         $shippingAddress->save();
 
@@ -105,7 +105,7 @@ class CheckoutController extends Controller
             $billingAddress->city = $request->billing_city;
             $billingAddress->zip_code = $request->billing_zip_code;
             $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
-            $billingAddress->state_id = State::first()->id; // TODO: deal with this as we can only display states for the us
+            $billingAddress->state_id = $request->billing_state ?? null;
             $billingAddress->customer_id = $customer->id;
             $billingAddress->save();
         }
@@ -147,7 +147,7 @@ class CheckoutController extends Controller
 
         $this->cart->clear($this->cartId);
 
-        return redirect(config('commerce.routes.thanks'));
+        return redirect(config('commerce.checkout-redirect'));
     }
 
     protected function createCart()

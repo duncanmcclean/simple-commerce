@@ -92,10 +92,6 @@ return [
             'search' => '/products/search',
         ],
 
-        'thanks' => '/thanks', // Page user is redirected to once order has been processed.
-        'redeem_coupon' => '/redeem-coupon', // Endpoint where we check if a coupon provided by the customer is valid
-        'category' => '/category/category}', // Index page for a product category
-
     ],
 
     /**
@@ -103,6 +99,12 @@ return [
      * database for? (in days)
      */
 
-    'cart-retention' => 30
+    'cart-retention' => 30,
+
+    /**
+     * Where should we redirect customers after purchase?
+     */
+
+    'checkout-redirect' => '/thank-you'
 
 ];
