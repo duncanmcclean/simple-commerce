@@ -4,6 +4,17 @@ Simple Commerce is a perfectly simple e-commerce solution for Statamic. It's sim
 
 > Please learn how to use Statamic first before using Simple Commerce.
 
+## Feature set
+
+* Products, orders, customers
+* Stripe Payment Gateway
+* Events - so you can trigger things to happen on services like Printful or Segment.
+* Product Categories
+* Notifications for customers and store staff
+* Control Panel widgets 
+* Front-end boilerplate
+* Tax, shipping and discounting
+
 ## Database vs flat-file
 
 Unlike Statamic itself using flat-files, **Simple Commerce uses a MySQL database**. There are a variety of advantages a *real* database gives us. Things like relationships, security, speed. We initially tried to make Commerce work just on files but it ended up being near enough impossible, especially if we want it to scale to more than just a few products.
