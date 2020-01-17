@@ -33,5 +33,12 @@ class Currency
             case 'right':
                 return $total.$symbol;
         }
+
+        return null;
+    }
+
+    public function unparse(string $total)
+    {
+        return (int) str_replace($this->primary()->symbol, '', $total);
     }
 }

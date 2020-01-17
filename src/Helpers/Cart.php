@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
@@ -60,7 +61,7 @@ class Cart
         $item->cart_id = $cart->id;
         $item->save();
 
-        $cart->total += (Variant::where('uid', $data['variant'])->first()->price) * $data['quantity'];
+        $cart->total += (new CurrencyHelper())->unparse(Variant::where('uid', $data['variant'])->first()->price) * $data['quantity'];
         $cart->save();
 
         event(new AddedToCart($cart, $item));

@@ -39,7 +39,7 @@ class CartController extends Controller
         $this->cart->add($this->cartId, [
             'product' => $request->product,
             'variant' => $request->variant,
-            'quantity' => $request->quantity,
+            'quantity' => (int) $request->quantity,
         ]);
 
         return back()
