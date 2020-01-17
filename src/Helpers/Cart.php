@@ -95,6 +95,6 @@ class Cart
     {
         $cart = CartModel::where('uid', $uid)->first();
 
-        return number_format($cart->total, 2);
+        return number_format($cart->total, 2, '.', config('commerce.currency_separator'));
     }
 }
