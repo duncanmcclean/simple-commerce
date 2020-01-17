@@ -11,6 +11,16 @@ class Currency
         return CurrencyModel::where('iso', config('commerce.currency'))->first();
     }
 
+    public function symbol()
+    {
+        return $this->primary()->symbol;
+    }
+
+    public function iso()
+    {
+        return $this->primary()->iso;
+    }
+
     public function parse(int $total)
     {
         $symbol = $this->primary()->symbol;

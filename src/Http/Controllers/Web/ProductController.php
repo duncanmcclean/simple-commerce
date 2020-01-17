@@ -24,7 +24,7 @@ class ProductController extends Controller
             ->with('variants')
             ->first();
 
-        if (! $product->is_enabled) {
+        if (! $product || ! $product->is_enabled) {
             abort(404);
         }
 

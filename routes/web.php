@@ -20,11 +20,11 @@ Route::namespace('Http\Controllers\Web')->group(function () {
         ->each(function ($category) {
             Route::get($category->category_route, 'ProductCategoryController@show')->name('categories.show');
 
-            $products = Product::where('product_category_id', $category->od);
+            $products = Product::where('product_category_id', $category->id)->get();
 
             collect($products)
                 ->each(function ($product) use ($category) {
-                    Route::get($category->product_route, 'ProductController@show')->name('products.show');
+                    Route::get($category->product_route, 'ProductController@show')->name("products.{$category->slug}.show");
                 });
         });
 });

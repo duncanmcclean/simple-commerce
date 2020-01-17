@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -15,12 +16,12 @@ class CommerceTags extends Tags
 
     public function currencyCode()
     {
-        return Currency::where('iso', config('commerce.currency'))->first()->iso;
+        return (new CurrencyHelper())->iso();
     }
 
     public function currencySymbol()
     {
-        return Currency::where('iso', config('commerce.currency'))->first()->symbol;
+        return (new CurrencyHelper())->symbol();
     }
 
     public function stripeKey()
@@ -76,7 +77,6 @@ class CommerceTags extends Tags
                 return array_merge($product->toArray(), [
                     'url' => route('products.show', ['product' => $product['slug']]),
                     'variants' => $product->variants->toArray(),
-                    'from_price' => $product->variants->sortByDesc('price')->first()->price,
                 ]);
             });
     }

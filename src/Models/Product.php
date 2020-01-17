@@ -15,7 +15,7 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'from_price', 'to_price',
+        'from_price', 'to_price', 'url',
     ];
 
     public function getRouteKeyName()
@@ -41,6 +41,13 @@ class Product extends Model
     public function getToPriceAttribute()
     {
         return Variant::where('product_id', $this->attributes['id'])->get()->sortBy('price')->first()->price;
+    }
+
+    public function getUrlAttribute()
+    {
+        $category = ProductCategory::find($this->attributes['product_category_id'])->first();
+
+        return route("products.{$category->slug}.show", ['product' => $this->attributes['slug']]);
     }
 
     public function createUrl()
