@@ -12,17 +12,11 @@ class ProductCategoryController extends Controller
     {
         $category = ProductCategory::where('slug', $slug)->first();
 
-        $products = Product::all()
+        $products = Product::with('variants')
+            ->get()
             ->where('product_category_id', $category->id)
             ->reject(function ($product) {
                 return ! $product->is_enabled;
-            })
-            ->map(function ($product) {
-                return array_merge($product->toArray(), [
-                    'url' => route('products.show', ['product' => $product['slug']]),
-                    'variants' => $product->variants->toArray(),
-                    'from_price' => $product->variants->sortByDesc('price')->first()->price,
-                ]);
             });
 
         return (new View)
@@ -31,7 +25,6 @@ class ProductCategoryController extends Controller
             ->with([
                 'title' => $category['title'],
                 'products' => $products,
-
             ]);
     }
 }
