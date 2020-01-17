@@ -160,7 +160,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->create('Settings')
                 ->section('Simple Commerce')
                 ->route('settings.edit')
-                ->icon('cogs');
+                ->icon('settings-horizontal');
         });
 
         CountryFieldtype::register();
