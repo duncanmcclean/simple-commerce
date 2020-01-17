@@ -10,6 +10,10 @@ class ProductCategory extends Model
         'title', 'slug', 'uid', 'category_route', 'product_route',
     ];
 
+    protected $appends = [
+        'url',
+    ];
+
     public function getRouteKeyName()
     {
         return 'uid';
@@ -18,6 +22,11 @@ class ProductCategory extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function getUrlAttribute()
+    {
+        return route("categories.{$this->attributes['slug']}.show", ['category' => $this->attributes['slug']]);
     }
 
     public function createUrl()

@@ -18,11 +18,9 @@ Route::namespace('Http\Controllers\Web')->group(function () {
 
     ProductCategory::all()
         ->each(function ($category) {
-            Route::get($category->category_route, 'ProductCategoryController@show')->name('categories.show');
+            Route::get($category->category_route, 'ProductCategoryController@show')->name("categories.{$category->slug}");
 
-            $products = Product::where('product_category_id', $category->id)->get();
-
-            collect($products)
+            collect(Product::where('product_category_id', $category->id)->get())
                 ->each(function ($product) use ($category) {
                     Route::get($category->product_route, 'ProductController@show')->name("products.{$category->slug}.show");
                 });
