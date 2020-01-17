@@ -4,7 +4,7 @@
     <div class="mb-6 border-b w-full">
         <h2 class="text-3xl"><a class="text-blue-700 hover:text-blue-800 font-bold" href="{{ url }}">{{ title }}</a></h2>
 
-        <form class="flex flex-row items-center my-4" action="/cart" method="post">
+        <form class="flex flex-row items-center my-4" action="{{ commerce:route key='cart_store' }}" method="post">
             {{ csrf_field }}
 
             <input type="hidden" name="product" value="{{ uid }}">
