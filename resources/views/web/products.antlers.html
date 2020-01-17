@@ -1,6 +1,6 @@
 <h1 class="text-gray-800 font-bold text-4xl mb-4">Products</h1>
 
-{{ commerce:products }}
+{{ products }}
     <div class="mb-6 border-b w-full">
         <h2 class="text-3xl"><a class="text-blue-700 hover:text-blue-800 font-bold" href="{{ url }}">{{ title }}</a></h2>
 
@@ -11,7 +11,7 @@
 
             <select name="variant" required>
                 {{ variants }}
-                    <option value="{{ uid }}">{{ name }} {{ commerce:currency_symbol }}{{ from_price }}</option>
+                    <option value="{{ uid }}">{{ name }} {{ price }}</option>
                 {{ /variants }}
             </select>
 
@@ -20,4 +20,4 @@
             <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>
         </form>
     </div>
-{{ /commerce:products }}
+{{ /products }}

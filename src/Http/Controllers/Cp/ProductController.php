@@ -144,6 +144,8 @@ class ProductController extends CpController
         $product->is_enabled = $request->is_enabled;
         $product->save();
 
+        // TODO: this doesn't even update properly
+
         return $product;
     }
 

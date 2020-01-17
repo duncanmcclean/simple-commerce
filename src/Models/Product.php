@@ -14,6 +14,10 @@ class Product extends Model
         'is_enabled' => 'boolean',
     ];
 
+    protected $appends = [
+        'from_price', 'to_price',
+    ];
+
     public function getRouteKeyName()
     {
         return 'uid';
@@ -27,6 +31,16 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class);
+    }
+
+    public function getFromPriceAttribute()
+    {
+        return Variant::where('product_id', $this->attributes['id'])->get()->sortByDesc('price')->first()->price;
+    }
+
+    public function getToPriceAttribute()
+    {
+        return Variant::where('product_id', $this->attributes['id'])->get()->sortBy('price')->first()->price;
     }
 
     public function createUrl()

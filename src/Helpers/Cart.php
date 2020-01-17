@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Stache\Stache;
@@ -93,8 +94,6 @@ class Cart
 
     public function total(string $uid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
-
-        return number_format($cart->total, 2, '.', config('commerce.currency_separator'));
+        return (new Currency())->parse(CartModel::where('uid', $uid)->first()->total);
     }
 }

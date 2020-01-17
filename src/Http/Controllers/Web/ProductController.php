@@ -12,7 +12,10 @@ class ProductController extends Controller
         return (new View)
             ->template('commerce::web.products')
             ->layout('commerce::web.layout')
-            ->with(['title' => 'Products']);
+            ->with([
+                'title' => 'Products',
+                'products' => Product::with('variants')->get(),
+            ]);
     }
 
     public function show(string $slug)

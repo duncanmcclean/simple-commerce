@@ -20,6 +20,8 @@ class ProductSearchController
     {
         $query = $request->input('query');
 
+        // TODO: find way of refactoring this controller method
+
         if (! $query) {
             $results = Product::all()
                 ->reject(function ($product) {
@@ -29,7 +31,7 @@ class ProductSearchController
                     return array_merge($product->toArray(), [
                         'url' => route('products.show', ['product' => $product['slug']]),
                         'variants' => $product->variants->toArray(),
-                        'from_price' => $product->variants->sortByDesc('price')->first()->price,
+                        'from_price' => $product->variants->sortByDesc('price')->first()->price, // TODO: use the currency in here
                     ]);
                 });
         } else {
@@ -44,7 +46,7 @@ class ProductSearchController
                     return array_merge($product->toArray(), [
                         'url' => route('products.show', ['product' => $product['slug']]),
                         'variants' => $product->variants->toArray(),
-                        'from_price' => $product->variants->sortByDesc('price')->first()->price,
+                        'from_price' => $product->variants->sortByDesc('price')->first()->price, // TODO: use the currency in here
                     ]);
                 });
         }

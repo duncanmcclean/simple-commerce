@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
@@ -18,6 +19,11 @@ class Variant extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function getPriceAttribute($value)
+    {
+        return (new CurrencyHelper())->parse((int) $value);
     }
 
     public function setVariantAttributesAttribute($value)
