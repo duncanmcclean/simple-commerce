@@ -239,11 +239,5 @@ class ServiceProvider extends AddonServiceProvider
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
         }
-
-        // We can remove this if my pull request gets merged
-        // https://github.com/statamic/cms/pull/1190
-        foreach ($this->policies as $key => $value) {
-            Gate::policy($key, $value);
-        }
     }
 }
