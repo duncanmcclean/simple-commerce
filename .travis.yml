@@ -1,12 +1,17 @@
 language: php
 
 php:
+  - 7.1
+  - 7.2
   - 7.3
+  - 7.4
 
-install:
+services:
+  - mysql
+
+before_script:
+  - cp phpunit-example.xml phpunit.xml
+  - mysql -e 'create database commerce_testing'
   - composer install --no-interaction
 
-script: vendor/bin/phpunit -v
-
-notifications:
-  email: false
+script: vendor/bin/phpunit
