@@ -167,10 +167,10 @@ class ServiceProvider extends AddonServiceProvider
         ProductFieldtype::register();
 
         $this->app->booted(function () {
-            Statamic::provideToScript([
-                'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
-                'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
-            ]);
+//            Statamic::provideToScript([
+//                'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
+//                'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
+//            ]);
 
             Permission::group('simple-commerce', 'Simple Commerce', function () {
                 Permission::register('edit settings')
