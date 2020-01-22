@@ -36,6 +36,7 @@ use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
 use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
@@ -173,6 +174,16 @@ class ServiceProvider extends AddonServiceProvider
         ProductFieldtype::register();
 
         $this->app->booted(function () {
+            ProductCategory::all()
+                ->each(function ($category) {
+                    Route::get($category->category_route, 'ProductCategoryController@show')->name("categories.{$category->slug}");
+
+                    collect(Product::where('product_category_id', $category->id)->get())
+                        ->each(function ($product) use ($category) {
+                            Route::get($category->product_route, 'ProductController@show')->name("products.{$category->slug}.show");
+                        });
+                });
+
             Permission::group('simple-commerce', 'Simple Commerce', function () {
                 Permission::register('edit settings')
                     ->label('Edit Commerce Settings');
