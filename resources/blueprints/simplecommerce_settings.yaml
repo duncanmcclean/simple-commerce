@@ -190,7 +190,7 @@ sections:
           width: 50
           display: 'Product Search'
       -
-        handle: products_show
+        handle: product_show
         field:
           placeholder: '/products/{product}'
           type: text
