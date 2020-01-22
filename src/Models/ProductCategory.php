@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductCategory extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'uid', 'category_route', 'product_route',
+        'title', 'slug', 'uid',
     ];
 
     protected $appends = [
@@ -26,7 +26,7 @@ class ProductCategory extends Model
 
     public function getUrlAttribute()
     {
-        return route("categories.{$this->attributes['slug']}.show", ['category' => $this->attributes['slug']]);
+        return route('categories.show', ['category' => $this->attributes['slug']]);
     }
 
     public function createUrl()

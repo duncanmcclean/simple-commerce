@@ -60,6 +60,8 @@ return [
     'checkout_redirect' => '/thank-you',
     'product_index' => '/products',
     'product_search' => '/products/search',
+    'product_show' => '/products/{product}',
+    'categories_show' => '/category/{category}',
 
     /**
      * How long should we keep your customers' cart in the

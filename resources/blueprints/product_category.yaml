@@ -10,33 +10,6 @@ sections:
           type: text
           localizable: false
           display: Title
-      -
-        handle: routes
-        field:
-          type: section
-          localizable: false
-          display: Routes
-          instructions: 'Here you can change the front-end routes the category index and the products in this category use. We''ve set some defaults, you can change them if you want.'
-      -
-        handle: category_route
-        field:
-          placeholder: '/{category}'
-          character_limit: 0
-          type: text
-          instructions: 'Use ''{category}'' for the category slug.'
-          localizable: false
-          width: 50
-          display: 'Category Route'
-      -
-        handle: product_route
-        field:
-          placeholder: '/product/{product}'
-          character_limit: 0
-          type: text
-          instructions: 'Use ''{product}'' for the product slug.'
-          localizable: false
-          width: 50
-          display: 'Product Route'
   sidebar:
     display: Sidebar
     fields:

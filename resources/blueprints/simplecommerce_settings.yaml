@@ -189,6 +189,28 @@ sections:
           localizable: false
           width: 50
           display: 'Product Search'
+      -
+        handle: products_show
+        field:
+          placeholder: '/products/{product}'
+          type: text
+          localizable: false
+          width: 50
+          display: 'Show Product'
+      -
+        handle: product_categories
+        field:
+          type: section
+          localizable: false
+          display: 'Product Categories'
+      -
+        handle: categories_show
+        field:
+          placeholder: '/category/{category}'
+          type: text
+          localizable: false
+          width: 50
+          display: 'Show Category'
   miscellaneous:
     display: Miscellaneous
     fields:

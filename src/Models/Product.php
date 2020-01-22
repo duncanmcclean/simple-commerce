@@ -45,9 +45,7 @@ class Product extends Model
 
     public function getUrlAttribute()
     {
-        $category = ProductCategory::find($this->attributes['product_category_id'])->first();
-
-        return route("products.{$category->slug}.show", ['product' => $this->attributes['slug']]);
+        return route('products.show', ['product' => $this->attributes['slug']]);
     }
 
     public function createUrl()

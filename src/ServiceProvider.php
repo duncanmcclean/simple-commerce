@@ -172,16 +172,6 @@ class ServiceProvider extends AddonServiceProvider
                 'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
             ]);
 
-            ProductCategory::all()
-                ->each(function ($category) {
-                    Route::get($category->category_route, 'ProductCategoryController@show')->name("categories.{$category->slug}");
-
-                    collect(Product::where('product_category_id', $category->id)->get())
-                        ->each(function ($product) use ($category) {
-                            Route::get($category->product_route, 'ProductController@show')->name("products.{$category->slug}.show");
-                        });
-                });
-
             Permission::group('simple-commerce', 'Simple Commerce', function () {
                 Permission::register('edit settings')
                     ->label('Edit Commerce Settings');
