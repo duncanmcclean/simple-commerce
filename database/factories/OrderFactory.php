@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Statamic\Stache\Stache;
 
-$faker->define(Order::class, function (Faker $faker) {
+$factory->define(Order::class, function (Faker $faker) {
     return [
         'payment_intent' => null,
         'billing_address_id' => function () {

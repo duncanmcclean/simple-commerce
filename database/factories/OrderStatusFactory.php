@@ -4,7 +4,7 @@ use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Statamic\Stache\Stache;
 
-$faker->define(OrderStatus::class, function (Faker $faker) {
+$factory->define(OrderStatus::class, function (Faker $faker) {
     $name = $faker->word;
 
     return [
