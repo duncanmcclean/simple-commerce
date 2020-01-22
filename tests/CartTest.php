@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,11 +20,13 @@ class CartTest extends TestCase
     /** @test */
     public function a_cart_can_be_created()
     {
-        //$cart = $this->cart->create();
+        $cart = $this->cart->create();
 
-        //$this->assertIsString($cart);
+        $this->assertIsString($cart);
 
-        $this->assertTrue(true);
+        $this->assertDatabaseHas('carts', [
+            'uid' => $cart,
+        ]);
     }
 
     /** @test */
