@@ -15,6 +15,8 @@ abstract class TestCase extends OrchestraTestCase
         require_once(__DIR__.'/ExceptionHandler.php');
 
         parent::setUp();
+
+        $this->withFactories(realpath(__DIR__.'/../database/factories'));
     }
 
     protected function getPackageProviders($app)
