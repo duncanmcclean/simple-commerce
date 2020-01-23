@@ -43,9 +43,8 @@ class Cart
     {
         $cart = CartModel::where('uid', $uid)->first();
 
-        return CartItem::where('cart_id', $cart->id)
-            ->with('variant')
-            ->with('product')
+        return CartItem::with('cart', 'product', 'variant')
+            ->where('cart_id', $cart->id)
             ->get();
     }
 
@@ -61,8 +60,9 @@ class Cart
         $item->cart_id = $cart->id;
         $item->save();
 
-        $cart->total += (new CurrencyHelper())->unparse(Variant::where('uid', $data['variant'])->first()->price) * $data['quantity'];
-        $cart->save();
+//        $cart->total += (new CurrencyHelper())->unparse(Variant::where('uid', $data['variant'])->first()->price) * $data['quantity'];
+//        $cart->save();
+        // TODO: figure out how to remove the currency parsed stuff so we can make a cart total
 
         event(new AddedToCart($cart, $item));
 

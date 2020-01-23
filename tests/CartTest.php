@@ -61,24 +61,58 @@ class CartTest extends TestCase
     /** @test */
     public function can_get_cart_items()
     {
-        //
+        $cart = factory(CartModel::class)->create();
+        $items = factory(CartItem::class, 5)->create([
+            'cart_id' => $cart->id,
+        ]);
+
+        $get = $this->cart->get($cart->uid);
+
+        $this->assertIsObject($get);
     }
 
     /** @test */
     public function can_add_cart_item_to_cart()
     {
-        //
+        $cart = factory(CartModel::class)->create();
+
+        $product = factory(Product::class)->create();
+        $variant = factory(Variant::class)->create([
+            'product_id' => $product->id,
+        ]);
+
+        $add = $this->cart->add($cart->uid, [
+            'product' => $product->uid,
+            'variant' => $variant->uid,
+            'quantity' => 1,
+        ]);
+
+        $this->assertIsObject($add);
     }
 
     /** @test */
     public function can_remove_cart_item_from_cart()
     {
-        //
+        $cart = factory(CartModel::class)->create();
+        $item = factory(CartItem::class)->create([
+            'cart_id' => $cart->id,
+        ]);
+
+        $remove = $this->cart->remove($cart->uid, $item->uid);
+
+        $this->assertIsObject($remove);
     }
 
     /** @test */
     public function a_cart_can_be_cleared()
     {
-        //
+        $cart = factory(CartModel::class)->create();
+        $item = factory(CartItem::class, 5)->create([
+            'cart_id' => $cart->id,
+        ]);
+
+        $clear = $this->cart->clear($cart->uid);
+
+        $this->assertNull($clear);
     }
 }
