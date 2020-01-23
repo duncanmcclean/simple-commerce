@@ -16,6 +16,6 @@ $factory->define(Product::class, function (Faker $faker) {
         },
         'uid' => (new Stache())->generateId(),
         'is_enabled' => true,
-        'description' => $faker->realText(),
+        'description' => $faker->text,
     ];
 });

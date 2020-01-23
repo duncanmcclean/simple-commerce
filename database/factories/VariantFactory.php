@@ -16,7 +16,7 @@ $factory->define(Variant::class, function (Faker $faker) {
             return factory(Product::class)->create()->id;
         },
         'uid' => (new Stache())->generateId(),
-        'description' => $faker->realText(),
+        'description' => $faker->text,
         'variant_attributes' => [
             [
                 '_id' => 'row_1',
