@@ -8,6 +8,7 @@ use Statamic\Tags\Tags;
 
 class CartTags extends Tags
 {
+    public $cart;
     public $cartId;
 
     protected static $handle = 'cart';
