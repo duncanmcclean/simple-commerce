@@ -39,7 +39,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::getEnvironmentSetUp($app);
 
         $app->make(Manifest::class)->manifest = [
-            'damcclean/commerce' => [
+            'doublethreedigital/simple-commerce' => [
                 'id' => 'doublethreedigital/simple-commerce',
                 'namespace' => 'DoubleThreeDigital\\SimpleCommerce\\',
             ],
