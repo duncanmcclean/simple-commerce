@@ -25,6 +25,8 @@ Route::namespace('Http\Controllers\Cp')->group(function () {
         Route::get('/edit/{order}', 'OrderController@edit')->name('.edit');
         Route::post('/edit/{order}', 'OrderController@update')->name('.update');
         Route::get('/delete/{order}', 'OrderController@destroy')->name('.destroy');
+
+        Route::get('/{order}/{status}', 'OrderStatusController@update')->name('.status-update');
     });
 
     Route::prefix('customers')->as('customers')->group(function () {

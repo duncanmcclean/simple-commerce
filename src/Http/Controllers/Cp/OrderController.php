@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderUpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
@@ -27,6 +28,7 @@ class OrderController extends CpController
         return view('commerce::cp.orders.index', [
             'crumbs' => $crumbs,
             'orders' => $orders,
+            'statuses' => OrderStatus::all(),
         ]);
     }
 
