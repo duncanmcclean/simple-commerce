@@ -194,8 +194,6 @@ class ServiceProvider extends AddonServiceProvider
                         Permission::make('edit orders')
                             ->label('Edit Orders')
                             ->children([
-                                Permission::make('create orders')
-                                    ->label('Create Orders'),
                                 Permission::make('refund orders')
                                     ->label('Refund Orders'),
                                 Permission::make('delete orders')

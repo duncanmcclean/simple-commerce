@@ -8,10 +8,6 @@
         <h1 class="flex-1">
             Orders
         </h1>
-
-        <a class="btn btn-primary" href="{{ $createUrl }}">
-            Create Order
-        </a>
     </div>
 
     @if ($orders->count())

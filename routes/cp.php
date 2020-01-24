@@ -22,8 +22,6 @@ Route::namespace('Http\Controllers\Cp')->group(function () {
 
     Route::prefix('orders')->as('orders')->group(function () {
         Route::get('/', 'OrderController@index')->name('.index');
-        Route::get('/create', 'OrderController@create')->name('.create');
-        Route::post('/create', 'OrderController@store')->name('.store');
         Route::get('/edit/{order}', 'OrderController@edit')->name('.edit');
         Route::post('/edit/{order}', 'OrderController@update')->name('.update');
         Route::get('/delete/{order}', 'OrderController@destroy')->name('.destroy');

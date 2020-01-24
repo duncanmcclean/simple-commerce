@@ -1,7 +1,6 @@
 <div class="card p-0 rounded-lg pb-2">
     <div class="flex justify-between items-center p-2">
         <h2>Recent Orders</h2>
-        <a href="{{ cp_route('orders.create') }}" class="text-blue hover:text-blue-dark text-sm">New Order</a>
     </div>
 
     @if($orders->count())
