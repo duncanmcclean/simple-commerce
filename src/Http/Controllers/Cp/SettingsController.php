@@ -37,6 +37,7 @@ class SettingsController extends CpController
 
     public function update(SettingsUpdateRequest $request)
     {
+        // TODO: use a policy for this?
         if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
             abort(401);
         }
