@@ -26,7 +26,7 @@ If you have a feature request for the addon, please check if it already exists. 
 
 ### Security disclosures
 
-If you discover a security vulnrability with the addon, please [email us](mailto:hello@doublethree.digital). We will review the issue and deal with it.
+If you discover a security vulnrability with the addon, please [email us](mailto:duncan@doublethree.digital). We will review the issue and deal with it.
 
 ### Compiled assets
 

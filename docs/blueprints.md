@@ -1,0 +1,3 @@
+Simple Commerce provides its own blueprints for each of the publish forms. For example, we have blueprints for products, orders, customers and product categories.
+
+During installation, the blueprints will be copied over from `vendor/damcclean/commerce/resources/blueprints` to your site's `resources/blueprints` directory. Because the blueprints are copied over, you can actually edit them to fit the site you're building. However, because Simple Commerce uses a database to store data, we can't just make columns up on the fly like you can when using flat files. // TODO: add a config to add custom attributes here
