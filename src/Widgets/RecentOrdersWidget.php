@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Statamic\Widgets\Widget;
 
 class RecentOrdersWidget extends Widget
@@ -15,6 +16,7 @@ class RecentOrdersWidget extends Widget
 
         return view('commerce::widgets.recent-orders', [
             'orders' => $orders,
+            'statuses' => OrderStatus::all(),
         ]);
     }
 }

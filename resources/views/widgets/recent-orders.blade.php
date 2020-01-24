@@ -34,6 +34,16 @@
 
                         <td class="flex justify-end">
                             <dropdown-list>
+                                @foreach($statuses as $status)
+                                    <dropdown-item text="Set as {{ $status->name }}" redirect="{{ cp_route('orders.status-update', ['order' => $order->uid, 'status' => $status->uid]) }}"></dropdown-item>
+                                @endforeach
+
+                                <div class="divider"></div>
+
+                                @if(auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
+                                    <dropdown-item text="Refund" redirect="{{ cp_route('commerce-api.refund-order', ['order' => $order->uid]) }}"></dropdown-item>
+                                @endif
+
                                 <dropdown-item text="Edit" redirect="{{ $order->editUrl() }}"></dropdown-item>
                                 <dropdown-item class="warning" text="Delete" redirect="{{ $order->deleteUrl() }}"></dropdown-item>
                             </dropdown-list>
