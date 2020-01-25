@@ -99,6 +99,7 @@ class ProductController extends CpController
             'variants' => $variants->map(function (Variant $variant, $key) {
                 return [
                     '_id' => 'row-'.$key,
+                    'uid' => $variant->uid,
                     'description' => $variant->description,
                     'max_quantity' => $variant->max_quantity,
                     'name' => $variant->name,
@@ -106,13 +107,14 @@ class ProductController extends CpController
                     'sku' => $variant->sku,
                     'stock_number' => $variant->stock_number,
                     'unlimited_stock' => $variant->unlimited_stock,
-                    'variant_attributes' => collect($variant->variant_attributes)->map(function ($attribute, $key) {
-                        return [
-                            '_id' => 'row-'.$key,
-                            'key' => $attribute['key'],
-                            'value' => $attribute['value'],
-                        ];
-                    })->toArray(),
+                    'variant_attributes' => collect($variant->variant_attributes)
+                        ->map(function ($attribute, $key) {
+                            return [
+                                '_id' => 'row-'.$key,
+                                'key' => $attribute['key'],
+                                'value' => $attribute['value'],
+                            ];
+                        })->toArray(),
                 ];
             })->toArray(),
         ]);
@@ -140,11 +142,30 @@ class ProductController extends CpController
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->description = $request->description;
-        $product->product_category_id = $request->category;
-        $product->is_enabled = $request->is_enabled;
+        $product->product_category_id = $request->category[0] ?? null;
+        $product->is_enabled = true;
         $product->save();
 
-        // TODO: this doesn't even update properly
+        collect($request->variants)
+            ->each(function ($variant) use ($product) {
+                if (isset($variant['uid'])) {
+                    $item = Variant::where('uid', $variant['uid'])->firstOrFail();
+                } else {
+                    $item = new Variant();
+                    $item->uid = (new Stache())->generateId();
+                }
+
+                $item->name = $variant['name'];
+                $item->sku = $variant['sku'];
+                $item->price = $variant['price'];
+                $item->stock = $variant['stock_number'];
+                $item->unlimited_stock = $variant['unlimited_stock'];
+                $item->max_quantity = $variant['max_quantity'];
+                $item->description = $variant['description'];
+                $item->variant_attributes = $variant['variant_attributes'];
+                $item->product_id = $product->id;
+                $item->save();
+            });
 
         return $product;
     }
@@ -152,6 +173,11 @@ class ProductController extends CpController
     public function destroy(Product $product)
     {
         $this->authorize('delete', $product);
+
+        collect($product->variants())
+            ->each(function ($variant) {
+                $variant->delete();
+            });
 
         $product->delete();
 
