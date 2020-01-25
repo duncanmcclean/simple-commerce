@@ -44,11 +44,17 @@ class OrderStatusController extends CpController
             abort(401);
         }
 
+        if ($request->primary === true) {
+            $currentPrimary = OrderStatus::where('primary', true)->first();
+            $currentPrimary->primary = false;
+            $currentPrimary->save();
+        }
+
         $status->name = $request->name;
         $status->slug = $request->slug;
         $status->description = $request->description;
         $status->color = $request->color;
-        $status->primary = false;
+        $status->primary = $request->primary;
         $status->save();
 
         return $status;

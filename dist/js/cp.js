@@ -2070,6 +2070,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2097,6 +2098,23 @@ __webpack_require__.r(__webpack_exports__);
         _this.items = response.data;
       })["catch"](function (error) {
         _this.$toast.error(error);
+      });
+    },
+    makePrimary: function makePrimary(status) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(status.updateUrl, {
+        name: status.name,
+        slug: status.slug,
+        description: status.description,
+        color: status.color,
+        primary: true
+      }).then(function (response) {
+        _this2.$toast.success(status.name + ' is now the primary order status');
+
+        _this2.getStatuses();
+      })["catch"](function (error) {
+        _this2.$toast.error(error);
       });
     },
     updateStatus: function updateStatus(status) {
@@ -2640,6 +2658,15 @@ var render = function() {
                     _c(
                       "dropdown-list",
                       [
+                        _c("dropdown-item", {
+                          attrs: { text: "Make Primary" },
+                          on: {
+                            click: function($event) {
+                              return _vm.makePrimary(status)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
                         _c("dropdown-item", {
                           attrs: { text: "Edit" },
                           on: {

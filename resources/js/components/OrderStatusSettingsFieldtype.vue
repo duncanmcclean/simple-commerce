@@ -30,6 +30,7 @@
 
                         <td class="flex justify-end">
                             <dropdown-list>
+                                <dropdown-item text="Make Primary" @click="makePrimary(status)"></dropdown-item>
                                 <dropdown-item text="Edit" @click="updateStatus(status)"></dropdown-item>
                                 <dropdown-item class="warning" text="Delete" :redirect="status.deleteUrl"></dropdown-item>
                             </dropdown-list>
@@ -104,6 +105,21 @@
                     }).catch(error => {
                         this.$toast.error(error);
                     })
+            },
+
+            makePrimary(status) {
+                axios.post(status.updateUrl, {
+                    name: status.name,
+                    slug: status.slug,
+                    description: status.description,
+                    color: status.color,
+                    primary: true
+                }).then(response => {
+                    this.$toast.success(status.name + ' is now the primary order status');
+                    this.getStatuses();
+                }).catch(error => {
+                    this.$toast.error(error);
+                });
             },
 
             updateStatus(status) {
