@@ -1,0 +1,52 @@
+title: 'Order Status'
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: name
+        field:
+          type: text
+          localizable: false
+          width: 50
+          display: Name
+          listable: hidden
+      -
+        handle: slug
+        field:
+          generate: true
+          type: slug
+          localizable: false
+          width: 50
+          display: Slug
+          listable: hidden
+      -
+        handle: description
+        field:
+          type: textarea
+          localizable: false
+          display: Description
+          listable: hidden
+      -
+        handle: color
+        field:
+          options:
+            gray: Gray
+            green: Green
+            blue: Blue
+            red: Red
+            yellow: Yellow
+            orange: Orange
+            pink: Pink
+            purple: Purple
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          cast_booleans: false
+          type: select
+          localizable: false
+          width: 50
+          display: Color
+          listable: hidden

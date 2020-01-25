@@ -48,10 +48,11 @@ sections:
       -
         handle: state
         field:
-          type: text
+          type: state
           localizable: false
           width: 25
           display: State
+          listable: hidden
       -
         handle: zip_code
         field:
@@ -211,6 +212,23 @@ sections:
           localizable: false
           width: 50
           display: 'Show Category'
+  orders:
+    display: Orders
+    fields:
+      -
+        handle: order_statuses
+        field:
+          type: section
+          localizable: false
+          display: 'Order Statuses'
+          listable: hidden
+      -
+        handle: manage_order_statuses
+        field:
+          type: order_status_settings
+          localizable: false
+          display: 'Manage Order Statuses'
+          listable: hidden
   miscellaneous:
     display: Miscellaneous
     fields:

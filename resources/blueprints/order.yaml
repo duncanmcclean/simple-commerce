@@ -101,11 +101,11 @@ sections:
       -
         handle: billing_state
         field:
-          character_limit: 0
-          type: text
+          type: state
           localizable: false
-          display: State
           width: 50
+          display: State
+          listable: hidden
   shipping_address:
     display: 'Shipping Address'
     fields:
@@ -160,11 +160,11 @@ sections:
       -
         handle: shipping_state
         field:
-          character_limit: 0
-          type: text
+          type: state
           localizable: false
-          display: State
           width: 50
+          display: State
+          listable: hidden
   sidebar:
     display: Sidebar
     fields:

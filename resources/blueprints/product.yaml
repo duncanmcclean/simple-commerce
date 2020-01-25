@@ -94,14 +94,14 @@ sections:
                       display: Value
                 mode: table
                 max_rows: 0
-                min_rows: 0
+                min_rows: 4
                 reorderable: true
                 type: grid
                 localizable: false
                 display: Attributes
           mode: stacked
           max_rows: 0
-          min_rows: 1
+          min_rows: 2
           add_row: 'New Variant'
           reorderable: true
           type: grid
