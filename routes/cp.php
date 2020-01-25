@@ -26,7 +26,7 @@ Route::namespace('Http\Controllers\Cp')->group(function () {
         Route::post('/edit/{order}', 'OrderController@update')->name('.update');
         Route::get('/delete/{order}', 'OrderController@destroy')->name('.destroy');
 
-        Route::get('/{order}/{status}', 'OrderStatusController@update')->name('.status-update');
+        Route::get('/{order}/{status}', 'UpdateOrderStatusController')->name('.status-update');
     });
 
     Route::prefix('customers')->as('customers')->group(function () {
@@ -46,6 +46,11 @@ Route::namespace('Http\Controllers\Cp')->group(function () {
     Route::prefix('commerce-api')->as('commerce-api')->group(function () {
         Route::post('/customer-order', 'CustomerOrderController@index')->name('.customer-order');
         Route::get('/refund-order/{order}', 'RefundOrderController@store')->name('.refund-order');
+
+        Route::get('/order-status', 'OrderStatusController@index')->name('.order-status.index');
+        Route::post('/order-status/create', 'OrderStatusController@store')->name('.order-status.store');
+        Route::post('/order-status/{status}', 'OrderStatusController@update')->name('.order-status.update');
+        Route::get('/order-status/{status}', 'OrderStatusController@destroy')->name('.order-status.destroy');
     });
 
 });
