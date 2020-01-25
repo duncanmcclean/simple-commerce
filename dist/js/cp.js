@@ -1999,6 +1999,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Stacks_CreateOrderStatusStack__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Stacks/CreateOrderStatusStack */ "./resources/js/components/Stacks/CreateOrderStatusStack.vue");
+/* harmony import */ var _Stacks_UpdateOrderStatusStack__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Stacks/UpdateOrderStatusStack */ "./resources/js/components/Stacks/UpdateOrderStatusStack.vue");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2064,14 +2071,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "OrderStatusSettingsFieldtype",
+  components: {
+    CreateOrderStatusStack: _Stacks_CreateOrderStatusStack__WEBPACK_IMPORTED_MODULE_1__["default"],
+    UpdateOrderStatusStack: _Stacks_UpdateOrderStatusStack__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   mixins: [Fieldtype],
   props: ['meta', 'value'],
   data: function data() {
     return {
       items: [],
-      createStackOpen: false
+      editStatus: [],
+      createStackOpen: false,
+      editStackOpen: false
     };
   },
   methods: {
@@ -2084,16 +2099,127 @@ __webpack_require__.r(__webpack_exports__);
         _this.$toast.error(error);
       });
     },
+    updateStatus: function updateStatus(status) {
+      this.editStatus = status;
+      this.editStackOpen = true;
+    },
     statusSaved: function statusSaved() {
       this.createStackOpen = false;
-      this.$toast.success('Created order status');
       this.getStatuses();
     },
-    updateStatus: function updateStatus(status) {//
+    statusUpdated: function statusUpdated() {
+      this.editStackOpen = false;
+      this.getStatuses();
     }
   },
   mounted: function mounted() {
     this.getStatuses();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "CreateOrderStatusStack",
+  props: ['action', 'blueprint', 'meta', 'values'],
+  methods: {
+    close: function close() {
+      this.$emit('closed', true);
+    },
+    saved: function saved() {
+      this.$emit('saved', true);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "UpdateOrderStatusStack",
+  props: ['action', 'blueprint', 'meta', 'values'],
+  methods: {
+    close: function close() {
+      this.$emit('closed', true);
+    },
+    saved: function saved() {
+      this.$emit('saved', true);
+    }
   }
 });
 
@@ -2503,7 +2629,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(status.description))]),
                 _vm._v(" "),
-                status.primary === "true"
+                status.primary === true
                   ? _c("td", [_vm._v("Yes")])
                   : _c("td", [_vm._v("No")]),
                 _vm._v(" "),
@@ -2515,7 +2641,12 @@ var render = function() {
                       "dropdown-list",
                       [
                         _c("dropdown-item", {
-                          attrs: { text: "Edit", redirect: "#" }
+                          attrs: { text: "Edit" },
+                          on: {
+                            click: function($event) {
+                              return _vm.updateStatus(status)
+                            }
+                          }
                         }),
                         _vm._v(" "),
                         _c("dropdown-item", {
@@ -2551,30 +2682,37 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm.createStackOpen
-        ? _c(
-            "stack",
-            {
-              attrs: { name: "create-order-status" },
-              on: {
-                closed: function($event) {
-                  _vm.createStackOpen = false
-                }
-              }
+        ? _c("create-order-status-stack", {
+            attrs: {
+              action: _vm.meta.store,
+              blueprint: _vm.meta.blueprint,
+              meta: _vm.meta.meta,
+              values: _vm.meta.values
             },
-            [
-              _c("publish-form", {
-                attrs: {
-                  title: "Create Customer",
-                  action: _vm.meta.store,
-                  blueprint: _vm.meta.blueprint,
-                  meta: _vm.meta.meta,
-                  values: _vm.meta.values
-                },
-                on: { saved: _vm.statusSaved }
-              })
-            ],
-            1
-          )
+            on: {
+              closed: function($event) {
+                _vm.createStackOpen = false
+              },
+              saved: _vm.statusSaved
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.editStackOpen
+        ? _c("update-order-status-stack", {
+            attrs: {
+              action: _vm.editStatus.updateUrl,
+              blueprint: _vm.meta.blueprint,
+              meta: _vm.meta.meta,
+              values: _vm.editStatus
+            },
+            on: {
+              closed: function($event) {
+                _vm.editStackOpen = false
+              },
+              saved: _vm.statusUpdated
+            }
+          })
         : _vm._e()
     ],
     1
@@ -2600,6 +2738,162 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "stack",
+        { attrs: { name: "createOrderStatus" }, on: { closed: _vm.close } },
+        [
+          _c("div", { staticClass: "h-full bg-white overflow-auto" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "bg-grey-20 px-3 py-1 border-b border-grey-30 text-lg font-medium flex items-center justify-between mb-4"
+              },
+              [
+                _vm._v(
+                  "\n                Simple Commerce Settings\n                "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn-close",
+                    attrs: { type: "button" },
+                    on: { click: _vm.close }
+                  },
+                  [_vm._v("×")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "px-4" },
+              [
+                _c("publish-form", {
+                  attrs: {
+                    id: "create-order-status-form",
+                    name: "create-order-status-form",
+                    title: "Create Order Status",
+                    action: _vm.action,
+                    blueprint: _vm.blueprint,
+                    meta: _vm.meta,
+                    values: _vm.values
+                  },
+                  on: { saved: _vm.saved }
+                })
+              ],
+              1
+            )
+          ])
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "stack",
+        { attrs: { name: "createOrderStatus" }, on: { closed: _vm.close } },
+        [
+          _c("div", { staticClass: "h-full bg-white overflow-auto" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "bg-grey-20 px-3 py-1 border-b border-grey-30 text-lg font-medium flex items-center justify-between mb-4"
+              },
+              [
+                _vm._v(
+                  "\n                Simple Commerce Settings\n                "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn-close",
+                    attrs: { type: "button" },
+                    on: { click: _vm.close }
+                  },
+                  [_vm._v("×")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "px-4" },
+              [
+                _c("publish-form", {
+                  attrs: {
+                    id: "update-order-status-form",
+                    name: "update-order-status-form",
+                    title: "Update Order Status",
+                    action: _vm.action,
+                    blueprint: _vm.blueprint,
+                    meta: _vm.meta,
+                    values: _vm.values
+                  },
+                  on: { saved: _vm.saved }
+                })
+              ],
+              1
+            )
+          ])
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -2984,6 +3278,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_template_id_2e943288_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_template_id_2e943288_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Stacks/CreateOrderStatusStack.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Stacks/CreateOrderStatusStack.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CreateOrderStatusStack_vue_vue_type_template_id_3284500d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true& */ "./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true&");
+/* harmony import */ var _CreateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateOrderStatusStack.vue?vue&type=script&lang=js& */ "./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CreateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateOrderStatusStack_vue_vue_type_template_id_3284500d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateOrderStatusStack_vue_vue_type_template_id_3284500d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "3284500d",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Stacks/CreateOrderStatusStack.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateOrderStatusStack.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true& ***!
+  \**************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateOrderStatusStack_vue_vue_type_template_id_3284500d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/CreateOrderStatusStack.vue?vue&type=template&id=3284500d&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateOrderStatusStack_vue_vue_type_template_id_3284500d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateOrderStatusStack_vue_vue_type_template_id_3284500d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Stacks/UpdateOrderStatusStack.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Stacks/UpdateOrderStatusStack.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UpdateOrderStatusStack_vue_vue_type_template_id_4f69ff5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true& */ "./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true&");
+/* harmony import */ var _UpdateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UpdateOrderStatusStack.vue?vue&type=script&lang=js& */ "./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UpdateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UpdateOrderStatusStack_vue_vue_type_template_id_4f69ff5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UpdateOrderStatusStack_vue_vue_type_template_id_4f69ff5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "4f69ff5a",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Stacks/UpdateOrderStatusStack.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateOrderStatusStack.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateOrderStatusStack_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true& ***!
+  \**************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateOrderStatusStack_vue_vue_type_template_id_4f69ff5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/UpdateOrderStatusStack.vue?vue&type=template&id=4f69ff5a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateOrderStatusStack_vue_vue_type_template_id_4f69ff5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateOrderStatusStack_vue_vue_type_template_id_4f69ff5a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

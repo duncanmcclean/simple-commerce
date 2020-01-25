@@ -25,12 +25,12 @@
 
                         <td>{{ status.description }}</td>
 
-                        <td v-if="status.primary === 'true'">Yes</td>
+                        <td v-if="status.primary === true">Yes</td>
                         <td v-else>No</td>
 
                         <td class="flex justify-end">
                             <dropdown-list>
-                                <dropdown-item text="Edit" redirect="#"></dropdown-item>
+                                <dropdown-item text="Edit" @click="updateStatus(status)"></dropdown-item>
                                 <dropdown-item class="warning" text="Delete" :redirect="status.deleteUrl"></dropdown-item>
                             </dropdown-list>
                         </td>
@@ -45,28 +45,40 @@
             </div>
         </section>
 
-        <stack
+        <create-order-status-stack
             v-if="createStackOpen"
-            name="create-order-status"
+            :action="meta.store"
+            :blueprint="meta.blueprint"
+            :meta="meta.meta"
+            :values="meta.values"
             @closed="createStackOpen = false"
-        >
-            <publish-form
-                title="Create Customer"
-                :action="meta.store"
-                :blueprint='meta.blueprint'
-                :meta='meta.meta'
-                :values='meta.values'
-                @saved="statusSaved"
-            ></publish-form>
-        </stack>
+            @saved="statusSaved"
+        ></create-order-status-stack>
+
+        <update-order-status-stack
+            v-if="editStackOpen"
+            :action="editStatus.updateUrl"
+            :blueprint="meta.blueprint"
+            :meta="meta.meta"
+            :values="editStatus"
+            @closed="editStackOpen = false"
+            @saved="statusUpdated"
+        ></update-order-status-stack>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import CreateOrderStatusStack from "./Stacks/CreateOrderStatusStack";
+    import UpdateOrderStatusStack from "./Stacks/UpdateOrderStatusStack";
 
     export default {
         name: "OrderStatusSettingsFieldtype",
+
+        components: {
+            CreateOrderStatusStack,
+            UpdateOrderStatusStack
+        },
 
         mixins: [Fieldtype],
 
@@ -77,8 +89,10 @@
         data() {
             return {
                 items: [],
+                editStatus: [],
 
                 createStackOpen: false,
+                editStackOpen: false
             }
         },
 
@@ -92,14 +106,19 @@
                     })
             },
 
+            updateStatus(status) {
+                this.editStatus = status;
+                this.editStackOpen = true;
+            },
+
             statusSaved() {
                 this.createStackOpen = false;
-                this.$toast.success('Created order status');
                 this.getStatuses();
             },
 
-            updateStatus(status) {
-                //
+            statusUpdated() {
+                this.editStackOpen = false;
+                this.getStatuses();
             },
         },
 
