@@ -8,9 +8,11 @@
     export default {
         mixins: [Fieldtype],
 
+        props: ['meta'],
+
         data() {
             return {
-                symbol: Statamic.$config.get('commerceCurrencySymbol')
+                symbol: this.meta.symbol
             }
         },
 
