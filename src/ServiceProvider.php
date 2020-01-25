@@ -21,6 +21,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -167,6 +168,7 @@ class ServiceProvider extends AddonServiceProvider
         OrderStatusSettingsFieldtype::register();
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
+        StateFieldtype::register();
 
         $this->app->booted(function () {
 //            Statamic::provideToScript([
