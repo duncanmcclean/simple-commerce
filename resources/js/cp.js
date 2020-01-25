@@ -1,7 +1,7 @@
-import CommerceCreateForm from "./components/CommerceCreateForm";
-import CustomerOrdersFieldtype from "./components/CustomerOrdersFieldtype";
-import MoneyFieldtype from "./components/MoneyFieldtype";
-import OrderStatusSettingsFieldtype from "./components/OrderStatusSettingsFieldtype";
+import CommerceCreateForm from "./components/Publish/CommerceCreateForm";
+import CustomerOrdersFieldtype from "./components/Fieldtypes/CustomerOrdersFieldtype";
+import MoneyFieldtype from "./components/Fieldtypes/MoneyFieldtype";
+import OrderStatusSettingsFieldtype from "./components/Fieldtypes/OrderStatusSettingsFieldtype";
 
 Statamic.$components.register('commerce-create-form', CommerceCreateForm);
 Statamic.$components.register('customer-orders-fieldtype', CustomerOrdersFieldtype);

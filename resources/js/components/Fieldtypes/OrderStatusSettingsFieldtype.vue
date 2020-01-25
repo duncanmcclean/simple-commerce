@@ -70,8 +70,8 @@
 
 <script>
     import axios from 'axios'
-    import CreateOrderStatusStack from "./Stacks/CreateOrderStatusStack";
-    import UpdateOrderStatusStack from "./Stacks/UpdateOrderStatusStack";
+    import CreateOrderStatusStack from "../Stacks/CreateOrderStatusStack";
+    import UpdateOrderStatusStack from "../Stacks/UpdateOrderStatusStack";
 
     export default {
         name: "OrderStatusSettingsFieldtype",
