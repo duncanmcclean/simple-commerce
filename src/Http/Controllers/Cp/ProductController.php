@@ -105,7 +105,7 @@ class ProductController extends CpController
                     'name' => $variant->name,
                     'price' => $variant->price,
                     'sku' => $variant->sku,
-                    'stock_number' => $variant->stock_number,
+                    'stock_number' => $variant->stock,
                     'unlimited_stock' => $variant->unlimited_stock,
                     'variant_attributes' => collect($variant->variant_attributes)
                         ->map(function ($attribute, $key) {
@@ -142,7 +142,7 @@ class ProductController extends CpController
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->description = $request->description;
-        $product->product_category_id = $request->category[0] ?? null;
+        $product->product_category_id = $request->category;
         $product->is_enabled = true;
         $product->save();
 
