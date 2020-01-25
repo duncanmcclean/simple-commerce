@@ -18,6 +18,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
@@ -163,6 +164,7 @@ class ServiceProvider extends AddonServiceProvider
         CustomerOrdersFieldtype::register();
         MoneyFieldtype::register();
         OrderStatusFieldtype::register();
+        OrderStatusSettingsFieldtype::register();
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
 

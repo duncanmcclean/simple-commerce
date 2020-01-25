@@ -26,7 +26,7 @@ class SettingsController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.settings.index', [
+        return view('commerce::cp.settings.edit', [
             'crumbs' => $crumbs,
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $values,

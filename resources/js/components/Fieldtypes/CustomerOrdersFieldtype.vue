@@ -47,13 +47,13 @@
         mixins: [Fieldtype],
 
         props: [
-            'meta', 'value',
+            'meta', 'value'
         ],
 
         data() {
             return {
                 orders: [],
-                hasItems: false,
+                hasItems: false
             }
         },
 
