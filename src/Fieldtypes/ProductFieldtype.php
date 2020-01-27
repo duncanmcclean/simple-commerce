@@ -11,21 +11,14 @@ class ProductFieldtype extends Relationship
     protected $categories = ['commerce'];
     protected $icon = 'entries';
 
-    public function formatProducts($products)
+    protected function toItemArray($id)
     {
-        return collect($products)
-            ->map(function ($product) {
-                return [
-                    'id' => $product['id'],
-                    'title' => $product['title'],
-                    'stock' => $product['stock_number'],
-                ];
-            });
+        return Product::find($id);
     }
 
     public function getIndexItems($request)
     {
-        return $this->formatProducts(Product::all());
+        return Product::all();
     }
 
     public function getColumns()
@@ -33,11 +26,6 @@ class ProductFieldtype extends Relationship
         return [
             Column::make('title'),
         ];
-    }
-
-    public function toItemArray($id)
-    {
-        return Product::find($id);
     }
 
     public static function title()

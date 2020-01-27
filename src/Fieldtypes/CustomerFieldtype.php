@@ -14,44 +14,22 @@ class CustomerFieldtype extends Relationship
     protected $taggable = false;
     protected $icon = 'user';
 
+    protected function toItemArray($id)
+    {
+        return Customer::find($id);
+    }
+
     public function getIndexItems($request)
     {
-        return $request->search
-            ? $this->formatCustomers($this->searchCustomers($request->search))
-            : $this->formatCustomers(Customer::all());
+        return Customer::all();
     }
 
-    public function formatCustomers($customers)
-    {
-        return collect($customers)
-            ->map(function ($customer) {
-                return [
-                    'id' => $customer['id'],
-                    'title' => $customer['name'],
-                    'email' => $customer['email'],
-                ];
-            });
-    }
-
-    protected function getColumns()
+    public function getColumns()
     {
         return [
             Column::make('name'),
             Column::make('email'),
         ];
-    }
-
-    public function searchCustomers($query)
-    {
-        return $results = Customer::all()
-            ->filter(function ($item) use ($query) {
-                return false !== stristr((string) $item['name'], $query);
-            });
-    }
-
-    protected function toItemArray($id)
-    {
-        return Customer::find($id);
     }
 
     public static function title()
