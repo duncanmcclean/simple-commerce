@@ -37,7 +37,7 @@ class ProductFieldtype extends Relationship
 
     public function toItemArray($id)
     {
-        // TODO: Implement toItemArray() method.
+        return Product::find($id);
     }
 
     public static function title()

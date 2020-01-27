@@ -51,7 +51,7 @@ class CustomerFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        // TODO: Implement toItemArray() method.
+        return Customer::find($id);
     }
 
     public static function title()

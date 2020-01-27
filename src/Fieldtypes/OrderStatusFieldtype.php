@@ -13,7 +13,7 @@ class OrderStatusFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        // TODO: Implement toItemArray() method.
+        return OrderStatus::find($id);
     }
 
     public function getIndexItems($request)

@@ -20,7 +20,7 @@ class CountryFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        // TODO: Implement toItemArray() method.
+        return Country::find($id);
     }
 
     public function getIndexItems($request)

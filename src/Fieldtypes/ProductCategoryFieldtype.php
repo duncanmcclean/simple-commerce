@@ -13,7 +13,7 @@ class ProductCategoryFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        // TODO: Implement toItemArray() method.
+        return ProductCategory::find($id);
     }
 
     public function getIndexItems($request)

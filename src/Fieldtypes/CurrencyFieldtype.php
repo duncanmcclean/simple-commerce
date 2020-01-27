@@ -13,7 +13,7 @@ class CurrencyFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        // TODO: Implement toItemArray() method.
+        return Currency::find($id);
     }
 
     public function getIndexItems($request)
