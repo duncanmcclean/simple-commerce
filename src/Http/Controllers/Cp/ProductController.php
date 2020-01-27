@@ -96,6 +96,7 @@ class ProductController extends CpController
         $variants = Variant::where('product_id', $product->id)->get();
 
         $values = array_merge($product->toArray(), [
+            'category' => $product->product_category_id,
             'variants' => $variants->map(function (Variant $variant, $key) {
                 return [
                     '_id' => 'row-'.$key,
