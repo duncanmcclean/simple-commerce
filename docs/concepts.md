@@ -48,3 +48,13 @@ Customers are the people who buy things from your store.
 A customer will always be created if a customer does not already exist with the email used during checkout. If that email is the same as an existing customer, an existing customer will be used instead.
 
 Customers will have addresses and orders attached to them.
+
+# Tax
+
+> Please consult an accountant or tax professional who may be able to help you decide which taxes apply to your store.
+
+Work in progress.
+
+# Shipping
+
+Work in progress.
