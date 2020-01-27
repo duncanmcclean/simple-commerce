@@ -33,8 +33,6 @@ class Currency
             case 'right':
                 return $total.$symbol;
         }
-
-        return null;
     }
 
     public function unparse(string $total)

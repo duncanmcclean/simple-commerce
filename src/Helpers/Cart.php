@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
