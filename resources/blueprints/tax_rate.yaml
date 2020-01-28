@@ -1,0 +1,46 @@
+title: 'Tax Rate'
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: name
+        field:
+          type: text
+          localizable: false
+          display: Name
+          listable: hidden
+      -
+        handle: country
+        field:
+          mode: default
+          type: country
+          localizable: false
+          width: 66
+          display: Country
+          listable: hidden
+      -
+        handle: state
+        field:
+          type: state
+          localizable: false
+          width: 50
+          display: State
+          listable: hidden
+      -
+        handle: start_of_zip_code
+        field:
+          type: text
+          localizable: false
+          width: 50
+          display: 'Start of Zip Code'
+          listable: hidden
+      -
+        handle: rate
+        field:
+          type: integer
+          instructions: 'What % should be taxed?'
+          localizable: false
+          width: 50
+          display: Rate
+          listable: hidden
