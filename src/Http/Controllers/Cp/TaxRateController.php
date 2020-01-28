@@ -27,9 +27,9 @@ class TaxRateController extends CpController
 
         $rate = new TaxRate();
         $rate->name = $request->name;
-        $rate->country_id = $request->country[0];
-        $rate->state_id = $request->state[0] ?? 1;
-        $rate->start_of_zip_code = $request->start_of_zip_code ?? '?';
+        $rate->country_id = $request->country;
+        $rate->state_id = $request->state;
+        $rate->start_of_zip_code = $request->start_of_zip_code;
         $rate->rate = $request->rate;
         $rate->save();
 
