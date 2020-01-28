@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class TaxRate extends Model
 {
     protected $fillable = [
-        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'name',
+        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'name', 'uid',
     ];
 
     protected $appends = [
         'updateUrl', 'deleteUrl',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uid';
+    }
 
     public function country()
     {
