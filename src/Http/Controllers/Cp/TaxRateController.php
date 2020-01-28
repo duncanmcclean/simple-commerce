@@ -42,9 +42,16 @@ class TaxRateController extends CpController
             abort(401);
         }
 
-        // TODO: update the tax rate
+        // TODO: setup a validation request
 
-        // TODO: return back the tax rate
+        $rate->name = $request->name;
+        $rate->country_id = $request->country;
+        $rate->state_id = $request->state;
+        $rate->start_of_zip_code = $request->start_of_zip_code;
+        $rate->rate = $request->rate;
+        $rate->save();
+
+        return $rate;
     }
 
     public function destroy(TaxRate $rate)
