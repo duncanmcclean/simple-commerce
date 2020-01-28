@@ -2191,6 +2191,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2912,15 +2913,23 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    _vm._s(rate.country.name) +
-                      ", " +
-                      _vm._s(rate.state.name) +
-                      ", " +
-                      _vm._s(rate.start_of_zip_code)
-                  )
-                ]),
+                rate.state_id
+                  ? _c("td", [
+                      _vm._v(
+                        _vm._s(rate.country.name) +
+                          ", " +
+                          _vm._s(rate.state.name) +
+                          ", " +
+                          _vm._s(rate.start_of_zip_code)
+                      )
+                    ])
+                  : _c("td", [
+                      _vm._v(
+                        _vm._s(rate.country.name) +
+                          ", " +
+                          _vm._s(rate.start_of_zip_code)
+                      )
+                    ]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(rate.rate) + "%")]),
                 _vm._v(" "),

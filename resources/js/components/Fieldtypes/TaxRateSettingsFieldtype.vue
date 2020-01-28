@@ -17,7 +17,8 @@
                             {{ rate.name }}
                         </td>
 
-                        <td>{{ rate.country.name }}, {{ rate.state.name }}, {{ rate.start_of_zip_code }}</td>
+                        <td v-if="rate.state_id">{{ rate.country.name }}, {{ rate.state.name }}, {{ rate.start_of_zip_code }}</td>
+                        <td v-else>{{ rate.country.name }}, {{ rate.start_of_zip_code }}</td>
 
                         <td>{{ rate.rate }}%</td>
 

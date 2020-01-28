@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use Illuminate\Http\Request;
 use Statamic\Http\Controllers\CP\CpController;
+use Statamic\Stache\Stache;
 
 class TaxRateController extends CpController
 {
@@ -26,9 +27,10 @@ class TaxRateController extends CpController
         // TODO: setup a validation request
 
         $rate = new TaxRate();
+        $rate->uid = (new Stache())->generateId();
         $rate->name = $request->name;
-        $rate->country_id = $request->country;
-        $rate->state_id = $request->state;
+        $rate->country_id = $request->country[0];
+        $rate->state_id = isset($request->state[0]) ?? null;
         $rate->start_of_zip_code = $request->start_of_zip_code;
         $rate->rate = $request->rate;
         $rate->save();
@@ -45,8 +47,8 @@ class TaxRateController extends CpController
         // TODO: setup a validation request
 
         $rate->name = $request->name;
-        $rate->country_id = $request->country;
-        $rate->state_id = $request->state;
+        $rate->country_id = $request->country[0];
+        $rate->state_id = isset($request->state[0]) ?? null;
         $rate->start_of_zip_code = $request->start_of_zip_code;
         $rate->rate = $request->rate;
         $rate->save();

@@ -31,11 +31,11 @@ class TaxRate extends Model
 
     public function getUpdateUrlAttribute()
     {
-        return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['id']]); // TODO: swap with uid
+        return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
-        return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['id']]); // TODO: swap with uid
+        return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['uid']]);
     }
 }
