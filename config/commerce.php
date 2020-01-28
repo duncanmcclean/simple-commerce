@@ -70,4 +70,24 @@ return [
 
     'cart_retention' => 30,
 
+    /**
+     * Tax
+     *
+     * Configure basic tax settings here. You can configure
+     * tax rules in the Control Panel.
+     */
+
+    'entered_with_tax' => false,
+    'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
+    'shop_prices_with_tax' => true,
+
+    /**
+     * Shipping
+     *
+     * Configure basic shipping settings here. You can configure
+     * shipping rules in the Control Panel.
+     */
+
+    'only_show_shipping_costs_in_cart' => true,
+
 ];

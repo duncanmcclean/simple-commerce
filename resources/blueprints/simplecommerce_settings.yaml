@@ -229,6 +229,51 @@ sections:
           localizable: false
           display: 'Manage Order Statuses'
           listable: hidden
+  tax:
+    display: Tax
+    fields:
+      -
+        handle: entered_with_tax
+        field:
+          type: toggle
+          localizable: false
+          display: 'Tax included in prices?'
+          listable: hidden
+      -
+        handle: calculate_tax_from
+        field:
+          options:
+            billingAddress: 'Order Billing Address'
+            shippingAddress: 'Order Shipping Address'
+            businessAddress: 'Business Address'
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          cast_booleans: false
+          type: select
+          instructions: 'Where should we calculate your tax from?'
+          localizable: false
+          display: 'Calculate Tax From'
+          listable: hidden
+      -
+        handle: shop_prices_with_tax
+        field:
+          type: toggle
+          localizable: false
+          display: 'Should we display shop prices with tax?'
+          listable: hidden
+  shipping:
+    display: Shipping
+    fields:
+      -
+        handle: only_show_shipping_costs_in_cart
+        field:
+          type: toggle
+          localizable: false
+          display: 'Only show shipping costs in Cart?'
+          listable: hidden
   miscellaneous:
     display: Miscellaneous
     fields:
