@@ -71,7 +71,7 @@ class OrderStatusController extends CpController
 
         $status->delete();
 
-        return redirect(route('settings.edit'))
+        return redirect(cp_route('settings.edit'))
             ->with('success', 'Deleted order status');
     }
 }
