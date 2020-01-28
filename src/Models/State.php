@@ -29,4 +29,9 @@ class State extends Model
     {
         return $this->hasMany(TaxRate::class);
     }
+
+    public function shippingZones()
+    {
+        return $this->hasMany(ShippingZone::class);
+    }
 }
