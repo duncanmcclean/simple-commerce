@@ -13,7 +13,7 @@ sections:
       -
         handle: country
         field:
-          mode: select
+          mode: default
           type: country
           localizable: false
           width: 50
@@ -29,7 +29,7 @@ sections:
           display: State
           listable: hidden
           max_items: 1
-          mode: select
+          mode: default
       -
         handle: start_of_zip_code
         field:
