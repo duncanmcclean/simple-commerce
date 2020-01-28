@@ -11,6 +11,8 @@ sections:
           width: 50
           display: Country
           listable: hidden
+          max_items: 1
+          mode: select
       -
         handle: state
         field:
@@ -19,6 +21,8 @@ sections:
           width: 50
           display: State
           listable: hidden
+          max_items: 1
+          mode: select
       -
         handle: start_of_zip_code
         field:
@@ -35,3 +39,4 @@ sections:
           localizable: false
           display: Rate
           listable: hidden
+          width: 50

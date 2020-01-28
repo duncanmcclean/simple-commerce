@@ -22,6 +22,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -169,13 +170,9 @@ class ServiceProvider extends AddonServiceProvider
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
         StateFieldtype::register();
+        TaxRateSettingsFieldtype::register();
 
         $this->app->booted(function () {
-//            Statamic::provideToScript([
-//                'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
-//                'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
-//            ]);
-
             Permission::group('simple-commerce', 'Simple Commerce', function () {
                 Permission::register('edit settings')
                     ->label('Edit Commerce Settings');

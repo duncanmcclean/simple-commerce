@@ -264,6 +264,20 @@ sections:
           localizable: false
           display: 'Should we display shop prices with tax?'
           listable: hidden
+      -
+        handle: tax_rates_section
+        field:
+          type: section
+          localizable: false
+          display: 'Tax Rates'
+          listable: hidden
+      -
+        handle: manage_tax_rates
+        field:
+          type: tax_rate_settings
+          localizable: false
+          display: 'Manage Tax Rates'
+          listable: hidden
   shipping:
     display: Shipping
     fields:

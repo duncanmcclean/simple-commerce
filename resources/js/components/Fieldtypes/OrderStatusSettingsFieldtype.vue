@@ -41,44 +41,46 @@
 
             <div class="flex items-center flex-row p-2">
                 <button class="btn btn-primary" @click="createStackOpen = true">
-                    Create Product
+                    Create Order Status
                 </button>
             </div>
         </section>
 
-        <create-order-status-stack
+        <create-stack
             v-if="createStackOpen"
+            title="Create Order Status"
             :action="meta.store"
             :blueprint="meta.blueprint"
             :meta="meta.meta"
             :values="meta.values"
             @closed="createStackOpen = false"
             @saved="statusSaved"
-        ></create-order-status-stack>
+        ></create-stack>
 
-        <update-order-status-stack
+        <update-stack
             v-if="editStackOpen"
+            title="Update Order Status"
             :action="editStatus.updateUrl"
             :blueprint="meta.blueprint"
             :meta="meta.meta"
             :values="editStatus"
             @closed="editStackOpen = false"
             @saved="statusUpdated"
-        ></update-order-status-stack>
+        ></update-stack>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
-    import CreateOrderStatusStack from "../Stacks/CreateOrderStatusStack";
-    import UpdateOrderStatusStack from "../Stacks/UpdateOrderStatusStack";
+    import CreateStack from "../Stacks/CreateStack";
+    import UpdateStack from "../Stacks/UpdateStack";
 
     export default {
         name: "OrderStatusSettingsFieldtype",
 
         components: {
-            CreateOrderStatusStack,
-            UpdateOrderStatusStack
+            CreateStack,
+            UpdateStack
         },
 
         mixins: [Fieldtype],

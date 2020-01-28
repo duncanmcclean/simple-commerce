@@ -13,12 +13,13 @@ sections:
       -
         handle: country
         field:
-          mode: default
+          mode: select
           type: country
           localizable: false
-          width: 66
+          width: 50
           display: Country
           listable: hidden
+          max_items: 1
       -
         handle: state
         field:
@@ -27,6 +28,8 @@ sections:
           width: 50
           display: State
           listable: hidden
+          max_items: 1
+          mode: select
       -
         handle: start_of_zip_code
         field:
