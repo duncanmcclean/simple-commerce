@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\CartCalculator;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
@@ -10,8 +11,17 @@ class Cart extends Model
         'uid',
     ];
 
+    protected $appends = [
+        'total',
+    ];
+
     public function items()
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function getTotalAttribute()
+    {
+        return (new CartCalculator($this))->calculate();
     }
 }
