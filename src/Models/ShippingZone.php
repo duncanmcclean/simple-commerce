@@ -29,6 +29,11 @@ class ShippingZone extends Model
         return $this->belongsTo(State::class);
     }
 
+    public function carts()
+    {
+        return $this->hasMany(CartShipping::class);
+    }
+
     public function getUpdateUrlAttribute()
     {
         return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uid']]);

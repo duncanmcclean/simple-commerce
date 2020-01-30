@@ -5,7 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Stache\Stache;
 
@@ -57,6 +59,9 @@ class Cart
         $item->cart_id = $cart->id;
         $item->save();
 
+        if (! $this->alreadyShipping($uid)) {
+            $this->addShipping($uid);
+        }
         event(new AddedToCart($cart, $item));
 
         return collect($cart->items);
@@ -79,11 +84,55 @@ class Cart
                 $item->delete();
             });
 
+        CartShipping::where('cart_id', $cart->id)
+            ->each(function ($item) {
+                $item->delete();
+            });
+
         $cart->delete();
     }
 
     public function total(string $uid)
     {
         return CartModel::where('uid', $uid)->first()->total;
+    }
+
+    public function getShipping(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        return CartShipping::with('shippingZone', 'shippingZone.country', 'shippingZone.state')
+            ->where('cart_id', $cart->id)
+            ->get();
+    }
+
+    public function alreadyShipping(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        $shipping = CartShipping::where('cart_id', $cart->id)->get()->count();
+
+        if ($shipping === 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function addShipping(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        // TODO: work out a better shipping zone thing to add rather than just the first one
+
+        $zone = ShippingZone::first();
+
+        $shipping = new CartShipping();
+        $shipping->uid = (new Stache())->generateId();
+        $shipping->shipping_zone_id = $zone->id;
+        $shipping->cart_id = $cart->id;
+        $shipping->save();
+
+        return $shipping;
     }
 }

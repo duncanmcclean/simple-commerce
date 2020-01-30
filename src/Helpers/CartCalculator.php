@@ -4,11 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
 
 class CartCalculator
 {
     public $cart;
     public $items;
+    public $shipping;
     public $total = 0;
 
     public function __construct(CartModel $cart)
@@ -18,6 +20,10 @@ class CartCalculator
         $this->items = CartItem::with('product', 'variant')
             ->where('cart_id', $cart->id)
             ->get();
+
+        $this->shipping = CartShipping::with('shippingZone')
+            ->where('cart_id', $cart->id)
+            ->get();
     }
 
     public function calculate()
@@ -25,6 +31,11 @@ class CartCalculator
         collect($this->items)
             ->each(function ($item) {
                 $this->add($item['variant']->price);
+            });
+
+        collect($this->shipping)
+            ->each(function ($item) {
+                $this->add($item['shippingZone']->rate);
             });
 
         return $this->total;

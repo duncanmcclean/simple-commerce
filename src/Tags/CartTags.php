@@ -30,6 +30,11 @@ class CartTags extends Tags
         return $this->index();
     }
 
+    public function shipping()
+    {
+        return $this->cart->getShipping($this->cartId);
+    }
+
     public function count()
     {
         return $this->cart->count($this->cartId);
