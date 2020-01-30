@@ -9,15 +9,34 @@ class CartCalculator
 {
     public $cart;
     public $items;
+    public $total = 0;
 
     public function __construct(CartModel $cart)
     {
         $this->cart = $cart;
-        $this->items = CartItem::where('cart_id', $cart->id);
+
+        $this->items = CartItem::with('product', 'variant')
+            ->where('cart_id', $cart->id)
+            ->get();
     }
 
     public function calculate()
     {
-        return 0;
+        collect($this->items)
+            ->each(function ($item) {
+                $this->add($item['variant']->price);
+            });
+
+        return $this->total;
+    }
+
+    protected function subtract(int $number)
+    {
+        $this->total -= $number;
+    }
+
+    protected function add(int $number)
+    {
+        $this->total += $number;
     }
 }
