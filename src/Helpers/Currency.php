@@ -21,18 +21,25 @@ class Currency
         return $this->primary()->iso;
     }
 
-    public function parse(int $total)
+    public function parse(int $total, bool $showSeparator = true, bool $showSymbol = true)
     {
-        $symbol = $this->primary()->symbol;
-        $total = number_format($total, 2, '.', config('commerce.currency_separator'));
-
-        switch (config('commerce.currency_position')) {
-            case 'left':
-                return $symbol.$total;
-
-            case 'right':
-                return $total.$symbol;
+        if ($showSeparator == true) {
+            $total = number_format($total, 2, '.', config('commerce.currency_separator'));
         }
+
+        if ($showSymbol == true) {
+            $symbol = $this->primary()->symbol;
+
+            if (config('commerce.currency_position') === 'left') {
+                $total = $symbol.$total;
+            }
+
+            if (config('commerce.currency_position') === 'right') {
+                $total = $total.$symbol;
+            }
+        }
+
+        return $total;
     }
 
     public function unparse(string $total)
