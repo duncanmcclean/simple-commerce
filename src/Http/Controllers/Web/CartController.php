@@ -2,12 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartDeleteRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartStoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 

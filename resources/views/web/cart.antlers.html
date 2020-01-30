@@ -20,7 +20,7 @@
                         ({{ variant:sku }})
 
                         <form class="mt-2" action="/cart/delete" method="post">
-                            {{ csrf_field}}
+                            {{ csrf_field }}
                             <input type="hidden" name="item_id" value="{{ uid }}">
 
                             <button class="text-red-700 font-medium text-sm" type="submit">Remove</button>
@@ -73,7 +73,7 @@
                     <p>Total Shipping: $0.00</p>
                     <p>Total Tax: $0.00</p>
                     <p>Total Tax (inc): $0.00</p>
-                    <p class="mt-6"><strong>Total Price: {{ cart:total | price }}</strong></p>
+                    <p class="mt-6"><strong>Total Price: {{ cart:total }}</strong></p>
                 </td>
             </tr>
 
