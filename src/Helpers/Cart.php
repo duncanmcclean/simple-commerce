@@ -15,7 +15,6 @@ class Cart
     {
         $cart = new CartModel();
         $cart->uid = (new Stache())->generateId();
-        $cart->total = 00.00;
         $cart->save();
 
         return $cart->uid;
