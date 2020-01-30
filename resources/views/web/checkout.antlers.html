@@ -159,6 +159,13 @@
                 </div>
             {{ /cart:items }}
 
+            {{ cart:shipping }}
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>Shipping: {{ shipping_zone:country:name }}, {{ shipping_zone:state:name }}, {{ shipping_zone:start_of_zip_code }}</p>
+                    <p>{{ shipping_zone:rate | price }}</p> <!-- TODO: need item prices for things in the cart -->
+                </div>
+            {{ /cart:shipping }}
+
             <div class="flex flex-row items-center justify-between mt-4 mb-2">
                 <p><strong>Total:</strong></p>
                 <p>{{ cart:total | price }}</p>
