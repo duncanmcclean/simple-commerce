@@ -93,6 +93,6 @@ class Cart
 
     public function total(string $uid)
     {
-        return (new Currency())->parse(CartModel::where('uid', $uid)->first()->total);
+        return CartModel::where('uid', $uid)->first()->total;
     }
 }
