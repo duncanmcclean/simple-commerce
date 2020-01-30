@@ -31,6 +31,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Modifiers\PriceModifier;
 use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
@@ -94,6 +95,12 @@ class ServiceProvider extends AddonServiceProvider
         CartDeletionCommand::class,
         SeederCommand::class,
     ];
+
+    protected $modifiers = [
+        PriceModifier::class,
+    ];
+
+    // TODO: order these in the same way as the addonserviceprovider
 
     public function boot()
     {
