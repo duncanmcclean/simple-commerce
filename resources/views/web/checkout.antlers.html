@@ -145,7 +145,7 @@
             </fieldset>
 
             <div class="flex flex-row justify-center mb-6">
-                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit" :disabled="isSubmitting">Pay {{ commerce:currency_symbol }}{{ cart:total }}</button>
+                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit" :disabled="isSubmitting">Pay {{ cart:total }}</button>
             </div>
         </form>
 
@@ -153,15 +153,15 @@
             <h2 class="text-2xl font-medium mb-4">Items</h2>
 
             {{ cart:items }}
-            <div class="flex flex-row items-center justify-between mb-2">
-                <p>{{ quantity}}x {{ title }}</p>
-                <p>$15.00</p>
-            </div>
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>{{ quantity }}x {{ variant:name }}</p>
+                    <p>$15.00</p> <!-- TODO: need item prices for things in the cart -->
+                </div>
             {{ /cart:items }}
 
             <div class="flex flex-row items-center justify-between mt-4 mb-2">
                 <p><strong>Total:</strong></p>
-                <p>$15.00</p>
+                <p>{{ cart:total | price }}</p>
             </div>
         </div>
     </div>

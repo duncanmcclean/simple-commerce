@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use Statamic\Tags\Tags;
 
 class CartTags extends Tags
@@ -36,7 +37,7 @@ class CartTags extends Tags
 
     public function total()
     {
-        return $this->cart->total($this->cartId);
+        return (new Currency())->parse($this->cart->total($this->cartId), true, true);
     }
 
     protected function createCart()
