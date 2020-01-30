@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductUpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -104,7 +105,7 @@ class ProductController extends CpController
                     'description' => $variant->description,
                     'max_quantity' => $variant->max_quantity,
                     'name' => $variant->name,
-                    'price' => $variant->price,
+                    'price' => (new Currency())->parse($variant->price, true, false),
                     'sku' => $variant->sku,
                     'stock_number' => $variant->stock,
                     'unlimited_stock' => $variant->unlimited_stock,
