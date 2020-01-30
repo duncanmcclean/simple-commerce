@@ -288,6 +288,20 @@ sections:
           localizable: false
           display: 'Only show shipping costs in Cart?'
           listable: hidden
+      -
+        handle: shipping_zones
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: 'Shipping Zones'
+      -
+        handle: manage_shipping_zones
+        field:
+          type: shipping_zone_settings
+          localizable: false
+          listable: hidden
+          display: 'Manage Shipping Zones'
   miscellaneous:
     display: Miscellaneous
     fields:

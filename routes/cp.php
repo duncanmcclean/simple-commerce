@@ -56,6 +56,11 @@ Route::namespace('Http\Controllers\Cp')->group(function () {
         Route::post('/tax-rates/create', 'TaxRateController@store')->name('.tax-rates.store');
         Route::post('/tax-rates/{rate}', 'TaxRateController@index')->name('.tax-rates.update');
         Route::get('/tax-rates/{rate}', 'TaxRateController@destroy')->name('.tax-rates.destroy');
+
+        Route::get('/shipping-zones', 'ShippingZoneController@index')->name('.shipping-zones.index');
+        Route::post('/shipping-zones/create', 'ShippingZoneController@store')->name('.shipping-zones.store');
+        Route::post('/shipping-zones/{zone}', 'ShippingZoneController@index')->name('.shipping-zones.update');
+        Route::get('/shipping-zones/{zone}', 'ShippingZoneController@destroy')->name('.shipping-zones.destroy');
     });
 
 });

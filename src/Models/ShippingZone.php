@@ -10,6 +10,10 @@ class ShippingZone extends Model
         'country_id', 'state_id', 'start_of_zip_code', 'rate', 'uid',
     ];
 
+    protected $appends = [
+        'updateUrl', 'deleteUrl',
+    ];
+
     public function getRouteKeyName()
     {
         return 'uid';
@@ -23,5 +27,15 @@ class ShippingZone extends Model
     public function state()
     {
         return $this->belongsTo(State::class);
+    }
+
+    public function getUpdateUrlAttribute()
+    {
+        return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uid']]);
+    }
+
+    public function getDeleteUrlAttribute()
+    {
+        return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uid']]);
     }
 }

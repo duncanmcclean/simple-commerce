@@ -21,6 +21,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingZoneSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
@@ -169,6 +170,7 @@ class ServiceProvider extends AddonServiceProvider
         OrderStatusSettingsFieldtype::register();
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
+        ShippingZoneSettingsFieldtype::register();
         StateFieldtype::register();
         TaxRateSettingsFieldtype::register();
 
