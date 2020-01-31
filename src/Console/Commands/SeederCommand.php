@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Illuminate\Console\Command;
+use Statamic\Stache\Stache;
 
 class SeederCommand extends Command
 {
@@ -15,8 +16,16 @@ class SeederCommand extends Command
 
     public function handle()
     {
-        $this->info('Seeding countries... 🌐');
+        $this->info('Seeding your database now...');
 
+        $this->seedCountries()
+            ->seedCurrencies()
+            ->seedOrderStatuses()
+            ->seedStates();
+    }
+
+    public function seedCountries()
+    {
         $countries = [
             ['iso' => 'US', 'name' => 'United States'],
             ['iso' => 'CA', 'name' => 'Canada'],
@@ -270,8 +279,11 @@ class SeederCommand extends Command
             $item->save();
         }
 
-        $this->info('Seeding currencies... 💸');
+        return $this;
+    }
 
+    public function seedCurrencies()
+    {
         $currencies = [
             ['iso' =>'AFN', 'name' => 'Afghani', 'symbol' => '؋'],
             ['iso' =>'ALL', 'name' => 'Lek', 'symbol' => 'Lek'],
@@ -393,8 +405,11 @@ class SeederCommand extends Command
             }
         }
 
-        $this->info('Seeding order statuses');
+        return $this;
+    }
 
+    public function seedOrderStatuses()
+    {
         $statuses = [
             [
                 'name' => 'New',
@@ -423,8 +438,11 @@ class SeederCommand extends Command
             $item->save();
         }
 
-        $this->info('Seeding states...');
+        return $this;
+    }
 
+    public function seedStates()
+    {
         $states = [
             ['name' => 'Alabama', 'abbreviation' => 'AL'],
             ['name' => 'Alaska', 'abbreviation' => 'AK'],
@@ -484,8 +502,10 @@ class SeederCommand extends Command
             $item->uid = (new Stache())->generateId();
             $item->name = $state['name'];
             $item->abbreviation = $state['abbreviation'];
-            $item->country_id = (Country::where('iso', 'US')->first())->id;
+            $item->country_id = Country::where('iso', 'US')->first()->id;
             $item->save();
         }
+
+        return $this;
     }
 }
