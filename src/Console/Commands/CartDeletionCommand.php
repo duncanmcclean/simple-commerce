@@ -21,9 +21,14 @@ class CartDeletionCommand extends Command
 
     public function handle()
     {
-        $this->info('Working on deleting old carts.');
+        $this->info('Deleting old carts...');
 
-        Cart::where('updated_at', now()->subDays(config('commerce.cart-retention'))->get())
+        $this->deletion();
+    }
+
+    public function deletion()
+    {
+        Cart::whereDate('created_at', '<=', now()->subDays(config('commerce.cart-retention'))->toDateString())
             ->each(function (Cart $cart) {
                 $items = CartItem::where('cart_id', $cart->id)
                     ->get()
@@ -45,7 +50,5 @@ class CartDeletionCommand extends Command
 
                 $cart->delete();
             });
-
-        $this->comment('Complete');
     }
 }
