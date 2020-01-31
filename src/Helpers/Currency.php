@@ -41,9 +41,4 @@ class Currency
 
         return $total;
     }
-
-    public function unparse(string $total)
-    {
-        return (int) str_replace($this->primary()->symbol, '', $total);
-    }
 }

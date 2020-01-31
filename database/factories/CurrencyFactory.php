@@ -9,7 +9,7 @@ $factory->define(Currency::class, function (Faker $faker) {
         'iso' => 'USD',
         'primary' => true,
         'uid' => (new Stache())->generateId(),
-        'symbol' => '£',
+        'symbol' => '$',
         'name' => 'Unites States Dollar',
     ];
 });
