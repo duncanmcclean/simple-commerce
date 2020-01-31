@@ -16,12 +16,10 @@ use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\StripeGateway;
 use Illuminate\Http\Request;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
-use Stripe\PaymentIntent;
-use Stripe\PaymentMethod;
-use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -29,8 +27,6 @@ class CheckoutController extends Controller
 
     public function __construct()
     {
-        Stripe::setApiKey(config('commerce.stripe.secret'));
-
         $this->cart = new Cart();
     }
 
@@ -47,10 +43,8 @@ class CheckoutController extends Controller
                 ]);
         }
 
-        $intent = PaymentIntent::create([
-            'amount' => ($this->cart->total($this->cartId) * 100),
-            'currency' => (new Currency())->primary()->iso,
-        ]);
+        $intent = (new StripeGateway())
+            ->setupIntent($this->cart->total($this->cartId) * 100, (new Currency())->iso())
 
         return (new View)
             ->template('commerce::web.checkout')
@@ -65,7 +59,7 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        $paymentMethod = PaymentMethod::retrieve($request->payment_method);
+        $paymentMethod = (new StripeGateway())->completeIntent($request->payment_method);
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));
