@@ -20,8 +20,8 @@ class ProductController extends Controller
 
     public function show(string $slug)
     {
-        $product = Product::where('slug', $slug)
-            ->with('variants')
+        $product = Product::with('variants')
+            ->where('slug', $slug)
             ->first();
 
         if (! $product || ! $product->is_enabled) {
@@ -31,8 +31,6 @@ class ProductController extends Controller
         return (new View)
             ->template('commerce::web.product')
             ->layout('commerce::web.layout')
-            ->with(array_merge($product->toArray(), [
-                'from_price' => collect($product->variants)->sortByDesc('price')->first()->price,
-            ]));
+            ->with($product->toArray());
     }
 }
