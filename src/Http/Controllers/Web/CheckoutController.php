@@ -34,9 +34,9 @@ class CheckoutController extends Controller
         $this->cart = new Cart();
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        $this->createCart();
+        $this->createCart($request);
 
         if ($this->cart->total($this->cartId) == '0') {
             return (new View())
@@ -63,7 +63,7 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        $this->createCart();
+        $this->createCart($request);
 
         $paymentMethod = PaymentMethod::retrieve($request->payment_method);
 
@@ -146,16 +146,19 @@ class CheckoutController extends Controller
 
         $this->cart->clear($this->cartId);
 
+        $request->session()->remove('commerce_cart_id');
+        $this->createCart($request);
+
         return redirect(config('commerce.checkout_redirect'));
     }
 
-    protected function createCart()
+    protected function createCart(Request $request)
     {
-        if (! request()->session()->get('commerce_cart_id')) {
-            request()->session()->put('commerce_cart_id', $this->cart->create());
-            request()->session()->save();
+        if (! $request->session()->get('commerce_cart_id')) {
+            $request->session()->put('commerce_cart_id', $this->cart->create());
+            $request->session()->save();
         }
 
-        $this->cartId = request()->session()->get('commerce_cart_id');
+        $this->cartId = $request->session()->get('commerce_cart_id');
     }
 }
