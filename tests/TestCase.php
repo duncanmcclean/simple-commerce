@@ -47,6 +47,14 @@ abstract class TestCase extends OrchestraTestCase
                 'namespace' => 'DoubleThreeDigital\\SimpleCommerce\\',
             ],
         ];
+
+        Statamic::pushWebRoutes(function() {
+            return require_once realpath(__DIR__.'/../routes/web.php');
+        });
+
+        Statamic::pushCpRoutes(function() {
+            return require_once realpath(__DIR__.'/../routes/cp.php');
+        });
     }
 
     protected function resolveApplicationConfiguration($app)

@@ -1,6 +1,6 @@
 <?php
 
-Route::namespace('Http\Controllers\Cp')->group(function () {
+Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->group(function () {
     Route::prefix('products')->as('products')->group(function () {
         Route::get('/', 'ProductController@index')->name('.index');
         Route::get('/create', 'ProductController@create')->name('.create');

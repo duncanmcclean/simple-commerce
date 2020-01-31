@@ -1,6 +1,6 @@
 <?php
 
-Route::namespace('Http\Controllers\Web')->group(function () {
+Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web')->group(function () {
     Route::get(config('commerce.cart_index'), 'CartController@index')->name('cart.index');
     Route::post(config('commerce.cart_store'), 'CartController@store')->name('cart.add');
     Route::post(config('commerce.cart_clear'), 'ClearCartController')->name('cart.clear');
