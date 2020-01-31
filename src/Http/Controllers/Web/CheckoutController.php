@@ -45,7 +45,7 @@ class CheckoutController extends Controller
         }
 
         $intent = (new StripeGateway())
-            ->setupIntent($this->cart->total($this->cartId) * 100, (new Currency())->iso())
+            ->setupIntent($this->cart->total($this->cartId) * 100, (new Currency())->iso());
 
         return (new View)
             ->template('commerce::web.checkout')
