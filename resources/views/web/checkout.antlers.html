@@ -162,9 +162,16 @@
             {{ cart:shipping }}
                 <div class="flex flex-row items-center justify-between mb-2">
                     <p>Shipping: {{ shipping_zone:country:name }}, {{ shipping_zone:state:name }}, {{ shipping_zone:start_of_zip_code }}</p>
-                    <p>{{ shipping_zone:rate | price }}</p> <!-- TODO: need item prices for things in the cart -->
+                    <p>{{ shipping_zone:rate | price }}</p>
                 </div>
             {{ /cart:shipping }}
+
+            {{ cart:tax }}
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>Tax: {{ tax_rate:country:name }}, {{ tax_rate:state:name }}, {{ tax_rate:start_of_zip_code }}</p>
+                    <p>{{ tax_rate:rate }}%</p>
+                </div>
+            {{ /cart:tax }}
 
             <div class="flex flex-row items-center justify-between mt-4 mb-2">
                 <p><strong>Total:</strong></p>
