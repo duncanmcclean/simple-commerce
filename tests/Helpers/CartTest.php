@@ -1,15 +1,17 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
+use DoubleThreeDigital\SimpleCommerce\Models\CartTax;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +20,8 @@ use Illuminate\Support\Facades\Schema;
 class CartTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
+
+    public $cart;
 
     public function setUp(): void
     {
@@ -93,6 +97,13 @@ class CartTest extends TestCase
         ]);
 
         $this->assertIsObject($add);
+
+        $this->assertDatabaseHas('cart_items', [
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'variant_id' => $variant->id,
+            'quantity' => 1,
+        ]);
     }
 
     /** @test */
@@ -106,6 +117,11 @@ class CartTest extends TestCase
         $remove = $this->cart->remove($cart->uid, $item->uid);
 
         $this->assertIsObject($remove);
+
+        $this->assertDatabaseMissing('cart_items', [
+            'id' => $item->id,
+            'cart_id' => $cart->id,
+        ]);
     }
 
     /** @test */
@@ -115,9 +131,27 @@ class CartTest extends TestCase
         $item = factory(CartItem::class, 5)->create([
             'cart_id' => $cart->id,
         ]);
+        $shipping = factory(CartShipping::class)->create([
+            'cart_id' => $cart->id,
+        ]);
+        $shipping = factory(CartTax::class)->create([
+            'cart_id' => $cart->id,
+        ]);
 
         $clear = $this->cart->clear($cart->uid);
 
         $this->assertNull($clear);
+
+        $this->assertDatabaseMissing('cart_items', [
+            'cart_id' => $cart->id,
+        ]);
+
+        $this->assertDatabaseMissing('cart_shipping', [
+            'cart_id' => $cart->id,
+        ]);
+
+        $this->assertDatabaseMissing('cart_taxes', [
+            'cart_id' => $cart->id,
+        ]);
     }
 }

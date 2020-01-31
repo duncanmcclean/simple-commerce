@@ -96,6 +96,11 @@ class Cart
                 $item->delete();
             });
 
+        CartTax::where('cart_id', $cart->id)
+            ->each(function ($item) {
+                $item->delete();
+            });
+
         $cart->delete();
     }
 
