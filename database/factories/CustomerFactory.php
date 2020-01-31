@@ -9,12 +9,6 @@ $factory->define(Customer::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
-        'default_billing_address_id' => function () {
-            return factory(Address::class)->create()->id;
-        },
-        'default_shipping_address_id' => function () {
-            return factory(Address::class)->create()->id;
-        },
         'uid' => (new Stache())->generateId(),
     ];
 });
