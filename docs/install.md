@@ -27,12 +27,12 @@ While Simple Commerce is in beta, you'll need to follow some extra steps to get 
 
 4. Run `composer install && composer update`
 5. Run `php artisan vendor:publish` and select the option `DoubleThreeDigital\SimpleCommerce\ServiceProvider`.
-6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan db:seed`
+6. You'll also need to run our database migrations and seeders to get your database setup. `php artisan migrate && php artisan commerce:seed`
 7. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.
 
 ## When we're on the Marketplace
 
 1. Run `composer require doublethreedigital/simple-commerce`
 2. Run `php artisan vendor:publish` and select the option `DoubleThreeDigital\SimpleCommerce\ServiceProvider`.
-3. Run our database migrations and seeders to get your database setup `php artisan migrate && php artisan db:seed`
+3. Run our database migrations and seeders to get your database setup `php artisan migrate && php artisan commerce:seed`
 4. Last but not least, you'll want to [setup Stripe](./stripe.md#setting-stripe-up) or you won't be able to accept payments.
