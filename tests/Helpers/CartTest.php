@@ -154,4 +154,64 @@ class CartTest extends TestCase
             'cart_id' => $cart->id,
         ]);
     }
+
+    /** @test */
+    public function a_cart_has_an_overall_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function a_cart_has_an_items_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function a_cart_has_a_shipping_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function a_cart_has_a_tax_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_get_cart_shipping()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_check_if_cart_already_has_shipping()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_add_shipping_to_cart()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_get_cart_tax()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_check_if_cart_already_has_tax()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_add_tax_to_cart()
+    {
+        //
+    }
 }
