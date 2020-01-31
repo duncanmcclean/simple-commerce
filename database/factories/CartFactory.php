@@ -7,6 +7,5 @@ use Statamic\Stache\Stache;
 $factory->define(Cart::class, function (Faker $faker) {
     return [
         'uid' => (new Stache())->generateId(),
-        'total' => 00.00,
     ];
 });
