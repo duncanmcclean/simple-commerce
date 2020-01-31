@@ -10,7 +10,9 @@ class SendOrderSuccessfulNotification
 {
     public function handle(CheckoutComplete $event)
     {
-        Notification::route('mail', $event->customer->name)
-            ->notify(new OrderSuccessful($event->order, $event->customer));
+        // TODO: fix this
+
+//        Notification::route('mail', $event->customer->name)
+//            ->notify(new OrderSuccessful($event->order, $event->customer));
     }
 }
