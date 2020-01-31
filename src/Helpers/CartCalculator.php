@@ -34,22 +34,44 @@ class CartCalculator
 
     public function calculate()
     {
+        $this
+            ->itemsTotal()
+            ->shippingTotal()
+            ->taxTotal();
+
+        return $this->total;
+    }
+
+    public function itemsTotal()
+    {
         collect($this->items)
             ->each(function ($item) {
                 $this->add($item['variant']->price * $item['quantity']);
             });
 
+        return $this;
+    }
+
+    public function shippingTotal()
+    {
         collect($this->shipping)
             ->each(function ($item) {
                 $this->add($item['shippingZone']->rate);
             });
+
+        return $this;
+    }
+
+    public function taxTotal()
+    {
+        // TODO: this does not work when called without the rest of the things
 
         collect($this->tax)
             ->each(function ($item) {
                 $this->add(($item['taxRate']->rate / 100) * $this->total);
             });
 
-        return $this->total;
+        return $this;
     }
 
     protected function subtract(int $number)

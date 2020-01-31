@@ -47,7 +47,21 @@ class CartTags extends Tags
 
     public function total()
     {
-        return (new Currency())->parse($this->cart->total($this->cartId), true, true);
+        $total = $this->cart->total($this->cartId);
+
+        if ($this->getParam('items')) {
+            $total = $this->cart->total($this->cartId, 'items');
+        }
+
+        if ($this->getParam('shipping')) {
+            $total = $this->cart->total($this->cartId, 'shipping');
+        }
+
+        if ($this->getParam('tax')) {
+            $total = $this->cart->total($this->cartId, 'tax');
+        }
+
+        return (new Currency())->parse($total, true, true);
     }
 
     protected function createCart()

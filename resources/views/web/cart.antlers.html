@@ -96,11 +96,10 @@
                 </td>
 
                 <td class="px-4 py-6 text-right">
-                    <p class="mb-6">Item Sub Total: $15.00</p>
+                    <p class="mb-6">Item Sub Total: {{ cart:total items='true' }}</p>
                     <p>Total Discount: $0.00</p>
-                    <p>Total Shipping: $0.00</p>
-                    <p>Total Tax: $0.00</p>
-                    <p>Total Tax (inc): $0.00</p>
+                    <p>Total Shipping: {{ cart:total shipping='true' }}</p>
+                    <p>Total Tax: {{ cart:total tax='true' }}</p>
                     <p class="mt-6"><strong>Total Price: {{ cart:total }}</strong></p>
                 </td>
             </tr>

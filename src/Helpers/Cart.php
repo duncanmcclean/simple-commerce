@@ -99,9 +99,23 @@ class Cart
         $cart->delete();
     }
 
-    public function total(string $uid)
+    public function total(string $uid, string $type = null)
     {
-        return CartModel::where('uid', $uid)->first()->total;
+        $cart = CartModel::where('uid', $uid)->first();
+
+        if ($type === 'items') {
+            return (new CartCalculator($cart))->itemsTotal()->total;
+        }
+
+        if ($type === 'shipping') {
+            return (new CartCalculator($cart))->shippingTotal()->total;
+        }
+
+        if ($type === 'tax') {
+            return (new CartCalculator($cart))->taxTotal()->total;
+        }
+
+        return $cart->total;
     }
 
     public function getShipping(string $uid)
