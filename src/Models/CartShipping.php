@@ -9,7 +9,7 @@ class CartShipping extends Model
     protected $table = 'cart_shipping';
 
     protected $fillable = [
-        'uid', 'shipping_zone_id', 'cart_id'
+        'uid', 'shipping_zone_id', 'cart_id',
     ];
 
     public function shippingZone()
