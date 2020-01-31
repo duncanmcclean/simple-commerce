@@ -14,6 +14,6 @@ class ProductControllerTest extends TestCase
     {
         $response = $this->get('/products');
 
-        dd($response);
+        $response->assertOk();
     }
 }
