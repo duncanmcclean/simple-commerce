@@ -4,9 +4,11 @@ use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
+use Statamic\Stache\Stache;
 
 $factory->define(ShippingZone::class, function (Faker $faker) {
     return [
+        'uid' => (new Stache())->generateId(),
         'country_id' => function () {
             return factory(Country::class)->create()->id;
         },

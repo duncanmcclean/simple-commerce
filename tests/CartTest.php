@@ -5,7 +5,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
+use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -80,6 +83,8 @@ class CartTest extends TestCase
         $variant = factory(Variant::class)->create([
             'product_id' => $product->id,
         ]);
+        $shipping = factory(ShippingZone::class)->create();
+        $tax = factory(TaxRate::class)->create();
 
         $add = $this->cart->add($cart->uid, [
             'product' => $product->uid,

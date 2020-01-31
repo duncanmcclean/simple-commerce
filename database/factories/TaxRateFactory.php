@@ -4,9 +4,11 @@ use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use Faker\Generator as Faker;
+use Statamic\Stache\Stache;
 
 $factory->define(TaxRate::class, function (Faker $faker) {
     return [
+        'uid' => (new Stache())->generateId(),
         'country_id' => function () {
             return factory(Country::class)->create()->id;
         },
