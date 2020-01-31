@@ -62,7 +62,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::resolveApplicationConfiguration($app);
 
         $configs = [
-            'assets', 'cp', 'forms', 'routes', 'static_caching',
+            'assets', 'cp', 'forms', 'static_caching',
             'sites', 'stache', 'system', 'users'
         ];
 
