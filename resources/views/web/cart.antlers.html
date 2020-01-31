@@ -19,7 +19,7 @@
                         <strong>{{ product:title }}</strong><br>
                         ({{ variant:sku }})
 
-                        <form class="mt-2" action="/cart/delete" method="post">
+                        <form class="mt-2" action="{{ commerce:route key='cart_remove' }}" method="post">
                             {{ csrf_field }}
                             <input type="hidden" name="item_id" value="{{ uid }}">
 
@@ -67,7 +67,7 @@
 
             <tr class="py-4 px-4 border-b w-full text-gray-800">
                 <td class="px-4 py-6 text-left">
-                    <form class="bg-gray-100 py-6 px-4" action="/cart/update" method="post">
+                    <form class="bg-gray-100 py-6 px-4" action="{{ commerce:route cart='cart_update' }}" method="post">
                         {{ csrf_field }}
 
                         <div class="flex flex-row items-center mb-4">
@@ -106,7 +106,7 @@
 
             <tr class="py-4 px-4 border-b w-full text-gray-800">
                 <td class="px-4 py-6 text-left">
-                    <form action="/cart/clear" method="post">
+                    <form action="{{ commerce:route key='cart_clear' }}" method="post">
                         {{ csrf_field }}
                         <button class="text-gray-700 font-medium" type="submit">Clear Cart</button>
                     </form>

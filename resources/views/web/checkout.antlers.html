@@ -4,7 +4,7 @@
     <p>There are no items in your cart.</p>
 {{ else }}
     <div class="flex flex-row">
-        <form id="payment-form" class="md:w-2/3 mx-2" action="/checkout" method="post" @submit.prevent="submitCheckout">
+        <form id="payment-form" class="md:w-2/3 mx-2" action="{{ commerce:route key='checkout_store' }}" method="post" @submit.prevent="submitCheckout">
             {{ csrf_field }}
 
             <fieldset class="border-b mb-6">
