@@ -25,6 +25,11 @@ class Cart extends Model
         return $this->hasOne(CartShipping::class);
     }
 
+    public function tax()
+    {
+        return $this->hasOne(CartTax::class);
+    }
+
     public function getTotalAttribute()
     {
         return (new CartCalculator($this))->calculate();

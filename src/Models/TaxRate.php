@@ -29,6 +29,11 @@ class TaxRate extends Model
         return $this->belongsTo(State::class);
     }
 
+    public function cartTax()
+    {
+        return $this->hasMany(CartTax::class);
+    }
+
     public function getUpdateUrlAttribute()
     {
         return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uid']]);

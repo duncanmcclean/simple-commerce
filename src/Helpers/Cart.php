@@ -6,8 +6,10 @@ use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
+use DoubleThreeDigital\SimpleCommerce\Models\CartTax;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Stache\Stache;
 
@@ -62,6 +64,11 @@ class Cart
         if (! $this->alreadyShipping($uid)) {
             $this->addShipping($uid);
         }
+
+        if (! $this->alreadyTax($uid)) {
+            $this->addTax($uid);
+        }
+
         event(new AddedToCart($cart, $item));
 
         return collect($cart->items);
@@ -134,5 +141,44 @@ class Cart
         $shipping->save();
 
         return $shipping;
+    }
+
+    public function getTax(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        return CartTax::with('taxRate', 'taxRate.country', 'taxRate.state')
+            ->where('cart_id', $cart->id)
+            ->get();
+    }
+
+    public function alreadyTax(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        $tax = CartTax::where('cart_id', $cart->id)->get()->count();
+
+        if ($tax === 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function addTax(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        // TODO: work out a better shipping zone thing to add rather than just the first one
+
+        $rate = TaxRate::first();
+
+        $tax = new CartTax();
+        $tax->uid = (new Stache())->generateId();
+        $tax->tax_rate_id = $rate->id;
+        $tax->cart_id = $cart->id;
+        $tax->save();
+
+        return $tax;
     }
 }

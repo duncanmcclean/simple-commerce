@@ -5,12 +5,14 @@ namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
+use DoubleThreeDigital\SimpleCommerce\Models\CartTax;
 
 class CartCalculator
 {
     public $cart;
     public $items;
     public $shipping;
+    public $tax;
     public $total = 0;
 
     public function __construct(CartModel $cart)
@@ -24,18 +26,27 @@ class CartCalculator
         $this->shipping = CartShipping::with('shippingZone')
             ->where('cart_id', $cart->id)
             ->get();
+
+        $this->tax = CartTax::with('taxRate')
+            ->where('cart_id', $cart->id)
+            ->get();
     }
 
     public function calculate()
     {
         collect($this->items)
             ->each(function ($item) {
-                $this->add($item['variant']->price);
+                $this->add($item['variant']->price * $item['quantity']);
             });
 
         collect($this->shipping)
             ->each(function ($item) {
                 $this->add($item['shippingZone']->rate);
+            });
+
+        collect($this->tax)
+            ->each(function ($item) {
+                $this->add(($item['taxRate']->rate / 100) * $this->total);
             });
 
         return $this->total;
