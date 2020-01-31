@@ -69,10 +69,7 @@ class CustomerController extends CpController
 
     public function edit($customer)
     {
-        $customer = Customer::where('uid', $customer)
-            ->with('billingAddress')
-            ->with('shippingAddress')
-            ->first();
+        $customer = Customer::where('uid', $customer)->first();
 
         $this->authorize('update', $customer);
 
