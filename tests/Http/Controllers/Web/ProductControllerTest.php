@@ -7,11 +7,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductControllerTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function can_get_index_of_products()
     {
-        // TODO: for some reason routes are not being loaded in
+        $response = $this->get('/products');
+
+        dd($response);
     }
 }

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CartTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use RefreshDatabase;
 
     public $cart;
 

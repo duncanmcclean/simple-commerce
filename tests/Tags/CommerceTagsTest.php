@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Config;
 
 class CommerceTagsTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp() : void
     {

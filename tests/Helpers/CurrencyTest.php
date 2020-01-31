@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Config;
 
 class CurrencyTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use RefreshDatabase;
 
     public $currencies;
     public $currency;
