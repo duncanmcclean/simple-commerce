@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class WebProductControllerTest extends TestCase
+class ProductControllerTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 
