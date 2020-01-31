@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\StripeGateway;
@@ -109,7 +110,7 @@ class CheckoutController extends Controller
         $order->billing_address_id = $billingAddress->id;
         $order->shipping_address_id = $shippingAddress->id;
         $order->customer_id = $customer->id;
-        $order->order_status_id = 1; // TODO: use a configuration option for this
+        $order->order_status_id = OrderStatus::where('primary', true)->first()->id;
         $order->items = null; // TODO: work on this from the cart
         $order->total = $this->cart->total($this->cartId);
         $order->currency_id = CurrencyModel::where('iso', config('commerce.currency'))->first()->id;
