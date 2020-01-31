@@ -14,7 +14,7 @@
                     <publish-form
                         id="update-order-status-form"
                         name="update-order-status-form"
-                        title="Update Order Status"
+                        :title="title"
                         :action="action"
                         :blueprint="blueprint"
                         :meta="meta"
@@ -32,7 +32,7 @@
         name: "UpdateOrderStatusStack",
 
         props: [
-            'action', 'blueprint', 'meta', 'values'
+            'title', 'action', 'blueprint', 'meta', 'values'
         ],
 
         methods: {

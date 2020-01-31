@@ -14,7 +14,7 @@
                     <publish-form
                         id="create-order-status-form"
                         name="create-order-status-form"
-                        title="Create Order Status"
+                        :title="title"
                         :action="action"
                         :blueprint="blueprint"
                         :meta="meta"
@@ -32,7 +32,7 @@
         name: "CreateOrderStatusStack",
 
         props: [
-            'action', 'blueprint', 'meta', 'values'
+            'title', 'action', 'blueprint', 'meta', 'values'
         ],
 
         methods: {

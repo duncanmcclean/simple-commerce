@@ -58,7 +58,7 @@ class CommerceTags extends Tags
         if ($categorySlug = $this->getParam('category')) {
             $category = ProductCategory::where('slug', $categorySlug)->first();
 
-            $products = Product::where('product_category_id', $category);
+            $products = Product::with('variants')->where('product_category_id', $category);
         }
 
         if (! $this->getParam('include_disabled')) {
@@ -76,7 +76,6 @@ class CommerceTags extends Tags
             ->map(function ($product) {
                 return array_merge($product->toArray(), [
                     'url' => route('products.show', ['product' => $product['slug']]),
-                    'variants' => $product->variants->toArray(),
                 ]);
             });
     }

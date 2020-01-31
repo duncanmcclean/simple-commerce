@@ -11,8 +11,14 @@ You can add them to your Dashboard, by updating the list in your `cp.php` config
 return [
 
     'widgets' => [
-        'new_customers',
-        'recent_orders',
+            [
+                'type' => 'recent_orders',
+                'width' => 50,
+            ],
+            [
+                'type' => 'new_customers',
+                'width' => 50,
+            ],
     ],
     
 ];

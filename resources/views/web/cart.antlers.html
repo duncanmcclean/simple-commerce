@@ -20,7 +20,7 @@
                         ({{ variant:sku }})
 
                         <form class="mt-2" action="/cart/delete" method="post">
-                            {{ csrf_field}}
+                            {{ csrf_field }}
                             <input type="hidden" name="item_id" value="{{ uid }}">
 
                             <button class="text-red-700 font-medium text-sm" type="submit">Remove</button>
@@ -36,6 +36,34 @@
                     </td>
                 </tr>
             {{ /cart:items }}
+
+            {{ cart:shipping }}
+                <tr class="py-4 px-4 border-b w-full text-gray-800">
+                    <td class="px-4 py-6 text-left">
+                        Shipping: {{ shipping_zone:country:name }}, {{ shipping_zone:state:name }}, {{ shipping_zone:start_of_zip_code }}
+                    </td>
+
+                    <td class="px-4 py-6 text-left"></td>
+
+                    <td class="px-4 py-6 text-right">
+                        Price: {{ shipping_zone:rate | price }}
+                    </td>
+                </tr>
+            {{ /cart:shipping }}
+
+            {{ cart:tax }}
+                <tr class="py-4 px-4 border-b w-full text-gray-800">
+                    <td class="px-4 py-6 text-left">
+                        Tax: {{ tax_rate:country:name }}, {{ tax_rate:state:name }}, {{ tax_rate:start_of_zip_code }}
+                    </td>
+
+                    <td class="px-4 py-6 text-left"></td>
+
+                    <td class="px-4 py-6 text-right">
+                        {{ tax_rate:rate }}%
+                    </td>
+                </tr>
+            {{ /cart:tax }}
 
             <tr class="py-4 px-4 border-b w-full text-gray-800">
                 <td class="px-4 py-6 text-left">
@@ -68,11 +96,10 @@
                 </td>
 
                 <td class="px-4 py-6 text-right">
-                    <p class="mb-6">Item Sub Total: $15.00</p>
+                    <p class="mb-6">Item Sub Total: {{ cart:total items='true' }}</p>
                     <p>Total Discount: $0.00</p>
-                    <p>Total Shipping: $0.00</p>
-                    <p>Total Tax: $0.00</p>
-                    <p>Total Tax (inc): $0.00</p>
+                    <p>Total Shipping: {{ cart:total shipping='true' }}</p>
+                    <p>Total Tax: {{ cart:total tax='true' }}</p>
                     <p class="mt-6"><strong>Total Price: {{ cart:total }}</strong></p>
                 </td>
             </tr>

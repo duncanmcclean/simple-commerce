@@ -160,6 +160,16 @@ Returns the total amount of the customers' cart.
 <p>The total of your cart {{ commerce:currency_symbol }}{{ cart:count }}.</p>
 ```
 
+# Modifiers
+
+## Price
+
+If you want to change a price from being a number like `15` to being formatted like a currency: `$15.00`, then you should use the price modifier.
+
+```html
+{{ from_price | price }}
+```
+
 # Form Endpoints
 
 On the front-end, Simple Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.

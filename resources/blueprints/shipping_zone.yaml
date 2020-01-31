@@ -1,0 +1,42 @@
+title: 'Shipping Zone'
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: country
+        field:
+          type: country
+          localizable: false
+          width: 50
+          display: Country
+          listable: hidden
+          max_items: 1
+          mode: default
+      -
+        handle: state
+        field:
+          type: state
+          localizable: false
+          width: 50
+          display: State
+          listable: hidden
+          max_items: 1
+          mode: default
+      -
+        handle: start_of_zip_code
+        field:
+          type: text
+          localizable: false
+          width: 50
+          display: 'Start of Zip Code'
+          listable: hidden
+      -
+        handle: rate
+        field:
+          type: integer
+          instructions: 'What % should be taxed?'
+          localizable: false
+          display: Rate
+          listable: hidden
+          width: 50

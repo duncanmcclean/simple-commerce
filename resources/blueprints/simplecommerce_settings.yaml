@@ -229,6 +229,79 @@ sections:
           localizable: false
           display: 'Manage Order Statuses'
           listable: hidden
+  tax:
+    display: Tax
+    fields:
+      -
+        handle: entered_with_tax
+        field:
+          type: toggle
+          localizable: false
+          display: 'Tax included in prices?'
+          listable: hidden
+      -
+        handle: calculate_tax_from
+        field:
+          options:
+            billingAddress: 'Order Billing Address'
+            shippingAddress: 'Order Shipping Address'
+            businessAddress: 'Business Address'
+          clearable: false
+          multiple: false
+          searchable: true
+          taggable: false
+          push_tags: false
+          cast_booleans: false
+          type: select
+          instructions: 'Where should we calculate your tax from?'
+          localizable: false
+          display: 'Calculate Tax From'
+          listable: hidden
+      -
+        handle: shop_prices_with_tax
+        field:
+          type: toggle
+          localizable: false
+          display: 'Should we display shop prices with tax?'
+          listable: hidden
+      -
+        handle: tax_rates_section
+        field:
+          type: section
+          localizable: false
+          display: 'Tax Rates'
+          listable: hidden
+      -
+        handle: manage_tax_rates
+        field:
+          type: tax_rate_settings
+          localizable: false
+          display: 'Manage Tax Rates'
+          listable: hidden
+  shipping:
+    display: Shipping
+    fields:
+      -
+        handle: only_show_shipping_costs_in_cart
+        field:
+          type: toggle
+          localizable: false
+          display: 'Only show shipping costs in Cart?'
+          listable: hidden
+      -
+        handle: shipping_zones
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: 'Shipping Zones'
+      -
+        handle: manage_shipping_zones
+        field:
+          type: shipping_zone_settings
+          localizable: false
+          listable: hidden
+          display: 'Manage Shipping Zones'
   miscellaneous:
     display: Miscellaneous
     fields:

@@ -21,14 +21,16 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingZoneSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Modifiers\PriceModifier;
 use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
@@ -37,12 +39,9 @@ use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
 use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
-use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -92,6 +91,12 @@ class ServiceProvider extends AddonServiceProvider
         CartDeletionCommand::class,
         SeederCommand::class,
     ];
+
+    protected $modifiers = [
+        PriceModifier::class,
+    ];
+
+    // TODO: order these in the same way as the addonserviceprovider
 
     public function boot()
     {
@@ -168,14 +173,11 @@ class ServiceProvider extends AddonServiceProvider
         OrderStatusSettingsFieldtype::register();
         ProductCategoryFieldtype::register();
         ProductFieldtype::register();
+        ShippingZoneSettingsFieldtype::register();
         StateFieldtype::register();
+        TaxRateSettingsFieldtype::register();
 
         $this->app->booted(function () {
-//            Statamic::provideToScript([
-//                'commerceCurrencyCode' => Currency::where('primary', true)->first()->iso,
-//                'commerceCurrencySymbol' => Currency::where('primary', true)->first()->symbol,
-//            ]);
-
             Permission::group('simple-commerce', 'Simple Commerce', function () {
                 Permission::register('edit settings')
                     ->label('Edit Commerce Settings');

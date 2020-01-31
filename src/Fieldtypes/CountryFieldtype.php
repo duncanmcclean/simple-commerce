@@ -11,13 +11,6 @@ class CountryFieldtype extends Relationship
     protected $categories = ['commerce'];
     protected $icon = 'earth';
 
-    public function __construct()
-    {
-        $this->defaultValue = [
-            Country::where('iso', 'US')->first()->id,
-        ];
-    }
-
     protected function toItemArray($id)
     {
         return Country::find($id);

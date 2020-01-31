@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use Statamic\Tags\Tags;
 
 class CartTags extends Tags
@@ -30,6 +30,16 @@ class CartTags extends Tags
         return $this->index();
     }
 
+    public function shipping()
+    {
+        return $this->cart->getShipping($this->cartId);
+    }
+
+    public function tax()
+    {
+        return $this->cart->getTax($this->cartId);
+    }
+
     public function count()
     {
         return $this->cart->count($this->cartId);
@@ -37,7 +47,21 @@ class CartTags extends Tags
 
     public function total()
     {
-        return $this->cart->total($this->cartId);
+        $total = $this->cart->total($this->cartId);
+
+        if ($this->getParam('items')) {
+            $total = $this->cart->total($this->cartId, 'items');
+        }
+
+        if ($this->getParam('shipping')) {
+            $total = $this->cart->total($this->cartId, 'shipping');
+        }
+
+        if ($this->getParam('tax')) {
+            $total = $this->cart->total($this->cartId, 'tax');
+        }
+
+        return (new Currency())->parse($total, true, true);
     }
 
     protected function createCart()

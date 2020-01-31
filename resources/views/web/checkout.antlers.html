@@ -1,0 +1,182 @@
+<h1 class="text-gray-800 font-bold text-4xl mb-4">Checkout</h1>
+
+{{ if {cart:count} == 0 }}
+    <p>There are no items in your cart.</p>
+{{ else }}
+    <div class="flex flex-row">
+        <form id="payment-form" class="md:w-2/3 mx-2" action="/checkout" method="post" @submit.prevent="submitCheckout">
+            {{ csrf_field }}
+
+            <fieldset class="border-b mb-6">
+                <h2 class="text-3xl mb-4 font-medium">Contact Information</h2>
+
+                <div class="flex flex-row items-center mb-4">
+                    <h2 class="w-2/5 font-bold mb-2">Full Name</h2>
+                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="name" placeholder="Joe Bloggs" required>
+                </div>
+
+                <div class="flex flex-row items-center mb-6">
+                    <h2 class="w-2/5 font-bold mb-2">Email</h2>
+                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="email" name="email" placeholder="joebloggs@example.com" required>
+                </div>
+            </fieldset>
+
+            <fieldset class="border-b mb-6">
+                <h2 class="text-3xl mb-2 font-medium">Addresses</h2>
+
+                <h3 class="text-xl mb-4 font-medium">Shipping Address</h3>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 1</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_address_1" required>
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 2</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_address_2">
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 3</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_address_3">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">City</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_city" required>
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">State</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_state">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Zip Code</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="shipping_zip_code" required>
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Country</h2>
+                        <select class="w-full bg-white rounded border py-1 px-2 text-gray-800" name="shipping_country" required>
+                            {{ commerce:countries }}
+                            <option value="{{ iso }}">{{ name }}</option>
+                            {{ /commerce:countries }}
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="text-xl mb-2 font-medium">Billing Address</h3>
+
+                <label class="flex flex-row items-center mb-4">
+                    <input class="mr-2" v-model="useShippingAsBilling" name="use_shipping_address_for_billing" type="checkbox" value="on" checked>
+                    Use the same address as shipping address.
+                </label>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 1</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_address_1">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 2</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_address_2">
+                    </div>
+                </div>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Address 3</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_address_3">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">City</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_city">
+                    </div>
+                </div>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">State</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_state">
+                    </div>
+
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Zip Code</h2>
+                        <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="billing_zip_code">
+                    </div>
+                </div>
+
+                <div v-if="useShippingAsBilling !== true" class="flex flex-row items-center mb-2">
+                    <div class="w-full md:w-1/2 flex flex-col mb-6 w-full px-2">
+                        <h2 class="font-bold mb-2">Country</h2>
+                        <select class="w-full bg-white rounded border py-1 px-2 text-gray-800" name="billing_country">
+                            {{ commerce:countries }}
+                            <option value="{{ iso }}">{{ name }}</option>
+                            {{ /commerce:countries }}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border-b mb-6">
+                <h2 class="text-3xl mb-4 font-medium">Payment</h2>
+
+                <!--                <div class="flex flex-row items-center mb-4">-->
+                <!--                    <h2 class="w-2/5 font-bold mb-2">Cardholder Name</h2>-->
+                <!--                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="cardholder_name" placeholder="Joe Bloggs" required>-->
+                <!--                </div>-->
+
+                <div class="flex flex-row items-center mb-4">
+                    <h2 class="w-2/5 font-bold mb-2">Card Details</h2>
+                    <div class="w-3/5 bg-white rounded border py-2 px-2 text-gray-800" id="card-element"></div>
+                </div>
+
+                <input type="hidden" name="payment_method">
+            </fieldset>
+
+            <div class="flex flex-row justify-center mb-6">
+                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit" :disabled="isSubmitting">Pay {{ cart:total }}</button>
+            </div>
+        </form>
+
+        <div class="md:w-1/3 sticky mx-2">
+            <h2 class="text-2xl font-medium mb-4">Items</h2>
+
+            {{ cart:items }}
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>{{ quantity }}x {{ variant:name }}</p>
+                    <p>$15.00</p> <!-- TODO: need item prices for things in the cart -->
+                </div>
+            {{ /cart:items }}
+
+            {{ cart:shipping }}
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>Shipping: {{ shipping_zone:country:name }}, {{ shipping_zone:state:name }}, {{ shipping_zone:start_of_zip_code }}</p>
+                    <p>{{ shipping_zone:rate | price }}</p>
+                </div>
+            {{ /cart:shipping }}
+
+            {{ cart:tax }}
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <p>Tax: {{ tax_rate:country:name }}, {{ tax_rate:state:name }}, {{ tax_rate:start_of_zip_code }}</p>
+                    <p>{{ tax_rate:rate }}%</p>
+                </div>
+            {{ /cart:tax }}
+
+            <div class="flex flex-row items-center justify-between mt-4 mb-2">
+                <p><strong>Total:</strong></p>
+                <p>{{ cart:total | price }}</p>
+            </div>
+        </div>
+    </div>
+{{ /if }}

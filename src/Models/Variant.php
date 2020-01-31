@@ -21,11 +21,6 @@ class Variant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function getPriceAttribute($value)
-    {
-        return (new CurrencyHelper())->parse((int) $value);
-    }
-
     public function setVariantAttributesAttribute($value)
     {
         $this->attributes['variant_attributes'] = json_encode($value);

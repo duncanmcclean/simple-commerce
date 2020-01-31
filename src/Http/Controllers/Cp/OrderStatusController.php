@@ -67,11 +67,11 @@ class OrderStatusController extends CpController
         }
 
         // TODO: make sure that the user cant delete the only remaining order status
-        // TODO: do something with the orders that are currecntly using this status
+        // TODO: do something with the orders that are currently using this status
 
         $status->delete();
 
-        return redirect(route('settings.edit'))
+        return redirect(cp_route('settings.edit'))
             ->with('success', 'Deleted order status');
     }
 }

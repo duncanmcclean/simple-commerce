@@ -21,6 +21,6 @@ class Currency extends Model
 
     public function orders()
     {
-        return $this->hasMany(self::class);
+        return $this->hasMany(Order::class);
     }
 }
