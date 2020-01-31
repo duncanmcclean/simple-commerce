@@ -64,42 +64,6 @@ class CustomerController extends CpController
         $customer->email = $request->email;
         $customer->save();
 
-        if ($request->billing_address_1) {
-            $billingAddress = new Address();
-            $billingAddress->uid = (new Stache())->generateId();
-            $billingAddress->country_id = $request->billing_country[0];
-            $billingAddress->state_id = $request->billing_state ?? null;
-            $billingAddress->name = $request->name;
-            $billingAddress->address1 = $request->billing_address_1;
-            $billingAddress->address2 = $request->billing_address_2;
-            $billingAddress->address3 = $request->billing_address_3;
-            $billingAddress->city = $request->billing_city;
-            $billingAddress->zip_code = $request->billing_zip_code;
-            $billingAddress->customer_id = $customer->id;
-            $billingAddress->save();
-
-            $customer->default_billing_address_id = $billingAddress->id;
-            $customer->save();
-        }
-
-        if ($request->shipping_address_1) {
-            $shippingAddress = new Address();
-            $shippingAddress->uid = (new Stache())->generateId();
-            $shippingAddress->country_id = $request->shipping_country[0];
-            $shippingAddress->state_id = $request->shipping_state ?? null;
-            $shippingAddress->name = $request->name;
-            $shippingAddress->address1 = $request->shipping_address_1;
-            $shippingAddress->address2 = $request->shipping_address_2;
-            $shippingAddress->address3 = $request->shipping_address_3;
-            $shippingAddress->city = $request->shipping_city;
-            $shippingAddress->zip_code = $request->shipping_zip_code;
-            $shippingAddress->customer_id = $customer->id;
-            $shippingAddress->save();
-
-            $customer->default_shipping_address_id = $shippingAddress->id;
-            $customer->save();
-        }
-
         return ['redirect' => cp_route('customers.edit', ['customer' => $customer->uid])];
     }
 
@@ -116,8 +80,6 @@ class CustomerController extends CpController
             ['text' => 'Commerce', 'url' => '#'],
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
         ]);
-
-//        dd(collect($customer)->toArray());
 
         $blueprint = Blueprint::find('customer');
 
@@ -142,30 +104,6 @@ class CustomerController extends CpController
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->save();
-
-        $billingAddress = Address::find($customer->defaultBillingAddress->id);
-        $billingAddress->country_id = $request->billing_country[0];
-        $billingAddress->state_id = $request->billing_state ?? null;
-        $billingAddress->name = $request->name;
-        $billingAddress->address1 = $request->billing_address_1;
-        $billingAddress->address2 = $request->billing_address_2;
-        $billingAddress->address3 = $request->billing_address_3;
-        $billingAddress->city = $request->billing_city;
-        $billingAddress->zip_code = $request->billing_zip_code;
-        $billingAddress->customer_id = $customer->id;
-        $billingAddress->save();
-
-        $shippingAddress = Address::find($customer->defaultShippingAddress->id);
-        $shippingAddress->country_id = $request->shipping_country[0];
-        $shippingAddress->state_id = $request->shipping_state ?? null;
-        $shippingAddress->name = $request->name;
-        $shippingAddress->address1 = $request->shipping_address_1;
-        $shippingAddress->address2 = $request->shipping_address_2;
-        $shippingAddress->address3 = $request->shipping_address_3;
-        $shippingAddress->city = $request->shipping_city;
-        $shippingAddress->zip_code = $request->shipping_zip_code;
-        $shippingAddress->customer_id = $customer->id;
-        $shippingAddress->save();
 
         return $customer;
     }

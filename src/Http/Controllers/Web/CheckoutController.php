@@ -109,10 +109,6 @@ class CheckoutController extends Controller
             $billingAddress->save();
         }
 
-        $customer->default_shipping_address_id = $shippingAddress->id;
-        $customer->default_billing_address_id = $billingAddress->id;
-        $customer->save();
-
         $order = new Order();
         $order->uid = (new Stache())->generateId();
         $order->payment_intent = $request->payment_method;

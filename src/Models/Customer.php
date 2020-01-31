@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     protected $fillable = [
-        'name', 'email', 'default_billing_address_id', 'default_shipping_address_id', 'uid',
+        'name', 'email', 'uid',
     ];
 
     public function getRouteKeyName()
@@ -18,16 +18,6 @@ class Customer extends Model
     public function addresses()
     {
         return $this->hasMany(Address::class);
-    }
-
-    public function billingAddress()
-    {
-        return $this->hasOne(Address::class);
-    }
-
-    public function shippingAddress()
-    {
-        return $this->hasOne(Address::class);
     }
 
     public function orders()
