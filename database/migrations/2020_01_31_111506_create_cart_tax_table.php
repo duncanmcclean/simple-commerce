@@ -29,6 +29,6 @@ class CreateCartTaxTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_tax');
+        Schema::dropIfExists('cart_taxes');
     }
 }

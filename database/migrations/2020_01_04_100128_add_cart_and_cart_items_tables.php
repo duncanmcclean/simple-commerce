@@ -37,6 +37,7 @@ class AddCartAndCartItemsTables extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('carts');
+        Schema::dropIfExists('cart_items');
     }
 }
