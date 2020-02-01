@@ -13,9 +13,9 @@ class CreateCartTaxTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_tax', function (Blueprint $table) {
+        Schema::create('cart_taxes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid');
+            $table->string('uid')->unique();
             $table->integer('tax_rate_id')->index();
             $table->integer('cart_id')->index();
             $table->timestamps();

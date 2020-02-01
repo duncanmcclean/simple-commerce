@@ -15,9 +15,10 @@ class CreateShippingZonesTable extends Migration
     {
         Schema::create('shipping_zones', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('uid')->unique();
             $table->integer('country_id')->index();
-            $table->integer('state_id')->index();
-            $table->string('start_of_zip_code');
+            $table->integer('state_id')->index()->nullable();
+            $table->string('start_of_zip_code')->nullable();
             $table->integer('rate');
             $table->timestamps();
         });

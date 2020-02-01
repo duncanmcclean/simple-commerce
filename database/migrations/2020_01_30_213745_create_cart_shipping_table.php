@@ -15,7 +15,7 @@ class CreateCartShippingTable extends Migration
     {
         Schema::create('cart_shipping', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid');
+            $table->string('uid')->unique();
             $table->integer('shipping_zone_id')->index();
             $table->integer('cart_id')->index();
             $table->timestamps();

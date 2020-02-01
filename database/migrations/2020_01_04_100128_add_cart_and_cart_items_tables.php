@@ -13,20 +13,19 @@ class AddCartAndCartItemsTables extends Migration
      */
     public function up()
     {
-        Schema::create('cart', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid');
-            $table->string('total');
+            $table->string('uid')->unique();
             $table->timestamps();
         });
 
         Schema::create('cart_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid');
-            $table->integer('product_id');
-            $table->integer('variant_id');
+            $table->string('uid')->unique();
             $table->integer('quantity');
-            $table->integer('quantity_id');
+            $table->integer('product_id')->index();
+            $table->integer('variant_id')->index();
+            $table->integer('cart_id')->index();
             $table->timestamps();
         });
     }
