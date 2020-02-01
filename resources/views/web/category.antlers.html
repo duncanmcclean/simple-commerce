@@ -1,14 +1,23 @@
-<div class="flex flex-row items-center justify-between">
-    <h1 class="text-5xl font-bold mb-2 text-gray-800">{{ title }}</h1>
-</div>
+<h1 class="text-gray-800 font-bold text-4xl mb-4">{{ title }}</h1>
 
-<div class="flex flex-row flex-wrap items-center">
-    {{ products }}
-        <a class="shadow-sm w-full md:w-1/4 mb-4 px-2" href="{{ url }}">
-            <div class="px-2 py-4 bg-gray-200">
-                <h2 class="font-gray-800 font-bold text-xl mb-1">{{ title }}</h2>
-                <h3 class="font-gray-600 font-medium text-normal">{{ from_price | price }}</h3>
-            </div>
-        </a>
-    {{ /products }}
-</div>
+{{ products }}
+    <div class="mb-6 border-b w-full">
+        <h2 class="text-3xl"><a class="text-blue-700 hover:text-blue-800 font-bold" href="{{ url }}">{{ title }}</a></h2>
+
+        <form class="flex flex-row items-center my-4" action="{{ commerce:route key='cart_store' }}" method="post">
+            {{ csrf_field }}
+
+            <input type="hidden" name="product" value="{{ uid }}">
+
+            <select name="variant" required>
+                {{ variants }}
+                <option value="{{ uid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
+                {{ /variants }}
+            </select>
+
+            <input class="bg-gray-100 rounded px-2 py-1 mx-2" type="number" name="quantity" max="{{ variants }}{{ if first }}{{ max_quantity }}{{ /if }}{{ /variants }}" value="1" required>
+
+            <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>
+        </form>
+    </div>
+{{ /products }}
