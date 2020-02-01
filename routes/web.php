@@ -14,5 +14,5 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web')->gro
     Route::get(config('commerce.product_search').'/results', 'ProductSearchController@show')->name('products.search.results');
     Route::get(config('commerce.product_show'), 'ProductController@show')->name('products.show');
 
-    Route::get(config('commerce.categories_show', 'ProductCategoryController@show'))->name('categories.show');
+    Route::get(config('commerce.categories_show'), 'ProductCategoryController@show')->name('categories.show');
 });
