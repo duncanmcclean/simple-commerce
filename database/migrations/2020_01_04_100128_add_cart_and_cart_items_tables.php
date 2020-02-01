@@ -13,7 +13,7 @@ class AddCartAndCartItemsTables extends Migration
      */
     public function up()
     {
-        Schema::create(config('commerce.database_prefix').'carts', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->timestamps();
