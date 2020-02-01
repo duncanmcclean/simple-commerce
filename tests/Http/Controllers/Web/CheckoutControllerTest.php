@@ -105,25 +105,25 @@ class CheckoutControllerTest extends TestCase
         $response->assertRedirect('/thank-you');
         $response->assertSessionHas('commerce_cart_id');
 
-        $this->assertDatabaseHas('simplecommerce_customers', [
+        $this->assertDatabaseHas('customers', [
             'name' => $data['name'],
             'email' => $data['email'],
         ]);
 
         $customer = Customer::where('name', $data['name'])->first();
 
-        $this->assertDatabaseHas('simplecommerce_addresses', [
+        $this->assertDatabaseHas('addresses', [
             'name' => $data['name'],
             'address1' => $data['shipping_address_1'],
             'customer_id' => $customer->id,
         ]);
 
-        $this->assertDatabaseHas('simplecommerce_orders', [
+        $this->assertDatabaseHas('orders', [
             'payment_intent' => $data['payment_method'],
             'customer_id' => $customer->id,
         ]);
 
-        $this->assertDatabaseMissing('simplecommerce_carts', [
+        $this->assertDatabaseMissing('carts', [
             'uid' => $cart->uid,
         ]);
 

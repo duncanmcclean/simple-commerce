@@ -29,13 +29,13 @@ class CartDeletionCommandTest extends TestCase
     {
         $cart = factory(Cart::class)->create();
 
-        $this->assertDatabaseHas('simplecommerce_carts', [
+        $this->assertDatabaseHas('carts', [
             'uid' => $cart->uid
         ]);
 
         $delete = $this->cartDeletion->deletion();
 
-        $this->assertDatabaseHas('simplecommerce_carts', [
+        $this->assertDatabaseHas('carts', [
             'uid' => $cart->uid
         ]);
     }

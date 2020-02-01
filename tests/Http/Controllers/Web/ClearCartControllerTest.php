@@ -39,7 +39,7 @@ class ClearCartControllerTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHas('commerce_cart_id');
 
-        $this->assertDatabaseMissing('simplecommerce_carts', [
+        $this->assertDatabaseMissing('carts', [
             'uid' => $cart->uid,
         ]);
     }
