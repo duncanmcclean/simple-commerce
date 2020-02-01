@@ -18,38 +18,16 @@ class ProductSearchController
 
     public function show(Request $request)
     {
+        // TODO: validation request
+
         $query = $request->input('query');
 
-        // TODO: find way of refactoring this controller method
-
-        if (! $query) {
-            $results = Product::all()
-                ->reject(function ($product) {
-                    return ! $product->is_enabled;
-                })
-                ->map(function ($product) {
-                    return array_merge($product->toArray(), [
-                        'url' => route('products.show', ['product' => $product['slug']]),
-                        'variants' => $product->variants->toArray(),
-                        'from_price' => $product->variants->sortByDesc('price')->first()->price, // TODO: use the currency in here
-                    ]);
-                });
-        } else {
-            $results = Product::all()
-                ->reject(function ($product) {
-                    return ! $product->is_enabled;
-                })
-                ->filter(function ($item) use ($query) {
-                    return false !== stristr((string) $item['title'], $query);
-                })
-                ->map(function ($product) {
-                    return array_merge($product->toArray(), [
-                        'url' => route('products.show', ['product' => $product['slug']]),
-                        'variants' => $product->variants->toArray(),
-                        'from_price' => $product->variants->sortByDesc('price')->first()->price, // TODO: use the currency in here
-                    ]);
-                });
-        }
+        $results = Product::with('variants')
+            ->get()
+            ->where('is_enabled', true)
+            ->filter(function ($item) use ($query) {
+                return false !== stristr((string) $item['title'], $query);
+            });
 
         return (new View)
             ->template('commerce::web.search')

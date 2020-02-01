@@ -5,9 +5,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductCategoryControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function can_show_product_category()
     {
