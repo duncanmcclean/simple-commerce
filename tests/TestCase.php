@@ -4,14 +4,17 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
+use Statamic\Facades\User;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, WithFaker;
 
     protected function setUp(): void
     {
@@ -72,5 +75,15 @@ abstract class TestCase extends OrchestraTestCase
 
         $app['config']->set('statamic.users.repository', 'file');
         $app['config']->set('commerce', require(__DIR__.'/../config/commerce.php'));
+    }
+
+    public function actAsAdmin()
+    {
+        Config::set('statamic.stache.stores.users.directory', realpath(__DIR__.'/__fixtures__/users'));
+
+        return User::make()
+            ->id(1)
+            ->email('duncan@doublethree.digital')
+            ->makeSuper();
     }
 }
