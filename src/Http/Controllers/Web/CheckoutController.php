@@ -58,6 +58,8 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        // TODO: add a validation request here
+
         $this->createCart($request);
 
         $paymentMethod = (new StripeGateway())->completeIntent($request->payment_method);
@@ -83,7 +85,7 @@ class CheckoutController extends Controller
         $shippingAddress->city = $request->shipping_city;
         $shippingAddress->zip_code = $request->shipping_zip_code;
         $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
-        $shippingAddress->state_id = $request->billing_state ?? null;
+        $shippingAddress->state_id = $request->shipping_state ?? null;
         $shippingAddress->customer_id = $customer->id;
         $shippingAddress->save();
 
@@ -133,6 +135,8 @@ class CheckoutController extends Controller
                 if ($variant->stock <= 5) { // TODO: maybe make this configurable
                     event(new VariantStockRunningLow($product, $variant));
                 }
+
+                // TODO: maybe this is the place where we could get all of the cart items and create an array for the orders table
             });
 
         $this->cart->clear($this->cartId);
