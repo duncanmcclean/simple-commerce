@@ -396,13 +396,7 @@ class SeederCommand extends Command
             $item->iso = $currency['iso'];
             $item->name = $currency['name'];
             $item->symbol = $currency['symbol'];
-            $item->primary = false;
             $item->save();
-
-            if ($item->iso === 'USD') {
-                $item->primary = true;
-                $item->save();
-            }
         }
 
         return $this;
