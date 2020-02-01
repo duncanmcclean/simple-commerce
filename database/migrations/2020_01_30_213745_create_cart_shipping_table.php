@@ -13,7 +13,7 @@ class CreateCartShippingTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_shipping', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'cart_shipping', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->integer('shipping_zone_id')->index();
@@ -29,6 +29,6 @@ class CreateCartShippingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_shipping');
+        Schema::dropIfExists(config('commerce.database_prefix').'cart_shipping');
     }
 }

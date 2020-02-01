@@ -13,7 +13,7 @@ class CreateTaxRatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tax_rates', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'tax_rates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->integer('country_id')->index();
@@ -32,6 +32,6 @@ class CreateTaxRatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tax_rates');
+        Schema::dropIfExists(config('commerce.database_prefix').'tax_rates');
     }
 }

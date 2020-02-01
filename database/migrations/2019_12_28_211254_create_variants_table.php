@@ -13,7 +13,7 @@ class CreateVariantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('variants', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'variants', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->string('sku');
@@ -36,6 +36,6 @@ class CreateVariantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('variants');
+        Schema::dropIfExists(config('commerce.database_prefix').'variants');
     }
 }

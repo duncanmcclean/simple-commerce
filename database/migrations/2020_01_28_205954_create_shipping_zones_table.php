@@ -13,7 +13,7 @@ class CreateShippingZonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_zones', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'shipping_zones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->integer('country_id')->index();
@@ -31,6 +31,6 @@ class CreateShippingZonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shipping_zones');
+        Schema::dropIfExists(config('commerce.database_prefix').'shipping_zones');
     }
 }

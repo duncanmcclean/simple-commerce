@@ -13,13 +13,13 @@ class AddCartAndCartItemsTables extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'carts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->timestamps();
         });
 
-        Schema::create('cart_items', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'cart_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->integer('quantity');
@@ -37,7 +37,7 @@ class AddCartAndCartItemsTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
-        Schema::dropIfExists('cart_items');
+        Schema::dropIfExists(config('commerce.database_prefix').'carts');
+        Schema::dropIfExists(config('commerce.database_prefix').'cart_items');
     }
 }

@@ -13,7 +13,7 @@ class CreateAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::create(config('commerce.database_prefix').'addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->integer('country_id')->index();
@@ -36,6 +36,6 @@ class CreateAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists(config('commerce.database_prefix').'addresses');
     }
 }

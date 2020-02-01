@@ -37,7 +37,7 @@ class CartTest extends TestCase
 
         $this->assertIsString($create);
 
-        $this->assertDatabaseHas('carts', [
+        $this->assertDatabaseHas('simplecommerce_carts', [
             'uid' => $create,
         ]);
     }
@@ -98,7 +98,7 @@ class CartTest extends TestCase
 
         $this->assertIsObject($add);
 
-        $this->assertDatabaseHas('cart_items', [
+        $this->assertDatabaseHas('simplecommerce_cart_items', [
             'cart_id' => $cart->id,
             'product_id' => $product->id,
             'variant_id' => $variant->id,
@@ -118,7 +118,7 @@ class CartTest extends TestCase
 
         $this->assertIsObject($remove);
 
-        $this->assertDatabaseMissing('cart_items', [
+        $this->assertDatabaseMissing('simplecommerce_cart_items', [
             'id' => $item->id,
             'cart_id' => $cart->id,
         ]);
@@ -142,15 +142,15 @@ class CartTest extends TestCase
 
         $this->assertNull($clear);
 
-        $this->assertDatabaseMissing('cart_items', [
+        $this->assertDatabaseMissing('simplecommerce_cart_items', [
             'cart_id' => $cart->id,
         ]);
 
-        $this->assertDatabaseMissing('cart_shipping', [
+        $this->assertDatabaseMissing('simplecommerce_cart_shipping', [
             'cart_id' => $cart->id,
         ]);
 
-        $this->assertDatabaseMissing('cart_taxes', [
+        $this->assertDatabaseMissing('simplecommerce_cart_taxes', [
             'cart_id' => $cart->id,
         ]);
     }

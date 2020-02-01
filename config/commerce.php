@@ -3,6 +3,17 @@
 return [
 
     /**
+     * Database
+     *
+     * You're welcome to set a prefix for the table
+     * names that Simple Commerce provides. Please note
+     * that after doing this, you'll need to re-migrate
+     * and re-seed your database.
+     */
+
+    'database_prefix' => 'simplecommerce_',
+
+    /**
      * Address
      *
      * This is where your business is located. Tax and shipping
@@ -64,13 +75,6 @@ return [
     'categories_show' => '/category/{category}',
 
     /**
-     * How long should we keep your customers' cart in the
-     * database for? (in days)
-     */
-
-    'cart_retention' => 30,
-
-    /**
      * Tax
      *
      * Configure basic tax settings here. You can configure
@@ -89,5 +93,12 @@ return [
      */
 
     'only_show_shipping_costs_in_cart' => true,
+
+    /**
+     * How long should we keep your customers' cart in the
+     * database for? (in days)
+     */
+
+    'cart_retention' => 30,
 
 ];
