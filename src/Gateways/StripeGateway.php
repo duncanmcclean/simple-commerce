@@ -45,7 +45,7 @@ class StripeGateway
         ])['id'];
     }
 
-    public function validCardNumber()
+    public function valid()
     {
         return collect([
             '4242424242424242',
@@ -55,7 +55,7 @@ class StripeGateway
         ])->random();
     }
 
-    public function americanCardNumber()
+    public function american()
     {
         return collect([
             '4000000760000002',
@@ -65,7 +65,7 @@ class StripeGateway
         ])->random();
     }
 
-    public function europeanCardNumber()
+    public function european()
     {
         return collect([
             '4000000400000008',
@@ -79,7 +79,7 @@ class StripeGateway
         ])->random();
     }
 
-    public function asiaPacificCardNumber()
+    public function asiaPacific()
     {
         return collect([
             '4000000360000006',
