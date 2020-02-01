@@ -92,16 +92,6 @@
             </div>
         @endif
     @else
-        @component('statamic::partials.create-first', [
-            'resource' => 'Order',
-            'svg' => 'empty/collection',
-        ])
-            <a
-                    class="btn btn-primary"
-                    href="{{ $createUrl }}"
-            >
-                Create Order
-            </a>
-        @endcomponent
+        <p>No one has purchased from your store. When they do, orders will be displayed here.</p>
     @endif
 @endsection
