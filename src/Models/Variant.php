@@ -11,6 +11,10 @@ class Variant extends Model
         'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uid', 'description', 'variant_attributes', 'name',
     ];
 
+    protected $appends = [
+        'outOfStock',
+    ];
+
     public function getRouteKeyName()
     {
         return 'uid';
@@ -29,5 +33,18 @@ class Variant extends Model
     public function getVariantAttributesAttribute($value)
     {
         return json_decode($value, true);
+    }
+
+    public function getOutOfStockAttribute()
+    {
+        if ($this->unlimited_stock) {
+            return false;
+        }
+
+        if ($this->stock <= 0) {
+            return true;
+        }
+
+        return true;
     }
 }
