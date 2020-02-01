@@ -10,10 +10,6 @@ class Currency extends Model
         'iso', 'uid', 'symbol', 'name',
     ];
 
-    protected $casts = [
-        'primary' => 'boolean',
-    ];
-
     public function getRouteKeyName()
     {
         return 'uid';
