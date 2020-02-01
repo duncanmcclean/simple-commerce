@@ -1,3 +1,9 @@
+![Statamic 3.0+](https://img.shields.io/badge/Statamic-3.0+-FF269E?style=for-the-badge&link=https://statamic.com)
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/doublethreedigital/simple-commerce.svg?style=flat-square)](https://packagist.org/packages/doublethreedigital/simple-commerce)
+
+[![Build Status](https://travis-ci.com/damcclean/simple-commerce.svg?token=ohsryjgQpFgmvZSuMUFs&branch=master)](https://travis-ci.com/damcclean/simple-commerce)
+
 ## About Simple Commerce
 
 Simple Commerce is a perfectly simple e-commerce solution for Statamic. It's simple for both developers and end-users.
