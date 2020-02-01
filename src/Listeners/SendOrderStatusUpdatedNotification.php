@@ -9,7 +9,6 @@ class SendOrderStatusUpdatedNotification
 {
     public function handle(OrderStatusUpdated $event)
     {
-        Notification::route('mail', $event->customer->email)
-            ->notify(new OrderStatusUpdated($event->order, $event->customer));
+        $event->customer->notify(new OrderStatusUpdated($event->order, $event->customer));
     }
 }
