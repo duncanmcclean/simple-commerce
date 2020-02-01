@@ -13,7 +13,7 @@ class CreateProductCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('commerce.database_prefix').'product_categories', function (Blueprint $table) {
+        Schema::create('product_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->string('title');
@@ -29,6 +29,6 @@ class CreateProductCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('commerce.database_prefix').'product_categories');
+        Schema::dropIfExists('product_categories');
     }
 }

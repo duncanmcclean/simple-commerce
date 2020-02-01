@@ -13,7 +13,7 @@ class CreateOrderStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('commerce.database_prefix').'order_statuses', function (Blueprint $table) {
+        Schema::create('order_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->string('name');
@@ -32,6 +32,6 @@ class CreateOrderStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('commerce.database_prefix').'order_statuses');
+        Schema::dropIfExists('order_statuses');
     }
 }

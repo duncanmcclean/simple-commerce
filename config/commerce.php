@@ -3,17 +3,6 @@
 return [
 
     /**
-     * Database
-     *
-     * You're welcome to set a prefix for the table
-     * names that Simple Commerce provides. Please note
-     * that after doing this, you'll need to re-migrate
-     * and re-seed your database.
-     */
-
-    'database_prefix' => 'simplecommerce_',
-
-    /**
      * Address
      *
      * This is where your business is located. Tax and shipping

@@ -13,7 +13,7 @@ class CreateCurrenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('commerce.database_prefix').'currencies', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->string('name');
@@ -30,6 +30,6 @@ class CreateCurrenciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('commerce.database_prefix').'currencies');
+        Schema::dropIfExists('currencies');
     }
 }

@@ -13,7 +13,7 @@ class CreateCartTaxTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('commerce.database_prefix').'cart_taxes', function (Blueprint $table) {
+        Schema::create('cart_taxes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->integer('tax_rate_id')->index();
@@ -29,6 +29,6 @@ class CreateCartTaxTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('commerce.database_prefix').'cart_taxes');
+        Schema::dropIfExists('cart_taxes');
     }
 }

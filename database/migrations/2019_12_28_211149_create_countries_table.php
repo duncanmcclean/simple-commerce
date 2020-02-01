@@ -13,7 +13,7 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('commerce.database_prefix').'countries', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uid')->unique();
             $table->string('name');
@@ -29,6 +29,6 @@ class CreateCountriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('commerce.database_prefix').'countries');
+        Schema::dropIfExists('countries');
     }
 }
