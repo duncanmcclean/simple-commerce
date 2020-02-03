@@ -12,14 +12,13 @@ Thanks for ordering from {{ config('app.name') }}. This email is the receipt for
 | {{ \DoubleThreeDigital\SimpleCommerce\Models\Product::find($item->product_id)->title }} ({{ \DoubleThreeDigital\SimpleCommerce\Models\Variant::find($item->variant_id)->sku }}) | {{ $item->quantity }} | $15.00 |
 @endforeach
 
-{{--@foreach($order->items['shipping'] as $item)--}}
-{{--{{ dd(\DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->state) }}--}}
-{{--| Shipping: {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->state->name }}, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }}--}}
-{{--@endforeach--}}
+@foreach($order->items['shipping'] as $item)
+| **Shipping:** {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }} |
+@endforeach
 
-{{--        @foreach($order->items['tax'] as $tax)--}}
-{{--            | Tax: {{ $tax->taxRate->country->name }}, {{ $tax->taxRate->state->name }}, {{ $tax->taxRate->start_of_zip_code }} | &nbsp; | {{ $tax->taxRate->rate }} |--}}
-{{--        @endforeach--}}
+@foreach($order->items['tax'] as $item)
+| **Tax:** {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }}% |
+@endforeach
 
 | - | Items Sub Total | {{ $order->items['totals']->items  }} |
 | - | Total Discount | $0.00 |
