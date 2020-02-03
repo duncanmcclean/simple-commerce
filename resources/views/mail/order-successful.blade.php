@@ -17,7 +17,7 @@ Thanks for ordering from {{ config('app.name') }}. This email is the receipt for
 @endforeach
 
 @foreach($order->items['tax'] as $item)
-| **Tax:** {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }}% |
+| **Tax:** {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->start_of_zip_code }} | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->rate }}% |
 @endforeach
 
 | - | Items Sub Total | {{ $order->items['totals']->items  }} |
