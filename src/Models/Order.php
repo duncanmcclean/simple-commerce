@@ -53,7 +53,7 @@ class Order extends Model
 
     public function getItemsAttribute($value)
     {
-        return json_decode($value);
+        return collect(json_decode($value));
     }
 
     public function editUrl()

@@ -32,7 +32,7 @@
                     </td>
 
                     <td class="px-4 py-6 text-right">
-                        Price: $15.00
+                        Price: $15.00 <!-- TODO: figure out how we can display these properly -->
                     </td>
                 </tr>
             {{ /cart:items }}
@@ -96,7 +96,7 @@
                 </td>
 
                 <td class="px-4 py-6 text-right">
-                    <p class="mb-6">Item Sub Total: {{ cart:total items='true' }}</p>
+                    <p class="mb-6">Items Sub Total: {{ cart:total items='true' }}</p>
                     <p>Total Discount: $0.00</p>
                     <p>Total Shipping: {{ cart:total shipping='true' }}</p>
                     <p>Total Tax: {{ cart:total tax='true' }}</p>

@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Stache\Stache;
+use Stripe\OrderItem;
 
 class Cart
 {
@@ -121,6 +122,23 @@ class Cart
         }
 
         return $cart->total;
+    }
+
+    public function orderItems(string $uid)
+    {
+        $cart = CartModel::where('uid', $uid)->first();
+
+        return [
+            'items' => CartItem::where('cart_id', $cart->id)->get(),
+            'shipping' => CartShipping::where('cart_id', $cart->id)->get(),
+            'tax' => CartTax::where('cart_id', $cart->id)->get(),
+            'totals' => [
+                'overall' => (new Currency())->parse($this->total($uid)),
+                'items' => (new Currency())->parse($this->total($uid, 'items')),
+                'shipping' => (new Currency())->parse($this->total($uid, 'shipping')),
+                'tax' => (new Currency())->parse($this->total($uid, 'tax')),
+            ],
+        ];
     }
 
     public function getShipping(string $uid)

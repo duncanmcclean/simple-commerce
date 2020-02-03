@@ -27,29 +27,12 @@ class OrderSuccessful extends Notification
 
     public function toMail($notifiable)
     {
-        // TODO: work on getting this stuff sorted, after we have proper item to cart stuff sorted :)
-
-//        $products = collect($this->order->data->items)
-//            ->map(function ($orderProduct) {
-//                $product = Product::find($orderProduct['id']);
-//
-//                $amount = Money::{strtoupper(config('commerce.currency.code'))}($product['price'] * 100);
-//                $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
-//
-//                return [
-//                    'title' => $product['title'],
-//                    'quantity' => $orderProduct['quantity'],
-//                    'price' => $moneyFormatter->format($amount),
-//                ];
-//            });
-
-//        return (new MailMessage())
-//            ->success()
-//            ->subject('Order successful')
-//            ->markdown('commerce::mail.order-successful', [
-//                'order' => $this->order->data,
-//                'customer' => $this->customer,
-//                'products' => $products->toArray(),
-//            ]);
+        return (new MailMessage())
+            ->success()
+            ->subject("Your order #{$this->order->id}")
+            ->markdown('commerce::mail.order-successful', [
+                'order' => $this->order,
+                'customer' => $this->customer,
+            ]);
     }
 }

@@ -25,6 +25,7 @@ use Statamic\View\View;
 
 class CheckoutController extends Controller
 {
+    public $cart;
     public $cartId;
 
     public function __construct()
@@ -114,7 +115,7 @@ class CheckoutController extends Controller
         $order->shipping_address_id = $shippingAddress->id;
         $order->customer_id = $customer->id;
         $order->order_status_id = OrderStatus::where('primary', true)->first()->id;
-        $order->items = null; // TODO: work on this from the cart
+        $order->items = (new Cart())->orderItems($request->session()->get('commerce_cart_id'));
         $order->total = $this->cart->total($this->cartId);
         $order->currency_id = CurrencyModel::where('iso', config('commerce.currency'))->first()->id;
         $order->save();
