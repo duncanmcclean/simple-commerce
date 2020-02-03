@@ -16,6 +16,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\StripeGateway;
 use Illuminate\Http\Request;
@@ -85,7 +86,7 @@ class CheckoutController extends Controller
         $shippingAddress->city = $request->shipping_city;
         $shippingAddress->zip_code = $request->shipping_zip_code;
         $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
-        $shippingAddress->state_id = $request->shipping_state ?? null;
+        $shippingAddress->state_id = State::where('abbreviation', $request->shipping_state)->first()->id ?? null;
         $shippingAddress->customer_id = $customer->id;
         $shippingAddress->save();
 
@@ -101,7 +102,7 @@ class CheckoutController extends Controller
             $billingAddress->city = $request->billing_city;
             $billingAddress->zip_code = $request->billing_zip_code;
             $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
-            $billingAddress->state_id = $request->billing_state ?? null;
+            $billingAddress->state_id = State::where('abbreviation', $request->billing_state)->first()->id ?? null;
             $billingAddress->customer_id = $customer->id;
             $billingAddress->save();
         }
