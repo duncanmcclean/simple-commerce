@@ -119,10 +119,6 @@ class ServiceProvider extends AddonServiceProvider
         ], 'commerce-migrations');
 
         $this->publishes([
-            __DIR__.'/../database/seeds' => database_path('seeds'),
-        ], 'commerce-seeders');
-
-        $this->publishes([
             __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
         ], 'commerce-blueprints');
 
