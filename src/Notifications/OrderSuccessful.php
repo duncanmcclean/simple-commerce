@@ -27,6 +27,8 @@ class OrderSuccessful extends Notification
 
     public function toMail($notifiable)
     {
+        // TODO: fix tables in this view, the formatting is way off
+
         return (new MailMessage())
             ->success()
             ->subject("Your order #{$this->order->id}")
