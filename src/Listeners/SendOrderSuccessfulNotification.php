@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Notifications\OrderSuccessful;
-use Illuminate\Support\Facades\Notification;
 
 class SendOrderSuccessfulNotification
 {
