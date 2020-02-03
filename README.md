@@ -42,4 +42,4 @@ Are you down with contributing? That's cool, just make sure to follow [our contr
 
 * [Simple Commerce Discord](https://discord.gg/P3ACYf9)
 * [Contributors Guide](./CONTRIBUTING.md)
-* [Github Issues](https://github.com/damcclean/commerce/issues)
+* [Github Issues](https://github.com/doublethreedigital/simple-commerce/issues)
