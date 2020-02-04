@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerUpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
@@ -109,8 +110,13 @@ class CustomerController extends CpController
     {
         $this->authorize('delete', $customer);
 
-        $customer->delete(); // TODO: what will happen with their orders? we might want to delete them
+        Order::where('customer_id', $customer->id)
+            ->each(function ($order) {
+                $order->delete();
+            });
 
-        return redirect(cp_route('customers.index'));
+        $customer->delete();
+
+        return back()->with('success', 'Customer has been deleted.');
     }
 }
