@@ -78,6 +78,6 @@ class OrderController extends CpController
 
         $order->delete();
 
-        return redirect(cp_route('orders.index'));
+        return back()->with('success', 'Order has been deleted.');
     }
 }
