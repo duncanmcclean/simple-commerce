@@ -45,22 +45,6 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $routes = [
-        'actions' => __DIR__.'/../routes/actions.php',
-        'cp' => __DIR__.'/../routes/cp.php',
-        'web' => __DIR__.'/../routes/web.php',
-    ];
-
-    protected $tags = [
-        CartTags::class,
-        CommerceTags::class,
-    ];
-
-    protected $scripts = [
-        __DIR__.'/../dist/js/cp.js',
-        __DIR__.'/../dist/js/web.js',
-    ];
-
     protected $listen = [
         AddedToCart::class => [],
         CheckoutComplete::class => [
@@ -71,21 +55,45 @@ class ServiceProvider extends AddonServiceProvider
         OrderStatusUpdated::class => [
             SendOrderStatusUpdatedNotification::class,
         ],
+        ReturnCustomer::class => [],
         VariantOutOfStock::class => [],
         VariantStockRunningLow::class => [],
-        ReturnCustomer::class => [],
+    ];
+
+    protected $tags = [
+        CartTags::class,
+        CommerceTags::class,
+    ];
+
+    protected $fieldtypes = [
+        CountryFieldtype::class,
+        CurrencyFieldtype::class,
+        CustomerFieldtype::class,
+        CustomerOrdersFieldtype::class,
+        MoneyFieldtype::class,
+        OrderStatusFieldtype::class,
+        OrderStatusSettingsFieldtype::class,
+        ProductCategoryFieldtype::class,
+        ProductFieldtype::class,
+        ShippingZoneSettingsFieldtype::class,
+        StateFieldtype::class,
+        TaxRateSettingsFieldtype::class,
+    ];
+
+    protected $modifiers = [
+        PriceModifier::class,
     ];
 
     protected $widgets = [
-        RecentOrdersWidget::class,
         NewCustomersWidget::class,
+        RecentOrdersWidget::class,
     ];
 
     protected $policies = [
         Customer::class => CustomerPolicy::class,
         Order::class => OrderPolicy::class,
-        Product::class => ProductPolicy::class,
         ProductCategory::class => ProductCategoryPolicy::class,
+        Product::class => ProductPolicy::class,
     ];
 
     protected $commands = [
@@ -93,12 +101,17 @@ class ServiceProvider extends AddonServiceProvider
         SeederCommand::class,
     ];
 
-    protected $modifiers = [
-        PriceModifier::class,
+    protected $scripts = [
+        __DIR__.'/../dist/js/cp.js',
+        __DIR__.'/../dist/js/web.js',
     ];
 
-    // TODO: order these in the same way as the addonserviceprovider
-
+    protected $routes = [
+        'actions' => __DIR__.'/../routes/actions.php',
+        'cp' => __DIR__.'/../routes/cp.php',
+        'web' => __DIR__.'/../routes/web.php',
+    ];
+    
     public function boot()
     {
         parent::boot();
@@ -160,19 +173,6 @@ class ServiceProvider extends AddonServiceProvider
                 ->route('settings.edit')
                 ->icon('settings-horizontal');
         });
-
-        CountryFieldtype::register();
-        CurrencyFieldtype::register();
-        CustomerFieldtype::register();
-        CustomerOrdersFieldtype::register();
-        MoneyFieldtype::register();
-        OrderStatusFieldtype::register();
-        OrderStatusSettingsFieldtype::register();
-        ProductCategoryFieldtype::register();
-        ProductFieldtype::register();
-        ShippingZoneSettingsFieldtype::register();
-        StateFieldtype::register();
-        TaxRateSettingsFieldtype::register();
 
         $this->app->booted(function () {
             Permission::group('simple-commerce', 'Simple Commerce', function () {
