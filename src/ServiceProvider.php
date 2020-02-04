@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponUsed;
 use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
@@ -24,6 +25,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingZoneSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
@@ -52,6 +54,9 @@ class ServiceProvider extends AddonServiceProvider
         ],
         CouponUsed::class => [],
         NewCustomerCreated::class => [],
+        OrderRefunded::class => [
+            SendOrderRefundedNotification::class,
+        ],
         OrderStatusUpdated::class => [
             SendOrderStatusUpdatedNotification::class,
         ],
@@ -111,7 +116,7 @@ class ServiceProvider extends AddonServiceProvider
         'cp' => __DIR__.'/../routes/cp.php',
         'web' => __DIR__.'/../routes/web.php',
     ];
-    
+
     public function boot()
     {
         parent::boot();
