@@ -115,6 +115,11 @@ class CustomerController extends CpController
                 $order->delete();
             });
 
+        Address::where('customer_id', $customer->id)
+            ->each(function ($address) {
+                $address->delete();
+            });
+
         $customer->delete();
 
         return back()->with('success', 'Customer has been deleted.');
