@@ -32,7 +32,7 @@ class CommerceTags extends Tags
 
     public function route()
     {
-        return route($this->getParam('key'), Arr::except($this->params, ['key']);
+        return route($this->getParam('key'), Arr::except($this->params, ['key']));
     }
 
     public function categories()
