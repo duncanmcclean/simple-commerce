@@ -14,6 +14,7 @@ Unlike Statamic itself using flat-files, **Simple Commerce uses a MySQL database
 * [Stripe (Payment Gateway)](./stripe.md)
 * [Frontend](./frontend.md)
 * [Widgets](./widgets.md)
+* [Notifications](./notifications.md)
 * [Permissions](./permissions.md)
 
 ## Extending
