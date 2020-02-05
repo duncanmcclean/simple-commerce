@@ -75,12 +75,12 @@ class Cart
         return collect($cart->items);
     }
 
-    public function remove(string $cartUuuid, string $itemUuuid)
+    public function remove(string $cartUuid, string $itemUuid)
     {
-        $item = CartItem::where('uuid', $itemUuuid)->first();
+        $item = CartItem::where('uuid', $itemUuid)->first();
         $item->delete();
 
-        return $this->get($cartUuuid);
+        return $this->get($cartUuid);
     }
 
     public function clear(string $uuid)
