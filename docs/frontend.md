@@ -18,10 +18,16 @@ Returns your Stripe key from your `.env` file.
 
 ## `{{ commerce:route }}`
 
-Returns Simple Commerce URLs using the route key.
+Returns Simple Commerce routes using the route names defined in [`web.php`](https://github.com/doublethreedigital/simple-commerce/blob/master/routes/web.php).
 
 ```html
-<a href="{{ commerce:route key='product_index' }}">All Products</a> 
+<a href="{{ commerce:route key='products.index' }}">All Products</a> 
+```
+
+The `commerce:route` tag also supports passing in parameters. For example, if you need to pass in the `product` parameter, just pass it into the tag, like so:
+
+```html
+{{ commerce:route key='products.show' product='uuid' }}
 ```
 
 ## `{{ commerce:categories }}`
