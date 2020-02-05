@@ -34,7 +34,6 @@
     "require": {
         "doctrine/dbal": "2.10.x-dev",
         "laravel/slack-notification-channel": "^3.0@dev",
-        "moneyphp/money": "^3.0@dev",
         "statamic/cms": "^3.0@beta",
         "stripe/stripe-php": "^7.7"
     },
