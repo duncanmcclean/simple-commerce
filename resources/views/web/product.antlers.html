@@ -4,10 +4,10 @@
     {{ description }}
 </div>
 
-<form class="flex flex-row items-center my-4" action="{{ commerce:route key='cart_store' }}" method="post">
+<form class="flex flex-row items-center my-4" action="{{ commerce:route key='cart.add' }}" method="post">
     {{ csrf_field }}
 
-    <input type="hidden" name="product" value="{{ uid }}">
+    <input type="hidden" name="product" value="{{ uuid }}">
 
     <select name="variant" required>
         {{ variants }}

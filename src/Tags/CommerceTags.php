@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
+use Illuminate\Support\Arr;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -31,7 +32,7 @@ class CommerceTags extends Tags
 
     public function route()
     {
-        return config("commerce.{$this->getParam('key')}");
+        return route($this->getParam('key'), Arr::except($this->params, ['key']);
     }
 
     public function categories()

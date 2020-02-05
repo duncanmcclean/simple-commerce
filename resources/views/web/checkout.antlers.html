@@ -4,7 +4,7 @@
     <p>There are no items in your cart.</p>
 {{ else }}
     <div class="flex flex-row">
-        <form id="payment-form" class="md:w-2/3 mx-2" action="{{ commerce:route key='checkout_store' }}" method="post" @submit.prevent="submitCheckout">
+        <form id="payment-form" class="md:w-2/3 mx-2" action="{{ commerce:route key='checkout.store' }}" method="post" @submit.prevent="submitCheckout">
             {{ csrf_field }}
 
             <fieldset class="border-b mb-6">
@@ -130,11 +130,6 @@
 
             <fieldset class="border-b mb-6">
                 <h2 class="text-3xl mb-4 font-medium">Payment</h2>
-
-                <!--                <div class="flex flex-row items-center mb-4">-->
-                <!--                    <h2 class="w-2/5 font-bold mb-2">Cardholder Name</h2>-->
-                <!--                    <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="cardholder_name" placeholder="Joe Bloggs" required>-->
-                <!--                </div>-->
 
                 <div class="flex flex-row items-center mb-4">
                     <h2 class="w-2/5 font-bold mb-2">Card Details</h2>
