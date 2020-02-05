@@ -27,6 +27,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
+use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantOutOfStockNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -59,7 +60,9 @@ class ServiceProvider extends AddonServiceProvider
             SendOrderStatusUpdatedNotification::class,
         ],
         ReturnCustomer::class => [],
-        VariantOutOfStock::class => [],
+        VariantOutOfStock::class => [
+            SendVariantOutOfStockNotification::class,
+        ],
         VariantStockRunningLow::class => [],
     ];
 

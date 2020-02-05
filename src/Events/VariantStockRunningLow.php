@@ -11,12 +11,10 @@ class VariantStockRunningLow
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $product;
     public $variant;
 
-    public function __construct(Product $product, Variant $variant)
+    public function __construct(Variant $variant)
     {
-        $this->product = $product;
         $this->variant = $variant;
     }
 }
