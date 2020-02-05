@@ -32,10 +32,11 @@
         }
     },
     "require": {
-        "stripe/stripe-php": "^7.7",
-        "statamic/cms": "^3.0@beta",
+        "doctrine/dbal": "2.10.x-dev",
+        "laravel/slack-notification-channel": "^3.0@dev",
         "moneyphp/money": "^3.0@dev",
-        "doctrine/dbal": "2.10.x-dev"
+        "statamic/cms": "^3.0@beta",
+        "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0"

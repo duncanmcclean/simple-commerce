@@ -90,4 +90,17 @@ return [
 
     'cart_retention' => 30,
 
+    /**
+     * Notifications
+     *
+     * Configure how we send your back of store notifications.
+     */
+
+    'notifications' => [
+        'channel' => ['mail'],
+
+        'mail_to' => 'admin@example.com',
+        'slack_webhook' => '',
+    ],
+
 ];
