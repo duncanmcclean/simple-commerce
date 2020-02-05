@@ -73,7 +73,13 @@ class CommerceTagsTest extends TestCase
     /** @test */
     public function commerce_route_tag()
     {
-        // TODO: wait until I get routing sorted for tests
+        // TODO: work with params pls
+    }
+
+    /** @test */
+    public function commerce_route_tag_with_params()
+    {
+        // TODO: work with params pls
     }
 
     /** @test */
