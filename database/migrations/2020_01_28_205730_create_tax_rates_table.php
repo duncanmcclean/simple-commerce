@@ -15,7 +15,7 @@ class CreateTaxRatesTable extends Migration
     {
         Schema::create('tax_rates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid')->unique();
+            $table->string('uid')->unique();
             $table->integer('country_id')->index();
             $table->integer('state_id')->index()->nullable();
             $table->string('start_of_zip_code')->nullable();

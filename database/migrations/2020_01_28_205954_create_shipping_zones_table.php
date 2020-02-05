@@ -15,7 +15,7 @@ class CreateShippingZonesTable extends Migration
     {
         Schema::create('shipping_zones', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid')->unique();
+            $table->string('uid')->unique();
             $table->integer('country_id')->index();
             $table->integer('state_id')->index()->nullable();
             $table->string('start_of_zip_code')->nullable();

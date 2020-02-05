@@ -15,7 +15,7 @@ class CreateVariantsTable extends Migration
     {
         Schema::create('variants', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid')->unique();
+            $table->string('uid')->unique();
             $table->string('sku');
             $table->string('name');
             $table->string('price');
