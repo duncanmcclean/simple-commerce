@@ -53,8 +53,14 @@ Customers will have addresses and orders attached to them.
 
 > Please consult an accountant or tax professional who may be able to help you decide which taxes apply to your store.
 
-Work in progress.
+Tax will be added automatically to carts when a customer adds an item to it. 
+
+You can manage your store's tax rates in `Settings > Tax > Manage Tax Rates`. You can specify the country, state and even the start of a zip code where you want your tax rate to apply.
+
+Carts can only have one tax rate attached to them. Tax Rates don't tax shipping so we would advise you include tax inside your shipping price.
 
 # Shipping
 
-Work in progress.
+Simple Commerce provides a shipping system that will automatically add shipping costs to your customer's cart.
+
+You can manage your store's shipping zones in `Settings > Shipping > Manage Shipping Zones`. You can specify the country, state and even the start of a zip code where you want your shipping zone to apply.
