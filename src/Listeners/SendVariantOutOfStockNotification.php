@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use \DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice\VariantOutOfStock as BackOfficeVariantOutOfStock;
+use DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice\VariantOutOfStock as BackOfficeVariantOutOfStock;
 use Illuminate\Support\Facades\Notification;
 
 class SendVariantOutOfStockNotification

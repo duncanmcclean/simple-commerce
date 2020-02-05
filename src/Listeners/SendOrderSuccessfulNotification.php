@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice\OrderSuccessful as BackOfficeOrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
+use DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice\OrderSuccessful as BackOfficeOrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Notifications\OrderSuccessful;
 use Illuminate\Support\Facades\Notification;
 

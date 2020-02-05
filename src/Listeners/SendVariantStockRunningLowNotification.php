@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice\VariantStockRunningLow as BackOfficeVariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice\VariantStockRunningLow as BackOfficeVariantStockRunningLow;
 use Illuminate\Support\Facades\Notification;
 
 class SendVariantStockRunningLowNotification
