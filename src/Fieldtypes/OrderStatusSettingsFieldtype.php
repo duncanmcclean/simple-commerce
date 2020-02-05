@@ -12,7 +12,7 @@ class OrderStatusSettingsFieldtype extends Fieldtype
 
     public function preload()
     {
-        $blueprint = Blueprint::find('order_status');
+        $blueprint = Blueprint::find('simple-commerce/order_status');
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

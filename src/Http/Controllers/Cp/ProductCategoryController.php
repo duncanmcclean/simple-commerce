@@ -37,7 +37,7 @@ class ProductCategoryController extends CpController
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
-        $blueprint = Blueprint::find('product_category');
+        $blueprint = Blueprint::find('simple-commerce/product_category');
 
         $fields = $blueprint->fields();
         $fields = $fields->addValues([]);
@@ -95,7 +95,7 @@ class ProductCategoryController extends CpController
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
-        $blueprint = Blueprint::find('product_category');
+        $blueprint = Blueprint::find('simple-commerce/product_category');
 
         $fields = $blueprint->fields();
         $fields = $fields->addValues([]);

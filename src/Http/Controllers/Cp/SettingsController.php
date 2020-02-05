@@ -21,7 +21,7 @@ class SettingsController extends CpController
         ]);
 
         $values = Config::get('commerce');
-        $blueprint = Blueprint::find('simplecommerce_settings');
+        $blueprint = Blueprint::find('simple-commerce/simplecommerce_settings');
 
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();

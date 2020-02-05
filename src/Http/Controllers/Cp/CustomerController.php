@@ -39,7 +39,7 @@ class CustomerController extends CpController
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
         ]);
 
-        $blueprint = Blueprint::find('customer');
+        $blueprint = Blueprint::find('simple-commerce/customer');
 
         $fields = $blueprint->fields();
         $fields = $fields->addValues([]);
@@ -79,7 +79,7 @@ class CustomerController extends CpController
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
         ]);
 
-        $blueprint = Blueprint::find('customer');
+        $blueprint = Blueprint::find('simple-commerce/customer');
 
         $fields = $blueprint->fields();
         $fields = $fields->addValues([]);

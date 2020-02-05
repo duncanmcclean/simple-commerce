@@ -12,7 +12,7 @@ class TaxRateSettingsFieldtype extends Fieldtype
 
     public function preload()
     {
-        $blueprint = Blueprint::find('tax_rate');
+        $blueprint = Blueprint::find('simple-commerce/tax_rate');
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

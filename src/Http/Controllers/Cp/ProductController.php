@@ -38,7 +38,7 @@ class ProductController extends CpController
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
 
-        $blueprint = Blueprint::find('product');
+        $blueprint = Blueprint::find('simple-commerce/product');
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
@@ -121,7 +121,7 @@ class ProductController extends CpController
             })->toArray(),
         ]);
 
-        $blueprint = Blueprint::find('product');
+        $blueprint = Blueprint::find('simple-commerce/product');
 
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();

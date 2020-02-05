@@ -12,7 +12,7 @@ class ShippingZoneSettingsFieldtype extends Fieldtype
 
     public function preload()
     {
-        $blueprint = Blueprint::find('shipping_zone');
+        $blueprint = Blueprint::find('simple-commerce/shipping_zone');
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

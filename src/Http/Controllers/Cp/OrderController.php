@@ -41,7 +41,7 @@ class OrderController extends CpController
             ['text' => 'Orders', 'url' => cp_route('orders.index')],
         ]);
 
-        $blueprint = Blueprint::find('order');
+        $blueprint = Blueprint::find('simple-commerce/order');
 
         $fields = $blueprint->fields();
         $fields = $fields->addValues([]);
