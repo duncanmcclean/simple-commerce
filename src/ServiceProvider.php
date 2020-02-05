@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Console\Commands\CartDeletionCommand;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
-use DoubleThreeDigital\SimpleCommerce\Events\CouponUsed;
 use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
@@ -52,7 +51,6 @@ class ServiceProvider extends AddonServiceProvider
         CheckoutComplete::class => [
             SendOrderSuccessfulNotification::class,
         ],
-        CouponUsed::class => [],
         NewCustomerCreated::class => [],
         OrderRefunded::class => [
             SendOrderRefundedNotification::class,
