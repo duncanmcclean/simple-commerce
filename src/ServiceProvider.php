@@ -28,6 +28,7 @@ use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantOutOfStockNotification;
+use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantStockRunningLowNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -63,7 +64,9 @@ class ServiceProvider extends AddonServiceProvider
         VariantOutOfStock::class => [
             SendVariantOutOfStockNotification::class,
         ],
-        VariantStockRunningLow::class => [],
+        VariantStockRunningLow::class => [
+            SendVariantStockRunningLowNotification::class,
+        ],
     ];
 
     protected $tags = [
