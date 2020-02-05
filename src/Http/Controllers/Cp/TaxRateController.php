@@ -27,7 +27,7 @@ class TaxRateController extends CpController
         // TODO: setup a validation request
 
         $rate = new TaxRate();
-        $rate->uid = (new Stache())->generateId();
+        $rate->uuid = (new Stache())->generateId();
         $rate->name = $request->name;
         $rate->country_id = $request->country[0];
         $rate->state_id = isset($request->state[0]) ?? null;

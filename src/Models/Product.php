@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'slug' => 'product_category_id', 'uid', 'is_enabled', 'description',
+        'title', 'slug' => 'product_category_id', 'uuid', 'is_enabled', 'description',
     ];
 
     protected $casts = [
@@ -20,7 +20,7 @@ class Product extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function productCategory()
@@ -55,16 +55,16 @@ class Product extends Model
 
     public function editUrl()
     {
-        return cp_route('products.edit', ['product' => $this->uid]);
+        return cp_route('products.edit', ['product' => $this->uuid]);
     }
 
     public function updateUrl()
     {
-        return cp_route('products.update', ['product' => $this->uid]);
+        return cp_route('products.update', ['product' => $this->uuid]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('products.destroy', ['product' => $this->uid]);
+        return cp_route('products.destroy', ['product' => $this->uuid]);
     }
 }

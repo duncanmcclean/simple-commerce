@@ -14,7 +14,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'product_category_id' => function () {
             return factory(ProductCategory::class)->create()->id;
         },
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
         'is_enabled' => true,
         'description' => $faker->text,
     ];

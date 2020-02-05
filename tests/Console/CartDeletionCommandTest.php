@@ -30,13 +30,13 @@ class CartDeletionCommandTest extends TestCase
         $cart = factory(Cart::class)->create();
 
         $this->assertDatabaseHas('carts', [
-            'uid' => $cart->uid
+            'uuid' => $cart->uuid
         ]);
 
         $delete = $this->cartDeletion->deletion();
 
         $this->assertDatabaseHas('carts', [
-            'uid' => $cart->uid
+            'uuid' => $cart->uuid
         ]);
     }
 
@@ -64,26 +64,26 @@ class CartDeletionCommandTest extends TestCase
 
         $this
             ->assertDatabaseHas('carts', [
-                'uid' => $cart->uid,
+                'uuid' => $cart->uuid,
             ])
             ->assertDatabaseHas('cart_items', [
-                'uid' => $item->uid,
+                'uuid' => $item->uuid,
             ])
             ->assertDatabaseHas('cart_shipping', [
-                'uid' => $shipping->uid,
+                'uuid' => $shipping->uuid,
             ]);
 
         $delete = $this->cartDeletion->deletion();
 
         $this
             ->assertDatabaseMissing('carts', [
-                'uid' => $cart->uid,
+                'uuid' => $cart->uuid,
             ])
             ->assertDatabaseMissing('cart_items', [
-                'uid' => $item->uid,
+                'uuid' => $item->uuid,
             ])
             ->assertDatabaseMissing('cart_shipping', [
-                'uid' => $shipping->uid,
+                'uuid' => $shipping->uuid,
             ]);
     }
 }

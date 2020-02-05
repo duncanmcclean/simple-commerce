@@ -40,7 +40,7 @@ class CartControllerTest extends TestCase
         ]);
 
         $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uid]);
+        $this->session(['commerce_cart_id' => $cart->uuid]);
 
         $cartItem = factory(CartItem::class)->create([
             'cart_id' => $cart->id,
@@ -66,7 +66,7 @@ class CartControllerTest extends TestCase
         ]);
 
         $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uid]);
+        $this->session(['commerce_cart_id' => $cart->uuid]);
 
         $response = $this->post('/cart/add', [
             'product' => $product->id,
@@ -87,7 +87,7 @@ class CartControllerTest extends TestCase
         ]);
 
         $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uid]);
+        $this->session(['commerce_cart_id' => $cart->uuid]);
 
         $cartItem = factory(CartItem::class)->create([
             'cart_id' => $cart->id,
@@ -97,8 +97,8 @@ class CartControllerTest extends TestCase
         ]);
 
         $response = $this->post('/cart/remove', [
-            'cartId' => $cart->uid,
-            'item_id' => $cartItem->uid,
+            'cartId' => $cart->uuid,
+            'item_id' => $cartItem->uuid,
         ]);
 
         $response

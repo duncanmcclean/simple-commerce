@@ -6,6 +6,6 @@ use Statamic\Stache\Stache;
 
 $factory->define(Cart::class, function (Faker $faker) {
     return [
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
     ];
 });

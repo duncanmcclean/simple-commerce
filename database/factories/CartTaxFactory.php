@@ -8,7 +8,7 @@ use Statamic\Stache\Stache;
 
 $factory->define(CartTax::class, function (Faker $faker) {
     return [
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
         'tax_rate_id' => function () {
             return factory(TaxRate::class)->create()->id;
         },

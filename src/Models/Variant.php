@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Variant extends Model
 {
     protected $fillable = [
-        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uid', 'description', 'variant_attributes', 'name',
+        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uuid', 'description', 'variant_attributes', 'name',
     ];
 
     protected $appends = [
@@ -17,7 +17,7 @@ class Variant extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function product()

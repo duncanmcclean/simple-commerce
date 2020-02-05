@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaxRate extends Model
 {
     protected $fillable = [
-        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'name', 'uid',
+        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'name', 'uuid',
     ];
 
     protected $appends = [
@@ -16,7 +16,7 @@ class TaxRate extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function country()
@@ -36,11 +36,11 @@ class TaxRate extends Model
 
     public function getUpdateUrlAttribute()
     {
-        return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uid']]);
+        return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uuid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
-        return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['uid']]);
+        return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['uuid']]);
     }
 }

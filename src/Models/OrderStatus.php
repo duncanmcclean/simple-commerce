@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderStatus extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'description', 'color', 'primary', 'uid',
+        'name', 'slug', 'description', 'color', 'primary', 'uuid',
     ];
 
     protected $casts = [
@@ -20,7 +20,7 @@ class OrderStatus extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function orders()
@@ -30,11 +30,11 @@ class OrderStatus extends Model
 
     public function getUpdateUrlAttribute()
     {
-        return cp_route('commerce-api.order-status.update', ['status' => $this->attributes['uid']]);
+        return cp_route('commerce-api.order-status.update', ['status' => $this->attributes['uuid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
-        return cp_route('commerce-api.order-status.destroy', ['status' => $this->attributes['uid']]);
+        return cp_route('commerce-api.order-status.destroy', ['status' => $this->attributes['uuid']]);
     }
 }

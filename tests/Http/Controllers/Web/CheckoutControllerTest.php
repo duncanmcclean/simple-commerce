@@ -47,7 +47,7 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uid]);
+        $this->session(['commerce_cart_id' => $cart->uuid]);
 
         $cartItem = factory(CartItem::class)->create([
             'cart_id' => $cart->id,
@@ -77,7 +77,7 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uid]);
+        $this->session(['commerce_cart_id' => $cart->uuid]);
 
         $cartItem = factory(CartItem::class)->create([
             'cart_id' => $cart->id,
@@ -124,7 +124,7 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('carts', [
-            'uid' => $cart->uid,
+            'uuid' => $cart->uuid,
         ]);
 
         Event::assertDispatched(CheckoutComplete::class);

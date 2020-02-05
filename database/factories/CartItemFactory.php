@@ -9,7 +9,7 @@ use Statamic\Stache\Stache;
 
 $factory->define(CartItem::class, function (Faker $faker) {
     return [
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
         'product_id' => function() {
             return factory(Product::class)->create()->id;
         },

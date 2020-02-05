@@ -7,7 +7,7 @@ use Statamic\Stache\Stache;
 $factory->define(Currency::class, function (Faker $faker) {
     return [
         'iso' => 'USD',
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
         'symbol' => '$',
         'name' => 'Unites States Dollar',
     ];

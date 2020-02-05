@@ -10,6 +10,6 @@ $factory->define(ProductCategory::class, function (Faker $faker) {
     return [
         'title' => $title,
         'slug' => str_slug($title),
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
     ];
 });

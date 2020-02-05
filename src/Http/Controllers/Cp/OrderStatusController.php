@@ -27,7 +27,7 @@ class OrderStatusController extends CpController
         // TODO: use a validation request here
 
         $status = new OrderStatus();
-        $status->uid = (new Stache())->generateId();
+        $status->uuid = (new Stache())->generateId();
         $status->name = $request->name;
         $status->slug = $request->slug;
         $status->description = $request->description;

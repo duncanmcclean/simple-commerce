@@ -38,7 +38,7 @@ class CartTest extends TestCase
         $this->assertIsString($create);
 
         $this->assertDatabaseHas('carts', [
-            'uid' => $create,
+            'uuid' => $create,
         ]);
     }
 
@@ -47,7 +47,7 @@ class CartTest extends TestCase
     {
         $cart = factory(CartModel::class)->create();
 
-        $exists = $this->cart->exists($cart->uid);
+        $exists = $this->cart->exists($cart->uuid);
 
         $this->assertTrue($exists);
     }
@@ -60,7 +60,7 @@ class CartTest extends TestCase
             'cart_id' => $cart->id,
         ]);
 
-        $count = $this->cart->count($cart->uid);
+        $count = $this->cart->count($cart->uuid);
 
         $this->assertSame($count, 5);
     }
@@ -73,7 +73,7 @@ class CartTest extends TestCase
             'cart_id' => $cart->id,
         ]);
 
-        $get = $this->cart->get($cart->uid);
+        $get = $this->cart->get($cart->uuid);
 
         $this->assertIsObject($get);
     }
@@ -90,9 +90,9 @@ class CartTest extends TestCase
         $shipping = factory(ShippingZone::class)->create();
         $tax = factory(TaxRate::class)->create();
 
-        $add = $this->cart->add($cart->uid, [
-            'product' => $product->uid,
-            'variant' => $variant->uid,
+        $add = $this->cart->add($cart->uuid, [
+            'product' => $product->uuid,
+            'variant' => $variant->uuid,
             'quantity' => 1,
         ]);
 
@@ -114,7 +114,7 @@ class CartTest extends TestCase
             'cart_id' => $cart->id,
         ]);
 
-        $remove = $this->cart->remove($cart->uid, $item->uid);
+        $remove = $this->cart->remove($cart->uuid, $item->uuid);
 
         $this->assertIsObject($remove);
 
@@ -138,7 +138,7 @@ class CartTest extends TestCase
             'cart_id' => $cart->id,
         ]);
 
-        $clear = $this->cart->clear($cart->uid);
+        $clear = $this->cart->clear($cart->uuid);
 
         $this->assertNull($clear);
 

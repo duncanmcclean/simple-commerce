@@ -19,55 +19,55 @@ class Cart
     public function create()
     {
         $cart = new CartModel();
-        $cart->uid = (new Stache())->generateId();
+        $cart->uuid = (new Stache())->generateId();
         $cart->save();
 
-        return $cart->uid;
+        return $cart->uuid;
     }
 
-    public function exists(string $uid)
+    public function exists(string $uuid)
     {
-        if ($cart = CartModel::where('uid', $uid)->first()) {
+        if ($cart = CartModel::where('uuid', $uuid)->first()) {
             return true;
         }
 
         return false;
     }
 
-    public function count(string $uid)
+    public function count(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         return CartItem::where('cart_id', $cart->id)->count();
     }
 
-    public function get(string $uid)
+    public function get(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         return CartItem::with('cart', 'product', 'variant')
             ->where('cart_id', $cart->id)
             ->get();
     }
 
-    public function add(string $uid, array $data)
+    public function add(string $uuid, array $data)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         $item = new CartItem();
-        $item->uid = (new Stache())->generateId();
-        $item->product_id = Product::where('uid', $data['product'])->first()->id;
-        $item->variant_id = Variant::where('uid', $data['variant'])->first()->id;
+        $item->uuid = (new Stache())->generateId();
+        $item->product_id = Product::where('uuid', $data['product'])->first()->id;
+        $item->variant_id = Variant::where('uuid', $data['variant'])->first()->id;
         $item->quantity = $data['quantity'];
         $item->cart_id = $cart->id;
         $item->save();
 
-        if (! $this->alreadyShipping($uid)) {
-            $this->addShipping($uid);
+        if (! $this->alreadyShipping($uuid)) {
+            $this->addShipping($uuid);
         }
 
-        if (! $this->alreadyTax($uid)) {
-            $this->addTax($uid);
+        if (! $this->alreadyTax($uuid)) {
+            $this->addTax($uuid);
         }
 
         event(new AddedToCart($cart, $item));
@@ -75,17 +75,17 @@ class Cart
         return collect($cart->items);
     }
 
-    public function remove(string $cartUid, string $itemUid)
+    public function remove(string $cartUuuid, string $itemUuuid)
     {
-        $item = CartItem::where('uid', $itemUid)->first();
+        $item = CartItem::where('uuid', $itemUuuid)->first();
         $item->delete();
 
-        return $this->get($cartUid);
+        return $this->get($cartUuuid);
     }
 
-    public function clear(string $uid)
+    public function clear(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         CartItem::where('cart_id', $cart->id)
             ->each(function ($item) {
@@ -105,9 +105,9 @@ class Cart
         $cart->delete();
     }
 
-    public function total(string $uid, string $type = null)
+    public function total(string $uuid, string $type = null)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         if ($type === 'items') {
             return (new CartCalculator($cart))->itemsTotal()->total;
@@ -124,35 +124,35 @@ class Cart
         return $cart->total;
     }
 
-    public function orderItems(string $uid)
+    public function orderItems(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         return [
             'items' => CartItem::where('cart_id', $cart->id)->get(),
             'shipping' => CartShipping::where('cart_id', $cart->id)->get(),
             'tax' => CartTax::where('cart_id', $cart->id)->get(),
             'totals' => [
-                'overall' => (new Currency())->parse($this->total($uid)),
-                'items' => (new Currency())->parse($this->total($uid, 'items')),
-                'shipping' => (new Currency())->parse($this->total($uid, 'shipping')),
-                'tax' => (new Currency())->parse($this->total($uid, 'tax')),
+                'overall' => (new Currency())->parse($this->total($uuid)),
+                'items' => (new Currency())->parse($this->total($uuid, 'items')),
+                'shipping' => (new Currency())->parse($this->total($uuid, 'shipping')),
+                'tax' => (new Currency())->parse($this->total($uuid, 'tax')),
             ],
         ];
     }
 
-    public function getShipping(string $uid)
+    public function getShipping(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         return CartShipping::with('shippingZone', 'shippingZone.country', 'shippingZone.state')
             ->where('cart_id', $cart->id)
             ->get();
     }
 
-    public function alreadyShipping(string $uid)
+    public function alreadyShipping(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         $shipping = CartShipping::where('cart_id', $cart->id)->get()->count();
 
@@ -163,16 +163,16 @@ class Cart
         return true;
     }
 
-    public function addShipping(string $uid)
+    public function addShipping(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         // TODO: work out a better shipping zone thing to add rather than just the first one
 
         $zone = ShippingZone::first();
 
         $shipping = new CartShipping();
-        $shipping->uid = (new Stache())->generateId();
+        $shipping->uuid = (new Stache())->generateId();
         $shipping->shipping_zone_id = $zone->id;
         $shipping->cart_id = $cart->id;
         $shipping->save();
@@ -180,18 +180,18 @@ class Cart
         return $shipping;
     }
 
-    public function getTax(string $uid)
+    public function getTax(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         return CartTax::with('taxRate', 'taxRate.country', 'taxRate.state')
             ->where('cart_id', $cart->id)
             ->get();
     }
 
-    public function alreadyTax(string $uid)
+    public function alreadyTax(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         $tax = CartTax::where('cart_id', $cart->id)->get()->count();
 
@@ -202,16 +202,16 @@ class Cart
         return true;
     }
 
-    public function addTax(string $uid)
+    public function addTax(string $uuid)
     {
-        $cart = CartModel::where('uid', $uid)->first();
+        $cart = CartModel::where('uuid', $uuid)->first();
 
         // TODO: work out a better shipping zone thing to add rather than just the first one
 
         $rate = TaxRate::first();
 
         $tax = new CartTax();
-        $tax->uid = (new Stache())->generateId();
+        $tax->uuid = (new Stache())->generateId();
         $tax->tax_rate_id = $rate->id;
         $tax->cart_id = $cart->id;
         $tax->save();

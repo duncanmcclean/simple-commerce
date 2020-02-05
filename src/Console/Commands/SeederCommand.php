@@ -273,7 +273,7 @@ class SeederCommand extends Command
 
         foreach ($countries as $country) {
             $item = new Country();
-            $item->uid = (new Stache())->generateId();
+            $item->uuid = (new Stache())->generateId();
             $item->name = $country['name'];
             $item->iso = $country['iso'];
             $item->save();
@@ -392,7 +392,7 @@ class SeederCommand extends Command
 
         foreach ($currencies as $currency) {
             $item = new Currency();
-            $item->uid = (new Stache())->generateId();
+            $item->uuid = (new Stache())->generateId();
             $item->iso = $currency['iso'];
             $item->name = $currency['name'];
             $item->symbol = $currency['symbol'];
@@ -423,7 +423,7 @@ class SeederCommand extends Command
 
         foreach ($statuses as $status) {
             $item = new OrderStatus();
-            $item->uid = (new Stache())->generateId();
+            $item->uuid = (new Stache())->generateId();
             $item->name = $status['name'];
             $item->slug = $status['slug'];
             $item->description = $status['description'];
@@ -493,7 +493,7 @@ class SeederCommand extends Command
 
         foreach ($states as $state) {
             $item = new State();
-            $item->uid = (new Stache())->generateId();
+            $item->uuid = (new Stache())->generateId();
             $item->name = $state['name'];
             $item->abbreviation = $state['abbreviation'];
             $item->country_id = Country::where('iso', 'US')->first()->id;

@@ -57,7 +57,7 @@ class ProductController extends CpController
         $validation = $request->validated();
 
         $product = new Product();
-        $product->uid = (new Stache())->generateId();
+        $product->uuid = (new Stache())->generateId();
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->description = $request->description;
@@ -68,7 +68,7 @@ class ProductController extends CpController
         collect($request->variants)
             ->each(function ($variant) use ($product) {
                 $item = new Variant();
-                $item->uid = (new Stache())->generateId();
+                $item->uuid = (new Stache())->generateId();
                 $item->name = $variant['name'];
                 $item->sku = $variant['sku'];
                 $item->price = $variant['price'];
@@ -81,7 +81,7 @@ class ProductController extends CpController
                 $item->save();
             });
 
-        return ['redirect' => cp_route('products.edit', ['product' => $product->uid])];
+        return ['redirect' => cp_route('products.edit', ['product' => $product->uuid])];
     }
 
     public function edit($product)
@@ -93,7 +93,7 @@ class ProductController extends CpController
             ['text' => 'Products', 'url' => cp_route('products.index')],
         ]);
 
-        $product = Product::where('uid', $product)->first();
+        $product = Product::where('uuid', $product)->first();
         $variants = Variant::where('product_id', $product->id)->get();
 
         $values = array_merge($product->toArray(), [
@@ -101,7 +101,7 @@ class ProductController extends CpController
             'variants' => $variants->map(function (Variant $variant, $key) {
                 return [
                     '_id' => 'row-'.$key,
-                    'uid' => $variant->uid,
+                    'uuid' => $variant->uuid,
                     'description' => $variant->description,
                     'max_quantity' => $variant->max_quantity,
                     'name' => $variant->name,
@@ -150,11 +150,11 @@ class ProductController extends CpController
 
         collect($request->variants)
             ->each(function ($variant) use ($product) {
-                if (isset($variant['uid'])) {
-                    $item = Variant::where('uid', $variant['uid'])->firstOrFail();
+                if (isset($variant['uuid'])) {
+                    $item = Variant::where('uuid', $variant['uuid'])->firstOrFail();
                 } else {
                     $item = new Variant();
-                    $item->uid = (new Stache())->generateId();
+                    $item->uuid = (new Stache())->generateId();
                 }
 
                 $item->name = $variant['name'];

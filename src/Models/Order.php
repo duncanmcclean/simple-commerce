@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'payment_intent', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'uid',
+        'payment_intent', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'uuid',
     ];
 
     protected $casts = [
@@ -18,7 +18,7 @@ class Order extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function billingAddress()
@@ -58,16 +58,16 @@ class Order extends Model
 
     public function editUrl()
     {
-        return cp_route('orders.edit', ['order' => $this->uid]);
+        return cp_route('orders.edit', ['order' => $this->uuid]);
     }
 
     public function updateUrl()
     {
-        return cp_route('orders.update', ['order' => $this->uid]);
+        return cp_route('orders.update', ['order' => $this->uuid]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('orders.destroy', ['order' => $this->uid]);
+        return cp_route('orders.destroy', ['order' => $this->uuid]);
     }
 }

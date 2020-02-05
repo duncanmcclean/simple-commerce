@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductCategory extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'uid',
+        'title', 'slug', 'uuid',
     ];
 
     protected $appends = [
@@ -16,7 +16,7 @@ class ProductCategory extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function products()
@@ -36,21 +36,21 @@ class ProductCategory extends Model
 
     public function showUrl()
     {
-        return cp_route('product-categories.show', ['category' => $this->uid]);
+        return cp_route('product-categories.show', ['category' => $this->uuid]);
     }
 
     public function editUrl()
     {
-        return cp_route('product-categories.edit', ['category' => $this->uid]);
+        return cp_route('product-categories.edit', ['category' => $this->uuid]);
     }
 
     public function updateUrl()
     {
-        return cp_route('product-categories.update', ['category' => $this->uid]);
+        return cp_route('product-categories.update', ['category' => $this->uuid]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('product-categories.destroy', ['category' => $this->uid]);
+        return cp_route('product-categories.destroy', ['category' => $this->uuid]);
     }
 }

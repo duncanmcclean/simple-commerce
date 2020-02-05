@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShippingZone extends Model
 {
     protected $fillable = [
-        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'uid',
+        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'uuid',
     ];
 
     protected $appends = [
@@ -16,7 +16,7 @@ class ShippingZone extends Model
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function country()
@@ -36,11 +36,11 @@ class ShippingZone extends Model
 
     public function getUpdateUrlAttribute()
     {
-        return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uid']]);
+        return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uuid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
-        return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uid']]);
+        return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
     }
 }
