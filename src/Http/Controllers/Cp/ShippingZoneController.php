@@ -27,7 +27,7 @@ class ShippingZoneController extends CpController
         // TODO: setup a validation request
 
         $zone = new ShippingZone();
-        $zone->uid = (new Stache())->generateId();
+        $zone->uuid = (new Stache())->generateId();
         $zone->country_id = $request->country[0];
         $zone->state_id = isset($request->state[0]) ?? null;
         $zone->start_of_zip_code = $request->start_of_zip_code;

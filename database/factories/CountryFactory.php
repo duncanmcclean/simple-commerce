@@ -8,6 +8,6 @@ $factory->define(Country::class, function (Faker $faker) {
     return [
         'name' => $faker->country,
         'iso' => $faker->countryCode,
-        'uid' => (new Stache)->generateId(),
+        'uuid' => (new Stache)->generateId(),
     ];
 });

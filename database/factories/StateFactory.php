@@ -12,6 +12,6 @@ $factory->define(State::class, function (Faker $faker) {
         'country_id' => function() {
             return factory(Country::class)->create()->id;
         },
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
     ];
 });

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CartTax extends Model
 {
     protected $fillable = [
-        'uid', 'tax_rate_id', 'cart_id',
+        'uuid', 'tax_rate_id', 'cart_id',
     ];
 
     public function taxRate()

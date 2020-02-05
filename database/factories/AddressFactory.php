@@ -20,6 +20,6 @@ $factory->define(Address::class, function (Faker $faker) {
         'customer_id' => function() {
             return factory(Customer::class)->create()->id;
         },
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
     ];
 });

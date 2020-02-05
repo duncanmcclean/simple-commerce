@@ -28,6 +28,6 @@ $factory->define(Order::class, function (Faker $faker) {
         'currency_id' => function () {
             return factory(Currency::class)->create()->id;
         },
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
     ];
 });

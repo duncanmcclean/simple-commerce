@@ -60,17 +60,17 @@ class CustomerController extends CpController
         $validated = $request->validated();
 
         $customer = new Customer();
-        $customer->uid = (new Stache())->generateId();
+        $customer->uuid = (new Stache())->generateId();
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->save();
 
-        return ['redirect' => cp_route('customers.edit', ['customer' => $customer->uid])];
+        return ['redirect' => cp_route('customers.edit', ['customer' => $customer->uuid])];
     }
 
     public function edit($customer)
     {
-        $customer = Customer::where('uid', $customer)->first();
+        $customer = Customer::where('uuid', $customer)->first();
 
         $this->authorize('update', $customer);
 

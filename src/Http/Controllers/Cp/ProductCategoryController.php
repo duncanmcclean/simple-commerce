@@ -58,12 +58,12 @@ class ProductCategoryController extends CpController
         $validation = $request->validated();
 
         $category = new ProductCategory();
-        $category->uid = (new Stache())->generateId();
+        $category->uuid = (new Stache())->generateId();
         $category->title = $request->title;
         $category->slug = $request->slug;
         $category->save();
 
-        return ['redirect' => cp_route('product-categories.edit', ['category' => $category->uid])];
+        return ['redirect' => cp_route('product-categories.edit', ['category' => $category->uuid])];
     }
 
     public function show(ProductCategory $category)

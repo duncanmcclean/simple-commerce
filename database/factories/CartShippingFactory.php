@@ -8,7 +8,7 @@ use Statamic\Stache\Stache;
 
 $factory->define(CartShipping::class, function (Faker $faker) {
     return [
-        'uid' => (new Stache())->generateId(),
+        'uuid' => (new Stache())->generateId(),
         'shipping_zone_id' => function () {
             return factory(ShippingZone::class)->create()->id;
         },

@@ -10,12 +10,12 @@ class Customer extends Model
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'uid',
+        'name', 'email', 'uuid',
     ];
 
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'uuid';
     }
 
     public function addresses()
@@ -35,16 +35,16 @@ class Customer extends Model
 
     public function editUrl()
     {
-        return cp_route('customers.edit', ['customer' => $this->uid]);
+        return cp_route('customers.edit', ['customer' => $this->uuid]);
     }
 
     public function updateUrl()
     {
-        return cp_route('customers.update', ['customer' => $this->uid]);
+        return cp_route('customers.update', ['customer' => $this->uuid]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('customers.destroy', ['customer' => $this->uid]);
+        return cp_route('customers.destroy', ['customer' => $this->uuid]);
     }
 }

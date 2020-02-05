@@ -21,7 +21,7 @@ class ClearCartControllerTest extends TestCase
         ]);
 
         $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uid]);
+        $this->session(['commerce_cart_id' => $cart->uuid]);
 
         $cartItem = factory(CartItem::class)->create([
             'cart_id' => $cart->id,
@@ -31,7 +31,7 @@ class ClearCartControllerTest extends TestCase
         ]);
 
         $data = [
-            'cartId' => $cart->uid,
+            'cartId' => $cart->uuid,
         ];
 
         $response = $this->post('/cart/clear', $data);
@@ -40,7 +40,7 @@ class ClearCartControllerTest extends TestCase
         $response->assertSessionHas('commerce_cart_id');
 
         $this->assertDatabaseMissing('carts', [
-            'uid' => $cart->uid,
+            'uuid' => $cart->uuid,
         ]);
     }
 }
