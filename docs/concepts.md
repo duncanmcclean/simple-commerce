@@ -64,3 +64,7 @@ Carts can only have one tax rate attached to them. Tax Rates don't tax shipping 
 Simple Commerce provides a shipping system that will automatically add shipping costs to your customer's cart.
 
 You can manage your store's shipping zones in `Settings > Shipping > Manage Shipping Zones`. You can specify the country, state and even the start of a zip code where you want your shipping zone to apply.
+
+# Sales
+
+WIP
