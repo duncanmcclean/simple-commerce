@@ -38,6 +38,15 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/delete/{customer}', 'CustomerController@destroy')->name('.destroy');
     });
 
+    Route::prefix('sales')->as('sales')->group(function () {
+        Route::get('/', 'SaleController@index')->name('.index');
+        Route::get('/create', 'SaleController@create')->name('.create');
+        Route::post('/create', 'SaleController@store')->name('.store');
+        Route::get('/edit/{customer}', 'SaleController@edit')->name('.edit');
+        Route::post('/edit/{customer}', 'SaleController@update')->name('.update');
+        Route::get('/delete/{customer}', 'SaleController@destroy')->name('.destroy');
+    });
+
     Route::prefix('settings')->as('settings')->group(function () {
         Route::get('/', 'SettingsController@edit')->name('.edit');
         Route::post('/', 'SettingsController@update')->name('.update');

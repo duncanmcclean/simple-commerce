@@ -176,6 +176,14 @@ class ServiceProvider extends AddonServiceProvider
 
         Nav::extend(function ($nav) {
             $nav
+                ->create('Sales')
+                ->section('Simple Commerce')
+                ->route('sales.index')
+                ->icon('user');
+        });
+
+        Nav::extend(function ($nav) {
+            $nav
                 ->create('Settings')
                 ->section('Simple Commerce')
                 ->route('settings.edit')
