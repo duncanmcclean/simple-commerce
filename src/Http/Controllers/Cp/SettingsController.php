@@ -17,7 +17,7 @@ class SettingsController extends CpController
         }
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
         ]);
 
         $values = Config::get('commerce');

@@ -18,7 +18,7 @@ class CustomerController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
         ]);
 
         $customers = Customer::paginate(config('statamic.cp.pagination_size'));
@@ -35,7 +35,7 @@ class CustomerController extends CpController
         $this->authorize('create', Customer::class);
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
         ]);
 
@@ -75,7 +75,7 @@ class CustomerController extends CpController
         $this->authorize('update', $customer);
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
             ['text' => 'Customers', 'url' => cp_route('customers.index')],
         ]);
 

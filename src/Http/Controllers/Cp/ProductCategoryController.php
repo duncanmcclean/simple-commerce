@@ -16,7 +16,7 @@ class ProductCategoryController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
         ]);
 
         $categories = ProductCategory::paginate(config('statamic.cp.pagination_size'));
@@ -33,7 +33,7 @@ class ProductCategoryController extends CpController
         $this->authorize('create', ProductCategory::class);
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
@@ -71,7 +71,7 @@ class ProductCategoryController extends CpController
         $this->authorize('view', $category);
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 
@@ -91,7 +91,7 @@ class ProductCategoryController extends CpController
         $this->authorize('edit', $category);
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
             ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
         ]);
 

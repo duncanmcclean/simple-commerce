@@ -19,7 +19,7 @@ class OrderController extends CpController
     public function index()
     {
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
         ]);
 
         $orders = Order::with('orderStatus')
@@ -37,7 +37,7 @@ class OrderController extends CpController
         $this->authorize('update', Order::class);
 
         $crumbs = Breadcrumbs::make([
-            ['text' => 'Commerce', 'url' => '#'],
+            ['text' => 'Simple Commerce'],
             ['text' => 'Orders', 'url' => cp_route('orders.index')],
         ]);
 
