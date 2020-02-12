@@ -10,6 +10,8 @@ class CustomerOrderController extends CpController
 {
     public function index(Request $request)
     {
+        $this->authorize('update', $request->customer);
+
         return Order::where('customer_id', $request->customer)
             ->with('orderStatus')
             ->get()
