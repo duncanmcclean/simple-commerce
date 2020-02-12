@@ -11,19 +11,11 @@ class TaxRateController extends CpController
 {
     public function index()
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         return TaxRate::with('country', 'state')->get();
     }
 
     public function store(Request $request)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         // TODO: setup a validation request
 
         $rate = new TaxRate();
@@ -40,10 +32,6 @@ class TaxRateController extends CpController
 
     public function update(TaxRate $rate, Request $request)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         // TODO: setup a validation request
 
         $rate->name = $request->name;
@@ -58,10 +46,6 @@ class TaxRateController extends CpController
 
     public function destroy(TaxRate $rate)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         $rate->delete();
 
         return redirect(cp_route('settings.edit'))

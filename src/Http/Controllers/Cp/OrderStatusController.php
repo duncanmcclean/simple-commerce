@@ -11,19 +11,11 @@ class OrderStatusController extends CpController
 {
     public function index()
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         return OrderStatus::all();
     }
 
     public function store(Request $request)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         // TODO: use a validation request here
 
         $status = new OrderStatus();
@@ -40,10 +32,6 @@ class OrderStatusController extends CpController
 
     public function update(OrderStatus $status, Request $request)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         if ($request->primary === true) {
             $currentPrimary = OrderStatus::where('primary', true)->first();
             $currentPrimary->primary = false;
@@ -62,10 +50,6 @@ class OrderStatusController extends CpController
 
     public function destroy(OrderStatus $status)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         // TODO: make sure that the user cant delete the only remaining order status
         // TODO: do something with the orders that are currently using this status
 

@@ -12,10 +12,6 @@ class SettingsController extends CpController
 {
     public function edit()
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         $crumbs = Breadcrumbs::make([
             ['text' => 'Simple Commerce'],
         ]);
@@ -37,11 +33,6 @@ class SettingsController extends CpController
 
     public function update(SettingsUpdateRequest $request)
     {
-        // TODO: use a policy for this?
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         foreach ($request->all() as $key => $value) {
             Config::set("commerce.{$key}", $value); // setting like this doesn't actually write back to the file
         }

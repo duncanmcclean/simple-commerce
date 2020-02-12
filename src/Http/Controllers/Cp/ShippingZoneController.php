@@ -11,19 +11,11 @@ class ShippingZoneController extends CpController
 {
     public function index()
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         return ShippingZone::with('country', 'state')->get();
     }
 
     public function store(Request $request)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         // TODO: setup a validation request
 
         $zone = new ShippingZone();
@@ -39,10 +31,6 @@ class ShippingZoneController extends CpController
 
     public function update(ShippingZone $zone, Request $request)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         // TODO: setup a validation request
 
         $zone->country_id = $request->country[0];
@@ -56,10 +44,6 @@ class ShippingZoneController extends CpController
 
     public function destroy(ShippingZone $zone)
     {
-        if (! auth()->user()->hasPermission('edit settings') && auth()->user()->isSuper() != true) {
-            abort(401);
-        }
-
         $zone->delete();
 
         return redirect(cp_route('settings.edit'))

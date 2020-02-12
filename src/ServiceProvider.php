@@ -24,6 +24,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingZoneSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Http\Middleware\AccessSettings;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
@@ -184,8 +185,8 @@ class ServiceProvider extends AddonServiceProvider
 
         $this->app->booted(function () {
             Permission::group('simple-commerce', 'Simple Commerce', function () {
-                Permission::register('edit settings')
-                    ->label('Edit Commerce Settings');
+                Permission::register('edit simple commerce settings')
+                    ->label('Edit Simple Commerce Settings');
 
                 Permission::register('view customers', function ($permission) {
                     $permission->children([

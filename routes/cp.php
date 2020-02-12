@@ -1,5 +1,7 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Http\Middleware\AccessSettings;
+
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->group(function () {
     Route::prefix('products')->as('products')->group(function () {
         Route::get('/', 'ProductController@index')->name('.index');
@@ -38,7 +40,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/delete/{customer}', 'CustomerController@destroy')->name('.destroy');
     });
 
-    Route::prefix('settings')->as('settings')->group(function () {
+    Route::prefix('settings')->as('settings')->middleware(AccessSettings::class)->group(function () {
         Route::get('/', 'SettingsController@edit')->name('.edit');
         Route::post('/', 'SettingsController@update')->name('.update');
     });
@@ -47,20 +49,22 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::post('/customer-order', 'CustomerOrderController@index')->name('.customer-order');
         Route::get('/refund-order/{order}', 'RefundOrderController@store')->name('.refund-order');
 
-        Route::get('/order-status', 'OrderStatusController@index')->name('.order-status.index');
-        Route::post('/order-status/create', 'OrderStatusController@store')->name('.order-status.store');
-        Route::post('/order-status/{status}', 'OrderStatusController@update')->name('.order-status.update');
-        Route::get('/order-status/{status}', 'OrderStatusController@destroy')->name('.order-status.destroy');
+        Route::middleware(AccessSettings::class)->group(function () {
+            Route::get('/order-status', 'OrderStatusController@index')->name('.order-status.index');
+            Route::post('/order-status/create', 'OrderStatusController@store')->name('.order-status.store');
+            Route::post('/order-status/{status}', 'OrderStatusController@update')->name('.order-status.update');
+            Route::get('/order-status/{status}', 'OrderStatusController@destroy')->name('.order-status.destroy');
 
-        Route::get('/tax-rates', 'TaxRateController@index')->name('.tax-rates.index');
-        Route::post('/tax-rates/create', 'TaxRateController@store')->name('.tax-rates.store');
-        Route::post('/tax-rates/{rate}', 'TaxRateController@index')->name('.tax-rates.update');
-        Route::get('/tax-rates/{rate}', 'TaxRateController@destroy')->name('.tax-rates.destroy');
+            Route::get('/tax-rates', 'TaxRateController@index')->name('.tax-rates.index');
+            Route::post('/tax-rates/create', 'TaxRateController@store')->name('.tax-rates.store');
+            Route::post('/tax-rates/{rate}', 'TaxRateController@index')->name('.tax-rates.update');
+            Route::get('/tax-rates/{rate}', 'TaxRateController@destroy')->name('.tax-rates.destroy');
 
-        Route::get('/shipping-zones', 'ShippingZoneController@index')->name('.shipping-zones.index');
-        Route::post('/shipping-zones/create', 'ShippingZoneController@store')->name('.shipping-zones.store');
-        Route::post('/shipping-zones/{zone}', 'ShippingZoneController@index')->name('.shipping-zones.update');
-        Route::get('/shipping-zones/{zone}', 'ShippingZoneController@destroy')->name('.shipping-zones.destroy');
+            Route::get('/shipping-zones', 'ShippingZoneController@index')->name('.shipping-zones.index');
+            Route::post('/shipping-zones/create', 'ShippingZoneController@store')->name('.shipping-zones.store');
+            Route::post('/shipping-zones/{zone}', 'ShippingZoneController@index')->name('.shipping-zones.update');
+            Route::get('/shipping-zones/{zone}', 'ShippingZoneController@destroy')->name('.shipping-zones.destroy');
+        });
     });
 
 });
