@@ -18,6 +18,8 @@ class OrderController extends CpController
 {
     public function index()
     {
+        $this->authorize('view', Order::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Simple Commerce'],
         ]);

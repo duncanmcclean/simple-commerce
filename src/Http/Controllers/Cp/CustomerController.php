@@ -17,6 +17,8 @@ class CustomerController extends CpController
 {
     public function index()
     {
+        $this->authorize('view', Customer::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Simple Commerce'],
         ]);

@@ -15,6 +15,8 @@ class ProductCategoryController extends CpController
 {
     public function index()
     {
+        $this->authorize('view', ProductCategory::class);
+
         $crumbs = Breadcrumbs::make([
             ['text' => 'Simple Commerce'],
         ]);
