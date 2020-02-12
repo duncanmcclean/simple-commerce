@@ -50,8 +50,17 @@ class OrderStatusController extends CpController
 
     public function destroy(OrderStatus $status)
     {
-        // TODO: make sure that the user cant delete the only remaining order status
         // TODO: do something with the orders that are currently using this status
+
+        if (OrderStatus::all()->count() === 1) {
+            return redirect(cp_route('settings.edit'))
+                ->with('error', "You can't delete the only order status.");
+        }
+
+        if ($status->primary === true) {
+            return redirect(cp_route('settings.edit'))
+                ->with('error', "You can't delete the primary order status.");
+        }
 
         $status->delete();
 
