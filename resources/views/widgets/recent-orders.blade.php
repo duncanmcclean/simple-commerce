@@ -54,7 +54,7 @@
         </table>
     @else
         <div class="content p-2">
-            <p>No orders exist.</p>
+            <p>No orders exist yet or you don't have permission to access them.</p>
         </div>
     @endif
 </div>

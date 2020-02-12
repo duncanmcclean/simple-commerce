@@ -10,9 +10,13 @@ class RecentOrdersWidget extends Widget
 {
     public function html()
     {
-        $orders = Order::all()
-            ->sortByDesc('created_at')
-            ->take(5);
+        $orders = collect([]);
+
+        if (auth()->user()->hasPermission('view orders') || auth()->user()->isSuper()) {
+            $orders = Order::all()
+                ->sortByDesc('created_at')
+                ->take(5);
+        }
 
         return view('commerce::widgets.recent-orders', [
             'orders' => $orders,

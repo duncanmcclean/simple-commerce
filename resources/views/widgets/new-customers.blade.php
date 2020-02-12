@@ -44,7 +44,7 @@
         </table>
     @else
         <div class="content p-2">
-            <p>No customers exist.</p>
+            <p>No customers exist yet or you don't have permission to access them.</p>
         </div>
     @endif
 </div>
