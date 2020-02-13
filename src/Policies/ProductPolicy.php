@@ -15,7 +15,7 @@ class ProductPolicy
         return $user->hasPermission('create products');
     }
 
-    public function view(User $user, Product $product)
+    public function view(User $user)
     {
         return $user->hasPermission('view products');
     }

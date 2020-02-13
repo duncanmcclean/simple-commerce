@@ -15,7 +15,7 @@ class CustomerPolicy
         return $user->hasPermission('create customers');
     }
 
-    public function view(User $user, Customer $customer)
+    public function view(User $user)
     {
         return $user->hasPermission('view customers');
     }

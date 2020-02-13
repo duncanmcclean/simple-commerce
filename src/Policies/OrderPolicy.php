@@ -15,7 +15,7 @@ class OrderPolicy
         return $user->hasPermission('create orders');
     }
 
-    public function view(User $user, Order $order)
+    public function view(User $user)
     {
         return $user->hasPermission('view orders');
     }

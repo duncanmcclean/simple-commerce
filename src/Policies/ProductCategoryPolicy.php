@@ -15,7 +15,7 @@ class ProductCategoryPolicy
         return $user->hasPermission('create product categories');
     }
 
-    public function view(User $user, ProductCategory $category)
+    public function view(User $user)
     {
         return $user->hasPermission('view product categories');
     }
