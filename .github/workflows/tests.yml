@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  phpunit_tests:
+  php_tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,10 +21,17 @@ jobs:
     - name: Setup PHPUnit config
       run: cp phpunit-example.xml phpunit.xml
 
+    - name: Shutdown Ubuntu MySQL
+        run: sudo service mysql stop
+
     - name: Setup database
       uses: mirromutth/mysql-action@v1.1
       with:
-        mysql version: '8.0'
+        host port: 3306
+        container port: 3306
+        character set server: 'utf8'
+        collation server: 'utf8_general_ci'
+        mysql version: '5.7'
         mysql database: 'commerce_testing'
         mysql root password: 'a.k-ZWzdKyWw@QyeP6rKAxg*'
         mysql user: 'root'
