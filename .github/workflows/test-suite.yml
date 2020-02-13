@@ -1,4 +1,4 @@
-name: 'Test Suite'
+name: Test Suite
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 jobs:
   phpunit_tests:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         php: [7.4, 7.3, 7.2, 7.1]
@@ -25,7 +25,7 @@ jobs:
         exclude:
         - laravel: 6.*
           php: 7.1
-          
+
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
     steps:
@@ -43,7 +43,7 @@ jobs:
       run: |
         composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" ${{ matrix.additional-deps }} --no-interaction --no-update
         composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
-        
+
     - name: Execute tests
       run: vendor/bin/phpunit
       continue-on-error: ${{ matrix.laravel == '5.8.*' }}
