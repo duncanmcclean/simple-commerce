@@ -30,6 +30,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v1
 
+    - name: Setup PHPUnit config
+      run: cp phpunit-example.xml phpunit.xml
+
+    - name: Setup database
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql database: 'commerce_testing'
+        mysql root password: 'a.k-ZWzdKyWw@QyeP6rKAxg*'
+        mysql user: 'root'
+        mysql password: 'a.k-ZWzdKyWw@QyeP6rKAxg*'
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v1
       with:
@@ -39,10 +50,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" ${{ matrix.additional-deps }} --no-interaction --no-update
-        composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+        composer validate
+        composer install --no-interaction
 
-    - name: Execute tests
+    - name: Run PHPUnit
       run: composer test
 
     - name: Send Slack notification
