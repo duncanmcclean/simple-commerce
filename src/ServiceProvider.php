@@ -154,8 +154,9 @@ class ServiceProvider extends AddonServiceProvider
                 ->section('Simple Commerce')
                 ->route('products.index')
                 ->icon('entries')
+                ->can('view products')
                 ->children([
-                    'Categories' => cp_route('product-categories.index'),
+                    $nav->item('Categories')->route('product-categories.index')->can('view product categories'),
                 ]);
         });
 
@@ -164,6 +165,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->create('Orders')
                 ->section('Simple Commerce')
                 ->route('orders.index')
+                ->can('view orders')
                 ->icon('list');
         });
 
@@ -172,6 +174,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->create('Customers')
                 ->section('Simple Commerce')
                 ->route('customers.index')
+                ->can('view customers')
                 ->icon('user');
         });
 
@@ -180,6 +183,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->create('Settings')
                 ->section('Simple Commerce')
                 ->route('settings.edit')
+                ->can('view simple commerce settings')
                 ->icon('settings-horizontal');
         });
 
