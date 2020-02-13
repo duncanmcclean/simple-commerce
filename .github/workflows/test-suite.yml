@@ -24,6 +24,7 @@ jobs:
     - name: Setup database
       uses: mirromutth/mysql-action@v1.1
       with:
+        mysql version: '8.0'
         mysql database: 'commerce_testing'
         mysql root password: 'a.k-ZWzdKyWw@QyeP6rKAxg*'
         mysql user: 'root'
