@@ -1,8 +1,0 @@
-blank_issues_enabled: true
-contact_links:
-  - name: Discord
-    url: https://statamic.com/discord
-    about: 'If you need some help with the addon, ask in the #third-party channel'
-  - name: Contact us
-    url: https://doublethree.digital/contact
-    about: If you have any additional questions, feel free to drop us an email.
