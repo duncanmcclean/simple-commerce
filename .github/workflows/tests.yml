@@ -22,7 +22,7 @@ jobs:
       run: cp phpunit-example.xml phpunit.xml
 
     - name: Shutdown Ubuntu MySQL
-        run: sudo service mysql stop
+      run: sudo service mysql stop
 
     - name: Setup database
       uses: mirromutth/mysql-action@v1.1
