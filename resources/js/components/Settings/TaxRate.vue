@@ -42,10 +42,10 @@
         <create-stack
                 v-if="createStackOpen"
                 title="Create Tax Rate"
-                :action="meta.store"
-                :blueprint="meta.blueprint"
-                :meta="meta.meta"
-                :values="meta.values"
+                :action="storeEndpoint"
+                :blueprint="blueprint"
+                :meta="meta"
+                :values="values"
                 @closed="createStackOpen = false"
                 @saved="rateSaved"
         ></create-stack>
@@ -54,8 +54,8 @@
                 v-if="editStackOpen"
                 title="Update Tax Rate"
                 :action="editRate.updateUrl"
-                :blueprint="meta.blueprint"
-                :meta="meta.meta"
+                :blueprint="blueprint"
+                :meta="meta"
                 :values="editRate"
                 @closed="editStackOpen = false"
                 @saved="rateSaved"
@@ -69,21 +69,27 @@
     import UpdateStack from "../Stacks/UpdateStack";
 
     export default {
-        name: "OrderStatusSettingsFieldtype",
+        name: "OrderStatus",
 
         components: {
             CreateStack,
             UpdateStack
         },
 
-        mixins: [Fieldtype],
-
-        props: [
-            'meta', 'value'
-        ],
+        props: {
+            indexEndpoint: String,
+            storeEndpoint: String,
+            initialBlueprint: Array,
+            initialMeta: Array,
+            initialValues: Array
+        },
 
         data() {
             return {
+                blueprint: JSON.parse(this.initialBlueprint),
+                meta: JSON.parse(this.initialMeta),
+                values: JSON.parse(this.initialValues),
+
                 items: [],
                 editRate: [],
 
@@ -94,7 +100,7 @@
 
         methods: {
             getRates() {
-                axios.get(this.meta.index)
+                axios.get(this.indexEndpoint)
                     .then(response => {
                         this.items = response.data;
                     }).catch(error => {
