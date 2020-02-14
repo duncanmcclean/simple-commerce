@@ -1,13 +1,13 @@
 import CommerceCreateForm from "./components/Publish/CommerceCreateForm";
 import CustomerOrdersFieldtype from "./components/Fieldtypes/CustomerOrdersFieldtype";
 import MoneyFieldtype from "./components/Fieldtypes/MoneyFieldtype";
-import OrderStatusSettingsFieldtype from "./components/Fieldtypes/OrderStatusSettingsFieldtype";
-import ShippingZoneSettingsFieldtype from "./components/Fieldtypes/ShippingZoneSettingsFieldtype";
-import TaxRateSettingsFieldtype from "./components/Fieldtypes/TaxRateSettingsFieldtype";
+import OrderStatus from "./components/Settings/OrderStatus";
+import ShippingZone from "./components/Settings/ShippingZone";
+import TaxRate from "./components/Settings/TaxRate";
 
 Statamic.$components.register('commerce-create-form', CommerceCreateForm);
 Statamic.$components.register('customer-orders-fieldtype', CustomerOrdersFieldtype);
 Statamic.$components.register('money-fieldtype', MoneyFieldtype);
-Statamic.$components.register('order-status-settings-fieldtype', OrderStatusSettingsFieldtype);
-Statamic.$components.register('shipping-zone-settings-fieldtype', ShippingZoneSettingsFieldtype);
-Statamic.$components.register('tax-rate-settings-fieldtype', TaxRateSettingsFieldtype);
+Statamic.$components.register('order-status-settings', OrderStatus);
+Statamic.$components.register('shipping-zone-settings', ShippingZone);
+Statamic.$components.register('tax-rate-settings', TaxRate);

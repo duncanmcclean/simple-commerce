@@ -3,27 +3,26 @@
         <section class="bg-grey-20 rounded w-full mt-2">
             <table class="bg-white data-table">
                 <thead>
-                <tr>
-                    <th>Location</th>
-                    <th>Price</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
                 </thead>
-
                 <tbody>
-                <tr v-for="zone in items" :key="zone.id">
-                    <td v-if="zone.state_id">{{ zone.country.name }}, {{ zone.state.name }}, {{ zone.start_of_zip_code }}</td>
-                    <td v-else>{{ zone.country.name }}, {{ zone.start_of_zip_code }}</td>
+                    <tr v-for="zone in items" :key="zone.id">
+                        <td v-if="zone.state_id">{{ zone.country.name }}, {{ zone.state.name }}, {{ zone.start_of_zip_code }}</td>
+                        <td v-else>{{ zone.country.name }}, {{ zone.start_of_zip_code }}</td>
 
-                    <td>{{ zone.formatted_price }}</td>
+                        <td>{{ zone.formatted_price }}</td>
 
-                    <td class="flex justify-end">
-                        <dropdown-list>
-                            <dropdown-item text="Edit" @click="updateShippingZone(zone)"></dropdown-item>
-                            <dropdown-item class="warning" text="Delete" :redirect="zone.deleteUrl"></dropdown-item>
-                        </dropdown-list>
-                    </td>
-                </tr>
+                        <td class="flex justify-end">
+                            <dropdown-list>
+                                <dropdown-item text="Edit" @click="updateShippingZone(zone)"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" :redirect="zone.deleteUrl"></dropdown-item>
+                            </dropdown-list>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -37,10 +36,10 @@
         <create-stack
                 v-if="createStackOpen"
                 title="Create Shipping Zone"
-                :action="meta.store"
-                :blueprint="meta.blueprint"
-                :meta="meta.meta"
-                :values="meta.values"
+                :action="storeEndpoint"
+                :blueprint="blueprint"
+                :meta="meta"
+                :values="values"
                 @closed="createStackOpen = false"
                 @saved="zoneSaved"
         ></create-stack>
@@ -49,8 +48,8 @@
                 v-if="editStackOpen"
                 title="Update Shipping Zone"
                 :action="editZone.updateUrl"
-                :blueprint="meta.blueprint"
-                :meta="meta.meta"
+                :blueprint="blueprint"
+                :meta="meta"
                 :values="editZone"
                 @closed="editStackOpen = false"
                 @saved="zoneSaved"
@@ -64,21 +63,27 @@
     import UpdateStack from "../Stacks/UpdateStack";
 
     export default {
-        name: "ShippingZoneSettingsFieldtype",
+        name: "ShippingZone",
 
         components: {
             CreateStack,
             UpdateStack
         },
 
-        mixins: [Fieldtype],
-
-        props: [
-            'meta', 'value'
-        ],
+        props: {
+            indexEndpoint: String,
+            storeEndpoint: String,
+            initialBlueprint: Array,
+            initialMeta: Array,
+            initialValues: Array
+        },
 
         data() {
             return {
+                blueprint: JSON.parse(this.initialBlueprint),
+                meta: JSON.parse(this.initialMeta),
+                values: JSON.parse(this.initialValues),
+
                 items: [],
                 editZone: [],
 
@@ -89,7 +94,7 @@
 
         methods: {
             getZones() {
-                axios.get(this.meta.index)
+                axios.get(this.indexEndpoint)
                     .then(response => {
                         this.items = response.data;
                     }).catch(error => {

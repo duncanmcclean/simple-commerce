@@ -1963,10 +1963,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "CommerceCreateForm",
+  methods: {
+    redirect: function redirect(response) {
+      window.location = response.data.redirect;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/OrderStatus.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Settings/OrderStatus.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2052,15 +2078,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "OrderStatusSettingsFieldtype",
+  name: "OrderStatusSettings",
   components: {
     CreateStack: _Stacks_CreateStack__WEBPACK_IMPORTED_MODULE_1__["default"],
     UpdateStack: _Stacks_UpdateStack__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  mixins: [Fieldtype],
-  props: ['meta', 'value'],
+  props: {
+    indexEndpoint: String,
+    storeEndpoint: String,
+    initialBlueprint: Array,
+    initialMeta: Array,
+    initialValues: Array
+  },
   data: function data() {
     return {
+      blueprint: JSON.parse(this.initialBlueprint),
+      meta: JSON.parse(this.initialMeta),
+      values: JSON.parse(this.initialValues),
       items: [],
       editStatus: [],
       createStackOpen: false,
@@ -2071,7 +2105,7 @@ __webpack_require__.r(__webpack_exports__);
     getStatuses: function getStatuses() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.meta.index).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.indexEndpoint).then(function (response) {
         _this.items = response.data;
       })["catch"](function (error) {
         _this.$toast.error(error);
@@ -2114,10 +2148,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/ShippingZone.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Settings/ShippingZone.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2186,20 +2220,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "ShippingZoneSettingsFieldtype",
+  name: "ShippingZone",
   components: {
     CreateStack: _Stacks_CreateStack__WEBPACK_IMPORTED_MODULE_1__["default"],
     UpdateStack: _Stacks_UpdateStack__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  mixins: [Fieldtype],
-  props: ['meta', 'value'],
+  props: {
+    indexEndpoint: String,
+    storeEndpoint: String,
+    initialBlueprint: Array,
+    initialMeta: Array,
+    initialValues: Array
+  },
   data: function data() {
     return {
+      blueprint: JSON.parse(this.initialBlueprint),
+      meta: JSON.parse(this.initialMeta),
+      values: JSON.parse(this.initialValues),
       items: [],
       editZone: [],
       createStackOpen: false,
@@ -2210,7 +2251,7 @@ __webpack_require__.r(__webpack_exports__);
     getZones: function getZones() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.meta.index).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.indexEndpoint).then(function (response) {
         _this.items = response.data;
       })["catch"](function (error) {
         _this.$toast.error(error);
@@ -2236,10 +2277,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/TaxRate.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Settings/TaxRate.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2318,15 +2359,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "OrderStatusSettingsFieldtype",
+  name: "OrderStatus",
   components: {
     CreateStack: _Stacks_CreateStack__WEBPACK_IMPORTED_MODULE_1__["default"],
     UpdateStack: _Stacks_UpdateStack__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  mixins: [Fieldtype],
-  props: ['meta', 'value'],
+  props: {
+    indexEndpoint: String,
+    storeEndpoint: String,
+    initialBlueprint: Array,
+    initialMeta: Array,
+    initialValues: Array
+  },
   data: function data() {
     return {
+      blueprint: JSON.parse(this.initialBlueprint),
+      meta: JSON.parse(this.initialMeta),
+      values: JSON.parse(this.initialValues),
       items: [],
       editRate: [],
       createStackOpen: false,
@@ -2337,7 +2386,7 @@ __webpack_require__.r(__webpack_exports__);
     getRates: function getRates() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.meta.index).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.indexEndpoint).then(function (response) {
         _this.items = response.data;
       })["catch"](function (error) {
         _this.$toast.error(error);
@@ -2358,32 +2407,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getRates();
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "CommerceCreateForm",
-  methods: {
-    redirect: function redirect(response) {
-      window.location = response.data.redirect;
-    }
   }
 });
 
@@ -2428,7 +2451,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "CreateOrderStatusStack",
+  name: "CreateStack",
   props: ['title', 'action', 'blueprint', 'meta', 'values'],
   methods: {
     close: function close() {
@@ -2481,7 +2504,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "UpdateOrderStatusStack",
+  name: "UpdateStack",
   props: ['title', 'action', 'blueprint', 'meta', 'values'],
   methods: {
     close: function close() {
@@ -2831,10 +2854,34 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true&":
-/*!******************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true& ***!
-  \******************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=template&id=db54f134&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=template&id=db54f134&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_vm._t("default")], 2)
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Settings/OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2940,10 +2987,10 @@ var render = function() {
         ? _c("create-stack", {
             attrs: {
               title: "Create Order Status",
-              action: _vm.meta.store,
-              blueprint: _vm.meta.blueprint,
-              meta: _vm.meta.meta,
-              values: _vm.meta.values
+              action: _vm.storeEndpoint,
+              blueprint: _vm.blueprint,
+              meta: _vm.meta,
+              values: _vm.values
             },
             on: {
               closed: function($event) {
@@ -2959,8 +3006,8 @@ var render = function() {
             attrs: {
               title: "Update Order Status",
               action: _vm.editStatus.updateUrl,
-              blueprint: _vm.meta.blueprint,
-              meta: _vm.meta.meta,
+              blueprint: _vm.blueprint,
+              meta: _vm.meta,
               values: _vm.editStatus
             },
             on: {
@@ -3001,10 +3048,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true&":
-/*!*******************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/ShippingZone.vue?vue&type=template&id=745894ab&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Settings/ShippingZone.vue?vue&type=template&id=745894ab&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3099,10 +3146,10 @@ var render = function() {
         ? _c("create-stack", {
             attrs: {
               title: "Create Shipping Zone",
-              action: _vm.meta.store,
-              blueprint: _vm.meta.blueprint,
-              meta: _vm.meta.meta,
-              values: _vm.meta.values
+              action: _vm.storeEndpoint,
+              blueprint: _vm.blueprint,
+              meta: _vm.meta,
+              values: _vm.values
             },
             on: {
               closed: function($event) {
@@ -3118,8 +3165,8 @@ var render = function() {
             attrs: {
               title: "Update Shipping Zone",
               action: _vm.editZone.updateUrl,
-              blueprint: _vm.meta.blueprint,
-              meta: _vm.meta.meta,
+              blueprint: _vm.blueprint,
+              meta: _vm.meta,
               values: _vm.editZone
             },
             on: {
@@ -3156,10 +3203,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true&":
-/*!**************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Settings/TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3262,10 +3309,10 @@ var render = function() {
         ? _c("create-stack", {
             attrs: {
               title: "Create Tax Rate",
-              action: _vm.meta.store,
-              blueprint: _vm.meta.blueprint,
-              meta: _vm.meta.meta,
-              values: _vm.meta.values
+              action: _vm.storeEndpoint,
+              blueprint: _vm.blueprint,
+              meta: _vm.meta,
+              values: _vm.values
             },
             on: {
               closed: function($event) {
@@ -3281,8 +3328,8 @@ var render = function() {
             attrs: {
               title: "Update Tax Rate",
               action: _vm.editRate.updateUrl,
-              blueprint: _vm.meta.blueprint,
-              meta: _vm.meta.meta,
+              blueprint: _vm.blueprint,
+              meta: _vm.meta,
               values: _vm.editRate
             },
             on: {
@@ -3321,30 +3368,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=template&id=db54f134&scoped=true&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Publish/CommerceCreateForm.vue?vue&type=template&id=db54f134&scoped=true& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [_vm._t("default")], 2)
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Stacks/CreateStack.vue?vue&type=template&id=b9fe615a&scoped=true&":
 /*!*********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Stacks/CreateStack.vue?vue&type=template&id=b9fe615a&scoped=true& ***!
@@ -3375,9 +3398,7 @@ var render = function() {
                   "bg-grey-20 px-3 py-1 border-b border-grey-30 text-lg font-medium flex items-center justify-between mb-4"
               },
               [
-                _vm._v(
-                  "\n                Simple Commerce Settings\n                "
-                ),
+                _vm._v("\n                Settings\n                "),
                 _c(
                   "button",
                   {
@@ -3453,9 +3474,7 @@ var render = function() {
                   "bg-grey-20 px-3 py-1 border-b border-grey-30 text-lg font-medium flex items-center justify-between mb-4"
               },
               [
-                _vm._v(
-                  "\n                Simple Commerce Settings\n                "
-                ),
+                _vm._v("\n                Settings\n                "),
                 _c(
                   "button",
                   {
@@ -3746,213 +3765,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue ***!
-  \*****************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _OrderStatusSettingsFieldtype_vue_vue_type_template_id_51ef26a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true& */ "./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true&");
-/* harmony import */ var _OrderStatusSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js& */ "./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _OrderStatusSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _OrderStatusSettingsFieldtype_vue_vue_type_template_id_51ef26a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _OrderStatusSettingsFieldtype_vue_vue_type_template_id_51ef26a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "51ef26a6",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true&":
-/*!************************************************************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true& ***!
-  \************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_template_id_51ef26a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue?vue&type=template&id=51ef26a6&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_template_id_51ef26a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatusSettingsFieldtype_vue_vue_type_template_id_51ef26a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue":
-/*!******************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue ***!
-  \******************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ShippingZoneSettingsFieldtype_vue_vue_type_template_id_e655c31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true& */ "./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true&");
-/* harmony import */ var _ShippingZoneSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js& */ "./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ShippingZoneSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ShippingZoneSettingsFieldtype_vue_vue_type_template_id_e655c31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ShippingZoneSettingsFieldtype_vue_vue_type_template_id_e655c31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "e655c31c",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZoneSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZoneSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true&":
-/*!*************************************************************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true& ***!
-  \*************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZoneSettingsFieldtype_vue_vue_type_template_id_e655c31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue?vue&type=template&id=e655c31c&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZoneSettingsFieldtype_vue_vue_type_template_id_e655c31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZoneSettingsFieldtype_vue_vue_type_template_id_e655c31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue":
-/*!*************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue ***!
-  \*************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TaxRateSettingsFieldtype_vue_vue_type_template_id_48f597bb_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true& */ "./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true&");
-/* harmony import */ var _TaxRateSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TaxRateSettingsFieldtype.vue?vue&type=script&lang=js& */ "./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _TaxRateSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TaxRateSettingsFieldtype_vue_vue_type_template_id_48f597bb_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _TaxRateSettingsFieldtype_vue_vue_type_template_id_48f597bb_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "48f597bb",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRateSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TaxRateSettingsFieldtype.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRateSettingsFieldtype_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true&":
-/*!********************************************************************************************************************!*\
-  !*** ./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true& ***!
-  \********************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRateSettingsFieldtype_vue_vue_type_template_id_48f597bb_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue?vue&type=template&id=48f597bb&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRateSettingsFieldtype_vue_vue_type_template_id_48f597bb_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRateSettingsFieldtype_vue_vue_type_template_id_48f597bb_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/Publish/CommerceCreateForm.vue":
 /*!****************************************************************!*\
   !*** ./resources/js/components/Publish/CommerceCreateForm.vue ***!
@@ -4017,6 +3829,213 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommerceCreateForm_vue_vue_type_template_id_db54f134_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CommerceCreateForm_vue_vue_type_template_id_db54f134_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/OrderStatus.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/Settings/OrderStatus.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _OrderStatus_vue_vue_type_template_id_11669bbf_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true& */ "./resources/js/components/Settings/OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true&");
+/* harmony import */ var _OrderStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrderStatus.vue?vue&type=script&lang=js& */ "./resources/js/components/Settings/OrderStatus.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _OrderStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _OrderStatus_vue_vue_type_template_id_11669bbf_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _OrderStatus_vue_vue_type_template_id_11669bbf_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "11669bbf",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Settings/OrderStatus.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/OrderStatus.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Settings/OrderStatus.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./OrderStatus.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/OrderStatus.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/Settings/OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatus_vue_vue_type_template_id_11669bbf_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/OrderStatus.vue?vue&type=template&id=11669bbf&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatus_vue_vue_type_template_id_11669bbf_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderStatus_vue_vue_type_template_id_11669bbf_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/ShippingZone.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Settings/ShippingZone.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ShippingZone_vue_vue_type_template_id_745894ab_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShippingZone.vue?vue&type=template&id=745894ab&scoped=true& */ "./resources/js/components/Settings/ShippingZone.vue?vue&type=template&id=745894ab&scoped=true&");
+/* harmony import */ var _ShippingZone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShippingZone.vue?vue&type=script&lang=js& */ "./resources/js/components/Settings/ShippingZone.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ShippingZone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ShippingZone_vue_vue_type_template_id_745894ab_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ShippingZone_vue_vue_type_template_id_745894ab_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "745894ab",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Settings/ShippingZone.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/ShippingZone.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Settings/ShippingZone.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShippingZone.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/ShippingZone.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZone_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/ShippingZone.vue?vue&type=template&id=745894ab&scoped=true&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/Settings/ShippingZone.vue?vue&type=template&id=745894ab&scoped=true& ***!
+  \******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZone_vue_vue_type_template_id_745894ab_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShippingZone.vue?vue&type=template&id=745894ab&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/ShippingZone.vue?vue&type=template&id=745894ab&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZone_vue_vue_type_template_id_745894ab_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShippingZone_vue_vue_type_template_id_745894ab_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/TaxRate.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/Settings/TaxRate.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TaxRate_vue_vue_type_template_id_ac4547ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true& */ "./resources/js/components/Settings/TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true&");
+/* harmony import */ var _TaxRate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TaxRate.vue?vue&type=script&lang=js& */ "./resources/js/components/Settings/TaxRate.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TaxRate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TaxRate_vue_vue_type_template_id_ac4547ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TaxRate_vue_vue_type_template_id_ac4547ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "ac4547ec",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Settings/TaxRate.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/TaxRate.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/Settings/TaxRate.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TaxRate.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/TaxRate.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Settings/TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/Settings/TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRate_vue_vue_type_template_id_ac4547ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Settings/TaxRate.vue?vue&type=template&id=ac4547ec&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRate_vue_vue_type_template_id_ac4547ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaxRate_vue_vue_type_template_id_ac4547ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -4172,9 +4191,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Publish_CommerceCreateForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Publish/CommerceCreateForm */ "./resources/js/components/Publish/CommerceCreateForm.vue");
 /* harmony import */ var _components_Fieldtypes_CustomerOrdersFieldtype__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Fieldtypes/CustomerOrdersFieldtype */ "./resources/js/components/Fieldtypes/CustomerOrdersFieldtype.vue");
 /* harmony import */ var _components_Fieldtypes_MoneyFieldtype__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Fieldtypes/MoneyFieldtype */ "./resources/js/components/Fieldtypes/MoneyFieldtype.vue");
-/* harmony import */ var _components_Fieldtypes_OrderStatusSettingsFieldtype__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Fieldtypes/OrderStatusSettingsFieldtype */ "./resources/js/components/Fieldtypes/OrderStatusSettingsFieldtype.vue");
-/* harmony import */ var _components_Fieldtypes_ShippingZoneSettingsFieldtype__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Fieldtypes/ShippingZoneSettingsFieldtype */ "./resources/js/components/Fieldtypes/ShippingZoneSettingsFieldtype.vue");
-/* harmony import */ var _components_Fieldtypes_TaxRateSettingsFieldtype__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Fieldtypes/TaxRateSettingsFieldtype */ "./resources/js/components/Fieldtypes/TaxRateSettingsFieldtype.vue");
+/* harmony import */ var _components_Settings_OrderStatus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Settings/OrderStatus */ "./resources/js/components/Settings/OrderStatus.vue");
+/* harmony import */ var _components_Settings_ShippingZone__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Settings/ShippingZone */ "./resources/js/components/Settings/ShippingZone.vue");
+/* harmony import */ var _components_Settings_TaxRate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Settings/TaxRate */ "./resources/js/components/Settings/TaxRate.vue");
 
 
 
@@ -4184,9 +4203,9 @@ __webpack_require__.r(__webpack_exports__);
 Statamic.$components.register('commerce-create-form', _components_Publish_CommerceCreateForm__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Statamic.$components.register('customer-orders-fieldtype', _components_Fieldtypes_CustomerOrdersFieldtype__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Statamic.$components.register('money-fieldtype', _components_Fieldtypes_MoneyFieldtype__WEBPACK_IMPORTED_MODULE_2__["default"]);
-Statamic.$components.register('order-status-settings-fieldtype', _components_Fieldtypes_OrderStatusSettingsFieldtype__WEBPACK_IMPORTED_MODULE_3__["default"]);
-Statamic.$components.register('shipping-zone-settings-fieldtype', _components_Fieldtypes_ShippingZoneSettingsFieldtype__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Statamic.$components.register('tax-rate-settings-fieldtype', _components_Fieldtypes_TaxRateSettingsFieldtype__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Statamic.$components.register('order-status-settings', _components_Settings_OrderStatus__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Statamic.$components.register('shipping-zone-settings', _components_Settings_ShippingZone__WEBPACK_IMPORTED_MODULE_4__["default"]);
+Statamic.$components.register('tax-rate-settings', _components_Settings_TaxRate__WEBPACK_IMPORTED_MODULE_5__["default"]);
 
 /***/ }),
 

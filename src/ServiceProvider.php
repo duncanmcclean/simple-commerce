@@ -18,13 +18,9 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingZoneSettingsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateSettingsFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Http\Middleware\AccessSettings;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
@@ -82,12 +78,9 @@ class ServiceProvider extends AddonServiceProvider
         CustomerOrdersFieldtype::class,
         MoneyFieldtype::class,
         OrderStatusFieldtype::class,
-        OrderStatusSettingsFieldtype::class,
         ProductCategoryFieldtype::class,
         ProductFieldtype::class,
-        ShippingZoneSettingsFieldtype::class,
         StateFieldtype::class,
-        TaxRateSettingsFieldtype::class,
     ];
 
     protected $modifiers = [
@@ -153,10 +146,13 @@ class ServiceProvider extends AddonServiceProvider
                 ->create('Products')
                 ->section('Simple Commerce')
                 ->route('products.index')
-                ->icon('entries')
                 ->can('view products')
+                ->icon('entries')
                 ->children([
-                    $nav->item('Categories')->route('product-categories.index')->can('view product categories'),
+                    $nav
+                        ->item('Categories')
+                        ->route('product-categories.index')
+                        ->can('view product categories'),
                 ]);
         });
 
@@ -182,9 +178,23 @@ class ServiceProvider extends AddonServiceProvider
             $nav
                 ->create('Settings')
                 ->section('Simple Commerce')
-                ->route('settings.edit')
+                ->route('settings.index')
                 ->can('view simple commerce settings')
-                ->icon('settings-horizontal');
+                ->icon('settings-horizontal')
+                ->children([
+                    $nav
+                        ->item('Order Statuses')
+                        ->route('settings.order-statuses.index')
+                        ->can('view simple commerce settings'),
+                    $nav
+                        ->item('Shipping Zones')
+                        ->route('settings.shipping-zones.index')
+                        ->can('view simple commerce settings'),
+                    $nav
+                        ->item('Tax Rates')
+                        ->route('settings.tax-rates.index')
+                        ->can('view simple commerce settings'),
+                ]);
         });
 
         $this->app->booted(function () {

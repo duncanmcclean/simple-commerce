@@ -6,7 +6,7 @@
         >
             <div class="h-full bg-white overflow-auto">
                 <div class="bg-grey-20 px-3 py-1 border-b border-grey-30 text-lg font-medium flex items-center justify-between mb-4">
-                    Simple Commerce Settings
+                    Settings
                     <button type="button" class="btn-close" @click="close">×</button>
                 </div>
 
@@ -29,7 +29,7 @@
 
 <script>
     export default {
-        name: "CreateOrderStatusStack",
+        name: "CreateStack",
 
         props: [
             'title', 'action', 'blueprint', 'meta', 'values'
