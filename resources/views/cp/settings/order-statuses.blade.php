@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', 'Simple Commerce Settings')
+@section('title', 'Order Statuses')
 
 @section('content')
     <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>

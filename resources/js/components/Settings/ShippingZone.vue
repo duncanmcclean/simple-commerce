@@ -37,10 +37,10 @@
         <create-stack
                 v-if="createStackOpen"
                 title="Create Shipping Zone"
-                :action="meta.store"
-                :blueprint="meta.blueprint"
-                :meta="meta.meta"
-                :values="meta.values"
+                :action="storeEndpoint"
+                :blueprint="blueprint"
+                :meta="meta"
+                :values="values"
                 @closed="createStackOpen = false"
                 @saved="zoneSaved"
         ></create-stack>
@@ -49,8 +49,8 @@
                 v-if="editStackOpen"
                 title="Update Shipping Zone"
                 :action="editZone.updateUrl"
-                :blueprint="meta.blueprint"
-                :meta="meta.meta"
+                :blueprint="blueprint"
+                :meta="meta"
                 :values="editZone"
                 @closed="editStackOpen = false"
                 @saved="zoneSaved"
@@ -64,21 +64,27 @@
     import UpdateStack from "../Stacks/UpdateStack";
 
     export default {
-        name: "ShippingZoneSettingsFieldtype",
+        name: "ShippingZone",
 
         components: {
             CreateStack,
             UpdateStack
         },
 
-        mixins: [Fieldtype],
-
-        props: [
-            'meta', 'value'
-        ],
+        props: {
+            indexEndpoint: String,
+            storeEndpoint: String,
+            initialBlueprint: Array,
+            initialMeta: Array,
+            initialValues: Array
+        },
 
         data() {
             return {
+                blueprint: JSON.parse(this.initialBlueprint),
+                meta: JSON.parse(this.initialMeta),
+                values: JSON.parse(this.initialValues),
+
                 items: [],
                 editZone: [],
 
@@ -89,7 +95,7 @@
 
         methods: {
             getZones() {
-                axios.get(this.meta.index)
+                axios.get(this.indexEndpoint)
                     .then(response => {
                         this.items = response.data;
                     }).catch(error => {
