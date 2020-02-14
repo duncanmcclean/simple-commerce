@@ -75,15 +75,6 @@ return [
     'shop_prices_with_tax' => true,
 
     /**
-     * Shipping
-     *
-     * Configure basic shipping settings here. You can configure
-     * shipping rules in the Control Panel.
-     */
-
-    'only_show_shipping_costs_in_cart' => true,
-
-    /**
      * How long should we keep your customers' cart in the
      * database for? (in days)
      */
