@@ -89,4 +89,10 @@ class CartCalculatorTest extends TestCase
 
         $this->assertIsInt($taxTotal);
     }
+
+    /** @test */
+    public function can_get_tax_total_if_prices_are_entered_with_tax()
+    {
+        // TODO: write test
+    }
 }
