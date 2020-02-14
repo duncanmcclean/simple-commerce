@@ -23,7 +23,7 @@ class ShippingZoneController extends CpController
         $zone->country_id = $request->country[0];
         $zone->state_id = isset($request->state[0]) ?? null;
         $zone->start_of_zip_code = $request->start_of_zip_code;
-        $zone->rate = $request->rate;
+        $zone->price = $request->price;
         $zone->save();
 
         return $zone;
@@ -36,7 +36,7 @@ class ShippingZoneController extends CpController
         $zone->country_id = $request->country[0];
         $zone->state_id = isset($request->state[0]) ?? null;
         $zone->start_of_zip_code = $request->start_of_zip_code;
-        $zone->rate = $request->rate;
+        $zone->price = $request->price;
         $zone->save();
 
         return $zone;

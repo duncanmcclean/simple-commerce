@@ -5,7 +5,7 @@
                 <thead>
                 <tr>
                     <th>Location</th>
-                    <th>Rate</th>
+                    <th>Price</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -15,7 +15,7 @@
                     <td v-if="zone.state_id">{{ zone.country.name }}, {{ zone.state.name }}, {{ zone.start_of_zip_code }}</td>
                     <td v-else>{{ zone.country.name }}, {{ zone.start_of_zip_code }}</td>
 
-                    <td>{{ zone.rate }}%</td>
+                    <td>{{ zone.formatted_price }}</td>
 
                     <td class="flex justify-end">
                         <dropdown-list>

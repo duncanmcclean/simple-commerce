@@ -56,7 +56,7 @@ class CartCalculator
     {
         collect($this->shipping)
             ->each(function ($item) {
-                $this->add($item['shippingZone']->rate);
+                $this->add($item['shippingZone']->price);
             });
 
         return $this;

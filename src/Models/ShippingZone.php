@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ShippingZone extends Model
 {
     protected $fillable = [
-        'country_id', 'state_id', 'start_of_zip_code', 'rate', 'uuid',
+        'country_id', 'state_id', 'start_of_zip_code', 'price', 'uuid',
     ];
 
     protected $appends = [
-        'updateUrl', 'deleteUrl',
+        'updateUrl', 'deleteUrl', 'formatted_price',
     ];
 
     public function getRouteKeyName()
@@ -42,5 +42,10 @@ class ShippingZone extends Model
     public function getDeleteUrlAttribute()
     {
         return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
+    }
+
+    public function getFormattedPriceAttribute()
+    {
+        return (new \DoubleThreeDigital\SimpleCommerce\Helpers\Currency())->parse($this->attributes['price']);
     }
 }

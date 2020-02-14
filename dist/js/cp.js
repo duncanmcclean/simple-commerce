@@ -3045,7 +3045,7 @@ var render = function() {
                       )
                     ]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(zone.rate) + "%")]),
+                _c("td", [_vm._v(_vm._s(zone.formatted_price))]),
                 _vm._v(" "),
                 _c(
                   "td",
@@ -3143,7 +3143,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Location")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Rate")]),
+        _c("th", [_vm._v("Price")]),
         _vm._v(" "),
         _c("th")
       ])

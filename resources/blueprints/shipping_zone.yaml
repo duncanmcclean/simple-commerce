@@ -32,11 +32,11 @@ sections:
           display: 'Start of Zip Code'
           listable: hidden
       -
-        handle: rate
+        handle: price
         field:
           type: integer
-          instructions: 'What % should be taxed?'
+          instructions: 'How much does shipping cost?'
           localizable: false
-          display: Rate
+          display: Price
           listable: hidden
           width: 50
