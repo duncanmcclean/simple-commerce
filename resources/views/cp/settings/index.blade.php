@@ -26,6 +26,6 @@
 
     <div class="content">
         <h2>Looking for more settings?</h2>
-        <p>Simple Commerce provides a load of other settings but for those you'll need to edit the <code>config/commerce.php</code> file.</p>
+        <p>Simple Commerce provides a load of other settings but for those you'll need to edit the <code>config/simple-commerce.php</code> file.</p>
     </div>
 @endsection

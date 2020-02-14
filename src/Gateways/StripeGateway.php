@@ -11,7 +11,7 @@ class StripeGateway
 {
     public function __construct()
     {
-        Stripe::setApiKey(config('commerce.stripe.secret'));
+        Stripe::setApiKey(config('simple-commerce.stripe.secret'));
     }
 
     public function issueRefund(string $paymentIntent)

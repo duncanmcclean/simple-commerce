@@ -119,7 +119,7 @@ class ServiceProvider extends AddonServiceProvider
         parent::boot();
 
         $this->publishes([
-            __DIR__.'/../config/commerce.php' => config_path('commerce.php'),
+            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
         ], 'commerce-config');
 
         $this->publishes([
@@ -260,7 +260,7 @@ class ServiceProvider extends AddonServiceProvider
     public function register()
     {
         if (! $this->app->configurationIsCached()) {
-            $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
+            $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'commerce');
         }
     }
 }

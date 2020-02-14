@@ -16,7 +16,7 @@ class CartDeletionCommand extends Command
     {
         parent::__construct();
 
-        $this->description = 'Deletes carts older than '.config('commerce.cart-retention').' days old';
+        $this->description = 'Deletes carts older than '.config('simple-commerce.cart-retention').' days old';
     }
 
     public function handle()
@@ -28,7 +28,7 @@ class CartDeletionCommand extends Command
 
     public function deletion()
     {
-        Cart::whereDate('created_at', '<=', now()->subDays(config('commerce.cart-retention'))->toDateString())
+        Cart::whereDate('created_at', '<=', now()->subDays(config('simple-commerce.cart-retention'))->toDateString())
             ->each(function (Cart $cart) {
                 $items = CartItem::where('cart_id', $cart->id)
                     ->get()

@@ -8,7 +8,7 @@ class Currency
 {
     public function primary()
     {
-        return CurrencyModel::where('iso', config('commerce.currency'))->first();
+        return CurrencyModel::where('iso', config('simple-commerce.currency'))->first();
     }
 
     public function symbol()
@@ -24,17 +24,17 @@ class Currency
     public function parse(int $total, bool $showSeparator = true, bool $showSymbol = true)
     {
         if ($showSeparator == true) {
-            $total = number_format($total, 2, '.', config('commerce.currency_separator'));
+            $total = number_format($total, 2, '.', config('simple-commerce.currency_separator'));
         }
 
         if ($showSymbol == true) {
             $symbol = $this->primary()->symbol;
 
-            if (config('commerce.currency_position') === 'left') {
+            if (config('simple-commerce.currency_position') === 'left') {
                 $total = $symbol.$total;
             }
 
-            if (config('commerce.currency_position') === 'right') {
+            if (config('simple-commerce.currency_position') === 'right') {
                 $total = $total.$symbol;
             }
         }

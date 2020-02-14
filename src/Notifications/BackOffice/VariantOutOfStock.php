@@ -18,7 +18,7 @@ class VariantOutOfStock extends Notification
 
     public function via($notifiable)
     {
-        return config('commerce.notifications.channel');
+        return config('simple-commerce.notifications.channel');
     }
 
     public function toMail($notifiable)
