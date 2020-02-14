@@ -1,6 +1,5 @@
 ![Statamic 3.0+](https://img.shields.io/badge/Statamic-3.0+-FF269E?style=for-the-badge&link=https://statamic.com)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/doublethreedigital/simple-commerce.svg?style=flat-square)](https://packagist.org/packages/doublethreedigital/simple-commerce)
-[![Build Status](https://travis-ci.com/doublethreedigital/simple-commerce.svg?branch=master)](https://travis-ci.com/doublethreedigital/simple-commerce)
 
 ## About Simple Commerce
 
