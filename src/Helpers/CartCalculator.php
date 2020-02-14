@@ -64,6 +64,10 @@ class CartCalculator
 
     public function taxTotal()
     {
+        if (config('simple-commerce.entered_with_tax')) {
+            return $this;
+        }
+
         // TODO: this does not work when called without the rest of the things
 
         collect($this->tax)
