@@ -49,10 +49,10 @@
         <create-stack
             v-if="createStackOpen"
             title="Create Order Status"
-            :action="meta.store"
-            :blueprint="meta.blueprint"
-            :meta="meta.meta"
-            :values="meta.values"
+            :action="storeEndpoint"
+            :blueprint="blueprint"
+            :meta="meta"
+            :values="values"
             @closed="createStackOpen = false"
             @saved="statusSaved"
         ></create-stack>
@@ -61,8 +61,8 @@
             v-if="editStackOpen"
             title="Update Order Status"
             :action="editStatus.updateUrl"
-            :blueprint="meta.blueprint"
-            :meta="meta.meta"
+            :blueprint="blueprint"
+            :meta="meta"
             :values="editStatus"
             @closed="editStackOpen = false"
             @saved="statusUpdated"
@@ -76,21 +76,27 @@
     import UpdateStack from "../Stacks/UpdateStack";
 
     export default {
-        name: "OrderStatusSettingsFieldtype",
+        name: "OrderStatusSettings",
 
         components: {
             CreateStack,
             UpdateStack
         },
 
-        mixins: [Fieldtype],
-
-        props: [
-            'meta', 'value'
-        ],
+        props: {
+            indexEndpoint: String,
+            storeEndpoint: String,
+            initialBlueprint: Array,
+            initialMeta: Array,
+            initialValues: Array
+        },
 
         data() {
             return {
+                blueprint: JSON.parse(this.initialBlueprint),
+                meta: JSON.parse(this.initialMeta),
+                values: JSON.parse(this.initialValues),
+
                 items: [],
                 editStatus: [],
 
@@ -101,7 +107,7 @@
 
         methods: {
             getStatuses() {
-                axios.get(this.meta.index)
+                axios.get(this.indexEndpoint)
                     .then(response => {
                         this.items = response.data;
                     }).catch(error => {

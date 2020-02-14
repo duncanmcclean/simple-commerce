@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use Illuminate\Http\Request;
