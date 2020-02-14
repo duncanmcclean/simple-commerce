@@ -3,27 +3,26 @@
         <section class="bg-grey-20 rounded w-full mt-2">
             <table class="bg-white data-table">
                 <thead>
-                <tr>
-                    <th>Location</th>
-                    <th>Price</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
                 </thead>
-
                 <tbody>
-                <tr v-for="zone in items" :key="zone.id">
-                    <td v-if="zone.state_id">{{ zone.country.name }}, {{ zone.state.name }}, {{ zone.start_of_zip_code }}</td>
-                    <td v-else>{{ zone.country.name }}, {{ zone.start_of_zip_code }}</td>
+                    <tr v-for="zone in items" :key="zone.id">
+                        <td v-if="zone.state_id">{{ zone.country.name }}, {{ zone.state.name }}, {{ zone.start_of_zip_code }}</td>
+                        <td v-else>{{ zone.country.name }}, {{ zone.start_of_zip_code }}</td>
 
-                    <td>{{ zone.formatted_price }}</td>
+                        <td>{{ zone.formatted_price }}</td>
 
-                    <td class="flex justify-end">
-                        <dropdown-list>
-                            <dropdown-item text="Edit" @click="updateShippingZone(zone)"></dropdown-item>
-                            <dropdown-item class="warning" text="Delete" :redirect="zone.deleteUrl"></dropdown-item>
-                        </dropdown-list>
-                    </td>
-                </tr>
+                        <td class="flex justify-end">
+                            <dropdown-list>
+                                <dropdown-item text="Edit" @click="updateShippingZone(zone)"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" :redirect="zone.deleteUrl"></dropdown-item>
+                            </dropdown-list>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
