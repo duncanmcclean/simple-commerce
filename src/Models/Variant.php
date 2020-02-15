@@ -4,11 +4,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
 {
-    use HasAttributes;
+    use HasAttributes, HasUuid;
 
     protected $fillable = [
         'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uuid', 'description', 'name',

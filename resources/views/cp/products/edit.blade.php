@@ -10,5 +10,6 @@
             :meta='@json($meta)'
             :values='@json($values)'
             action="{{ $action }}"
+            @saved="window.location.reload()"
     ></publish-form>
 @endsection

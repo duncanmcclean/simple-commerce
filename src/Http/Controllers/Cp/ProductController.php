@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\CP\Breadcrumbs;
@@ -68,7 +69,7 @@ class ProductController extends CpController
         $product->save();
 
         collect($request->variants)
-            ->each(function ($variant) use ($product) {
+            ->each(function ($variant) use ($product, $request) {
                 $item = new Variant();
                 $item->uuid = (new Stache())->generateId();
                 $item->name = $variant['name'];
@@ -78,9 +79,21 @@ class ProductController extends CpController
                 $item->unlimited_stock = $variant['unlimited_stock'];
                 $item->max_quantity = $variant['max_quantity'];
                 $item->description = $variant['description'];
-                $item->variant_attributes = $variant['variant_attributes'];
                 $item->product_id = $product->id;
                 $item->save();
+
+                collect($variant['variant_attributes'])
+                    ->each(function ($attribute) use ($item) {
+                        if ($attribute['key'] === null) {
+                            return;
+                        }
+
+                        $item->attributes()->create([
+                            'uuid' => (new Stache())->generateId(),
+                            'key' => $attribute['key'],
+                            'value' => $attribute['value'],
+                        ]);
+                    });
             });
 
         return ['redirect' => cp_route('products.edit', ['product' => $product->uuid])];
@@ -111,14 +124,16 @@ class ProductController extends CpController
                     'sku' => $variant->sku,
                     'stock_number' => $variant->stock,
                     'unlimited_stock' => $variant->unlimited_stock,
-                    'variant_attributes' => collect($variant->variant_attributes)
-                        ->map(function ($attribute, $key) {
+                    'variant_attributes' => collect($variant->attributes)
+                        ->map(function (Attribute $attribute, $key) {
                             return [
                                 '_id' => 'row-'.$key,
-                                'key' => $attribute['key'],
-                                'value' => $attribute['value'],
+                                'uuid' => $attribute->uuid,
+                                'key' => $attribute->key,
+                                'value' => $attribute->value,
                             ];
-                        })->toArray(),
+                        })
+                        ->toArray(),
                 ];
             })->toArray(),
         ]);
@@ -150,25 +165,36 @@ class ProductController extends CpController
         $product->is_enabled = true;
         $product->save();
 
+//        dd('smth');
+
         collect($request->variants)
             ->each(function ($variant) use ($product) {
-                if (isset($variant['uuid'])) {
-                    $item = Variant::where('uuid', $variant['uuid'])->firstOrFail();
-                } else {
-                    $item = new Variant();
-                    $item->uuid = (new Stache())->generateId();
-                }
+                $item = Variant::updateOrCreate([
+                    'uuid' => $variant['uuid'],
+                ], [
+                    'name' => $variant['name'],
+                    'sku' => $variant['sku'],
+                    'price' => $variant['price'],
+                    'stock' => $variant['stock_number'],
+                    'unlimited_stock' => $variant['unlimited_stock'],
+                    'max_quantity' => $variant['max_quantity'],
+                    'description' => $variant['description'],
+                    'product_id' => $product->id,
+                ]);
 
-                $item->name = $variant['name'];
-                $item->sku = $variant['sku'];
-                $item->price = $variant['price'];
-                $item->stock = $variant['stock_number'];
-                $item->unlimited_stock = $variant['unlimited_stock'];
-                $item->max_quantity = $variant['max_quantity'];
-                $item->description = $variant['description'];
-                $item->variant_attributes = $variant['variant_attributes'];
-                $item->product_id = $product->id;
-                $item->save();
+                collect($variant['variant_attributes'])
+                    ->each(function ($attribute) use ($item) {
+                        if ($attribute['key'] === null) {
+                            return;
+                        }
+
+                        $item->attributes()->updateOrCreate([
+                            'uuid' => $attribute['uuid'],
+                        ], [
+                            'key' => $attribute['key'],
+                            'value' => $attribute['value'],
+                        ]);
+                    });
             });
 
         return $product;
@@ -178,8 +204,10 @@ class ProductController extends CpController
     {
         $this->authorize('delete', $product);
 
-        collect($product->variants())
-            ->each(function ($variant) {
+        collect($product->variants)
+            ->each(function (Variant $variant) {
+                $variant->attributes()->delete();
+
                 $variant->delete();
             });
 
