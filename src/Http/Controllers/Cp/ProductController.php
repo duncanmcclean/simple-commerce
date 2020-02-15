@@ -165,8 +165,6 @@ class ProductController extends CpController
         $product->is_enabled = true;
         $product->save();
 
-//        dd('smth');
-
         collect($request->variants)
             ->each(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
@@ -195,6 +193,14 @@ class ProductController extends CpController
                             'value' => $attribute['value'],
                         ]);
                     });
+
+                $item->attributes
+                    ->filter(function (Attribute $attribute) use ($variant) {
+                        return !collect($variant['variant_attributes'])
+                            ->where('uuid', $attribute->uuid)
+                            ->first(null, false);
+                    })
+                    ->each->delete();
             });
 
         return $product;
