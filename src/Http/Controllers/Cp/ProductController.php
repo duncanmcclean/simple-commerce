@@ -163,7 +163,9 @@ class ProductController extends CpController
         $product->is_enabled = true;
         $product->save();
 
-        collect($request->variants)
+        $requestVariants = collect($request->variants);
+
+        $requestVariants
             ->each(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
                     'uuid' => $variant['uuid'] ?? null,
@@ -203,6 +205,13 @@ class ProductController extends CpController
                     })
                     ->each->delete();
             });
+
+        $product->variants
+            ->filter(function ($variant) use ($requestVariants) {
+                return ! $requestVariants
+                    ->contains('sku', $variant->sku);
+            })
+            ->each->delete();
 
         return $product;
     }
