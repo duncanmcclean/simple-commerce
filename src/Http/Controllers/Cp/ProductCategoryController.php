@@ -2,14 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductCategoryStoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductCategoryUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductCategoryRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Stache\Stache;
 
 class ProductCategoryController extends CpController
 {
@@ -53,14 +51,11 @@ class ProductCategoryController extends CpController
         ]);
     }
 
-    public function store(ProductCategoryStoreRequest $request)
+    public function store(ProductCategoryRequest $request)
     {
         $this->authorize('create', ProductCategory::class);
 
-        $validation = $request->validated();
-
         $category = new ProductCategory();
-        $category->uuid = (new Stache())->generateId();
         $category->title = $request->title;
         $category->slug = $request->slug;
         $category->save();
@@ -111,11 +106,9 @@ class ProductCategoryController extends CpController
         ]);
     }
 
-    public function update(ProductCategoryUpdateRequest $request, ProductCategory $category)
+    public function update(ProductCategoryRequest $request, ProductCategory $category): ProductCategory
     {
         $this->authorize('update', $category);
-
-        $validated = $request->validated();
 
         $category->title = $request->title;
         $category->slug = $request->slug;
@@ -129,13 +122,14 @@ class ProductCategoryController extends CpController
         $this->authorize('delete', $category);
 
         if (ProductCategory::count() === 1) {
-            return back()->with('success', 'You can\'t delete the only category.');
+            return back()->with('error', 'You can\'t delete the only category.');
         }
 
         // TODO: decide what we should do with products in this category
 
         $category->delete();
 
-        return redirect(cp_route('product-categories.index'));
+        return back()
+            ->with('success', "$category->title has been deleted.");
     }
 }

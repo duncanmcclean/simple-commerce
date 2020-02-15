@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductCategoryStoreRequest extends FormRequest
+class CustomerRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,8 +14,8 @@ class ProductCategoryStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
-            'slug' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email',
         ];
     }
 }

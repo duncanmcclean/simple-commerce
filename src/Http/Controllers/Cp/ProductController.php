@@ -3,15 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductStoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Stache\Stache;
 
 class ProductController extends CpController
 {
@@ -53,14 +51,11 @@ class ProductController extends CpController
         ]);
     }
 
-    public function store(ProductStoreRequest $request)
+    public function store(ProductRequest $request)
     {
         $this->authorize('create', Product::class);
 
-        $validation = $request->validated();
-
         $product = new Product();
-        $product->uuid = (new Stache())->generateId();
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->description = $request->description;
@@ -75,7 +70,6 @@ class ProductController extends CpController
                 }
 
                 $product->attributes()->create([
-                    'uuid' => (new Stache())->generateId(),
                     'key' => $attribute['key'],
                     'value' => $attribute['value'],
                 ]);
@@ -84,7 +78,6 @@ class ProductController extends CpController
         collect($request->variants)
             ->each(function ($variant) use ($product, $request) {
                 $item = new Variant();
-                $item->uuid = (new Stache())->generateId();
                 $item->name = $variant['name'];
                 $item->sku = $variant['sku'];
                 $item->price = $variant['price'];
@@ -102,7 +95,6 @@ class ProductController extends CpController
                         }
 
                         $item->attributes()->create([
-                            'uuid' => (new Stache())->generateId(),
                             'key' => $attribute['key'],
                             'value' => $attribute['value'],
                         ]);
@@ -175,11 +167,9 @@ class ProductController extends CpController
         ]);
     }
 
-    public function update(ProductUpdateRequest $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
         $this->authorize('update', $product);
-
-        $validation = $request->validated();
 
         $product->title = $request->title;
         $product->slug = $request->slug;
@@ -268,6 +258,7 @@ class ProductController extends CpController
 
         $product->delete();
 
-        return redirect(cp_route('products.index'));
+        return back()
+            ->with('success', "$product->title has been deleted.");
     }
 }

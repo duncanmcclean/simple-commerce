@@ -2,16 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerStoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CustomerRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Stache\Stache;
 
 class CustomerController extends CpController
 {
@@ -55,14 +52,11 @@ class CustomerController extends CpController
         ]);
     }
 
-    public function store(CustomerStoreRequest $request)
+    public function store(CustomerRequest $request)
     {
         $this->authorize('create', Customer::class);
 
-        $validated = $request->validated();
-
         $customer = new Customer();
-        $customer->uuid = (new Stache())->generateId();
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->save();
@@ -95,11 +89,9 @@ class CustomerController extends CpController
         ]);
     }
 
-    public function update(CustomerUpdateRequest $request, Customer $customer)
+    public function update(CustomerRequest $request, Customer $customer): Customer
     {
         $this->authorize('update', $customer);
-
-        $validated = $request->validated();
 
         $customer->name = $request->name;
         $customer->email = $request->email;
@@ -113,17 +105,18 @@ class CustomerController extends CpController
         $this->authorize('delete', $customer);
 
         Order::where('customer_id', $customer->id)
-            ->each(function ($order) {
+            ->each(function (Order $order) {
                 $order->delete();
             });
 
         Address::where('customer_id', $customer->id)
-            ->each(function ($address) {
+            ->each(function (Address $address) {
                 $address->delete();
             });
 
         $customer->delete();
 
-        return back()->with('success', 'Customer has been deleted.');
+        return back()
+            ->with('success', 'Customer has been deleted.');
     }
 }

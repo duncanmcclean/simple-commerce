@@ -70,7 +70,6 @@ class CheckoutController extends Controller
             event(new ReturnCustomer($customer));
         } else {
             $customer = new Customer();
-            $customer->uuid = (new Stache())->generateId();
             $customer->name = $request->name;
             $customer->email = $request->email;
             $customer->save();
@@ -79,7 +78,6 @@ class CheckoutController extends Controller
         }
 
         $shippingAddress = new Address();
-        $shippingAddress->uuid = (new Stache())->generateId();
         $shippingAddress->name = $customer->name;
         $shippingAddress->address1 = $request->shipping_address_1;
         $shippingAddress->address2 = $request->shipping_address_2;
@@ -95,7 +93,6 @@ class CheckoutController extends Controller
             $billingAddress = $shippingAddress;
         } else {
             $billingAddress = new Address();
-            $billingAddress->uuid = (new Stache())->generateId();
             $billingAddress->name = $customer->name;
             $billingAddress->address1 = $request->billing_address_1;
             $billingAddress->address2 = $request->billing_address_2;
@@ -109,7 +106,6 @@ class CheckoutController extends Controller
         }
 
         $order = new Order();
-        $order->uuid = (new Stache())->generateId();
         $order->payment_intent = $request->payment_method;
         $order->billing_address_id = $billingAddress->id;
         $order->shipping_address_id = $shippingAddress->id;

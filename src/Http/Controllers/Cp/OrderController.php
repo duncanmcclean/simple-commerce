@@ -3,16 +3,15 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Stache\Stache;
 
 class OrderController extends CpController
 {
@@ -58,19 +57,47 @@ class OrderController extends CpController
         ]);
     }
 
-    public function update(OrderUpdateRequest $request, Order $order)
+    public function update(OrderRequest $request, Order $order): Order
     {
         $this->authorize('update', Order::class);
 
-        $validated = $request->validated();
-
-        $order = Order::find($order)->first();
-
         if ($request->status != $order->status) {
-            event(new OrderStatusUpdated($order));
+            event(new OrderStatusUpdated($order, $order->customer));
         }
 
-        // TODO: actually update the entry
+        $billingAddress = new Address();
+        $billingAddress->name = $order->customer->name;
+        $billingAddress->address1 = $request->billing_address_1;
+        $billingAddress->address2 = $request->billing_address_2;
+        $billingAddress->address3 = $request->billing_address_3;
+        $billingAddress->city = $request->billing_city;
+        $billingAddress->zip_code = $request->billing_zip_code;
+        $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
+        $billingAddress->state_id = State::where('abbreviation', $request->billing_state)->first()->id ?? null;
+        $billingAddress->customer_id = $order->customer_id;
+        $billingAddress->save();
+
+        $shippingAddress = new Address();
+        $shippingAddress->name = $order->customer->name;
+        $shippingAddress->address1 = $request->shipping_address_1;
+        $shippingAddress->address2 = $request->shipping_address_2;
+        $shippingAddress->address3 = $request->shipping_address_3;
+        $shippingAddress->city = $request->shipping_city;
+        $shippingAddress->zip_code = $request->shipping_zip_code;
+        $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
+        $shippingAddress->state_id = State::where('abbreviation', $request->shipping_state)->first()->id ?? null;
+        $shippingAddress->customer_id = $order->customer_id;
+        $shippingAddress->save();
+
+        $order->total = $request->total;
+        $order->notes = $request->notes;
+        $order->items = $request->items;
+        $order->order_status_id = $request->order_status_id;
+        $order->currency_id = $request->currency_id;
+        $order->customer_id = $request->customer_id;
+        $order->billing_address_id = $billingAddress->id;
+        $order->shipping_address_id = $shippingAddress->id;
+        $order->save();
 
         return $order;
     }
@@ -81,6 +108,7 @@ class OrderController extends CpController
 
         $order->delete();
 
-        return back()->with('success', 'Order has been deleted.');
+        return back()
+            ->with('success', 'Order has been deleted.');
     }
 }
