@@ -2,10 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
+    use HasUuid;
+
     protected $fillable = [
         'uuid', 'product_id', 'variant_id', 'quantity', 'cart_id',
     ];

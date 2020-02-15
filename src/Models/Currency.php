@@ -2,18 +2,16 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-    protected $fillable = [
-        'iso', 'uuid', 'symbol', 'name',
-    ];
+    use HasUuid;
 
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
+    protected $fillable = [
+        'uuid', 'iso', 'symbol', 'name',
+    ];
 
     public function orders()
     {

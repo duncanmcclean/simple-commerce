@@ -3,10 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\CartCalculator;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
+    use HasUuid;
+
     protected $fillable = [
         'uuid',
     ];

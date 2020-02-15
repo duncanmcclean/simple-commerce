@@ -2,18 +2,16 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    protected $fillable = [
-        'name', 'iso', 'uuid',
-    ];
+    use HasUuid;
 
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
+    protected $fillable = [
+        'uuid', 'name', 'iso',
+    ];
 
     public function addresses()
     {

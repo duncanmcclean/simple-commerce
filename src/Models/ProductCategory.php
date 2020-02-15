@@ -2,22 +2,20 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductCategory extends Model
 {
+    use HasUuid;
+
     protected $fillable = [
-        'title', 'slug', 'uuid',
+        'uuid', 'title', 'slug',
     ];
 
     protected $appends = [
         'url',
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
 
     public function products()
     {

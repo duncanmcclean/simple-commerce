@@ -2,22 +2,20 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class ShippingZone extends Model
 {
+    use HasUuid;
+
     protected $fillable = [
-        'country_id', 'state_id', 'start_of_zip_code', 'price', 'uuid',
+        'uuid', 'country_id', 'state_id', 'start_of_zip_code', 'price',
     ];
 
     protected $appends = [
         'updateUrl', 'deleteUrl', 'formatted_price',
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
 
     public function country()
     {

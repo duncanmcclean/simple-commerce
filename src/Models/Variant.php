@@ -12,17 +12,12 @@ class Variant extends Model
     use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uuid', 'description', 'name',
+        'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name',
     ];
 
     protected $appends = [
         'outOfStock',
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
 
     public function product()
     {

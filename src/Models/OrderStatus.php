@@ -2,12 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderStatus extends Model
 {
+    use HasUuid;
+
     protected $fillable = [
-        'name', 'slug', 'description', 'color', 'primary', 'uuid',
+        'uuid', 'name', 'slug', 'description', 'color', 'primary',
     ];
 
     protected $casts = [
@@ -17,11 +20,6 @@ class OrderStatus extends Model
     protected $appends = [
         'updateUrl', 'deleteUrl',
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
 
     public function orders()
     {

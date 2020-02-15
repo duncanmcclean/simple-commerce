@@ -2,21 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class Customer extends Model
 {
-    use Notifiable;
+    use Notifiable, HasUuid;
 
     protected $fillable = [
-        'name', 'email', 'uuid',
+        'uuid', 'name', 'email',
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
 
     public function addresses()
     {

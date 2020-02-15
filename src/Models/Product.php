@@ -3,14 +3,15 @@
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasAttributes;
+    use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'title', 'slug' => 'product_category_id', 'uuid', 'is_enabled', 'description',
+        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description',
     ];
 
     protected $casts = [
@@ -20,11 +21,6 @@ class Product extends Model
     protected $appends = [
         'from_price', 'to_price', 'url',
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
 
     public function productCategory()
     {
