@@ -56,16 +56,16 @@ class Order extends Model
 
     public function editUrl()
     {
-        return cp_route('orders.edit', ['order' => $this->uuid]);
+        return cp_route('orders.edit', ['order' => $this->attributes['uuid']]);
     }
 
     public function updateUrl()
     {
-        return cp_route('orders.update', ['order' => $this->uuid]);
+        return cp_route('orders.update', ['order' => $this->attributes['uuid']]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('orders.destroy', ['order' => $this->uuid]);
+        return cp_route('orders.destroy', ['order' => $this->attributes['uuid']]);
     }
 }

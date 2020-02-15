@@ -12,10 +12,11 @@ class CustomerOrderController extends CpController
     {
         $this->authorize('update', $request->customer);
 
-        return Order::where('customer_id', $request->customer)
-            ->with('orderStatus')
+        return Order::with('orderStatus')
+            ->where('customer_id', $request->customer)
+            ->orderByDesc('created_at')
             ->get()
-            ->map(function ($order) {
+            ->map(function (Order $order) {
                 return array_merge($order->toArray(), [
                     'edit_url' => $order->editUrl(),
                     'delete_url' => $order->deleteUrl(),
