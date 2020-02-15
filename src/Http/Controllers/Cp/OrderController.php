@@ -25,6 +25,7 @@ class OrderController extends CpController
         ]);
 
         $orders = Order::with('orderStatus')
+            ->orderByDesc('created_at')
             ->paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.orders.index', [
