@@ -180,8 +180,9 @@ class ProductController extends CpController
                     'product_id' => $product->id,
                 ]);
 
-                collect($variant['variant_attributes'])
-                    ->each(function ($attribute) use ($item) {
+                $requestAttributes = collect($variant['variant_attributes']);
+
+                $requestAttributes->each(function ($attribute, $key) use ($item) {
                         if ($attribute['key'] === null) {
                             return;
                         }
@@ -195,10 +196,10 @@ class ProductController extends CpController
                     });
 
                 $item->attributes
-                    ->filter(function (Attribute $attribute) use ($variant) {
-                        return !collect($variant['variant_attributes'])
-                            ->where('uuid', $attribute->uuid)
-                            ->first(null, false);
+                    ->filter(function ($attribute) use ($requestAttributes) {
+                        return !$requestAttributes->contains(function ($requestAttribute) use ($attribute) {
+                            return $attribute->key === $requestAttribute['key'] && $attribute->value === $requestAttribute['value'];
+                        });
                     })
                     ->each->delete();
             });

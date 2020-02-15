@@ -79,6 +79,13 @@ sections:
               field:
                 fields:
                   -
+                    handle: uuid
+                    field:
+                      character_limit: 0
+                      type: hidden
+                      localizable: false
+                      display: UUID
+                  -
                     handle: key
                     field:
                       character_limit: 0
