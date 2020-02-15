@@ -68,6 +68,19 @@ class ProductController extends CpController
         $product->is_enabled = true;
         $product->save();
 
+        collect($request->product_attributes)
+            ->each(function ($attribute) use ($product) {
+                if ($attribute['key'] === null) {
+                    return;
+                }
+
+                $product->attributes()->create([
+                    'uuid' => (new Stache())->generateId(),
+                    'key' => $attribute['key'],
+                    'value' => $attribute['value'],
+                ]);
+            });
+
         collect($request->variants)
             ->each(function ($variant) use ($product, $request) {
                 $item = new Variant();
@@ -135,7 +148,17 @@ class ProductController extends CpController
                         })
                         ->toArray(),
                 ];
-            })->toArray(),
+            }),
+            'product_attributes' => collect($product->attributes)
+                ->map(function (Attribute $attribute, $key) {
+                    return [
+                        '_id' => 'row-'.$key,
+                        'uuid' => $attribute->uuid,
+                        'key' => $attribute->key,
+                        'value' => $attribute->value,
+                    ];
+                })
+                ->toArray(),
         ]);
 
         $blueprint = Blueprint::find('simple-commerce/product');
@@ -230,6 +253,8 @@ class ProductController extends CpController
 
                 $variant->delete();
             });
+
+        $product->attributes()->delete();
 
         $product->delete();
 
