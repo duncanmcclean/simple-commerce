@@ -182,7 +182,8 @@ class ProductController extends CpController
 
                 $requestAttributes = collect($variant['variant_attributes']);
 
-                $requestAttributes->each(function ($attribute, $key) use ($item) {
+                $requestAttributes
+                    ->each(function ($attribute, $key) use ($item) {
                         if ($attribute['key'] === null) {
                             return;
                         }
@@ -197,9 +198,10 @@ class ProductController extends CpController
 
                 $item->attributes
                     ->filter(function ($attribute) use ($requestAttributes) {
-                        return !$requestAttributes->contains(function ($requestAttribute) use ($attribute) {
-                            return $attribute->key === $requestAttribute['key'] && $attribute->value === $requestAttribute['value'];
-                        });
+                        return ! $requestAttributes
+                            ->contains(function ($requestAttribute) use ($attribute) {
+                                return $attribute->key === $requestAttribute['key'] && $attribute->value === $requestAttribute['value'];
+                            });
                     })
                     ->each->delete();
             });
