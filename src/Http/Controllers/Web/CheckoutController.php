@@ -20,7 +20,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\StripeGateway;
 use Illuminate\Http\Request;
-use Statamic\Stache\Stache;
 use Statamic\View\View;
 
 class CheckoutController extends Controller
@@ -64,7 +63,8 @@ class CheckoutController extends Controller
 
         $this->createCart($request);
 
-        $paymentMethod = (new StripeGateway())->completeIntent($request->payment_method);
+        $paymentMethod = (new StripeGateway())
+            ->completeIntent($request->payment_method);
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));
