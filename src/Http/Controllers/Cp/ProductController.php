@@ -156,8 +156,6 @@ class ProductController extends CpController
     {
         $this->authorize('update', $product);
 
-        $validation = $request->validated();
-
         $product->title = $request->title;
         $product->slug = $request->slug;
         $product->description = $request->description;
