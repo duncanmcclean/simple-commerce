@@ -19,7 +19,7 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'from_price', 'to_price', 'url', 'variant_count'
+        'from_price', 'to_price', 'url'
     ];
 
     public function getRouteKeyName()
