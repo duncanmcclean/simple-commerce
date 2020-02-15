@@ -168,7 +168,7 @@ class ProductController extends CpController
         collect($request->variants)
             ->each(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
-                    'uuid' => $variant['uuid'],
+                    'uuid' => $variant['uuid'] ?? null,
                 ], [
                     'name' => $variant['name'],
                     'sku' => $variant['sku'],
