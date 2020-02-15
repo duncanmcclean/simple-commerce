@@ -38,7 +38,7 @@ sections:
             -
               handle: sku
               field:
-                generate: true
+                generate: false
                 type: slug
                 localizable: false
                 width: 25
