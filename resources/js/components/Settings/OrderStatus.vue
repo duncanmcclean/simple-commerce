@@ -32,7 +32,7 @@
                             <dropdown-list>
                                 <dropdown-item text="Make Primary" @click="makePrimary(status)"></dropdown-item>
                                 <dropdown-item text="Edit" @click="updateStatus(status)"></dropdown-item>
-                                <dropdown-item class="warning" text="Delete" :redirect="status.deleteUrl"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" @click="openDeleteStatusModal(status)"></dropdown-item>
                             </dropdown-list>
                         </td>
                     </tr>
@@ -67,6 +67,38 @@
             @closed="editStackOpen = false"
             @saved="statusUpdated"
         ></update-stack>
+
+        <modal
+            v-if="deleteModalOpen"
+            name="order-status-delete-modal"
+            width="400px"
+            height="400px"
+            @closed="deleteModalOpen = false"
+        >
+            <div slot-scope="{ close }">
+                <div class="p-4">
+                    <div class="content">
+                        <h1>Delete {{ deleteStatus.name }}</h1>
+                        <p>Before deleting {{ deleteStatus.name }}, pick which order status you wish orders with {{ deleteStatus.name }} to be assigned to.</p>
+                    </div>
+
+                    <div class="my-4">
+                        <select class="w-full input" v-model="deleteAssignTo">
+                            <option
+                                v-for="status in items"
+                                :value="status.id"
+                                v-text="status.name"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <button
+                        class="btn btn-primary"
+                        @click="verifyDeleteStatus(deleteStatus)"
+                    >Confirm delete</button>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -80,7 +112,7 @@
 
         components: {
             CreateStack,
-            UpdateStack
+            UpdateStack,
         },
 
         props: {
@@ -100,8 +132,12 @@
                 items: [],
                 editStatus: [],
 
+                deleteStatus: [],
+                deleteAssignTo: 1,
+
                 createStackOpen: false,
-                editStackOpen: false
+                editStackOpen: false,
+                deleteModalOpen: false
             }
         },
 
@@ -133,6 +169,25 @@
             updateStatus(status) {
                 this.editStatus = status;
                 this.editStackOpen = true;
+            },
+
+            openDeleteStatusModal(status) {
+                this.deleteStatus = status;
+                this.deleteModalOpen = true;
+            },
+
+            verifyDeleteStatus(status) {
+                axios.delete(cp_url('commerce-api/order-status/'+status.uuid), {
+                    assign: this.deleteAssignTo
+                }).then(response => {
+                    this.deleteStatus = [];
+                    this.deleteModalOpen = false;
+
+                    this.$toast.success(status.name + ' has now been deleted');
+                    this.getStatuses();
+                }).catch(error => {
+                    this.$toast.error(error);
+                });
             },
 
             statusSaved() {

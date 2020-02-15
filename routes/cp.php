@@ -55,7 +55,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
             Route::get('/order-status', 'API\OrderStatusController@index')->name('.order-status.index');
             Route::post('/order-status/create', 'API\OrderStatusController@store')->name('.order-status.store');
             Route::post('/order-status/{status}', 'API\OrderStatusController@update')->name('.order-status.update');
-            Route::get('/order-status/{status}', 'API\OrderStatusController@destroy')->name('.order-status.destroy');
+            Route::delete('/order-status/{status}', 'API\OrderStatusController@destroy')->name('.order-status.destroy');
 
             Route::get('/tax-rates', 'API\TaxRateController@index')->name('.tax-rates.index');
             Route::post('/tax-rates/create', 'API\TaxRateController@store')->name('.tax-rates.store');

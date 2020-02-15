@@ -2,24 +2,23 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Stache\Stache;
 
 class OrderStatusController extends CpController
 {
-    public function index()
+    public function index(): Collection
     {
         return OrderStatus::all();
     }
 
-    public function store(Request $request)
+    public function store(OrderStatusRequest $request): OrderStatus
     {
-        // TODO: use a validation request here
-
         $status = new OrderStatus();
-        $status->uuid = (new Stache())->generateId();
         $status->name = $request->name;
         $status->slug = $request->slug;
         $status->description = $request->description;
@@ -30,7 +29,7 @@ class OrderStatusController extends CpController
         return $status;
     }
 
-    public function update(OrderStatus $status, Request $request)
+    public function update(OrderStatus $status, OrderStatusRequest $request): OrderStatus
     {
         if ($request->primary === true) {
             $currentPrimary = OrderStatus::where('primary', true)->first();
@@ -48,9 +47,13 @@ class OrderStatusController extends CpController
         return $status;
     }
 
-    public function destroy(OrderStatus $status)
+    public function destroy(OrderStatus $status, Request $request)
     {
-        // TODO: do something with the orders that are currently using this status
+        collect(Order::where('order_status_id', $status->id)->get())
+            ->each(function ($order) use ($request) {
+                $order->order_status_id = $request->assign;
+                $order->save();
+            });
 
         if (OrderStatus::all()->count() === 1) {
             return redirect(cp_route('settings.edit'))
@@ -63,8 +66,5 @@ class OrderStatusController extends CpController
         }
 
         $status->delete();
-
-        return redirect(cp_route('settings.edit'))
-            ->with('success', 'Deleted order status');
     }
 }

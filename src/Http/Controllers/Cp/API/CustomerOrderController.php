@@ -4,11 +4,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Statamic\Http\Controllers\CP\CpController;
 
 class CustomerOrderController extends CpController
 {
-    public function index(Request $request)
+    public function index(Request $request): Collection
     {
         $this->authorize('update', $request->customer);
 
