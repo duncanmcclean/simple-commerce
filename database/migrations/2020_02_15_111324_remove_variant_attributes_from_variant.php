@@ -25,7 +25,7 @@ class RemoveVariantAttributesFromVariant extends Migration
      */
     public function down()
     {
-        Schema::table('variant', function (Blueprint $table) {
+        Schema::table('variants', function (Blueprint $table) {
             //
         });
     }
