@@ -36,11 +36,15 @@
                         </td>
 
                         <td>
-                            {{ $product->variants->count() }} variants
+                            {{ $product->variant_count }} 
                         </td>
 
                         <td>
-                            <a href="{{ $product->productCategory->showUrl() }}">{{ $product->productCategory->title }}</a>
+                            @if($product->productCategory)
+                                <a href="{{ $product->productCategory->showUrl() }}">{{ $product->productCategory->title }}</a>
+                            @else
+                                &mdash;
+                            @endif
                         </td>
 
                         <td class="flex justify-end">
