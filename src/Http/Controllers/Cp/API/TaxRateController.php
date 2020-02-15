@@ -2,10 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\TaxRateRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
-use Illuminate\Http\Request;
 use Statamic\Http\Controllers\CP\CpController;
-use Statamic\Stache\Stache;
 
 class TaxRateController extends CpController
 {
@@ -14,12 +13,9 @@ class TaxRateController extends CpController
         return TaxRate::with('country', 'state')->get();
     }
 
-    public function store(Request $request)
+    public function store(TaxRateRequest $request): TaxRate
     {
-        // TODO: setup a validation request
-
         $rate = new TaxRate();
-        $rate->uuid = (new Stache())->generateId();
         $rate->name = $request->name;
         $rate->country_id = $request->country[0];
         $rate->state_id = isset($request->state[0]) ?? null;
@@ -30,10 +26,8 @@ class TaxRateController extends CpController
         return $rate;
     }
 
-    public function update(TaxRate $rate, Request $request)
+    public function update(TaxRate $rate, TaxRateRequest $request): TaxRate
     {
-        // TODO: setup a validation request
-
         $rate->name = $request->name;
         $rate->country_id = $request->country[0];
         $rate->state_id = isset($request->state[0]) ?? null;
@@ -48,7 +42,7 @@ class TaxRateController extends CpController
     {
         $rate->delete();
 
-        return redirect(cp_route('settings.edit'))
+        return redirect(cp_route('settings.tax-rates.index'))
             ->with('success', 'Deleted tax rate');
     }
 }
