@@ -2,10 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasAttributes;
+
     protected $fillable = [
         'title', 'slug' => 'product_category_id', 'uuid', 'is_enabled', 'description',
     ];

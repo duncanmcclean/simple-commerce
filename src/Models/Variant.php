@@ -3,12 +3,16 @@
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
 {
+    use HasAttributes, HasUuid;
+
     protected $fillable = [
-        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uuid', 'description', 'variant_attributes', 'name',
+        'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uuid', 'description', 'name',
     ];
 
     protected $appends = [
@@ -23,16 +27,6 @@ class Variant extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function setVariantAttributesAttribute($value)
-    {
-        $this->attributes['variant_attributes'] = json_encode($value);
-    }
-
-    public function getVariantAttributesAttribute($value)
-    {
-        return json_decode($value, true);
     }
 
     public function getOutOfStockAttribute()

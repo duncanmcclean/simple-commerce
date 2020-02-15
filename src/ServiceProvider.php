@@ -135,7 +135,7 @@ class ServiceProvider extends AddonServiceProvider
         ], 'commerce-migrations');
 
         $this->publishes([
-            __DIR__.'/../resources/blueprints/simple-commerce' => resource_path('blueprints'),
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints/simple-commerce'),
         ], 'commerce-blueprints');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
