@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusDeleteRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -47,7 +47,7 @@ class OrderStatusController extends CpController
         return $status;
     }
 
-    public function destroy(OrderStatus $status, Request $request)
+    public function destroy(OrderStatus $status, OrderStatusDeleteRequest $request)
     {
         collect(Order::where('order_status_id', $status->id)->get())
             ->each(function ($order) use ($request) {
