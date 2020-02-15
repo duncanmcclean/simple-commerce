@@ -83,7 +83,7 @@ sections:
                     field:
                       character_limit: 0
                       type: hidden
-                      localizable: false
+                      localization: false
                       display: UUID
                   -
                     handle: key
@@ -100,20 +100,58 @@ sections:
                       localizable: false
                       display: Value
                 mode: table
-                max_rows: 0
-                min_rows: 4
-                reorderable: true
+                reorderable: false
                 type: grid
                 localizable: false
                 display: Attributes
+                listable: true
+                add_row: 'Add Attribute'
           mode: stacked
           max_rows: 0
           min_rows: 2
           add_row: 'New Variant'
-          reorderable: true
+          reorderable: false
           type: grid
           localizable: false
           display: Variants
+          listable: hidden
+  attributes:
+    display: Attributes
+    fields:
+      -
+        handle: product_attributes
+        field:
+          fields:
+            -
+              handle: uuid
+              field:
+                type: hidden
+                localizable: false
+                listable: hidden
+                display: UUID
+            -
+              handle: key
+              field:
+                html_type: text
+                type: text
+                localizable: false
+                listable: hidden
+                display: Key
+            -
+              handle: value
+              field:
+                html_type: text
+                type: text
+                localizable: false
+                listable: hidden
+                display: Value
+          mode: table
+          add_row: 'Add Attribute'
+          reorderable: false
+          type: grid
+          localizable: false
+          listable: true
+          display: Attributes
   sidebar:
     display: Sidebar
     fields:
