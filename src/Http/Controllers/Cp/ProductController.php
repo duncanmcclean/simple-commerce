@@ -163,10 +163,8 @@ class ProductController extends CpController
         $product->is_enabled = true;
         $product->save();
 
-        $requestVariants = collect($request->variants);
-
-        $requestVariants
-            ->each(function ($variant) use ($product) {
+        $requestVariants = collect($request->variants)
+            ->map(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
                     'uuid' => $variant['uuid'] ?? null,
                 ], [
@@ -180,36 +178,42 @@ class ProductController extends CpController
                     'product_id' => $product->id,
                 ]);
 
-                $requestAttributes = collect($variant['variant_attributes']);
-
-                $requestAttributes
-                    ->each(function ($attribute, $key) use ($item) {
+                $requestAttributes = collect($variant['variant_attributes'])
+                    ->map(function ($attribute) use ($item) {
                         if ($attribute['key'] === null) {
-                            return;
+                            return $attribute;
                         }
 
-                        $item->attributes()->updateOrCreate([
+                        $attributeRecord = $item->attributes()->updateOrCreate([
                             'uuid' => $attribute['uuid'],
                         ], [
                             'key' => $attribute['key'],
                             'value' => $attribute['value'],
                         ]);
+
+                        $attribute['uuid'] = $attributeRecord->uuid;
+
+                        return $attribute;
                     });
 
                 $item->attributes
                     ->filter(function ($attribute) use ($requestAttributes) {
                         return ! $requestAttributes
                             ->contains(function ($requestAttribute) use ($attribute) {
-                                return $attribute->key === $requestAttribute['key'] && $attribute->value === $requestAttribute['value'];
+                                return $attribute->uuid === $requestAttribute['uuid'];
                             });
                     })
                     ->each->delete();
+
+                $variant['uuid'] = $item->uuid;
+
+                return $variant;
             });
 
         $product->variants
             ->filter(function ($variant) use ($requestVariants) {
                 return ! $requestVariants
-                    ->contains('sku', $variant->sku);
+                    ->contains('uuid', $variant->uuid);
             })
             ->each->delete();
 
