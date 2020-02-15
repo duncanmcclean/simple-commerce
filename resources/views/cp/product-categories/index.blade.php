@@ -79,16 +79,10 @@
             </div>
         @endif
     @else
-        @component('statamic::partials.create-first', [
+        @include('statamic::partials.create-first', [
             'resource' => 'Product Category',
             'svg' => 'empty/collection',
+            'route' => $createUrl
         ])
-            <a
-                    class="btn btn-primary"
-                    href="{{ $createUrl }}"
-            >
-                Create Product Category
-            </a>
-        @endcomponent
     @endif
 @endsection
