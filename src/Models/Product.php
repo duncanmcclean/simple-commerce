@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -19,7 +20,7 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'from_price', 'to_price', 'url',
+        'from_price', 'to_price', 'url', 'variant_count',
     ];
 
     public function productCategory()
@@ -45,6 +46,11 @@ class Product extends Model
     public function getUrlAttribute()
     {
         return route('products.show', ['product' => $this->attributes['slug']]);
+    }
+
+    public function getVariantCountAttribute()
+    {
+        return sprintf('%s %s', $count = $this->variants->count(), Str::plural('variant', $count));
     }
 
     public function createUrl()
