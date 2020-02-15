@@ -3,10 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
 {
+    use HasAttributes;
+
     protected $fillable = [
         'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'uuid', 'description', 'variant_attributes', 'name',
     ];
