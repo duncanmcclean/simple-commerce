@@ -15,8 +15,8 @@
             <thead>
                 <tr>
                     <th>Order ID</th>
-                    <th>Order Date</th>
                     <th>Customer</th>
+                    <th>Order Date</th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,11 +32,11 @@
                         </td>
 
                         <td>
-                            {{ $order->created_at->toFormattedDateString() }}
+                            <a href="{{ $order->customer->editUrl() }}">{{ $order->customer->name }}</a>
                         </td>
 
                         <td>
-                            <a href="{{ $order->customer->editUrl() }}">{{ $order->customer->name }}</a>
+                            {{ $order->created_at->toFormattedDateString() }}
                         </td>
 
                         <td class="flex justify-end">
