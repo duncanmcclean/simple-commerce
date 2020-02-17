@@ -74,7 +74,7 @@ abstract class TestCase extends OrchestraTestCase
         }
 
         $app['config']->set('statamic.users.repository', 'file');
-        $app['config']->set('commerce', require(__DIR__.'/../config/simple-commerce.php'));
+        $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
     }
 
     public function actAsAdmin()
