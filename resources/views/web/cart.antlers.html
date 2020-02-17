@@ -21,7 +21,7 @@
 
                         <form class="mt-2" action="{{ commerce:route key='cart.delete' }}" method="post">
                             {{ csrf_field }}
-                            <input type="hidden" name="item_id" value="{{ uid }}">
+                            <input type="hidden" name="item_id" value="{{ uuid }}">
 
                             <button class="text-red-700 font-medium text-sm" type="submit">Remove</button>
                         </form>
@@ -67,7 +67,7 @@
 
             <tr class="py-4 px-4 border-b w-full text-gray-800">
                 <td class="px-4 py-6 text-left">
-                    <form class="bg-gray-100 py-6 px-4" action="{{ commerce:route cart='cart_update' }}" method="post">
+                    <form class="bg-gray-100 py-6 px-4" action="{{ commerce:route key='cart.index' }}" method="post">
                         {{ csrf_field }}
 
                         <div class="flex flex-row items-center mb-4">
