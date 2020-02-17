@@ -20,7 +20,7 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'from_price', 'to_price', 'url', 'variant_count',
+        'url', 'variant_count',
     ];
 
     public function productCategory()
@@ -31,16 +31,6 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class);
-    }
-
-    public function getFromPriceAttribute()
-    {
-        return Variant::where('product_id', $this->attributes['id'])->get()->sortByDesc('price')->first()->price;
-    }
-
-    public function getToPriceAttribute()
-    {
-        return Variant::where('product_id', $this->attributes['id'])->get()->sortBy('price')->first()->price;
     }
 
     public function getUrlAttribute()
