@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -32,6 +33,14 @@ class CommerceTags extends Tags
 
     public function route()
     {
+        if ($this->getParam('key') === null) {
+            throw new \Exception('Please set a route key. You are currently sending:'.json_encode($this->params));
+        }
+
+        if (! Route::has($this->getParam('key'))) {
+            throw new \Exception("The route key ({$this->getParam('key')}) you are referencing does not exist.");
+        }
+
         return route($this->getParam('key'), Arr::except($this->params, ['key']));
     }
 

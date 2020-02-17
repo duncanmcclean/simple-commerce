@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Stripe\Exception\AuthenticationException;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Refund;
@@ -11,7 +12,11 @@ class StripeGateway
 {
     public function __construct()
     {
-        Stripe::setApiKey(config('simple-commerce.stripe.secret'));
+        try {
+            Stripe::setApiKey(config('simple-commerce.stripe.secret'));
+        } catch (AuthenticationException $e) {
+            throw new \Exception('Authentication to Stripe failed. Check your API keys are valid.');
+        }
     }
 
     public function issueRefund(string $paymentIntent)

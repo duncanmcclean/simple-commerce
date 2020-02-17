@@ -8,6 +8,10 @@ class Currency
 {
     public function primary()
     {
+        if (config('simple-commerce.currency') === null) {
+            throw new \Exception('Please configure your store\'s currency.');
+        }
+
         return CurrencyModel::where('iso', config('simple-commerce.currency'))->first();
     }
 
