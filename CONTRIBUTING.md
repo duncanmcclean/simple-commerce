@@ -33,3 +33,42 @@ If you are submitting a change which makes updates to the addon's JavaScript, we
 ## Pull requests
 
 Pull requests should clearly describe the problem and solution. We would also ask that you reference any issues numbers that the pull request affects. If you are adding new functionality or updating the way something works, we would also ask that you update the relevant tests.
+
+# Setup Guide for contributors
+
+If you're going to make contributions to Simple Commerce with writing code, fixing bugs etc, you'll want a separate install for that.
+
+First, create a Statamic site which you'll use for Simple Commerce development.
+
+```
+composer create-project statamic/statamic simple-commerce-dev --prefer-dist --stability=dev
+```
+
+Then pull down the Simple Commerce repository (or your fork of it) to your project's folder.
+
+```
+git clone git@github.com:doublethreedigital/simple-commerce.git sp-source
+```
+
+You should have the Simple Commerce stuff in your `sp-source` folder. To install it in your Statamic site, open up it's `composer.json` file and add a few things.
+
+The first thing to add is the `require` package thing:
+
+```json
+"require": {
+	"doublethreedigital/simple-commerce": "dev-master"
+},
+```
+
+And also add this repositories section, it'll tell Composer that we should load the package from our computer instead of downloading it from Packagist.
+
+```json
+"repositories": [
+        {
+            "type": "path",
+            "url": "sp-source"
+        }
+]
+```
+
+And then just run `composer install` and Simple Commerce should be installed and you can work on your first pull request! 🥳
