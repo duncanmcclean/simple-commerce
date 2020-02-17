@@ -24,6 +24,7 @@ class ProductSearchControllerTest extends TestCase
     public function can_get_search_results()
     {
         $product = factory(Product::class)->create();
+
         $variant = factory(Variant::class)->create([
             'product_id' => $product->id,
         ]);
@@ -39,6 +40,7 @@ class ProductSearchControllerTest extends TestCase
     public function cant_get_search_results_of_query_with_no_results()
     {
         $product = factory(Product::class)->create();
+
         $variant = factory(Variant::class)->create([
             'product_id' => $product->id,
         ]);

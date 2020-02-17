@@ -17,13 +17,6 @@ $factory->define(Variant::class, function (Faker $faker) {
         },
         'uuid' => (new Stache())->generateId(),
         'description' => $faker->text,
-        'variant_attributes' => [
-            [
-                '_id' => 'row_1',
-                'key' => 'color',
-                'value' => 'Red',
-            ],
-        ],
         'name' => $faker->word,
     ];
 });
