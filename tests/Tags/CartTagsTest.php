@@ -2,9 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Cart;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Statamic\Facades\Antlers;
 
 class CartTagsTest extends TestCase
 {
@@ -16,7 +18,14 @@ class CartTagsTest extends TestCase
     {
         parent::setUp();
 
-//        $this->tag = new CartTags();
+        $cart = factory(Cart::class)->create();
+
+//        $this->tag = (new CartTags())
+//            ->setParser(Antlers::class)
+//            ->setContext([]);
+//
+//        $this->tag->cartId = $cart->uuid;
+//        $this->session(['commerce_cart_id' => $cart->uuid]);
     }
 
     /** @test */
@@ -28,7 +37,14 @@ class CartTagsTest extends TestCase
     /** @test */
     public function cart_index_tag()
     {
-        //
+//        $cart = factory(Cart::class)->create();
+//        $items = factory(CartItem::class, 5)->create([
+//            'cart_id' => $cart->id,
+//        ]);
+//
+//        $usage = $this->tag->index();
+//
+//        $this->assertIsObject($usage);
     }
 
     /** @test */
