@@ -11,7 +11,7 @@
 
             <select name="variant" required>
                 {{ variants }}
-                    <option value="{{ uid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
+                    <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
                 {{ /variants }}
             </select>
 
