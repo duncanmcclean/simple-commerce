@@ -157,7 +157,7 @@
             {{ cart:shipping }}
                 <div class="flex flex-row items-center justify-between mb-2">
                     <p>Shipping: {{ shipping_zone:country:name }}, {{ shipping_zone:state:name }}, {{ shipping_zone:start_of_zip_code }}</p>
-                    <p>{{ shipping_zone:rate | price }}</p>
+                    <p>{{ shipping_zone:price | price }}</p>
                 </div>
             {{ /cart:shipping }}
 
