@@ -150,7 +150,7 @@
             {{ cart:items }}
                 <div class="flex flex-row items-center justify-between mb-2">
                     <p>{{ quantity }}x {{ variant:name }}</p>
-                    <p>$15.00</p> <!-- TODO: need item prices for things in the cart -->
+                    <p>{{ total | price }}</p>
                 </div>
             {{ /cart:items }}
 
