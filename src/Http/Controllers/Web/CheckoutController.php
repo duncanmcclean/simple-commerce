@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
@@ -46,18 +47,15 @@ class CheckoutController extends Controller
             ->layout('commerce::web.layout')
             ->with([
                 'title' => 'Checkout',
-                'intent' => $intent->client_secret ?? null,
+                'intent' => $intent->client_secret ?? 'something',
             ]);
     }
 
-    public function store(Request $request)
+    public function store(CheckoutRequest $request)
     {
-        // TODO: add a validation request here
-
         $this->createCart($request);
 
-        $paymentMethod = (new StripeGateway())
-            ->completeIntent($request->payment_method);
+        (new StripeGateway())->completeIntent($request->payment_method);
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));
