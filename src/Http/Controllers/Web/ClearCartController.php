@@ -17,8 +17,6 @@ class ClearCartController extends Controller
 
     public function __invoke(Request $request)
     {
-        // TODO: validation request
-
         $this->createCart($request);
 
         $this->cart->clear($this->cartId);

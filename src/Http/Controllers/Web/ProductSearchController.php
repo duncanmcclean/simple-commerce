@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductSearchRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
-use Illuminate\Http\Request;
 use Statamic\View\View;
 
 class ProductSearchController
@@ -16,10 +16,8 @@ class ProductSearchController
             ->with(['title' => 'Search']);
     }
 
-    public function show(Request $request)
+    public function show(ProductSearchRequest $request)
     {
-        // TODO: validation request
-
         $query = $request->input('query');
 
         $results = Product::with('variants')
