@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartDeleteRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartStoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\RemoveFromCartRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\AddToCartRequest;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 
@@ -13,7 +13,7 @@ class CartController extends Controller
     public $cart;
     public $cartId;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
         $this->cart = new Cart();
     }
@@ -28,7 +28,7 @@ class CartController extends Controller
             ]);
     }
 
-    public function store(CartStoreRequest $request)
+    public function store(AddToCartRequest $request)
     {
         $this->createCart($request);
 
@@ -42,7 +42,7 @@ class CartController extends Controller
             ->with('success', 'Added item to cart.');
     }
 
-    public function destroy(CartDeleteRequest $request)
+    public function destroy(RemoveFromCartRequest $request)
     {
         $this->createCart($request);
 

@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CartStoreRequest extends FormRequest
+class AddToCartRequest extends FormRequest
 {
     public function authorize()
     {

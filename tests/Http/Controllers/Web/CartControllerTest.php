@@ -71,7 +71,7 @@ class CartControllerTest extends TestCase
         $response = $this->post('/cart/add', [
             'product' => $product->id,
             'variant' => $variant->id,
-            'quantity' => 1,
+            'quantity' => '1',
         ]);
 
         $response
@@ -93,7 +93,7 @@ class CartControllerTest extends TestCase
             'cart_id' => $cart->id,
             'product_id' => $product->id,
             'variant_id' => $variant->id,
-            'quantity' => 1,
+            'quantity' => '1',
         ]);
 
         $response = $this->post('/cart/remove', [

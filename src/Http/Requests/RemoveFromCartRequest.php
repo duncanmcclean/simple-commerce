@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CartDeleteRequest extends FormRequest
+class RemoveFromCartRequest extends FormRequest
 {
     public function authorize()
     {
