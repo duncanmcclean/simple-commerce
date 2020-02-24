@@ -38,7 +38,7 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        if ($total = $this->cart->total($this->cartId) === '0') {
+        if ($total = $this->cart->total($this->cartId) != '0') {
             $intent = (new StripeGateway())->setupIntent($total * 100, (new Currency())->iso());
         }
 
@@ -47,7 +47,7 @@ class CheckoutController extends Controller
             ->layout('commerce::web.layout')
             ->with([
                 'title' => 'Checkout',
-                'intent' => $intent->client_secret ?? 'something',
+                'intent' => $intent->client_secret ?? '',
             ]);
     }
 
@@ -128,8 +128,6 @@ class CheckoutController extends Controller
                 if ($variant->stock <= 5) { // TODO: maybe make this configurable
                     event(new VariantStockRunningLow($product, $variant));
                 }
-
-                // TODO: maybe this is the place where we could get all of the cart items and create an array for the orders table
             });
 
         $this->cart->clear($this->cartId);

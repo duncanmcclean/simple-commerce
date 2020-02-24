@@ -17,6 +17,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderItemsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
@@ -77,6 +78,7 @@ class ServiceProvider extends AddonServiceProvider
         CustomerFieldtype::class,
         CustomerOrdersFieldtype::class,
         MoneyFieldtype::class,
+        OrderItemsFieldtype::class,
         OrderStatusFieldtype::class,
         ProductCategoryFieldtype::class,
         ProductFieldtype::class,

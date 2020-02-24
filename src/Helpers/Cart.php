@@ -129,9 +129,9 @@ class Cart
         $cart = CartModel::where('uuid', $uuid)->first();
 
         return [
-            'items' => CartItem::where('cart_id', $cart->id)->get(),
-            'shipping' => CartShipping::where('cart_id', $cart->id)->get(),
-            'tax' => CartTax::where('cart_id', $cart->id)->get(),
+            'items' => CartItem::with('product', 'variant')->where('cart_id', $cart->id)->get(),
+            'shipping' => CartShipping::with('shippingZone', 'shippingZone.country', 'shippingZone.state')->where('cart_id', $cart->id)->get(),
+            'tax' => CartTax::with('taxRate', 'taxRate.country', 'taxRate.state')->where('cart_id', $cart->id)->get(),
             'totals' => [
                 'overall' => (new Currency())->parse($this->total($uuid)),
                 'items' => (new Currency())->parse($this->total($uuid, 'items')),
