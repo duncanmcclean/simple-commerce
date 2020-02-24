@@ -6,10 +6,11 @@ use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Variant extends Model
 {
-    use HasAttributes, HasUuid;
+    use HasAttributes, HasUuid, SoftDeletes;
 
     protected $fillable = [
         'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name',
@@ -17,6 +18,10 @@ class Variant extends Model
 
     protected $appends = [
         'outOfStock',
+    ];
+
+    protected $dates = [
+        'deleted_at',
     ];
 
     public function product()

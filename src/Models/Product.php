@@ -5,11 +5,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    use HasAttributes, HasUuid;
+    use HasAttributes, HasUuid, SoftDeletes;
 
     protected $fillable = [
         'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description',
@@ -21,6 +22,10 @@ class Product extends Model
 
     protected $appends = [
         'url', 'variant_count',
+    ];
+
+    protected $dates = [
+        'deleted_at',
     ];
 
     public function productCategory()
