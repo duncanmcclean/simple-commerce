@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\RemoveFromCartRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AddToCartRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\RemoveFromCartRequest;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 
