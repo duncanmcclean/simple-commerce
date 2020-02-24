@@ -33,7 +33,7 @@ class ProductRequest extends FormRequest
             'product_attributes.*.value' => 'required|string',
 
             'slug' => 'required|string',
-            'category' => 'required|integer',
+            'category' => '',
         ];
     }
 }
