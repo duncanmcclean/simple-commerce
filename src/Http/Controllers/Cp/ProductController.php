@@ -60,7 +60,7 @@ class ProductController extends CpController
         $product->slug = $request->slug;
         $product->description = $request->description;
         $product->product_category_id = $request->category[0] ?? null;
-        $product->is_enabled = true;
+        $product->is_enabled = $request->is_enabled;
         $product->save();
 
         collect($request->product_attributes)
@@ -175,7 +175,7 @@ class ProductController extends CpController
         $product->slug = $request->slug;
         $product->description = $request->description;
         $product->product_category_id = $request->category;
-        $product->is_enabled = true;
+        $product->is_enabled = $request->is_enabled;
         $product->save();
 
         $requestVariants = collect($request->variants)
