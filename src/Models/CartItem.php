@@ -15,7 +15,7 @@ class CartItem extends Model
     ];
 
     protected $appends = [
-        'total',
+        'total', 'formatted_total',
     ];
 
     public function cart()
@@ -36,5 +36,10 @@ class CartItem extends Model
     public function getTotalAttribute()
     {
         return $this->variant->price * $this->attributes['quantity'];
+    }
+
+    public function getFormattedTotalAttribute()
+    {
+        return (new CurrencyHelper())->parse($this->getTotalAttribute());
     }
 }
