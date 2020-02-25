@@ -106,6 +106,11 @@ class OrderController extends CpController
     {
         $this->authorize('delete', Order::class);
 
+        if (! config('simple-commerce.allow_to_delete_orders')) {
+            return back()
+                ->with('error', 'Deleting orders has been disabled for this store.');
+        }
+
         $order->delete();
 
         return back()

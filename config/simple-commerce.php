@@ -94,4 +94,13 @@ return [
         'slack_webhook' => '',
     ],
 
+    /**
+     * Deleting Orders
+     *
+     * Should users be allowed to delete orders
+     * from your store?
+     */
+
+    'allow_to_delete_orders' => true,
+
 ];

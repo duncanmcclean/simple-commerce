@@ -57,7 +57,10 @@
                                     @endif
 
                                     <dropdown-item text="Edit" redirect="{{ $order->editUrl() }}"></dropdown-item>
-                                    <dropdown-item class="warning" text="Delete" redirect="{{ $order->deleteUrl() }}"></dropdown-item>
+
+                                    @if(config('simple-commerce.allow_to_delete_orders'))
+                                        <dropdown-item class="warning" text="Delete" redirect="{{ $order->deleteUrl() }}"></dropdown-item>
+                                    @endif
                                 </dropdown-list>
                             </td>
                         </tr>
