@@ -50,3 +50,9 @@ Simple Commerce stores the cart of every customer in the database. For large sto
 This is where you can control where you want your back of store notifications sent to. Currently the only options are `mail` and `slack`.
 
 Depending on your option, you'll need to fill in other values, like your slack webhook or your to email.
+
+### Deleting orders
+
+In some stores you may find that you need to disable the delete functionality of orders. Maybe for regulatory requirements or bookkeeping.
+
+The `allow_to_delete_orders` config option is a boolean that dictates whether orders can be deleted from the Control Panel or not.
