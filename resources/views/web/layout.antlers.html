@@ -55,11 +55,7 @@
             </footer>
         </div>
 
-        <script>
-            window.csrfToken = '{{ csrf_token }}';
-            window.stripeKey = '{{ commerce:stripe_key }}';
-            {{ if intent }}window.paymentIntent = '{{ intent }}';{{ /if }}
-        </script>
+        <script>window.csrfToken = '{{ csrf_token }}';</script>
         <script src="https://js.stripe.com/v3/"></script>
         <script src="/vendor/doublethreedigital/simple-commerce/js/web.js"></script>
     </body>

@@ -38,16 +38,11 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        if ($total = $this->cart->total($this->cartId) != '0') {
-            $intent = (new StripeGateway())->setupIntent($total * 100, (new Currency())->iso());
-        }
-
         return (new View)
             ->template('commerce::web.checkout')
             ->layout('commerce::web.layout')
             ->with([
                 'title' => 'Checkout',
-                'intent' => $intent->client_secret ?? '',
             ]);
     }
 
