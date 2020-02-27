@@ -38,6 +38,7 @@ use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductPolicy;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
 use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
 use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
@@ -70,6 +71,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $tags = [
         CartTags::class,
+        CheckoutTags::class,
         CommerceTags::class,
     ];
 

@@ -21,7 +21,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
 use Omnipay\Common\Exception\InvalidCreditCardException;
-use Omnipay\Omnipay;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
 
@@ -42,9 +41,7 @@ class CheckoutController extends Controller
         return (new View)
             ->template('commerce::web.checkout')
             ->layout('commerce::web.layout')
-            ->with([
-                'title' => 'Checkout',
-            ]);
+            ->with(['title' => 'Checkout']);
     }
 
     public function store(CheckoutRequest $request)
@@ -52,20 +49,17 @@ class CheckoutController extends Controller
         $this->createCart($request);
 
         try {
-            $charge = Gateway::charge([
-                'number' => '4242424242424242',
-                'expiryMonth' => '6',
-                'expiryYear' => '2021',
-                'cvv' => '123',
-            ], [
-                'amount' => $this->cart->total($this->cartId),
-                'currency' => (new Currency())->iso(),
+            $authorize = Gateway::authorize([
+                'amount' => Cart::total($this->cartId),
+                'currency' => Currency::iso(),
+                'description' => 'Payment from '.config('app.name'),
+                'paymentMethod' => $request->paymentMethod,
+                'confirm' => true,
+                'returnUrl' => '',
             ]);
-        } catch (InvalidCreditCardException $e) {
+        } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
-
-        dd($charge);
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));

@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AddToCartRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\RemoveFromCartRequest;
 use Illuminate\Http\Request;
@@ -17,9 +17,7 @@ class CartController extends Controller
         return (new View())
             ->template('commerce::web.cart')
             ->layout('commerce::web.layout')
-            ->with([
-                'title' => 'Cart',
-            ]);
+            ->with(['title' => 'Cart']);
     }
 
     public function store(AddToCartRequest $request)

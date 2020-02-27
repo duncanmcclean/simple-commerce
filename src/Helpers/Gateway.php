@@ -15,17 +15,9 @@ class Gateway
         $this->gateway->setApiKey(config('simple-commerce.gateways.Stripe.secret'));
     }
 
-    public function charge(array $card, array $properties)
+    public function authorize(array $data)
     {
-        if (! $card || ! $properties) {
-            throw new \Exception('Please pass in card information and charge properties.');
-        }
-
-        $response = $this->gateway->purchase([
-            'amount' => $properties['amount'],
-            'currency' => $properties['currency'],
-            'card' => $card,
-        ])->send();
+        $response = $this->gateway->authorize($data)->send();
 
         if ($response->isSuccessful()) {
             return $response;
@@ -35,6 +27,6 @@ class Gateway
             return $response->redirect();
         }
 
-        return $response->getMessage();
+        throw new \Exception($response->getMessage());
     }
 }
