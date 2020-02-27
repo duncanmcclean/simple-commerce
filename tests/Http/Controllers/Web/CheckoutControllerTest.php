@@ -62,8 +62,7 @@ class CheckoutControllerTest extends TestCase
             ->assertOk()
             ->assertDontSee('There are no items in your cart')
             ->assertSee($variant->name)
-            ->assertSee('Card Details')
-            ->assertSee('window.paymentIntent');
+            ->assertSee('Card Details');
     }
 
     /** @test */
@@ -101,6 +100,8 @@ class CheckoutControllerTest extends TestCase
         ];
 
         $response = $this->post('/checkout/store', $data);
+
+        dd($response);
 
         $response->assertRedirect('/thank-you');
         $response->assertSessionHas('commerce_cart_id');

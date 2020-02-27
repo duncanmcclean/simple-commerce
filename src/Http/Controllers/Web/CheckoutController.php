@@ -20,6 +20,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
+use Omnipay\Common\Exception\InvalidCreditCardException;
 use Omnipay\Omnipay;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
@@ -50,15 +51,19 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        $charge = Gateway::charge([
-            'number' => '4242424242424242',
-            'expiryMonth' => '6',
-            'expiryYear' => '2016',
-            'cvv' => '123',
-        ], [
-            'amount' => $this->cart->total($this->cartId),
-            'currency' => (new Currency())->iso(),
-        ]);
+        try {
+            $charge = Gateway::charge([
+                'number' => '4242424242424242',
+                'expiryMonth' => '6',
+                'expiryYear' => '2021',
+                'cvv' => '123',
+            ], [
+                'amount' => $this->cart->total($this->cartId),
+                'currency' => (new Currency())->iso(),
+            ]);
+        } catch (InvalidCreditCardException $e) {
+            return back()->with('error', $e->getMessage());
+        }
 
         dd($charge);
 
