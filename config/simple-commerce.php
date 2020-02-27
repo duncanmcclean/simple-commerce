@@ -15,7 +15,7 @@ return [
         'address_2' => '',
         'address_3' => '',
         'city' => '',
-        'country' => DoubleThreeDigital\SimpleCommerce\Models\Country::where('iso', 'UK'),
+        'country' => '',
         'state' => '',
         'zip_code' => '',
     ],
