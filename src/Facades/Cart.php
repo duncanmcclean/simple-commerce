@@ -8,5 +8,6 @@ class Cart extends Facade
 {
     public static function getFacadeAccessor()
     {
+        return \DoubleThreeDigital\SimpleCommerce\Helpers\Cart::class;
     }
 }
