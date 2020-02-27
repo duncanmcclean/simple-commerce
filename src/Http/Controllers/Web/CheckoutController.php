@@ -8,8 +8,8 @@ use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
@@ -20,7 +20,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
-use Omnipay\Common\Exception\InvalidCreditCardException;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
 
@@ -58,8 +57,12 @@ class CheckoutController extends Controller
                 'returnUrl' => '',
             ]);
         } catch (\Exception $e) {
+            dd($e);
+
             return back()->with('error', $e->getMessage());
         }
+
+        dd('all good');
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));

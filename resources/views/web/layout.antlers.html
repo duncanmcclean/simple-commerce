@@ -21,9 +21,11 @@
                 </div>
             {{ /if }}
 
-            {{ if (errors | count) >= 1 }}
+            {{ if errors }}
                 <div class="w-full bg-red-600 text-center font-semibold py-2 text-white">
-                    Something doesn't look quite right.
+                    {{ errors }}
+                        {{ value }}<br>
+                    {{ /errors }}
                 </div>
             {{ /if }}
 
