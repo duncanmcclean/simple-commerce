@@ -36,8 +36,7 @@
         "laravel/slack-notification-channel": "^3.0@dev",
         "league/omnipay": "^3.0@dev",
         "omnipay/stripe": "^3.1@dev",
-        "statamic/cms": "^3.0@beta",
-        "stripe/stripe-php": "^7.7"
+        "statamic/cms": "^3.0@beta"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0"
