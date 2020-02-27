@@ -10,13 +10,7 @@ use Statamic\View\View;
 
 class CartController extends Controller
 {
-    public $cart;
     public $cartId;
-
-    public function __construct()
-    {
-        $this->cart = new Cart();
-    }
 
     public function index()
     {
@@ -32,7 +26,7 @@ class CartController extends Controller
     {
         $this->createCart($request);
 
-        $this->cart->add($this->cartId, [
+        Cart::add($this->cartId, [
             'product' => $request->product,
             'variant' => $request->variant,
             'quantity' => (int) $request->quantity,
@@ -46,7 +40,7 @@ class CartController extends Controller
     {
         $this->createCart($request);
 
-        $this->cart->remove($this->cartId, $request->item_id);
+        Cart::remove($this->cartId, $request->item_id);
 
         return back()
             ->with('success', 'Removed product from cart.');
@@ -55,7 +49,7 @@ class CartController extends Controller
     protected function createCart(Request $request)
     {
         if (! $request->session()->get('commerce_cart_id')) {
-            $request->session()->put('commerce_cart_id', $this->cart->create());
+            $request->session()->put('commerce_cart_id', Cart::create());
             $request->session()->save();
         }
 
