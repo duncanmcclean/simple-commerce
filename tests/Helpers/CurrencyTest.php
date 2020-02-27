@@ -21,7 +21,7 @@ class CurrencyTest extends TestCase
         parent::setUp();
 
         $this->currencies = factory(CurrencyModel::class, 5)->create();
-        Config::set('simple-commerce.currency', $this->currencies[2]->iso);
+        Config::set('simple-commerce.currency.iso', $this->currencies[2]->iso);
 
         $this->currency = new Currency();
     }

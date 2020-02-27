@@ -30,19 +30,19 @@ class CartDeletionCommand extends Command
     {
         Cart::whereDate('created_at', '<=', now()->subDays(config('simple-commerce.cart-retention'))->toDateString())
             ->each(function (Cart $cart) {
-                $items = CartItem::where('cart_id', $cart->id)
+                CartItem::where('cart_id', $cart->id)
                     ->get()
                     ->each(function (CartItem $item) {
                         $item->delete();
                     });
 
-                $shipping = CartShipping::where('cart_id', $cart->id)
+                CartShipping::where('cart_id', $cart->id)
                     ->get()
                     ->each(function (CartShipping $item) {
                         $item->delete();
                     });
 
-                $tax = CartTax::where('cart_id', $cart->id)
+                CartTax::where('cart_id', $cart->id)
                     ->get()
                     ->each(function (CartTax $item) {
                         $item->delete();

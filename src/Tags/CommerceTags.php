@@ -26,11 +26,6 @@ class CommerceTags extends Tags
         return (new CurrencyHelper())->symbol();
     }
 
-    public function stripeKey()
-    {
-        return config('simple-commerce.stripe.key');
-    }
-
     public function route()
     {
         if ($this->getParam('key') === null) {
@@ -41,7 +36,7 @@ class CommerceTags extends Tags
             throw new \Exception("The route key ({$this->getParam('key')}) you are referencing does not exist.");
         }
 
-        return route($this->getParam('key'), Arr::except($this->params, ['key'])); // TODO: refactor this with new config file format
+        return route($this->getParam('key'), Arr::except($this->params, ['key']));
     }
 
     public function categories()

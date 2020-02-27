@@ -43,9 +43,11 @@ return [
      * formatted in the front-end.
      */
 
-    'currency' => 'USD',
-    'currency_position' => 'left', // Options: 'left', 'right'
-    'currency_separator' => '.',
+    'currency' => [
+        'iso' => 'USD',
+        'position' => 'left', // Options: left, right
+        'separator' => '.',
+    ],
 
     /**
      * Routes
