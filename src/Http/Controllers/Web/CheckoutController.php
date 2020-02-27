@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
 use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
@@ -19,6 +20,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
+use Omnipay\Omnipay;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
 
@@ -48,8 +50,17 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        $gateway = Omnipay::create('Stripe');
-        $gateway->setApiKey('abc123');
+        $charge = Gateway::charge([
+            'number' => '4242424242424242',
+            'expiryMonth' => '6',
+            'expiryYear' => '2016',
+            'cvv' => '123',
+        ], [
+            'amount' => $this->cart->total($this->cartId),
+            'currency' => (new Currency())->iso(),
+        ]);
+
+        dd($charge);
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));

@@ -264,5 +264,10 @@ class ServiceProvider extends AddonServiceProvider
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'commerce');
         }
+
+        $this->app->bind(
+            \DoubleThreeDigital\SimpleCommerce\Facades\Gateway::class,
+            \DoubleThreeDigital\SimpleCommerce\Helpers\Gateway::class
+        );
     }
 }

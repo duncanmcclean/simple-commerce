@@ -14,7 +14,7 @@ class CheckoutRequest extends FormRequest
     public function rules()
     {
         return [
-            'payment_method' => 'required|string',
+//            'payment_method' => 'required|string',
             'use_shipping_address_for_billing' => 'required|in:on,off',
 
             'name' => 'required|string',

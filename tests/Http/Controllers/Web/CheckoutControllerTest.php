@@ -87,7 +87,7 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $data = [
-            'payment_method' => (new StripeGateway())->randomPaymentMethod(),
+//            'payment_method' => (new StripeGateway())->randomPaymentMethod(),
             'name' => $this->faker->name,
             'email' => $this->faker->email,
             'shipping_address_1' => $this->faker->streetAddress,
