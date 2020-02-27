@@ -55,7 +55,10 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        (new StripeGateway())->completeIntent($request->payment_method);
+//        (new StripeGateway())->completeIntent($request->payment_method);
+
+        $gateway = Omnipay::create('Stripe');
+        $gateway->setApiKey('abc123');
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));

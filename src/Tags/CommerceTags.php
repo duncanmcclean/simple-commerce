@@ -41,7 +41,7 @@ class CommerceTags extends Tags
             throw new \Exception("The route key ({$this->getParam('key')}) you are referencing does not exist.");
         }
 
-        return route($this->getParam('key'), Arr::except($this->params, ['key']));
+        return route($this->getParam('key'), Arr::except($this->params, ['key'])); // TODO: refactor this with new config file format
     }
 
     public function categories()
