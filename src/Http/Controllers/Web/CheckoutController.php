@@ -48,8 +48,6 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-//        (new StripeGateway())->completeIntent($request->payment_method);
-
         $gateway = Omnipay::create('Stripe');
         $gateway->setApiKey('abc123');
 
