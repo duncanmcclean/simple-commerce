@@ -1,7 +1,9 @@
 <?php
 
-function sc_route(string $key) {
-    return config("simple-commerce.routes.$key");
+if (! function_exists('sc_route')) {
+    function sc_route(string $key) {
+        return config("simple-commerce.routes.$key");
+    }
 }
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web')->group(function () {
