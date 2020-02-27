@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
@@ -264,6 +265,21 @@ class ServiceProvider extends AddonServiceProvider
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'commerce');
         }
+
+        $this->app->bind(
+            \DoubleThreeDigital\SimpleCommerce\Facades\Cart::class,
+            \DoubleThreeDigital\SimpleCommerce\Helpers\Cart::class
+        );
+
+        $this->app->bind(
+            \DoubleThreeDigital\SimpleCommerce\Facades\CartCalculator::class,
+            \DoubleThreeDigital\SimpleCommerce\Helpers\CartCalculator::class
+        );
+
+        $this->app->bind(
+            \DoubleThreeDigital\SimpleCommerce\Facades\Currency::class,
+            \DoubleThreeDigital\SimpleCommerce\Helpers\Currency::class
+        );
 
         $this->app->bind(
             \DoubleThreeDigital\SimpleCommerce\Facades\Gateway::class,
