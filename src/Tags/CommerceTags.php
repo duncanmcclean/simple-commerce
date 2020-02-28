@@ -28,7 +28,7 @@ class CommerceTags extends Tags
 
     public function stripeKey()
     {
-        return config('simple-commerce.stripe.key');
+        return config('simple-commerce.gateways.stripe.key');
     }
 
     public function route()

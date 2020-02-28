@@ -13,7 +13,7 @@ class StripeGateway
     public function __construct()
     {
         try {
-            Stripe::setApiKey(config('simple-commerce.stripe.secret'));
+            Stripe::setApiKey(config('simple-commerce.gateways.stripe.secret'));
         } catch (AuthenticationException $e) {
             throw new \Exception('Authentication to Stripe failed. Check your API keys are valid.');
         }

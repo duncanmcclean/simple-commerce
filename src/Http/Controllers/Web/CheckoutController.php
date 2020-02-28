@@ -108,7 +108,7 @@ class CheckoutController extends Controller
         $order->order_status_id = OrderStatus::where('primary', true)->first()->id;
         $order->items = (new Cart())->orderItems($request->session()->get('commerce_cart_id'));
         $order->total = $this->cart->total($this->cartId);
-        $order->currency_id = CurrencyModel::where('iso', config('simple-commerce.currency'))->first()->id;
+        $order->currency_id = CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first()->id;
         $order->save();
 
         event(new CheckoutComplete($order, $customer));
@@ -135,7 +135,7 @@ class CheckoutController extends Controller
         $request->session()->remove('commerce_cart_id');
         $this->createCart($request);
 
-        return redirect(config('simple-commerce.checkout_redirect'));
+        return redirect(config('simple-commerce.routes.checkout_redirect'));
     }
 
     protected function createCart(Request $request)

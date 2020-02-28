@@ -3,44 +3,50 @@
 return [
 
     /**
-     * Address
+     * Business Address
      *
-     * This is where your business is located. Tax and shipping
-     * prices will be generated from here. This address will also
-     * appear on customers' receipts.
+     * Address information for your business. By default,
+     * this will be used as the location to set tax and
+     * shipping prices.
      */
 
-    'address_1' => '',
-    'address_2' => '',
-    'address_3' => '',
-    'city' => '',
-    'country' => '',
-    'state' => '',
-    'zip_code' => '',
+    'address' => [
+        'address_1' => '',
+        'address_2' => '',
+        'address_3' => '',
+        'city' => '',
+        'country' => '',
+        'state' => '',
+        'zip_code' => '',
+    ],
 
     /**
-     * Prices
+     * Payment Gateways
      *
-     * Set how your prices and currencies will be displayed
-     * throughout Simple Commerce.
+     * Simple Commerce uses Omnipay to interface with
+     * different payment gateways. You can configure which
+     * ones you want to use for your store here.
      */
 
-    'currency' => 'USD',
-    'currency_position' => 'left', // Options: 'left', 'right'
-    'currency_separator' => '.',
+    'gateways' => [
+        'stripe' => [
+            'key' => env('STRIPE_KEY'),
+            'secret' => env('STRIPE_SECRET'),
+        ],
+    ],
 
     /**
-     * Stripe
+     * Currency
      *
-     * We need these keys so your customers can purchase
-     * products and so you can receive the money.
-     *
-     * You can find these keys here: https://dashboard.stripe.com/apikeys
+     * Control your currency settings. These will dictate
+     * what currency products are sold in and how they are
+     * formatted in the front-end.
      */
 
-    'stripe' => [
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET')
+    'currency' => [
+        'iso' => 'USD',
+        'position' => 'left', // Options: left, right
+        'separator' => '.',
     ],
 
     /**
@@ -51,40 +57,25 @@ return [
      * preferences.
      */
 
-    'cart_index' => '/cart',
-    'cart_store' => '/cart/add',
-    'cart_clear' => '/cart/clear',
-    'cart_remove' => '/cart/remove',
-    'checkout_show' => '/checkout',
-    'checkout_store' => '/checkout/store',
-    'checkout_redirect' => '/thank-you',
-    'product_index' => '/products',
-    'product_search' => '/products/search',
-    'product_show' => '/products/{product}',
-    'categories_show' => '/category/{category}',
-
-    /**
-     * Tax
-     *
-     * Configure basic tax settings here. You can configure
-     * tax rules in the Control Panel.
-     */
-
-    'entered_with_tax' => false,
-    'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
-    'shop_prices_with_tax' => true,
-
-    /**
-     * How long should we keep your customers' cart in the
-     * database for? (in days)
-     */
-
-    'cart_retention' => 30,
+    'routes' => [
+        'cart_index' => '/cart',
+        'cart_store' => '/cart/add',
+        'cart_clear' => '/cart/clear',
+        'cart_remove' => '/cart/remove',
+        'checkout_show' => '/checkout',
+        'checkout_store' => '/checkout/store',
+        'checkout_redirect' => '/thank-you',
+        'product_index' => '/products',
+        'product_search' => '/products/search',
+        'product_show' => '/products/{product}',
+        'categories_show' => '/category/{category}',
+    ],
 
     /**
      * Notifications
      *
-     * Configure how we send your back of store notifications.
+     * Configure where we send your store's back
+     * office notifications.
      */
 
     'notifications' => [
@@ -95,12 +86,15 @@ return [
     ],
 
     /**
-     * Deleting Orders
+     * Tax & Shipping
      *
-     * Should users be allowed to delete orders
-     * from your store?
+     * Configure the tax and shipping settings
+     * for your store.
      */
 
-    'allow_to_delete_orders' => true,
+    'entered_with_tax' => false,
+    'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
+    'shop_prices_with_tax' => true,
+    'cart_retention' => 30,
 
 ];
