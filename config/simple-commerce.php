@@ -23,16 +23,12 @@ return [
     /**
      * Payment Gateways
      *
-     * Simple Commerce uses Omnipay to interface with
-     * different payment gateways. You can configure which
-     * ones you want to use for your store here.
+     * Simple Commerce gives you the ability to
+     * configure different payment gateways.
      */
 
     'gateways' => [
-        'stripe' => [
-            'key' => env('STRIPE_KEY'),
-            'secret' => env('STRIPE_SECRET'),
-        ],
+        \DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway::class => [],
     ],
 
     /**

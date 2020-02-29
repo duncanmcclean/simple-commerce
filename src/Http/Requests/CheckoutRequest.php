@@ -13,8 +13,9 @@ class CheckoutRequest extends FormRequest
 
     public function rules()
     {
+        // TODO: merge this array with the one for the chosen payment gateway
+
         return [
-            'payment_method' => 'required|string',
             'use_shipping_address_for_billing' => 'required|in:on,off',
 
             'name' => 'required|string',
