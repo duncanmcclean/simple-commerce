@@ -24,12 +24,7 @@ class StripeGateway implements Gateway
 
     public function completePurchase($data)
     {
-        // TODO: Implement capture() method.
-    }
-
-    public function authorize($paymentMethod)
-    {
-        return PaymentMethod::retrieve($paymentMethod);
+        return PaymentMethod::retrieve($data['payment_method']);
     }
 
     public function rules()

@@ -46,11 +46,9 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request)
     {
-        dd($request->all());
-
         $this->createCart($request);
 
-        (new StripeGateway())->completeIntent($request->payment_method);
+        (new $request->gateway)->completePurchase($request->all());
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));

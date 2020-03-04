@@ -6,12 +6,8 @@ interface Gateway
 {
     public function completePurchase($data);
 
-    public function authorize($paymentMethod);
-
-    // validation rules for submitting to the checkout form
     public function rules();
 
-    // returns html and js required to use the gateway
     public function paymentForm();
 
     public function refund($payment);
