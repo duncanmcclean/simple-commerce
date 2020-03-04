@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 interface Gateway
 {
-    public function capture();
+    public function completePurchase($data);
 
     public function authorize($paymentMethod);
 

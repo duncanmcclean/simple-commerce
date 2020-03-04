@@ -21,7 +21,7 @@ class StripeGateway implements Gateway
         }
     }
 
-    public function capture()
+    public function completePurchase($data)
     {
         // TODO: Implement capture() method.
     }
