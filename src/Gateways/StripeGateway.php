@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use Statamic\View\View;
 use Stripe\Exception\AuthenticationException;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -26,19 +27,11 @@ class StripeGateway implements Gateway
         // TODO: Implement capture() method.
     }
 
-    /**
-     * @param $paymentMethod
-     * @return PaymentMethod
-     * @throws \Stripe\Exception\ApiErrorException
-     */
     public function authorize($paymentMethod)
     {
         return PaymentMethod::retrieve($paymentMethod);
     }
 
-    /**
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -46,35 +39,29 @@ class StripeGateway implements Gateway
         ];
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws \Stripe\Exception\ApiErrorException
-     */
     public function paymentForm()
     {
-        $intent = PaymentIntent::create([
-            'amount' => (new Cart())->total(request()->session()->get('commerce_cart_id')),
-            'currency' => (new Currency())->iso(),
-        ]);
+        if ($total = (new Cart())->total(request()->session()->get('commerce_cart_id'))) {
+            $intent = PaymentIntent::create([
+                'amount' => $total * 100,
+                'currency' => (new Currency())->iso(),
+            ]);
+        }
 
-        return view('commerce::gateways.stripe-payment-form', [
-            'intent' => $intent,
-        ]);
+        return (new View)
+            ->template('commerce::gateways.stripe-payment-form')
+            ->with([
+                'class' => get_class($this),
+                'stripeKey' => config('services.stripe.key'),
+                'intent' => $intent->client_secret ?? '',
+            ]);
     }
 
-    /**
-     * @param $payment
-     * @return Refund
-     * @throws \Stripe\Exception\ApiErrorException
-     */
     public function refund($payment)
     {
         return Refund::create(['payment_intent' => $payment]);
     }
 
-    /**
-     * @return string
-     */
     public function name(): string
     {
         return 'Stripe';

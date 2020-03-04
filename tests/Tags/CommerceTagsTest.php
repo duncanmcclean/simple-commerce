@@ -130,4 +130,10 @@ class CommerceTagsTest extends TestCase
 
         $this->assertIsObject($run);
     }
+
+    /** @test */
+    public function commerce_gateways_tag()
+    {
+        //
+    }
 }

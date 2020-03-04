@@ -1,0 +1,49 @@
+<div class="flex flex-row items-center mb-4">
+    <h2 class="w-2/5 font-bold mb-2">Card Details</h2>
+    <div class="w-3/5 bg-white rounded border py-2 px-2 text-gray-800" id="card-element"></div>
+</div>
+
+<input id="stripePaymentMethod" type="hidden" name="payment_method">
+<input type="hidden" name="gateway" value="{{ class }}">
+
+{{ section:scripts }}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ stripeKey }}');
+    var elements = stripe.elements();
+
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    card.addEventListener('change', ({error}) => {
+        const displayError = document.getElementById('card-errors');
+
+        if (error) {
+            alert('There was an issue when loading: '+error.message);
+        }
+    });
+
+    var form = document.getElementById('card-element').closest('form');
+
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        console.log('starting to do stripe processing');
+
+        stripe.confirmCardPayment('{{ intent }}', {
+            payment_method: {
+                card: card
+            }
+        }).then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            } else if (result.paymentIntent.status === 'succeeded') {
+                var paymentMethod = document.getElementById('stripePaymentMethod');
+                paymentMethod.value = result.paymentIntent.payment_method;
+
+                form.submit();
+            }
+        });
+    });
+</script>
+{{ /section:scripts }}
