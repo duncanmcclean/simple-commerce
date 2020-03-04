@@ -2,7 +2,7 @@
 
 if (! function_exists('sc_route')) {
     function sc_route($key) {
-        return "simple-commerce.routes.$key";
+        return config("simple-commerce.routes.$key");
     }
 }
 
