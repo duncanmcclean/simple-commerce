@@ -6,9 +6,11 @@ class SimpleCommerce
 {
     protected static $gateways = [];
 
-    public static function registerGateway($class)
+    public static function bootGateways()
     {
-        static::$gateways[] = $class;
+        foreach (config('simple-commerce.gateways') as $class => $config) {
+            static::$gateways[] = $class;
+        }
 
         return new static;
     }

@@ -259,7 +259,7 @@ class ServiceProvider extends AddonServiceProvider
             });
         });
 
-        SimpleCommerce::registerGateway(StripeGateway::class);
+        SimpleCommerce::bootGateways();
     }
 
     public function register()
