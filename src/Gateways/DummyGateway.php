@@ -18,6 +18,10 @@ class DummyGateway implements Gateway
 
         return [
             'is_paid' => $isPaid,
+            'cardholder' => $data['cardholder'],
+            'cardNumber' => $data['cardNumber'],
+            'expiryMonth' => $data['expiryMonth'],
+            'expiryYear' => $data['expiryYear'],
             'transaction_id' => uniqid(),
         ];
     }
