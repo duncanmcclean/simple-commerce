@@ -27,7 +27,7 @@ class StripeGateway implements Gateway
         return PaymentMethod::retrieve($data['payment_method']);
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'payment_method' => 'required|string',

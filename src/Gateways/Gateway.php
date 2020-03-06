@@ -6,7 +6,7 @@ interface Gateway
 {
     public function completePurchase($data);
 
-    public function rules();
+    public function rules(): array;
 
     public function paymentForm();
 
