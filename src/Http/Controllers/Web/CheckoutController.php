@@ -94,7 +94,9 @@ class CheckoutController extends Controller
 
         $order = new Order();
         $order->uuid = (new Stache())->generateId();
-        $order->payment_intent = $request->payment_method; // wippppp
+        $order->gateway_data = array_merge($payment, [
+            'gateway' => $request->gateway,
+        ]);
         $order->billing_address_id = $billingAddress->id;
         $order->shipping_address_id = $shippingAddress->id;
         $order->customer_id = $customer->id;

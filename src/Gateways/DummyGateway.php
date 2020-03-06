@@ -9,14 +9,17 @@ class DummyGateway implements Gateway
     public function completePurchase($data)
     {
         if ($data['cardNumber'] === '4242 4242 4242 4242') {
-            return true;
+            $isPaid = true;
+        } else if ($data['cardNumber'] === '1111 1111 1111 1111') {
+            $isPaid = false;
+        } else {
+            throw new \Exception('The card provided is invalid.');
         }
 
-        if ($data['cardNumber'] === '1111 1111 1111 1111') {
-            return false;
-        }
-
-        return 'Invalid card';
+        return [
+            'is_paid' => $isPaid,
+            'transaction_id' => uniqid(),
+        ];
     }
 
     public function rules(): array
