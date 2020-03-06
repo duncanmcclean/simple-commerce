@@ -21,6 +21,7 @@ class SimpleCommerce
             ->map(function ($gateway) {
                 $instance = new $gateway;
 
+                // TODO: add the config in here too (the array after the gateway class)
                 return [
                     'name' => $instance->name(),
                     'class' => $gateway,

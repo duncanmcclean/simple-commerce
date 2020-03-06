@@ -48,7 +48,7 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        (new $request->gateway)->completePurchase($request->all());
+        $payment = (new $request->gateway)->completePurchase($request->all());
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));
@@ -94,7 +94,7 @@ class CheckoutController extends Controller
 
         $order = new Order();
         $order->uuid = (new Stache())->generateId();
-        $order->payment_intent = $request->payment_method;
+        $order->payment_intent = $request->payment_method; // wippppp
         $order->billing_address_id = $billingAddress->id;
         $order->shipping_address_id = $shippingAddress->id;
         $order->customer_id = $customer->id;
