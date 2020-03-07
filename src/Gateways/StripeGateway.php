@@ -1,137 +1,74 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use Statamic\View\View;
 use Stripe\Exception\AuthenticationException;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Refund;
 use Stripe\Stripe;
 
-class StripeGateway
+class StripeGateway implements Gateway
 {
     public function __construct()
     {
         try {
-            Stripe::setApiKey(config('simple-commerce.gateways.stripe.secret'));
+            Stripe::setApiKey(config('services.stripe.secret'));
         } catch (AuthenticationException $e) {
             throw new \Exception('Authentication to Stripe failed. Check your API keys are valid.');
         }
     }
 
-    public function issueRefund(string $paymentIntent)
+    public function completePurchase($data)
     {
-        return Refund::create(['payment_intent' => $paymentIntent]);
+        $paymentMethod = PaymentMethod::retrieve($data['payment_method']);
+
+        return [
+            'is_paid' => true,
+            'payment_method' => $paymentMethod,
+        ];
     }
 
-    public function setupIntent(string $amount, string $currencyIso)
+    public function rules(): array
     {
-        return PaymentIntent::create([
-            'amount' => $amount,
-            'currency' => $currencyIso,
-        ]);
+        return [
+            'payment_method' => 'required|string',
+        ];
     }
 
-    public function completeIntent(string $paymentMethod)
+    public function paymentForm()
     {
-        return PaymentMethod::retrieve($paymentMethod);
+        if ($total = (new Cart())->total(request()->session()->get('commerce_cart_id'))) {
+            $intent = PaymentIntent::create([
+                'amount' => $total * 100,
+                'currency' => (new Currency())->iso(),
+            ]);
+        }
+
+        return (new View)
+            ->template('commerce::gateways.stripe-payment-form')
+            ->with([
+                'class' => get_class($this),
+                'stripeKey' => config('services.stripe.key'),
+                'intent' => $intent->client_secret ?? '',
+            ]);
     }
 
-    public function randomPaymentMethod(string $type = 'valid', int $expiryYear = 2026)
+    public function refund(array $gatewayData)
     {
-        return PaymentMethod::create([
-            'type' => 'card',
-            'card' => [
-                'number' => $this->{$type}(),
-                'exp_month' => rand(1, 9),
-                'exp_year' => $expiryYear,
-                'cvc' => mt_rand(100, 999),
-            ],
-        ])['id'];
+        try {
+            Refund::create(['payment_intent' => $gatewayData['payment_method']]);
+            return true;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
-    public function valid()
+    public function name(): string
     {
-        return collect([
-            '4242424242424242',
-            '4000056655665556',
-            '5555555555554444',
-            '2223003122003222',
-        ])->random();
-    }
-
-    public function american()
-    {
-        return collect([
-            '4000000760000002',
-            '4000001240000000',
-            '4012888888881881',
-            '4000004840008001',
-        ])->random();
-    }
-
-    public function european()
-    {
-        return collect([
-            '4000000400000008',
-            '4000000560000004',
-            '4000002080000001',
-            '4000007240000007',
-            '4000007520000008',
-            '4000007560000009',
-            '4000008260000000',
-            '4000058260000005',
-        ])->random();
-    }
-
-    public function asiaPacific()
-    {
-        return collect([
-            '4000000360000006',
-            '4000003440000004',
-            '3530111333300000',
-            '4000005540000008',
-            '4000001560000002',
-        ])->random();
-    }
-
-    public function oneTimePaymentAuth()
-    {
-        return '4000002500003155';
-    }
-
-    public function oneTimePaymentAuthFailure()
-    {
-        return '4000008260003178';
-    }
-
-    public function everyTimePaymentAuth()
-    {
-        return '4000002760003184';
-    }
-
-    public function require3DSecureWithDeclinedCard()
-    {
-        return '4000008400001629';
-    }
-
-    public function incorrectCvc()
-    {
-        return '4000000000000127';
-    }
-
-    public function cardDeclined()
-    {
-        return '4000000000000002';
-    }
-
-    public function cardExpired()
-    {
-        return '4000000000000069';
-    }
-
-    public function highRisk()
-    {
-        return '4000000000004954';
+        return 'Stripe';
     }
 }

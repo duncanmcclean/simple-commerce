@@ -1,5 +1,7 @@
 Simple Commerce gives you a lot of settings, some can be updated in the Control Panel, others in the config file.
 
+// TODO: update the config file stuff in here
+
 ## Control Panel
 
 In the Control Panel, you can update order statuses, shipping zones and tax rates. To manage settings from the Control Panel, go to the `Settings` navigation item under `Simple Commerce` and you can go through the settings from there.

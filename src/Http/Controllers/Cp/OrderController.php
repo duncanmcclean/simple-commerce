@@ -51,7 +51,10 @@ class OrderController extends CpController
 
         return view('commerce::cp.orders.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $order,
+            'values'    => array_merge($order->toArray(), [
+                'gateway' => $order->gateway_data['gateway'],
+                'paid' => $order->gateway_data['is_paid'],
+            ]),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
         ]);

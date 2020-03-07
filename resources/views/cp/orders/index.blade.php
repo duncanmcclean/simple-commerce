@@ -52,8 +52,10 @@
 
                                     <div class="divider"></div>
 
-                                    @if(auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
-                                        <dropdown-item text="Refund" redirect="{{ cp_route('commerce-api.refund-order', ['order' => $order->uuid]) }}"></dropdown-item>
+                                    @if(! $order->is_refunded)
+                                        @if(auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
+                                            <dropdown-item text="Refund" redirect="{{ cp_route('commerce-api.refund-order', ['order' => $order->uuid]) }}"></dropdown-item>
+                                        @endif
                                     @endif
 
                                     <dropdown-item text="Edit" redirect="{{ $order->editUrl() }}"></dropdown-item>

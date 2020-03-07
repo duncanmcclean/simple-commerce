@@ -62,8 +62,7 @@ class CheckoutControllerTest extends TestCase
             ->assertOk()
             ->assertDontSee('There are no items in your cart')
             ->assertSee($variant->name)
-            ->assertSee('Card Details')
-            ->assertSee('window.paymentIntent');
+            ->assertSee('Billing Address');
     }
 
     /** @test */
@@ -87,7 +86,13 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $data = [
-            'payment_method' => (new StripeGateway())->randomPaymentMethod(),
+            'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+            'cardholder' => 'Mr Joe Bloggs',
+            'cardNumber' => '4242 4242 4242 4242',
+            'expiryMonth' => '07',
+            'expiryYear' => '2025',
+            'cvc' => '123',
+
             'name' => $this->faker->name,
             'email' => $this->faker->email,
             'shipping_address_1' => $this->faker->streetAddress,
@@ -119,7 +124,6 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('orders', [
-            'payment_intent' => $data['payment_method'],
             'customer_id' => $customer->id,
         ]);
 

@@ -10,13 +10,14 @@ class Order extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'payment_intent', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id',
+        'uuid', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'gateway_data', 'is_paid', 'is_refunded',
     ];
 
     protected $casts = [
         'is_completed' => 'boolean',
         'is_paid' => 'boolean',
         'items' => 'json',
+        'gateway_data' => 'json',
     ];
 
     public function billingAddress()

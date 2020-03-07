@@ -8,8 +8,10 @@ use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+use Statamic\Statamic;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -24,11 +26,6 @@ class CommerceTags extends Tags
     public function currencySymbol()
     {
         return (new CurrencyHelper())->symbol();
-    }
-
-    public function stripeKey()
-    {
-        return config('simple-commerce.gateways.stripe.key');
     }
 
     public function route()
@@ -113,5 +110,10 @@ class CommerceTags extends Tags
     public function currencies()
     {
         return Currency::all();
+    }
+
+    public function gateways()
+    {
+        return SimpleCommerce::gateways();
     }
 }

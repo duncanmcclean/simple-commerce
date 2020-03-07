@@ -22,6 +22,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
@@ -257,6 +258,8 @@ class ServiceProvider extends AddonServiceProvider
                 })->label('View Product Categories');
             });
         });
+
+        SimpleCommerce::bootGateways();
     }
 
     public function register()

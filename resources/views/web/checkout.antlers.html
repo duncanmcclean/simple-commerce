@@ -4,7 +4,7 @@
     <p>There are no items in your cart.</p>
 {{ else }}
     <div class="flex flex-row">
-        <form id="payment-form" class="md:w-2/3 mx-2" action="{{ commerce:route key='checkout.store' }}" method="post" @submit.prevent="submitCheckout">
+        <form id="a-form" class="md:w-2/3 mx-2" action="{{ commerce:route key='checkout.store' }}" method="post">
             {{ csrf_field }}
 
             <fieldset class="border-b mb-6">
@@ -72,7 +72,7 @@
                         <h2 class="font-bold mb-2">Country</h2>
                         <select class="w-full bg-white rounded border py-1 px-2 text-gray-800" name="shipping_country" required>
                             {{ commerce:countries }}
-                            <option value="{{ iso }}">{{ name }}</option>
+                                <option value="{{ iso }}">{{ name }}</option>
                             {{ /commerce:countries }}
                         </select>
                     </div>
@@ -141,16 +141,13 @@
             <fieldset class="border-b mb-6">
                 <h2 class="text-3xl mb-4 font-medium">Payment</h2>
 
-                <div class="flex flex-row items-center mb-4">
-                    <h2 class="w-2/5 font-bold mb-2">Card Details</h2>
-                    <div class="w-3/5 bg-white rounded border py-2 px-2 text-gray-800" id="card-element"></div>
-                </div>
-
-                <input type="hidden" name="payment_method">
+                {{ commerce:gateways }}
+                    {{ payment_form }}
+                {{ /commerce:gateways }}
             </fieldset>
 
             <div class="flex flex-row justify-center mb-6">
-                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit" :disabled="isSubmitting">Pay {{ cart:total }}</button>
+                <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Pay {{ cart:total }}</button>
             </div>
         </form>
 

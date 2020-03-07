@@ -13,8 +13,11 @@ class CheckoutRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'payment_method' => 'required|string',
+        $gateway = $this->all()['gateway'];
+        $gateway = new $gateway();
+
+        return array_merge($gateway->rules(), [
+            'gateway' => 'required|string',
             'use_shipping_address_for_billing' => 'required|in:on,off',
 
             'name' => 'required|string',
@@ -35,6 +38,6 @@ class CheckoutRequest extends FormRequest
             'billing_zip_code' => 'required_if:use_shipping_address_for_billing,true',
             'billing_country' => 'required_if:use_shipping_address_for_billing,true|string',
             'billing_state' => 'nullable|integer',
-        ];
+        ]);
     }
 }

@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
@@ -19,7 +18,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
-use DoubleThreeDigital\SimpleCommerce\StripeGateway;
 use Illuminate\Http\Request;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
@@ -38,16 +36,11 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        if ($total = $this->cart->total($this->cartId) != '0') {
-            $intent = (new StripeGateway())->setupIntent($total * 100, (new Currency())->iso());
-        }
-
         return (new View)
             ->template('commerce::web.checkout')
             ->layout('commerce::web.layout')
             ->with([
                 'title' => 'Checkout',
-                'intent' => $intent->client_secret ?? '',
             ]);
     }
 
@@ -55,7 +48,7 @@ class CheckoutController extends Controller
     {
         $this->createCart($request);
 
-        (new StripeGateway())->completeIntent($request->payment_method);
+        $payment = (new $request->gateway)->completePurchase($request->all());
 
         if ($customer = Customer::where('email', $request->email)->first()) {
             event(new ReturnCustomer($customer));
@@ -101,7 +94,9 @@ class CheckoutController extends Controller
 
         $order = new Order();
         $order->uuid = (new Stache())->generateId();
-        $order->payment_intent = $request->payment_method;
+        $order->gateway_data = array_merge($payment, [
+            'gateway' => $request->gateway,
+        ]);
         $order->billing_address_id = $billingAddress->id;
         $order->shipping_address_id = $shippingAddress->id;
         $order->customer_id = $customer->id;
@@ -109,6 +104,8 @@ class CheckoutController extends Controller
         $order->items = (new Cart())->orderItems($request->session()->get('commerce_cart_id'));
         $order->total = $this->cart->total($this->cartId);
         $order->currency_id = CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first()->id;
+        $order->is_paid = $payment['is_paid'];
+        $order->is_refunded = false;
         $order->save();
 
         event(new CheckoutComplete($order, $customer));
