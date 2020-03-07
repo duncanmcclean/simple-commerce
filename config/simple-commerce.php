@@ -28,7 +28,8 @@ return [
      */
 
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway::class => [],
+        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+//        \DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway::class => [],
     ],
 
     /**
