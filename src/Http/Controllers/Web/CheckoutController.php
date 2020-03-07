@@ -104,6 +104,8 @@ class CheckoutController extends Controller
         $order->items = (new Cart())->orderItems($request->session()->get('commerce_cart_id'));
         $order->total = $this->cart->total($this->cartId);
         $order->currency_id = CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first()->id;
+        $order->is_paid = $payment['is_paid'];
+        $order->is_refunded = false;
         $order->save();
 
         event(new CheckoutComplete($order, $customer));

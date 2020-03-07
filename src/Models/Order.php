@@ -10,7 +10,7 @@ class Order extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'gateway_data',
+        'uuid', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'gateway_data', 'is_paid', 'is_refunded',
     ];
 
     protected $casts = [
