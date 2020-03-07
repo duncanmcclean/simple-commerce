@@ -46,7 +46,7 @@ class DummyGateway implements Gateway
             ]);
     }
 
-    public function refund($payment)
+    public function refund(array $gatewayData)
     {
         return true;
     }

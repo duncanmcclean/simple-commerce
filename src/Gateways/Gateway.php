@@ -10,7 +10,7 @@ interface Gateway
 
     public function paymentForm();
 
-    public function refund($payment);
+    public function refund(array $gatewayData);
 
     public function name(): string;
 }

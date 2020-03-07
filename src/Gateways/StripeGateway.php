@@ -57,9 +57,14 @@ class StripeGateway implements Gateway
             ]);
     }
 
-    public function refund($payment)
+    public function refund(array $gatewayData)
     {
-        return Refund::create(['payment_intent' => $payment]);
+        try {
+            Refund::create(['payment_intent' => $gatewayData['payment_method']]);
+            return true;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     public function name(): string

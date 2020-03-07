@@ -13,12 +13,12 @@ class RefundOrderController extends CpController
     {
         $this->authorize('refund', $order);
 
-        if (! $order->payment_intent) {
-            return back()->with('error', 'Refund failed because there is no PaymentIntent.');
-        }
+        $refund = (new $order->gateway_data['gateway'])->refund($order->gateway_data);
 
-        (new StripeGateway())
-            ->issueRefund($order->payment_intent);
+        if ($refund != true) {
+            return back()
+                ->with('error', $refund);
+        }
 
         event(new OrderRefunded($order));
 

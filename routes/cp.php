@@ -49,7 +49,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
 
     Route::prefix('commerce-api')->as('commerce-api')->group(function () {
         Route::post('/customer-order', 'API\CustomerOrderController@index')->name('.customer-order');
-        Route::get('/refund-order/{order}', 'API\RefundOrderController@store')->name('.refund-order');
+        Route::get('/refund-order/{order}', 'RefundOrderController@store')->name('.refund-order');
 
         Route::middleware(AccessSettings::class)->group(function () {
             Route::get('/order-status', 'API\OrderStatusController@index')->name('.order-status.index');
