@@ -28,6 +28,7 @@ class DummyGateway implements Gateway
             'cardNumber' => $data['cardNumber'],
             'expiryMonth' => $data['expiryMonth'],
             'expiryYear' => $data['expiryYear'],
+            'cvc' => $data['cvc'],
             'transaction_id' => uniqid(),
         ];
     }
@@ -36,10 +37,10 @@ class DummyGateway implements Gateway
     {
         return [
             'cardholder' => 'required|string',
-            'cardNumber' => 'required|string',
-            'expiryMonth' => 'required',
+            'cardNumber' => 'required|string|min:19|max:22',
+            'expiryMonth' => 'required|in:01,02,03,04,05,06,07,08,09,10,11,12',
             'expiryYear' => 'required',
-            'cvc' => 'required',
+            'cvc' => 'required|min:3|max:4',
         ];
     }
 

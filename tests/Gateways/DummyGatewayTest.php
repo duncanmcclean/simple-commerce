@@ -24,6 +24,7 @@ class DummyGatewayTest extends TestCase
             'cardNumber' => '4242 4242 4242 4242',
             'expiryMonth' => '07',
             'expiryYear' => '2025',
+            'cvc' => '123',
         ]);
 
         $this->assertIsArray($completePurchase);
@@ -41,6 +42,7 @@ class DummyGatewayTest extends TestCase
             'cardNumber' => '1111 1111 1111 1111',
             'expiryMonth' => '07',
             'expiryYear' => '2025',
+            'cvc' => '123',
         ]);
     }
 
@@ -52,6 +54,7 @@ class DummyGatewayTest extends TestCase
             'cardNumber' => '4242 4242 4242 4242',
             'expiryMonth' => '07',
             'expiryYear' => '2019',
+            'cvc' => '123',
         ]);
 
         $this->assertIsArray($completePurchase);
@@ -67,10 +70,10 @@ class DummyGatewayTest extends TestCase
         $this->assertIsArray($rules);
         $this->assertSame($rules, [
             'cardholder' => 'required|string',
-            'cardNumber' => 'required|string',
-            'expiryMonth' => 'required',
+            'cardNumber' => 'required|string|min:19|max:22',
+            'expiryMonth' => 'required|in:01,02,03,04,05,06,07,08,09,10,11,12',
             'expiryYear' => 'required',
-            'cvc' => 'required',
+            'cvc' => 'required|min:3|max:4',
         ]);
     }
 
@@ -91,6 +94,7 @@ class DummyGatewayTest extends TestCase
             'cardNumber' => '4242 4242 4242 4242',
             'expiryMonth' => '07',
             'expiryYear' => '2019',
+            'cvc' => '123',
             'transaction_id' => uniqid(),
         ]);
 
