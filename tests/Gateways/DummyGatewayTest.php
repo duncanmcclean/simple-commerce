@@ -98,7 +98,7 @@ class DummyGatewayTest extends TestCase
             'transaction_id' => uniqid(),
         ]);
 
-        $this->assertIsBool();
+        $this->assertIsBool($refund);
         $this->assertSame(true, $refund);
     }
 
