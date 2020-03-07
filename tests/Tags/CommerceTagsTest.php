@@ -31,7 +31,7 @@ class CommerceTagsTest extends TestCase
     /** @test */
     public function commerce_currency_code_tag()
     {
-        Config::set('simple-commerce.currency', 'USD');
+        Config::set('simple-commerce.currency.iso', 'USD');
 
         $currency = factory(Currency::class)->create([
             'iso' => 'USD',
@@ -47,7 +47,7 @@ class CommerceTagsTest extends TestCase
     /** @test */
     public function commerce_currency_symbol_tag()
     {
-        Config::set('simple-commerce.currency', 'GBP');
+        Config::set('simple-commerce.currency.iso', 'GBP');
 
         $currency = factory(Currency::class)->create([
             'iso' => 'GBP',
@@ -58,16 +58,6 @@ class CommerceTagsTest extends TestCase
         $run = $this->tag->currencySymbol();
 
         $this->assertSame($run, '£');
-    }
-
-    /** @test */
-    public function commerce_stripe_key_tag()
-    {
-        Config::set('simple-commerce.stripe.key', 'sk-123456789');
-
-        $run = $this->tag->stripeKey();
-
-        $this->assertSame($run, 'sk-123456789');
     }
 
     /** @test */

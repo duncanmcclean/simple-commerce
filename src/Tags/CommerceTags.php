@@ -28,11 +28,6 @@ class CommerceTags extends Tags
         return (new CurrencyHelper())->symbol();
     }
 
-    public function stripeKey()
-    {
-        return config('simple-commerce.gateways.stripe.key');
-    }
-
     public function route()
     {
         if ($this->getParam('key') === null) {
