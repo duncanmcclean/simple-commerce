@@ -2,9 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\StripeGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Facades\Stripe\Refund;
 
 class StripeGatewayTest extends TestCase
 {
@@ -18,20 +17,34 @@ class StripeGatewayTest extends TestCase
     }
 
     /** @test */
+    public function can_complete_purchase()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_return_validation_rules()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_return_payment_form()
+    {
+        //
+    }
+
+    /** @test */
     public function can_issue_refund()
     {
-        // TODO: figure out the best way to test this, as it touches Stripe
+        //
     }
 
     /** @test */
-    public function can_setup_intent()
+    public function can_return_name()
     {
-        // TODO: figure out the best way to test this, as it touches Stripe
-    }
+        $name = $this->gateway->name();
 
-    /** @test */
-    public function can_complete_intent()
-    {
-        // TODO: figure out the best way to test this, as it touches Stripe
+        $this->assertSame($name, 'Stripe');
     }
 }

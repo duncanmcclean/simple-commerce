@@ -8,12 +8,18 @@ class DummyGateway implements Gateway
 {
     public function completePurchase($data)
     {
+        $isPaid = false;
+
         if ($data['cardNumber'] === '4242 4242 4242 4242') {
             $isPaid = true;
-        } else if ($data['cardNumber'] === '1111 1111 1111 1111') {
-            $isPaid = false;
-        } else {
+        }
+
+        if ($data['cardNumber'] === '1111 1111 1111 1111') {
             throw new \Exception('The card provided is invalid.');
+        }
+
+        if ($data['expiryYear'] < now()->format('Y')) {
+            $isPaid = false;
         }
 
         return [
