@@ -1,125 +1,66 @@
-<h1 class="text-gray-800 font-bold text-4xl mb-4">Your Cart</h1>
+<h2 class="text-center font-bold text-gray-700 text-3xl">Your Cart</h2>
 
-{{ if {cart:count} == 0 }}
-    <p>There are no items in your cart.</p>
+{{ if {cart:count} === 0 }}
+    <p class="text-gray-800 text-lg text-center mt-12">Your cart is empty. <a href="{{ commerce:route key='products.index' }}">Browse for products</a>.</p>
 {{ else }}
-    <table class="table-auto overflow-x-scroll w-full">
-        <thead>
-            <tr class="w-full border-t-2 border-b-2 text-gray-900 font-bold">
-                <th class="px-4 py-2 text-left">Product</th>
-                <th class="px-4 py-2 text-left">Qty</th>
-                <th class="px-4 py-2 text-right float-right">Price</th>
+    <table class="table-auto mx-auto my-12 md:w-1/2">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2">Product</th>
+                <th class="px-4 py-2">Quantity</th>
+                <th class="px-4 py-2">Price</th>
             </tr>
         </thead>
-
         <tbody>
             {{ cart:items }}
-                <tr class="py-4 px-4 border-b w-full text-gray-800">
-                    <td class="px-4 py-6 text-left">
-                        <strong>{{ product:title }}</strong><br>
-                        ({{ variant:sku }})
+                <tr>
+                    <td class="border px-4 py-2">
+                        <a href="{{ product:url }}">{{ product:title }} ({{ variant:sku }})</a>
 
-                        <form class="mt-2" action="{{ commerce:route key='cart.delete' }}" method="post">
+                        <form class="mt-1" action="{{ commerce:route key='cart.delete' }}" method="post">
                             {{ csrf_field }}
                             <input type="hidden" name="item_id" value="{{ uuid }}">
 
-                            <button class="text-red-700 font-medium text-sm" type="submit">Remove</button>
+                            <button class="text-red-700 font-medium text-sm focus:outline-none" type="submit">Remove</button>
                         </form>
                     </td>
-
-                    <td class="px-4 py-6 text-left">
-                        {{ quantity }}
+                    <td class="border px-4 py-2 flex justify-center">
+                        <select name="quantity">
+                            {{ increment from='1' :to='variant:max_quantity' by='1' }}
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
                     </td>
-
-                    <td class="px-4 py-6 text-right">
-                        Price: {{ total | price }}
-                    </td>
+                    <td class="border px-4 py-2">{{ total | price }}</td>
                 </tr>
             {{ /cart:items }}
-
-            {{ cart:shipping }}
-                <tr class="py-4 px-4 border-b w-full text-gray-800">
-                    <td class="px-4 py-6 text-left">
-                        Shipping: {{ shipping_zone:country:name }}, {{ shipping_zone:state:name }}, {{ shipping_zone:start_of_zip_code }}
-                    </td>
-
-                    <td class="px-4 py-6 text-left"></td>
-
-                    <td class="px-4 py-6 text-right">
-                        Price: {{ shipping_zone:price | price }}
-                    </td>
-                </tr>
-            {{ /cart:shipping }}
-
-            {{ cart:tax }}
-                <tr class="py-4 px-4 border-b w-full text-gray-800">
-                    <td class="px-4 py-6 text-left">
-                        Tax: {{ tax_rate:country:name }}, {{ tax_rate:state:name }}, {{ tax_rate:start_of_zip_code }}
-                    </td>
-
-                    <td class="px-4 py-6 text-left"></td>
-
-                    <td class="px-4 py-6 text-right">
-                        {{ tax_rate:rate }}%
-                    </td>
-                </tr>
-            {{ /cart:tax }}
-
-            <tr class="py-4 px-4 border-b w-full text-gray-800">
-                <td class="px-4 py-6 text-left">
-                    <form class="bg-gray-100 py-6 px-4" action="{{ commerce:route key='cart.index' }}" method="post">
-                        {{ csrf_field }}
-
-                        <div class="flex flex-row items-center mb-4">
-                            <h2 class="w-2/5 font-bold mb-2">Coupon</h2>
-                            <input class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" type="text" name="coupon" placeholder="Coupon Code">
-                        </div>
-
-                        <div class="flex flex-row items-center mb-4">
-                            <h2 class="w-2/5 font-bold mb-2">Country</h2>
-
-                            <select class="w-3/5 bg-white rounded border py-1 px-2 text-gray-800" name="country">
-                                {{ commerce:countries }}
-                                    <option value="{{ iso }}">{{ name }}</option>
-                                {{ /commerce:countries }}
-                            </select>
-                        </div>
-
-                        <div class="flex justify-end mb-4">
-                            <button class="border rounded hover:bg-white px-2 py-1 text-center text-black" type="submit">Update Cart</button>
-                        </div>
-                    </form>
-                </td>
-
-                <td class="px-4 py-6 text-left">
-
-                </td>
-
-                <td class="px-4 py-6 text-right">
-                    <p class="mb-6">Items Sub Total: {{ cart:total items='true' }}</p>
-                    <p>Total Discount: $0.00</p>
-                    <p>Total Shipping: {{ cart:total shipping='true' }}</p>
-                    <p>Total Tax: {{ cart:total tax='true' }}</p>
-                    <p class="mt-6"><strong>Total Price: {{ cart:total }}</strong></p>
-                </td>
+            <tr>
+                <td class="px-4 py-2"></td>
+                <td class="border px-4 py-2 font-semibold">Shipping</td>
+                <td class="border px-4 py-2">{{ cart:total shipping='true' }}</td>
             </tr>
-
-            <tr class="py-4 px-4 border-b w-full text-gray-800">
-                <td class="px-4 py-6 text-left">
+            <tr>
+                <td class="px-4 py-2"></td>
+                <td class="border px-4 py-2 font-semibold">Tax</td>
+                <td class="border px-4 py-2">{{ cart:total tax='true' }}</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-2"></td>
+                <td class="border px-4 py-2 font-semibold">Total</td>
+                <td class="border px-4 py-2">{{ cart:total }}</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-2"></td>
+                <td class="px-4 py-2">
                     <form action="{{ commerce:route key='cart.clear' }}" method="post">
                         {{ csrf_field }}
-                        <button class="text-gray-700 font-medium" type="submit">Clear Cart</button>
+                        <button class="text-gray-700 font-medium text-center focus:outline-none" type="submit">Clear Cart</button>
                     </form>
                 </td>
-
-                <td class="px-4 py-6 text-left">
-
-                </td>
-
-                <td class="px-4 py-6 text-right">
-                    <div class="flex justify-end">
-                        <a class="rounded bg-red-700 hover:bg-red-800 px-2 py-1 text-center font-bold text-white" href="{{ commerce:route key='checkout.show' }}">Checkout</a>
-                    </div>
+                <td class="px-4 py-2 flex justify-center">
+                    <a class="bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold" href="{{ commerce:route key='checkout.show' }}">Proceed to Checkout</a>
                 </td>
             </tr>
         </tbody>

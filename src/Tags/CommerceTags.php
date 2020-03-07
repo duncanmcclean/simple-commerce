@@ -60,12 +60,11 @@ class CommerceTags extends Tags
 
     public function products()
     {
-        $products = Product::all();
+        $products = Product::with('variants', 'productCategory', 'attributes')->get();
 
         if ($categorySlug = $this->getParam('category')) {
             $category = ProductCategory::where('slug', $categorySlug)->first();
-
-            $products = Product::with('variants')->where('product_category_id', $category);
+            $products = $products->where('product_category_id', $category);
         }
 
         if (! $this->getParam('include_disabled')) {
@@ -73,6 +72,29 @@ class CommerceTags extends Tags
                 ->reject(function ($product) {
                     return ! $product->is_enabled;
                 });
+        }
+
+        if ($this->getParam('not')) {
+            $not = $this->getParam('not');
+
+            $products = $products
+                ->reject(function ($product) use ($not) {
+                    if ($product->id === $not) {
+                        return true;
+                    }
+
+                    if ($product->uuid === $not) {
+                        return true;
+                    }
+
+                    if ($product->slug === $not) {
+                        return true;
+                    }
+                });
+        }
+
+        if ($this->getParam('limit')) {
+            $products = $products->take($this->getParam('limit'));
         }
 
         if ($this->getParam('count')) {

@@ -1,21 +1,53 @@
-<h1 class="text-gray-800 font-bold text-4xl mb-4">{{ title }}</h1>
+<main class="my-6">
+    <div class="container mx-auto">
+        <div class="flex flex-row items-center">
+            <div class="md:w-2/3">
+                <div class="bg-gray-100 h-64 w-full"></div>
+            </div>
+            <div class="md:w-1/3 px-4">
+                <h1 class="text-2xl font-bold">{{ title }}</h1>
 
-<div class="leading-loose py-2 text-gray-700 font-thin">
-    {{ description }}
-</div>
+                <form class="flex flex-col my-4" action="{{ commerce:route key='cart.add' }}" method="post">
+                    {{ csrf_field }}
+                    <input type="hidden" name="product" value="{{ uuid }}">
 
-<form class="flex flex-row items-center my-4" action="{{ commerce:route key='cart.add' }}" method="post">
-    {{ csrf_field }}
+<!--                    <select name="variant" required>-->
+<!--                        {{ variants }}-->
+<!--                        <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>-->
+<!--                        {{ /variants }}-->
+<!--                    </select>-->
 
-    <input type="hidden" name="product" value="{{ uuid }}">
+<!--                    <input class="bg-gray-100 rounded px-2 py-1 mx-2" type="number" name="quantity" max="{{ variants }}{{ if first }}{{ max_quantity }}{{ /if }}{{ /variants }}" value="1" required>-->
 
-    <select name="variant" required>
-        {{ variants }}
-            <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
-        {{ /variants }}
-    </select>
+<!--                    <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>-->
 
-    <input class="bg-gray-100 rounded px-2 py-1 mx-2" type="number" name="quantity" max="{{ variants }}{{ if first }}{{ max_quantity }}{{ /if }}{{ /variants }}" value="1" required>
+                    <h2 class="text-xl font-bold">{{ variants }}{{ if first }}{{ price | price }}{{ /if }}{{ /variants }}</h2>
 
-    <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>
-</form>
+                    <div class="my-4 leading-relaxed text-lg">{{ description }}</div>
+                    <div class="flex flex-row items-stretch w-full">
+                        <select class="md:w-1/4 mx-2" name="quantity">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+
+                        <button class="md:w-3/4 bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold" type="submit">Add to Cart</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h2 class="text-center font-bold text-gray-700 text-3xl mt-12">Related Products</h2>
+
+        <div class="flex flex-row items-center flex-wrap p-2">
+            {{ commerce:products :not='uuid' limit='4' }}
+                <a class="w-1/2 md:w-1/4 px-2 py-4" href="{{ url }}">
+                    <div class="h-40 bg-gray-200 mb-2"></div>
+                    <h2 class="text-gray-700 font-bold text-xl">{{ title }}</h2>
+                    <h3 class="text-gray-700 font-semibold text-sm">From {{ variants }}{{ if first }}{{ price | price }}{{ /if }}{{ /variants }}</h3>
+                </a>
+            {{ /commerce:products }}
+        </div>
+    </div>
+</main>

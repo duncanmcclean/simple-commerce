@@ -1,23 +1,16 @@
-<h1 class="text-gray-800 font-bold text-4xl mb-4">Products</h1>
+<h2 class="text-center font-bold text-gray-700 text-3xl">Our Products</h2>
 
-{{ products }}
-    <div class="mb-6 border-b w-full">
-        <h2 class="text-3xl"><a class="text-blue-700 hover:text-blue-800 font-bold" href="{{ url }}">{{ title }}</a></h2>
+<div class="flex flex-row items-center flex-wrap p-2">
+    {{ products }}
+        <a class="w-1/2 md:w-1/4 px-2 py-4" href="{{ url }}">
+            <div class="h-40 bg-gray-200 mb-2"></div>
+            <h2 class="text-gray-700 font-bold text-xl">{{ title }}</h2>
+            <h3 class="text-gray-700 font-semibold text-sm">From {{ variants }}{{ if first }}{{ price | price }}{{ /if }}{{ /variants }}</h3>
+        </a>
+    {{ /products }}
+</div>
 
-        <form class="flex flex-row items-center my-4" action="{{ commerce:route key='cart.add' }}" method="post">
-            {{ csrf_field }}
-
-            <input type="hidden" name="product" value="{{ uuid }}">
-
-            <select name="variant" required>
-                {{ variants }}
-                    <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
-                {{ /variants }}
-            </select>
-
-            <input class="bg-gray-100 rounded px-2 py-1 mx-2" type="number" name="quantity" max="{{ variants }}{{ if first }}{{ max_quantity }}{{ /if }}{{ /variants }}" value="1" required>
-
-            <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>
-        </form>
-    </div>
-{{ /products }}
+<!-- TODO: pagination -->
+<!--                    <div class="flex justify-center mt-4">-->
+<!--                        <a class="bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold" href="#">More Products</a>-->
+<!--                    </div>-->
