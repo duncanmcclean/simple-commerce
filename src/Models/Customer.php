@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated;
+use DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +15,11 @@ class Customer extends Model
 
     protected $fillable = [
         'uuid', 'name', 'email',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => CustomerCreated::class,
+        'updated' => CustomerUpdated::class,
     ];
 
     public function addresses()
