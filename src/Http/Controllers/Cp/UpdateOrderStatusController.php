@@ -13,12 +13,10 @@ class UpdateOrderStatusController extends CpController
     {
         $this->authorize('update', Order::class);
 
-        $order->order_status_id = $status->id;
-        $order->save();
+        $order->update(['order_status_id' => $status->id]);
 
         event(new OrderStatusUpdated($order, $order->customer));
 
-        return redirect(cp_route('orders.index'))
-            ->with('success', "Set as $status->name.");
+        return redirect(cp_route('orders.index'))->with('success', "Set as $status->name.");
     }
 }

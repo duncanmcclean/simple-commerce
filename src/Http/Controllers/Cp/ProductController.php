@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Illuminate\Routing\Route;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
@@ -17,9 +18,7 @@ class ProductController extends CpController
     {
         $this->authorize('view', Product::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
 
         $products = Product::paginate(config('statamic.cp.pagination_size'));
 
@@ -34,10 +33,7 @@ class ProductController extends CpController
     {
         $this->authorize('create', Product::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Products', 'url' => cp_route('products.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Products', 'url' => cp_route('products.index')]]);
 
         $blueprint = Blueprint::find('simple-commerce/product');
         $fields = $blueprint->fields();
@@ -55,13 +51,13 @@ class ProductController extends CpController
     {
         $this->authorize('create', Product::class);
 
-        $product = new Product();
-        $product->title = $request->title;
-        $product->slug = $request->slug;
-        $product->description = $request->description;
-        $product->product_category_id = $request->category[0] ?? null;
-        $product->is_enabled = $request->is_enabled;
-        $product->save();
+        $product = Product::create([
+            'title' => $request->title,
+            'slug' => $request->slug,
+            'description' => $request->description,
+            'product_category_id' => $request->category[0] ?? null,
+            'is_enabled' => $request->is_enabled,
+        ]);
 
         collect($request->product_attributes)
             ->each(function ($attribute) use ($product) {
@@ -76,59 +72,53 @@ class ProductController extends CpController
             });
 
         collect($request->variants)
-            ->each(function ($variant) use ($product, $request) {
-                $item = new Variant();
-                $item->name = $variant['name'];
-                $item->sku = $variant['sku'];
-                $item->price = $variant['price'];
-                $item->stock = $variant['stock_number'];
-                $item->unlimited_stock = $variant['unlimited_stock'];
-                $item->max_quantity = $variant['max_quantity'];
-                $item->description = $variant['description'];
-                $item->product_id = $product->id;
-                $item->save();
+            ->each(function ($theVariant) use ($product, $request) {
+                $variant = $product->variants()->create([
+                    'name' => $theVariant['name'],
+                    'sku' => $theVariant['sku'],
+                    'price' => $theVariant['price'],
+                    'stock' => $theVariant['stock_number'],
+                    'unlimited_stock' => $theVariant['unlimited_stock'],
+                    'max_quantity' => $theVariant['max_quantity'],
+                    'description' => $theVariant['description'],
+                ]);
 
-                collect($variant['variant_attributes'])
-                    ->each(function ($attribute) use ($item) {
+                collect($theVariant['variant_attributes'])
+                    ->each(function ($attribute) use ($variant) {
                         if ($attribute['key'] === null) {
                             return;
                         }
 
-                        $item->attributes()->create([
+                        $variant->attributes()->create([
                             'key' => $attribute['key'],
                             'value' => $attribute['value'],
                         ]);
                     });
             });
 
-        return ['redirect' => cp_route('products.edit', ['product' => $product->uuid])];
+        return [
+            'redirect' => cp_route('products.edit', [
+                'product' => $product->uuid,
+            ])
+        ];
     }
 
     public function edit($product)
     {
         $this->authorize('update', $product);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Products', 'url' => cp_route('products.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Products', 'url' => cp_route('products.index')]]);
 
-        $product = Product::where('uuid', $product)->first();
-        $variants = Variant::where('product_id', $product->id)->get();
+        $product = Product::with('variants', 'attributes')
+            ->where('uuid', $product)
+            ->first();
 
         $values = array_merge($product->toArray(), [
             'category' => $product->product_category_id,
-            'variants' => $variants->map(function (Variant $variant, $key) {
-                return [
+            'variants' => $product->variants->map(function (Variant $variant, $key) {
+                return array_merge($variant->toArray(), [
                     '_id' => 'row-'.$key,
-                    'uuid' => $variant->uuid,
-                    'description' => $variant->description,
-                    'max_quantity' => $variant->max_quantity,
-                    'name' => $variant->name,
-                    'price' => (new Currency())->parse($variant->price, true, false),
-                    'sku' => $variant->sku,
                     'stock_number' => $variant->stock,
-                    'unlimited_stock' => $variant->unlimited_stock,
                     'variant_attributes' => collect($variant->attributes)
                         ->map(function (Attribute $attribute, $key) {
                             return [
@@ -139,7 +129,7 @@ class ProductController extends CpController
                             ];
                         })
                         ->toArray(),
-                ];
+                ]);
             }),
             'product_attributes' => collect($product->attributes)
                 ->map(function (Attribute $attribute, $key) {
@@ -163,7 +153,7 @@ class ProductController extends CpController
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $values,
             'meta'      => $fields->meta(),
-            'action' => $product->updateUrl(),
+            'action'    => $product->updateUrl(),
         ]);
     }
 
@@ -171,12 +161,13 @@ class ProductController extends CpController
     {
         $this->authorize('update', $product);
 
-        $product->title = $request->title;
-        $product->slug = $request->slug;
-        $product->description = $request->description;
-        $product->product_category_id = $request->category;
-        $product->is_enabled = $request->is_enabled;
-        $product->save();
+        $product->update([
+            'title' => $request->title,
+            'slug' => $request->slug,
+            'description' => $request->description,
+            'product_category_id' => $request->category,
+            'is_enabled' => $request->is_enabled,
+        ]);
 
         $requestVariants = collect($request->variants)
             ->map(function ($variant) use ($product) {
@@ -230,7 +221,8 @@ class ProductController extends CpController
                 return ! $requestVariants
                     ->contains('uuid', $variant->uuid);
             })
-            ->each->delete();
+            ->each
+            ->delete();
 
         return $product;
     }
@@ -239,15 +231,9 @@ class ProductController extends CpController
     {
         $this->authorize('delete', $product);
 
-        collect($product->variants)
-            ->each(function (Variant $variant) {
-                $variant->attributes()->delete();
-
-                $variant->delete();
-            });
-
         $product->attributes()->delete();
-
+        $product->variants()->attributes()->delete();
+        $product->variants()->delete();
         $product->delete();
 
         return back()

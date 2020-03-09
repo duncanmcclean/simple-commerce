@@ -19,18 +19,16 @@ class OrderController extends CpController
     {
         $this->authorize('view', Order::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
 
         $orders = Order::with('orderStatus')
             ->orderByDesc('created_at')
             ->paginate(config('statamic.cp.pagination_size'));
 
         return view('commerce::cp.orders.index', [
-            'crumbs' => $crumbs,
-            'orders' => $orders,
-            'statuses' => OrderStatus::all(),
+            'crumbs'    => $crumbs,
+            'orders'    => $orders,
+            'statuses'  => OrderStatus::all(),
         ]);
     }
 
@@ -38,22 +36,18 @@ class OrderController extends CpController
     {
         $this->authorize('update', Order::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Orders', 'url' => cp_route('orders.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Orders', 'url' => cp_route('orders.index')]]);
 
         $blueprint = Blueprint::find('simple-commerce/order');
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.orders.edit', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => array_merge($order->toArray(), [
-                'gateway' => $order->gateway_data['gateway'],
-                'paid' => $order->gateway_data['is_paid'],
+                'gateway'   => $order->gateway_data['gateway'],
+                'paid'      => $order->gateway_data['is_paid'],
             ]),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
@@ -68,41 +62,52 @@ class OrderController extends CpController
             event(new OrderStatusUpdated($order, $order->customer));
         }
 
-        $billingAddress = new Address();
-        $billingAddress->name = $order->customer->name;
-        $billingAddress->address1 = $request->billing_address_1;
-        $billingAddress->address2 = $request->billing_address_2;
-        $billingAddress->address3 = $request->billing_address_3;
-        $billingAddress->city = $request->billing_city;
-        $billingAddress->zip_code = $request->billing_zip_code;
-        $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
-        $billingAddress->state_id = State::where('abbreviation', $request->billing_state)->first()->id ?? null;
-        $billingAddress->customer_id = $order->customer_id;
-        $billingAddress->save();
+        $order->billingAddress()->updateOrCreate(
+            [
+                'customer_id'   => $request->customer_id,
+                'address1'      => $request->billing_address_1,
+                'zip_code'      => $request->billing_zip_code,
+            ],
+            [
+                'name'          => $order->customer->name,
+                'address1'      => $request->billing_addresss_1,
+                'address2'      => $request->billing_addresss_2,
+                'address3'      => $request->billing_addresss_3,
+                'city'          => $request->billing_city,
+                'zip_code'      => $request->billing_zip_code,
+                'country_id'    => Country::where('iso', $request->billing_country)->first()->id,
+                'state_id'      => State::where('abbreviation', $request->billing_state)->first()->id ?? null,
+            ]
+        );
 
-        $shippingAddress = new Address();
-        $shippingAddress->name = $order->customer->name;
-        $shippingAddress->address1 = $request->shipping_address_1;
-        $shippingAddress->address2 = $request->shipping_address_2;
-        $shippingAddress->address3 = $request->shipping_address_3;
-        $shippingAddress->city = $request->shipping_city;
-        $shippingAddress->zip_code = $request->shipping_zip_code;
-        $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
-        $shippingAddress->state_id = State::where('abbreviation', $request->shipping_state)->first()->id ?? null;
-        $shippingAddress->customer_id = $order->customer_id;
-        $shippingAddress->save();
+        $order->shippingAddress()->updateOrCreate(
+            [
+                'customer_id'   => $request->customer_id,
+                'address1'      => $request->shipping_address_1,
+                'zip_code'      => $request->shipping_zip_code,
+            ],
+            [
+                'name'          => $order->customer->name,
+                'address1'      => $request->shipping_addresss_1,
+                'address2'      => $request->shipping_addresss_2,
+                'address3'      => $request->shipping_addresss_3,
+                'city'          => $request->shipping_city,
+                'zip_code'      => $request->shipping_zip_code,
+                'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
+                'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
+            ]
+        );
 
-        $order->total = $request->total;
-        $order->notes = $request->notes;
-        $order->items = $request->items;
-        $order->order_status_id = $request->order_status_id;
-        $order->currency_id = $request->currency_id;
-        $order->customer_id = $request->customer_id;
-        $order->billing_address_id = $billingAddress->id;
-        $order->shipping_address_id = $shippingAddress->id;
-        $order->save();
+        $order->update([
+            'total'             => $request->total,
+            'notes'             => $request->notes,
+            'items'             => $request->items,
+            'order_status_id'   => $request->order_status_id,
+            'currency_id'       => $request->currency_id,
+            'customer_id'       => $request->customer_id,
+        ]);
 
-        return $order;
+        return $order->refresh();
     }
 
     public function destroy(Order $order)
@@ -111,7 +116,6 @@ class OrderController extends CpController
 
         $order->delete();
 
-        return back()
-            ->with('success', 'Order has been deleted.');
+        return back()->with('success', "Order #{$order->id} has been deleted.");
     }
 }

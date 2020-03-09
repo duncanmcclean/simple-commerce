@@ -15,10 +15,10 @@ class OrderStatusController extends CpController
         $fields = $fields->preProcess();
 
         return view('commerce::cp.settings.order-statuses', [
-            'crumbs' => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
+            'crumbs'    => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
             'blueprint' => $blueprint->toPublishArray(),
-            'meta' => $fields->meta(),
-            'values' => $fields->values(),
+            'meta'      => $fields->meta(),
+            'values'    => $fields->values(),
         ]);
     }
 }

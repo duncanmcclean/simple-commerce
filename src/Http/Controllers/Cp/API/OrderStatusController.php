@@ -18,43 +18,36 @@ class OrderStatusController extends CpController
 
     public function store(OrderStatusRequest $request): OrderStatus
     {
-        $status = new OrderStatus();
-        $status->name = $request->name;
-        $status->slug = $request->slug;
-        $status->description = $request->description;
-        $status->color = $request->color;
-        $status->primary = false;
-        $status->save();
-
-        return $status;
+        return OrderStatus::create([
+            'name'          => $request->name,
+            'slug'          => $request->slug,
+            'description'   => $request->description,
+            'color'         => $request->color,
+            'primary'       => false,
+        ]);
     }
 
     public function update(OrderStatus $status, OrderStatusRequest $request): OrderStatus
     {
         if ($request->primary === true) {
-            $currentPrimary = OrderStatus::where('primary', true)->first();
-            $currentPrimary->primary = false;
-            $currentPrimary->save();
+            OrderStatus::where('primary', true)->first()->update([
+                'primary' => false,
+            ]);
         }
 
-        $status->name = $request->name;
-        $status->slug = $request->slug;
-        $status->description = $request->description;
-        $status->color = $request->color;
-        $status->primary = $request->primary;
-        $status->save();
+        $status->update([
+            'name'          => $request->name,
+            'slug'          => $request->slug,
+            'description'   => $request->description,
+            'color'         => $request->color,
+            'primary'       => $request->primary,
+        ]);
 
-        return $status;
+        return $status->refresh();
     }
 
     public function destroy(OrderStatus $status, OrderStatusDeleteRequest $request)
     {
-        collect(Order::where('order_status_id', $status->id)->get())
-            ->each(function ($order) use ($request) {
-                $order->order_status_id = $request->assign;
-                $order->save();
-            });
-
         if (OrderStatus::all()->count() === 1) {
             return redirect(cp_route('settings.edit'))
                 ->with('error', "You can't delete the only order status.");
@@ -64,6 +57,10 @@ class OrderStatusController extends CpController
             return redirect(cp_route('settings.edit'))
                 ->with('error', "You can't delete the primary order status.");
         }
+
+        $status->orders()->update([
+           'order_status_id' => $request->assign,
+        ]);
 
         $status->delete();
     }

@@ -45,16 +45,6 @@ class Order extends Model
         return $this->belongsTo(Currency::class);
     }
 
-    public function setItemsAttribute($value)
-    {
-        $this->attributes['items'] = json_encode($value);
-    }
-
-    public function getItemsAttribute($value)
-    {
-        return collect(json_decode($value));
-    }
-
     public function editUrl()
     {
         return cp_route('orders.edit', ['order' => $this->attributes['uuid']]);

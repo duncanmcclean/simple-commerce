@@ -16,15 +16,11 @@ class CustomerController extends CpController
     {
         $this->authorize('view', Customer::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-        ]);
-
-        $customers = Customer::paginate(config('statamic.cp.pagination_size'));
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
 
         return view('commerce::cp.customers.index', [
-            'crumbs' => $crumbs,
-            'customers' => $customers,
+            'crumbs'    => $crumbs,
+            'customers' => Customer::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Customer())->createUrl(),
         ]);
     }
@@ -33,15 +29,11 @@ class CustomerController extends CpController
     {
         $this->authorize('create', Customer::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Customers', 'url' => cp_route('customers.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Customers', 'url' => cp_route('customers.index')]]);
 
         $blueprint = Blueprint::find('simple-commerce/customer');
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.customers.create', [
@@ -56,29 +48,27 @@ class CustomerController extends CpController
     {
         $this->authorize('create', Customer::class);
 
-        $customer = new Customer();
-        $customer->name = $request->name;
-        $customer->email = $request->email;
-        $customer->save();
+        $customer = Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
-        return ['redirect' => cp_route('customers.edit', ['customer' => $customer->uuid])];
+        return [
+            'redirect' => cp_route('customers.edit', [
+                'customer' => $customer->uuid,
+            ]),
+        ];
     }
 
     public function edit($customer)
     {
-        $customer = Customer::where('uuid', $customer)->first();
-
         $this->authorize('update', $customer);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Customers', 'url' => cp_route('customers.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Customers', 'url' => cp_route('customers.index')]]);
 
         $blueprint = Blueprint::find('simple-commerce/customer');
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.customers.edit', [
@@ -93,30 +83,22 @@ class CustomerController extends CpController
     {
         $this->authorize('update', $customer);
 
-        $customer->name = $request->name;
-        $customer->email = $request->email;
-        $customer->save();
+        $customer->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
-        return $customer;
+        return $customer->refresh();
     }
 
     public function destroy(Customer $customer)
     {
         $this->authorize('delete', $customer);
 
-        Order::where('customer_id', $customer->id)
-            ->each(function (Order $order) {
-                $order->delete();
-            });
-
-        Address::where('customer_id', $customer->id)
-            ->each(function (Address $address) {
-                $address->delete();
-            });
-
+        $customer->addresses()->delete();
+        $customer->orders()->delete();
         $customer->delete();
 
-        return back()
-            ->with('success', 'Customer has been deleted.');
+        return back()->with('success', 'Customer has been deleted.');
     }
 }

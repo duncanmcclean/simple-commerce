@@ -15,34 +15,32 @@ class TaxRateController extends CpController
 
     public function store(TaxRateRequest $request): TaxRate
     {
-        $rate = new TaxRate();
-        $rate->name = $request->name;
-        $rate->country_id = $request->country[0];
-        $rate->state_id = isset($request->state[0]) ?? null;
-        $rate->start_of_zip_code = $request->start_of_zip_code;
-        $rate->rate = $request->rate;
-        $rate->save();
-
-        return $rate;
+        return TaxRate::create([
+            'name'              => $request->name,
+            'country_id'        => $request->country[0],
+            'state_id'          => $request->state[0] ?? null,
+            'start_of_zip_code' => $request->start_of_zip_code,
+            'rate'              => $request->rate,
+        ]);
     }
 
     public function update(TaxRate $rate, TaxRateRequest $request): TaxRate
     {
-        $rate->name = $request->name;
-        $rate->country_id = $request->country[0];
-        $rate->state_id = isset($request->state[0]) ?? null;
-        $rate->start_of_zip_code = $request->start_of_zip_code;
-        $rate->rate = $request->rate;
-        $rate->save();
+        $rate->update([
+            'name'              => $request->name,
+            'country_id'        => $request->country[0],
+            'state_id'          => $request->state[0] ?? null,
+            'start_of_zip_code' => $request->start_of_zip_code,
+            'rate'              => $request->rate,
+        ]);
 
-        return $rate;
+        return $rate->refresh();
     }
 
     public function destroy(TaxRate $rate)
     {
         $rate->delete();
 
-        return redirect(cp_route('settings.tax-rates.index'))
-            ->with('success', 'Deleted tax rate');
+        return redirect(cp_route('settings.tax-rates.index'))->with('success', 'Deleted tax rate');
     }
 }

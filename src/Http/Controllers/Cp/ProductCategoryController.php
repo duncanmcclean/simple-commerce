@@ -15,16 +15,12 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('view', ProductCategory::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-        ]);
-
-        $categories = ProductCategory::paginate(config('statamic.cp.pagination_size'));
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
 
         return view('commerce::cp.product-categories.index', [
-            'crumbs' => $crumbs,
-            'categories' => $categories,
-            'createUrl' => (new ProductCategory())->createUrl(),
+            'crumbs'        => $crumbs,
+            'categories'    => ProductCategory::paginate(config('statamic.cp.pagination_size')),
+            'createUrl'     => (new ProductCategory())->createUrl(),
         ]);
     }
 
@@ -32,15 +28,11 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('create', ProductCategory::class);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],]);
 
         $blueprint = Blueprint::find('simple-commerce/product_category');
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.product-categories.create', [
@@ -55,30 +47,28 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('create', ProductCategory::class);
 
-        $category = new ProductCategory();
-        $category->title = $request->title;
-        $category->slug = $request->slug;
-        $category->save();
+        $category = ProductCategory::create([
+            'title' => $request->title,
+            'slug' => $request->slug,
+        ]);
 
-        return ['redirect' => cp_route('product-categories.edit', ['category' => $category->uuid])];
+        return [
+            'redirect' => cp_route('product-categories.edit', [
+                'category' => $category->uuid,
+            ]),
+        ];
     }
 
     public function show(ProductCategory $category)
     {
         $this->authorize('view', $category);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
-        ]);
-
-        $products = Product::where('product_category_id', $category->id)
-            ->paginate(config('statamic.cp.pagination_size'));
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')]]);
 
         return view('commerce::cp.product-categories.show', [
-            'crumbs' => $crumbs,
-            'products' => $products,
-            'category' => $category,
+            'crumbs'    => $crumbs,
+            'products'  => Product::where('product_category_id', $category->id)->paginate(config('statamic.cp.pagination_size')),
+            'category'  => $category,
             'createUrl' => (new Product())->createUrl(),
         ]);
     }
@@ -87,15 +77,11 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('edit', $category);
 
-        $crumbs = Breadcrumbs::make([
-            ['text' => 'Simple Commerce'],
-            ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],
-        ]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')]]);
 
         $blueprint = Blueprint::find('simple-commerce/product_category');
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues([]);
         $fields = $fields->preProcess();
 
         return view('commerce::cp.product-categories.edit', [
@@ -110,26 +96,22 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('update', $category);
 
-        $category->title = $request->title;
-        $category->slug = $request->slug;
-        $category->save();
+        $category->update([
+            'title' => $request->title,
+            'slug' => $request->slug,
+        ]);
 
-        return $category;
+        return $category->refresh();
     }
 
     public function destroy(ProductCategory $category)
     {
         $this->authorize('delete', $category);
 
-        if (ProductCategory::count() === 1) {
-            return back()->with('error', 'You can\'t delete the only category.');
-        }
-
         // TODO: decide what we should do with products in this category
 
         $category->delete();
 
-        return back()
-            ->with('success', "$category->title has been deleted.");
+        return back()->with('success', "$category->title has been deleted.");
     }
 }
