@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusDeleteRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
@@ -49,18 +50,19 @@ class OrderStatusController extends CpController
     public function destroy(OrderStatus $status, OrderStatusDeleteRequest $request)
     {
         if (OrderStatus::all()->count() === 1) {
-            return redirect(cp_route('settings.edit'))
-                ->with('error', "You can't delete the only order status.");
+            return redirect(cp_route('settings.edit'))->with('error', "You can't delete the only order status.");
         }
 
         if ($status->primary === true) {
-            return redirect(cp_route('settings.edit'))
-                ->with('error', "You can't delete the primary order status.");
+            return redirect(cp_route('settings.edit'))->with('error', "You can't delete the primary order status.");
         }
 
-        $status->orders()->update([
-           'order_status_id' => $request->assign,
-        ]);
+        // TODO: fire the order status updated event
+
+        $status->orders()
+            ->update([
+               'order_status_id' => $request->assign,
+            ]);
 
         $status->delete();
     }

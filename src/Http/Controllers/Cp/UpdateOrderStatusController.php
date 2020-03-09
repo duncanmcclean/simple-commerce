@@ -16,7 +16,7 @@ class UpdateOrderStatusController extends CpController
 
         $order->update(['order_status_id' => $status->id]);
 
-        Event::dispatch(new OrderStatusUpdated($order, $order->customer));
+        Event::dispatch(new OrderStatusUpdated($order, $order->orderStatus()));
 
         return redirect(cp_route('orders.index'))->with('success', "Set as $status->name.");
     }
