@@ -35,7 +35,7 @@ class CheckoutControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('There are no items in your cart');
+            ->assertSee('Your cart is empty');
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class CheckoutControllerTest extends TestCase
         $response
             ->assertOk()
             ->assertDontSee('There are no items in your cart')
-            ->assertSee($variant->name)
+            ->assertSee($variant->sku)
             ->assertSee('Billing Address');
     }
 

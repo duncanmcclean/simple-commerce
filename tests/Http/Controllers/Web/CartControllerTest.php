@@ -28,7 +28,7 @@ class CartControllerTest extends TestCase
         $repsonse
             ->assertOk()
             ->assertSee('Cart')
-            ->assertSee('There are no items in your cart');
+            ->assertSee('Your cart is empty');
     }
 
     /** @test */
