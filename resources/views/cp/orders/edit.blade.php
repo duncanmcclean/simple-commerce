@@ -1,5 +1,6 @@
 @extends('statamic::layout')
 @section('title', 'Edit Order')
+@section('wrapper_class', 'max-w-3xl')
 
 @section('content')
     <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>

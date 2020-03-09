@@ -61,7 +61,7 @@ class CustomerController extends CpController
         $this->authorize('update', $customer);
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Customers', 'url' => cp_route('customers.index')]]);
-        
+
         $blueprint = (new Customer())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
