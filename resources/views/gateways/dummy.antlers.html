@@ -1,26 +1,6 @@
-<div class="flex flex-row items-center mb-4">
-    <h2 class="w-2/5 font-bold mb-2">Cardholder's Name</h2>
-    <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="cardholder">
-</div>
-
-<div class="flex flex-row items-center mb-4">
-    <h2 class="w-2/5 font-bold mb-2">Card Number</h2>
-    <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="text" name="cardNumber">
-</div>
-
-<div class="flex flex-row items-center mb-4">
-    <h2 class="w-2/5 font-bold mb-2">Expiry Month</h2>
-    <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="number" min="01" max="12" name="expiryMonth">
-</div>
-
-<div class="flex flex-row items-center mb-4">
-    <h2 class="w-2/5 font-bold mb-2">Expiry Year</h2>
-    <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="number" min="{{ now format='Y'}}" max="2030" name="expiryYear">
-</div>
-
-<div class="flex flex-row items-center mb-4">
-    <h2 class="w-2/5 font-bold mb-2">CVC</h2>
-    <input class="w-full bg-white rounded border py-1 px-2 text-gray-800" type="number" name="cvc">
-</div>
+<input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="text" name="cardholder" placeholder="Cardholder">
+<input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="number" name="cardNumber" placeholder="Card Number">
+<input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="month" name="expiryDate" placeholder="Expiry Date">
+<input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="text" name="cvc" placeholder="Security code">
 
 <input type="hidden" name="gateway" value="{{ class }}">
