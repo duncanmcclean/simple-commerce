@@ -24,13 +24,15 @@
                             <button class="text-red-700 font-medium text-sm focus:outline-none" type="submit">Remove</button>
                         </form>
                     </td>
-                    <td class="border px-4 py-2 flex justify-center">
-                        <select name="quantity">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
+                    <td class="border px-4 py-2">
+                        <div class="flex justify-center items-center">
+                            <select name="quantity">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
                     </td>
                     <td class="border px-4 py-2">{{ total | price }}</td>
                 </tr>
