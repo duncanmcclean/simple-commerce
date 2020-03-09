@@ -12,6 +12,10 @@ class ProductCategoryController extends Controller
     {
         $category = ProductCategory::where('slug', $slug)->first();
 
+        if (! $category->title) {
+            abort(404);
+        }
+
         $products = Product::with('variants')
             ->get()
             ->where('product_category_id', $category->id)
@@ -23,7 +27,7 @@ class ProductCategoryController extends Controller
             ->template('commerce::web.category')
             ->layout('commerce::web.layout')
             ->with([
-                'title' => $category['title'],
+                'title' => $category->title,
                 'products' => $products,
             ]);
     }

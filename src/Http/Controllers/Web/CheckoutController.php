@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
@@ -24,17 +25,11 @@ use Statamic\View\View;
 
 class CheckoutController extends Controller
 {
-    public $cart;
-    public $cartId;
-
-    public function __construct()
-    {
-        $this->cart = new Cart();
-    }
+    use UsesCart;
 
     public function show(Request $request)
     {
-        $this->createCart($request);
+        $this->createCart();
 
         return (new View)
             ->template('commerce::web.checkout')
@@ -46,7 +41,7 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request)
     {
-        $this->createCart($request);
+        $this->createCart();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
 
@@ -132,16 +127,7 @@ class CheckoutController extends Controller
         $request->session()->remove('commerce_cart_id');
         $this->createCart($request);
 
-        return redirect(config('simple-commerce.routes.checkout_redirect'));
-    }
-
-    protected function createCart(Request $request)
-    {
-        if (! $request->session()->get('commerce_cart_id')) {
-            $request->session()->put('commerce_cart_id', $this->cart->create());
-            $request->session()->save();
-        }
-
-        $this->cartId = $request->session()->get('commerce_cart_id');
+        return redirect(config('simple-commerce.routes.checkout_redirect'))
+            ->with('success', 'Success! Your order has been placed. You should receive an email shortly.');
     }
 }

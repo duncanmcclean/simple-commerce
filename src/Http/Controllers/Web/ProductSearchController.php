@@ -23,8 +23,8 @@ class ProductSearchController
         $results = Product::with('variants')
             ->get()
             ->where('is_enabled', true)
-            ->filter(function ($item) use ($query) {
-                return false !== stristr((string) $item['title'], $query);
+            ->filter(function ($product) use ($query) {
+                return false !== stristr((string) $product->title, $query);
             });
 
         return (new View)

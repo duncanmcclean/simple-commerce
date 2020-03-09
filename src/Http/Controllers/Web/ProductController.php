@@ -14,7 +14,7 @@ class ProductController extends Controller
             ->layout('commerce::web.layout')
             ->with([
                 'title' => 'Products',
-                'products' => Product::with('variants')->get(),
+                'products' => Product::with('variants', 'productCategory', 'attributes')->get(),
             ]);
     }
 
