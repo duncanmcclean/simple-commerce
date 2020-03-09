@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
@@ -77,7 +78,12 @@ class Cart
 
     public function remove(string $cartUuid, string $itemUuid)
     {
+        $cart = CartModel::where('uuid', $cartUuid)->first();
+
         $item = CartItem::where('uuid', $itemUuid)->first();
+
+        Event::dispatch(new RemovedFromCart($cart, $item->variant));
+
         $item->delete();
 
         return $this->get($cartUuid);
