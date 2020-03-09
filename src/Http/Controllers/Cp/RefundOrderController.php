@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\StripeGateway;
+use Illuminate\Support\Facades\Event;
 use Statamic\Http\Controllers\CP\CpController;
 
 class RefundOrderController extends CpController
@@ -25,7 +26,7 @@ class RefundOrderController extends CpController
 
         $order->update(['is_refunded' => true]);
 
-        event(new OrderRefunded($order));
+        Event::dispatch(new OrderRefunded($order));
 
         return back()->with('success', 'Order has been refunded.');
     }
