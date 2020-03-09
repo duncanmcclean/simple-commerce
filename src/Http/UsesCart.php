@@ -26,7 +26,9 @@ trait UsesCart
 
     public function replaceCart()
     {
-        $this->cart->clear();
+        $this->createCart();
+
+        $this->cart->clear($this->cartId);
 
         request()->session()->remove('commerce_cart_id');
 
