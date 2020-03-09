@@ -23,6 +23,20 @@
                 </div>
             {{ /if }}
 
+            {{ session }}
+                {{ if success }}
+                    <div class="w-full bg-green-500 text-center font-semibold py-2 text-white">
+                        {{ success }}
+                    </div>
+                {{ /if }}
+
+                {{ if error }}
+                    <div class="w-full bg-red-600 text-center font-semibold py-2 text-white">
+                        {{ error }}
+                    </div>
+                {{ /if }}
+            {{ /session }}
+
             {{ if (errors | count) >= 1 }}
                 <div class="w-full bg-red-600 text-center font-semibold py-2 text-white">
                     Something doesn't look quite right.

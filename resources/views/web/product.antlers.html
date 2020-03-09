@@ -11,15 +11,11 @@
                     {{ csrf_field }}
                     <input type="hidden" name="product" value="{{ uuid }}">
 
-<!--                    <select name="variant" required>-->
-<!--                        {{ variants }}-->
-<!--                        <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>-->
-<!--                        {{ /variants }}-->
-<!--                    </select>-->
-
-<!--                    <input class="bg-gray-100 rounded px-2 py-1 mx-2" type="number" name="quantity" max="{{ variants }}{{ if first }}{{ max_quantity }}{{ /if }}{{ /variants }}" value="1" required>-->
-
-<!--                    <button class="border rounded hover:bg-gray-100 px-2 py-1 text-center text-black mx-2" type="submit">Add to Cart</button>-->
+                    <select class="mb-2" name="variant" required>
+                        {{ variants }}
+                        <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
+                        {{ /variants }}
+                    </select>
 
                     <h2 class="text-xl font-bold">{{ variants }}{{ if first }}{{ price | price }}{{ /if }}{{ /variants }}</h2>
 
