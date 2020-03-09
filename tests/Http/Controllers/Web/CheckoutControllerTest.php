@@ -3,6 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
@@ -131,6 +133,7 @@ class CheckoutControllerTest extends TestCase
             'uuid' => $cart->uuid,
         ]);
 
-        Event::assertDispatched(CheckoutComplete::class);
+        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(OrderSuccessful::class);
     }
 }
