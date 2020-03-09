@@ -54,14 +54,14 @@
             </tr>
             <tr>
                 <td class="px-4 py-2"></td>
-                <td class="px-4 py-2">
+                <td class="py-2">
                     <form action="{{ commerce:route key='cart.clear' }}" method="post">
                         {{ csrf_field }}
                         <button class="text-gray-700 font-medium text-center focus:outline-none" type="submit">Clear Cart</button>
                     </form>
                 </td>
-                <td class="px-4 py-2 flex justify-center">
-                    <a class="bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold" href="{{ commerce:route key='checkout.show' }}">Proceed to Checkout</a>
+                <td class="py-2 flex justify-center">
+                    <a class="bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold w-full text-center" href="{{ commerce:route key='checkout.show' }}">Proceed to Checkout</a>
                 </td>
             </tr>
         </tbody>
