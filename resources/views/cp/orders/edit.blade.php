@@ -3,13 +3,15 @@
 @section('wrapper_class', 'max-w-3xl')
 
 @section('content')
-    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
-
     <publish-form
-            title="Order #{{ $values['id'] }}"
-            action="{{ cp_route('orders.update', ['order' => $values['uuid']]) }}"
-            :blueprint='@json($blueprint)'
-            :meta='@json($meta)'
-            :values='@json($values)'
+        :blueprint='@json($blueprint)'
+        :meta='@json($meta)'
+        :values='@json($values)'
+        title="Order #{{ $values['id'] }}"
+        name="order-publish-form"
+        :breadcrumbs='@json($crumbs)'
+        action="{{ $action }}"
+        method="post"
+        @saved="window.location.reload()"
     ></publish-form>
 @endsection

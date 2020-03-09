@@ -36,6 +36,7 @@ class ProductController extends CpController
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
+            'action'    => cp_route('products.store'),
         ]);
     }
 

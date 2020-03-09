@@ -36,6 +36,7 @@ class ProductCategoryController extends CpController
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
+            'action'    => cp_route('product-categories.store'),
         ]);
     }
 
@@ -81,9 +82,10 @@ class ProductCategoryController extends CpController
 
         return view('simple-commerce::cp.product-categories.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $category,
+            'values'    => $category->toArray(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
+            'action'    => cp_route('product-categories.update', ['category' => $category->uuid]),
         ]);
     }
 

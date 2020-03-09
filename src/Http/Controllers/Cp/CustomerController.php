@@ -37,6 +37,7 @@ class CustomerController extends CpController
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
+            'action'    => cp_route('customers.store'),
         ]);
     }
 
@@ -71,6 +72,7 @@ class CustomerController extends CpController
             'values'    => $customer->toArray(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
+            'action'    => cp_route('customers.update', ['customer' => $customer->uuid]),
         ]);
     }
 
