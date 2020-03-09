@@ -7,11 +7,8 @@ use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderFailed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
@@ -19,12 +16,10 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductCategoryUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart;
-use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\ShippingAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\TaxAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
@@ -66,7 +61,6 @@ class ServiceProvider extends AddonServiceProvider
         CartCreated::class => [],
         CustomerCreated::class => [],
         CustomerUpdated::class => [],
-        OrderFailed::class => [],
         OrderPaid::class => [],
         OrderRefunded::class => [
             SendOrderRefundedNotification::class,
