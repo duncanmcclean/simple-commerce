@@ -16,10 +16,7 @@ class CustomerController extends CpController
     {
         $this->authorize('view', Customer::class);
 
-        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
-
         return view('simple-commerce::cp.customers.index', [
-            'crumbs'    => $crumbs,
             'customers' => Customer::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Customer())->createUrl(),
         ]);

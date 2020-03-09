@@ -2,8 +2,6 @@
 @section('title', 'Simple Commerce Settings')
 
 @section('content')
-    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
-
     <div class="content">
         <h1 class="mb">Settings</h1>
     </div>

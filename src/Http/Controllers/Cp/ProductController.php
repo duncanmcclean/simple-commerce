@@ -2,14 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
-use Illuminate\Routing\Route;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class ProductController extends CpController
@@ -18,13 +15,8 @@ class ProductController extends CpController
     {
         $this->authorize('view', Product::class);
 
-        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
-
-        $products = Product::paginate(config('statamic.cp.pagination_size'));
-
         return view('simple-commerce::cp.products.index', [
-            'crumbs' => $crumbs,
-            'products' => $products,
+            'products' => Product::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Product())->createUrl(),
         ]);
     }

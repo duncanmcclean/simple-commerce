@@ -15,10 +15,7 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('view', ProductCategory::class);
 
-        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
-
         return view('simple-commerce::cp.product-categories.index', [
-            'crumbs'        => $crumbs,
             'categories'    => ProductCategory::paginate(config('statamic.cp.pagination_size')),
             'createUrl'     => (new ProductCategory())->createUrl(),
         ]);

@@ -2,8 +2,6 @@
 @section('title', 'Products')
 
 @section('content')
-    <breadcrumbs :crumbs='@json($crumbs)'></breadcrumbs>
-
     <div class="flex items-center justify-between mb-3">
         <h1 class="flex-1">Products</h1>
 

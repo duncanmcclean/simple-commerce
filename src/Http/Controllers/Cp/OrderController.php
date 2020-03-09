@@ -19,14 +19,11 @@ class OrderController extends CpController
     {
         $this->authorize('view', Order::class);
 
-        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
-
         $orders = Order::with('orderStatus')
             ->orderByDesc('created_at')
             ->paginate(config('statamic.cp.pagination_size'));
 
         return view('simple-commerce::cp.orders.index', [
-            'crumbs'    => $crumbs,
             'orders'    => $orders,
             'statuses'  => OrderStatus::all(),
         ]);
