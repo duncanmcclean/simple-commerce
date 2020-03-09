@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Statamic\Facades\Blueprint;
 
 class OrderStatus extends Model
 {
@@ -34,5 +35,10 @@ class OrderStatus extends Model
     public function getDeleteUrlAttribute()
     {
         return cp_route('commerce-api.order-status.destroy', ['status' => $this->attributes['uuid']]);
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::find('simple-commerce/order_status');
     }
 }

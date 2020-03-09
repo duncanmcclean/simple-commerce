@@ -38,8 +38,7 @@ class OrderController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Orders', 'url' => cp_route('orders.index')]]);
 
-        $blueprint = Blueprint::find('simple-commerce/order');
-
+        $blueprint = (new Order())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

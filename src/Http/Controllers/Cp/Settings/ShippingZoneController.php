@@ -2,15 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\Settings;
 
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class ShippingZoneController extends CpController
 {
     public function index()
     {
-        $blueprint = Blueprint::find('simple-commerce/shipping_zone');
+        $blueprint = (new ShippingZone())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

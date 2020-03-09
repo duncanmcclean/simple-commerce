@@ -2,15 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\Settings;
 
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderStatusController extends CpController
 {
     public function index()
     {
-        $blueprint = Blueprint::find('simple-commerce/order_status');
+        $blueprint = (new OrderStatus())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

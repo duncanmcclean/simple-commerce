@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Statamic\Facades\Blueprint;
 
 class Customer extends Model
 {
@@ -42,5 +43,10 @@ class Customer extends Model
     public function deleteUrl()
     {
         return cp_route('customers.destroy', ['customer' => $this->uuid]);
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::find('simple-commerce/customer');
     }
 }

@@ -31,8 +31,7 @@ class CustomerController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Customers', 'url' => cp_route('customers.index')]]);
 
-        $blueprint = Blueprint::find('simple-commerce/customer');
-
+        $blueprint = (new Customer())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
@@ -66,8 +65,7 @@ class CustomerController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Customers', 'url' => cp_route('customers.index')]]);
 
-        $blueprint = Blueprint::find('simple-commerce/customer');
-
+        $blueprint = (new Customer())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

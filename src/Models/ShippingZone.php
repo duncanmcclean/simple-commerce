@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Statamic\Facades\Blueprint;
 
 class ShippingZone extends Model
 {
@@ -34,16 +35,23 @@ class ShippingZone extends Model
 
     public function getUpdateUrlAttribute()
     {
+        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uuid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
+        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
     }
 
     public function getFormattedPriceAttribute()
     {
         return (new \DoubleThreeDigital\SimpleCommerce\Helpers\Currency())->parse($this->attributes['price']);
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::find('simple-commerce/shipping_zone');
     }
 }

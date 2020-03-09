@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Statamic\Facades\Blueprint;
 
 class ProductCategory extends Model
 {
@@ -50,5 +51,10 @@ class ProductCategory extends Model
     public function deleteUrl()
     {
         return cp_route('product-categories.destroy', ['category' => $this->uuid]);
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::find('simple-commerce/product_category');
     }
 }

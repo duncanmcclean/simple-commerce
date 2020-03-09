@@ -2,15 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\Settings;
 
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class TaxRateController extends CpController
 {
     public function index()
     {
-        $blueprint = Blueprint::find('simple-commerce/tax_rate');
+        $blueprint = (new TaxRate())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

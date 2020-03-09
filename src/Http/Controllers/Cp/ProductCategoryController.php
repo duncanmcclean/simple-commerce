@@ -30,8 +30,7 @@ class ProductCategoryController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],]);
 
-        $blueprint = Blueprint::find('simple-commerce/product_category');
-
+        $blueprint = (new ProductCategory())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
@@ -79,8 +78,7 @@ class ProductCategoryController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')]]);
 
-        $blueprint = Blueprint::find('simple-commerce/product_category');
-
+        $blueprint = (new ProductCategory())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

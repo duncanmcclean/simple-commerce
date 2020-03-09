@@ -35,7 +35,7 @@ class ProductController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Products', 'url' => cp_route('products.index')]]);
 
-        $blueprint = Blueprint::find('simple-commerce/product');
+        $blueprint = (new Product())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
@@ -143,8 +143,7 @@ class ProductController extends CpController
                 ->toArray(),
         ]);
 
-        $blueprint = Blueprint::find('simple-commerce/product');
-
+        $blueprint = (new Product())->blueprint();
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 

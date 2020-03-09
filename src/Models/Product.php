@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Statamic\Facades\Blueprint;
 
 class Product extends Model
 {
@@ -66,5 +67,10 @@ class Product extends Model
     public function deleteUrl()
     {
         return cp_route('products.destroy', ['product' => $this->uuid]);
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::find('simple-commerce/product');
     }
 }

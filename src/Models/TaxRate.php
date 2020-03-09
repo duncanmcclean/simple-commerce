@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Statamic\Facades\Blueprint;
 
 class TaxRate extends Model
 {
@@ -34,11 +35,18 @@ class TaxRate extends Model
 
     public function getUpdateUrlAttribute()
     {
+        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uuid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
+        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['uuid']]);
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::find('simple-commerce/tax_rate');
     }
 }
