@@ -1,29 +1,87 @@
-Simple Commerce provides a few events which you can hook into in your `EventServiceProvider`.
+Simple Commerce provides a set of events which you can listen for in your app or package.
 
-### [`AddedToCart`](https://github.com/damcclean/commerce/blob/master/src/Events/AddedToCart.php)
+# List of Events
 
-Every time the user adds a product variant to their cart, this event is dispatched with the user's `Cart` and the `CartItem` that was added.
+## `AddedToCart`
 
-### [`CheckoutComplete`](https://github.com/damcclean/commerce/blob/master/src/Events/CheckoutComplete.php)
+This event will be triggered whenever an item is added to the customer's cart. It has three parameters: `cart`, `cartItem` and `variant`.
 
-Once the user has completed the checkout flow and an order has been created within Commerce, this event is dispatched with the `order` and `customer`.
+## `AttributeUpdated`
 
-### [`NewCustomerCreated`](https://github.com/damcclean/commerce/blob/master/src/Events/NewCustomerCreated.php)
+This event will be triggered whenever a product or variant attribute is updated. It has one parameter: `attribute`.
 
-When a user completes an order, we look to see if the customer is new or already exists in the store database. If they are new, we dispatch this event with the `customer`.
+## `CartCreated`
 
-### [`OrderStatusUpdated`](https://github.com/damcclean/commerce/blob/master/src/Events/OrderStatusUpdated.php)
+This event will be triggered whenever a cart is created. It has one parameter: `cart`.
 
-When the status of an order is changed from the Control Panel, then this event is dispatched with the `order` and the `customer`.
+## `CustomerCreated`
 
-### [`VariantOutOfStock`](https://github.com/damcclean/commerce/blob/master/src/Events/ProductOutOfStock.php)
+This event will be triggered whenever a new customer is created. It has one parameter: `customer`.
 
-When a product variant has run out of stock, this event will be dispatched with the `variant`.
+## `CustomerUpdated`
 
-### [`VariantStockRunningLow.php`](https://github.com/damcclean/commerce/blob/master/src/Events/ProductStockRunningLow.php)
+This event will be triggered whenever a customer is updated. It has one parameter: `customer`.
 
-When a product variant is running low on stock, this event will be dispatched with the `variant`.
+## `OrderPaid`
 
-### [`ReturnCustomer`](https://github.com/damcclean/commerce/blob/master/src/Events/ReturnCustomer.php)
+This event will be triggered whenever an order is paid. It has one parameter: `order`.
 
-When a user completes an order, we will look to see if the customer is new or already exists in the store database. If they already exist, we will dispatch this event with the `customer`.
+## `OrderRefunded`
+
+This event will be triggered whenever an order is refunded. It has one parameter: `order`.
+
+## `OrderStatusUpdated`
+
+This event will be triggered whenever the status of an order has been updated. It has two parameters: `order` and `orderStatus`.
+
+## `OrderSuccessful`
+
+This event will be triggered whenever the order process has been successful. It has one parameter: `order`.
+
+## `ProductCategoryUpdated`
+
+This event will be triggered whenever a product category is updated. It has one parameter: `category`.
+
+## `ProductUpdated`
+
+This event will be triggered whenever a product is updated. It has one parameter `product`.
+
+## `RemovedFromCart`
+
+This event will be triggered whenever an item is removed from a cart. It has two parameters: `cart` and `variant`.
+
+## `ShippingAddedToCart`
+
+This event will be triggered whenever shipping is added to a cart. It has three parameters: `cart`, `cartShipping` and `shippingZone`.
+
+## `TaxAddedToCart`
+
+This event will be triggered whenever tax is added to a cart. It has three parameters: `cart`, `cartTax` and `taxRate`.
+
+## `VariantLowStock`
+
+This event will be triggered whenever a variant is running low on stock. It has one parameter: `variant`.
+
+## `VariantOutOfStock`
+
+This event will be triggered whenever a variant has run out of stock. It has one parameter: `variant`.
+
+## `VariantUpdated`
+
+This event will be triggered whenever a variant has been updated. It has one parameter: `variant`.
+
+# How to listen for events
+
+You can listen for events in your `EventServiceProvider` or in your package's `ServiceProvider`. In your `protected $listen` code, you would just do something like this:
+
+```php
+<?php
+
+protected $listen = [
+    AddedToCart::class => [
+        MyListener::class,
+    ],
+];
+```
+
+In this example, you would be listening out for the `AddedToCart` event we provide and you would be invoking the `MyListener` listener, which you'd need to create.
