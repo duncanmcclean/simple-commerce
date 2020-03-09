@@ -3,6 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart;
+use DoubleThreeDigital\SimpleCommerce\Events\ShippingAddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\TaxAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
@@ -11,23 +14,23 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
-use Stripe\OrderItem;
 
 class Cart
 {
     public function create()
     {
-        $cart = new CartModel();
-        $cart->uuid = (new Stache())->generateId();
-        $cart->save();
+        $cart = CartModel::create([
+            'uuid' => (new Stache())->generateId(),
+        ]);
 
         return $cart->uuid;
     }
 
     public function exists(string $uuid)
     {
-        if ($cart = CartModel::where('uuid', $uuid)->first()) {
+        if (CartModel::where('uuid', $uuid)->first()) {
             return true;
         }
 
@@ -54,13 +57,13 @@ class Cart
     {
         $cart = CartModel::where('uuid', $uuid)->first();
 
-        $item = new CartItem();
-        $item->uuid = (new Stache())->generateId();
-        $item->product_id = Product::where('uuid', $data['product'])->first()->id;
-        $item->variant_id = Variant::where('uuid', $data['variant'])->first()->id;
-        $item->quantity = $data['quantity'];
-        $item->cart_id = $cart->id;
-        $item->save();
+        $item = CartItem::create([
+            'uuid' => (new Stache())->generateId(),
+            'product_id' => Product::where('uuid', $data['product'])->first()->id,
+            'variant_id' => Variant::where('uuid', $data['variant'])->first()->id,
+            'quantity' => $data['quantity'],
+            'cart_id' => $cart->id,
+        ]);
 
         if (! $this->alreadyShipping($uuid)) {
             $this->addShipping($uuid);
@@ -70,14 +73,19 @@ class Cart
             $this->addTax($uuid);
         }
 
-        event(new AddedToCart($cart, $item));
+        Event::dispatch(new AddedToCart($cart, $item, $item->variant));
 
         return collect($cart->items);
     }
 
     public function remove(string $cartUuid, string $itemUuid)
     {
+        $cart = CartModel::where('uuid', $cartUuid)->first();
+
         $item = CartItem::where('uuid', $itemUuid)->first();
+
+        Event::dispatch(new RemovedFromCart($cart, $item->variant));
+
         $item->delete();
 
         return $this->get($cartUuid);
@@ -177,6 +185,8 @@ class Cart
         $shipping->cart_id = $cart->id;
         $shipping->save();
 
+        Event::dispatch(new ShippingAddedToCart($cart, $shipping, $zone));
+
         return $shipping;
     }
 
@@ -215,6 +225,8 @@ class Cart
         $tax->tax_rate_id = $rate->id;
         $tax->cart_id = $cart->id;
         $tax->save();
+
+        Event::dispatch(new TaxAddedToCart($cart, $tax, $rate));
 
         return $tax;
     }

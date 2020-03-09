@@ -2,21 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class CheckoutComplete
+class OrderPaid
 {
     use Dispatchable, InteractsWithSockets;
 
     public $order;
-    public $customer;
 
-    public function __construct(Order $order, Customer $customer)
+    public function __construct(Order $order)
     {
         $this->order = $order;
-        $this->customer = $customer;
     }
 }

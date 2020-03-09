@@ -2,18 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Cart;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class ReturnCustomer
+class CartCreated
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $customer;
+    public $cart;
 
-    public function __construct(Customer $customer)
+    public function __construct(Cart $cart)
     {
-        $this->customer = $customer;
+        $this->cart = $cart;
     }
 }

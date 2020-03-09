@@ -2,11 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
-use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
@@ -20,6 +19,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
 
@@ -41,20 +41,18 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request)
     {
+        // TODO: this method needs refactoring big time!!
+
         $this->createCart();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
 
-        if ($customer = Customer::where('email', $request->email)->first()) {
-            event(new ReturnCustomer($customer));
-        } else {
+        if (! $customer = Customer::where('email', $request->email)->first()) {
             $customer = new Customer();
             $customer->uuid = (new Stache())->generateId(); // TODO: this should not be required if using the uuid trait
             $customer->name = $request->name;
             $customer->email = $request->email;
             $customer->save();
-
-            event(new NewCustomerCreated($customer));
         }
 
         $shippingAddress = new Address();
@@ -103,7 +101,11 @@ class CheckoutController extends Controller
         $order->is_refunded = false;
         $order->save();
 
-        event(new CheckoutComplete($order, $customer));
+        if ($order->is_paid) {
+            Event::dispatch(new OrderPaid($order));
+        }
+
+        Event::dispatch(new OrderSuccessful($order));
 
         collect($this->cart->get($this->cartId))
             ->each(function ($cartItem) {
@@ -114,18 +116,15 @@ class CheckoutController extends Controller
                 $variant->save();
 
                 if ($variant->stock === 0) {
-                    event(new VariantOutOfStock($product, $variant));
+                    Event::dispatch(new VariantOutOfStock($variant));
                 }
 
                 if ($variant->stock <= 5) { // TODO: maybe make this configurable
-                    event(new VariantStockRunningLow($product, $variant));
+                    Event::dispatch(new VariantLowStock($variant));
                 }
             });
 
-        $this->cart->clear($this->cartId);
-
-        $request->session()->remove('commerce_cart_id');
-        $this->createCart($request);
+        $this->replaceCart();
 
         return redirect(config('simple-commerce.routes.checkout_redirect'))
             ->with('success', 'Success! Your order has been placed. You should receive an email shortly.');

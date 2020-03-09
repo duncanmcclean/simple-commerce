@@ -2,18 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class NewCustomerCreated
+class OrderSuccessful
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $customer;
+    public $order;
 
-    public function __construct(Customer $customer)
+    public function __construct(Order $order)
     {
-        $this->customer = $customer;
+        $this->order = $order;
     }
 }

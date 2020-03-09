@@ -2,18 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class VariantOutOfStock
+class CustomerUpdated
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $variant;
+    public $customer;
 
-    public function __construct(Variant $variant)
+    public function __construct(Customer $customer)
     {
-        $this->variant = $variant;
+        $this->customer = $customer;
     }
 }

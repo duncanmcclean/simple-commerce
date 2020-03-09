@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Events\CartCreated;
 use DoubleThreeDigital\SimpleCommerce\Helpers\CartCalculator;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,10 @@ class Cart extends Model
 
     protected $appends = [
         'total',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => CartCreated::class,
     ];
 
     public function items()
