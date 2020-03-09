@@ -133,7 +133,7 @@
                 editStatus: [],
 
                 deleteStatus: [],
-                deleteAssignTo: 1,
+                deleteAssignTo: null,
 
                 createStackOpen: false,
                 editStackOpen: false,
