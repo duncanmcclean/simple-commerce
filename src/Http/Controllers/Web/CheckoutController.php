@@ -37,6 +37,8 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request)
     {
+        // TODO: this method needs refactoring big time!!
+
         $this->createCart();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
