@@ -2,11 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
-use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
-use DoubleThreeDigital\SimpleCommerce\Events\NewCustomerCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\ReturnCustomer;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Events\VariantStockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
@@ -45,16 +41,12 @@ class CheckoutController extends Controller
 
         $payment = (new $request->gateway)->completePurchase($request->all());
 
-        if ($customer = Customer::where('email', $request->email)->first()) {
-            event(new ReturnCustomer($customer));
-        } else {
+        if (! $customer = Customer::where('email', $request->email)->first()) {
             $customer = new Customer();
             $customer->uuid = (new Stache())->generateId(); // TODO: this should not be required if using the uuid trait
             $customer->name = $request->name;
             $customer->email = $request->email;
             $customer->save();
-
-            event(new NewCustomerCreated($customer));
         }
 
         $shippingAddress = new Address();
@@ -103,8 +95,6 @@ class CheckoutController extends Controller
         $order->is_refunded = false;
         $order->save();
 
-        event(new CheckoutComplete($order, $customer));
-
         collect($this->cart->get($this->cartId))
             ->each(function ($cartItem) {
                 $product = Product::find($cartItem->product_id);
@@ -114,11 +104,11 @@ class CheckoutController extends Controller
                 $variant->save();
 
                 if ($variant->stock === 0) {
-                    event(new VariantOutOfStock($product, $variant));
+//                    event(new VariantOutOfStock($product, $variant));
                 }
 
                 if ($variant->stock <= 5) { // TODO: maybe make this configurable
-                    event(new VariantStockRunningLow($product, $variant));
+//                    event(new VariantStockRunningLow($product, $variant));
                 }
             });
 

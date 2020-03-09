@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
-use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
@@ -12,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Stache\Stache;
-use Stripe\OrderItem;
 
 class Cart
 {
@@ -69,8 +67,6 @@ class Cart
         if (! $this->alreadyTax($uuid)) {
             $this->addTax($uuid);
         }
-
-        event(new AddedToCart($cart, $item));
 
         return collect($cart->items);
     }
