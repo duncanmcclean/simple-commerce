@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use Illuminate\Support\Facades\Event;
 use Statamic\Http\Controllers\CP\CpController;
 
 class UpdateOrderStatusController extends CpController
@@ -15,7 +16,7 @@ class UpdateOrderStatusController extends CpController
 
         $order->update(['order_status_id' => $status->id]);
 
-        event(new OrderStatusUpdated($order, $order->customer));
+        Event::dispatch(new OrderStatusUpdated($order, $order->customer));
 
         return redirect(cp_route('orders.index'))->with('success', "Set as $status->name.");
     }
