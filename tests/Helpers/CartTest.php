@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
 
+use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
@@ -15,6 +16,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 
 class CartTest extends TestCase
@@ -81,6 +83,8 @@ class CartTest extends TestCase
     /** @test */
     public function can_add_cart_item_to_cart()
     {
+        Event::fake();
+
         $cart = factory(CartModel::class)->create();
 
         $product = factory(Product::class)->create();
@@ -104,6 +108,8 @@ class CartTest extends TestCase
             'variant_id' => $variant->id,
             'quantity' => 1,
         ]);
+
+        Event::assertDispatched(AddedToCart::class);
     }
 
     /** @test */

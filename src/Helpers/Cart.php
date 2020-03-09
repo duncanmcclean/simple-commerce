@@ -18,7 +18,9 @@ class Cart
 {
     public function create()
     {
-        $cart = CartModel::create([]);
+        $cart = CartModel::create([
+            'uuid' => (new Stache())->generateId(),
+        ]);
 
         return $cart->uuid;
     }
@@ -53,6 +55,7 @@ class Cart
         $cart = CartModel::where('uuid', $uuid)->first();
 
         $item = CartItem::create([
+            'uuid' => (new Stache())->generateId(),
             'product_id' => Product::where('uuid', $data['product'])->first()->id,
             'variant_id' => Variant::where('uuid', $data['variant'])->first()->id,
             'quantity' => $data['quantity'],
@@ -67,7 +70,7 @@ class Cart
             $this->addTax($uuid);
         }
 
-        Event::dispatch(new AddedToCart($cart, $item, $item->variant()));
+        Event::dispatch(new AddedToCart($cart, $item, $item->variant));
 
         return collect($cart->items);
     }
