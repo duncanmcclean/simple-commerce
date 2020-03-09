@@ -16,8 +16,8 @@ class CartController extends Controller
     public function index()
     {
         return (new View())
-            ->template('commerce::web.cart')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.cart')
+            ->layout('simple-commerce::web.layout')
             ->with([
                 'title' => 'Cart',
             ]);

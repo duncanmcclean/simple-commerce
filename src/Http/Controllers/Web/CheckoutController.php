@@ -32,8 +32,8 @@ class CheckoutController extends Controller
         $this->createCart();
 
         return (new View)
-            ->template('commerce::web.checkout')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.checkout')
+            ->layout('simple-commerce::web.layout')
             ->with([
                 'title' => 'Checkout',
             ]);

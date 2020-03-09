@@ -18,7 +18,7 @@ class CustomerController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
 
-        return view('commerce::cp.customers.index', [
+        return view('simple-commerce::cp.customers.index', [
             'crumbs'    => $crumbs,
             'customers' => Customer::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Customer())->createUrl(),
@@ -36,7 +36,7 @@ class CustomerController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.customers.create', [
+        return view('simple-commerce::cp.customers.create', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
@@ -71,7 +71,7 @@ class CustomerController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.customers.edit', [
+        return view('simple-commerce::cp.customers.edit', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $customer->toArray(),
             'meta'      => $fields->meta(),

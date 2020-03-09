@@ -141,7 +141,7 @@ class ServiceProvider extends AddonServiceProvider
             __DIR__.'/../resources/blueprints' => resource_path('blueprints/simple-commerce'),
         ], 'commerce-blueprints');
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'commerce');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         Nav::extend(function ($nav) {

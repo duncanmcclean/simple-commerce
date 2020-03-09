@@ -22,7 +22,7 @@ class ProductController extends CpController
 
         $products = Product::paginate(config('statamic.cp.pagination_size'));
 
-        return view('commerce::cp.products.index', [
+        return view('simple-commerce::cp.products.index', [
             'crumbs' => $crumbs,
             'products' => $products,
             'createUrl' => (new Product())->createUrl(),
@@ -39,7 +39,7 @@ class ProductController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.products.create', [
+        return view('simple-commerce::cp.products.create', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
@@ -148,7 +148,7 @@ class ProductController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.products.edit', [
+        return view('simple-commerce::cp.products.edit', [
             'crumbs'    => $crumbs,
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $values,

@@ -24,8 +24,8 @@ class ProductCategoryController extends Controller
             });
 
         return (new View)
-            ->template('commerce::web.category')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.category')
+            ->layout('simple-commerce::web.layout')
             ->with([
                 'title' => $category->title,
                 'products' => $products,

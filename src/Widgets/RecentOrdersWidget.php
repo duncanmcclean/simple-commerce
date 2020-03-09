@@ -18,7 +18,7 @@ class RecentOrdersWidget extends Widget
                 ->take(5);
         }
 
-        return view('commerce::widgets.recent-orders', [
+        return view('simple-commerce::widgets.recent-orders', [
             'orders' => $orders,
             'statuses' => OrderStatus::all(),
         ]);

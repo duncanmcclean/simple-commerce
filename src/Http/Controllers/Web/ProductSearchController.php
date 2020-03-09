@@ -11,8 +11,8 @@ class ProductSearchController
     public function index()
     {
         return (new View)
-            ->template('commerce::web.search')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.search')
+            ->layout('simple-commerce::web.layout')
             ->with(['title' => 'Search']);
     }
 
@@ -28,8 +28,8 @@ class ProductSearchController
             });
 
         return (new View)
-            ->template('commerce::web.search')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.search')
+            ->layout('simple-commerce::web.layout')
             ->with([
                 'results' => $results,
                 'count' => $results->count(),

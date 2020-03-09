@@ -25,7 +25,7 @@ class OrderController extends CpController
             ->orderByDesc('created_at')
             ->paginate(config('statamic.cp.pagination_size'));
 
-        return view('commerce::cp.orders.index', [
+        return view('simple-commerce::cp.orders.index', [
             'crumbs'    => $crumbs,
             'orders'    => $orders,
             'statuses'  => OrderStatus::all(),
@@ -43,7 +43,7 @@ class OrderController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.orders.edit', [
+        return view('simple-commerce::cp.orders.edit', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => array_merge($order->toArray(), [
                 'gateway'   => $order->gateway_data['gateway'],

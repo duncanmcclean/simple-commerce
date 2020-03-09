@@ -10,8 +10,8 @@ class ProductController extends Controller
     public function index()
     {
         return (new View)
-            ->template('commerce::web.products')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.products')
+            ->layout('simple-commerce::web.layout')
             ->with([
                 'title' => 'Products',
                 'products' => Product::with('variants', 'productCategory', 'attributes')->get(),
@@ -29,8 +29,8 @@ class ProductController extends Controller
         }
 
         return (new View)
-            ->template('commerce::web.product')
-            ->layout('commerce::web.layout')
+            ->template('simple-commerce::web.product')
+            ->layout('simple-commerce::web.layout')
             ->with($product->toArray());
     }
 }

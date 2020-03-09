@@ -47,7 +47,7 @@ class DummyGateway implements Gateway
     public function paymentForm()
     {
         return (new View)
-            ->template('commerce::gateways.dummy')
+            ->template('simple-commerce::gateways.dummy')
             ->with([
                 'class' => get_class($this),
             ]);

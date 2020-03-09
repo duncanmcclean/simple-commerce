@@ -32,7 +32,7 @@ class OrderSuccessful extends Notification
         return (new MailMessage())
             ->success()
             ->subject("Your order #{$this->order->id}")
-            ->markdown('commerce::mail.order-successful', [
+            ->markdown('simple-commerce::mail.order-successful', [
                 'order' => $this->order,
                 'customer' => $this->customer,
             ]);

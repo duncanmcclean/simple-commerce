@@ -17,7 +17,7 @@ class ProductCategoryController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce']]);
 
-        return view('commerce::cp.product-categories.index', [
+        return view('simple-commerce::cp.product-categories.index', [
             'crumbs'        => $crumbs,
             'categories'    => ProductCategory::paginate(config('statamic.cp.pagination_size')),
             'createUrl'     => (new ProductCategory())->createUrl(),
@@ -35,7 +35,7 @@ class ProductCategoryController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.product-categories.create', [
+        return view('simple-commerce::cp.product-categories.create', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $fields->values(),
             'meta'      => $fields->meta(),
@@ -65,7 +65,7 @@ class ProductCategoryController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')]]);
 
-        return view('commerce::cp.product-categories.show', [
+        return view('simple-commerce::cp.product-categories.show', [
             'crumbs'    => $crumbs,
             'products'  => Product::where('product_category_id', $category->id)->paginate(config('statamic.cp.pagination_size')),
             'category'  => $category,
@@ -84,7 +84,7 @@ class ProductCategoryController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.product-categories.edit', [
+        return view('simple-commerce::cp.product-categories.edit', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => $category,
             'meta'      => $fields->meta(),

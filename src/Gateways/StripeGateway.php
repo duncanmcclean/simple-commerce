@@ -49,7 +49,7 @@ class StripeGateway implements Gateway
         }
 
         return (new View)
-            ->template('commerce::gateways.stripe-payment-form')
+            ->template('simple-commerce::gateways.stripe-payment-form')
             ->with([
                 'class' => get_class($this),
                 'stripeKey' => config('services.stripe.key'),

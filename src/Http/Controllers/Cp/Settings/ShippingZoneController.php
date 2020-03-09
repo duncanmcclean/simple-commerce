@@ -14,7 +14,7 @@ class ShippingZoneController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.settings.shipping-zones', [
+        return view('simple-commerce::cp.settings.shipping-zones', [
             'crumbs' => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
             'blueprint' => $blueprint->toPublishArray(),
             'meta' => $fields->meta(),

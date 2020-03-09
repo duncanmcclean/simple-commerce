@@ -14,7 +14,7 @@ class TaxRateController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
-        return view('commerce::cp.settings.tax-rates', [
+        return view('simple-commerce::cp.settings.tax-rates', [
             'crumbs' => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
             'blueprint' => $blueprint->toPublishArray(),
             'meta' => $fields->meta(),

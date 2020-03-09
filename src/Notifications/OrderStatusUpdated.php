@@ -26,7 +26,7 @@ class OrderStatusUpdated extends Notification
         return (new MailMessage())
             ->success()
             ->subject('Order status updated')
-            ->markdown('commerce::mail.order-updated', [
+            ->markdown('simple-commerce::mail.order-updated', [
                 'order' => $this->order,
                 'customer' => $this->customer,
             ]);

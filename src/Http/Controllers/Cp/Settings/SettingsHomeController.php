@@ -10,7 +10,7 @@ class SettingsHomeController extends CpController
 {
     public function index()
     {
-        return view('commerce::cp.settings.index', [
+        return view('simple-commerce::cp.settings.index', [
             'crumbs' => Breadcrumbs::make([['text' => 'Simple Commerce']]),
             'settings' => [
                 [

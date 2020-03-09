@@ -18,7 +18,7 @@ class NewCustomersWidget extends Widget
                 ->take(5);
         }
 
-        return view('commerce::widgets.new-customers', [
+        return view('simple-commerce::widgets.new-customers', [
             'customers' => $customers,
         ]);
     }
