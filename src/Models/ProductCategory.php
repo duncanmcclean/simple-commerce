@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Events\ProductCategoryUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Statamic\Facades\Blueprint;
@@ -16,6 +17,10 @@ class ProductCategory extends Model
 
     protected $appends = [
         'url',
+    ];
+
+    protected $dispatchesEvents = [
+        'updated' => ProductCategoryUpdated::class,
     ];
 
     public function products()
