@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
@@ -115,18 +116,15 @@ class CheckoutController extends Controller
                 $variant->save();
 
                 if ($variant->stock === 0) {
-//                    event(new VariantOutOfStock($product, $variant));
+                    Event::dispatch(new VariantOutOfStock($variant));
                 }
 
                 if ($variant->stock <= 5) { // TODO: maybe make this configurable
-//                    event(new VariantStockRunningLow($product, $variant));
+                    Event::dispatch(new VariantLowStock($variant));
                 }
             });
 
-        $this->cart->clear($this->cartId);
-
-        $request->session()->remove('commerce_cart_id');
-        $this->createCart($request);
+        $this->replaceCart();
 
         return redirect(config('simple-commerce.routes.checkout_redirect'))
             ->with('success', 'Success! Your order has been placed. You should receive an email shortly.');
