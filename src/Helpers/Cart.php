@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
+use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
@@ -10,22 +11,21 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 
 class Cart
 {
     public function create()
     {
-        $cart = new CartModel();
-        $cart->uuid = (new Stache())->generateId();
-        $cart->save();
+        $cart = CartModel::create([]);
 
         return $cart->uuid;
     }
 
     public function exists(string $uuid)
     {
-        if ($cart = CartModel::where('uuid', $uuid)->first()) {
+        if (CartModel::where('uuid', $uuid)->first()) {
             return true;
         }
 
@@ -52,13 +52,12 @@ class Cart
     {
         $cart = CartModel::where('uuid', $uuid)->first();
 
-        $item = new CartItem();
-        $item->uuid = (new Stache())->generateId();
-        $item->product_id = Product::where('uuid', $data['product'])->first()->id;
-        $item->variant_id = Variant::where('uuid', $data['variant'])->first()->id;
-        $item->quantity = $data['quantity'];
-        $item->cart_id = $cart->id;
-        $item->save();
+        $item = CartItem::create([
+            'product_id' => Product::where('uuid', $data['product'])->first()->id,
+            'variant_id' => Variant::where('uuid', $data['variant'])->first()->id,
+            'quantity' => $data['quantity'],
+            'cart_id' => $cart->id,
+        ]);
 
         if (! $this->alreadyShipping($uuid)) {
             $this->addShipping($uuid);
@@ -67,6 +66,8 @@ class Cart
         if (! $this->alreadyTax($uuid)) {
             $this->addTax($uuid);
         }
+
+        Event::dispatch(new AddedToCart($cart, $item, $item->variant()));
 
         return collect($cart->items);
     }
