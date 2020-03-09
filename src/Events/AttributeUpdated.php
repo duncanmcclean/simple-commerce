@@ -2,18 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class VariantOutOfStock
+class AttributeUpdated
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $variant;
+    public $attribute;
 
-    public function __construct(Variant $variant)
+    public function __construct(Attribute $attribute)
     {
-        $this->variant = $variant;
+        $this->attribute = $attribute;
     }
 }

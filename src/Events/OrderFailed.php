@@ -2,18 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class VariantOutOfStock
+class OrderFailed
 {
     use Dispatchable, InteractsWithSockets;
 
-    public $variant;
+    public $order;
 
-    public function __construct(Variant $variant)
+    public function __construct(Order $order)
     {
-        $this->variant = $variant;
+        $this->order = $order;
     }
 }

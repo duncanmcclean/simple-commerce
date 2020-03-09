@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class VariantOutOfStock
+class VariantUpdated
 {
     use Dispatchable, InteractsWithSockets;
 
