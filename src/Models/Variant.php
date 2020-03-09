@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
+use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +22,10 @@ class Variant extends Model
 
     protected $dates = [
         'deleted_at',
+    ];
+
+    protected $dispatchesEvents = [
+        'updated' => VariantUpdated::class,
     ];
 
     public function product()
