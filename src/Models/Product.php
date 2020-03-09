@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,10 @@ class Product extends Model
 
     protected $dates = [
         'deleted_at',
+    ];
+
+    protected $dispatchesEvents = [
+        'updated' => ProductUpdated::class,
     ];
 
     public function productCategory()
