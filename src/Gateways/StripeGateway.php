@@ -61,6 +61,7 @@ class StripeGateway implements Gateway
     {
         try {
             Refund::create(['payment_intent' => $gatewayData['payment_method']]);
+
             return true;
         } catch (\Exception $e) {
             return $e->getMessage();

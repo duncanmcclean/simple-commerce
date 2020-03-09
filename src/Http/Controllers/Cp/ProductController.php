@@ -92,7 +92,7 @@ class ProductController extends CpController
         return [
             'redirect' => cp_route('products.edit', [
                 'product' => $product->uuid,
-            ])
+            ]),
         ];
     }
 

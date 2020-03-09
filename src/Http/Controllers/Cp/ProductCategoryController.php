@@ -25,7 +25,7 @@ class ProductCategoryController extends CpController
     {
         $this->authorize('create', ProductCategory::class);
 
-        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')],]);
+        $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')]]);
 
         $blueprint = (new ProductCategory())->blueprint();
         $fields = $blueprint->fields();
