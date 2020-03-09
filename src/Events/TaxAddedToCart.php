@@ -16,7 +16,7 @@ class TaxAddedToCart
     public $cartTax;
     public $taxRate;
 
-    public function __construct(Cart $cart, CartTax $cartTax, TaxRate, $taxRate)
+    public function __construct(Cart $cart, CartTax $cartTax, TaxRate $taxRate)
     {
         $this->cart = $cart;
         $this->cartTax = $cartTax;
