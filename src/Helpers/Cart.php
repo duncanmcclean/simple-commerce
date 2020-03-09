@@ -4,6 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart;
+use DoubleThreeDigital\SimpleCommerce\Events\ShippingAddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\TaxAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Cart as CartModel;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
@@ -183,6 +185,8 @@ class Cart
         $shipping->cart_id = $cart->id;
         $shipping->save();
 
+        Event::dispatch(new ShippingAddedToCart($cart, $shipping, $zone));
+
         return $shipping;
     }
 
@@ -221,6 +225,8 @@ class Cart
         $tax->tax_rate_id = $rate->id;
         $tax->cart_id = $cart->id;
         $tax->save();
+
+        Event::dispatch(new TaxAddedToCart($cart, $tax, $rate));
 
         return $tax;
     }
