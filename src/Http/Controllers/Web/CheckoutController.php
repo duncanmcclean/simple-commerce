@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
@@ -16,6 +18,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
 
@@ -96,6 +99,12 @@ class CheckoutController extends Controller
         $order->is_paid = $payment['is_paid'];
         $order->is_refunded = false;
         $order->save();
+
+        if ($order->is_paid) {
+            Event::dispatch(new OrderPaid($order));
+        }
+
+        Event::dispatch(new OrderSuccessful($order));
 
         collect($this->cart->get($this->cartId))
             ->each(function ($cartItem) {
