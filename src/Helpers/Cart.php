@@ -57,13 +57,19 @@ class Cart
     {
         $cart = CartModel::where('uuid', $uuid)->first();
 
-        $item = CartItem::create([
-            'uuid' => (new Stache())->generateId(),
-            'product_id' => Product::where('uuid', $data['product'])->first()->id,
-            'variant_id' => Variant::where('uuid', $data['variant'])->first()->id,
-            'quantity' => $data['quantity'],
-            'cart_id' => $cart->id,
-        ]);
+        $item = $cart->items()->updateOrCreate(
+            [
+                'cart_id' => $cart->id,
+                'variant_id' => Variant::where('uuid', $data['variant'])->first()->id,
+            ],
+            [
+                'uuid' => (new Stache())->generateId(),
+                'product_id' => Product::where('uuid', $data['product'])->first()->id,
+                'variant_id' => Variant::where('uuid', $data['variant'])->first()->id,
+                'quantity' => $data['quantity'],
+                'cart_id' => $cart->id,
+            ]
+        );
 
         if (! $this->alreadyShipping($uuid)) {
             $this->addShipping($uuid);

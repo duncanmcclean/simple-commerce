@@ -82,7 +82,7 @@ class CartTest extends TestCase
     }
 
     /** @test */
-    public function can_add_cart_item_to_cart()
+    public function can_add_item_to_cart()
     {
         Event::fake();
 
@@ -111,6 +111,29 @@ class CartTest extends TestCase
         ]);
 
         Event::assertDispatched(AddedToCart::class);
+    }
+
+    /** @test */
+    public function can_add_existing_item_to_cart()
+    {
+        $cart = factory(CartModel::class)->create();
+        $cartItem = factory(CartItem::class)->create([
+            'quantity' => 1,
+            'cart_id' => $cart->id,
+        ]);
+        $shipping = factory(ShippingZone::class)->create();
+        $tax = factory(TaxRate::class)->create();
+
+        $add = $this->cart->add($cart->uuid, [
+            'product' => $cartItem->product->uuid,
+            'variant' => $cartItem->variant->uuid,
+            'quantity' => 3,
+        ]);
+
+        $this->assertIsObject($add);
+
+        $cartItem->refresh();
+        $this->assertSame($cartItem->quantity, 3);
     }
 
     /** @test */
