@@ -27,10 +27,10 @@
                     <td class="border px-4 py-2">
                         <div class="flex justify-center items-center">
                             <select name="quantity">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="1" {{ if quantity === 1 }} selected="selected" {{ /if }}>1</option>
+                                <option value="2" {{ if quantity === 2 }} selected="selected" {{ /if }}>2</option>
+                                <option value="3" {{ if quantity === 3 }} selected="selected" {{ /if }}>3</option>
+                                <option value="4" {{ if quantity === 4 }} selected="selected" {{ /if }}>4</option>
                             </select>
                         </div>
                     </td>
