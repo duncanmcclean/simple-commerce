@@ -24,8 +24,10 @@
                             <button class="text-red-700 font-medium text-sm focus:outline-none" type="submit">Remove</button>
                         </form>
                     </td>
-                    <td class="border px-4 py-2 flex justify-center">
-                        {{ quantity }}
+                    <td class="border px-4 py-2">
+                        <div class="flex justify-center items-center">
+                            {{ quantity }}
+                        </div>
                     </td>
                     <td class="border px-4 py-2">{{ total | price }}</td>
                 </tr>
