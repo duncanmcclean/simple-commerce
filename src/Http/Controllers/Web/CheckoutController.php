@@ -18,7 +18,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
@@ -27,7 +26,7 @@ class CheckoutController extends Controller
 {
     use UsesCart;
 
-    public function show(Request $request)
+    public function show()
     {
         $this->createCart();
 
