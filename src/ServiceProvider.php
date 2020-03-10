@@ -76,13 +76,13 @@ class ServiceProvider extends AddonServiceProvider
         RemovedFromCart::class => [],
         ShippingAddedToCart::class => [],
         TaxAddedToCart::class => [],
-        VariantLowStock::class => [],
+        VariantLowStock::class => [
+            SendVariantStockRunningLowNotification::class,
+        ],
         VariantOutOfStock::class => [
             SendVariantOutOfStockNotification::class,
         ],
-        VariantUpdated::class => [
-            SendVariantStockRunningLowNotification::class,
-        ],
+        VariantUpdated::class => [],
     ];
 
     protected $tags = [

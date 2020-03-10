@@ -5,27 +5,27 @@ Hi {{ $customer->name }},
 
 Thanks for ordering from {{ config('app.name') }}. This email is the receipt for your purchase.
 
-@component('mail::table')
-| Product       | Quantity         | Price                  |
-| ------------- |:----------------:| ----------------------:|
-@foreach($order->items['items'] as $item)
-| {{ \DoubleThreeDigital\SimpleCommerce\Models\Product::find($item->product_id)->title }} ({{ \DoubleThreeDigital\SimpleCommerce\Models\Variant::find($item->variant_id)->sku }}) | {{ $item->quantity }} | $15.00 |
-@endforeach
+{{--@component('mail::table')--}}
+{{--| Product       | Quantity         | Price                  |--}}
+{{--| ------------- |:----------------:| ----------------------:|--}}
+{{--@foreach($order->items['items'] as $item)--}}
+{{--| {{ \DoubleThreeDigital\SimpleCommerce\Models\Product::find($item->product_id)->title }} ({{ \DoubleThreeDigital\SimpleCommerce\Models\Variant::find($item->variant_id)->sku }}) | {{ $item->quantity }} | $15.00 |--}}
+{{--@endforeach--}}
 
-@foreach($order->items['shipping'] as $item)
-| **Shipping:** {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} n | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }} |
-@endforeach
+{{--@foreach($order->items['shipping'] as $item)--}}
+{{--| **Shipping:** {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} n | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }} |--}}
+{{--@endforeach--}}
 
-@foreach($order->items['tax'] as $item)
-| **Tax:** {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->start_of_zip_code }} n | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->rate }}% |
-@endforeach
+{{--@foreach($order->items['tax'] as $item)--}}
+{{--| **Tax:** {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->start_of_zip_code }} n | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->rate }}% |--}}
+{{--@endforeach--}}
 
-| - | Items Sub Total | {{ $order->items['totals']->items  }} |
-| - | Total Discount | $0.00 |
-| - | Total Shipping | {{ $order->items['totals']->shipping }} |
-| - | Total Tax | {{ $order->items['totals']->tax }} |
-| - | **Total Price** | **{{ $order->items['totals']->overall }}** |
-@endcomponent
+{{--| - | Items Sub Total | {{ $order->items['totals']->items  }} |--}}
+{{--| - | Total Discount | $0.00 |--}}
+{{--| - | Total Shipping | {{ $order->items['totals']->shipping }} |--}}
+{{--| - | Total Tax | {{ $order->items['totals']->tax }} |--}}
+{{--| - | **Total Price** | **{{ $order->items['totals']->overall }}** |--}}
+{{--@endcomponent--}}
 
 {{--    @component('mail::panel')--}}
 {{--        ## Shipping Address--}}

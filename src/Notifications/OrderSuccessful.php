@@ -2,12 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\DecimalMoneyFormatter;
-use Money\Money;
 
 class OrderSuccessful extends Notification
 {
