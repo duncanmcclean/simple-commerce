@@ -6,18 +6,16 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
+use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 use Statamic\View\View;
@@ -40,87 +38,98 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request)
     {
-        // TODO: this method needs refactoring big time!!
-
         $this->createCart();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
 
-        if (! $customer = Customer::where('email', $request->email)->first()) {
-            $customer = new Customer();
-            $customer->uuid = (new Stache())->generateId(); // TODO: this should not be required if using the uuid trait
-            $customer->name = $request->name;
-            $customer->email = $request->email;
-            $customer->save();
-        }
+        $customer = Customer::updateOrCreate(
+            [
+                'email' => $request->email,
+            ],
+            [
+                'uuid'  => (new Stache())->generateId(),
+                'name'  => $request->name,
+                'email' => $request->email,
+            ]
+        );
 
-        $shippingAddress = new Address();
-        $shippingAddress->uuid = (new Stache())->generateId();
-        $shippingAddress->name = $customer->name;
-        $shippingAddress->address1 = $request->shipping_address_1;
-        $shippingAddress->address2 = $request->shipping_address_2;
-        $shippingAddress->address3 = $request->shipping_address_3;
-        $shippingAddress->city = $request->shipping_city;
-        $shippingAddress->zip_code = $request->shipping_zip_code;
-        $shippingAddress->country_id = Country::where('iso', $request->shipping_country)->first()->id;
-        $shippingAddress->state_id = State::where('abbreviation', $request->shipping_state)->first()->id ?? null;
-        $shippingAddress->customer_id = $customer->id;
-        $shippingAddress->save();
+        $billing = Address::updateOrCreate(
+            [
+                'customer_id'   => $request->customer_id,
+                'address1'      => $request->shipping_address_1,
+                'zip_code'      => $request->shipping_zip_code,
+            ],
+            [
+                'uuid'          => (new Stache())->generateId(),
+                'name'          => $customer->name,
+                'address1'      => $request->shipping_address_1,
+                'address2'      => $request->shipping_address_2,
+                'address3'      => $request->shipping_address_3,
+                'city'          => $request->shipping_city,
+                'zip_code'      => $request->shipping_zip_code,
+                'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
+                'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
+                'customer_id'   => $customer->id,
+            ]
+        );
 
         if ($request->use_shipping_address_for_billing === 'on') {
-            $billingAddress = $shippingAddress;
+            $shipping = $billing;
         } else {
-            $billingAddress = new Address();
-            $billingAddress->uuid = (new Stache())->generateId();
-            $billingAddress->name = $customer->name;
-            $billingAddress->address1 = $request->billing_address_1;
-            $billingAddress->address2 = $request->billing_address_2;
-            $billingAddress->address3 = $request->billing_address_3;
-            $billingAddress->city = $request->billing_city;
-            $billingAddress->zip_code = $request->billing_zip_code;
-            $billingAddress->country_id = Country::where('iso', $request->billing_country)->first()->id;
-            $billingAddress->state_id = State::where('abbreviation', $request->billing_state)->first()->id ?? null;
-            $billingAddress->customer_id = $customer->id;
-            $billingAddress->save();
+            $shipping = Address::updateOrCreate(
+                [
+                    'customer_id'   => $request->customer_id,
+                    'address1'      => $request->shipping_address_1,
+                    'zip_code'      => $request->shipping_zip_code,
+                ],
+                [
+                    'uuid'          => (new Stache())->generateId(),
+                    'name'          => $customer->name,
+                    'address1'      => $request->shipping_address_1,
+                    'address2'      => $request->shipping_address_2,
+                    'address3'      => $request->shipping_address_3,
+                    'city'          => $request->shipping_city,
+                    'zip_code'      => $request->shipping_zip_code,
+                    'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
+                    'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
+                    'customer_id'   => $customer->id,
+                ]
+            );
         }
 
-        $order = new Order();
-        $order->uuid = (new Stache())->generateId();
-        $order->gateway_data = array_merge($payment, [
-            'gateway' => $request->gateway,
+        $order = Order::create([
+            'uuid'                  => (new Stache())->generateId(),
+            'billing_address_id'    => $billing->id,
+            'shipping_address_id'   => $shipping->id,
+            'customer_id'           => $customer->id,
+            'order_status_id'       => OrderStatus::where('primary', true)->first()->id,
+            'items'                 => $this->cart->orderItems($this->cartId),
+            'total'                 => $this->cart->total($this->cartId),
+            'currency_id'           => (new Currency())->primary()->id,
+            'gateway_data'          => $payment,
+            'is_paid'               => $payment['is_paid'],
+            'is_refunded'           => false,
         ]);
-        $order->billing_address_id = $billingAddress->id;
-        $order->shipping_address_id = $shippingAddress->id;
-        $order->customer_id = $customer->id;
-        $order->order_status_id = OrderStatus::where('primary', true)->first()->id;
-        $order->items = (new Cart())->orderItems($request->session()->get('commerce_cart_id'));
-        $order->total = $this->cart->total($this->cartId);
-        $order->currency_id = CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first()->id;
-        $order->is_paid = $payment['is_paid'];
-        $order->is_refunded = false;
-        $order->save();
 
-        if ($order->is_paid) {
+        if ($payment['is_paid']) {
             Event::dispatch(new OrderPaid($order));
         }
 
         Event::dispatch(new OrderSuccessful($order));
 
         collect($this->cart->get($this->cartId))
-            ->each(function ($cartItem) {
-                $product = Product::find($cartItem->product_id);
+            ->each(function (CartItem $cartItem) {
+               $cartItem->variant()->update([
+                   'stock' => ($cartItem->variant->stock - $cartItem->quantity),
+               ]);
 
-                $variant = Variant::find($cartItem->variant_id);
-                $variant->stock -= $cartItem->quantity;
-                $variant->save();
+               if ($cartItem->variant->stock <= 5) {
+                   Event::dispatch(new VariantLowStock($cartItem->variant()));
+               }
 
-                if ($variant->stock === 0) {
-                    Event::dispatch(new VariantOutOfStock($variant));
-                }
-
-                if ($variant->stock <= 5) { // TODO: maybe make this configurable
-                    Event::dispatch(new VariantLowStock($variant));
-                }
+               if ($cartItem->variant->stock === 0) {
+                   Event::dispatch(new VariantOutOfStock($cartItem->variant()));
+               }
             });
 
         $this->replaceCart();
