@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Web;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
