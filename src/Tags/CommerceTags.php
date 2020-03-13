@@ -49,13 +49,7 @@ class CommerceTags extends Tags
             return $categories->count();
         }
 
-        return $categories
-            ->map(function ($category) {
-                return array_merge($category->toArray(), [
-                    'url' => route('categories.show', ['category' => $category->slug]),
-                ]);
-            })
-            ->toArray();
+        return $categories->toArray();
     }
 
     public function products()
@@ -101,12 +95,7 @@ class CommerceTags extends Tags
             return $products->count();
         }
 
-        return $products
-            ->map(function ($product) {
-                return array_merge($product->toArray(), [
-                    'url' => route('products.show', ['product' => $product['slug']]),
-                ]);
-            });
+        return $products->toArray();
     }
 
     public function countries()
