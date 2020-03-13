@@ -147,10 +147,6 @@ class ServiceProvider extends AddonServiceProvider
         ], 'commerce-views');
 
         $this->publishes([
-            __DIR__.'/../dist/js/web.js' => resource_path('js/web.js'),
-        ], 'commerce-scripts');
-
-        $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'commerce-migrations');
 
