@@ -72,3 +72,5 @@ And also add this repositories section, it'll tell Composer that we should load 
 ```
 
 And then just run `composer install` and Simple Commerce should be installed and you can work on your first pull request! 🥳
+
+Oh any by the way, you might want to copy over `phpunit-example.xml` to `phpunit.xml` so you can run tests against a MySQL database.
