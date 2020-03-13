@@ -8,11 +8,13 @@ class SimpleCommerce
 
     public static function bootGateways()
     {
-        foreach (config('simple-commerce.gateways') as $class => $config) {
-            static::$gateways[] = $class;
-        }
+        if (app()->booted()) {
+            foreach (config('simple-commerce.gateways') as $class => $config) {
+                static::$gateways[] = $class;
+            }
 
-        return new static;
+            return new static;
+        }
     }
 
     public static function gateways()
