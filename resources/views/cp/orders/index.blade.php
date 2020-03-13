@@ -5,11 +5,13 @@
     <div class="flex items-center justify-between mb-3">
         <h1 class="flex-1">Orders</h1>
 
-        <dropdown-list class="mr-1">
-            @if(auth()->user()->hasPermission('edit simple commerce settings') || auth()->user()->isSuper())
-                <dropdown-item text="Configure Order Statuses" redirect="{{ cp_route('settings.order-statuses.index') }}"></dropdown-item>
-            @endif
-        </dropdown-list>
+        @if($orders->count())
+            <dropdown-list class="mr-1">
+                @if(auth()->user()->hasPermission('edit simple commerce settings') || auth()->user()->isSuper())
+                    <dropdown-item text="Configure Order Statuses" redirect="{{ cp_route('settings.order-statuses.index') }}"></dropdown-item>
+                @endif
+            </dropdown-list>
+        @endif
     </div>
 
     @if ($orders->count())
