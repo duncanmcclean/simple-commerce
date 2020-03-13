@@ -142,10 +142,26 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([__DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce/web')]);
         $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
         $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints/simple-commerce')]);
-
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
+        $this->app->booted(function () {
+            $this->navigation();
+            $this->permissions();
+        });
+
+        SimpleCommerce::bootGateways();
+    }
+
+    public function register()
+    {
+        if (! $this->app->configurationIsCached()) {
+            $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
+        }
+    }
+
+    protected function navigation()
+    {
         Nav::extend(function ($nav) {
             $nav
                 ->create('Products')
@@ -201,73 +217,65 @@ class ServiceProvider extends AddonServiceProvider
                         ->can('view simple commerce settings'),
                 ]);
         });
-
-        $this->app->booted(function () {
-            Permission::group('simple-commerce', 'Simple Commerce', function () {
-                Permission::register('edit simple commerce settings')
-                    ->label('Edit Simple Commerce Settings');
-
-                Permission::register('view customers', function ($permission) {
-                    $permission->children([
-                        Permission::make('edit customers')
-                            ->label('Edit customers')
-                            ->children([
-                                Permission::make('create customers')
-                                    ->label('Create Customers'),
-                                Permission::make('delete customers')
-                                    ->label('Delete Customers'),
-                            ]),
-                    ]);
-                })->label('View Customers');
-
-                Permission::register('view orders', function ($permission) {
-                    $permission->children([
-                        Permission::make('edit orders')
-                            ->label('Edit Orders')
-                            ->children([
-                                Permission::make('refund orders')
-                                    ->label('Refund Orders'),
-                                Permission::make('delete orders')
-                                    ->label('Delete Orders'),
-                            ]),
-                    ]);
-                })->label('View Orders');
-
-                Permission::register('view products', function ($permission) {
-                    $permission->children([
-                        Permission::make('edit products')
-                            ->label('Edit Products')
-                            ->children([
-                                Permission::make('create products')
-                                    ->label('Create Products'),
-                                Permission::make('delete products')
-                                    ->label('Delete Products'),
-                            ]),
-                    ]);
-                })->label('View Products');
-
-                Permission::register('view product categories', function ($permission) {
-                    $permission->children([
-                        Permission::make('edit product categories')
-                            ->label('Edit Product Categories')
-                            ->children([
-                                Permission::make('create product categories')
-                                    ->label('Create Product Categories'),
-                                Permission::make('delete product categories')
-                                    ->label('Delete Product Categories'),
-                            ]),
-                    ]);
-                })->label('View Product Categories');
-            });
-        });
-
-        SimpleCommerce::bootGateways();
     }
 
-    public function register()
+    protected function permissions()
     {
-        if (! $this->app->configurationIsCached()) {
-            $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'commerce');
-        }
+        Permission::group('simple-commerce', 'Simple Commerce', function () {
+            Permission::register('edit simple commerce settings')
+                ->label('Edit Simple Commerce Settings');
+
+            Permission::register('view customers', function ($permission) {
+                $permission->children([
+                    Permission::make('edit customers')
+                        ->label('Edit customers')
+                        ->children([
+                            Permission::make('create customers')
+                                ->label('Create Customers'),
+                            Permission::make('delete customers')
+                                ->label('Delete Customers'),
+                        ]),
+                ]);
+            })->label('View Customers');
+
+            Permission::register('view orders', function ($permission) {
+                $permission->children([
+                    Permission::make('edit orders')
+                        ->label('Edit Orders')
+                        ->children([
+                            Permission::make('refund orders')
+                                ->label('Refund Orders'),
+                            Permission::make('delete orders')
+                                ->label('Delete Orders'),
+                        ]),
+                ]);
+            })->label('View Orders');
+
+            Permission::register('view products', function ($permission) {
+                $permission->children([
+                    Permission::make('edit products')
+                        ->label('Edit Products')
+                        ->children([
+                            Permission::make('create products')
+                                ->label('Create Products'),
+                            Permission::make('delete products')
+                                ->label('Delete Products'),
+                        ]),
+                ]);
+            })->label('View Products');
+
+            Permission::register('view product categories', function ($permission) {
+                $permission->children([
+                    Permission::make('edit product categories')
+                        ->label('Edit Product Categories')
+                        ->children([
+                            Permission::make('create product categories')
+                                ->label('Create Product Categories'),
+                            Permission::make('delete product categories')
+                                ->label('Delete Product Categories'),
+                        ]),
+                ]);
+            })->label('View Product Categories');
+        });
     }
 }
