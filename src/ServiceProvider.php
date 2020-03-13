@@ -138,21 +138,10 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
-        $this->publishes([
-            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
-        ], 'commerce-config');
-
-        $this->publishes([
-            __DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce/web'),
-        ], 'commerce-views');
-
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'commerce-migrations');
-
-        $this->publishes([
-            __DIR__.'/../resources/blueprints' => resource_path('blueprints/simple-commerce'),
-        ], 'commerce-blueprints');
+        $this->publishes([__DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php')]);
+        $this->publishes([__DIR__.'/../resources/views/web' => resource_path('views/vendor/commerce/web')]);
+        $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
+        $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints/simple-commerce')]);
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
