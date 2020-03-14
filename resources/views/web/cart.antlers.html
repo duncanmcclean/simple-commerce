@@ -26,12 +26,17 @@
                     </td>
                     <td class="border px-4 py-2">
                         <div class="flex justify-center items-center">
-                            <select name="quantity">
-                                <option value="1" {{ if quantity === 1 }} selected="selected" {{ /if }}>1</option>
-                                <option value="2" {{ if quantity === 2 }} selected="selected" {{ /if }}>2</option>
-                                <option value="3" {{ if quantity === 3 }} selected="selected" {{ /if }}>3</option>
-                                <option value="4" {{ if quantity === 4 }} selected="selected" {{ /if }}>4</option>
-                            </select>
+                            <form class="flex justify-center items-center" action="{{ commerce:route key='cart.update' }}" method="post">
+                                {{ csrf_field }}
+                                <input type="hidden" name="item_id" value="{{ uuid }}">
+
+                                <select name="quantity" onchange="parentElement.submit()">
+                                    <option value="1" {{ if quantity === 1 }} selected="selected" {{ /if }}>1</option>
+                                    <option value="2" {{ if quantity === 2 }} selected="selected" {{ /if }}>2</option>
+                                    <option value="3" {{ if quantity === 3 }} selected="selected" {{ /if }}>3</option>
+                                    <option value="4" {{ if quantity === 4 }} selected="selected" {{ /if }}>4</option>
+                                </select>
+                            </form>
                         </div>
                     </td>
                     <td class="border px-4 py-2">{{ total | price }}</td>
@@ -67,3 +72,14 @@
         </tbody>
     </table>
 {{ /if }}
+
+<!--{{ section:scripts }}-->
+<!--    <script>-->
+<!--        function updateQuantity(cartItemUuid) {-->
+<!--            var cartItem = cartItemUuid;-->
+<!--            var quantity = '';-->
+
+<!--            alert('Changing quantity to');-->
+<!--        }-->
+<!--    </script>-->
+<!--{{ /section:scripts }}-->

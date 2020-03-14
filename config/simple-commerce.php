@@ -57,6 +57,7 @@ return [
     'routes' => [
         'cart_index' => '/cart',
         'cart_store' => '/cart/add',
+        'cart_update' => '/cart/update',
         'cart_clear' => '/cart/clear',
         'cart_remove' => '/cart/remove',
         'checkout_show' => '/checkout',

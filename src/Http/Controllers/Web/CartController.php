@@ -5,7 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AddToCartRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\RemoveFromCartRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\UpdateCartRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
+use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use Illuminate\Http\Request;
 use Statamic\View\View;
 
@@ -34,6 +36,17 @@ class CartController extends Controller
         ]);
 
         return back()->with('success', 'Success! Product added to your cart.');
+    }
+
+    public function update(UpdateCartRequest $request)
+    {
+        CartItem::where('uuid', $request->item_id)
+            ->first()
+            ->update([
+                'quantity' => $request->quantity,
+            ]);
+
+        return back()->with('success', 'Success! Cart quantity updated.');
     }
 
     public function destroy(RemoveFromCartRequest $request)

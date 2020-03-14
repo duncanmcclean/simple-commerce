@@ -9,6 +9,7 @@ if (! function_exists('sc_route')) {
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Web')->group(function () {
     Route::get(sc_route('cart_index'), 'CartController@index')->name('cart.index');
     Route::post(sc_route('cart_store'), 'CartController@store')->name('cart.add');
+    Route::post(sc_route('cart_update'), 'CartController@update')->name('cart.update');
     Route::post(sc_route('cart_clear'), 'ClearCartController')->name('cart.clear');
     Route::post(sc_route('cart_remove'), 'CartController@destroy')->name('cart.delete');
 
