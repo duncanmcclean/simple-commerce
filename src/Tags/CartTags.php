@@ -20,7 +20,7 @@ class CartTags extends Tags
 
     public function index()
     {
-        return $this->cart->get($this->cartId)->toArray();
+        return $this->cart()->get($this->cartId)->toArray();
     }
 
     public function items()
@@ -30,33 +30,33 @@ class CartTags extends Tags
 
     public function shipping()
     {
-        return $this->cart->getShipping($this->cartId);
+        return $this->cart()->getShipping($this->cartId);
     }
 
     public function tax()
     {
-        return $this->cart->getTax($this->cartId);
+        return $this->cart()->getTax($this->cartId);
     }
 
     public function count()
     {
-        return $this->cart->count($this->cartId);
+        return $this->cart()->count($this->cartId);
     }
 
     public function total()
     {
-        $total = $this->cart->total($this->cartId);
+        $total = $this->cart()->total($this->cartId);
 
         if ($this->getParam('items')) {
-            $total = $this->cart->total($this->cartId, 'items');
+            $total = $this->cart()->total($this->cartId, 'items');
         }
 
         if ($this->getParam('shipping')) {
-            $total = $this->cart->total($this->cartId, 'shipping');
+            $total = $this->cart()->total($this->cartId, 'shipping');
         }
 
         if ($this->getParam('tax')) {
-            $total = $this->cart->total($this->cartId, 'tax');
+            $total = $this->cart()->total($this->cartId, 'tax');
         }
 
         return (new Currency())->parse($total, true, true);

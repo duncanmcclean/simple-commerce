@@ -9,15 +9,10 @@ trait UsesCart
     public $cart;
     public $cartId;
 
-    public function __construct()
-    {
-        $this->cart = new Cart();
-    }
-
     public function createCart()
     {
         if (! request()->session()->get('commerce_cart_id')) {
-            request()->session()->put('commerce_cart_id', $this->cart->create());
+            request()->session()->put('commerce_cart_id', $this->cart()->create());
             request()->session()->save();
         }
 
@@ -28,10 +23,15 @@ trait UsesCart
     {
         $this->createCart();
 
-        $this->cart->clear($this->cartId);
+        $this->cart()->clear($this->cartId);
 
         request()->session()->remove('commerce_cart_id');
 
         $this->createCart();
+    }
+
+    public function cart()
+    {
+        return new Cart();
     }
 }
