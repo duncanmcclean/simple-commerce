@@ -123,7 +123,7 @@ class CheckoutController extends Controller
                    'stock' => ($cartItem->variant->stock - $cartItem->quantity),
                ]);
 
-               if ($cartItem->variant->stock <= 5) {
+               if ($cartItem->variant->stock <= config('simple-commerce.low_stock_counter')) {
                    Event::dispatch(new VariantLowStock($cartItem->variant()));
                }
 

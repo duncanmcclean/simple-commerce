@@ -92,5 +92,6 @@ return [
     'entered_with_tax' => false,
     'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
     'shop_prices_with_tax' => true,
+    'low_stock_counter' => 5,
 
 ];
