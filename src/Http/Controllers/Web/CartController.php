@@ -27,7 +27,7 @@ class CartController extends Controller
     {
         $this->createCart();
 
-        $this->cart->add($this->cartId, [
+        $this->cart()->add($this->cartId, [
             'product' => $request->product,
             'variant' => $request->variant,
             'quantity' => (int) $request->quantity,
@@ -40,7 +40,7 @@ class CartController extends Controller
     {
         $this->createCart();
 
-        $this->cart->remove($this->cartId, $request->item_id);
+        $this->cart()->remove($this->cartId, $request->item_id);
 
         return back()->with('success', 'Success! Product removed from your cart.');
     }
