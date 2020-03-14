@@ -84,15 +84,13 @@ return [
     ],
 
     /**
-     * Tax & Shipping
+     * Other Settings
      *
-     * Configure the tax and shipping settings
-     * for your store.
+     * Some other settings for Simple Commerce.
      */
 
     'entered_with_tax' => false,
     'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
     'shop_prices_with_tax' => true,
-    'cart_retention' => 30,
 
 ];
