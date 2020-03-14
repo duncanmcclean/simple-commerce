@@ -13,22 +13,29 @@
 
                     <select class="mb-2" name="variant" required>
                         {{ variants }}
-                        <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
+                            <option value="{{ uuid }}" {{ if outOfStock }} disabled="true" {{ /if }}>{{ name }} {{ price | price }}</option>
                         {{ /variants }}
                     </select>
 
                     <h2 class="text-xl font-bold">{{ variants }}{{ if first }}{{ price | price }}{{ /if }}{{ /variants }}</h2>
 
                     <div class="my-4 leading-relaxed text-lg">{{ description }}</div>
-                    <div class="flex flex-row items-stretch w-full">
-                        <select class="md:w-1/4 mx-2" name="quantity">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
 
-                        <button class="md:w-3/4 bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold" type="submit">Add to Cart</button>
+                    <div class="flex flex-row items-stretch w-full">
+                        {{ variants limit='1' }}
+                            {{ if stock === 0 }}
+                                <button class="w-full bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold opacity-75 cursor-not-allowed" disabled="true" title="Variant is out of stock" type="submit">Add to Cart</button>
+                            {{ else }}
+                                <select class="md:w-1/4 mx-2" name="quantity">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+
+                                <button class="md:w-3/4 bg-blue-600 hover:bg-blue-500 py-2 px-6 uppercase text-white font-bold" type="submit">Add to Cart</button>
+                            {{ /if }}
+                        {{ /variants }}
                     </div>
                 </form>
             </div>

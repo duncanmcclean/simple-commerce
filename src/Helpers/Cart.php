@@ -57,6 +57,10 @@ class Cart
     {
         $cart = CartModel::where('uuid', $uuid)->first();
 
+        if (Variant::where('uuid', $data['variant'])->first()->stock === 0) {
+            throw new \Exception("Don't be silly! You can't purchase a variant with no stock.");
+        }
+
         $item = $cart->items()->updateOrCreate(
             [
                 'cart_id' => $cart->id,
