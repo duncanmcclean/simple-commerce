@@ -56,9 +56,9 @@ class CommerceTags extends Tags
     {
         $products = Product::with('variants', 'productCategory', 'attributes')->get();
 
-        if ($categorySlug = $this->getParam('category')) {
-            $category = ProductCategory::where('slug', $categorySlug)->first();
-            $products = $products->where('product_category_id', $category);
+        if ($this->getParam('category') != null) {
+            $category = ProductCategory::where('slug', $this->getParam('category'))->first();
+            $products = $products->where('product_category_id', $category->id);
         }
 
         if (! $this->getParam('include_disabled')) {
@@ -100,7 +100,7 @@ class CommerceTags extends Tags
 
     public function countries()
     {
-        return Country::all();
+        return Country::all()->toArray();
     }
 
     public function states()
@@ -115,12 +115,12 @@ class CommerceTags extends Tags
             return $states->count();
         }
 
-        return $states;
+        return $states->toArray();
     }
 
     public function currencies()
     {
-        return Currency::all();
+        return Currency::all()->toArray();
     }
 
     public function gateways()

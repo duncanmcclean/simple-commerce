@@ -2,10 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -107,6 +109,8 @@ class CommerceTagsTest extends TestCase
     {
         $categories = factory(ProductCategory::class, 5)->create();
 
+        $this->tag->setParameters([]);
+
         $run = $this->tag->categories();
 
         $this->assertIsArray($run);
@@ -121,7 +125,7 @@ class CommerceTagsTest extends TestCase
 
         $count = $this->tag->categories();
 
-        $this->assertIsNumeric();
+        $this->assertIsNumeric($count);
     }
 
     /** @test */
@@ -129,9 +133,133 @@ class CommerceTagsTest extends TestCase
     {
         $products = factory(Product::class, 5)->create();
 
+        $this->tag->setParameters([]);
+
         $run = $this->tag->products();
 
         $this->assertIsArray($run);
+    }
+
+    /** @test */
+    public function commerce_products_tag_in_category()
+    {
+        $category = factory(ProductCategory::class)->create();
+        $products = factory(Product::class, 5)->create([
+            'product_category_id' => $category->id,
+        ]);
+
+        $this->tag->setParameters([
+            'category' => $category->slug,
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($products[2]['title'], json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_and_include_disabled()
+    {
+        $enabledProduct = factory(Product::class)->create([
+            'is_enabled' => true,
+        ]);
+
+        $disabledProduct = factory(Product::class)->create([
+            'is_enabled' => false,
+        ]);
+
+        $this->tag->setParameters([
+            'include_disabled' => true,
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($enabledProduct->title, json_encode($run));
+        $this->assertStringContainsString($disabledProduct->title, json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_not_with_id()
+    {
+        $keepProduct = factory(Product::class)->create();
+        $removeProduct = factory(Product::class)->create();
+
+        $this->tag->setParameters([
+            'not' => $removeProduct->id,
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($keepProduct->title, json_encode($run));
+        $this->assertStringNotContainsString($removeProduct->title, json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_not_with_uuid()
+    {
+        $keepProduct = factory(Product::class)->create();
+        $removeProduct = factory(Product::class)->create();
+
+        $this->tag->setParameters([
+            'not' => $removeProduct->uuid,
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($keepProduct->title, json_encode($run));
+        $this->assertStringNotContainsString($removeProduct->title, json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_not_with_slug()
+    {
+        $keepProduct = factory(Product::class)->create();
+        $removeProduct = factory(Product::class)->create();
+
+        $this->tag->setParameters([
+            'not' => $removeProduct->slug,
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($keepProduct->title, json_encode($run));
+        $this->assertStringNotContainsString($removeProduct->title, json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_limit()
+    {
+        $products = factory(Product::class, 5)->create();
+
+        $this->tag->setParameters([
+            'limit' => 3
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($products[0]['title'], json_encode($run));
+        $this->assertStringNotContainsString($products[4]['title'], json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_count()
+    {
+        $products = factory(Product::class, 5)->create();
+
+        $this->tag->setParameters([
+            'count' => true,
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsInt($run);
+        $this->assertSame($run, 5);
     }
 
     /** @test */
@@ -139,36 +267,61 @@ class CommerceTagsTest extends TestCase
     {
         $countries = factory(Country::class, 15)->create();
 
+        $this->tag->setParameters([]);
+
         $run = $this->tag->countries();
 
-        $this->assertIsObject($run);
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($countries[2]['name'], json_encode($run));
+        $this->assertStringContainsString($countries[5]['name'], json_encode($run));
+        $this->assertStringContainsString($countries[10]['name'], json_encode($run));
+        $this->assertStringContainsString($countries[13]['name'], json_encode($run));
     }
 
     /** @test */
     public function commerce_states_tag()
     {
-        // TODO: once params are done, states requires a country code
+        $states = factory(State::class, 5)->create();
 
-//        $states = factory(State::class, 15)->create();
-//
-////        $run = $this->tag->states();
-//
-//        $this->assertIsObject($run);
+        $this->tag->setParameters([]);
+
+        $run = $this->tag->states();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($states[0]['name'], json_encode($run));
+        $this->assertStringContainsString($states[1]['name'], json_encode($run));
+        $this->assertStringContainsString($states[2]['name'], json_encode($run));
+        $this->assertStringContainsString($states[3]['name'], json_encode($run));
+        $this->assertStringContainsString($states[4]['name'], json_encode($run));
     }
 
     /** @test */
     public function commerce_currencies_tag()
     {
-        $currencies = factory(Currency::class, 15)->create();
+        $currencies = factory(Currency::class, 5)->create();
 
         $run = $this->tag->currencies();
 
-        $this->assertIsObject($run);
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($currencies[0]['name'], json_encode($run));
+        $this->assertStringContainsString($currencies[1]['name'], json_encode($run));
+        $this->assertStringContainsString($currencies[2]['name'], json_encode($run));
+        $this->assertStringContainsString($currencies[3]['name'], json_encode($run));
+        $this->assertStringContainsString($currencies[4]['name'], json_encode($run));
     }
 
     /** @test */
     public function commerce_gateways_tag()
     {
-        //
+        Config::set('simple-commerce.gateways', [
+            DummyGateway::class,
+        ]);
+
+        $this->tag->setParameters([]);
+
+        $run = $this->tag->gateways();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString('Dummy', json_encode($run));
     }
 }
