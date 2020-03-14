@@ -185,6 +185,10 @@ class Cart
 
         $zone = ShippingZone::first();
 
+        if (! isset($zone->id)) {
+            return null;
+        }
+
         $shipping = new CartShipping();
         $shipping->uuid = (new Stache())->generateId();
         $shipping->shipping_zone_id = $zone->id;
@@ -225,6 +229,10 @@ class Cart
         // TODO: work out a better shipping zone thing to add rather than just the first one
 
         $rate = TaxRate::first();
+
+        if (! isset($tax->id)) {
+            return null;
+        }
 
         $tax = new CartTax();
         $tax->uuid = (new Stache())->generateId();
