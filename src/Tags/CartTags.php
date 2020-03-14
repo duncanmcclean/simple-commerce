@@ -4,25 +4,23 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use Statamic\Tags\Tags;
 
 class CartTags extends Tags
 {
-    public $cart;
-    public $cartId;
+    use UsesCart;
 
     protected static $handle = 'cart';
 
     public function __construct()
     {
-        $this->cart = new Cart();
-
         $this->createCart();
     }
 
     public function index()
     {
-        return $this->cart->get($this->cartId);
+        return $this->cart->get($this->cartId)->toArray();
     }
 
     public function items()
@@ -62,15 +60,5 @@ class CartTags extends Tags
         }
 
         return (new Currency())->parse($total, true, true);
-    }
-
-    protected function createCart()
-    {
-        if (! request()->session()->get('commerce_cart_id')) {
-            request()->session()->put('commerce_cart_id', $this->cart->create());
-            request()->session()->save();
-        }
-
-        $this->cartId = request()->session()->get('commerce_cart_id');
     }
 }

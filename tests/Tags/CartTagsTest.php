@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 
 class CartTagsTest extends TestCase
@@ -19,14 +20,11 @@ class CartTagsTest extends TestCase
     {
         parent::setUp();
 
-        $cart = factory(Cart::class)->create();
+        // TODO: set a session store
 
-//        $this->tag = (new CartTags())
-//            ->setParser(Antlers::class)
-//            ->setContext([]);
-//
-//        $this->tag->cartId = $cart->uuid;
-//        $this->session(['commerce_cart_id' => $cart->uuid]);
+        $this->tag = (new CartTags())
+            ->setParameters(Antlers::parser())
+            ->setContext([]);
     }
 
     /** @test */
@@ -36,32 +34,62 @@ class CartTagsTest extends TestCase
     }
 
     /** @test */
-    public function cart_index_tag()
+    public function cart_tag_index()
     {
-//        $cart = factory(Cart::class)->create();
 //        $items = factory(CartItem::class, 5)->create([
-//            'cart_id' => $cart->id,
+//            'cart_id' => $this->cart->id,
 //        ]);
 //
-//        $usage = $this->tag->index();
+//        $run = $this->tag->index();
 //
-//        $this->assertIsObject($usage);
+//        $this->assertIsArray($run);
+//        $this->assertStringContainsString($items[2]['title'], json_encode($run));
     }
 
     /** @test */
-    public function cart_items_tag()
+    public function cart_tag_items()
     {
         //
     }
 
     /** @test */
-    public function cart_count_tag()
+    public function cart_tag_shipping()
     {
         //
     }
 
     /** @test */
-    public function cart_total_tag()
+    public function cart_tag_tax()
+    {
+        //
+    }
+
+    /** @test */
+    public function cart_tag_count()
+    {
+        //
+    }
+
+    /** @test */
+    public function cart_tag_overall_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function cart_tag_items_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function cart_tag_shipping_total()
+    {
+        //
+    }
+
+    /** @test */
+    public function cart_tag_tax_total()
     {
         //
     }
