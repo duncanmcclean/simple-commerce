@@ -24,8 +24,6 @@ class CommerceTagsTest extends TestCase
     {
         parent::setUp();
 
-        $this->tag = new CommerceTags();
-
         $this->tag = (new CommerceTags())
             ->setParser(Antlers::parser())
             ->setContext([]);
