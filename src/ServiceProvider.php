@@ -141,7 +141,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([__DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php')]);
         $this->publishes([__DIR__.'/../resources/views/web' => resource_path('views/vendor/simple-commerce/web')]);
         $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
-        $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints/simple-commerce')]);
+        $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints')]);
         $this->publishes([__DIR__.'/../dist/js/cp.js', public_path('vendor/doublethreedigital/simple-commerce/js')]);
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
