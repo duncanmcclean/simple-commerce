@@ -49,7 +49,7 @@ use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
 use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
-use Statamic\Facades\Nav;
+use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 
