@@ -28,7 +28,7 @@ class SettingsHomeController extends CpController
                     'title' => 'Tax Rates',
                     'description' => 'Manage the tax rates that are added to customer\'s orders when checking out.',
                     'url' => cp_route('settings.tax-rates.index'),
-                    'icon' => 'generic',
+                    'icon' => 'earth',
                 ],
                 [
                     'title' => 'More Settings',
