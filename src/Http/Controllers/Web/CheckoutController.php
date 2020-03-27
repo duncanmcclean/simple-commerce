@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
@@ -118,6 +119,13 @@ class CheckoutController extends Controller
         Event::dispatch(new OrderSuccessful($order));
 
         collect($this->cart->get($this->cartId))
+            ->reject(function (CartItem $cartItem) {
+                if ($cartItem->variant->unlimited_stock) {
+                    return true;
+                }
+
+                return false;
+            })
             ->each(function (CartItem $cartItem) {
                $cartItem->variant()->update([
                    'stock' => ($cartItem->variant->stock - $cartItem->quantity),
