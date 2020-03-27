@@ -22,7 +22,7 @@
     },
     "extra": {
         "statamic": {
-            "name": "Commerce",
+            "name": "Simple Commerce",
             "description": "A perfectly simple e-commerce solution for Statamic"
         },
         "laravel": {
