@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Console\Commands\CartDeletionCommand;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
@@ -120,7 +119,6 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $commands = [
-        CartDeletionCommand::class,
         SeederCommand::class,
     ];
 
