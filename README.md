@@ -11,7 +11,7 @@ This addon requires the latest version of Statamic 3. You should also have MySQL
 ## Installation
 From your terminal, run the following commands:
 
-```
+```bash
 composer require doublethreedigital/simple-commerce
 php artisan vendor:publish --provider=DoubleThreeDigital\SimpleCommerce\ServiceProvider
 php artisan migrate
