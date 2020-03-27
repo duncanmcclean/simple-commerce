@@ -51,11 +51,11 @@
                         <div class="flex flex-row items-center">
                             <a class="font-bold text-gray-800 text-lg hover:text-blue-500 mr-4 {{ if current_uri === '/products' }} text-blue-500 {{ /if }}" href="{{ commerce:route key='products.index' }}">Home</a>
 
-                            {{ structure:pages as='pages' }}
+                            {{ nav as='pages' }}
                                 {{ pages }}
                                     <a class="font-bold text-gray-800 text-lg hover:text-blue-500 mx-4 {{ if current_uri === url }} text-blue-500 {{ /if }}" href="{{ url }}">{{ title }}</a>
                                 {{ /pages }}
-                            {{ /structure:pages }}
+                            {{ /nav }}
                         </div>
 
                         <a class="flex flex-row items-center font-bold text-gray-800 hover:text-blue-500" href="{{ commerce:route key='cart.index' }}">
@@ -82,11 +82,11 @@
                     </div>
 
                     <div class="flex flex-row items-center">
-                        {{ structure:pages as='pages' }}
+                        {{ nav as='pages' }}
                             {{ pages }}
                                 <a class="text-gray-700 font-semibold mx-4" href="{{ url }}">{{ title }}</a>
                             {{ /pages }}
-                        {{ /structure:pages }}
+                        {{ /nav }}
                     </div>
                 </div>
             </footer>
