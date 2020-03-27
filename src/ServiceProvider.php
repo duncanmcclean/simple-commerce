@@ -129,7 +129,6 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $routes = [
-        'actions' => __DIR__.'/../routes/actions.php',
         'cp' => __DIR__.'/../routes/cp.php',
         'web' => __DIR__.'/../routes/web.php',
     ];
