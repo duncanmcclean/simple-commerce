@@ -107,8 +107,7 @@ sections:
                 listable: true
                 add_row: 'Add Attribute'
           mode: stacked
-          max_rows: 0
-          min_rows: 2
+          min_rows: 1
           add_row: 'New Variant'
           reorderable: false
           type: grid
