@@ -14,7 +14,12 @@ class StateFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        return Country::find($id);
+        $state = State::find($id);
+
+        return [
+            'id' => $state->id,
+            'title' => $state->name,
+        ];
     }
 
     public function getIndexItems($request)
