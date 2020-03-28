@@ -14,11 +14,11 @@ class TaxRateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'country_id' => 'required|integer',
-            'state_id' => 'nullable|integer',
+            'name'              => 'required|string',
+            'country.*'         => 'required|integer',
+            'state.*'           => 'nullable|integer',
             'start_of_zip_code' => 'nullable|string',
-            'rate' => 'required|string',
+            'rate'              => 'required|string',
         ];
     }
 }

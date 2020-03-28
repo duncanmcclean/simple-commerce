@@ -14,8 +14,8 @@ class ShippingZoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'country_id' => 'required|integer',
-            'state_id' => 'nullable|integer',
+            'country.*' => 'required|integer',
+            'state.*' => 'nullable|integer',
             'start_of_zip_code' => 'nullable|string',
             'price' => 'required|string',
         ];
