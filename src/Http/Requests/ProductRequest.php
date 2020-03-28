@@ -19,7 +19,7 @@ class ProductRequest extends FormRequest
 
             'variants.*.name' => 'required|string',
             'variants.*.price' => 'required',
-            'variants.*.sku' => 'required|unique:variants',
+            'variants.*.sku' => 'required|string',
             'variants.*.max_quantity' => 'required|integer',
             'variants.*.stock_number' => 'required|integer',
             'variants.*.unlimited_stock' => 'required|boolean',
