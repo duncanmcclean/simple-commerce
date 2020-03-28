@@ -107,7 +107,9 @@ class ProductController extends CpController
             ->first();
 
         $values = array_merge($product->toArray(), [
-            'category' => $product->product_category_id,
+            'category' => [
+                0 => $product->productCategory->title,
+            ],
             'variants' => $product->variants->map(function (Variant $variant, $key) {
                 return array_merge($variant->toArray(), [
                     '_id' => 'row-'.$key,
