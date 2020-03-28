@@ -21,6 +21,8 @@ sections:
           display: Email
           validate: required|email
           width: 50
+          listable: hidden
+          input_type: email
   orders:
     display: Orders
     fields:

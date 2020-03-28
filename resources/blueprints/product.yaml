@@ -10,6 +10,9 @@ sections:
           type: text
           localizable: false
           display: Title
+          listable: hidden
+          input_type: text
+          validate: required
       -
         handle: description
         field:
@@ -28,6 +31,9 @@ sections:
                 localizable: false
                 width: 50
                 display: Name
+                listable: hidden
+                input_type: text
+                validate: required
             -
               handle: price
               field:
@@ -35,6 +41,8 @@ sections:
                 localizable: false
                 width: 25
                 display: Price
+                listable: hidden
+                validate: required
             -
               handle: sku
               field:
@@ -43,6 +51,8 @@ sections:
                 localizable: false
                 width: 25
                 display: SKU
+                listable: hidden
+                validate: required
             -
               handle: max_quantity
               field:
@@ -51,6 +61,8 @@ sections:
                 localizable: false
                 width: 33
                 display: 'Max Quantity'
+                listable: hidden
+                validate: required
             -
               handle: stock_number
               field:
@@ -58,9 +70,10 @@ sections:
                 localizable: false
                 width: 33
                 display: 'Stock Number'
+                listable: hidden
                 unless:
                   unlimited_stock: 'equals true'
-                instructions: 'After every purchase, this number will be deducted from.'
+                validate: required
             -
               handle: unlimited_stock
               field:
@@ -92,6 +105,9 @@ sections:
                       type: text
                       localizable: false
                       display: Key
+                      listable: hidden
+                      input_type: text
+                      validate: required
                   -
                     handle: value
                     field:
@@ -99,6 +115,9 @@ sections:
                       type: text
                       localizable: false
                       display: Value
+                      listable: hidden
+                      input_type: text
+                      validate: required
                 mode: table
                 reorderable: false
                 type: grid
@@ -136,6 +155,8 @@ sections:
                 localizable: false
                 listable: hidden
                 display: Key
+                input_type: text
+                validate: required
             -
               handle: value
               field:
@@ -144,6 +165,8 @@ sections:
                 localizable: false
                 listable: hidden
                 display: Value
+                input_type: text
+                validate: required
           mode: table
           add_row: 'Add Attribute'
           reorderable: false
@@ -161,6 +184,8 @@ sections:
           type: slug
           localizable: false
           display: Slug
+          listable: hidden
+          validate: required
       -
         handle: category
         field:
