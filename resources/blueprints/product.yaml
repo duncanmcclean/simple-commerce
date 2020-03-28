@@ -29,8 +29,8 @@ sections:
                 character_limit: 0
                 type: text
                 localizable: false
-                width: 50
-                display: Name
+                width: 100
+                display: 'Variant Name'
                 listable: hidden
                 input_type: text
                 validate: required
@@ -39,7 +39,7 @@ sections:
               field:
                 type: money
                 localizable: false
-                width: 25
+                width: 50
                 display: Price
                 listable: hidden
                 validate: required
@@ -49,7 +49,7 @@ sections:
                 generate: false
                 type: slug
                 localizable: false
-                width: 25
+                width: 50
                 display: SKU
                 listable: hidden
                 validate: required
@@ -57,12 +57,12 @@ sections:
               handle: max_quantity
               field:
                 type: integer
-                instructions: 'How many of these can a customer buy at once?'
                 localizable: false
                 width: 33
                 display: 'Max Quantity'
                 listable: hidden
                 validate: required
+                default: 1
             -
               handle: stock_number
               field:
