@@ -1,3 +1,5 @@
+# Payment Gateways
+
 Simple Commerce can be used with pretty much any payment gateway under the sun. Out of the box, you'll get a Stripe gateway, a manual gateway and a dummy gateway.
 
 However, if you need one that's not included, create your own gateway.
@@ -39,10 +41,55 @@ Some payment gateways also push their own scripts, for example Stripe requires S
 It's easy to create your own gateway. Create a class that implements our `Gateway` interface. It'll scaffold out a few methods for you, just fill those in with stuff required for your gateway of choice.
 
 ```php
-// TODO: update example here
-```
+<?php
 
-TODO: update these method definitions
+namespace YourName\YourGateway;
+
+use Statamic\View\View;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Gateway;
+
+class YourGateway implements Gateway
+{
+    public function completePurchase($data)
+    {
+        // stuff
+
+        return [
+            'is_paid' => true,
+        ];
+    }
+
+    public function rules(): array
+    {
+        return [
+            'cardholder' => 'required',
+            'cardNumber' => 'required',
+            'expiryMonth' => 'required',
+            'expiryYear' => 'required',
+            'cvc' => 'required',
+        ];
+    }
+
+    public function paymentForm()
+    {
+        return (new View)
+            ->template('your-gateay::payment-form')
+            ->with([
+                'class' => get_class($this),
+            ]);
+    }
+
+    public function refund(array $gatewayData)
+    {
+        // stuff
+    }
+
+    public function name(): string
+    {
+        return 'Your Gateway';
+    }
+}
+```
 
 The `rules` method should return a Laravel validation array with any required fields for your gateway.
 

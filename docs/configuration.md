@@ -1,54 +1,185 @@
-Simple Commerce gives you a lot of settings, some can be updated in the Control Panel, others in the config file.
+# Configuration
 
-// TODO: update the config file stuff in here
+Simple Commerce gives you a lot of settings, some can be updated in the Control Panel, others in the config file, located in `config/simple-commerce.php`.
 
 ## Control Panel
 
-In the Control Panel, you can update order statuses, shipping zones and tax rates. To manage settings from the Control Panel, go to the `Settings` navigation item under `Simple Commerce` and you can go through the settings from there.
+Order Statuses, Shipping Zones and Tax Rates are some of the things that Simple Commerce allows you to configure from the Control Panel.
 
-## Config file
+You can manage them from the `Settings` navigation item under the `Simple Commerce` section.
 
-Simple Commerce pushes its own configuration file which is required for Simple Commerce to work properly.
+## `config/simple-commerce.php`
+
+When you install Simple Commerce, it publishes it's own configuration file for you. This configuration file gives you the ultimate control over how Simple Commerce works.
 
 ### Address
 
-We require to know where your business is located so that we can generate tax and shipping prices for you and so we can display it on customer's receipts.
+```php
+<?php
 
-### Prices
+return [
 
-We need to know what currency you want to display on your store. By default we have it set to `USD` but in reality you can change it to whatever you want (as long as its supported by Stripe).
+    /**
+        * Business Address
+        *
+        * Address information for your business. By default,
+        * this will be used as the location to set tax and
+        * shipping prices.
+    */
+    
+    'address' => [
+        'address_1' => '',
+        'address_2' => '',
+        'address_3' => '',
+        'city' => '',
+        'country' => '',
+        'state' => '',
+        'zip_code' => '',
+    ],
 
-There's also the option to change the position of the currency symbol when we display prices and what you want to use as your currency separator. 
-
-### Stripe
-
-Your Stripe details shouldn't be entered directly into the config file. Instead they should be put in your `.env` file, like this:
-
+];
 ```
-STRIPE_KEY=
-STRIPE_SECRET=
+
+In order for Simple Commerce to calculate taxes and shipping prices properly, you'll need to enter information about where your business is located.
+
+### Gateways
+
+```php
+<?php
+
+return [
+
+    /**
+         * Payment Gateways
+         *
+         * Simple Commerce gives you the ability to
+         * configure different payment gateways.
+    */
+    
+    'gateways' => [
+        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+//        \DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway::class => [],
+    ],
+
+];
 ```
+
+Simple Commerce comes out of the box with a number of popular [payment gateways](./gateways.md). Some of which you'll want to use for your store, some of which you may not.
+
+To enable a gateway, just add the class of the gateway you wish to enable. In the example, the `DummyGateway` is enabled.
+
+If you want to learn more about Payment Gateways, read [our documentation](./gateways.md) on it.
+
+### Currency
+
+```php
+<?php
+
+return [
+
+    /**
+         * Currency
+         *
+         * Control your currency settings. These will dictate
+         * what currency products are sold in and how they are
+         * formatted in the front-end.
+    */
+    
+    'currency' => [
+        'iso' => 'USD',
+        'position' => 'left', // Options: left, right
+        'separator' => '.',
+    ],
+
+];
+```
+
+Right now, Simple Commerce only supports a single currency. You can tell it which currency you wish to use and you can adjust the positioning of separators too.
 
 ### Routes
 
-Sometimes you might want to use your own URLs because you don't want to loose SEO from your old site or maybe you just have a preference. If so, just update those things here.
+```php
+<?php
 
-For things like product and category show pages, you'll want to use `{product}` and `{category}` which will be rendered out as the slug of the product/category.
+return [
 
-### Tax
+    /**
+         * Routes
+         *
+         * Simple Commerce provides a set of web routes to make your store
+         * function. You can change these routes if you have other
+         * preferences.
+    */
+    
+    'routes' => [
+        'cart_index' => '/cart',
+        'cart_store' => '/cart/add',
+        'cart_update' => '/cart/update',
+        'cart_clear' => '/cart/clear',
+        'cart_remove' => '/cart/remove',
+        'checkout_show' => '/checkout',
+        'checkout_store' => '/checkout/store',
+        'checkout_redirect' => '/thank-you',
+        'product_index' => '/products',
+        'product_search' => '/products/search',
+        'product_show' => '/products/{product}',
+        'categories_show' => '/category/{category}',
+    ],
 
-You can choose if the prices of your variants include tax or not, if they don't already include tax, we'll add an appropriate tax rate.
+];
+```
 
-We also need to know where we should be calculating tax from, is it from your company's address, the billing address or the customer's shipping address?
+Simple Commerce provides its own routing setup to its own controllers. Sometimes stores may wish to adjust the URLs of certain pages. For example, if your store wanted to use the word `Basket` instead of `Cart`, you'd just make changes to the cart routes. 
 
-And the last thing is only really needed if the first option is `false` but it lets you configure if you want the variant prices that show in your product index and product show pages to include tax or not.
-
-### Cart
-
-Simple Commerce stores the cart of every customer in the database. For large stores, sometimes you might want to get rid of these untouched carts if they have been abandoned for a certain amount of time. We default this to `30` days but you can change that to whatever you want.
+These routes can be referenced from in the [`commerce:route`](./frontend.md) tag.
 
 ### Notifications
+
+```php
+<?php
+
+return [
+
+    /**
+         * Notifications
+         *
+         * Configure where we send your store's back
+         * office notifications.
+    */
+    
+    'notifications' => [
+            'channel' => ['mail'],
+    
+            'mail_to' => 'admin@example.com',
+            'slack_webhook' => '',
+    ],
+
+];
+```
 
 This is where you can control where you want your back of store notifications sent to. Currently the only options are `mail` and `slack`.
 
 Depending on your option, you'll need to fill in other values, like your slack webhook or your to email.
+
+### Other settings
+
+```php
+<?php
+
+return [
+
+    /**
+         * Other Settings
+         *
+         * Some other settings for Simple Commerce.
+         */
+    
+        'entered_with_tax' => false,
+        'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
+        'shop_prices_with_tax' => true,
+        'low_stock_counter' => 5,
+
+];
+```
+
+There are some other things that you can configure if you want. Things like if your prices already include tax when entered, where you want to calculate tax from and when should we start notifying you about low stock.

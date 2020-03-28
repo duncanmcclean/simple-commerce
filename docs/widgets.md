@@ -1,3 +1,5 @@
+# Widgets
+
 Simple Commerce provides a few widgets that you can add to the Dashboard of your Control Panel that displays key store information at a glance.
 
 * `new_customers`

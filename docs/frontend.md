@@ -1,22 +1,20 @@
+# Front-end
+
 By default, Simple Commerce provides you with a boilerplate front-end. We wouldn't recommend using this boilerplate in product but only as an example of how things work together.
 
-The boilerplate should get published to your `resources/views/vendor` directory during installation, but you can also find them [on Github](../resources/views/web).
+The boilerplate should get published to `resources/views/vendor` during installation, but you can also find them [on Github](../resources/views/web).
 
-# Tags
+## Tags
 
-## `{{ commerce:currencyCode }}`
+### `{{ commerce:currencyCode }}`
 
 Returns the code of your chosen currency.
 
-## `{{ commerce:currencySymbol }}`
+### `{{ commerce:currencySymbol }}`
 
 Returns the symbol of your chosen currency.
 
-## `{{ commerce:stripKey }}`
-
-Returns your Stripe key from your `.env` file.
-
-## `{{ commerce:route }}`
+### `{{ commerce:route }}`
 
 Returns Simple Commerce routes using the route names defined in [`web.php`](https://github.com/doublethreedigital/simple-commerce/blob/master/routes/web.php).
 
@@ -30,9 +28,9 @@ The `commerce:route` tag also supports passing in parameters. For example, if yo
 {{ commerce:route key='products.show' product='uuid' }}
 ```
 
-## `{{ commerce:categories }}`
+### `{{ commerce:categories }}`
 
-### All Categories
+#### All Categories
 
 ```html
 {{ commerce:categories }}
@@ -40,15 +38,15 @@ The `commerce:route` tag also supports passing in parameters. For example, if yo
 {{ /commerce:categories }}
 ```
 
-### Count
+#### Count
 
 ```html
 {{ commerce:categories count='true' }}
 ```
 
-## `{{ commerce:products }}`
+### `{{ commerce:products }}`
 
-### All Products
+#### All Products
 
 ```html
 {{ commerce:products }}
@@ -56,7 +54,7 @@ The `commerce:route` tag also supports passing in parameters. For example, if yo
 {{ /commerce:products }}
 ```
 
-### Product in Category
+#### Product in Category
 
 `category` should be the `slug` of the category you want to get products of.
 
@@ -66,7 +64,7 @@ The `commerce:route` tag also supports passing in parameters. For example, if yo
 {{ /commerce:products }}
 ```
 
-### Include Disabled
+#### Include Disabled
 
 Include disabled products in your results.
 
@@ -76,13 +74,13 @@ Include disabled products in your results.
 {{ /commerce:products }}
 ```
 
-### Count
+#### Count
 
 ```html
 {{ commerce:products count='true' }}
 ```
 
-## `{{ commerce:countries }}`
+### `{{ commerce:countries }}`
 
 Returns an array of countries.
 
@@ -94,9 +92,9 @@ Returns an array of countries.
 </select>
 ```
 
-## `{{ commerce:states }}`
+### `{{ commerce:states }}`
 
-### All States
+#### All States
 
 ```html
 <select name="state">
@@ -106,7 +104,7 @@ Returns an array of countries.
 </select>
 ```
 
-### States in country
+#### States in country
 
 Returns an array of states in a country.
 
@@ -120,13 +118,13 @@ Returns an array of states in a country.
 </select>
 ```
 
-### Count
+#### Count
 
 ```html
 {{ commerce:states count='true' }}
 ```
 
-## `{{ commerce:currencies }}`
+### `{{ commerce:currencies }}`
 
 Returns an array of currencies.
 
@@ -140,7 +138,7 @@ Returns an array of currencies.
 </ul>
 ```
 
-## `{{ cart:items }}`
+### `{{ cart:items }}`
 
 Get all items in the customers' cart. `cart` by itself is an alias of this.
 
@@ -150,7 +148,7 @@ Get all items in the customers' cart. `cart` by itself is an alias of this.
 {{ /cart:items }}
 ```
 
-## `{{ cart:count }}`
+### `{{ cart:count }}`
 
 Get a count of the items in the customers' cart.
 
@@ -158,7 +156,7 @@ Get a count of the items in the customers' cart.
 <p>There are {{ cart:count }} items in your cart.</p>
 ```
 
-## `{{ cart:total }}`
+### `{{ cart:total }}`
 
 Returns the total amount of the customers' cart.
 
@@ -166,9 +164,9 @@ Returns the total amount of the customers' cart.
 <p>The total of your cart {{ commerce:currency_symbol }}{{ cart:count }}.</p>
 ```
 
-# Modifiers
+## Modifiers
 
-## Price
+### Price
 
 If you want to change a price from being a number like `15` to being formatted like a currency: `$15.00`, then you should use the price modifier.
 
@@ -176,11 +174,12 @@ If you want to change a price from being a number like `15` to being formatted l
 {{ from_price | price }}
 ```
 
-# Form Endpoints
+## Form Endpoints
 
 On the front-end, Simple Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
 
 * `/cart` - Adds an item to the user's cart
 * `/cart/clear` - Clears the user's cart
+* `/cart/update` - Update cart items (individually)
 * `/cart/delete` - Removes an item from the user's cart
 * `/checkout` - Processes the user's information, charges the customer and creates an order

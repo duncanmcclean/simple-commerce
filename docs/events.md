@@ -1,78 +1,80 @@
-Simple Commerce provides a set of events which you can listen for in your app or package.
+# Events
 
-# List of Events
+Simple Commerce provides quite a few events which can be helpful to listen out for if you want to add functionality to your store.
 
-## `AddedToCart`
+## List of Events
+
+### `DoubleThreeDigital\SimpleCommerce\Events\AddedToCart`
 
 This event will be triggered whenever an item is added to the customer's cart. It has three parameters: `cart`, `cartItem` and `variant`.
 
-## `AttributeUpdated`
+### `DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated`
 
 This event will be triggered whenever a product or variant attribute is updated. It has one parameter: `attribute`.
 
-## `CartCreated`
+### `DoubleThreeDigital\SimpleCommerce\Events\CartCreated`
 
 This event will be triggered whenever a cart is created. It has one parameter: `cart`.
 
-## `CustomerCreated`
+### `DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated`
 
 This event will be triggered whenever a new customer is created. It has one parameter: `customer`.
 
-## `CustomerUpdated`
+### `DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated`
 
 This event will be triggered whenever a customer is updated. It has one parameter: `customer`.
 
-## `OrderPaid`
+### `DoubleThreeDigital\SimpleCommerce\Events\OrderPaid`
 
 This event will be triggered whenever an order is paid. It has one parameter: `order`.
 
-## `OrderRefunded`
+### `DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded`
 
 This event will be triggered whenever an order is refunded. It has one parameter: `order`.
 
-## `OrderStatusUpdated`
+### `DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated`
 
 This event will be triggered whenever the status of an order has been updated. It has two parameters: `order` and `orderStatus`.
 
-## `OrderSuccessful`
+### `DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful`
 
 This event will be triggered whenever the order process has been successful. It has one parameter: `order`.
 
-## `ProductCategoryUpdated`
+### `DoubleThreeDigital\SimpleCommerce\Events\ProductCategoryUpdated`
 
 This event will be triggered whenever a product category is updated. It has one parameter: `category`.
 
-## `ProductUpdated`
+### `DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated`
 
 This event will be triggered whenever a product is updated. It has one parameter `product`.
 
-## `RemovedFromCart`
+### `DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart`
 
 This event will be triggered whenever an item is removed from a cart. It has two parameters: `cart` and `variant`.
 
-## `ShippingAddedToCart`
+### `DoubleThreeDigital\SimpleCommerce\Events\ShippingAddedToCart`
 
 This event will be triggered whenever shipping is added to a cart. It has three parameters: `cart`, `cartShipping` and `shippingZone`.
 
-## `TaxAddedToCart`
+### `DoubleThreeDigital\SimpleCommerce\Events\TaxAddedToCart`
 
 This event will be triggered whenever tax is added to a cart. It has three parameters: `cart`, `cartTax` and `taxRate`.
 
-## `VariantLowStock`
+### `DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock`
 
 This event will be triggered whenever a variant is running low on stock. It has one parameter: `variant`.
 
-## `VariantOutOfStock`
+### `DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock`
 
 This event will be triggered whenever a variant has run out of stock. It has one parameter: `variant`.
 
-## `VariantUpdated`
+### `DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated`
 
 This event will be triggered whenever a variant has been updated. It has one parameter: `variant`.
 
-# How to listen for events
+## How to listen for events
 
-You can listen for events in your `EventServiceProvider` or in your package's `ServiceProvider`. In your `protected $listen` code, you would just do something like this:
+You can listen for events in your app's `EventServiceProvider` or in your package's `ServiceProvider`. In your `protected $listen` code, you would just do something like this:
 
 ```php
 <?php
