@@ -47,6 +47,6 @@ class TaxRate extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/tax_rate');
+        return Blueprint::find('tax_rate');
     }
 }

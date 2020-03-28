@@ -39,6 +39,6 @@ class OrderStatus extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/order_status');
+        return Blueprint::find('order_status');
     }
 }

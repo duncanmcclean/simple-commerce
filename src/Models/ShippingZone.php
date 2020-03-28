@@ -52,6 +52,6 @@ class ShippingZone extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/shipping_zone');
+        return Blueprint::find('shipping_zone');
     }
 }

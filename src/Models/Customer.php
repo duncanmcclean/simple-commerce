@@ -54,6 +54,6 @@ class Customer extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/customer');
+        return Blueprint::find('customer');
     }
 }

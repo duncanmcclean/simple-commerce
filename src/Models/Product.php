@@ -76,6 +76,6 @@ class Product extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/product');
+        return Blueprint::find('product');
     }
 }

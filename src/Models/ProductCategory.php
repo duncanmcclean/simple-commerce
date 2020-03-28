@@ -60,6 +60,6 @@ class ProductCategory extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/product_category');
+        return Blueprint::find('product_category');
     }
 }

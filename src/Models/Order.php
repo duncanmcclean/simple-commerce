@@ -63,6 +63,6 @@ class Order extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('simple-commerce/order');
+        return Blueprint::find('order');
     }
 }
