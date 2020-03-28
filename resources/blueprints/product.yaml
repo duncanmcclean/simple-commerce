@@ -13,7 +13,7 @@ sections:
       -
         handle: description
         field:
-          type: textarea
+          type: markdown
           localizable: false
           display: Description
       -
@@ -71,7 +71,7 @@ sections:
             -
               handle: description
               field:
-                type: textarea
+                type: markdown
                 localizable: false
                 display: Description
             -
