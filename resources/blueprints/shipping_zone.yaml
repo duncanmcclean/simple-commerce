@@ -34,7 +34,7 @@ sections:
       -
         handle: price
         field:
-          type: integer
+          type: money
           instructions: 'How much does shipping cost?'
           localizable: false
           display: Price
