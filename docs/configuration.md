@@ -96,43 +96,6 @@ return [
 
 Right now, Simple Commerce only supports a single currency. You can tell it which currency you wish to use and you can adjust the positioning of separators too.
 
-### Routes
-
-```php
-<?php
-
-return [
-
-    /**
-         * Routes
-         *
-         * Simple Commerce provides a set of web routes to make your store
-         * function. You can change these routes if you have other
-         * preferences.
-    */
-    
-    'routes' => [
-        'cart_index' => '/cart',
-        'cart_store' => '/cart/add',
-        'cart_update' => '/cart/update',
-        'cart_clear' => '/cart/clear',
-        'cart_remove' => '/cart/remove',
-        'checkout_show' => '/checkout',
-        'checkout_store' => '/checkout/store',
-        'checkout_redirect' => '/thank-you',
-        'product_index' => '/products',
-        'product_search' => '/products/search',
-        'product_show' => '/products/{product}',
-        'categories_show' => '/category/{category}',
-    ],
-
-];
-```
-
-Simple Commerce provides its own routing setup to its own controllers. Sometimes stores may wish to adjust the URLs of certain pages. For example, if your store wanted to use the word `Basket` instead of `Cart`, you'd just make changes to the cart routes. 
-
-These routes can be referenced from in the [`commerce:route`](./frontend.md) tag.
-
 ### Notifications
 
 ```php

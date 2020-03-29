@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -9,9 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route;
-use Statamic\Statamic;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -20,25 +18,12 @@ class CommerceTags extends Tags
 
     public function currencyCode()
     {
-        return (new CurrencyHelper())->iso();
+        return CurrencyHelper::iso();
     }
 
     public function currencySymbol()
     {
-        return (new CurrencyHelper())->symbol();
-    }
-
-    public function route()
-    {
-        if ($this->getParam('key') === null) {
-            throw new \Exception('Please set a route key. You are currently sending:'.json_encode($this->params));
-        }
-
-        if (! Route::has($this->getParam('key'))) {
-            throw new \Exception("The route key ({$this->getParam('key')}) you are referencing does not exist.");
-        }
-
-        return route($this->getParam('key'), Arr::except($this->params, ['key']));
+        return CurrencyHelper::symbol();
     }
 
     public function categories()
@@ -126,5 +111,11 @@ class CommerceTags extends Tags
     public function gateways()
     {
         return SimpleCommerce::gateways();
+    }
+
+    public function form()
+    {
+        // TODO: fix $this->content so it parses stuff as Antlers
+        return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->content);
     }
 }

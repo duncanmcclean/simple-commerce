@@ -23,7 +23,7 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'url', 'variant_count',
+        'variant_count',
     ];
 
     protected $dates = [
@@ -42,11 +42,6 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class);
-    }
-
-    public function getUrlAttribute()
-    {
-        return route('products.show', ['product' => $this->attributes['slug']]);
     }
 
     public function getVariantCountAttribute()

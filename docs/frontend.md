@@ -1,8 +1,6 @@
 # Front-end
 
-By default, Simple Commerce provides you with a boilerplate front-end. We wouldn't recommend using this boilerplate in product but only as an example of how things work together.
-
-The boilerplate should get published to `resources/views/vendor` during installation, but you can also find them [on Github](../resources/views/web).
+Simple Commerce provides a few tags you can use and various other things to help you craft a unique front-end for your store. We've built an [example store theme layout](https://github.com/doublethreedigital/simple-commerce-example) if you're looking for use cases.
 
 ## Tags
 
@@ -13,20 +11,6 @@ Returns the code of your chosen currency.
 ### `{{ commerce:currencySymbol }}`
 
 Returns the symbol of your chosen currency.
-
-### `{{ commerce:route }}`
-
-Returns Simple Commerce routes using the route names defined in [`web.php`](https://github.com/doublethreedigital/simple-commerce/blob/master/routes/web.php).
-
-```html
-<a href="{{ commerce:route key='products.index' }}">All Products</a> 
-```
-
-The `commerce:route` tag also supports passing in parameters. For example, if you need to pass in the `product` parameter, just pass it into the tag, like so:
-
-```html
-{{ commerce:route key='products.show' product='uuid' }}
-```
 
 ### `{{ commerce:categories }}`
 
@@ -118,6 +102,43 @@ Returns an array of states in a country.
 </select>
 ```
 
+### Form
+
+Returns a `<form>` with a set action and method to point to Simple Commerce's actions.
+
+#### Example
+
+Here's a quick example of a checkout form that uses the `commerce:form` tag.
+
+**In your template:**
+
+```html
+{{ commerce:form for='checkout' redirect='/thanks' class='flex flex-col w-full' }}
+    <input type="text" name="name">
+    <input type="text" name="email">
+
+    <button>Checkout</button>
+{{ /commerce:form }}
+```
+
+**And the output in your browser:**
+
+```html
+<form action="http://yourstore.test/!/simple-commerce/checkout" method="POST" class="flex flex-col w-full">
+    <input type="text" name="name">
+    <input type="text" name="email">
+    
+    <button>Checkout</button>
+
+    <input type="hidden" name="_token" value="someRand0mSt6ff">
+    <input type="hidden" name="redirect" value="/thanks">
+</form>
+```
+
+To walk you through how it works. The `for` param chooses which action and method to use. You can also add a `redirect` attribute which will redirect your user to wherever you want when the form is successful. Any other parameters you add will just be added to the `<form>` element.
+
+We'll also add in a CSRF field for you too, for good luck!
+
 #### Count
 
 ```html
@@ -173,13 +194,3 @@ If you want to change a price from being a number like `15` to being formatted l
 ```html
 {{ from_price | price }}
 ```
-
-## Form Endpoints
-
-On the front-end, Simple Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
-
-* `/cart` - Adds an item to the user's cart
-* `/cart/clear` - Clears the user's cart
-* `/cart/update` - Update cart items (individually)
-* `/cart/delete` - Removes an item from the user's cart
-* `/checkout` - Processes the user's information, charges the customer and creates an order

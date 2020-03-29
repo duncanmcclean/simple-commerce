@@ -68,41 +68,6 @@ class CommerceTagsTest extends TestCase
     }
 
     /** @test */
-    public function commerce_route_tag_works_with_key()
-    {
-        $this->tag->setParameters([
-            'key' => 'products.index',
-        ]);
-
-        $route = $this->tag->route();
-
-        $this->assertIsString($route);
-        $this->assertStringContainsString('/products', $route);
-    }
-
-    /** @test */
-    public function commerce_route_tag_does_not_work_with_no_key()
-    {
-        $this->tag->setParameters([]);
-
-        $this->expectExceptionMessage('Please set a route key.');
-
-        $route = $this->tag->route();
-    }
-
-    /** @test */
-    public function commerce_route_tag_does_not_work_with_invalid_key()
-    {
-        $this->tag->setParameters([
-            'key' => 'fish-tank'
-        ]);
-
-        $this->expectExceptionMessage('The route key (fish-tank) you are referencing does not exist.');
-
-        $route = $this->tag->route();
-    }
-
-    /** @test */
     public function commerce_categories_tag()
     {
         $categories = factory(ProductCategory::class, 5)->create();
@@ -321,5 +286,11 @@ class CommerceTagsTest extends TestCase
 
         $this->assertIsArray($run);
         $this->assertStringContainsString('Dummy', json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_form_tag()
+    {
+        //
     }
 }

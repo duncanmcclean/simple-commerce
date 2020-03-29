@@ -51,8 +51,8 @@ abstract class TestCase extends OrchestraTestCase
             ],
         ];
 
-        Statamic::pushWebRoutes(function() {
-            return require_once realpath(__DIR__.'/../routes/web.php');
+        Statamic::pushActionRoutes(function() {
+            return require_once realpath(__DIR__.'/../routes/actions.php');
         });
 
         Statamic::pushCpRoutes(function() {
