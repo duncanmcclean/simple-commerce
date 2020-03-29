@@ -18,12 +18,12 @@ class CommerceTags extends Tags
 
     public function currencyCode()
     {
-        return CurrencyHelper::iso();
+        return (new CurrencyHelper())->iso();
     }
 
     public function currencySymbol()
     {
-        return CurrencyHelper::symbol();
+        return (new CurrencyHelper())->symbol();
     }
 
     public function categories()

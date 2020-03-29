@@ -14,7 +14,7 @@ class CartTagsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $tag;
+    //public $tag;
 
     public function setUp() : void
     {
@@ -22,9 +22,9 @@ class CartTagsTest extends TestCase
 
         // TODO: set a session store
 
-        $this->tag = (new CartTags())
-            ->setParameters(Antlers::parser())
-            ->setContext([]);
+//        $this->tag = (new CartTags())
+//            ->setParameters(Antlers::parser())
+//            ->setContext([]);
     }
 
     /** @test */
