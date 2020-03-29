@@ -234,7 +234,7 @@ class Cart
 
         $rate = TaxRate::first();
 
-        if (! isset($tax->id)) {
+        if (! isset($rate->id)) {
             return null;
         }
 
