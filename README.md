@@ -18,6 +18,11 @@ php artisan migrate
 php artisan commerce:seed
 ```
 
+## Licensing
+Like Statamic, Simple Commerce is commercial software but has an open-source codebase. If you want to use Simple Commerce in production, you'll need to buy a license. 
+
+When Statamic 3 is launched, Simple Commerce will launch on the Marketplace, until then you can buy a license by emailing [duncan@doublethree.digital](mailto:duncan@doublethree.digital).
+
 ## Resources
 * [Simple Commerce Docs](./docs)
 * [Simple Commerce Issues](https://github.com/doublethreedigital/simple-commerce/issues)
