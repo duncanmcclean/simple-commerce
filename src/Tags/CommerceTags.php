@@ -115,7 +115,6 @@ class CommerceTags extends Tags
 
     public function form()
     {
-        // TODO: fix $this->content so it parses stuff as Antlers
-        return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->content);
+        return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
     }
 }

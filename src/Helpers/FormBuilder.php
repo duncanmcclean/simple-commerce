@@ -31,11 +31,13 @@ class FormBuilder
 
     protected function compose(string $action, string $method, array $params, string $contents)
     {
+        // TODO: form errors
+
         $body = $contents;
-        $body = $body.csrf_field();
+        $body .= csrf_field();
 
         if (array_key_exists('redirect', $params)) {
-            $body = $body.'<input type="hidden" name="redirect" value="'.$params['redirect'].'">';
+            $body .= '<input type="hidden" name="redirect" value="'.$params['redirect'].'">';
             unset($params['redirect']);
         }
 
@@ -43,7 +45,7 @@ class FormBuilder
         unset($params['for']);
 
         foreach ($params as $key => $value) {
-            $formParameters = $formParameters.' '.$key.'="'.$value.'" ';
+            $formParameters .= ' '.$key.'="'.$value.'" ';
         }
 
         return '<form action="'.$action.'" method="'.$method.'" '.$formParameters.'>'.$body.'</form>';
