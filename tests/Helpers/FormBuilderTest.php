@@ -22,7 +22,7 @@ class FormBuilderTest extends TestCase
         $build = $this->builder->build('checkout', ['for' => 'checkout', 'redirect' => '/thanks'], '<input type="text" name="name">');
 
         $this->assertIsString($build);
-        $this->assertStringContainsString('/!/checkout', $build);
+        $this->assertStringContainsString('/!/simple-commerce/checkout', $build);
         $this->assertStringContainsString('<input type="hidden" name="redirect" value="/thanks">', $build);
         $this->assertStringContainsString('<input type="text" name="name">', $build);
     }
