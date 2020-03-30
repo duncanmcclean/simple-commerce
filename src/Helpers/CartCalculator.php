@@ -68,11 +68,11 @@ class CartCalculator
             return $this;
         }
 
-        // TODO: this does not work when called without the rest of the things
+        // TODO: this stuff doesn't actually work for some reason
 
         collect($this->tax)
             ->each(function ($item) {
-                $this->add(($item['taxRate']->rate / 100) * $this->total);
+                $this->add("0.{$item['taxRate']->rate}" * $this->total);
             });
 
         return $this;
