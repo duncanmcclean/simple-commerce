@@ -38,7 +38,7 @@ class CartController extends Controller
 
     public function destroy(CartDestroyRequest $request)
     {
-        if ($request->clear != null) {
+        if ($request->has('clear')) {
             $this->replaceCart();
 
             return $request->redirect ? redirect($request->redirect) : back();
