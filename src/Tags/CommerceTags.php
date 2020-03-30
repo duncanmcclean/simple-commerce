@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Statamic\Facades\Antlers;
 use Statamic\Tags\Tags;
 
 class CommerceTags extends Tags
@@ -46,6 +47,13 @@ class CommerceTags extends Tags
             $products = $products->where('product_category_id', $category->id);
         }
 
+        if ($where = $this->getParam('where')) {
+            $key = explode(':', $where)[0];
+            $value = explode(':', $where)[1];
+
+            $products = $products->where($key, $value);
+        }
+
         if (! $this->getParam('include_disabled')) {
             $products = $products
                 ->reject(function ($product) {
@@ -78,6 +86,10 @@ class CommerceTags extends Tags
 
         if ($this->getParam('count')) {
             return $products->count();
+        }
+
+        if ($this->getParam('first')) {
+            return $products->first()->toArray();
         }
 
         return $products->toArray();

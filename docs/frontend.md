@@ -48,6 +48,18 @@ Returns the symbol of your chosen currency.
 {{ /commerce:products }}
 ```
 
+#### Where
+
+You can get products where a field is something. For example if I want to get products where the `is_enabled` is `true`, I'd do something like this:
+
+```html
+{{ commerce:products where='slug:toothbrush' }}
+    <h2>{{ title }}</h2>
+{{ /commerce:products }}
+```
+
+It would output a loop of products that have are enabled. However, if you actually wanted to do that, using the next parameter would be nicer 😃
+
 #### Include Disabled
 
 Include disabled products in your results.
@@ -62,6 +74,16 @@ Include disabled products in your results.
 
 ```html
 {{ commerce:products count='true' }}
+```
+
+#### First
+
+Sometimes you may come across a situation where you just want to get the first product in the results. That is what `first` is for.
+
+```html
+{{ commerce:products first='true' }}
+    <h2>{{ title }}</h2>
+{{ /commerce:products }}
 ```
 
 ### `{{ commerce:countries }}`

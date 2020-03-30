@@ -122,6 +122,22 @@ class CommerceTagsTest extends TestCase
     }
 
     /** @test */
+    public function commerce_products_tag_where()
+    {
+        $products = factory(Product::class, 5)->create();
+
+        $this->tag->setParameters([
+            'where' => 'slug:'.$products[0]['slug'],
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($products[0]['title'], json_encode($run));
+        $this->assertStringNotContainsString($products[1]['title'], json_encode($run));
+    }
+
+    /** @test */
     public function commerce_products_tag_and_include_disabled()
     {
         $enabledProduct = factory(Product::class)->create([
@@ -226,6 +242,22 @@ class CommerceTagsTest extends TestCase
     }
 
     /** @test */
+    public function commerce_products_tag_first()
+    {
+        $products = factory(Product::class, 2)->create();
+
+        $this->tag->setParameters([
+            'first' => 'true',
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($products[0]['title'], json_encode($run));
+        $this->assertStringNotContainsString($products[1]['title'], json_encode($run));
+    }
+
+    /** @test */
     public function commerce_countries_tag()
     {
         $countries = factory(Country::class, 15)->create();
@@ -291,6 +323,23 @@ class CommerceTagsTest extends TestCase
     /** @test */
     public function commerce_form_tag()
     {
-        //
+        $this->tag->setParameters([
+            'for' => 'checkout',
+        ]);
+
+        $this->tag->setContent('
+            <input type="text" name="name" value="Duncan McClean">
+            <input type="email" name="email" value="duncan@example.com">
+            
+            <button type="submit">Submit</button>
+        ');
+
+        $run = $this->tag->form();
+
+        $this->assertIsString($run);
+        $this->assertStringContainsString('/!/checkout', $run);
+        $this->assertStringContainsString('<input type="text" name="name" value="Duncan McClean">', $run);
+        $this->assertStringContainsString('<input type="email" name="email" value="duncan@example.com">', $run);
+        $this->assertStringContainsString('name="_token"', $run);
     }
 }

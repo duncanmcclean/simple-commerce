@@ -19,7 +19,12 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function build_method_works()
     {
-        // TODO: assert that the build method can call another method
+        $build = $this->builder->build('checkout', ['for' => 'checkout', 'redirect' => '/thanks'], '<input type="text" name="name">');
+
+        $this->assertIsString($build);
+        $this->assertStringContainsString('/!/checkout', $build);
+        $this->assertStringContainsString('<input type="hidden" name="redirect" value="/thanks">', $build);
+        $this->assertStringContainsString('<input type="text" name="name">', $build);
     }
 
     /** @test */
