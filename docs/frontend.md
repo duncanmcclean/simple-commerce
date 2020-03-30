@@ -4,38 +4,38 @@ Simple Commerce provides a few tags you can use and various other things to help
 
 ## Tags
 
-### `{{ commerce:currencyCode }}`
+### `{{ simple-commerce:currencyCode }}`
 
 Returns the code of your chosen currency.
 
-### `{{ commerce:currencySymbol }}`
+### `{{ simple-commerce:currencySymbol }}`
 
 Returns the symbol of your chosen currency.
 
-### `{{ commerce:categories }}`
+### `{{ simple-commerce:categories }}`
 
 #### All Categories
 
 ```html
-{{ commerce:categories }}
+{{ simple-commerce:categories }}
     <h2>{{ title }}</h2>
-{{ /commerce:categories }}
+{{ /simple-commerce:categories }}
 ```
 
 #### Count
 
 ```html
-{{ commerce:categories count='true' }}
+{{ simple-commerce:categories count='true' }}
 ```
 
-### `{{ commerce:products }}`
+### `{{ simple-commerce:products }}`
 
 #### All Products
 
 ```html
-{{ commerce:products }}
+{{ simple-commerce:products }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
 #### Product in Category
@@ -43,9 +43,9 @@ Returns the symbol of your chosen currency.
 `category` should be the `slug` of the category you want to get products of.
 
 ```html
-{{ commerce:products category='clothing' }}
+{{ simple-commerce:products category='clothing' }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
 #### Where
@@ -53,9 +53,9 @@ Returns the symbol of your chosen currency.
 You can get products where a field is something. For example if I want to get products where the `is_enabled` is `true`, I'd do something like this:
 
 ```html
-{{ commerce:products where='slug:toothbrush' }}
+{{ simple-commerce:products where='slug:toothbrush' }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
 It would output a loop of products that have are enabled. However, if you actually wanted to do that, using the next parameter would be nicer 😃
@@ -65,15 +65,15 @@ It would output a loop of products that have are enabled. However, if you actual
 Include disabled products in your results.
 
 ```html
-{{ commerce:products include_disabled='true' }}
+{{ simple-commerce:products include_disabled='true' }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
 #### Count
 
 ```html
-{{ commerce:products count='true' }}
+{{ simple-commerce:products count='true' }}
 ```
 
 #### First
@@ -81,32 +81,32 @@ Include disabled products in your results.
 Sometimes you may come across a situation where you just want to get the first product in the results. That is what `first` is for.
 
 ```html
-{{ commerce:products first='true' }}
+{{ simple-commerce:products first='true' }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
-### `{{ commerce:countries }}`
+### `{{ simple-commerce:countries }}`
 
 Returns an array of countries.
 
 ```html
 <select name="country">
-    {{ commerce:countries }}
+    {{ simple-commerce:countries }}
         <option value="{{ iso }}">{{ name }}</option>
-    {{ /commerce:countries }}
+    {{ /simple-commerce:countries }}
 </select>
 ```
 
-### `{{ commerce:states }}`
+### `{{ simple-commerce:states }}`
 
 #### All States
 
 ```html
 <select name="state">
-    {{ commerce:states }}
+    {{ simple-commerce:states }}
         <option value="{{ abreviation }}">{{ name }}</option>
-    {{ /commerce:states }}
+    {{ /simple-commerce:states }}
 </select>
 ```
 
@@ -118,9 +118,9 @@ Returns an array of states in a country.
 
 ```html
 <select name="state">
-    {{ commerce:states country='USD' }}
+    {{ simple-commerce:states country='USD' }}
         <option value="{{ abreviation }}">{{ name }}</option>
-    {{ /commerce:states }}
+    {{ /simple-commerce:states }}
 </select>
 ```
 
@@ -130,17 +130,17 @@ Returns a `<form>` with a set action and method to point to Simple Commerce's ac
 
 #### Example
 
-Here's a quick example of a checkout form that uses the `commerce:form` tag.
+Here's a quick example of a checkout form that uses the `simple-commerce:form` tag.
 
 **In your template:**
 
 ```html
-{{ commerce:form for='checkout' redirect='/thanks' class='flex flex-col w-full' }}
+{{ simple-commerce:form for='checkout' redirect='/thanks' class='flex flex-col w-full' }}
     <input type="text" name="name">
     <input type="text" name="email">
 
     <button>Checkout</button>
-{{ /commerce:form }}
+{{ /simple-commerce:form }}
 ```
 
 **And the output in your browser:**
@@ -164,10 +164,10 @@ We'll also add in a CSRF field for you too, for good luck!
 #### Count
 
 ```html
-{{ commerce:states count='true' }}
+{{ simple-commerce:states count='true' }}
 ```
 
-### `{{ commerce:currencies }}`
+### `{{ simple-commerce:currencies }}`
 
 Returns an array of currencies.
 
@@ -175,9 +175,9 @@ Returns an array of currencies.
 <p>We support these currencies:</p>
 
 <ul>
-    {{ commerce:currencies }}
+    {{ simple-commerce:currencies }}
         <li>{{ name }}</li>
-    {{ /commerce:currencies }}
+    {{ /simple-commerce:currencies }}
 </ul>
 ```
 
@@ -204,7 +204,7 @@ Get a count of the items in the customers' cart.
 Returns the total amount of the customers' cart.
 
 ```html
-<p>The total of your cart {{ commerce:currency_symbol }}{{ cart:count }}.</p>
+<p>The total of your cart {{ simple-commerce:currency_symbol }}{{ cart:count }}.</p>
 ```
 
 ## Modifiers

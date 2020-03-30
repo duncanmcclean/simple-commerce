@@ -10,12 +10,11 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Statamic\Facades\Antlers;
 use Statamic\Tags\Tags;
 
-class CommerceTags extends Tags
+class SimpleCommerceTag extends Tags
 {
-    protected static $handle = 'commerce';
+    protected static $handle = 'simple-commerce';
 
     public function currencyCode()
     {

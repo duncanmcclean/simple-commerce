@@ -2,12 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Cart;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use Statamic\Tags\Tags;
 
-class CartTags extends Tags
+class CartTag extends Tags
 {
     use UsesCart;
 

@@ -4,13 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
-use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\CartTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 
-class CartTagsTest extends TestCase
+class CartTagTest extends TestCase
 {
     use RefreshDatabase;
 

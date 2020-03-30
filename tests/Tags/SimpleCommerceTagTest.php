@@ -8,13 +8,13 @@ use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Antlers;
 
-class CommerceTagsTest extends TestCase
+class SimpleCommerceTagTest extends TestCase
 {
     public $tag;
 
@@ -24,7 +24,7 @@ class CommerceTagsTest extends TestCase
     {
         parent::setUp();
 
-        $this->tag = (new CommerceTags())
+        $this->tag = (new SimpleCommerceTag())
             ->setParser(Antlers::parser())
             ->setContext([]);
     }
