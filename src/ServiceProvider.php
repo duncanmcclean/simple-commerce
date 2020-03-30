@@ -186,15 +186,6 @@ class ServiceProvider extends AddonServiceProvider
 
         Nav::extend(function ($nav) {
             $nav
-                ->create('Customers')
-                ->section('Simple Commerce')
-                ->route('customers.index')
-                ->can('view customers')
-                ->icon('user');
-        });
-
-        Nav::extend(function ($nav) {
-            $nav
                 ->create('Settings')
                 ->section('Simple Commerce')
                 ->route('settings.index')
@@ -222,19 +213,6 @@ class ServiceProvider extends AddonServiceProvider
         Permission::group('simple-commerce', 'Simple Commerce', function () {
             Permission::register('edit simple commerce settings')
                 ->label('Edit Simple Commerce Settings');
-
-            Permission::register('view customers', function ($permission) {
-                $permission->children([
-                    Permission::make('edit customers')
-                        ->label('Edit customers')
-                        ->children([
-                            Permission::make('create customers')
-                                ->label('Create Customers'),
-                            Permission::make('delete customers')
-                                ->label('Delete Customers'),
-                        ]),
-                ]);
-            })->label('View Customers');
 
             Permission::register('view orders', function ($permission) {
                 $permission->children([

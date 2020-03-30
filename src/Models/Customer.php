@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated;
+use DoubleThreeDigital\SimpleCommerce\IsACustomer;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -11,26 +12,15 @@ use Statamic\Facades\Blueprint;
 
 class Customer extends Model
 {
-    use Notifiable, HasUuid;
+    /**
+     * This model is pretty much useless right now...
+     */
+
+    use Notifiable, HasUuid, IsACustomer;
 
     protected $fillable = [
         'uuid', 'name', 'email',
     ];
-
-    protected $dispatchesEvents = [
-        'created' => CustomerCreated::class,
-        'updated' => CustomerUpdated::class,
-    ];
-
-    public function addresses()
-    {
-        return $this->hasMany(Address::class);
-    }
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
 
     public function createUrl()
     {

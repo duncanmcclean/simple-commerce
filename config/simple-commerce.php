@@ -61,6 +61,17 @@ return [
     ],
 
     /**
+     * Customers
+     *
+     * Configure how you'd like to handle customers
+     * in your store.
+     */
+
+    'customers' => [
+        'model' => \App\User::class,
+    ],
+
+    /**
      * Other Settings
      *
      * Some other settings for Simple Commerce.

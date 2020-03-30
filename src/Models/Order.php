@@ -33,7 +33,7 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(get_class(config('customers.model')));
     }
 
     public function orderStatus()
