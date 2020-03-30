@@ -128,4 +128,30 @@ class SimpleCommerceTag extends Tags
     {
         return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
     }
+
+    public function errors()
+    {
+        if (! (new FormBuilder())->hasErrors()) {
+            return false;
+        }
+
+        $errors = [];
+
+        foreach (session('errors')->getBag('form.'.$this->getParam('for'))->all() as $error) {
+            $errors[]['value'] = $error;
+        }
+
+        return ($this->content === '')
+            ? !empty($errors)
+            : $this->parseLoop($errors);
+    }
+
+    public function success()
+    {
+        if (! $this->getParam('for')) {
+            return false;
+        }
+
+        return session()->has("form.{$this->getParam('for')}.success");
+    }
 }

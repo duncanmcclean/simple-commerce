@@ -4,8 +4,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Helpers;
 
 class FormBuilder
 {
+    public $form;
+
     public function build(string $form, array $params, string $contents)
     {
+        $this->form = $form;
+
         return $this->{$form}($params, $contents);
     }
 
@@ -19,7 +23,7 @@ class FormBuilder
         return $this->compose(route('statamic.simple-commerce.cart.update'), 'POST', $params, $contents);
     }
 
-    public function cartDestroy(array $params, string $contents)
+    public function cartDelete(array $params, string $contents)
     {
         return $this->compose(route('statamic.simple-commerce.cart.destroy'), 'POST', $params, $contents);
     }
@@ -31,7 +35,7 @@ class FormBuilder
 
     protected function compose(string $action, string $method, array $params, string $contents)
     {
-        // TODO: form errors
+        $errors = $this->getErrorBag();
 
         $body = $contents;
         $body .= csrf_field();
@@ -49,5 +53,17 @@ class FormBuilder
         }
 
         return '<form action="'.$action.'" method="'.$method.'" '.$formParameters.'>'.$body.'</form>';
+    }
+
+    public function hasErrors()
+    {
+        return session()->has('errors') ? session()->get('errors')->hasBag('form.'.$this->form) : false;
+    }
+
+    public function getErrorBag()
+    {
+        if ($this->hasErrors()) {
+            return session('errors')->getBag('form.'.$this->form);
+        }
     }
 }

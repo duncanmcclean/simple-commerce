@@ -22,7 +22,7 @@ class CartTagTest extends TestCase
 
         // TODO: set a session store
 
-//        $this->tag = (new CartTags())
+//        $this->tag = (new CartTag())
 //            ->setParameters(Antlers::parser())
 //            ->setContext([]);
     }

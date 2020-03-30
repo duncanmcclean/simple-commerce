@@ -138,7 +138,7 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function a_cart_destroy_form_can_be_built()
     {
-        $form = $this->builder->cartDestroy([], '
+        $form = $this->builder->cartDelete([], '
             <input type="hidden" name="item_id" value="2ec1c9da-6947-478a-ad7c-6fa35233d46e">
             <input type="number" name="quantity" value="1">
         ');
@@ -153,7 +153,7 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function a_cart_destroy_form_can_be_built_with_a_redirect()
     {
-        $form = $this->builder->cartDestroy([
+        $form = $this->builder->cartDelete([
             'redirect' => '/thanks'
         ], '
             <input type="hidden" name="item_id" value="2ec1c9da-6947-478a-ad7c-6fa35233d46e">
@@ -171,7 +171,7 @@ class FormBuilderTest extends TestCase
     /** @test */
     public function a_cart_destroy_form_can_be_built_with_form_parameters()
     {
-        $form = $this->builder->cartDestroy([
+        $form = $this->builder->cartDelete([
             'class' => 'flex flex-col'
         ], '
             <input type="hidden" name="item_id" value="2ec1c9da-6947-478a-ad7c-6fa35233d46e">

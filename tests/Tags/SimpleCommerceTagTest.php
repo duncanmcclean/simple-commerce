@@ -32,7 +32,7 @@ class SimpleCommerceTagTest extends TestCase
     /** @test */
     public function commerce_tag_is_registered()
     {
-        $this->assertTrue(isset(app()['statamic.tags']['commerce']));
+        $this->assertTrue(isset(app()['statamic.tags']['simple-commerce']));
     }
 
     /** @test */
@@ -337,9 +337,31 @@ class SimpleCommerceTagTest extends TestCase
         $run = $this->tag->form();
 
         $this->assertIsString($run);
-        $this->assertStringContainsString('/!/checkout', $run);
+        $this->assertStringContainsString('/!/simple-commerce/checkout', $run);
         $this->assertStringContainsString('<input type="text" name="name" value="Duncan McClean">', $run);
         $this->assertStringContainsString('<input type="email" name="email" value="duncan@example.com">', $run);
         $this->assertStringContainsString('name="_token"', $run);
+    }
+
+    /** @test */
+    public function commerce_errors_tag()
+    {
+        //
+    }
+
+    /** @test */
+    public function commerce_success_tag()
+    {
+        $this->session([
+            'form.checkout.success' => 'Your payment is being processed.',
+        ]);
+
+        $this->tag->setParameters([
+            'for' => 'checkout',
+        ]);
+
+        $run = $this->tag->success();
+
+        $this->assertTrue($run);
     }
 }
