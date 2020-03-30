@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductSearchRequest extends FormRequest
+class CartUpdateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,9 @@ class ProductSearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'query' => 'required|string',
+            'item_id'   => 'required|string',
+            'quantity'  => 'required|integer',
+            'redirect'  => 'nullable|string',
         ];
     }
 }

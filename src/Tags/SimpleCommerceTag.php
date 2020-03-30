@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -9,14 +10,11 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route;
-use Statamic\Statamic;
 use Statamic\Tags\Tags;
 
-class CommerceTags extends Tags
+class SimpleCommerceTag extends Tags
 {
-    protected static $handle = 'commerce';
+    protected static $handle = 'simple-commerce';
 
     public function currencyCode()
     {
@@ -26,19 +24,6 @@ class CommerceTags extends Tags
     public function currencySymbol()
     {
         return (new CurrencyHelper())->symbol();
-    }
-
-    public function route()
-    {
-        if ($this->getParam('key') === null) {
-            throw new \Exception('Please set a route key. You are currently sending:'.json_encode($this->params));
-        }
-
-        if (! Route::has($this->getParam('key'))) {
-            throw new \Exception("The route key ({$this->getParam('key')}) you are referencing does not exist.");
-        }
-
-        return route($this->getParam('key'), Arr::except($this->params, ['key']));
     }
 
     public function categories()
@@ -59,6 +44,13 @@ class CommerceTags extends Tags
         if ($this->getParam('category') != null) {
             $category = ProductCategory::where('slug', $this->getParam('category'))->first();
             $products = $products->where('product_category_id', $category->id);
+        }
+
+        if ($where = $this->getParam('where')) {
+            $key = explode(':', $where)[0];
+            $value = explode(':', $where)[1];
+
+            $products = $products->where($key, $value);
         }
 
         if (! $this->getParam('include_disabled')) {
@@ -95,6 +87,10 @@ class CommerceTags extends Tags
             return $products->count();
         }
 
+        if ($this->getParam('first')) {
+            return $products->first()->toArray();
+        }
+
         return $products->toArray();
     }
 
@@ -126,5 +122,36 @@ class CommerceTags extends Tags
     public function gateways()
     {
         return SimpleCommerce::gateways();
+    }
+
+    public function form()
+    {
+        return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
+    }
+
+    public function errors()
+    {
+        if (! (new FormBuilder())->hasErrors()) {
+            return false;
+        }
+
+        $errors = [];
+
+        foreach (session('errors')->getBag('form.'.$this->getParam('for'))->all() as $error) {
+            $errors[]['value'] = $error;
+        }
+
+        return ($this->content === '')
+            ? !empty($errors)
+            : $this->parseLoop($errors);
+    }
+
+    public function success()
+    {
+        if (! $this->getParam('for')) {
+            return false;
+        }
+
+        return session()->has("form.{$this->getParam('for')}.success");
     }
 }

@@ -15,10 +15,6 @@ class ProductCategory extends Model
         'uuid', 'title', 'slug',
     ];
 
-    protected $appends = [
-        'url',
-    ];
-
     protected $dispatchesEvents = [
         'updated' => ProductCategoryUpdated::class,
     ];
@@ -26,11 +22,6 @@ class ProductCategory extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
-    }
-
-    public function getUrlAttribute()
-    {
-        return route('categories.show', ['category' => $this->attributes['slug']]);
     }
 
     public function createUrl()

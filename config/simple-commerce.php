@@ -47,29 +47,6 @@ return [
     ],
 
     /**
-     * Routes
-     *
-     * Simple Commerce provides a set of web routes to make your store
-     * function. You can change these routes if you have other
-     * preferences.
-     */
-
-    'routes' => [
-        'cart_index' => '/cart',
-        'cart_store' => '/cart/add',
-        'cart_update' => '/cart/update',
-        'cart_clear' => '/cart/clear',
-        'cart_remove' => '/cart/remove',
-        'checkout_show' => '/checkout',
-        'checkout_store' => '/checkout/store',
-        'checkout_redirect' => '/thank-you',
-        'product_index' => '/products',
-        'product_search' => '/products/search',
-        'product_show' => '/products/{product}',
-        'categories_show' => '/category/{category}',
-    ],
-
-    /**
      * Notifications
      *
      * Configure where we send your store's back

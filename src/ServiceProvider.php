@@ -44,8 +44,8 @@ use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductPolicy;
-use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
-use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\CartTag;
+use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
 use Statamic\Facades\CP\Nav;
@@ -85,8 +85,8 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $tags = [
-        CartTags::class,
-        CommerceTags::class,
+        CartTag::class,
+        SimpleCommerceTag::class,
     ];
 
     protected $fieldtypes = [
@@ -127,8 +127,8 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $routes = [
+        'actions' => __DIR__.'/../routes/actions.php',
         'cp' => __DIR__.'/../routes/cp.php',
-        'web' => __DIR__.'/../routes/web.php',
     ];
 
     public function boot()

@@ -1,57 +1,41 @@
 # Front-end
 
-By default, Simple Commerce provides you with a boilerplate front-end. We wouldn't recommend using this boilerplate in product but only as an example of how things work together.
-
-The boilerplate should get published to `resources/views/vendor` during installation, but you can also find them [on Github](../resources/views/web).
+Simple Commerce provides a few tags you can use and various other things to help you craft a unique front-end for your store. We've built an [example store theme layout](https://github.com/doublethreedigital/simple-commerce-example) if you're looking for use cases.
 
 ## Tags
 
-### `{{ commerce:currencyCode }}`
+### `{{ simple-commerce:currencyCode }}`
 
 Returns the code of your chosen currency.
 
-### `{{ commerce:currencySymbol }}`
+### `{{ simple-commerce:currencySymbol }}`
 
 Returns the symbol of your chosen currency.
 
-### `{{ commerce:route }}`
-
-Returns Simple Commerce routes using the route names defined in [`web.php`](https://github.com/doublethreedigital/simple-commerce/blob/master/routes/web.php).
-
-```html
-<a href="{{ commerce:route key='products.index' }}">All Products</a> 
-```
-
-The `commerce:route` tag also supports passing in parameters. For example, if you need to pass in the `product` parameter, just pass it into the tag, like so:
-
-```html
-{{ commerce:route key='products.show' product='uuid' }}
-```
-
-### `{{ commerce:categories }}`
+### `{{ simple-commerce:categories }}`
 
 #### All Categories
 
 ```html
-{{ commerce:categories }}
+{{ simple-commerce:categories }}
     <h2>{{ title }}</h2>
-{{ /commerce:categories }}
+{{ /simple-commerce:categories }}
 ```
 
 #### Count
 
 ```html
-{{ commerce:categories count='true' }}
+{{ simple-commerce:categories count='true' }}
 ```
 
-### `{{ commerce:products }}`
+### `{{ simple-commerce:products }}`
 
 #### All Products
 
 ```html
-{{ commerce:products }}
+{{ simple-commerce:products }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
 #### Product in Category
@@ -59,48 +43,70 @@ The `commerce:route` tag also supports passing in parameters. For example, if yo
 `category` should be the `slug` of the category you want to get products of.
 
 ```html
-{{ commerce:products category='clothing' }}
+{{ simple-commerce:products category='clothing' }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
+
+#### Where
+
+You can get products where a field is something. For example if I want to get products where the `is_enabled` is `true`, I'd do something like this:
+
+```html
+{{ simple-commerce:products where='slug:toothbrush' }}
+    <h2>{{ title }}</h2>
+{{ /simple-commerce:products }}
+```
+
+It would output a loop of products that have are enabled. However, if you actually wanted to do that, using the next parameter would be nicer 😃
 
 #### Include Disabled
 
 Include disabled products in your results.
 
 ```html
-{{ commerce:products include_disabled='true' }}
+{{ simple-commerce:products include_disabled='true' }}
     <h2>{{ title }}</h2>
-{{ /commerce:products }}
+{{ /simple-commerce:products }}
 ```
 
 #### Count
 
 ```html
-{{ commerce:products count='true' }}
+{{ simple-commerce:products count='true' }}
 ```
 
-### `{{ commerce:countries }}`
+#### First
+
+Sometimes you may come across a situation where you just want to get the first product in the results. That is what `first` is for.
+
+```html
+{{ simple-commerce:products first='true' }}
+    <h2>{{ title }}</h2>
+{{ /simple-commerce:products }}
+```
+
+### `{{ simple-commerce:countries }}`
 
 Returns an array of countries.
 
 ```html
 <select name="country">
-    {{ commerce:countries }}
+    {{ simple-commerce:countries }}
         <option value="{{ iso }}">{{ name }}</option>
-    {{ /commerce:countries }}
+    {{ /simple-commerce:countries }}
 </select>
 ```
 
-### `{{ commerce:states }}`
+### `{{ simple-commerce:states }}`
 
 #### All States
 
 ```html
 <select name="state">
-    {{ commerce:states }}
+    {{ simple-commerce:states }}
         <option value="{{ abreviation }}">{{ name }}</option>
-    {{ /commerce:states }}
+    {{ /simple-commerce:states }}
 </select>
 ```
 
@@ -112,19 +118,56 @@ Returns an array of states in a country.
 
 ```html
 <select name="state">
-    {{ commerce:states country='USD' }}
+    {{ simple-commerce:states country='USD' }}
         <option value="{{ abreviation }}">{{ name }}</option>
-    {{ /commerce:states }}
+    {{ /simple-commerce:states }}
 </select>
 ```
+
+### Form
+
+Returns a `<form>` with a set action and method to point to Simple Commerce's actions.
+
+#### Example
+
+Here's a quick example of a checkout form that uses the `simple-commerce:form` tag.
+
+**In your template:**
+
+```html
+{{ simple-commerce:form for='checkout' redirect='/thanks' class='flex flex-col w-full' }}
+    <input type="text" name="name">
+    <input type="text" name="email">
+
+    <button>Checkout</button>
+{{ /simple-commerce:form }}
+```
+
+**And the output in your browser:**
+
+```html
+<form action="http://yourstore.test/!/simple-commerce/checkout" method="POST" class="flex flex-col w-full">
+    <input type="text" name="name">
+    <input type="text" name="email">
+    
+    <button>Checkout</button>
+
+    <input type="hidden" name="_token" value="someRand0mSt6ff">
+    <input type="hidden" name="redirect" value="/thanks">
+</form>
+```
+
+To walk you through how it works. The `for` param chooses which action and method to use. You can also add a `redirect` attribute which will redirect your user to wherever you want when the form is successful. Any other parameters you add will just be added to the `<form>` element.
+
+We'll also add in a CSRF field for you too, for good luck!
 
 #### Count
 
 ```html
-{{ commerce:states count='true' }}
+{{ simple-commerce:states count='true' }}
 ```
 
-### `{{ commerce:currencies }}`
+### `{{ simple-commerce:currencies }}`
 
 Returns an array of currencies.
 
@@ -132,9 +175,9 @@ Returns an array of currencies.
 <p>We support these currencies:</p>
 
 <ul>
-    {{ commerce:currencies }}
+    {{ simple-commerce:currencies }}
         <li>{{ name }}</li>
-    {{ /commerce:currencies }}
+    {{ /simple-commerce:currencies }}
 </ul>
 ```
 
@@ -161,7 +204,7 @@ Get a count of the items in the customers' cart.
 Returns the total amount of the customers' cart.
 
 ```html
-<p>The total of your cart {{ commerce:currency_symbol }}{{ cart:count }}.</p>
+<p>The total of your cart {{ simple-commerce:currency_symbol }}{{ cart:count }}.</p>
 ```
 
 ## Modifiers
@@ -173,13 +216,3 @@ If you want to change a price from being a number like `15` to being formatted l
 ```html
 {{ from_price | price }}
 ```
-
-## Form Endpoints
-
-On the front-end, Simple Commerce uses lots of form request to do things like adding to the user's cart, redeeming a coupon and processing an order. Here's a list of the form endpoints that we provide, we'll add more detailed documentation on them later.
-
-* `/cart` - Adds an item to the user's cart
-* `/cart/clear` - Clears the user's cart
-* `/cart/update` - Update cart items (individually)
-* `/cart/delete` - Removes an item from the user's cart
-* `/checkout` - Processes the user's information, charges the customer and creates an order

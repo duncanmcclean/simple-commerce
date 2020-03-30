@@ -8,13 +8,13 @@ use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use DoubleThreeDigital\SimpleCommerce\Tags\CommerceTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Antlers;
 
-class CommerceTagsTest extends TestCase
+class SimpleCommerceTagTest extends TestCase
 {
     public $tag;
 
@@ -24,7 +24,7 @@ class CommerceTagsTest extends TestCase
     {
         parent::setUp();
 
-        $this->tag = (new CommerceTags())
+        $this->tag = (new SimpleCommerceTag())
             ->setParser(Antlers::parser())
             ->setContext([]);
     }
@@ -32,7 +32,7 @@ class CommerceTagsTest extends TestCase
     /** @test */
     public function commerce_tag_is_registered()
     {
-        $this->assertTrue(isset(app()['statamic.tags']['commerce']));
+        $this->assertTrue(isset(app()['statamic.tags']['simple-commerce']));
     }
 
     /** @test */
@@ -65,41 +65,6 @@ class CommerceTagsTest extends TestCase
         $run = $this->tag->currencySymbol();
 
         $this->assertSame($run, '£');
-    }
-
-    /** @test */
-    public function commerce_route_tag_works_with_key()
-    {
-        $this->tag->setParameters([
-            'key' => 'products.index',
-        ]);
-
-        $route = $this->tag->route();
-
-        $this->assertIsString($route);
-        $this->assertStringContainsString('/products', $route);
-    }
-
-    /** @test */
-    public function commerce_route_tag_does_not_work_with_no_key()
-    {
-        $this->tag->setParameters([]);
-
-        $this->expectExceptionMessage('Please set a route key.');
-
-        $route = $this->tag->route();
-    }
-
-    /** @test */
-    public function commerce_route_tag_does_not_work_with_invalid_key()
-    {
-        $this->tag->setParameters([
-            'key' => 'fish-tank'
-        ]);
-
-        $this->expectExceptionMessage('The route key (fish-tank) you are referencing does not exist.');
-
-        $route = $this->tag->route();
     }
 
     /** @test */
@@ -154,6 +119,22 @@ class CommerceTagsTest extends TestCase
 
         $this->assertIsArray($run);
         $this->assertStringContainsString($products[2]['title'], json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_products_tag_where()
+    {
+        $products = factory(Product::class, 5)->create();
+
+        $this->tag->setParameters([
+            'where' => 'slug:'.$products[0]['slug'],
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($products[0]['title'], json_encode($run));
+        $this->assertStringNotContainsString($products[1]['title'], json_encode($run));
     }
 
     /** @test */
@@ -261,6 +242,22 @@ class CommerceTagsTest extends TestCase
     }
 
     /** @test */
+    public function commerce_products_tag_first()
+    {
+        $products = factory(Product::class, 2)->create();
+
+        $this->tag->setParameters([
+            'first' => 'true',
+        ]);
+
+        $run = $this->tag->products();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($products[0]['title'], json_encode($run));
+        $this->assertStringNotContainsString($products[1]['title'], json_encode($run));
+    }
+
+    /** @test */
     public function commerce_countries_tag()
     {
         $countries = factory(Country::class, 15)->create();
@@ -321,5 +318,50 @@ class CommerceTagsTest extends TestCase
 
         $this->assertIsArray($run);
         $this->assertStringContainsString('Dummy', json_encode($run));
+    }
+
+    /** @test */
+    public function commerce_form_tag()
+    {
+        $this->tag->setParameters([
+            'for' => 'checkout',
+        ]);
+
+        $this->tag->setContent('
+            <input type="text" name="name" value="Duncan McClean">
+            <input type="email" name="email" value="duncan@example.com">
+            
+            <button type="submit">Submit</button>
+        ');
+
+        $run = $this->tag->form();
+
+        $this->assertIsString($run);
+        $this->assertStringContainsString('/!/simple-commerce/checkout', $run);
+        $this->assertStringContainsString('<input type="text" name="name" value="Duncan McClean">', $run);
+        $this->assertStringContainsString('<input type="email" name="email" value="duncan@example.com">', $run);
+        $this->assertStringContainsString('name="_token"', $run);
+    }
+
+    /** @test */
+    public function commerce_errors_tag()
+    {
+        //
+    }
+
+    /** @test */
+    public function commerce_success_tag()
+    {
+        $this->session([
+            'form.checkout.success' => 'Your payment is being processed.',
+        ]);
+
+        $this->tag->setParameters([
+            'for' => 'checkout',
+        ]);
+
+        $run = $this->tag->success();
+
+        $this->assertTrue($run);
     }
 }
