@@ -2,7 +2,7 @@
 name: 'Bug Report'
 about: Report a Simple Commerce bug
 title: ''
-labels: 'bug'
+labels: bug
 assignees: ''
 ---
 
