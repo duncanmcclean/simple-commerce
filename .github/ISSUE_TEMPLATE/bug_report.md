@@ -1,6 +1,6 @@
 ---
-name: 'Bug Report'
-about: Report a Simple Commerce bug
+name: '🐛 Bug Report'
+about: Report a bug or issue in Simple Commerce
 title: ''
 labels: bug
 assignees: ''
