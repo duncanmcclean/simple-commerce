@@ -17,7 +17,7 @@ class ProductController extends CpController
         $this->authorize('view', Product::class);
 
         return view('simple-commerce::cp.products.index', [
-            'products' => Product::paginate(config('statamic.cp.pagination_size')),
+            'products'  => Product::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Product())->createUrl(),
         ]);
     }
@@ -46,11 +46,11 @@ class ProductController extends CpController
         $this->authorize('create', Product::class);
 
         $product = Product::create([
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'description' => $request->description,
-            'product_category_id' => $request->category[0] ?? null,
-            'is_enabled' => $request->is_enabled,
+            'title'                 => $request->title,
+            'slug'                  => $request->slug,
+            'description'           => $request->description,
+            'product_category_id'   => $request->category[0] ?? null,
+            'is_enabled'            => $request->is_enabled,
         ]);
 
         collect($request)
@@ -59,27 +59,25 @@ class ProductController extends CpController
                     return true;
                 }
             })
-            ->map(function ($value, $key) use ($product) {
+            ->each(function ($value, $key) use ($product) {
                 $key = str_replace('attributes_', '', $key);
 
-                $attribute = $product->attributes()->create([
+                $product->attributes()->create([
                     'key'   => $key,
                     'value' => $value,
                 ]);
-
-                return $attribute;
             });
 
         collect($request->variants)
             ->each(function ($theVariant) use ($product, $request) {
                 $variant = $product->variants()->create([
-                    'name' => $theVariant['name'],
-                    'sku' => $theVariant['sku'],
-                    'price' => $theVariant['price'],
-                    'stock' => $theVariant['stock_number'],
-                    'unlimited_stock' => $theVariant['unlimited_stock'],
-                    'max_quantity' => $theVariant['max_quantity'],
-                    'description' => $theVariant['description'],
+                    'name'              => $theVariant['name'],
+                    'sku'               => $theVariant['sku'],
+                    'price'             => $theVariant['price'],
+                    'stock'             => $theVariant['stock_number'],
+                    'unlimited_stock'   => $theVariant['unlimited_stock'],
+                    'max_quantity'      => $theVariant['max_quantity'],
+                    'description'       => $theVariant['description'],
                 ]);
 
                 collect($theVariant)
@@ -153,11 +151,11 @@ class ProductController extends CpController
         $this->authorize('update', $product);
 
         $product->update([
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'description' => $request->description,
-            'product_category_id' => $request->category,
-            'is_enabled' => $request->is_enabled,
+            'title'                 => $request->title,
+            'slug'                  => $request->slug,
+            'description'           => $request->description,
+            'product_category_id'   => $request->category,
+            'is_enabled'            => $request->is_enabled,
         ]);
 
         collect($request)
@@ -166,32 +164,30 @@ class ProductController extends CpController
                     return true;
                 }
             })
-            ->map(function ($value, $key) use ($product) {
+            ->each(function ($value, $key) use ($product) {
                 $key = str_replace('attributes_', '', $key);
 
-                $attribute = $product->attributes()->updateOrCreate([
-                    'key' => $key,
+                $product->attributes()->updateOrCreate([
+                    'key'   => $key,
                 ], [
-                    'key' => $key,
+                    'key'   => $key,
                     'value' => $value,
                 ]);
-
-                return $attribute;
             });
 
         collect($request->variants)
             ->map(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
-                    'uuid' => $variant['uuid'] ?? null,
+                    'uuid'              => $variant['uuid'] ?? null,
                 ], [
-                    'name' => $variant['name'],
-                    'sku' => $variant['sku'],
-                    'price' => $variant['price'],
-                    'stock' => $variant['stock_number'],
-                    'unlimited_stock' => $variant['unlimited_stock'],
-                    'max_quantity' => $variant['max_quantity'],
-                    'description' => $variant['description'],
-                    'product_id' => $product->id,
+                    'name'              => $variant['name'],
+                    'sku'               => $variant['sku'],
+                    'price'             => $variant['price'],
+                    'stock'             => $variant['stock_number'],
+                    'unlimited_stock'   => $variant['unlimited_stock'],
+                    'max_quantity'      => $variant['max_quantity'],
+                    'description'       => $variant['description'],
+                    'product_id'        => $product->id,
                 ]);
 
                 collect($variant)
@@ -200,17 +196,15 @@ class ProductController extends CpController
                             return true;
                         }
                     })
-                    ->map(function ($value, $key) use ($item) {
+                    ->each(function ($value, $key) use ($item) {
                         $key = str_replace('attributes_', '', $key);
 
-                        $attribute = $item->attributes()->updateOrCreate([
-                            'key' => $key,
+                        $item->attributes()->updateOrCreate([
+                            'key'   => $key,
                         ], [
-                            'key' => $key,
+                            'key'   => $key,
                             'value' => $value,
                         ]);
-
-                        return $attribute;
                     });
 
                 return $variant;
