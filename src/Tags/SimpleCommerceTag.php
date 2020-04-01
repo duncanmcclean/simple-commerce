@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
+use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -39,7 +40,7 @@ class SimpleCommerceTag extends Tags
 
     public function products()
     {
-        $products = Product::with('variants', 'variants.attributes', 'productCategory', 'attributes')->get();
+        $products = Product::with('variants', 'productCategory')->get();
 
         if ($this->getParam('category') != null) {
             $category = ProductCategory::where('slug', $this->getParam('category'))->first();
