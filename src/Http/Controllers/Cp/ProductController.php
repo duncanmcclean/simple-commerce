@@ -174,34 +174,26 @@ class ProductController extends CpController
                     'product_id' => $product->id,
                 ]);
 
-                $requestAttributes = collect($variant['variant_attributes'])
-                    ->map(function ($attribute) use ($item) {
-                        if ($attribute['key'] === null) {
-                            return $attribute;
+                $requestAttributes = collect($variant)
+                    ->reject(function ($value, $key) {
+                        if (str_contains($key, 'attributes')) {
+                            return false;
                         }
 
-                        $attributeRecord = $item->attributes()->updateOrCreate([
-                            'uuid' => $attribute['uuid'],
-                        ], [
-                            'key' => $attribute['key'],
-                            'value' => $attribute['value'],
-                        ]);
+                        return true;
+                    })
+                    ->map(function ($value, $key) use ($item) {
+                        $key = str_replace('attributes_', '', $key);
 
-                        $attribute['uuid'] = $attributeRecord->uuid;
+                        $attribute = $item->attributes()->updateOrCreate([
+                            'key' => $key,
+                        ], [
+                            'key' => $key,
+                            'value' => $value,
+                        ]);
 
                         return $attribute;
                     });
-
-                $item->attributes
-                    ->filter(function ($attribute) use ($requestAttributes) {
-                        return ! $requestAttributes
-                            ->contains(function ($requestAttribute) use ($attribute) {
-                                return $attribute->uuid === $requestAttribute['uuid'];
-                            });
-                    })
-                    ->each->delete();
-
-                $variant['uuid'] = $item->uuid;
 
                 return $variant;
             });
@@ -221,8 +213,6 @@ class ProductController extends CpController
     {
         $this->authorize('delete', $product);
 
-        $product->attributes()->delete();
-        //$product->variants()->attributes()->delete(); // TODO: if variants have no attributes, this goes off on one
         $product->variants()->delete();
         $product->delete();
 

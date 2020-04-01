@@ -45,4 +45,13 @@ class Variant extends Model
 
         return false;
     }
+
+    public function delete()
+    {
+        parent::delete();
+
+        if ($this->attributes()->count() > 0) {
+            $this->attributes()->delete();
+        }
+    }
 }
