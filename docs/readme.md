@@ -19,6 +19,7 @@ Unlike Statamic itself using flat-files, **Simple Commerce uses a MySQL database
 ## Extending
 
 * [Events](./events.md)
+* [Custom Attributes](./attributes.md)
 
 ## Knowledge Base
 
