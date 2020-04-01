@@ -63,16 +63,16 @@ sections:
                 validate: required
                 default: 1
             -
-              handle: stock_number
+              handle: stock
               field:
                 type: integer
                 localizable: false
                 width: 33
                 display: 'Stock Number'
                 listable: hidden
+                validate: required
                 unless:
                   unlimited_stock: 'equals true'
-                validate: required
             -
               handle: unlimited_stock
               field:

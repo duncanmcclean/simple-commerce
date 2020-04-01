@@ -74,7 +74,7 @@ class ProductController extends CpController
                     'name'              => $theVariant['name'],
                     'sku'               => $theVariant['sku'],
                     'price'             => $theVariant['price'],
-                    'stock'             => $theVariant['stock_number'],
+                    'stock'             => $theVariant['stock'],
                     'unlimited_stock'   => $theVariant['unlimited_stock'],
                     'max_quantity'      => $theVariant['max_quantity'],
                     'description'       => $theVariant['description'],
@@ -128,7 +128,6 @@ class ProductController extends CpController
 
                 return array_merge($variant, [
                     '_id'           => "row-{$key}",
-                    'stock_number'  => $variant['stock'], // TODO: need to change the blueprint field handle to be the same as the db column name
                 ]);
             }),
         ]);
@@ -183,7 +182,7 @@ class ProductController extends CpController
                     'name'              => $variant['name'],
                     'sku'               => $variant['sku'],
                     'price'             => $variant['price'],
-                    'stock'             => $variant['stock_number'],
+                    'stock'             => $variant['stock'],
                     'unlimited_stock'   => $variant['unlimited_stock'],
                     'max_quantity'      => $variant['max_quantity'],
                     'description'       => $variant['description'],
