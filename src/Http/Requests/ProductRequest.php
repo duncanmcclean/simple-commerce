@@ -21,7 +21,7 @@ class ProductRequest extends FormRequest
             'variants.*.price' => 'required',
             'variants.*.sku' => 'required|string',
             'variants.*.max_quantity' => 'required|integer',
-            'variants.*.stock_number' => 'required|integer',
+            'variants.*.stock' => 'required|integer',
             'variants.*.unlimited_stock' => 'required|boolean',
             'variants.*.description' => 'nullable|string',
             'variants.*.variant_attributes.*.uuid' => 'nullable|string',
