@@ -29,7 +29,6 @@ sections:
                 character_limit: 0
                 type: text
                 localizable: false
-                width: 100
                 display: 'Variant Name'
                 listable: hidden
                 input_type: text
@@ -64,16 +63,16 @@ sections:
                 validate: required
                 default: 1
             -
-              handle: stock_number
+              handle: stock
               field:
                 type: integer
                 localizable: false
                 width: 33
                 display: 'Stock Number'
                 listable: hidden
+                validate: required
                 unless:
                   unlimited_stock: 'equals true'
-                validate: required
             -
               handle: unlimited_stock
               field:
@@ -88,43 +87,8 @@ sections:
                 localizable: false
                 display: Description
             -
-              handle: variant_attributes
-              field:
-                fields:
-                  -
-                    handle: uuid
-                    field:
-                      character_limit: 0
-                      type: hidden
-                      localization: false
-                      display: UUID
-                  -
-                    handle: key
-                    field:
-                      character_limit: 0
-                      type: text
-                      localizable: false
-                      display: Key
-                      listable: hidden
-                      input_type: text
-                      validate: required
-                  -
-                    handle: value
-                    field:
-                      character_limit: 0
-                      type: text
-                      localizable: false
-                      display: Value
-                      listable: hidden
-                      input_type: text
-                      validate: required
-                mode: table
-                reorderable: false
-                type: grid
-                localizable: false
-                display: Attributes
-                listable: true
-                add_row: 'Add Attribute'
+              import: variant_attributes
+              prefix: attributes_
           mode: stacked
           min_rows: 1
           add_row: 'New Variant'
@@ -137,43 +101,8 @@ sections:
     display: Attributes
     fields:
       -
-        handle: product_attributes
-        field:
-          fields:
-            -
-              handle: uuid
-              field:
-                type: hidden
-                localizable: false
-                listable: hidden
-                display: UUID
-            -
-              handle: key
-              field:
-                html_type: text
-                type: text
-                localizable: false
-                listable: hidden
-                display: Key
-                input_type: text
-                validate: required
-            -
-              handle: value
-              field:
-                html_type: text
-                type: text
-                localizable: false
-                listable: hidden
-                display: Value
-                input_type: text
-                validate: required
-          mode: table
-          add_row: 'Add Attribute'
-          reorderable: false
-          type: grid
-          localizable: false
-          listable: true
-          display: Attributes
+        import: product_attributes
+        prefix: attributes_
   sidebar:
     display: Sidebar
     fields:

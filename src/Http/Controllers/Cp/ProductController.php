@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Illuminate\Support\Arr;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -16,7 +17,7 @@ class ProductController extends CpController
         $this->authorize('view', Product::class);
 
         return view('simple-commerce::cp.products.index', [
-            'products' => Product::paginate(config('statamic.cp.pagination_size')),
+            'products'  => Product::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Product())->createUrl(),
         ]);
     }
@@ -45,47 +46,51 @@ class ProductController extends CpController
         $this->authorize('create', Product::class);
 
         $product = Product::create([
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'description' => $request->description,
-            'product_category_id' => $request->category[0] ?? null,
-            'is_enabled' => $request->is_enabled,
+            'title'                 => $request->title,
+            'slug'                  => $request->slug,
+            'description'           => $request->description,
+            'product_category_id'   => $request->category[0] ?? null,
+            'is_enabled'            => $request->is_enabled,
         ]);
 
-        collect($request->product_attributes)
-            ->each(function ($attribute) use ($product) {
-                if ($attribute['key'] === null) {
-                    return;
+        collect($request)
+            ->reject(function ($value, $key) {
+                if (! str_contains($key, 'attributes_')) {
+                    return true;
                 }
+            })
+            ->each(function ($value, $key) use ($product) {
+                $key = str_replace('attributes_', '', $key);
 
                 $product->attributes()->create([
-                    'key' => $attribute['key'],
-                    'value' => $attribute['value'],
+                    'key'   => $key,
+                    'value' => $value,
                 ]);
             });
 
         collect($request->variants)
             ->each(function ($theVariant) use ($product, $request) {
                 $variant = $product->variants()->create([
-                    'name' => $theVariant['name'],
-                    'sku' => $theVariant['sku'],
-                    'price' => $theVariant['price'],
-                    'stock' => $theVariant['stock_number'],
-                    'unlimited_stock' => $theVariant['unlimited_stock'],
-                    'max_quantity' => $theVariant['max_quantity'],
-                    'description' => $theVariant['description'],
+                    'name'              => $theVariant['name'],
+                    'sku'               => $theVariant['sku'],
+                    'price'             => $theVariant['price'],
+                    'stock'             => $theVariant['stock'],
+                    'unlimited_stock'   => $theVariant['unlimited_stock'],
+                    'max_quantity'      => $theVariant['max_quantity'],
+                    'description'       => $theVariant['description'],
                 ]);
 
-                collect($theVariant['variant_attributes'])
-                    ->each(function ($attribute) use ($variant) {
-                        if ($attribute['key'] === null) {
-                            return;
-                        }
+                collect($theVariant)
+                    ->each(function ($value, $key) use ($variant) {
+                        if (str_contains($key, 'attributes_')) {
+                            $attributeKey = str_replace('attributes_', '', $key);
+                            $attributeValue = $value;
 
-                        $variant->attributes()->create([
-                            'key' => $attribute['key'],
-                            'value' => $attribute['value'],
-                        ]);
+                            $variant->attributes()->create([
+                                'key'   => $attributeKey,
+                                'value' => $attributeValue,
+                            ]);
+                        }
                     });
             });
 
@@ -106,34 +111,25 @@ class ProductController extends CpController
             ->where('uuid', $product)
             ->first();
 
-        $values = array_merge($product->toArray(), [
-            'category' => $product->product_category_id,
-            'variants' => $product->variants->map(function (Variant $variant, $key) {
-                return array_merge($variant->toArray(), [
-                    '_id' => 'row-'.$key,
-                    'stock_number' => $variant->stock,
-                    'variant_attributes' => collect($variant->attributes)
-                        ->map(function (Attribute $attribute, $key) {
-                            return [
-                                '_id' => 'row-'.$key,
-                                'uuid' => $attribute->uuid,
-                                'key' => $attribute->key,
-                                'value' => $attribute->value,
-                            ];
-                        })
-                        ->toArray(),
+        $fields = $product->toArray();
+
+        $product->attributes->each(function (Attribute $attribute) use (&$fields) {
+            $fields["attributes_{$attribute->key}"] = $attribute['value'];
+        });
+
+        $values = array_merge($fields, [
+            'category'  => $product->product_category_id,
+            'variants'  => $product->variants->map(function (Variant $originalVariant, $key) {
+                $variant = $originalVariant->toArray();
+
+                $originalVariant->attributes->each(function (Attribute $attribute) use (&$variant) {
+                    $variant["attributes_{$attribute->key}"] = $attribute['value'];
+                });
+
+                return array_merge($variant, [
+                    '_id'           => "row-{$key}",
                 ]);
             }),
-            'product_attributes' => collect($product->attributes)
-                ->map(function (Attribute $attribute, $key) {
-                    return [
-                        '_id' => 'row-'.$key,
-                        'uuid' => $attribute->uuid,
-                        'key' => $attribute->key,
-                        'value' => $attribute->value,
-                    ];
-                })
-                ->toArray(),
         ]);
 
         $blueprint = (new Product())->blueprint();
@@ -154,67 +150,64 @@ class ProductController extends CpController
         $this->authorize('update', $product);
 
         $product->update([
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'description' => $request->description,
-            'product_category_id' => $request->category,
-            'is_enabled' => $request->is_enabled,
+            'title'                 => $request->title,
+            'slug'                  => $request->slug,
+            'description'           => $request->description,
+            'product_category_id'   => $request->category,
+            'is_enabled'            => $request->is_enabled,
         ]);
 
-        $requestVariants = collect($request->variants)
+        collect($request)
+            ->reject(function ($value, $key) {
+                if (! str_contains($key, 'attributes_')) {
+                    return true;
+                }
+            })
+            ->each(function ($value, $key) use ($product) {
+                $key = str_replace('attributes_', '', $key);
+
+                $product->attributes()->updateOrCreate([
+                    'key'   => $key,
+                ], [
+                    'key'   => $key,
+                    'value' => $value,
+                ]);
+            });
+
+        collect($request->variants)
             ->map(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
-                    'uuid' => $variant['uuid'] ?? null,
+                    'uuid'              => $variant['uuid'] ?? null,
                 ], [
-                    'name' => $variant['name'],
-                    'sku' => $variant['sku'],
-                    'price' => $variant['price'],
-                    'stock' => $variant['stock_number'],
-                    'unlimited_stock' => $variant['unlimited_stock'],
-                    'max_quantity' => $variant['max_quantity'],
-                    'description' => $variant['description'],
-                    'product_id' => $product->id,
+                    'name'              => $variant['name'],
+                    'sku'               => $variant['sku'],
+                    'price'             => $variant['price'],
+                    'stock'             => $variant['stock'],
+                    'unlimited_stock'   => $variant['unlimited_stock'],
+                    'max_quantity'      => $variant['max_quantity'],
+                    'description'       => $variant['description'],
+                    'product_id'        => $product->id,
                 ]);
 
-                $requestAttributes = collect($variant['variant_attributes'])
-                    ->map(function ($attribute) use ($item) {
-                        if ($attribute['key'] === null) {
-                            return $attribute;
+                collect($variant)
+                    ->reject(function ($value, $key) {
+                        if (! str_contains($key, 'attributes')) {
+                            return true;
                         }
-
-                        $attributeRecord = $item->attributes()->updateOrCreate([
-                            'uuid' => $attribute['uuid'],
-                        ], [
-                            'key' => $attribute['key'],
-                            'value' => $attribute['value'],
-                        ]);
-
-                        $attribute['uuid'] = $attributeRecord->uuid;
-
-                        return $attribute;
-                    });
-
-                $item->attributes
-                    ->filter(function ($attribute) use ($requestAttributes) {
-                        return ! $requestAttributes
-                            ->contains(function ($requestAttribute) use ($attribute) {
-                                return $attribute->uuid === $requestAttribute['uuid'];
-                            });
                     })
-                    ->each->delete();
+                    ->each(function ($value, $key) use ($item) {
+                        $key = str_replace('attributes_', '', $key);
 
-                $variant['uuid'] = $item->uuid;
+                        $item->attributes()->updateOrCreate([
+                            'key'   => $key,
+                        ], [
+                            'key'   => $key,
+                            'value' => $value,
+                        ]);
+                    });
 
                 return $variant;
             });
-
-        $product->variants
-            ->filter(function ($variant) use ($requestVariants) {
-                return ! $requestVariants
-                    ->contains('uuid', $variant->uuid);
-            })
-            ->each
-            ->delete();
 
         return $product;
     }
@@ -223,8 +216,6 @@ class ProductController extends CpController
     {
         $this->authorize('delete', $product);
 
-        $product->attributes()->delete();
-        $product->variants()->attributes()->delete();
         $product->variants()->delete();
         $product->delete();
 

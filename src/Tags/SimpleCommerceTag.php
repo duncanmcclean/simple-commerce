@@ -39,7 +39,7 @@ class SimpleCommerceTag extends Tags
 
     public function products()
     {
-        $products = Product::with('variants', 'productCategory', 'attributes')->get();
+        $products = Product::with('variants', 'variants.attributes', 'productCategory', 'attributes')->get();
 
         if ($this->getParam('category') != null) {
             $category = ProductCategory::where('slug', $this->getParam('category'))->first();

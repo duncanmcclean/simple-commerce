@@ -73,4 +73,13 @@ class Product extends Model
     {
         return Blueprint::find('product');
     }
+
+    public function delete()
+    {
+        parent::delete();
+
+        if ($this->attributes()->count() > 0) {
+            $this->attributes()->delete();
+        }
+    }
 }

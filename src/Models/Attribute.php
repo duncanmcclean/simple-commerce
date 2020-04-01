@@ -16,6 +16,10 @@ class Attribute extends Model
         'updated' => AttributeUpdated::class,
     ];
 
+    protected $casts = [
+        'value' => 'array',
+    ];
+
     public function attributable()
     {
         return $this->morphTo();
