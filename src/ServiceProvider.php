@@ -123,7 +123,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $scripts = [
-        __DIR__.'/../dist/js/cp.js',
+        __DIR__.'/../resources/dist/js/cp.js',
     ];
 
     protected $routes = [
@@ -140,7 +140,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
         $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints')]);
         $this->publishes([__DIR__.'/../resources/fieldsets' => resource_path('fieldsets')]);
-        $this->publishes([__DIR__.'/../dist/js/cp.js', public_path('vendor/doublethreedigital/simple-commerce/js')]);
+        $this->publishes([__DIR__.'/../resources/dist/js/cp.js', public_path('vendor/doublethreedigital/simple-commerce/js')]);
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 

@@ -11,8 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-// WIP: work on a better solution that just copying over...
+// TODO: work on a better solution that just copying over...
 
-mix.js('resources/js/cp.js', 'dist/js/cp.js')
+mix.js('resources/js/cp.js', 'resources/dist/js/cp.js')
     .copy('dist/js/cp.js', '../../../public/vendor/doublethreedigital/simple-commerce/js/cp.js')
-    .setPublicPath('dist');
+    .setPublicPath('resources/dist');
