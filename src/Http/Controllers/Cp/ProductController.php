@@ -53,16 +53,21 @@ class ProductController extends CpController
             'is_enabled' => $request->is_enabled,
         ]);
 
-        collect($request->product_attributes)
-            ->each(function ($attribute) use ($product) {
-                if ($attribute['key'] === null) {
-                    return;
+        collect($request)
+            ->reject(function ($value, $key) {
+                if (! str_contains($key, 'attributes_')) {
+                    return true;
                 }
+            })
+            ->map(function ($value, $key) use ($product) {
+                $key = str_replace('attributes_', '', $key);
 
-                $product->attributes()->create([
-                    'key' => $attribute['key'],
-                    'value' => $attribute['value'],
+                $attribute = $product->attributes()->create([
+                    'key'   => $key,
+                    'value' => $value,
                 ]);
+
+                return $attribute;
             });
 
         collect($request->variants)
@@ -108,7 +113,13 @@ class ProductController extends CpController
             ->where('uuid', $product)
             ->first();
 
-        $values = array_merge($product->toArray(), [
+        $fields = $product->toArray();
+
+        $product->attributes->each(function (Attribute $attribute) use (&$fields) {
+            $fields["attributes_{$attribute->key}"] = $attribute['value'];
+        });
+
+        $values = array_merge($fields, [
             'category'  => $product->product_category_id,
             'variants'  => $product->variants->map(function (Variant $originalVariant, $key) {
                 $variant = $originalVariant->toArray();
@@ -122,16 +133,6 @@ class ProductController extends CpController
                     'stock_number'  => $variant['stock'], // TODO: need to change the blueprint field handle to be the same as the db column name
                 ]);
             }),
-            'product_attributes' => collect($product->attributes)
-                ->map(function (Attribute $attribute, $key) {
-                    return [
-                        '_id' => 'row-'.$key,
-                        'uuid' => $attribute->uuid,
-                        'key' => $attribute->key,
-                        'value' => $attribute->value,
-                    ];
-                })
-                ->toArray(),
         ]);
 
         $blueprint = (new Product())->blueprint();
@@ -159,7 +160,26 @@ class ProductController extends CpController
             'is_enabled' => $request->is_enabled,
         ]);
 
-        $requestVariants = collect($request->variants)
+        collect($request)
+            ->reject(function ($value, $key) {
+                if (! str_contains($key, 'attributes_')) {
+                    return true;
+                }
+            })
+            ->map(function ($value, $key) use ($product) {
+                $key = str_replace('attributes_', '', $key);
+
+                $attribute = $product->attributes()->updateOrCreate([
+                    'key' => $key,
+                ], [
+                    'key' => $key,
+                    'value' => $value,
+                ]);
+
+                return $attribute;
+            });
+
+        collect($request->variants)
             ->map(function ($variant) use ($product) {
                 $item = Variant::updateOrCreate([
                     'uuid' => $variant['uuid'] ?? null,
@@ -174,13 +194,11 @@ class ProductController extends CpController
                     'product_id' => $product->id,
                 ]);
 
-                $requestAttributes = collect($variant)
+                collect($variant)
                     ->reject(function ($value, $key) {
-                        if (str_contains($key, 'attributes')) {
-                            return false;
+                        if (! str_contains($key, 'attributes')) {
+                            return true;
                         }
-
-                        return true;
                     })
                     ->map(function ($value, $key) use ($item) {
                         $key = str_replace('attributes_', '', $key);
@@ -197,14 +215,6 @@ class ProductController extends CpController
 
                 return $variant;
             });
-
-        $product->variants
-            ->filter(function ($variant) use ($requestVariants) {
-                return ! $requestVariants
-                    ->contains('uuid', $variant->uuid);
-            })
-            ->each
-            ->delete();
 
         return $product;
     }
