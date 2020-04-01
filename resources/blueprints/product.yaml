@@ -101,43 +101,8 @@ sections:
     display: Attributes
     fields:
       -
-        handle: product_attributes
-        field:
-          fields:
-            -
-              handle: uuid
-              field:
-                type: hidden
-                localizable: false
-                listable: hidden
-                display: UUID
-            -
-              handle: key
-              field:
-                html_type: text
-                type: text
-                localizable: false
-                listable: hidden
-                display: Key
-                input_type: text
-                validate: required
-            -
-              handle: value
-              field:
-                html_type: text
-                type: text
-                localizable: false
-                listable: hidden
-                display: Value
-                input_type: text
-                validate: required
-          mode: table
-          add_row: 'Add Attribute'
-          reorderable: false
-          type: grid
-          localizable: false
-          listable: true
-          display: Attributes
+        import: product_attributes
+        prefix: attributes_
   sidebar:
     display: Sidebar
     fields:
