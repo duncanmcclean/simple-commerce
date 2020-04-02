@@ -48,6 +48,7 @@ use DoubleThreeDigital\SimpleCommerce\Tags\CartTag;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
+use Illuminate\Support\Facades\Route;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
@@ -148,6 +149,15 @@ class ServiceProvider extends AddonServiceProvider
             $this->navigation();
             $this->permissions();
         });
+
+        // TODO: make this part of the $routes thing
+        if (config('statamic.api.enabled')) {
+            Route::middleware(config('statamic.api.middleware'))
+                ->name('simple-commerce.api.')
+                ->prefix(config('statamic.api.route').'/simple-commerce/')
+                ->namespace('DoubleThreeDigital\SimpleCommerce\Http\Controllers\API')
+                ->group(__DIR__.'/../routes/api.php');
+        }
 
         SimpleCommerce::bootGateways();
     }

@@ -20,6 +20,7 @@ Unlike Statamic itself using flat-files, **Simple Commerce uses a MySQL database
 
 * [Events](./events.md)
 * [Custom Attributes](./attributes.md)
+* [REST API](./rest-api.md)
 
 ## Knowledge Base
 
