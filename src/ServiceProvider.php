@@ -150,7 +150,6 @@ class ServiceProvider extends AddonServiceProvider
             $this->permissions();
         });
 
-        // TODO: make this part of the $routes thing
         if (config('statamic.api.enabled')) {
             Route::middleware(config('statamic.api.middleware'))
                 ->name('simple-commerce.api.')
