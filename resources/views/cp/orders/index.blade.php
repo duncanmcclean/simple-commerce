@@ -100,6 +100,8 @@
             @endif
         </div>
     @else
-        <p>No one has purchased from your store. When they do, orders will be displayed here.</p>
+        <div class="card p-4">
+            <p>There's nothing to show, your store doesn't have any orders. <a href="/" target="_blank" class="text-blue hover:text-blue-dark">Buy something</a>.</p>
+        </div>
     @endif
 @endsection
