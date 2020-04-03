@@ -9,7 +9,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::post('/create', 'ProductController@store')->name('.store');
         Route::get('/edit/{product}', 'ProductController@edit')->name('.edit');
         Route::post('/edit/{product}', 'ProductController@update')->name('.update');
-        Route::get('/delete/{product}', 'ProductController@destroy')->name('.destroy');
+        Route::delete('/delete/{product}', 'ProductController@destroy')->name('.destroy');
     });
 
     Route::prefix('product-categories')->as('product-categories')->group(function () {
@@ -19,14 +19,14 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/{category}', 'ProductCategoryController@show')->name('.show');
         Route::get('/edit/{category}', 'ProductCategoryController@edit')->name('.edit');
         Route::post('/edit/{category}', 'ProductCategoryController@update')->name('.update');
-        Route::get('/delete/{category}', 'ProductCategoryController@destroy')->name('.destroy');
+        Route::delete('/delete/{category}', 'ProductCategoryController@destroy')->name('.destroy');
     });
 
     Route::prefix('orders')->as('orders')->group(function () {
         Route::get('/', 'OrderController@index')->name('.index');
         Route::get('/edit/{order}', 'OrderController@edit')->name('.edit');
         Route::post('/edit/{order}', 'OrderController@update')->name('.update');
-        Route::get('/delete/{order}', 'OrderController@destroy')->name('.destroy');
+        Route::delete('/delete/{order}', 'OrderController@destroy')->name('.destroy');
 
         Route::get('/{order}/{status}', 'UpdateOrderStatusController')->name('.status-update');
     });
@@ -37,7 +37,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::post('/create', 'CustomerController@store')->name('.store');
         Route::get('/edit/{customer}', 'CustomerController@edit')->name('.edit');
         Route::post('/edit/{customer}', 'CustomerController@update')->name('.update');
-        Route::get('/delete/{customer}', 'CustomerController@destroy')->name('.destroy');
+        Route::delete('/delete/{customer}', 'CustomerController@destroy')->name('.destroy');
     });
 
     Route::prefix('settings')->as('settings')->middleware(AccessSettings::class)->group(function () {

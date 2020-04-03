@@ -47,10 +47,21 @@
                             </td>
 
                             <td class="flex justify-end">
-                                <dropdown-list>
-                                    <dropdown-item text="Edit" redirect="{{ $product->editUrl() }}"></dropdown-item>
-                                    <dropdown-item class="warning" text="Delete" redirect="{{ $product->deleteUrl() }}"></dropdown-item>
-                                </dropdown-list>
+                                <simple-commerce-actions>
+                                    <simple-commerce-action-item
+                                        type="standard"
+                                        text="Edit"
+                                        action="{{ $product->editUrl() }}"
+                                    ></simple-commerce-action-item>
+                                    <simple-commerce-action-item
+                                        type="delete"
+                                        text="Delete"
+                                        action="{{ $product->deleteUrl() }}"
+                                        method="delete"
+                                        modal-title="Delete Product"
+                                        modal-text="Are you sure you want to delete this product?"
+                                    ></simple-commerce-action-item>
+                                </simple-commerce-actions>
                             </td>
                         </tr>
                     @endforeach

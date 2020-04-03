@@ -29,10 +29,21 @@
                             <td>{{ $customer->created_at->toFormattedDateString() }}</td>
 
                             <td class="flex justify-end">
-                                <dropdown-list>
-                                    <dropdown-item text="Edit" redirect="{{ $customer->editUrl() }}"></dropdown-item>
-                                    <dropdown-item class="warning" text="Delete" redirect="{{ $customer->deleteUrl() }}"></dropdown-item>
-                                </dropdown-list>
+                                <simple-commerce-actions>
+                                    <simple-commerce-action-item
+                                        type="standard"
+                                        text="Edit"
+                                        action="{{ $customer->editUrl() }}"
+                                    ></simple-commerce-action-item>
+                                    <simple-commerce-action-item
+                                        type="delete"
+                                        text="Delete"
+                                        action="{{ $customer->deleteUrl() }}"
+                                        method="delete"
+                                        modal-title="Delete Customer"
+                                        modal-text="Are you sure you want to delete this customer?"
+                                    ></simple-commerce-action-item>
+                                </simple-commerce-actions>
                             </td>
                         </tr>
                     @endforeach

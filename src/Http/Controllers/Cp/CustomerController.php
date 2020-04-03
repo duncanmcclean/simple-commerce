@@ -95,7 +95,5 @@ class CustomerController extends CpController
         $customer->addresses()->delete();
         $customer->orders()->delete();
         $customer->delete();
-
-        return back()->with('success', 'Customer has been deleted.');
     }
 }

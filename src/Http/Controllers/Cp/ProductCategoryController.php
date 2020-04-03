@@ -108,7 +108,5 @@ class ProductCategoryController extends CpController
         // TODO: decide what we should do with products in this category
 
         $category->delete();
-
-        return back()->with('success', "$category->title has been deleted.");
     }
 }

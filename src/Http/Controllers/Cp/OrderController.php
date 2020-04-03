@@ -112,7 +112,5 @@ class OrderController extends CpController
         $this->authorize('delete', Order::class);
 
         $order->delete();
-
-        return back()->with('success', "Order #{$order->id} has been deleted.");
     }
 }

@@ -26,11 +26,26 @@
                             <td>{{ $category->slug }}</td>
 
                             <td class="flex justify-end">
-                                <dropdown-list>
-                                    <dropdown-item text="Products" redirect="{{ $category->showUrl() }}"></dropdown-item>
-                                    <dropdown-item text="Edit" redirect="{{ $category->editUrl() }}"></dropdown-item>
-                                    <dropdown-item class="warning" text="Delete" redirect="{{ $category->deleteUrl() }}"></dropdown-item>
-                                </dropdown-list>
+                                <simple-commerce-actions>
+                                    <simple-commerce-action-item
+                                        type="standard"
+                                        text="View Products"
+                                        action="{{ $category->showUrl() }}"
+                                    ></simple-commerce-action-item>
+                                    <simple-commerce-action-item
+                                        type="standard"
+                                        text="Edit"
+                                        action="{{ $category->editUrl() }}"
+                                    ></simple-commerce-action-item>
+                                    <simple-commerce-action-item
+                                        type="delete"
+                                        text="Delete"
+                                        action="{{ $category->deleteUrl() }}"
+                                        method="delete"
+                                        modal-title="Delete Product Category"
+                                        modal-text="Are you sure you want to delete this category?"
+                                    ></simple-commerce-action-item>
+                                </simple-commerce-actions>
                             </td>
                         </tr>
                     @endforeach

@@ -218,8 +218,5 @@ class ProductController extends CpController
 
         $product->variants()->delete();
         $product->delete();
-
-        return back()
-            ->with('success', "$product->title has been deleted.");
     }
 }

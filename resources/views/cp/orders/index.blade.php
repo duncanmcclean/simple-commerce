@@ -45,22 +45,41 @@
                             </td>
 
                             <td class="flex justify-end">
-                                <dropdown-list>
+                                <simple-commerce-actions>
                                     @foreach($statuses as $status)
-                                        <dropdown-item text="Set as {{ $status->name }}" redirect="{{ cp_route('orders.status-update', ['order' => $order->uuid, 'status' => $status->uuid]) }}"></dropdown-item>
+                                        <simple-commerce-action-item
+                                            type="standard"
+                                            text="Set as {{ $status->name }}"
+                                            action="{{ cp_route('orders.status-update', ['order' => $order->uuid, 'status' => $status->uuid]) }}"
+                                        ></simple-commerce-action-item>
                                     @endforeach
 
                                     <div class="divider"></div>
 
                                     @if(! $order->is_refunded)
-                                        @if(auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
-                                            <dropdown-item text="Refund" redirect="{{ cp_route('commerce-api.refund-order', ['order' => $order->uuid]) }}"></dropdown-item>
+                                        @if (auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
+                                            <simple-commerce-action-item
+                                                type="standard"
+                                                text="Refund"
+                                                action="{{ cp_route('commerce-api.refund-order', ['order' => $order->uuid]) }}"
+                                            ></simple-commerce-action-item>
                                         @endif
                                     @endif
 
-                                    <dropdown-item text="Edit" redirect="{{ $order->editUrl() }}"></dropdown-item>
-                                    <dropdown-item class="warning" text="Delete" redirect="{{ $order->deleteUrl() }}"></dropdown-item>
-                                </dropdown-list>
+                                    <simple-commerce-action-item
+                                        type="standard"
+                                        text="Edit"
+                                        action="{{ $order->editUrl() }}"
+                                    ></simple-commerce-action-item>
+                                    <simple-commerce-action-item
+                                        type="delete"
+                                        text="Delete"
+                                        action="{{ $order->deleteUrl() }}"
+                                        method="delete"
+                                        modal-title="Delete Order"
+                                        modal-text="Are you sure you want to delete this order?"
+                                    ></simple-commerce-action-item>
+                                </simple-commerce-actions>
                             </td>
                         </tr>
                     @endforeach

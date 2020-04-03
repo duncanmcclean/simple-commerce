@@ -74,9 +74,3 @@ And also add this repositories section, it'll tell Composer that we should load 
 And then just run `composer install` and Simple Commerce should be installed and you can work on your first pull request! 🥳
 
 Oh any by the way, you might want to copy over `phpunit-example.xml` to `phpunit.xml` so you can run tests against a MySQL database.
-
-If you want to do any JavaScript development, you'll also need to symlink the addon's js folder with the `public/vendor` folder.
-
-```
- ln -s addon/resources/dist/js/ public/vendor/doublethreedigital/simple-commerce/js
-```
