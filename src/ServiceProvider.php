@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
+use DoubleThreeDigital\SimpleCommerce\Console\Commands\VersionCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCreated;
@@ -121,6 +122,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $commands = [
         SeederCommand::class,
+        VersionCommand::class,
     ];
 
     protected $scripts = [

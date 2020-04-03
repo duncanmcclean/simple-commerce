@@ -15,7 +15,7 @@ From your terminal, run the following commands:
 composer require doublethreedigital/simple-commerce
 php artisan vendor:publish --provider=DoubleThreeDigital\SimpleCommerce\ServiceProvider
 php artisan migrate
-php artisan commerce:seed
+php artisan simple-commerce:seed
 ```
 
 ## Licensing

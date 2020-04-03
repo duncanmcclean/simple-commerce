@@ -2,9 +2,16 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Facades\Statamic\Console\Processes\Composer;
+
 class SimpleCommerce
 {
     protected static $gateways = [];
+
+    public static function getVersion()
+    {
+        return Composer::installedVersion('doublethreedigital/simple-commerce');
+    }
 
     public static function bootGateways()
     {
