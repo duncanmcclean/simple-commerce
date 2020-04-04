@@ -1,7 +1,7 @@
 <?php
 
+use App\User;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
@@ -18,7 +18,7 @@ $factory->define(Address::class, function (Faker $faker) {
         'city' => $faker->city,
         'zip_code' => $faker->postcode,
         'customer_id' => function() {
-            return factory(Customer::class)->create()->id;
+            return factory(User::class)->create()->id;
         },
         'uuid' => (new Stache())->generateId(),
     ];

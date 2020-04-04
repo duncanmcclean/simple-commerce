@@ -132,7 +132,18 @@ class SimpleCommerceTag extends Tags
             return null;
         }
 
-        return auth()->user()->orders->toArray();
+        if ($this->getParam('get')) {
+            return auth()->user()->orders()
+                ->where('uuid', $this->getParam('get'))
+                ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer')
+                ->first()
+                ->toArray();
+        }
+
+        return auth()->user()->orders()
+            ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer')
+            ->get()
+            ->toArray();
     }
 
     public function form()

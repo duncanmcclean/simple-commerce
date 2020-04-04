@@ -1,8 +1,8 @@
 <?php
 
+use App\User;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
@@ -18,7 +18,7 @@ $factory->define(Order::class, function (Faker $faker) {
             return factory(Address::class)->create()->id;
         },
         'customer_id' => function () {
-            return factory(Customer::class)->create()->id;
+            return factory(User::class)->create()->id;
         },
         'order_status_id' => function () {
             return factory(OrderStatus::class)->create()->id;

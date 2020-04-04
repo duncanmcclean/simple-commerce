@@ -323,6 +323,7 @@ class SimpleCommerceTagTest extends TestCase
         $this->assertStringContainsString('Dummy', json_encode($run));
     }
 
+    // TODO: it can't find a users table, the migration isn't being loaded in
     /** @test */
     public function commerce_orders_tag()
     {
@@ -343,9 +344,15 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
+    public function commerce_orders_tag_can_get_single_order()
+    {
+        $this->markTestIncomplete();
+    }
+
+    /** @test */
     public function commerce_orders_tag_returns_null_if_logged_out()
     {
-        //
+        $this->markTestIncomplete();
     }
 
     /** @test */

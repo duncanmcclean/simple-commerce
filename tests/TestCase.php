@@ -19,10 +19,13 @@ abstract class TestCase extends OrchestraTestCase
     protected function setUp(): void
     {
         require_once(__DIR__.'/ExceptionHandler.php');
+        require_once(__DIR__.'/__fixtures__/app/User.php');
 
         parent::setUp();
 
         $this->withFactories(realpath(__DIR__.'/../database/factories'));
+        require_once(__DIR__.'/__fixtures__/database/migrations/2014_10_12_000000_create_users_table.php');
+        require_once(__DIR__.'/__fixtures__/database/migrations/2020_03_30_151610_statamic_auth_tables.php');
     }
 
     protected function getPackageProviders($app)
@@ -73,7 +76,10 @@ abstract class TestCase extends OrchestraTestCase
             $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
         }
 
-        $app['config']->set('statamic.users.repository', 'file');
+        $app['config']->set('statamic.stache', require(__DIR__.'/__fixtures__/config/statamic/stache.php'));
+        $app['config']->set('statamic.users', require(__DIR__.'/__fixtures__/config/statamic/users.php'));
+        $app['config']->set('auth', require(__DIR__.'/__fixtures__/config/auth.php'));
+
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
     }
 
