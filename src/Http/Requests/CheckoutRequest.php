@@ -16,12 +16,12 @@ class CheckoutRequest extends FormRequest
         $gateway = $this->all()['gateway'];
         $gateway = new $gateway();
 
-        return array_merge($gateway->rules(), [
+        $customerModel = config('simple-commerce.customers.model');
+        $customerModel = new $customerModel();
+
+        return array_merge($gateway->rules(), $customerModel->rules(), [
             'gateway'                           => 'required|string',
             'use_shipping_address_for_billing'  => 'required|in:on,off',
-
-            'name'                              => 'required|string',
-            'email'                             => 'required|email',
 
             'shipping_address_1'                => 'required|string',
             'shipping_address_2'                => '',

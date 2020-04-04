@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -12,7 +11,7 @@ class CustomerCreated
 
     public $customer;
 
-    public function __construct(Customer $customer)
+    public function __construct($customer)
     {
         $this->customer = $customer;
     }

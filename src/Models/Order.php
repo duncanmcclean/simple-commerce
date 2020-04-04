@@ -33,7 +33,8 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(get_class(config('customers.model')));
+        $model = config('simple-commerce.customers.model');
+        return $this->belongsTo(new $model());
     }
 
     public function orderStatus()

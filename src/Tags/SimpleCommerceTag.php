@@ -6,10 +6,12 @@ use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Facades\Auth;
 use Statamic\Tags\Tags;
 
 class SimpleCommerceTag extends Tags
@@ -122,6 +124,15 @@ class SimpleCommerceTag extends Tags
     public function gateways()
     {
         return SimpleCommerce::gateways();
+    }
+
+    public function orders()
+    {
+        if (Auth::guest()) {
+            return null;
+        }
+
+        return auth()->user()->orders->toArray();
     }
 
     public function form()
