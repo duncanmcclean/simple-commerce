@@ -22,7 +22,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderItemsFieldtype;
@@ -92,7 +91,6 @@ class ServiceProvider extends AddonServiceProvider
     protected $fieldtypes = [
         CountryFieldtype::class,
         CurrencyFieldtype::class,
-        CustomerFieldtype::class,
         CustomerOrdersFieldtype::class,
         MoneyFieldtype::class,
         OrderItemsFieldtype::class,
