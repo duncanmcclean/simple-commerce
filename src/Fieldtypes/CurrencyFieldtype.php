@@ -8,7 +8,6 @@ use Statamic\Fieldtypes\Relationship;
 
 class CurrencyFieldtype extends Relationship
 {
-    protected $categories = ['commerce'];
     protected $icon = 'generic';
 
     protected function toItemArray($id)

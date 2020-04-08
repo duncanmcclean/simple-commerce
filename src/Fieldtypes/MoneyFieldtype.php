@@ -7,7 +7,6 @@ use Statamic\Fields\Fieldtype;
 
 class MoneyFieldtype extends Fieldtype
 {
-    protected $categories = ['commerce'];
     protected $icon = 'generic';
 
     public function preload()

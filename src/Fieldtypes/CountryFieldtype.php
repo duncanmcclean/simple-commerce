@@ -8,7 +8,6 @@ use Statamic\Fieldtypes\Relationship;
 
 class CountryFieldtype extends Relationship
 {
-    protected $categories = ['commerce'];
     protected $icon = 'earth';
 
     protected function toItemArray($id)
