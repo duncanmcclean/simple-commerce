@@ -13,7 +13,7 @@ class DeleteCustomersTable extends Migration
      */
     public function up()
     {
-        // TODO: fix tests so we can run this migration in testing
+        // TODO: we shouldn't have to do this but it seems to be the only way to fix the tests
         if (config('app.env') != 'testing') {
             Schema::dropIfExists('customers');
         }
