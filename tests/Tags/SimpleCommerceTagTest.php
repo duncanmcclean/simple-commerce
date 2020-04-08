@@ -2,15 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
+use App\User;
 use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Antlers;
 
@@ -320,36 +323,53 @@ class SimpleCommerceTagTest extends TestCase
         $this->assertStringContainsString('Dummy', json_encode($run));
     }
 
-    // TODO: it can't find a users table, the migration isn't being loaded in
     /** @test */
     public function simple_commerce_orders_tag()
     {
-//        $user = factory(User::class)->create();
-//        $orders = factory(Order::class, 2)->create([
-//            'customer_id' => $user->id,
-//        ]);
-//
-//        Auth::loginUsingId($user->id);
-//
-//        $this->tag->setParameters([]);
-//
-//        $run = $this->tag->orders();
-//
-//        $this->assertIsArray($run);
-//        $this->assertStringContainsString($orders[0]['id'], json_encode($run));
-//        $this->assertStringContainsString($orders[1]['id'], json_encode($run));
+        $user = factory(User::class)->create();
+        $orders = factory(Order::class, 2)->create([
+            'customer_id' => $user->id,
+        ]);
+
+        Auth::loginUsingId($user->id);
+
+        $this->tag->setParameters([]);
+
+        $run = $this->tag->orders();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($orders[0]['id'], json_encode($run));
+        $this->assertStringContainsString($orders[1]['id'], json_encode($run));
     }
 
     /** @test */
     public function simple_commerce_orders_tag_can_get_single_order()
     {
-        $this->markTestIncomplete();
+        $user = factory(User::class)->create();
+        $order = factory(Order::class)->create([
+            'customer_id' => $user->id,
+        ]);
+
+        Auth::loginUsingId($user->id);
+
+        $this->tag->setParameters([
+            'get' => $order->uuid,
+        ]);
+
+        $run = $this->tag->orders();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($order->id, json_encode($run));
     }
 
     /** @test */
     public function simple_commerce_orders_tag_returns_null_if_logged_out()
     {
-        $this->markTestIncomplete();
+        $this->tag->setParameters([]);
+
+        $run = $this->tag->orders();
+
+        $this->assertNull($run);
     }
 
     /** @test */
