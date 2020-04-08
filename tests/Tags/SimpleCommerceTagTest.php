@@ -2,18 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
-use App\User;
 use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Antlers;
 
@@ -33,13 +30,13 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_tag_is_registered()
+    public function simple_commerce_tag_is_registered()
     {
         $this->assertTrue(isset(app()['statamic.tags']['simple-commerce']));
     }
 
     /** @test */
-    public function commerce_currency_code_tag()
+    public function simple_commerce_currency_code_tag()
     {
         Config::set('simple-commerce.currency.iso', 'USD');
 
@@ -55,7 +52,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_currency_symbol_tag()
+    public function simple_commerce_currency_symbol_tag()
     {
         Config::set('simple-commerce.currency.iso', 'GBP');
 
@@ -71,7 +68,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_categories_tag()
+    public function simple_commerce_categories_tag()
     {
         $categories = factory(ProductCategory::class, 5)->create();
 
@@ -83,7 +80,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_categories_tag_count()
+    public function simple_commerce_categories_tag_count()
     {
         $categories = factory(ProductCategory::class, 5)->create();
 
@@ -95,7 +92,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag()
+    public function simple_commerce_products_tag()
     {
         $products = factory(Product::class, 5)->create();
 
@@ -107,7 +104,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_in_category()
+    public function simple_commerce_products_tag_in_category()
     {
         $category = factory(ProductCategory::class)->create();
         $products = factory(Product::class, 5)->create([
@@ -125,7 +122,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_where()
+    public function simple_commerce_products_tag_where()
     {
         $products = factory(Product::class, 5)->create();
 
@@ -141,7 +138,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_and_include_disabled()
+    public function simple_commerce_products_tag_and_include_disabled()
     {
         $enabledProduct = factory(Product::class)->create([
             'is_enabled' => true,
@@ -163,7 +160,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_not_with_id()
+    public function simple_commerce_products_tag_not_with_id()
     {
         $keepProduct = factory(Product::class)->create();
         $removeProduct = factory(Product::class)->create();
@@ -180,7 +177,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_not_with_uuid()
+    public function simple_commerce_products_tag_not_with_uuid()
     {
         $keepProduct = factory(Product::class)->create();
         $removeProduct = factory(Product::class)->create();
@@ -197,7 +194,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_not_with_slug()
+    public function simple_commerce_products_tag_not_with_slug()
     {
         $keepProduct = factory(Product::class)->create();
         $removeProduct = factory(Product::class)->create();
@@ -214,7 +211,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_limit()
+    public function simple_commerce_products_tag_limit()
     {
         $products = factory(Product::class, 5)->create();
 
@@ -230,7 +227,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_count()
+    public function simple_commerce_products_tag_count()
     {
         $products = factory(Product::class, 5)->create();
 
@@ -245,7 +242,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_products_tag_first()
+    public function simple_commerce_products_tag_first()
     {
         $products = factory(Product::class, 2)->create();
 
@@ -261,7 +258,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_countries_tag()
+    public function simple_commerce_countries_tag()
     {
         $countries = factory(Country::class, 15)->create();
 
@@ -277,7 +274,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_states_tag()
+    public function simple_commerce_states_tag()
     {
         $states = factory(State::class, 5)->create();
 
@@ -294,7 +291,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_currencies_tag()
+    public function simple_commerce_currencies_tag()
     {
         $currencies = factory(Currency::class, 5)->create();
 
@@ -309,7 +306,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_gateways_tag()
+    public function simple_commerce_gateways_tag()
     {
         Config::set('simple-commerce.gateways', [
             DummyGateway::class,
@@ -325,7 +322,7 @@ class SimpleCommerceTagTest extends TestCase
 
     // TODO: it can't find a users table, the migration isn't being loaded in
     /** @test */
-    public function commerce_orders_tag()
+    public function simple_commerce_orders_tag()
     {
 //        $user = factory(User::class)->create();
 //        $orders = factory(Order::class, 2)->create([
@@ -344,19 +341,19 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_orders_tag_can_get_single_order()
+    public function simple_commerce_orders_tag_can_get_single_order()
     {
         $this->markTestIncomplete();
     }
 
     /** @test */
-    public function commerce_orders_tag_returns_null_if_logged_out()
+    public function simple_commerce_orders_tag_returns_null_if_logged_out()
     {
         $this->markTestIncomplete();
     }
 
     /** @test */
-    public function commerce_form_tag()
+    public function simple_commerce_form_tag()
     {
         $this->tag->setParameters([
             'for' => 'checkout',
@@ -379,13 +376,13 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function commerce_errors_tag()
+    public function simple_commerce_errors_tag()
     {
         //
     }
 
     /** @test */
-    public function commerce_success_tag()
+    public function simple_commerce_success_tag()
     {
         $this->session([
             'form.checkout.success' => 'Your payment is being processed.',
