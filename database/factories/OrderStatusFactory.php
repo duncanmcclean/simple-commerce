@@ -13,5 +13,6 @@ $factory->define(OrderStatus::class, function (Faker $faker) {
         'description' => '',
         'color' => 'green' ?? 'blue' ?? 'orange',
         'uuid' => (new Stache())->generateId(),
+        'primary' => false,
     ];
 });

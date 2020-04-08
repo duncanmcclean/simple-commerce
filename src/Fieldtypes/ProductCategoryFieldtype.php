@@ -8,7 +8,6 @@ use Statamic\Fieldtypes\Relationship;
 
 class ProductCategoryFieldtype extends Relationship
 {
-    protected $categories = ['commerce'];
     protected $icon = 'taxonomies';
 
     protected function toItemArray($id)

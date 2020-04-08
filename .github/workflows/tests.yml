@@ -50,7 +50,4 @@ jobs:
         composer install --no-interaction
 
     - name: Run PHPUnit
-      env:
-        STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
-        STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
       run: composer test

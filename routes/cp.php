@@ -31,14 +31,6 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/{order}/{status}', 'UpdateOrderStatusController')->name('.status-update');
     });
 
-    Route::prefix('customers')->as('customers')->group(function () {
-        Route::get('/', 'CustomerController@index')->name('.index');
-        Route::get('/create', 'CustomerController@create')->name('.create');
-        Route::post('/create', 'CustomerController@store')->name('.store');
-        Route::get('/edit/{customer}', 'CustomerController@edit')->name('.edit');
-        Route::post('/edit/{customer}', 'CustomerController@update')->name('.update');
-        Route::delete('/delete/{customer}', 'CustomerController@destroy')->name('.destroy');
-    });
 
     Route::prefix('settings')->as('settings')->middleware(AccessSettings::class)->group(function () {
         Route::get('/', 'Settings\SettingsHomeController@index')->name('.index');
@@ -68,5 +60,4 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
             Route::get('/shipping-zones/{zone}', 'API\ShippingZoneController@destroy')->name('.shipping-zones.destroy');
         });
     });
-
 });

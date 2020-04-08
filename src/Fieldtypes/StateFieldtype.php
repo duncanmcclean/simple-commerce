@@ -9,7 +9,6 @@ use Statamic\Fieldtypes\Relationship;
 
 class StateFieldtype extends Relationship
 {
-    protected $categories = ['commerce'];
     protected $icon = 'earth';
 
     protected function toItemArray($id)

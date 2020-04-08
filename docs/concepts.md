@@ -47,9 +47,7 @@ Product Categories allow you to tag the different types of products available in
 
 Customers are the people who buy things from your store. 
 
-A customer will always be created if a customer does not already exist with the email used during checkout. If that email is the same as an existing customer, an existing customer will be used instead.
-
-Customers will have addresses and orders attached to them.
+Simple Commerce will treat any users of your site as customers as long as they use the `IsACustomer` trait provided by Simple Commerce.
 
 ## Tax
 

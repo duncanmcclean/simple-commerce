@@ -13,15 +13,12 @@ class CustomerOrderController extends CpController
     {
         $this->authorize('update', $request->customer);
 
+        $customerModel = config('simple-commerce.customers.model');
+        $customerModel = new $customerModel();
+
         return Order::with('orderStatus')
-            ->where('customer_id', $request->customer)
+            ->where('customer_id', $customerModel::where('email', $request->email)->first()->id)
             ->orderByDesc('created_at')
-            ->get()
-            ->map(function (Order $order) {
-                return array_merge($order->toArray(), [
-                    'edit_url' => $order->editUrl(),
-                    'delete_url' => $order->deleteUrl(),
-                ]);
-            });
+            ->get();
     }
 }

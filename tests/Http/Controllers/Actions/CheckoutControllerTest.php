@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Actions;
 
+use App\User;
 use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
@@ -9,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
@@ -61,6 +61,7 @@ class CheckoutControllerTest extends TestCase
 
             'name'                              => $this->faker->name,
             'email'                             => $this->faker->email,
+            'password'                          => $this->faker->password,
             'shipping_address_1'                => $this->faker->streetAddress,
             'shipping_address_2'                => '',
             'shipping_address_3'                => '',
@@ -77,21 +78,21 @@ class CheckoutControllerTest extends TestCase
         $response->assertRedirect('/thank-you');
         $response->assertSessionHas('commerce_cart_id');
 
-        $this->assertDatabaseHas('customers', [
+        $this->assertDatabaseHas('users', [
             'name'  => $data['name'],
             'email' => $data['email'],
         ]);
 
-        $customer = Customer::where('name', $data['name'])->first();
+        $user = User::where('email', $data['email'])->first();
 
         $this->assertDatabaseHas('addresses', [
             'name'          => $data['name'],
             'address1'      => $data['shipping_address_1'],
-            'customer_id'   => $customer->id,
+            'customer_id'   => $user->id,
         ]);
 
         $this->assertDatabaseHas('orders', [
-            'customer_id'   => $customer->id,
+            'customer_id'   => $user->id,
         ]);
 
         $this->assertDatabaseMissing('carts', [

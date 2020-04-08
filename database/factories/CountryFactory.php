@@ -7,7 +7,7 @@ use Statamic\Stache\Stache;
 $factory->define(Country::class, function (Faker $faker) {
     return [
         'name' => $faker->country,
-        'iso' => $faker->countryCode,
+        'iso' => $faker->countryISOAlpha3,
         'uuid' => (new Stache)->generateId(),
     ];
 });

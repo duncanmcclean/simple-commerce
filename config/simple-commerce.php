@@ -29,7 +29,6 @@ return [
 
     'gateways' => [
         \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
-//        \DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway::class => [],
     ],
 
     /**
@@ -58,6 +57,17 @@ return [
 
         'mail_to' => 'admin@example.com',
         'slack_webhook' => '',
+    ],
+
+    /**
+     * Customers
+     *
+     * Configure how you'd like to handle customers
+     * in your store.
+     */
+
+    'customers' => [
+        'model' => \App\User::class,
     ],
 
     /**

@@ -6,7 +6,6 @@ use Statamic\Fields\Fieldtype;
 
 class CustomerOrdersFieldtype extends Fieldtype
 {
-    protected $categories = ['commerce'];
     protected $icon = 'select';
 
     public function preload()

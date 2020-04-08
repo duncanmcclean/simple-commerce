@@ -16,6 +16,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 
@@ -23,22 +24,34 @@ class CheckoutController
 {
     use UsesCart;
 
-    public function store(CheckoutRequest $request)
+    public function store(Request $request)
     {
         $this->createCart();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
+        $payment['gateway'] = $request->gateway;
 
-        $customer = Customer::updateOrCreate(
-            [
-                'email' => $request->email,
-            ],
-            [
-                'uuid'  => (new Stache())->generateId(),
-                'name'  => $request->name,
-                'email' => $request->email,
-            ]
-        );
+        $customerModel = config('simple-commerce.customers.model');
+        $customerModel = new $customerModel();
+
+        // TODO: needs tidy up
+        try {
+            $customer = $customerModel::where('email', $request->email)->first();
+            $email = $customer->email;
+        } catch (\ErrorException $e) {
+            $fields = $customerModel->fields;
+
+            $customer = new $customerModel();
+            collect($request->all())
+                ->reject(function ($value, $key) use ($fields) {
+                    return !in_array($key, $fields);
+                })
+                ->each(function ($value, $key) use ($customer) {
+                    $customer->{$key} = $value;
+                })
+                ->toArray();
+            $customer->save();
+        }
 
         $billing = Address::updateOrCreate(
             [

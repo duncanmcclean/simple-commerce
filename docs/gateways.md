@@ -13,12 +13,12 @@ Gateways are easy enough to configure. Just add the namespaces of the gateways y
 
 return [
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway::class => [],
+        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
     ],
 ];
 ```
 
-You can add as many gateways as need.
+You can add as many gateways as want.
 
 In your checkout form, you'll need to use the `commerce:gateways` tag to loop through each of the payment gateways and display their payment form.
 
@@ -35,6 +35,11 @@ Some payment gateways also push their own scripts, for example Stripe requires S
 ```html
 {{ yield:scripts }}
 ```
+
+## First party gateways
+Apart from the Dummy Gateway, Simple Commerce does not provide any payment gateways. However, you can install various other gateways.
+
+* [Stripe for Simple Commerce](https://github.com/doublethreedigital/simple-commerce-stripe)
 
 ## Creating your own gateway
 

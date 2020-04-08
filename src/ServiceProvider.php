@@ -23,7 +23,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderItemsFieldtype;
@@ -47,7 +46,6 @@ use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductPolicy;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTag;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
-use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
 use Illuminate\Support\Facades\Route;
 use Statamic\Facades\CP\Nav;
@@ -94,7 +92,6 @@ class ServiceProvider extends AddonServiceProvider
     protected $fieldtypes = [
         CountryFieldtype::class,
         CurrencyFieldtype::class,
-        CustomerFieldtype::class,
         CustomerOrdersFieldtype::class,
         MoneyFieldtype::class,
         OrderItemsFieldtype::class,
@@ -109,7 +106,6 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $widgets = [
-        NewCustomersWidget::class,
         RecentOrdersWidget::class,
     ];
 
@@ -139,7 +135,6 @@ class ServiceProvider extends AddonServiceProvider
         parent::boot();
 
         $this->publishes([__DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php')]);
-        $this->publishes([__DIR__.'/../resources/views/web' => resource_path('views/vendor/simple-commerce/web')]);
         $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
         $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints')]);
         $this->publishes([__DIR__.'/../resources/fieldsets' => resource_path('fieldsets')]);
@@ -198,15 +193,6 @@ class ServiceProvider extends AddonServiceProvider
 
         Nav::extend(function ($nav) {
             $nav
-                ->create('Customers')
-                ->section('Simple Commerce')
-                ->route('customers.index')
-                ->can('view customers')
-                ->icon('user');
-        });
-
-        Nav::extend(function ($nav) {
-            $nav
                 ->create('Settings')
                 ->section('Simple Commerce')
                 ->route('settings.index')
@@ -234,19 +220,6 @@ class ServiceProvider extends AddonServiceProvider
         Permission::group('simple-commerce', 'Simple Commerce', function () {
             Permission::register('edit simple commerce settings')
                 ->label('Edit Simple Commerce Settings');
-
-            Permission::register('view customers', function ($permission) {
-                $permission->children([
-                    Permission::make('edit customers')
-                        ->label('Edit customers')
-                        ->children([
-                            Permission::make('create customers')
-                                ->label('Create Customers'),
-                            Permission::make('delete customers')
-                                ->label('Delete Customers'),
-                        ]),
-                ]);
-            })->label('View Customers');
 
             Permission::register('view orders', function ($permission) {
                 $permission->children([
