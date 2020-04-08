@@ -1,7 +1,7 @@
 <template>
     <div>
-        <section class="bg-grey-20 rounded w-full mt-2">
-            <table v-if="hasItems" class="bg-white data-table">
+        <section v-if="hasItems" class="bg-grey-20 rounded w-full mt-2">
+            <table class="bg-white data-table">
                 <thead>
                     <tr>
                         <th>Order ID</th>
@@ -32,9 +32,9 @@
                     </tr>
                 </tbody>
             </table>
-
-            <p v-else class="mx-2 my-4">This customer has not ordered anything yet.</p>
         </section>
+
+        <p v-else class="mx-2 my-4">This customer has not ordered anything yet.</p>
     </div>
 </template>
 
@@ -52,22 +52,21 @@
 
         data() {
             return {
+                email: this.$parent.$parent.$parent.$parent.$parent.$parent._props.values.email,
                 orders: [],
                 hasItems: false
             }
         },
 
         mounted() {
-            if (window.customerId) {
-                axios.post(this.meta, {
-                    customer: window.customerId
-                }).then(response => {
-                    this.orders = response.data;
-                    this.hasItems = true;
-                }).catch(error => {
-                    this.$toast.error(error);
-                })
-            }
+            axios.post(this.meta, {
+                email: this.email
+            }).then(response => {
+                this.orders = response.data;
+                this.hasItems = true;
+            }).catch(error => {
+                this.$toast.error(error);
+            });
         }
     }
 </script>
