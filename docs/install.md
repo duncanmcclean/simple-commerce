@@ -17,4 +17,19 @@ php artisan migrate
 php artisan simple-commerce:seed
 ```
 
-You'll also want to add the `IsACustomer` trait to your `User` model.
+Also make sure to add the `IsACustomer` trait to your `User` model and add the following code:
+
+```php
+public $fields = [
+	'name', 'email', 'password',
+;
+
+public function rules(): array
+{
+	return [
+		'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6|confirmed',
+	];
+}
+```
