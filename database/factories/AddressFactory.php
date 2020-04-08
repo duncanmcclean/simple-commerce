@@ -10,7 +10,7 @@ use Statamic\Stache\Stache;
 $factory->define(Address::class, function (Faker $faker) {
     return [
         'country_id' => Country::where('iso', $faker->countryCode)->first(),
-        'state_id' => State::where('abreviation', $faker->stateAbbr)->first(),
+        'state_id' => State::where('abbreviation', $faker->stateAbbr)->first(),
         'name' => $faker->name,
         'address1' => $faker->streetAddress,
         'address2' => null,
