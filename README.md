@@ -20,6 +20,8 @@ php artisan migrate
 php artisan simple-commerce:seed
 ```
 
+Also make sure to add the `IsACustomer` trait to your `User` model.
+
 ## Licensing
 Like Statamic, Simple Commerce is commercial software but has an open-source codebase. If you want to use Simple Commerce in production, you'll need to buy a license. 
 
