@@ -29,6 +29,7 @@ class CheckoutController
         $this->createCart();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
+        $payment['gateway'] = $request->gateway;
 
         $customerModel = config('simple-commerce.customers.model');
         $customerModel = new $customerModel();
