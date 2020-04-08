@@ -45,7 +45,6 @@ use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductPolicy;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTag;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
-use DoubleThreeDigital\SimpleCommerce\Widgets\NewCustomersWidget;
 use DoubleThreeDigital\SimpleCommerce\Widgets\RecentOrdersWidget;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
@@ -105,7 +104,6 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $widgets = [
-        NewCustomersWidget::class,
         RecentOrdersWidget::class,
     ];
 
