@@ -24,8 +24,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::setUp();
 
         $this->withFactories(realpath(__DIR__.'/../database/factories'));
-        require_once(__DIR__.'/__fixtures__/database/migrations/2014_10_12_000000_create_users_table.php');
-        require_once(__DIR__.'/__fixtures__/database/migrations/2020_03_30_151610_statamic_auth_tables.php');
+        $this->loadMigrationsFrom(__DIR__ . '/__fixtures__/database/migrations');
     }
 
     protected function getPackageProviders($app)
