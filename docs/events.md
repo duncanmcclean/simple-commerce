@@ -16,14 +16,6 @@ This event will be triggered whenever a product or variant attribute is updated.
 
 This event will be triggered whenever a cart is created. It has one parameter: `cart`.
 
-### `DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated`
-
-This event will be triggered whenever a new customer is created. It has one parameter: `customer`.
-
-### `DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated`
-
-This event will be triggered whenever a customer is updated. It has one parameter: `customer`.
-
 ### `DoubleThreeDigital\SimpleCommerce\Events\OrderPaid`
 
 This event will be triggered whenever an order is paid. It has one parameter: `order`.

@@ -7,8 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Console\Commands\VersionCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
@@ -58,8 +56,6 @@ class ServiceProvider extends AddonServiceProvider
         AddedToCart::class => [],
         AttributeUpdated::class => [],
         CartCreated::class => [],
-        CustomerCreated::class => [],
-        CustomerUpdated::class => [],
         OrderPaid::class => [],
         OrderRefunded::class => [
             SendOrderRefundedNotification::class,

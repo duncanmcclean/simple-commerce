@@ -2,19 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models\Traits;
 
-use DoubleThreeDigital\SimpleCommerce\Events\CustomerCreated;
-use DoubleThreeDigital\SimpleCommerce\Events\CustomerUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 
 trait IsACustomer
 {
     public $fields = ['name', 'email', 'password'];
-
-//    protected $dispatchesEvents = [
-//        'created' => CustomerCreated::class,
-//        'updated' => CustomerUpdated::class,
-//    ];
 
     public function addresses()
     {
