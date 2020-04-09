@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Statamic\CP\Breadcrumbs;
+use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderController extends CpController
@@ -52,10 +53,6 @@ class OrderController extends CpController
     public function update(OrderRequest $request, Order $order): Order
     {
         $this->authorize('update', Order::class);
-
-        if ($request->status != $order->status) {
-            event(new OrderStatusUpdated($order, $order->customer));
-        }
 
         $order->billingAddress()->updateOrCreate(
             [
@@ -101,6 +98,10 @@ class OrderController extends CpController
             'currency_id'       => $request->currency_id,
             'customer_id'       => $request->customer_id,
         ]);
+
+        if ($request->order_status_id != $order->order_status_id) {
+            event(new OrderStatusUpdated($order, $order->customer));
+        }
 
         return $order->refresh();
     }

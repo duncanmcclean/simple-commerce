@@ -2,19 +2,24 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
+use App\User;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
-use Statamic\Facades\User;
+use Statamic\Facades\Blueprint;
+use Statamic\Facades\Fieldset;
+use Statamic\Fields\BlueprintRepository;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
-    use DatabaseMigrations, WithFaker;
+    use DatabaseMigrations, RefreshDatabase, WithFaker;
+
+    protected $shouldFakeVersion = true;
 
     protected function setUp(): void
     {
@@ -25,6 +30,11 @@ abstract class TestCase extends OrchestraTestCase
 
         $this->withFactories(realpath(__DIR__.'/../database/factories'));
         $this->loadMigrationsFrom(__DIR__ . '/__fixtures__/database/migrations');
+
+        if ($this->shouldFakeVersion) {
+            \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.0.0-testing');
+            $this->addToAssertionCount(-1); // Dont want to assert this
+        }
     }
 
     protected function getPackageProviders($app)
@@ -60,6 +70,9 @@ abstract class TestCase extends OrchestraTestCase
         Statamic::pushCpRoutes(function() {
             return require_once realpath(__DIR__.'/../routes/cp.php');
         });
+
+        Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
+        Fieldset::setDirectory(__DIR__.'/../resources/fieldsets');
     }
 
     protected function resolveApplicationConfiguration($app)
@@ -82,13 +95,13 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
     }
 
-    public function actAsAdmin()
+    public function actAsUser()
     {
-        Config::set('statamic.stache.stores.users.directory', realpath(__DIR__.'/__fixtures__/users'));
+        return $this->actingAs(factory(User::class)->create());
+    }
 
-        return User::make()
-            ->id(1)
-            ->email('duncan@doublethree.digital')
-            ->makeSuper();
+    public function actAsSuper()
+    {
+        return $this->actingAs(factory(User::class)->create(['super' => true]));
     }
 }

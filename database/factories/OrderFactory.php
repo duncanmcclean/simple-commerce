@@ -37,12 +37,15 @@ $factory->define(Order::class, function (Faker $faker) {
         'order_status_id' => function () {
             return factory(OrderStatus::class)->create()->id;
         },
-        'items' => json_encode((new CartHelper())->orderItems($cart->uuid)),
+        'items' => (new CartHelper())->orderItems($cart->uuid),
         'total' => 0,
         'currency_id' => function () {
             return factory(Currency::class)->create()->id;
         },
-        'gateway_data' => json_encode([]),
+        'gateway_data' => [
+            'gateway' => '\DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+            'is_paid' => true,
+        ],
         'is_paid' => true,
         'is_refunded' => false,
     ];
