@@ -22,9 +22,7 @@
                     @foreach($categories as $category)
                         <tr>
                             <td><a href="{{ $category->showUrl() }}">{{ $category->title }}</a></td>
-
                             <td>{{ $category->slug }}</td>
-
                             <td class="flex justify-end">
                                 <simple-commerce-actions>
                                     <simple-commerce-action-item

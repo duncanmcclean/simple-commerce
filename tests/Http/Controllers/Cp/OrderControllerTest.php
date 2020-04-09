@@ -2,11 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Support\Facades\Event;
 
 class OrderControllerTest extends TestCase
 {
