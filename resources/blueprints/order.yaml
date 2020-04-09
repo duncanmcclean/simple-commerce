@@ -21,32 +21,10 @@ sections:
       -
         handle: items
         field:
-          fields:
-            -
-              handle: product
-              field:
-                max_items: 1
-                mode: select
-                type: product
-                localizable: false
-                display: Product
-                width: 50
-            -
-              handle: quantity
-              field:
-                type: integer
-                localizable: false
-                display: Quantity
-                validate: required
-                width: 50
-          mode: table
-          max_rows: 0
-          min_rows: 1
-          reorderable: false
-          type: grid
+          type: order_items
           localizable: false
-          display: Products
-          add_row: 'Add to Order'
+          listable: hidden
+          display: 'Order Items'
   billing_address:
     display: 'Billing Address'
     fields:
