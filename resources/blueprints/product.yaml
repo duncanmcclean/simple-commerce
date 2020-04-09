@@ -20,6 +20,9 @@ sections:
           localizable: false
           display: Description
       -
+        import: product_attributes
+        prefix: attributes_
+      -
         handle: variants
         field:
           fields:
@@ -97,12 +100,6 @@ sections:
           localizable: false
           display: Variants
           listable: hidden
-  attributes:
-    display: Attributes
-    fields:
-      -
-        import: product_attributes
-        prefix: attributes_
   sidebar:
     display: Sidebar
     fields:
