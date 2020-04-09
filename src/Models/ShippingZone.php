@@ -15,7 +15,7 @@ class ShippingZone extends Model
     ];
 
     protected $appends = [
-        'updateUrl', 'deleteUrl', 'formatted_price',
+        'formatted_price', 'name',
     ];
 
     public function country()
@@ -33,21 +33,28 @@ class ShippingZone extends Model
         return $this->hasMany(CartShipping::class);
     }
 
-    public function getUpdateUrlAttribute()
+    public function updateUrl()
     {
-        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uuid']]);
     }
 
-    public function getDeleteUrlAttribute()
+    public function deleteUrl()
     {
-        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
     }
 
     public function getFormattedPriceAttribute()
     {
         return (new \DoubleThreeDigital\SimpleCommerce\Helpers\Currency())->parse($this->attributes['price']);
+    }
+
+    public function getNameAttribute()
+    {
+        if ($this->state != null) {
+            return $this->country->name.', '.$this->state->name.', '.$this->start_of_zip_code;
+        }
+
+        return $this->country->name.', '.$this->start_of_zip_code;
     }
 
     public function blueprint()

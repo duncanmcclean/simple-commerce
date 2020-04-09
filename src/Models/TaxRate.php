@@ -14,10 +14,6 @@ class TaxRate extends Model
         'uuid', 'country_id', 'state_id', 'start_of_zip_code', 'rate', 'name',
     ];
 
-    protected $appends = [
-        'updateUrl', 'deleteUrl',
-    ];
-
     public function country()
     {
         return $this->belongsTo(Country::class);
@@ -33,15 +29,13 @@ class TaxRate extends Model
         return $this->hasMany(CartTax::class);
     }
 
-    public function getUpdateUrlAttribute()
+    public function updateUrl()
     {
-        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uuid']]);
     }
 
-    public function getDeleteUrlAttribute()
+    public function deleteUrl()
     {
-        // TODO: this should not be an attribute, it should be a method
         return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['uuid']]);
     }
 

@@ -15,5 +15,5 @@ mix.js('resources/js/cp.js', 'resources/dist/js/cp.js')
     .setPublicPath('resources/dist');
 
 if (! mix.inProduction()) {
-    mix.copy('dist/js/cp.js', '../../../public/vendor/doublethreedigital/simple-commerce/js/cp.js');
+    mix.copy('resources/dist/js/cp.js', '../../../public/vendor/doublethreedigital/simple-commerce/js/cp.js');
 }

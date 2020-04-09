@@ -15,7 +15,6 @@
                     <td>{{ item.formatted_total }}</td>
                 </tr>
 
-                <!-- TODO: this tax total is a bit off -->
                 <tr v-for="tax in value.tax">
                     <td>{{ tax.tax_rate.name }}</td>
                     <td></td>
@@ -23,8 +22,7 @@
                 </tr>
 
                 <tr v-for="shipping in value.shipping">
-                    <!-- TODO: need a better system for shipping zone naming, and add the shipping zone state (if it has one) -->
-                    <td>{{ shipping.shipping_zone.country.name }}, {{ shipping.shipping_zone.start_of_zip_code }}</td>
+                    <td>{{ shipping.shipping_zone.name }}</td>
                     <td></td>
                     <td>{{ value.totals.shipping }}</td>
                 </tr>
