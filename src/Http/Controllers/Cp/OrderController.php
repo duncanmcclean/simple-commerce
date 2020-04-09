@@ -4,13 +4,11 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderRequest;
-use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderController extends CpController
