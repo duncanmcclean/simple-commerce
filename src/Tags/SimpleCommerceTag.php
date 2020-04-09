@@ -141,10 +141,15 @@ class SimpleCommerceTag extends Tags
                 ->toArray();
         }
 
-        return auth()->user()->orders()
+        $orders = auth()->user()->orders()
             ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer')
-            ->get()
-            ->toArray();
+            ->get();
+
+        if ($this->getParam('count')) {
+            return $orders->count();
+        }
+
+        return $orders->toArray();
     }
 
     public function form()
