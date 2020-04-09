@@ -34,4 +34,9 @@ trait IsACustomer
             'password' => 'required|string|min:6|confirmed',
         ];
     }
+
+    public function editUrl()
+    {
+        return cp_route('users.edit', $this->id);
+    }
 }
