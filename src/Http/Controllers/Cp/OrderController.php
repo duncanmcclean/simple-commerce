@@ -42,7 +42,7 @@ class OrderController extends CpController
         return view('simple-commerce::cp.orders.edit', [
             'blueprint' => $blueprint->toPublishArray(),
             'values'    => array_merge($order->toArray(), [
-                'gateway'   => isset($order->gateway_data['gateway']) ? $order->gateway_data['gateway'] : null,
+                'gateway'   => isset($order->gateway_data['gateway']) ? $order->gateway_data['gateway'] : null, // TODO: wip 
                 'paid'      => $order->gateway_data['is_paid'],
             ]),
             'meta'      => $fields->meta(),
