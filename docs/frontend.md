@@ -124,6 +124,26 @@ Returns an array of states in a country.
 </select>
 ```
 
+### Orders
+
+Returns an array of orders for the currently logged in user.
+
+```html
+{{ simple-commerce:orders }}
+    <p>Order #{{ id }} currently has the '{{ order_status:name }}' status.</p>
+{{ /simple-commerce:orders }}
+```
+
+You can also get a specific order by using the `get` parameter.
+
+```html
+{{ simple-commerce:orders get='order-uuid' }}
+    <p>You are looking at order {{ id }}.</p>
+{{ /simple-commerce:orders }}
+```
+
+Finally, you can also use the `count` parameter so you can see how many orders the customer has made.
+
 ### Form
 
 Returns a `<form>` with a set action and method to point to Simple Commerce's actions.
