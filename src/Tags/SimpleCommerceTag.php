@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Tags\Tags;
@@ -42,7 +43,7 @@ class SimpleCommerceTag extends Tags
 
     public function products()
     {
-        $products = Product::with('variants', 'productCategory')->get();
+        $products = Product::with('productCategory')->get();
 
         if ($this->getParam('category') != null) {
             $category = ProductCategory::where('slug', $this->getParam('category'))->first();
@@ -90,11 +91,31 @@ class SimpleCommerceTag extends Tags
             return $products->count();
         }
 
+        $products = $products->map(function (Product $product) {
+            $newProduct = $product->toArray();
+
+            $product->attributes->each(function (Attribute $attribute) use (&$newProduct) {
+                $newProduct["$attribute->key"] = $attribute->value;
+            });
+
+            $newProduct['variants'] = $product->variants->map(function (Variant $variant) {
+                $newVariant = $variant->toArray();
+
+                $variant->attributes->each(function (Attribute $attribute) use (&$newVariant) {
+                    $newVariant["$attribute->key"] = $attribute->value;
+                });
+
+                return $newVariant;
+            });
+
+            return $newProduct;
+        });
+
         if ($this->getParam('first')) {
-            return $products->first()->toArray();
+            return $products[0];
         }
 
-        return $products->toArray();
+        return $products;
     }
 
     public function countries()
