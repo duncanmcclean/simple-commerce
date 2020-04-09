@@ -76,10 +76,14 @@ class Product extends Model
 
     public function delete()
     {
-        parent::delete();
-
         if ($this->attributes()->count() > 0) {
             $this->attributes()->delete();
         }
+
+        if ($this->variants()->count() > 0) {
+            $this->variants()->delete();
+        }
+
+        parent::delete();
     }
 }

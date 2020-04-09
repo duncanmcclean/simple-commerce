@@ -127,7 +127,7 @@ class ProductController extends CpController
                 });
 
                 return array_merge($variant, [
-                    '_id'           => "row-{$key}",
+                    '_id' => "row-{$key}",
                 ]);
             }),
         ]);
@@ -216,7 +216,6 @@ class ProductController extends CpController
     {
         $this->authorize('delete', $product);
 
-        $product->variants()->delete();
         $product->delete();
     }
 }
