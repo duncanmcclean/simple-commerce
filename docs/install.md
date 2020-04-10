@@ -17,19 +17,53 @@ php artisan migrate
 php artisan simple-commerce:seed
 ```
 
-Also make sure to add the `IsACustomer` trait to your `User` model and add the following code:
+All customers in Simple Commerce are attached to a User model. By default in Laravel/Statamic apps, this model is `App\User`. Simple Commerce has a few things you'll need to add to your model class so it can attach relationships and process the checkout process.
+
+The first change is that you'll need to add our `IsACustomer` trait to your model, as so:
 
 ```php
-public $fields = [
-	'name', 'email', 'password',
-;
+<?php
 
-public function rules(): array
+namespace App;
+
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\IsACustomer;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
 {
-	return [
-		'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:6|confirmed',
-	];
+    use IsACustomer;
+
+    // ...
+}
+```
+
+We also require that you add a public `$fields` variable, which will be the variables that will be stored to your user model upon checkout and the `rules` method which are validation rules you wish to apply when the user submits the checkout form.
+
+```php
+<?php
+
+namespace App;
+
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\IsACustomer;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+    use IsACustomer;
+    
+    public $fields = [
+    	'name', 'email', 'password',
+    ];
+
+    // ...
+
+    public function rules(): array
+    {
+    	return [
+    		'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+    	];
+    }
 }
 ```
