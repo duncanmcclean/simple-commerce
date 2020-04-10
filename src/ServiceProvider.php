@@ -140,7 +140,7 @@ class ServiceProvider extends AddonServiceProvider
             ], 'simple-commerce');
 
         $this
-            ->loadViewsFrom(__DIR__.'../resources/views', 'simple-commerce');
+            ->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
 
         $this
             ->loadMigrationsFrom(__DIR__.'/../database/migrations');

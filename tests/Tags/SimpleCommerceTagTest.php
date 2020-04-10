@@ -280,16 +280,6 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function simple_commerce_product_tag_without_slug()
-    {
-        $this->expectException('You must pass in a slug to the simple-commerce:product tag.');
-
-        $this->tag->setParameters([]);
-
-        $run = $this->tag->product();
-    }
-
-    /** @test */
     public function simple_commerce_countries_tag()
     {
         $countries = factory(Country::class, 15)->create();
