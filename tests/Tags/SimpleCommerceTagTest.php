@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,8 +21,6 @@ use Statamic\Facades\Antlers;
 class SimpleCommerceTagTest extends TestCase
 {
     public $tag;
-
-    use RefreshDatabase;
 
     public function setUp() : void
     {
@@ -258,6 +257,36 @@ class SimpleCommerceTagTest extends TestCase
         $this->assertIsArray($run);
         $this->assertStringContainsString($products[0]['title'], json_encode($run));
         $this->assertStringNotContainsString($products[1]['title'], json_encode($run));
+    }
+
+    /** @test */
+    public function simple_commerce_product_tag()
+    {
+        $product = factory(Product::class)->create();
+        $variants = factory(Variant::class, 2)->create([
+            'product_id' => $product->id,
+        ]);
+
+        $this->tag->setParameters([
+            'slug' => $product->slug,
+        ]);
+
+        $run = $this->tag->product();
+
+        $this->assertIsArray($run);
+        $this->assertStringContainsString($product->title, json_encode($run));
+        $this->assertStringContainsString($variants[0]['name'], json_encode($run));
+        $this->assertStringContainsString($variants[1]['name'], json_encode($run));
+    }
+
+    /** @test */
+    public function simple_commerce_product_tag_without_slug()
+    {
+        $this->expectException('You must pass in a slug to the simple-commerce:product tag.');
+
+        $this->tag->setParameters([]);
+
+        $run = $this->tag->product();
     }
 
     /** @test */

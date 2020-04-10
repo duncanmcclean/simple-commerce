@@ -118,6 +118,35 @@ class SimpleCommerceTag extends Tags
         return $products;
     }
 
+    public function product()
+    {
+        $slug = $this->getParam('slug');
+
+        if (! $slug) {
+            throw new \Exception('You must pass in a slug to the simple-commerce:product tag.');
+        }
+
+        $product = Product::where('slug', $slug)->first();
+
+        $productArray = $product->toArray();
+
+        $product->attributes->each(function (Attribute $attribute) use (&$productArray) {
+            $productArray["$attribute->key"] = $attribute->value;
+        });
+
+        $newProduct['variants'] = $product->variants->map(function (Variant $variant) {
+            $variantArray = $variant->toArray();
+
+            $variant->attributes->each(function (Attribute $attribute) use (&$variantArray) {
+                $variantArray["$attribute->key"] = $attribute->value;
+            });
+
+            return $variantArray;
+        });
+
+        return $productArray;
+    }
+
     public function countries()
     {
         return Country::all()->toArray();

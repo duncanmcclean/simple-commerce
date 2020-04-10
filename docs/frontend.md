@@ -86,6 +86,20 @@ Sometimes you may come across a situation where you just want to get the first p
 {{ /simple-commerce:products }}
 ```
 
+### `{{ simple-commerce:product }}`
+Returns a product
+
+```html
+{{ simple-commerce:product :slug='segment_2' }}
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+
+    {{ variants }}
+        {{ name }} {{ price | price }}
+    {{ /variants }}
+{{ /simple-commerce:product }}
+```
+
 ### `{{ simple-commerce:countries }}`
 
 Returns an array of countries.
