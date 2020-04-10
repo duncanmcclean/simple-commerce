@@ -130,13 +130,20 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
-        $this->publishes([__DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php')]);
-        $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
-        $this->publishes([__DIR__.'/../resources/blueprints' => resource_path('blueprints')]);
-        $this->publishes([__DIR__.'/../resources/fieldsets' => resource_path('fieldsets')]);
-        $this->publishes([__DIR__.'/../resources/dist/js/cp.js', public_path('vendor/doublethreedigital/simple-commerce/js')]);
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this
+            ->publishes([
+                __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+                __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+                __DIR__.'/../resources/fieldsets' => resource_path('fieldsets'),
+                __DIR__.'/../resources/dist/js/cp.js' => public_path('vendor/doublethreedigital/simple-commerce/js'),
+            ], 'simple-commerce');
+
+        $this
+            ->loadViewsFrom(__DIR__.'../resources/views', 'simple-commerce');
+
+        $this
+            ->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         $this->app->booted(function () {
             $this->navigation();
