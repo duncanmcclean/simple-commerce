@@ -12,7 +12,7 @@ From your terminal, run the following commands:
 
 ```shell script
 composer require doublethreedigital/simple-commerce
-php artisan vendor:publish --provider=DoubleThreeDigital\SimpleCommerce\ServiceProvider
+php artisan vendor:publish --provider="DoubleThreeDigital\SimpleCommerce\ServiceProvider"
 php artisan migrate
 php artisan simple-commerce:seed
 ```
