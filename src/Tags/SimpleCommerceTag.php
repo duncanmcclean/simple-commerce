@@ -112,10 +112,10 @@ class SimpleCommerceTag extends Tags
         });
 
         if ($this->getParam('first')) {
-            return $products[0];
+            return $products->toArray()[0];
         }
 
-        return $products;
+        return $products->toArray();
     }
 
     public function product()
