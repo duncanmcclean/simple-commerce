@@ -47,7 +47,7 @@ class ProductControllerTest extends TestCase
     /** @test */
     public function can_store_product()
     {
-        $re = $this
+        $this
             ->actAsSuper()
             ->post(cp_route('products.store'), [
                 'title'             => $this->faker->words(3),
@@ -79,9 +79,6 @@ class ProductControllerTest extends TestCase
                     ],
                 ],
             ]);
-
-        dd($re);
-
 
         $this
             ->assertDatabaseHas('attributes', [
