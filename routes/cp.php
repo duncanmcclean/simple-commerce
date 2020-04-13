@@ -26,6 +26,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/', 'OrderController@index')->name('.index');
         Route::get('/edit/{order}', 'OrderController@edit')->name('.edit');
         Route::post('/edit/{order}', 'OrderController@update')->name('.update');
+        Route::get('/refund/{order}', 'RefundOrderController@store')->name('.refund');
         Route::delete('/delete/{order}', 'OrderController@destroy')->name('.destroy');
 
         Route::get('/{order}/{status}', 'UpdateOrderStatusController')->name('.status-update');
@@ -41,7 +42,6 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
 
     Route::prefix('commerce-api')->as('commerce-api')->group(function () {
         Route::post('/customer-order', 'API\CustomerOrderController@index')->name('.customer-order');
-        Route::get('/refund-order/{order}', 'RefundOrderController@store')->name('.refund-order');
 
         Route::middleware(AccessSettings::class)->group(function () {
             Route::get('/order-status', 'API\OrderStatusController@index')->name('.order-status.index');

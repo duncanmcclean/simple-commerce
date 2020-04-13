@@ -15,10 +15,11 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'is_completed' => 'boolean',
-        'is_paid' => 'boolean',
-        'items' => 'json',
-        'gateway_data' => 'json',
+        'is_completed'  => 'boolean',
+        'is_paid'       => 'boolean',
+        'is_refunded'   => 'boolean',
+        'items'         => 'json',
+        'gateway_data'  => 'json',
     ];
 
     public function billingAddress()

@@ -61,7 +61,7 @@
                                             <simple-commerce-action-item
                                                 type="standard"
                                                 text="Refund"
-                                                action="{{ cp_route('commerce-api.refund-order', ['order' => $order->uuid]) }}"
+                                                action="{{ cp_route('orders.refund', ['order' => $order->uuid]) }}"
                                             ></simple-commerce-action-item>
                                         @endif
                                     @endif
