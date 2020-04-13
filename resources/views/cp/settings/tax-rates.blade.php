@@ -9,10 +9,10 @@
     </div>
 
     <tax-rate-settings
-            index-endpoint="{{ cp_route('commerce-api.tax-rates.index') }}"
-            store-endpoint="{{ cp_route('commerce-api.tax-rates.store') }}"
-            initial-blueprint='@json($blueprint)'
-            initial-meta='@json($meta)'
-            initial-values='@json($values)'
+        index-endpoint="{{ cp_route('tax-rates.index') }}"
+        store-endpoint="{{ cp_route('tax-rates.store') }}"
+        initial-blueprint='@json($blueprint)'
+        initial-meta='@json($meta)'
+        initial-values='@json($values)'
     ></tax-rate-settings>
 @endsection

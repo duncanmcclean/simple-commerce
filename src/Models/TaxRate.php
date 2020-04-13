@@ -31,12 +31,12 @@ class TaxRate extends Model
 
     public function updateUrl()
     {
-        return cp_route('commerce-api.tax-rates.update', ['rate' => $this->attributes['uuid']]);
+        return cp_route('tax-rates.update', ['rate' => $this->attributes['uuid']]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('commerce-api.tax-rates.destroy', ['rate' => $this->attributes['uuid']]);
+        return cp_route('tax-rates.destroy', ['rate' => $this->attributes['uuid']]);
     }
 
     public function blueprint()

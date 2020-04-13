@@ -9,8 +9,8 @@
     </div>
 
     <order-status-settings
-        index-endpoint="{{ cp_route('commerce-api.order-status.index') }}"
-        store-endpoint="{{ cp_route('commerce-api.order-status.store') }}"
+        index-endpoint="{{ cp_route('order-status.index') }}"
+        store-endpoint="{{ cp_route('order-status.store') }}"
         initial-blueprint='@json($blueprint)'
         initial-meta='@json($meta)'
         initial-values='@json($values)'

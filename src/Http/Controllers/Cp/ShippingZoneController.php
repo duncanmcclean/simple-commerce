@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ShippingZoneRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;

@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp\API;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;

@@ -29,12 +29,12 @@ class OrderStatus extends Model
 
     public function getUpdateUrlAttribute()
     {
-        return cp_route('commerce-api.order-status.update', ['status' => $this->attributes['uuid']]);
+        return cp_route('order-status.update', ['status' => $this->attributes['uuid']]);
     }
 
     public function getDeleteUrlAttribute()
     {
-        return cp_route('commerce-api.order-status.destroy', ['status' => $this->attributes['uuid']]);
+        return cp_route('order-status.destroy', ['status' => $this->attributes['uuid']]);
     }
 
     public function blueprint()

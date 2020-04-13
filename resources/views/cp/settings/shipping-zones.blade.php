@@ -9,8 +9,8 @@
     </div>
 
     <shipping-zone-settings
-            index-endpoint="{{ cp_route('commerce-api.shipping-zones.index') }}"
-            store-endpoint="{{ cp_route('commerce-api.shipping-zones.store') }}"
+            index-endpoint="{{ cp_route('shipping-zones.index') }}"
+            store-endpoint="{{ cp_route('shipping-zones.store') }}"
             initial-blueprint='@json($blueprint)'
             initial-meta='@json($meta)'
             initial-values='@json($values)'

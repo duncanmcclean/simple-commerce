@@ -1,8 +1,7 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp\API;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
@@ -15,7 +14,7 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->get(cp_route('commerce-api.order-status.index'))
+            ->get(cp_route('order-status.index'))
             ->assertOk();
     }
 
@@ -24,7 +23,7 @@ class OrderStatusControllerTest extends TestCase
     {
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.order-status.store'), [
+            ->post(cp_route('order-status.store'), [
                 'name'          => 'Out for Delivery',
                 'slug'          => 'out-for-delivery',
                 'description'   => 'This status is used when orders are out for delivery.',
@@ -48,7 +47,7 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.order-status.update', ['status' => $status->uuid]), [
+            ->post(cp_route('order-status.update', ['status' => $status->uuid]), [
                 'name'          => $status->name,
                 'slug'          => $status->slug,
                 'description'   => $status->description,
@@ -78,7 +77,7 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.order-status.update', ['status' => $status->uuid]), [
+            ->post(cp_route('order-status.update', ['status' => $status->uuid]), [
                 'name'          => $status->name,
                 'slug'          => $status->slug,
                 'description'   => $status->description,
@@ -106,7 +105,7 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->delete(cp_route('commerce-api.order-status.destroy', ['status' => $status->uuid]), [
+            ->delete(cp_route('order-status.destroy', ['status' => $status->uuid]), [
                 'assign' => $assignedStatus->id,
             ])
             ->assertOk();
@@ -124,7 +123,7 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->delete(cp_route('commerce-api.order-status.destroy', ['status' => $status->uuid]), [
+            ->delete(cp_route('order-status.destroy', ['status' => $status->uuid]), [
                 'assign' => $status->id,
             ])
             ->assertRedirect(cp_route('settings.order-statuses.index'))
@@ -143,7 +142,7 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->delete(cp_route('commerce-api.order-status.destroy', ['status' => $status->uuid]), [
+            ->delete(cp_route('order-status.destroy', ['status' => $status->uuid]), [
                 'assign' => $assignedStatus->id,
             ])
             ->assertRedirect(cp_route('settings.order-statuses.index'))

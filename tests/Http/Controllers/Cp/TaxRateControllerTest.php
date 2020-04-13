@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp\API;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\State;

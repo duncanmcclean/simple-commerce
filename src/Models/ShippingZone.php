@@ -35,12 +35,12 @@ class ShippingZone extends Model
 
     public function updateUrl()
     {
-        return cp_route('commerce-api.shipping-zones.update', ['zone' => $this->attributes['uuid']]);
+        return cp_route('shipping-zones.update', ['zone' => $this->attributes['uuid']]);
     }
 
     public function deleteUrl()
     {
-        return cp_route('commerce-api.shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
+        return cp_route('shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
     }
 
     public function getFormattedPriceAttribute()

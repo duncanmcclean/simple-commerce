@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use Statamic\Contracts\Auth\User as UserContract;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
@@ -10,7 +10,7 @@ use Statamic\Http\Controllers\CP\CpController;
 
 class CustomerOrderController extends CpController
 {
-    public function index(Request $request): Collection
+    public function __invoke(Request $request): Collection
     {
         $this->authorize('index', UserContract::class);
 

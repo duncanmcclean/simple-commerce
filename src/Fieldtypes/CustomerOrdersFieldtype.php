@@ -10,7 +10,7 @@ class CustomerOrdersFieldtype extends Fieldtype
 
     public function preload()
     {
-        return cp_route('commerce-api.customer-order');
+        return cp_route('fieldtype-data.customer-orders');
     }
 
     public function preProcess($data)
