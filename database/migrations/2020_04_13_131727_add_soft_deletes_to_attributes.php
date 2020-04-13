@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DeleteCustomersTable extends Migration
+class AddSoftDeletesToAttributes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class DeleteCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('customers');
+        Schema::table('attributes', function (Blueprint $table) {
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class DeleteCustomersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('attributes', function (Blueprint $table) {
+            //
+        });
     }
 }
