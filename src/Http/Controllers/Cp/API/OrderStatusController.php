@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Event;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderStatusController extends CpController
@@ -31,7 +32,7 @@ class OrderStatusController extends CpController
     public function update(OrderStatus $status, OrderStatusRequest $request): OrderStatus
     {
         if ($request->primary === true) {
-            OrderStatus::where('primary', true)->first()->update([
+            OrderStatus::where('primary', true)->update([
                 'primary' => false,
             ]);
         }
@@ -50,14 +51,12 @@ class OrderStatusController extends CpController
     public function destroy(OrderStatus $status, OrderStatusDeleteRequest $request)
     {
         if (OrderStatus::all()->count() === 1) {
-            return redirect(cp_route('settings.edit'))->with('error', "You can't delete the only order status.");
+            return redirect(cp_route('settings.order-statuses.index'))->with('error', "You can't delete the only order status.");
         }
 
         if ($status->primary === true) {
-            return redirect(cp_route('settings.edit'))->with('error', "You can't delete the primary order status.");
+            return redirect(cp_route('settings.order-statuses.index'))->with('error', "You can't delete the primary order status.");
         }
-
-        // TODO: fire the order status updated event
 
         $status->orders()
             ->update([

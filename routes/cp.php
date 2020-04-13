@@ -31,7 +31,6 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::delete('/delete/{order}', 'OrderController@destroy')->name('.destroy');
     });
 
-
     Route::prefix('settings')->as('settings')->middleware(AccessSettings::class)->group(function () {
         Route::get('/', 'Settings\SettingsHomeController@index')->name('.index');
         Route::get('/order-statuses', 'Settings\OrderStatusController@index')->name('.order-statuses.index');

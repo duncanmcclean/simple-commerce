@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\API;
 
+use Statamic\Contracts\Auth\User as UserContract;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -11,7 +12,7 @@ class CustomerOrderController extends CpController
 {
     public function index(Request $request): Collection
     {
-        $this->authorize('update', $request->customer);
+        $this->authorize('index', UserContract::class);
 
         $customerModel = config('simple-commerce.customers.model');
         $customerModel = new $customerModel();
