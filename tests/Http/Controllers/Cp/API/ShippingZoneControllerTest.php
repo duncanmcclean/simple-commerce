@@ -22,7 +22,7 @@ class ShippingZoneControllerTest extends TestCase
     /** @test */
     public function can_index_shipping_zones()
     {
-        $zones = factory(ShippingZone::class)->create();
+        $zones = factory(ShippingZone::class, 5)->create();
 
         $this
             ->actAsSuper()
