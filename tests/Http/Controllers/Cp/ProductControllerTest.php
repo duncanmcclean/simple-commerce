@@ -2,9 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\ProductController;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -117,36 +119,57 @@ class ProductControllerTest extends TestCase
                 'slug'                  => $product->slug,
                 'description'           => $this->faker->realText(),
                 'product_category_id'   => $product->product_category_id,
-                'is_enabled'            => true,
+                'is_enabled'            => 'true',
                 'variants' => [
                     [
                         'name'              => $this->faker->word,
                         'sku'               => str_slug($this->faker->word),
                         'price'             => '10',
                         'stock'             => '100',
-                        'unlimited_stock'   => true,
+                        'unlimited_stock'   => 'true',
                         'max_quantity'      => 5,
                         'description'       => $this->faker->realText(),
                         'attributes_colour' => 'Red',
                     ],
                 ],
             ])
-            ->assertRedirect();
+            ->assertOk();
     }
 
     /** @test */
     public function can_destroy_product()
     {
         $product = factory(Product::class)->create();
+        $productAttribute = factory(Attribute::class)->create([
+            'attributable_type' => Product::class,
+            'attributable_id'   => $product->id,
+        ]);
+        $variant = factory(Variant::class)->create([
+            'product_id' => $product->id,
+        ]);
+        $variantAttribute = factory(Attribute::class)->create([
+            'attributable_type' => Variant::class,
+            'attributable_id'   => $variant->id,
+        ]);
 
         $this
             ->actAsSuper()
             ->delete(cp_route('products.destroy', ['product' => $product->uuid]))
             ->assertOk();
 
+        // We're not doing 'assertMissing' because we use soft deletes on these modelss
         $this
-            ->assertDatabaseMissing('products', [
-                'uuid' => $product->uuid,
+            ->assertDatabaseHas('products', [
+                'uuid'          => $product->uuid,
+            ])
+            ->assertDatabaseHas('attributes', [
+                'uuid'          => $productAttribute->uuid,
+            ])
+            ->assertDatabaseHas('variants', [
+                'uuid'          => $variant->uuid,
+            ])
+            ->assertDatabaseHas('attributes', [
+                'uuid'          => $variantAttribute->uuid,
             ]);
     }
 }

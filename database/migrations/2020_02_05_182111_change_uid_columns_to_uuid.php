@@ -13,9 +13,9 @@ class ChangeUidColumnsToUuid extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->renameColumn('uid', 'uuid');
-        });
+//        Schema::table('customers', function (Blueprint $table) {
+//            $table->renameColumn('uid', 'uuid');
+//        });
 
         Schema::table('addresses', function (Blueprint $table) {
             $table->renameColumn('uid', 'uuid');
@@ -85,9 +85,9 @@ class ChangeUidColumnsToUuid extends Migration
      */
     public function down()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->renameColumn('uuid', 'uid');
-        });
+//        Schema::table('customers', function (Blueprint $table) {
+//            $table->renameColumn('uuid', 'uid');
+//        });
 
         Schema::table('addresses', function (Blueprint $table) {
             $table->renameColumn('uuid', 'uid');
