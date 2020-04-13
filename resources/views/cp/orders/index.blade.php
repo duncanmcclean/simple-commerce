@@ -50,7 +50,7 @@
                                         <simple-commerce-action-item
                                             type="standard"
                                             text="Set as {{ $status->name }}"
-                                            action="{{ cp_route('orders.status-update', ['order' => $order->uuid, 'status' => $status->uuid]) }}"
+                                            action="{{ cp_route('orders.status', ['order' => $order->uuid, 'status' => $status->uuid]) }}"
                                         ></simple-commerce-action-item>
                                     @endforeach
 

@@ -27,9 +27,8 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/edit/{order}', 'OrderController@edit')->name('.edit');
         Route::post('/edit/{order}', 'OrderController@update')->name('.update');
         Route::get('/refund/{order}', 'RefundOrderController@store')->name('.refund');
+        Route::get('/status/{order}/{status}', 'UpdateOrderStatusController@update')->name('.status');
         Route::delete('/delete/{order}', 'OrderController@destroy')->name('.destroy');
-
-        Route::get('/{order}/{status}', 'UpdateOrderStatusController')->name('.status-update');
     });
 
 

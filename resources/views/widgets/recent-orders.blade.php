@@ -35,7 +35,7 @@
                         <td class="flex justify-end">
                             <dropdown-list>
                                 @foreach($statuses as $status)
-                                    <dropdown-item text="Set as {{ $status->name }}" redirect="{{ cp_route('orders.status-update', ['order' => $order->uuid, 'status' => $status->uuid]) }}"></dropdown-item>
+                                    <dropdown-item text="Set as {{ $status->name }}" redirect="{{ cp_route('orders.status', ['order' => $order->uuid, 'status' => $status->uuid]) }}"></dropdown-item>
                                 @endforeach
 
                                 <div class="divider"></div>

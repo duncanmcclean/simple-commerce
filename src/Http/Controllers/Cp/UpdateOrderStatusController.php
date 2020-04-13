@@ -10,13 +10,13 @@ use Statamic\Http\Controllers\CP\CpController;
 
 class UpdateOrderStatusController extends CpController
 {
-    public function __invoke(Order $order, OrderStatus $status)
+    public function update(Order $order, OrderStatus $status)
     {
         $this->authorize('update', Order::class);
 
         $order->update(['order_status_id' => $status->id]);
 
-        Event::dispatch(new OrderStatusUpdated($order, $order->orderStatus()));
+        Event::dispatch(new OrderStatusUpdated($order, $order->orderStatus));
 
         return redirect(cp_route('orders.index'))->with('success', "Set as $status->name.");
     }
