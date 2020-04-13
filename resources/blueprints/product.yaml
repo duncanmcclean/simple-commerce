@@ -103,6 +103,12 @@ sections:
   sidebar:
     display: Sidebar
     fields:
+      - handle: is_enabled
+        field:
+          type: toggle
+          localizable: false
+          display: 'Is Enabled?'
+          default: true
       -
         handle: slug
         field:
@@ -120,9 +126,4 @@ sections:
           type: product_category
           localizable: false
           display: 'Product Category'
-      -
-        handle: is_enabled
-        field:
-          type: toggle
-          localizable: false
-          display: 'Is Enabled?'
+
