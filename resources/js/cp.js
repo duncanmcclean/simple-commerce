@@ -1,4 +1,4 @@
-import ActionsList from "./components/Actions/ActionsList";
+import ActionList from "./components/Actions/ActionList";
 import ActionItem from "./components/Actions/ActionItem";
 import CommerceCreateForm from "./components/Publish/CommerceCreateForm";
 import CustomerOrdersFieldtype from "./components/Fieldtypes/CustomerOrdersFieldtype";
@@ -8,7 +8,7 @@ import OrderStatus from "./components/Settings/OrderStatus";
 import ShippingZone from "./components/Settings/ShippingZone";
 import TaxRate from "./components/Settings/TaxRate";
 
-Statamic.$components.register('simple-commerce-actions', ActionsList);
+Statamic.$components.register('simple-commerce-actions', ActionList);
 Statamic.$components.register('simple-commerce-action-item', ActionItem);
 Statamic.$components.register('commerce-create-form', CommerceCreateForm);
 Statamic.$components.register('customer-orders-fieldtype', CustomerOrdersFieldtype);
