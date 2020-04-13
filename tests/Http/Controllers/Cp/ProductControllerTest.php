@@ -51,11 +51,11 @@ class ProductControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('products.store'), [
-                'title'             => $this->faker->words(3),
+                'title'             => $this->faker->words(2),
                 'slug'              => str_slug($this->faker->word),
                 'description'       => $this->faker->realText(),
                 'category'          => factory(ProductCategory::class)->create()->id,
-                'is_enabled'        => true,
+                'is_enabled'        => 'true',
                 'attributes_weight' => '100g',
                 'variants' => [
                     [
@@ -63,7 +63,7 @@ class ProductControllerTest extends TestCase
                         'sku'               => str_slug($this->faker->word),
                         'price'             => '10',
                         'stock'             => '100',
-                        'unlimited_stock'   => true,
+                        'unlimited_stock'   => 'true',
                         'max_quantity'      => 5,
                         'description'       => $this->faker->realText(),
                         'attributes_colour'  => 'Red',
@@ -73,23 +73,23 @@ class ProductControllerTest extends TestCase
                         'sku'               => str_slug($this->faker->word),
                         'price'             => '10',
                         'stock'             => '100',
-                        'unlimited_stock'   => true,
+                        'unlimited_stock'   => 'true',
                         'max_quantity'      => 5,
                         'description'       => $this->faker->realText(),
                         'attributes_colour'  => 'Yellow',
                     ],
                 ],
-            ]);
+            ])
+            ->assertOk();
 
-        // TODO: for some reason the weight one is not being picked up
         $this
             ->assertDatabaseHas('attributes', [
                 'key' => 'weight',
-                'value' => '100g',
+                'value' => '"100g"',
             ])
             ->assertDatabaseHas('attributes', [
                 'key' => 'colour',
-                'value' => 'Yellow',
+                'value' => '"Yellow"',
             ]);
     }
 

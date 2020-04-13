@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
@@ -50,7 +51,7 @@ class ProductController extends CpController
             'slug'                  => $request->slug,
             'description'           => $request->description,
             'product_category_id'   => $request->category[0] ?? null,
-            'is_enabled'            => $request->is_enabled,
+            'is_enabled'            => $request->is_enabled === 'true' ? true : false,
         ]);
 
         collect($request)
@@ -75,7 +76,7 @@ class ProductController extends CpController
                     'sku'               => $theVariant['sku'],
                     'price'             => $theVariant['price'],
                     'stock'             => $theVariant['stock'],
-                    'unlimited_stock'   => $theVariant['unlimited_stock'],
+                    'unlimited_stock'   => $theVariant['unlimited_stock'] === 'true' ? true : false,
                     'max_quantity'      => $theVariant['max_quantity'],
                     'description'       => $theVariant['description'],
                 ]);
@@ -154,7 +155,7 @@ class ProductController extends CpController
             'slug'                  => $request->slug,
             'description'           => $request->description,
             'product_category_id'   => $request->category,
-            'is_enabled'            => $request->is_enabled,
+            'is_enabled'            => $request->is_enabled === 'true' ? true : false,
         ]);
 
         collect($request)
@@ -183,7 +184,7 @@ class ProductController extends CpController
                     'sku'               => $variant['sku'],
                     'price'             => $variant['price'],
                     'stock'             => $variant['stock'],
-                    'unlimited_stock'   => $variant['unlimited_stock'],
+                    'unlimited_stock'   => $variant['unlimited_stock'] === 'true' ? true : false,
                     'max_quantity'      => $variant['max_quantity'],
                     'description'       => $variant['description'],
                     'product_id'        => $product->id,
