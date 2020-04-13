@@ -53,7 +53,7 @@ class ProductControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('products.store'), [
-                'title'             => $this->faker->words(2),
+                'title'             => $this->faker->word,
                 'slug'              => str_slug($this->faker->word),
                 'description'       => $this->faker->realText(),
                 'category'          => factory(ProductCategory::class)->create()->id,
@@ -66,7 +66,7 @@ class ProductControllerTest extends TestCase
                         'price'             => '10',
                         'stock'             => '100',
                         'unlimited_stock'   => 'true',
-                        'max_quantity'      => 5,
+                        'max_quantity'      => '5',
                         'description'       => $this->faker->realText(),
                         'attributes_colour'  => 'Red',
                     ],
@@ -76,7 +76,7 @@ class ProductControllerTest extends TestCase
                         'price'             => '10',
                         'stock'             => '100',
                         'unlimited_stock'   => 'true',
-                        'max_quantity'      => 5,
+                        'max_quantity'      => '5',
                         'description'       => $this->faker->realText(),
                         'attributes_colour'  => 'Yellow',
                     ],
