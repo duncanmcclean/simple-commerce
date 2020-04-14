@@ -11,15 +11,12 @@ class Order extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'gateway_data', 'is_paid', 'is_refunded',
+        'uuid', 'billing_address_id', 'shipping_address_id', 'gateway', 'customer_id', 'order_status_id', 'item_total', 'tax_total', 'shipping_total', 'total', 'is_paid', 'is_completed', 'currency_id',
     ];
 
     protected $casts = [
-        'is_completed'  => 'boolean',
         'is_paid'       => 'boolean',
-        'is_refunded'   => 'boolean',
-        'items'         => 'json',
-        'gateway_data'  => 'json',
+        'is_completed'  => 'boolean',
     ];
 
     public function billingAddress()
@@ -66,5 +63,15 @@ class Order extends Model
     public function blueprint()
     {
         return Blueprint::find('order');
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('is_completed', true);
+    }
+
+    public function scopeNotCompleted($query)
+    {
+        return $query->where('is_completed', false);
     }
 }

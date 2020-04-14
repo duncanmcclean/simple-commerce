@@ -7,16 +7,16 @@ use Statamic\Stache\Stache;
 
 $factory->define(Variant::class, function (Faker $faker) {
     return [
-        'sku' => $faker->slug,
-        'price' => 10.55,
-        'stock' => $faker->numberBetween(50, 250),
-        'unlimited_stock' => false,
-        'max_quantity' => 1,
-        'product_id' => function () {
+        'uuid'              => (new Stache())->generateId(),
+        'sku'               => $faker->slug,
+        'price'             => 10.55,
+        'stock'             => $faker->numberBetween(50, 250),
+        'unlimited_stock'   => false,
+        'max_quantity'      => 1,
+        'product_id'        => function () {
             return factory(Product::class)->create()->id;
         },
-        'uuid' => (new Stache())->generateId(),
-        'description' => $faker->text,
-        'name' => $faker->word,
+        'description'       => $faker->text,
+        'name'              => $faker->word,
     ];
 });

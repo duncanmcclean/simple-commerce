@@ -9,7 +9,7 @@ $factory->define(ProductCategory::class, function (Faker $faker) {
 
     return [
         'title' => $title,
-        'slug' => str_slug($title),
-        'uuid' => (new Stache())->generateId(),
+        'slug'  => str_slug($title),
+        'uuid'  => (new Stache())->generateId(),
     ];
 });

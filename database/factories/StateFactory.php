@@ -7,11 +7,11 @@ use Statamic\Stache\Stache;
 
 $factory->define(State::class, function (Faker $faker) {
     return [
-        'name' => $faker->state,
-        'abbreviation' => $faker->stateAbbr,
-        'country_id' => function() {
+        'uuid'          => (new Stache())->generateId(),
+        'name'          => $faker->state,
+        'abbreviation'  => $faker->stateAbbr,
+        'country_id'    => function() {
             return factory(Country::class)->create()->id;
         },
-        'uuid' => (new Stache())->generateId(),
     ];
 });
