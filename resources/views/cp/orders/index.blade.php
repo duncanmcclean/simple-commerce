@@ -3,7 +3,13 @@
 
 @section('content')
     <div class="flex items-center justify-between mb-3">
-        <h1 class="flex-1">Orders</h1>
+        @if(request()->has('view-carts'))
+            <h1 class="flex-1">Carts</h1>
+        @elseif(request()->has('status'))
+            <h1 class="flex-1">Orders in {{ $status->name }}</h1>
+        @else
+            <h1 class="flex-1">Orders</h1>
+        @endif
 
         @if($orders->count())
             <dropdown-list class="mr-1">
@@ -36,14 +42,8 @@
                                 </div>
                             </td>
 
-                            <td>
-                                <a href="{{ $order->customer->editUrl() }}">{{ $order->customer->name }}</a>
-                            </td>
-
-                            <td>
-                                {{ $order->created_at->toFormattedDateString() }}
-                            </td>
-
+                            <td><a href="{{ $order->customer->editUrl() }}">{{ $order->customer->name }}</a></td>
+                            <td>{{ $order->created_at->toFormattedDateString() }}</td>
                             <td class="flex justify-end">
                                 <simple-commerce-actions>
                                     @foreach($statuses as $status)
@@ -56,15 +56,15 @@
 
                                     <div class="divider"></div>
 
-                                    @if(! $order->is_refunded)
-                                        @if (auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
-                                            <simple-commerce-action-item
-                                                type="standard"
-                                                text="Refund"
-                                                action="{{ cp_route('orders.refund', ['order' => $order->uuid]) }}"
-                                            ></simple-commerce-action-item>
-                                        @endif
-                                    @endif
+{{--                                    @if(! $order->is_refunded)--}}
+{{--                                        @if (auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())--}}
+{{--                                            <simple-commerce-action-item--}}
+{{--                                                type="standard"--}}
+{{--                                                text="Refund"--}}
+{{--                                                action="{{ cp_route('orders.refund', ['order' => $order->uuid]) }}"--}}
+{{--                                            ></simple-commerce-action-item>--}}
+{{--                                        @endif--}}
+{{--                                    @endif--}}
 
                                     <simple-commerce-action-item
                                         type="standard"

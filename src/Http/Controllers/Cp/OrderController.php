@@ -8,22 +8,40 @@ use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
+use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderController extends CpController
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('view', Order::class);
 
-        $orders = Order::with('orderStatus')
+        $orders = Order::completed()
             ->orderByDesc('created_at')
             ->paginate(config('statamic.cp.pagination_size'));
 
+        if ($request->has('view-carts')) {
+            $orders = Order::notCompleted()
+                ->orderByDesc('created_at')
+                ->paginate(config('statamic.cp.pagination_size'));
+        }
+
+        if ($request->has('status')) {
+            $status = OrderStatus::where('slug', $request->input('status'))
+                ->first();
+
+            $orders = $status
+                ->orders()
+                ->orderByDesc('created_at')
+                ->paginate(config('statamic.cp.pagination_size'));
+        }
+
         return view('simple-commerce::cp.orders.index', [
             'orders'    => $orders,
+            'status'    => $status,
             'statuses'  => OrderStatus::all(),
         ]);
     }
