@@ -41,7 +41,7 @@ class OrderController extends CpController
 
         return view('simple-commerce::cp.orders.index', [
             'orders'    => $orders,
-            'status'    => $status,
+            'status'    => $status ?? null,
             'statuses'  => OrderStatus::all(),
         ]);
     }
