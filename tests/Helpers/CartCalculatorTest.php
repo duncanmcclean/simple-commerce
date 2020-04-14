@@ -8,13 +8,9 @@ use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\CartShipping;
 use DoubleThreeDigital\SimpleCommerce\Models\CartTax;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CartCalculatorTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function setUp(): void
     {
         parent::setUp();
