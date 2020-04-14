@@ -67,7 +67,7 @@ class ShippingZoneControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->get(cp_route('shipping-zones.destroy', ['zone' => $zone->uuid]))
+            ->delete(cp_route('shipping-zones.destroy', ['zone' => $zone->uuid]))
             ->assertRedirect();
     }
 }

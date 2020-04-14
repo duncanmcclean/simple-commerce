@@ -10,7 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 class TaxRateControllerTest extends TestCase
 {
     /** @test */
-    public function can_index_shipping_zones()
+    public function can_index_tax_rates()
     {
         $rates = factory(TaxRate::class, 5)->create();
 
@@ -21,7 +21,7 @@ class TaxRateControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_store_shipping_zone()
+    public function can_store_tax_rate()
     {
         $this
             ->actAsSuper()
@@ -36,7 +36,7 @@ class TaxRateControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_update_shipping_zone()
+    public function can_update_tax_rate()
     {
         $rate = factory(TaxRate::class)->create();
 
@@ -53,13 +53,13 @@ class TaxRateControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_destroy_shipping_zone()
+    public function can_destroy_tax_rate()
     {
         $rate = factory(TaxRate::class)->create();
 
         $this
             ->actAsSuper()
-            ->get(cp_route('tax-rates.destroy', ['rate' => $rate->uuid]))
+            ->delete(cp_route('tax-rates.destroy', ['rate' => $rate->uuid]))
             ->assertRedirect();
     }
 }
