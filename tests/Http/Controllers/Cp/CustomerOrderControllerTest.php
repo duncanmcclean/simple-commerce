@@ -14,7 +14,7 @@ class CustomerOrderControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.customer-order'), [
+            ->post(cp_route('fieldtype-data.customer-orders'), [
                 'email' => $order->customer->email,
             ])
             ->assertOk();

@@ -26,7 +26,7 @@ class ShippingZoneControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->get(cp_route('commerce-api.shipping-zones.index'))
+            ->get(cp_route('shipping-zones.index'))
             ->assertOk();
     }
 
@@ -35,7 +35,7 @@ class ShippingZoneControllerTest extends TestCase
     {
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.shipping-zones.store'), [
+            ->post(cp_route('shipping-zones.store'), [
                 'country' => [factory(Country::class)->create()->id],
                 'state' => [factory(State::class)->create()->id],
                 'start_of_zip_code' => 'G72 A12',
@@ -51,7 +51,7 @@ class ShippingZoneControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.shipping-zones.update', ['zone' => $zone->uuid]), [
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
                 'country' => [$zone->country_id],
                 'state' => [$zone->state_id],
                 'start_of_zip_code' => $zone->start_of_zip_code,
@@ -67,7 +67,7 @@ class ShippingZoneControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->get(cp_route('commerce-api.shipping-zones.destroy', ['zone' => $zone->uuid]))
+            ->get(cp_route('shipping-zones.destroy', ['zone' => $zone->uuid]))
             ->assertRedirect();
     }
 }

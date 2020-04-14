@@ -16,7 +16,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->get(cp_route('commerce-api.tax-rates.index'))
+            ->get(cp_route('tax-rates.index'))
             ->assertOk();
     }
 
@@ -25,7 +25,7 @@ class TaxRateControllerTest extends TestCase
     {
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.tax-rates.store'), [
+            ->post(cp_route('tax-rates.store'), [
                 'name' => $this->faker->word,
                 'country' => [factory(Country::class)->create()->id],
                 'state' => [factory(State::class)->create()->id],
@@ -42,7 +42,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->post(cp_route('commerce-api.tax-rates.update', ['rate' => $rate->uuid]), [
+            ->post(cp_route('tax-rates.update', ['rate' => $rate->uuid]), [
                 'name' => $this->faker->word,
                 'country' => [$rate->country_id],
                 'state' => [$rate->state_id],
@@ -59,7 +59,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actAsSuper()
-            ->get(cp_route('commerce-api.tax-rates.destroy', ['rate' => $rate->uuid]))
+            ->get(cp_route('tax-rates.destroy', ['rate' => $rate->uuid]))
             ->assertRedirect();
     }
 }
