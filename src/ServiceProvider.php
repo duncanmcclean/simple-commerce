@@ -53,9 +53,7 @@ use Statamic\Providers\AddonServiceProvider;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $listen = [
-        AddedToCart::class => [],
         AttributeUpdated::class => [],
-        CartCreated::class => [],
         OrderPaid::class => [],
         OrderRefunded::class => [
             SendOrderRefundedNotification::class,
@@ -68,9 +66,6 @@ class ServiceProvider extends AddonServiceProvider
         ],
         ProductCategoryUpdated::class => [],
         ProductUpdated::class => [],
-        RemovedFromCart::class => [],
-        ShippingAddedToCart::class => [],
-        TaxAddedToCart::class => [],
         VariantLowStock::class => [
             SendVariantStockRunningLowNotification::class,
         ],
