@@ -2,7 +2,7 @@
     <div>
         <text-input
             :type="inputType"
-            :value="value"
+            :value="formattedValue"
             :prepend="symbol"
             :isReadOnly="config.read_only || readOnly"
             placeholder="00.00"
@@ -18,7 +18,8 @@
 
         data() {
             return {
-                symbol: this.meta.symbol
+                symbol: this.meta.symbol,
+                formattedValue: parseFloat(this.value).toFixed(2),
             }
         },
 

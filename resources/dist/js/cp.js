@@ -2182,7 +2182,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ['meta'],
   data: function data() {
     return {
-      symbol: this.meta.symbol
+      symbol: this.meta.symbol,
+      formattedValue: parseFloat(this.value).toFixed(2)
     };
   },
   computed: {
@@ -3259,7 +3260,7 @@ var render = function() {
       _c("text-input", {
         attrs: {
           type: _vm.inputType,
-          value: _vm.value,
+          value: _vm.formattedValue,
           prepend: _vm.symbol,
           isReadOnly: _vm.config.read_only || _vm.readOnly,
           placeholder: "00.00"
