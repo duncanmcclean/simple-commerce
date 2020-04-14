@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use Statamic\Fields\Fieldtype;
 
-class OrderItemsFieldtype extends Fieldtype
+class LineItemsFieldtype extends Fieldtype
 {
     protected $icon = 'generic';
 
@@ -28,11 +28,11 @@ class OrderItemsFieldtype extends Fieldtype
 
     public static function title()
     {
-        return 'Order Items';
+        return 'Line Items';
     }
 
     public function component(): string
     {
-        return 'order-items';
+        return 'line-items';
     }
 }

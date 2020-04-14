@@ -4,53 +4,99 @@ sections:
     display: Main
     fields:
       -
+        handle: totals_section
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: Totals
+      -
+        handle: item_total
+        field:
+          type: money
+          localizable: false
+          width: 33
+          listable: hidden
+          display: 'Item Total'
+      -
+        handle: tax_total
+        field:
+          type: money
+          localizable: false
+          width: 33
+          listable: hidden
+          display: 'Tax Total'
+      -
+        handle: shipping_total
+        field:
+          type: money
+          localizable: false
+          width: 33
+          listable: hidden
+          display: 'Shipping Total'
+      -
         handle: total
         field:
           type: money
           localizable: false
-          display: Total
-          validate: required
-          character_limit: 0
-          instructions: 'This is the final order total, after any coupons, sales, tax and shipping conditions have been applied.'
+          width: 33
+          listable: hidden
+          display: 'Overall Total'
       -
-        handle: notes
+        handle: line_items_section
         field:
-          type: textarea
-          localizable: false
-          display: Notes
-      -
-        handle: items
-        field:
-          type: order_items
+          type: section
+          instructions: 'List of the line items included in this order.'
           localizable: false
           listable: hidden
-          display: 'Order Items'
+          display: 'Line Items'
+      -
+        handle: line_items
+        field:
+          type: line_items
+          localizable: false
+          listable: hidden
+          display: 'Line Items'
   billing_address:
     display: 'Billing Address'
     fields:
       -
-        handle: billing_address_1
+        handle: billing_uuid
+        field:
+          type: hidden
+          localizable: false
+          listable: hidden
+          display: 'Billing Address Uuid'
+          validate: required
+      -
+        handle: billing_address1
         field:
           character_limit: 0
           type: text
           localizable: false
           display: 'Address 1'
+          listable: hidden
+          input_type: text
       -
-        handle: billing_address_2
+        handle: billing_address2
         field:
           character_limit: 0
           type: text
           localizable: false
           display: 'Address 2'
           width: 50
+          listable: hidden
+          input_type: text
       -
-        handle: billing_address_3
+        handle: billing_addres3
         field:
           character_limit: 0
           type: text
           localizable: false
           display: 'Address 3'
           width: 50
+          listable: hidden
+          input_type: text
       -
         handle: billing_city
         field:
@@ -59,6 +105,8 @@ sections:
           localizable: false
           display: City
           width: 75
+          listable: hidden
+          input_type: text
       -
         handle: billing_zip_code
         field:
@@ -88,28 +136,42 @@ sections:
     display: 'Shipping Address'
     fields:
       -
-        handle: shipping_address_1
+        handle: shipping_uuid
+        field:
+          type: hidden
+          localizable: false
+          listable: hidden
+          display: 'Shipping Address Uuid'
+          validate: required
+      -
+        handle: shipping_address1
         field:
           character_limit: 0
           type: text
           localizable: false
           display: 'Address 1'
+          listable: hidden
+          input_type: text
       -
-        handle: shipping_address_2
+        handle: shipping_address2
         field:
           character_limit: 0
           type: text
           localizable: false
           display: 'Address 2'
           width: 50
+          listable: hidden
+          input_type: text
       -
-        handle: shipping_address_3
+        handle: shipping_address3
         field:
           character_limit: 0
           type: text
           localizable: false
           display: 'Address 3'
           width: 50
+          listable: hidden
+          input_type: text
       -
         handle: shipping_city
         field:
@@ -147,6 +209,15 @@ sections:
     display: Sidebar
     fields:
       -
+        handle: customer_id
+        field:
+          max_items: 1
+          mode: select
+          type: users
+          localizable: false
+          listable: hidden
+          display: Customer
+      -
         handle: order_status_id
         field:
           max_items: 1
@@ -162,13 +233,20 @@ sections:
           type: currency
           localizable: false
           display: Currency
-          validate: required
+          listable: hidden
       -
-        handle: customer_id
+        handle: is_paid
         field:
-          max_items: 1
-          mode: select
-          type: users
+          type: toggle
+          instructions: 'Has this order been paid for?'
           localizable: false
           listable: hidden
-          display: Customer
+          display: 'Is Paid?'
+      -
+        handle: is_completed
+        field:
+          type: toggle
+          instructions: 'If false, this order will be displayed as a cart, if true, it will become a full order.'
+          localizable: false
+          listable: hidden
+          display: 'Is Completed?'

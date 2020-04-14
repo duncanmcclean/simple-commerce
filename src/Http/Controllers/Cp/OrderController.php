@@ -56,9 +56,25 @@ class OrderController extends CpController
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();
 
+        // TODO: remember to pass in the line items in a parseable format
+
+        $values = $order->toArray();
+
+        collect($order->billingAddress->getAttributes())
+            ->each(function ($value, $key) use (&$values) {
+                 $values["billing_{$key}"] = $value;
+            });
+
+        collect($order->shippingAddress->getAttributes())
+            ->each(function ($value, $key) use (&$values) {
+                $values["shipping_{$key}"] = $value;
+            });
+
+//        dd($values);
+
         return view('simple-commerce::cp.orders.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $order->toArray(),
+            'values'    => $values,
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
             'action'    => cp_route('orders.update', ['order' => $order->uuid]),
@@ -71,15 +87,14 @@ class OrderController extends CpController
 
         $order->billingAddress()->updateOrCreate(
             [
+                'billing_uuid'  => $request->billing_uuid,
                 'customer_id'   => $request->customer_id,
-                'address1'      => $request->billing_address_1,
-                'zip_code'      => $request->billing_zip_code,
             ],
             [
                 'name'          => $order->customer->name,
-                'address1'      => $request->billing_addresss_1,
-                'address2'      => $request->billing_addresss_2,
-                'address3'      => $request->billing_addresss_3,
+                'address1'      => $request->billing_addresss1,
+                'address2'      => $request->billing_addresss2,
+                'address3'      => $request->billing_addresss3,
                 'city'          => $request->billing_city,
                 'zip_code'      => $request->billing_zip_code,
                 'country_id'    => Country::where('iso', $request->billing_country)->first()->id,
@@ -89,15 +104,14 @@ class OrderController extends CpController
 
         $order->shippingAddress()->updateOrCreate(
             [
+                'shipping_uuid' => $request->billing_uuid,
                 'customer_id'   => $request->customer_id,
-                'address1'      => $request->shipping_address_1,
-                'zip_code'      => $request->shipping_zip_code,
             ],
             [
                 'name'          => $order->customer->name,
-                'address1'      => $request->shipping_addresss_1,
-                'address2'      => $request->shipping_addresss_2,
-                'address3'      => $request->shipping_addresss_3,
+                'address1'      => $request->shipping_addresss1,
+                'address2'      => $request->shipping_addresss2,
+                'address3'      => $request->shipping_addresss3,
                 'city'          => $request->shipping_city,
                 'zip_code'      => $request->shipping_zip_code,
                 'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
@@ -106,12 +120,16 @@ class OrderController extends CpController
         );
 
         $order->update([
+            'item_total'        => $request->item_total,
+            'tax_total'         => $request->tax_total,
+            'shipping_total'    => $request->shipping_total,
             'total'             => $request->total,
-            'notes'             => $request->notes,
-            'items'             => $request->items,
+
+            'customer_id'       => $request->customer_id,
             'order_status_id'   => $request->order_status_id,
             'currency_id'       => $request->currency_id,
-            'customer_id'       => $request->customer_id,
+            'is_paid'           => $request->is_paid,
+            'is_completed'      => $request->is_completed,
         ]);
 
         if ($request->order_status_id != $order->order_status_id) {
