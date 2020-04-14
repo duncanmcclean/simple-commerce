@@ -11,22 +11,12 @@ class TaxRate extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'country_id', 'state_id', 'start_of_zip_code', 'rate', 'name',
+        'uuid', 'name', 'description', 'rate',
     ];
 
-    public function country()
+    public function lineItems()
     {
-        return $this->belongsTo(Country::class);
-    }
-
-    public function state()
-    {
-        return $this->belongsTo(State::class);
-    }
-
-    public function cartTax()
-    {
-        return $this->hasMany(CartTax::class);
+        return $this->hasMany(LineItem::class);
     }
 
     public function updateUrl()
