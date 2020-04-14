@@ -35,6 +35,7 @@ use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantOutOfStockNotificatio
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantStockRunningLowNotification;
 use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Modifiers\PriceModifier;
@@ -186,7 +187,22 @@ class ServiceProvider extends AddonServiceProvider
                 ->section('Simple Commerce')
                 ->route('orders.index')
                 ->can('view orders')
-                ->icon('list');
+                ->icon('list')
+                ->children(array_merge([
+                    $nav
+                        ->item('All Orders')
+                        ->route('orders.index')
+                        ->can('view orders'),
+                    $nav
+                        ->item('Carts')
+                        ->url(cp_route('orders.index').'?view-carts=true')
+                        ->can('view orders'),
+                ], OrderStatus::all()->map(function ($status) use ($nav) {
+                    return $nav
+                        ->item($status->name)
+                        ->url(cp_route('orders.index').'?status='.$status->slug)
+                        ->can('view orders');
+                })->toArray()));
         });
 
         Nav::extend(function ($nav) {
