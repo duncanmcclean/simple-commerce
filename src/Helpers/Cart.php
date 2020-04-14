@@ -21,11 +21,9 @@ class Cart
 {
     public function create()
     {
-        $cart = CartModel::create([
+        return CartModel::create([
             'uuid' => (new Stache())->generateId(),
-        ]);
-
-        return $cart->uuid;
+        ])->uuid;
     }
 
     public function exists(string $uuid)
