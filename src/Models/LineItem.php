@@ -32,4 +32,13 @@ class LineItem extends Model
     {
         return $this->hasOne(ShippingCategory::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            \DoubleThreeDigital\SimpleCommerce\Facades\Cart::calculateTotals($model->order);
+        });
+    }
 }
