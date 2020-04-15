@@ -19,6 +19,11 @@ class Order extends Model
         'is_completed'  => 'boolean',
     ];
 
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
+    }
+
     public function billingAddress()
     {
         return $this->belongsTo(Address::class);

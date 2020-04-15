@@ -33,6 +33,11 @@ class Variant extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
+    }
+
     public function getOutOfStockAttribute()
     {
         if ($this->unlimited_stock) {
