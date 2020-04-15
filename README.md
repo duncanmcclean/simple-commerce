@@ -71,6 +71,14 @@ class User extends Authenticatable
 }
 ```
 
+## Limitations
+As much as Simple Commerce might sound good, it has some limitations due to the way it works and because we want to keep it 'simple'. Some of the limitations include:
+
+* Selling products in more than one currency
+* Selling products with more than one tax rate
+
+Some of these things we're thinking about adding in the future but they're not here now and some of which we'll probably never add.
+
 ## Licensing
 Like Statamic, Simple Commerce is commercial software but has an open-source codebase. If you want to use Simple Commerce in production, you'll need to buy a license. 
 
