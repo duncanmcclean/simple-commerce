@@ -218,8 +218,8 @@ class ServiceProvider extends AddonServiceProvider
                         ->route('settings.order-statuses.index')
                         ->can('view simple commerce settings'),
                     $nav
-                        ->item('Shipping Zones')
-                        ->route('settings.shipping-zones.index')
+                        ->item('Shipping')
+                        ->route('settings.shipping.index')
                         ->can('view simple commerce settings'),
                     $nav
                         ->item('Tax Rates')

@@ -35,7 +35,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/', 'Settings\SettingsHomeController@index')->name('.index');
         Route::get('/order-statuses', 'Settings\OrderStatusController@index')->name('.order-statuses.index');
         Route::get('/tax-rates', 'Settings\TaxRateController@index')->name('.tax-rates.index');
-        Route::get('/shipping-zones', 'Settings\ShippingZoneController@index')->name('.shipping-zones.index');
+        Route::get('/shipping', 'Settings\ShippingController@index')->name('.shipping.index');
     });
 
     Route::prefix('order-status')->as('order-status')->middleware(AccessSettings::class)->group(function () {
