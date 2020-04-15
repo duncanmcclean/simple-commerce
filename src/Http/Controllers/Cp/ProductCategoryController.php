@@ -77,12 +77,11 @@ class ProductCategoryController extends CpController
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Product Categories', 'url' => cp_route('product-categories.index')]]);
 
         $blueprint = (new ProductCategory())->blueprint();
-        $fields = $blueprint->fields();
-        $fields = $fields->preProcess();
+        $fields = $blueprint->fields()->addValues($category->toArray())->preProcess();
 
         return view('simple-commerce::cp.product-categories.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $category->toArray(),
+            'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
             'action'    => cp_route('product-categories.update', ['category' => $category->uuid]),

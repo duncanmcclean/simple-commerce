@@ -52,10 +52,6 @@ class OrderController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Orders', 'url' => cp_route('orders.index')]]);
 
-        $blueprint = (new Order())->blueprint();
-        $fields = $blueprint->fields();
-        $fields = $fields->preProcess();
-
         // TODO: remember to pass in the line items in a parseable format
 
         $values = $order->toArray();
@@ -70,11 +66,12 @@ class OrderController extends CpController
                 $values["shipping_{$key}"] = $value;
             });
 
-//        dd($values);
+        $blueprint = (new Order())->blueprint();
+        $fields = $blueprint->fields()->addValues($values)->preProcess();
 
         return view('simple-commerce::cp.orders.edit', [
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $values,
+            'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
             'action'    => cp_route('orders.update', ['order' => $order->uuid]),

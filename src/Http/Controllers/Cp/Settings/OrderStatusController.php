@@ -11,8 +11,7 @@ class OrderStatusController extends CpController
     public function index()
     {
         $blueprint = (new OrderStatus())->blueprint();
-        $fields = $blueprint->fields();
-        $fields = $fields->preProcess();
+        $fields = $blueprint->fields()->preProcess();
 
         return view('simple-commerce::cp.settings.order-statuses', [
             'crumbs'    => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
