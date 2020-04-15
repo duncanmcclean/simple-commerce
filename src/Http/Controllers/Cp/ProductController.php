@@ -52,7 +52,7 @@ class ProductController extends CpController
             'description'           => $request->description,
             'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled === 'true' ? true : false,
-            'tax_rate_id'           => $request->tax_rate_id[0],
+            'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
         ]);
 
         collect($request)

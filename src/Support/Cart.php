@@ -55,7 +55,7 @@ class Cart
 
     public function addLineItem(int $id, string $variantUuid, int $quantity, string $note = '')
     {
-        $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity')
+        $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity', 'product_id')
             ->where('uuid', $variantUuid)
             ->first();
 
@@ -69,7 +69,7 @@ class Cart
             ->create([
                 'uuid'                  => (new Stache())->generateId(),
                 'variant_id'            => $variant->id,
-                'tax_rate_id'           => null, // TODO: this needs to be the one assigned to the product
+                'tax_rate_id'           => $variant->product->tax_rate_id, // TODO: this needs to be the one assigned to the product
                 'shipping_category_id'  => null, // TODO: this needs to be the one assigned to the product
                 'description'           => $variant->name,
                 'sku'                   => $variant->sku,
