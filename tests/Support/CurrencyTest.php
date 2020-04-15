@@ -1,18 +1,14 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Support\Currency;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 
 class CurrencyTest extends TestCase
 {
-    use RefreshDatabase;
-
     public $currencies;
     public $currency;
 

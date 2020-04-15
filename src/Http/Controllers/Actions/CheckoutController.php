@@ -6,17 +6,15 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Statamic\Stache\Stache;
 
@@ -24,7 +22,7 @@ class CheckoutController
 {
     use UsesCart;
 
-    public function store(Request $request)
+    public function store(CheckoutRequest $request)
     {
         $this->createCart();
 
@@ -105,7 +103,7 @@ class CheckoutController
             'order_status_id'       => OrderStatus::where('primary', true)->first()->id,
             'items'                 => $this->cart()->orderItems($this->cartId),
             'total'                 => $this->cart()->total($this->cartId),
-            'currency_id'           => (new Currency())->primary()->id,
+            'currency_id'           => Currency::primary()->id,
             'gateway_data'          => $payment,
             'is_paid'               => $payment['is_paid'],
             'is_refunded'           => false,

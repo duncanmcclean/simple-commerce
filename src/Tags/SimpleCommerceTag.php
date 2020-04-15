@@ -3,11 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
@@ -22,12 +20,12 @@ class SimpleCommerceTag extends Tags
 
     public function currencyCode()
     {
-        return (new CurrencyHelper())->iso();
+        return \DoubleThreeDigital\SimpleCommerce\Facades\Currency::iso();
     }
 
     public function currencySymbol()
     {
-        return (new CurrencyHelper())->symbol();
+        return \DoubleThreeDigital\SimpleCommerce\Facades\Currency::symbol();
     }
 
     public function categories()

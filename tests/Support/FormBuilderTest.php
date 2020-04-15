@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Support;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
+use DoubleThreeDigital\SimpleCommerce\Support\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class FormBuilderTest extends TestCase

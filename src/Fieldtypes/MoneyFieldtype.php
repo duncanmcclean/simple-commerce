@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Fields\Fieldtype;
 
 class MoneyFieldtype extends Fieldtype
@@ -19,7 +19,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
-        return (new Currency())->primary();
+        return Currency::primary();
     }
 
     public function preProcess($data)

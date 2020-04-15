@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Statamic\Facades\Blueprint;
@@ -45,7 +46,7 @@ class ShippingZone extends Model
 
     public function getFormattedPriceAttribute()
     {
-        return (new \DoubleThreeDigital\SimpleCommerce\Helpers\Currency())->parse($this->attributes['price']);
+        return Currency::parse($this->attributes['price']);
     }
 
     public function getNameAttribute()

@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 class FormBuilder
 {

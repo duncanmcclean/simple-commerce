@@ -4,18 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\VersionCommand;
-use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\CartCreated;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductCategoryUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart;
-use DoubleThreeDigital\SimpleCommerce\Events\ShippingAddedToCart;
-use DoubleThreeDigital\SimpleCommerce\Events\TaxAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
@@ -162,6 +157,9 @@ class ServiceProvider extends AddonServiceProvider
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
         }
+
+        $this->app->bind('Currency', \DoubleThreeDigital\SimpleCommerce\Support\Currency::class);
+        $this->app->bind('FormBuilder', \DoubleThreeDigital\SimpleCommerce\Support\FormBuilder::class);
     }
 
     protected function navigation()

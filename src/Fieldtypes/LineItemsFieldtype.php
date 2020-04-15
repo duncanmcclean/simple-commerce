@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Fields\Fieldtype;
 
 class LineItemsFieldtype extends Fieldtype
@@ -12,7 +12,7 @@ class LineItemsFieldtype extends Fieldtype
     public function preload()
     {
         return [
-            'currency' => (new Currency())->primary(),
+            'currency' => Currency::primary(),
         ];
     }
 

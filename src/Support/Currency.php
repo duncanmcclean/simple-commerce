@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
 
@@ -25,7 +25,7 @@ class Currency
         return $this->primary()->iso;
     }
 
-    public function parse(int $total, bool $showSeparator = true, bool $showSymbol = true)
+    public function parse(float $total, bool $showSeparator = true, bool $showSymbol = true)
     {
         if ($showSeparator == true) {
             $total = number_format($total, 2, '.', config('simple-commerce.currency.separator'));
