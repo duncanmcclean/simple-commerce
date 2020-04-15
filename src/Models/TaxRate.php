@@ -19,6 +19,11 @@ class TaxRate extends Model
         return $this->hasMany(LineItem::class);
     }
 
+    public function products()
+    {
+        return $this->hasMany(TaxRate::class);
+    }
+
     public function updateUrl()
     {
         return cp_route('tax-rates.update', ['rate' => $this->attributes['uuid']]);

@@ -15,7 +15,7 @@ class Product extends Model
     use HasAttributes, HasUuid, SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description',
+        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description', 'tax_rate_id',
     ];
 
     protected $casts = [
@@ -42,6 +42,11 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class);
+    }
+
+    public function taxRate()
+    {
+        return $this->hasOne(TaxRate::class);
     }
 
     public function getVariantCountAttribute()
