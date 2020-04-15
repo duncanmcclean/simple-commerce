@@ -115,8 +115,6 @@ class ProductController extends CpController
 
         $fields = $product->toArray();
 
-//        $fields['tax_rate_id'] = [$product->tax_rate_id];
-
         $product->attributes->each(function (Attribute $attribute) use (&$fields) {
             $fields["attributes_{$attribute->key}"] = $attribute['value'];
         });
@@ -137,13 +135,12 @@ class ProductController extends CpController
         ]);
 
         $blueprint = (new Product())->blueprint();
-        $fields = $blueprint->fields();
-        $fields = $fields->preProcess();
+        $fields = $blueprint->fields()->addValues($values)->preProcess();
 
         return view('simple-commerce::cp.products.edit', [
             'crumbs'    => $crumbs,
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $values,
+            'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'action'    => $product->updateUrl(),
         ]);
