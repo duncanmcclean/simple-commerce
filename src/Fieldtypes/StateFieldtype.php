@@ -16,7 +16,7 @@ class StateFieldtype extends Relationship
         $state = State::find($id);
 
         return [
-            'id' => $state->id,
+            'id'    => $state->id,
             'title' => $state->name,
         ];
     }

@@ -15,7 +15,7 @@ class CountryFieldtype extends Relationship
         $country = Country::find($id);
 
         return [
-            'id' => $country->id,
+            'id'    => $country->id,
             'title' => $country->name,
         ];
     }
