@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\Settings;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\SettingsUpdateRequest;
-use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
 
 class SettingsHomeController extends CpController
