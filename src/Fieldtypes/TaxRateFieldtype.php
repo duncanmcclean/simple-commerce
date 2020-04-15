@@ -10,8 +10,6 @@ class TaxRateFieldtype extends Relationship
 {
     protected function toItemArray($id)
     {
-//        return TaxRate::get()->toArray();
-
         $rate = TaxRate::find($id);
 
         return [
