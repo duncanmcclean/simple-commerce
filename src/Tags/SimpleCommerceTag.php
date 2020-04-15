@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
+use DoubleThreeDigital\SimpleCommerce\Facades\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -202,12 +202,12 @@ class SimpleCommerceTag extends Tags
 
     public function form()
     {
-        return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
+        return FormBuilder::build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
     }
 
     public function errors()
     {
-        if (! (new FormBuilder())->hasErrors()) {
+        if (! FormBuilder::hasErrors()) {
             return false;
         }
 

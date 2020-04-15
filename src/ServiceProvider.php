@@ -28,7 +28,6 @@ use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotificati
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantOutOfStockNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantStockRunningLowNotification;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -158,6 +157,7 @@ class ServiceProvider extends AddonServiceProvider
             $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
         }
 
+        $this->app->bind('Cart', \DoubleThreeDigital\SimpleCommerce\Support\Cart::class);
         $this->app->bind('Currency', \DoubleThreeDigital\SimpleCommerce\Support\Currency::class);
         $this->app->bind('FormBuilder', \DoubleThreeDigital\SimpleCommerce\Support\FormBuilder::class);
     }
