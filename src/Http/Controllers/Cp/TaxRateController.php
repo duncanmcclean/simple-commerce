@@ -10,16 +10,17 @@ class TaxRateController extends CpController
 {
     public function index()
     {
-        return TaxRate::with('country', 'state')->get();
+        return TaxRate::get()->map(function (TaxRate $rate) {
+            return array_merge($rate->toArray(), [
+                'updateUrl' => $rate->updateUrl(),
+            ]);
+        });
     }
 
     public function store(TaxRateRequest $request): TaxRate
     {
         return TaxRate::create([
             'name'              => $request->name,
-            'country_id'        => $request->country[0],
-            'state_id'          => $request->state[0] ?? null,
-            'start_of_zip_code' => $request->start_of_zip_code,
             'rate'              => $request->rate,
         ]);
     }
@@ -28,9 +29,6 @@ class TaxRateController extends CpController
     {
         $rate->update([
             'name'              => $request->name,
-            'country_id'        => $request->country[0],
-            'state_id'          => $request->state[0] ?? null,
-            'start_of_zip_code' => $request->start_of_zip_code,
             'rate'              => $request->rate,
         ]);
 
@@ -41,6 +39,7 @@ class TaxRateController extends CpController
     {
         $rate->delete();
 
-        return redirect(cp_route('settings.tax-rates.index'))->with('success', 'Deleted tax rate');
+        return redirect(cp_route('settings.tax-rates.index'))
+            ->with('success', 'Deleted tax rate');
     }
 }
