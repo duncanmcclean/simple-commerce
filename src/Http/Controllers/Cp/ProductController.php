@@ -52,6 +52,7 @@ class ProductController extends CpController
             'description'           => $request->description,
             'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled === 'true' ? true : false,
+            'tax_rate_id'           => $request->tax_rate_id[0],
         ]);
 
         collect($request)
@@ -113,6 +114,8 @@ class ProductController extends CpController
             ->first();
 
         $fields = $product->toArray();
+
+//        $fields['tax_rate_id'] = [$product->tax_rate_id];
 
         $product->attributes->each(function (Attribute $attribute) use (&$fields) {
             $fields["attributes_{$attribute->key}"] = $attribute['value'];

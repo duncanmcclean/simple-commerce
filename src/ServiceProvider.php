@@ -23,6 +23,7 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
@@ -85,6 +86,7 @@ class ServiceProvider extends AddonServiceProvider
         ProductCategoryFieldtype::class,
         ProductFieldtype::class,
         StateFieldtype::class,
+        TaxRateFieldtype::class,
     ];
 
     protected $modifiers = [
