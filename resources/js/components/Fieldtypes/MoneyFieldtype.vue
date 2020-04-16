@@ -30,8 +30,8 @@
         },
 
         mounted() {
-            if (! isNaN(this.value)) {
-                this.formattedValue = parseFloat(this.value).toFixed(2)
+            if (isNaN(parseFloat(this.value)) == false) {
+                this.formattedValue = parseFloat(this.value).toFixed(2);
             }
         }
     };
