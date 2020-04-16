@@ -19,6 +19,7 @@ abstract class TestCase extends OrchestraTestCase
 {
     use DatabaseMigrations, RefreshDatabase, WithFaker;
 
+    public $basePath;
     protected $shouldFakeVersion = true;
 
     protected function setUp(): void
@@ -30,6 +31,8 @@ abstract class TestCase extends OrchestraTestCase
 
         $this->withFactories(realpath(__DIR__.'/../database/factories'));
         $this->loadMigrationsFrom(__DIR__ . '/__fixtures__/database/migrations');
+
+        $this->basePath = realpath(__DIR__.'/../');
 
         if ($this->shouldFakeVersion) {
             \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.0.0-testing');
