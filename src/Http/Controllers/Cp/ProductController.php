@@ -155,7 +155,7 @@ class ProductController extends CpController
             'title'                 => $request->title,
             'slug'                  => $request->slug,
             'description'           => $request->description,
-            'product_category_id'   => $request->category,
+            'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled === 'true' ? true : false,
             'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
             'needs_shipping'        => $request->needs_shipping,
