@@ -83,8 +83,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::resolveApplicationConfiguration($app);
 
         $configs = [
-            'assets', 'cp', 'forms', 'static_caching',
-            'sites', 'stache', 'system', 'users'
+            'assets', 'cp', 'forms', 'static_caching', 'sites', 'stache', 'system', 'users'
         ];
 
         foreach ($configs as $config) {
@@ -94,7 +93,6 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.stache', require(__DIR__.'/__fixtures__/config/statamic/stache.php'));
         $app['config']->set('statamic.users', require(__DIR__.'/__fixtures__/config/statamic/users.php'));
         $app['config']->set('auth', require(__DIR__.'/__fixtures__/config/auth.php'));
-
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
     }
 
