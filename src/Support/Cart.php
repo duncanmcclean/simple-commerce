@@ -63,14 +63,18 @@ class Cart
             throw new \Exception("You are not allowed to add more than {$variant->max_quantity} of this item.");
         }
 
+        // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
+        // TODO: variants need weight field in the db
+        // TODO: remove the other dimension fields from the database + model
+
         return Order::notCompleted()
             ->findOrFail($id)
             ->lineItems()
             ->create([
                 'uuid'                  => (new Stache())->generateId(),
                 'variant_id'            => $variant->id,
-                'tax_rate_id'           => $variant->product->tax_rate_id, // TODO: this needs to be the one assigned to the product
-                'shipping_rate_id'      => null, // TODO: this needs to be the one assigned to the product
+                'tax_rate_id'           => $variant->product->tax_rate_id,
+                'shipping_rate_id'      => null,
                 'description'           => $variant->name,
                 'sku'                   => $variant->sku,
                 'price'                 => $variant->price,
