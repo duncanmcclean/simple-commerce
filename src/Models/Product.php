@@ -49,6 +49,16 @@ class Product extends Model
         return $this->hasOne(TaxRate::class);
     }
 
+    public function scopeEnabled($query)
+    {
+        return $query->where('is_enabled', true);
+    }
+
+    public function scopeDisabled($query)
+    {
+        return $query->where('is_enabled', false);
+    }
+
     public function getVariantCountAttribute()
     {
         return sprintf('%s %s', $count = $this->variants->count(), Str::plural('variant', $count));
