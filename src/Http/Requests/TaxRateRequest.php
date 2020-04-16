@@ -15,10 +15,8 @@ class TaxRateRequest extends FormRequest
     {
         return [
             'name'              => 'required|string',
-            'country.*'         => 'required|integer',
-            'state.*'           => 'nullable|integer',
-            'start_of_zip_code' => 'nullable|string',
             'rate'              => 'required|string',
+            'description'       => 'nullable|string',
         ];
     }
 }

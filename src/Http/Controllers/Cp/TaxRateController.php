@@ -22,6 +22,7 @@ class TaxRateController extends CpController
         return TaxRate::create([
             'name'              => $request->name,
             'rate'              => $request->rate,
+            'description'       => $request->description,
         ]);
     }
 
@@ -30,6 +31,7 @@ class TaxRateController extends CpController
         $rate->update([
             'name'              => $request->name,
             'rate'              => $request->rate,
+            'description'       => $request->description,
         ]);
 
         return $rate->refresh();

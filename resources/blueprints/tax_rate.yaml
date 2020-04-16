@@ -12,6 +12,7 @@ sections:
           listable: hidden
           width: 50
           input_type: text
+          validate: required
       -
         handle: rate
         field:
@@ -22,3 +23,11 @@ sections:
           width: 50
           listable: hidden
           display: Rate
+          validate: required
+      -
+        handle: description
+        field:
+          type: textarea
+          display: Description
+          listable: hidden
+          localizable: false
