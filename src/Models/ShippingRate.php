@@ -5,17 +5,18 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
-class ShippingCategory extends Model
+class ShippingRate extends Model
 {
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'name', 'description', 'primary',
+        'uuid', 'name', 'type', 'minimum', 'maximum', 'rate', 'shipping_rate_id',
     ];
 
-    protected $casts = [
-        'primary' => 'boolean',
-    ];
+    public function shippingZone()
+    {
+        return $this->belongsTo(ShippingZone::class);
+    }
 
     public function lineItems()
     {

@@ -53,6 +53,7 @@ class ProductController extends CpController
             'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled === 'true' ? true : false,
             'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
+            'needs_shipping'        => $request->needs_shipping,
         ]);
 
         collect($request)
@@ -156,6 +157,8 @@ class ProductController extends CpController
             'description'           => $request->description,
             'product_category_id'   => $request->category,
             'is_enabled'            => $request->is_enabled === 'true' ? true : false,
+            'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
+            'needs_shipping'        => $request->needs_shipping,
         ]);
 
         collect($request)

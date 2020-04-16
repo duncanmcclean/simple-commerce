@@ -10,7 +10,7 @@ class LineItem extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'order_id', 'variant_id', 'tax_rate_id', 'shipping_category_id', 'description', 'sku', 'price', 'weight', 'height', 'length', 'width', 'total', 'quantity', 'note',
+        'uuid', 'order_id', 'variant_id', 'tax_rate_id', 'shipping_rate_id', 'description', 'sku', 'price', 'weight', 'height', 'length', 'width', 'total', 'quantity', 'note',
     ];
 
     public function order()
@@ -28,9 +28,9 @@ class LineItem extends Model
         return $this->hasOne(TaxRate::class);
     }
 
-    public function shippingCategory()
+    public function shippingRate()
     {
-        return $this->hasOne(ShippingCategory::class);
+        return $this->hasOne(ShippingRate::class);
     }
 
     public static function boot()

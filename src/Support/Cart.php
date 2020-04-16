@@ -70,7 +70,7 @@ class Cart
                 'uuid'                  => (new Stache())->generateId(),
                 'variant_id'            => $variant->id,
                 'tax_rate_id'           => $variant->product->tax_rate_id, // TODO: this needs to be the one assigned to the product
-                'shipping_category_id'  => null, // TODO: this needs to be the one assigned to the product
+                'shipping_rate_id'      => null, // TODO: this needs to be the one assigned to the product
                 'description'           => $variant->name,
                 'sku'                   => $variant->sku,
                 'price'                 => $variant->price,

@@ -103,7 +103,8 @@ sections:
   sidebar:
     display: Sidebar
     fields:
-      - handle: is_enabled
+      -
+        handle: is_enabled
         field:
           type: toggle
           localizable: false
@@ -126,4 +127,21 @@ sections:
           type: product_category
           localizable: false
           display: 'Product Category'
-
+      -
+        handle: tax_rate_id
+        field:
+          type: tax_rate
+          localizable: false
+          listable: hidden
+          display: 'Tax Rate'
+          max_items: 1
+          mode: default
+      -
+        handle: needs_shipping
+        field:
+          type: toggle
+          instructions: 'Does this product need to be shipped?'
+          localizable: false
+          listable: hidden
+          display: 'Needs Shipping?'
+          default: true
