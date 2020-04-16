@@ -19,13 +19,19 @@
         data() {
             return {
                 symbol: this.meta.symbol,
-                formattedValue: parseFloat(this.value).toFixed(2),
+                formattedValue: this.value,
             }
         },
 
         computed: {
             inputType() {
                 return this.show;
+            }
+        },
+
+        mounted() {
+            if (! isNaN(this.value)) {
+                this.formattedValue = parseFloat(this.value).toFixed(2)
             }
         }
     };
