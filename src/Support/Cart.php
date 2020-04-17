@@ -2,12 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Stache\Stache;
 
@@ -23,12 +26,29 @@ class Cart
         $order = Order::notCompleted()->where('uuid', $uuid)->first();
 
         $attributes = $order->toArray();
-        $attributes['line_items'] = $order->lineItems->toArray();
+        $attributes['line_items'] = $order->lineItems->map(function ($lineItem) {
+            $attributes = $lineItem->toArray();
+
+            $attributes['variant'] = $lineItem->variant->toArray();
+            $attributes['product'] = Arr::except($lineItem->variant->product->toArray(), 'variants');
+
+            collect($lineItem->variant->attributes)
+                ->each(function (Attribute $attribute) use (&$attributes) {
+                    $attributes['variant']["$attribute->key"] = $attribute->value;
+                });
+
+            collect($lineItem->variant->product->attributes)
+                ->each(function (Attribute $attribute) use (&$attributes) {
+                    $attributes['product']["$attribute->key"] = $attribute->value;
+                });
+
+            return $attributes;
+        })->toArray();
 
         $attributes['items_count'] = 0;
         collect($attributes['line_items'])
             ->each(function ($lineItem) use (&$attributes) {
-                $attributes['items_count'] += $lineItem->quantity;
+                $attributes['items_count'] += $lineItem['quantity'];
             });
 
         return collect($attributes);
@@ -115,10 +135,11 @@ class Cart
                 $shippingTotal = $lineItem->shippingRate->rate;
                 $overallTotal = $itemTotal + $taxTotal + $shippingTotal;
 
-                $lineItem
-                    ->update([
-                        'total' => $overallTotal,
-                    ]);
+                // TODO: come back to this - the whole request just crashes when it reaches the commented out code
+//                $lineItem
+//                    ->update([
+//                        'total' => $overallTotal,
+//                    ]);
 
                 $totals['total'] += $overallTotal;
                 $totals['item_total'] += $itemTotal;
