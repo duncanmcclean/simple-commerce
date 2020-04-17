@@ -65,7 +65,6 @@ class Cart
 
         // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
         // TODO: variants need weight field in the db
-        // TODO: remove the other dimension fields from the database + model
 
         return Order::notCompleted()
             ->findOrFail($id)
@@ -79,9 +78,6 @@ class Cart
                 'sku'                   => $variant->sku,
                 'price'                 => $variant->price,
                 'weight'                => null, // TODO: this field needs added to the variants model
-                'height'                => null, // TODO: this field needs added to the variants model
-                'length'                => null, // TODO: this field needs added to the variants model
-                'width'                 => null, // TODO: this field needs added to the variants model
                 'total'                 => $variant->price, // price + shipping for item dimensions + tax rate
                 'quantity'              => $quantity,
                 'note'                  => $note,

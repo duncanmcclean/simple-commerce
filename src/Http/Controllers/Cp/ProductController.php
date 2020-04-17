@@ -81,6 +81,7 @@ class ProductController extends CpController
                     'unlimited_stock'   => $theVariant['unlimited_stock'] === 'true' ? true : false,
                     'max_quantity'      => $theVariant['max_quantity'],
                     'description'       => $theVariant['description'],
+                    'weight'            => $theVariant['weight'],
                 ]);
 
                 collect($theVariant)
@@ -190,6 +191,7 @@ class ProductController extends CpController
                     'unlimited_stock'   => $variant['unlimited_stock'] === 'true' ? true : false,
                     'max_quantity'      => $variant['max_quantity'],
                     'description'       => $variant['description'],
+                    'weight'            => $variant['weight'],
                     'product_id'        => $product->id,
                 ]);
 

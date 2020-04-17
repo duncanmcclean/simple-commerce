@@ -18,5 +18,6 @@ $factory->define(Variant::class, function (Faker $faker) {
         },
         'description'       => $faker->text,
         'name'              => $faker->word,
+        'weight'            => $faker->randomFloat(),
     ];
 });

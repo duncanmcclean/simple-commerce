@@ -84,6 +84,14 @@ sections:
                 width: 33
                 display: 'Unlimited stock?'
             -
+              handle: weight
+              field:
+                input_type: text
+                type: text
+                localizable: false
+                listable: hidden
+                display: Weight
+            -
               handle: description
               field:
                 type: markdown

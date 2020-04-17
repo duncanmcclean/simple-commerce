@@ -13,7 +13,7 @@ class Variant extends Model
     use HasAttributes, HasUuid, SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name',
+        'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name', 'weight',
     ];
 
     protected $appends = [
