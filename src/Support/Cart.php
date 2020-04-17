@@ -95,10 +95,10 @@ class Cart
     public function calculateTotals(Order $order)
     {
         $totals = [
-            'overall'   => 00.00,
-            'items'     => 00.00,
-            'tax'       => 00.00,
-            'shipping'  => 00.00,
+            'total'             => 00.00,
+            'item_total'        => 00.00,
+            'tax_total'         => 00.00,
+            'shipping_total'    => 00.00,
         ];
 
         $order
@@ -115,21 +115,17 @@ class Cart
                 $shippingTotal = $lineItem->shippingRate->rate;
                 $overallTotal = $itemTotal + $taxTotal + $shippingTotal;
 
-                $lineItem->update([
-                    'total' => $overallTotal,
-                ]);
+                $lineItem
+                    ->update([
+                        'total' => $overallTotal
+                    ]);
 
-                $totals['overall'] += $overallTotal;
-                $totals['items'] += $itemTotal;
-                $totals['tax'] += $taxTotal;
-                $totals['shipping'] += $shippingTotal;
+                $totals['total'] += $overallTotal;
+                $totals['item_total'] += $itemTotal;
+                $totals['tax_total'] += $taxTotal;
+                $totals['shipping_total'] += $shippingTotal;
             });
 
-        $order->update([
-            'total' => $totals['total'],
-            'item_total' => $totals['item_total'],
-            'tax_total' => $totals['tax_total'],
-            'shipping_total' => $totals['shipping'],
-        ]);
+        $order->update($totals);
     }
 }
