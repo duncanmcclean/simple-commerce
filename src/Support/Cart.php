@@ -117,7 +117,7 @@ class Cart
 
                 $lineItem
                     ->update([
-                        'total' => $overallTotal
+                        'total' => $overallTotal,
                     ]);
 
                 $totals['total'] += $overallTotal;
