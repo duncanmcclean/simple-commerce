@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Collection;
@@ -21,7 +22,13 @@ class Cart
         $order = Order::notCompleted()->findOrFail($id);
 
         $attributes = $order->toArray();
-        $attributes['lineItems'] = $order->lineItems;
+        $attributes['line_items'] = $order->lineItems->toArray();
+
+        $order['items_count'] = 0;
+        collect($attributes['line_items'])
+            ->each(function ($lineItem) use (&$order) {
+                $order['items_count'] += $lineItem->quantity;
+            });
 
         return collect($attributes);
     }
@@ -55,7 +62,7 @@ class Cart
 
     public function addLineItem(int $id, string $variantUuid, int $quantity, string $note = '')
     {
-        $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity', 'product_id')
+        $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity', 'product_id', 'weight')
             ->where('uuid', $variantUuid)
             ->first();
 
@@ -64,7 +71,6 @@ class Cart
         }
 
         // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
-        // TODO: variants need weight field in the db
 
         return Order::notCompleted()
             ->findOrFail($id)
@@ -73,11 +79,11 @@ class Cart
                 'uuid'                  => (new Stache())->generateId(),
                 'variant_id'            => $variant->id,
                 'tax_rate_id'           => $variant->product->tax_rate_id,
-                'shipping_rate_id'      => null,
+                'shipping_rate_id'      => ShippingRate::first()->id,
                 'description'           => $variant->name,
                 'sku'                   => $variant->sku,
                 'price'                 => $variant->price,
-                'weight'                => null, // TODO: this field needs added to the variants model
+                'weight'                => $variant->weight,
                 'total'                 => $variant->price, // price + shipping for item dimensions + tax rate
                 'quantity'              => $quantity,
                 'note'                  => $note,

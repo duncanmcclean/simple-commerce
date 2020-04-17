@@ -14,7 +14,12 @@ class CartController extends Controller
     {
         $this->dealWithSession();
 
-        Cart::addLineItem(Session::get('simple_commerce_cart'), $request->variant, (int) $request->quantity, '');
+        Cart::addLineItem(
+            Session::get('simple_commerce_cart'),
+            $request->variant,
+            (int) $request->quantity,
+            $request->note ?? ''
+        );
 
         return $request->redirect ? redirect($request->redirect) : back();
     }

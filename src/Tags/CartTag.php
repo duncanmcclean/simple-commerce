@@ -19,12 +19,12 @@ class CartTag extends Tags
     {
         $this->dealWithSession();
 
-        return Cart::find(Session::get('simple_commerce_cart'))->get('lineItems');
+        return Cart::find(Session::get('simple_commerce_cart'))->get('line_items');
     }
 
     public function count()
     {
-        return $this->items()->count();
+        return Cart::find(Session::get('simple-commerce_cart'))->get('items_count');
     }
 
     public function total()
