@@ -24,6 +24,8 @@ class CartTag extends Tags
 
     public function count()
     {
+        $this->dealWithSession();
+
         return Cart::find(Session::get('simple-commerce_cart'))->get('items_count');
     }
 
