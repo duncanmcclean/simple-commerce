@@ -15,7 +15,7 @@ class CartController extends Controller
         $this->dealWithSession();
 
         Cart::addLineItem(
-            Session::get('simple_commerce_cart'),
+            Session::get(config('simple-commerce.cart_session_key')),
             $request->variant,
             (int) $request->quantity,
             $request->note ?? ''
@@ -40,8 +40,8 @@ class CartController extends Controller
 
     protected function dealWithSession()
     {
-        if (! Session::has('simple_commerce_cart')) {
-            Session::put('simple_commerce_cart', Cart::make()->uuid);
+        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+            Session::put(config('simple-commerce.cart_session_key'), Cart::make()->uuid);
         }
     }
 }

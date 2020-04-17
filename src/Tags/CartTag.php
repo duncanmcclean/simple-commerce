@@ -19,37 +19,37 @@ class CartTag extends Tags
     {
         $this->dealWithSession();
 
-        return Cart::find(Session::get('simple_commerce_cart'))->get('line_items');
+        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('line_items');
     }
 
     public function count()
     {
         $this->dealWithSession();
 
-        return Cart::find(Session::get('simple_commerce_cart'))->get('items_count');
+        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('items_count');
     }
 
     public function total()
     {
         if ($this->getParam('items')) {
-            return Cart::find(Session::get('simple_commerce_cart'))->item_total;
+            return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('item_total');
         }
 
         if ($this->getParam('shipping')) {
-            return Cart::find(Session::get('simple_commerce_cart'))->shipping_total;
+            return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('shipping_total');
         }
 
         if ($this->getParam('tax')) {
-            return Cart::find(Session::get('simple_commerce_cart'))->tax_total;
+            return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('tax_total');
         }
 
-        return Cart::find(Session::get('simple_commerce_cart'))->total;
+        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('total');
     }
 
     protected function dealWithSession()
     {
-        if (! Session::has('simple_commerce_cart')) {
-            Session::put('simple_commerce_cart', Cart::make()->uuid);
+        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+            Session::put(config('simple-commerce.cart_session_key'), Cart::make()->uuid);
         }
     }
 }
