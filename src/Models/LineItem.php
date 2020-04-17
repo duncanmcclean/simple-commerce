@@ -10,7 +10,7 @@ class LineItem extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'order_id', 'variant_id', 'tax_rate_id', 'shipping_rate_id', 'description', 'sku', 'price', 'weight', 'height', 'length', 'width', 'total', 'quantity', 'note',
+        'uuid', 'order_id', 'variant_id', 'tax_rate_id', 'shipping_rate_id', 'description', 'sku', 'price', 'weight', 'total', 'quantity', 'note',
     ];
 
     public function order()

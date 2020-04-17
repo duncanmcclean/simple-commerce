@@ -24,9 +24,6 @@ class CreateLineItemsTable extends Migration
             $table->string('sku');
             $table->float('price');
             $table->float('weight');
-            $table->float('height');
-            $table->float('length');
-            $table->float('width');
             $table->float('total');
             $table->integer('quantity');
             $table->longText('note')->nullable();
