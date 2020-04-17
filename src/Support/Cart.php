@@ -25,10 +25,10 @@ class Cart
         $attributes = $order->toArray();
         $attributes['line_items'] = $order->lineItems->toArray();
 
-        $order['items_count'] = 0;
+        $attributes['items_count'] = 0;
         collect($attributes['line_items'])
-            ->each(function ($lineItem) use (&$order) {
-                $order['items_count'] += $lineItem->quantity;
+            ->each(function ($lineItem) use (&$attributes) {
+                $attributes['items_count'] += $lineItem->quantity;
             });
 
         return collect($attributes);

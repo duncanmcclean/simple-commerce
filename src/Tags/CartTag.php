@@ -26,7 +26,7 @@ class CartTag extends Tags
     {
         $this->dealWithSession();
 
-        return Cart::find(Session::get('simple-commerce_cart'))->get('items_count');
+        return Cart::find(Session::get('simple_commerce_cart'))->get('items_count');
     }
 
     public function total()
