@@ -25,12 +25,12 @@ class LineItem extends Model
 
     public function taxRate()
     {
-        return $this->hasOne(TaxRate::class);
+        return $this->belongsTo(TaxRate::class);
     }
 
     public function shippingRate()
     {
-        return $this->hasOne(ShippingRate::class);
+        return $this->belongsTo(ShippingRate::class);
     }
 
     public static function boot()

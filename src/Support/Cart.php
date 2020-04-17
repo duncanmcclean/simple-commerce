@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
+use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
@@ -92,6 +93,42 @@ class Cart
 
     public function calculateTotals(Order $order)
     {
-        dd($order);
+        $totals = [
+            'overall'   => 00.00,
+            'items'     => 00.00,
+            'tax'       => 00.00,
+            'shipping'  => 00.00,
+        ];
+
+        $order
+            ->lineItems
+            ->each(function (LineItem $lineItem) use (&$totals) {
+                $itemTotal = ($lineItem->price * $lineItem->quantity);
+
+                if (! config('simple-commerce.entered_with_tax')) {
+                    $taxTotal = ($lineItem->taxRate->rate / 100) * $itemTotal;
+                } else {
+                    $taxTotal = 00.00;
+                }
+
+                $shippingTotal = $lineItem->shippingRate->rate;
+                $overallTotal = $itemTotal + $taxTotal + $shippingTotal;
+
+                $lineItem->update([
+                    'total' => $overallTotal,
+                ]);
+
+                $totals['overall'] += $overallTotal;
+                $totals['items'] += $itemTotal;
+                $totals['tax'] += $taxTotal;
+                $totals['shipping'] += $shippingTotal;
+            });
+
+        $order->update([
+            'total' => $totals['total'],
+            'item_total' => $totals['item_total'],
+            'tax_total' => $totals['tax_total'],
+            'shipping_total' => $totals['shipping'],
+        ]);
     }
 }
