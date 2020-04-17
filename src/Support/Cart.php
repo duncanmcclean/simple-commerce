@@ -18,9 +18,9 @@ class Cart
         return Order::notCompleted()->get();
     }
 
-    public function find(int $id): ?Collection
+    public function find(string $uuid): ?Collection
     {
-        $order = Order::notCompleted()->findOrFail($id);
+        $order = Order::notCompleted()->where('uuid', $uuid)->first();
 
         $attributes = $order->toArray();
         $attributes['line_items'] = $order->lineItems->toArray();
@@ -53,15 +53,15 @@ class Cart
         ]);
     }
 
-    public function update(int $id, array $attributes = [])
+    public function update(string $uuid, array $attributes = [])
     {
         return Order::notCompleted()
             ->updateOrCreate([
-                'id' => $id,
+                'uuid' => $uuid,
             ], $attributes);
     }
 
-    public function addLineItem(int $id, string $variantUuid, int $quantity, string $note = '')
+    public function addLineItem(string $uuid, string $variantUuid, int $quantity, string $note = '')
     {
         $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity', 'product_id', 'weight')
             ->where('uuid', $variantUuid)
@@ -74,7 +74,8 @@ class Cart
         // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
 
         return Order::notCompleted()
-            ->findOrFail($id)
+            ->where('uuid', $uuid)
+            ->first()
             ->lineItems()
             ->create([
                 'uuid'                  => (new Stache())->generateId(),

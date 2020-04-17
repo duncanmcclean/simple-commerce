@@ -49,7 +49,7 @@ class CartTag extends Tags
     protected function dealWithSession()
     {
         if (! Session::has('simple_commerce_cart')) {
-            Session::put('simple_commerce_cart', Cart::make()->id);
+            Session::put('simple_commerce_cart', Cart::make()->uuid);
         }
     }
 }
