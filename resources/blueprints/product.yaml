@@ -86,11 +86,12 @@ sections:
             -
               handle: weight
               field:
-                input_type: text
+                input_type: number
                 type: text
                 localizable: false
                 listable: hidden
                 display: Weight
+                validate: required
             -
               handle: description
               field:
