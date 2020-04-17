@@ -272,11 +272,12 @@ class SeederCommand extends Command
         ];
 
         foreach ($countries as $country) {
-            $item = new Country();
-            $item->uuid = (new Stache())->generateId();
-            $item->name = $country['name'];
-            $item->iso = $country['iso'];
-            $item->save();
+            Country::create([
+                'uuid'              => (new Stache())->generateId(),
+                'name'              => $country['name'],
+                'iso'               => $country['iso'],
+                'shipping_zone_id'  => 0,
+            ]);
         }
 
         return $this;
@@ -391,12 +392,12 @@ class SeederCommand extends Command
         ];
 
         foreach ($currencies as $currency) {
-            $item = new Currency();
-            $item->uuid = (new Stache())->generateId();
-            $item->iso = $currency['iso'];
-            $item->name = $currency['name'];
-            $item->symbol = $currency['symbol'];
-            $item->save();
+            Currency::create([
+                'uuid'      => (new Stache())->generateId(),
+                'iso'       => $currency['iso'],
+                'name'      => $currency['name'],
+                'symbol'    => $currency['symbol'],
+            ]);
         }
 
         return $this;
@@ -422,14 +423,14 @@ class SeederCommand extends Command
         ];
 
         foreach ($statuses as $status) {
-            $item = new OrderStatus();
-            $item->uuid = (new Stache())->generateId();
-            $item->name = $status['name'];
-            $item->slug = $status['slug'];
-            $item->description = $status['description'];
-            $item->color = $status['color'];
-            $item->primary = $status['primary'];
-            $item->save();
+            OrderStatus::create([
+                'uuid'          => (new Stache())->generateId(),
+                'name'          => $status['name'],
+                'slug'          => $status['slug'],
+                'description'   => $status['description'],
+                'color'         => $status['color'],
+                'primary'       => $status['primary'],
+            ]);
         }
 
         return $this;
@@ -492,12 +493,12 @@ class SeederCommand extends Command
         ];
 
         foreach ($states as $state) {
-            $item = new State();
-            $item->uuid = (new Stache())->generateId();
-            $item->name = $state['name'];
-            $item->abbreviation = $state['abbreviation'];
-            $item->country_id = Country::where('iso', 'US')->first()->id;
-            $item->save();
+            State::create([
+                'uuid' => (new Stache())->generateId(),
+                'name' => $state['name'],
+                'abbreviation' => $state['abbreviation'],
+                'country_id' => Country::where('iso', 'US')->first()->id,
+            ]);
         }
 
         return $this;
