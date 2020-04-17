@@ -20,7 +20,7 @@ class LineItem extends Model
 
     public function variant()
     {
-        return $this->hasOne(Variant::class);
+        return $this->belongsTo(Variant::class);
     }
 
     public function taxRate()
