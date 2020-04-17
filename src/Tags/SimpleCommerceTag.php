@@ -124,7 +124,11 @@ class SimpleCommerceTag extends Tags
             throw new \Exception('You must pass in a slug to the simple-commerce:product tag.');
         }
 
-        $product = Product::where('slug', $slug)->first();
+        $product = Product::enabled()->where('slug', $slug)->first();
+
+        if (! $product) {
+            throw new \Exception('Product Not Found');
+        }
 
         $productArray = $product->toArray();
 
