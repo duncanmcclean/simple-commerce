@@ -14,8 +14,8 @@ class CartUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'item_id'   => 'required|string',
-            'quantity'  => 'required|integer',
+            'line_item' => 'required|string',
+            'quantity'  => 'required',
             'redirect'  => 'nullable|string',
         ];
     }

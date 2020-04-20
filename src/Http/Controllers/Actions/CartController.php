@@ -28,7 +28,15 @@ class CartController extends Controller
 
     public function update(CartUpdateRequest $request)
     {
-        //
+        // update line item's quantity
+
+        Cart::updateLineItem(
+            Session::get(config('simple-commerce.cart_session_key')),
+            $request->line_item,
+            [
+                'quantity' => $request->quantity,
+            ]
+        );
 
         return $request->redirect ? redirect($request->redirect) : back();
     }

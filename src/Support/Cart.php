@@ -127,6 +127,13 @@ class Cart
             ]);
     }
 
+    public function updateLineItem(string $orderUuid, string $itemUuid, array $updateOptions)
+    {
+        return LineItem::where('uuid', $itemUuid)
+            ->first()
+            ->update($updateOptions);
+    }
+
     public function removeLineItem(string $orderUuid, string $itemUuid)
     {
         return LineItem::where('uuid', $itemUuid)->get()->each(function ($item) {
