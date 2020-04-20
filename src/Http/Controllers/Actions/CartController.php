@@ -6,7 +6,9 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartDestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Support\Facades\Session;
+use test\Mockery\MockingVariadicArgumentsTest;
 
 class CartController extends Controller
 {
@@ -33,7 +35,21 @@ class CartController extends Controller
 
     public function destroy(CartDestroyRequest $request)
     {
-        //
+        $this->dealWithSession();
+
+        if ($request->has('clear')) {
+            Cart::clear(Session::get(config('simple-commerce.cart_session_key')));
+            Session::remove(config('simple-commerce.cart_session_key'));
+
+            $this->dealWithSession();
+        }
+
+        if ($request->has('line_item')) {
+            Cart::removeLineItem(
+                Session::get(config('simple-commerce.cart_session_key')),
+                $request->line_item
+            );
+        }
 
         return $request->redirect ? redirect($request->redirect) : back();
     }

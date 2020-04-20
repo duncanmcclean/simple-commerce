@@ -20,9 +20,9 @@ class Cart
         return Order::notCompleted()->get();
     }
 
-    public function find(string $uuid): ?Collection
+    public function find(string $orderUuid): ?Collection
     {
-        $order = Order::notCompleted()->where('uuid', $uuid)->first();
+        $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
 
         $attributes = $order->toArray();
         $attributes['line_items'] = $order->lineItems->map(function ($lineItem) {
@@ -72,15 +72,25 @@ class Cart
         ]);
     }
 
-    public function update(string $uuid, array $attributes = [])
+    public function update(string $orderUuid, array $attributes = [])
     {
         return Order::notCompleted()
             ->updateOrCreate([
-                'uuid' => $uuid,
+                'uuid' => $orderUuid,
             ], $attributes);
     }
 
-    public function addLineItem(string $uuid, string $variantUuid, int $quantity, string $note = '')
+    public function clear(string $orderUuid)
+    {
+        return Order::notCompleted()
+            ->where('uuid', $orderUuid)
+            ->get()
+            ->each(function ($order) {
+                $order->delete();
+            });
+    }
+
+    public function addLineItem(string $orderUuid, string $variantUuid, int $quantity, string $note = '')
     {
         $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity', 'product_id', 'weight')
             ->where('uuid', $variantUuid)
@@ -90,7 +100,7 @@ class Cart
             throw new \Exception("You are not allowed to add more than {$variant->max_quantity} of this item.");
         }
 
-        if ($lineItem = Order::notCompleted()->where('uuid', $uuid)->first()->lineItems()->where('variant_id', $variant->id)) {
+        if ($lineItem = Order::notCompleted()->where('uuid', $orderUuid)->first()->lineItems()->where('variant_id', $variant->id)->first()) {
             return $lineItem->update([
                 'quantity' => $lineItem->quantity + $quantity,
             ]);
@@ -99,7 +109,7 @@ class Cart
         // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
 
         return Order::notCompleted()
-            ->where('uuid', $uuid)
+            ->where('uuid', $orderUuid)
             ->first()
             ->lineItems()
             ->create([
@@ -115,6 +125,13 @@ class Cart
                 'quantity'              => $quantity,
                 'note'                  => $note,
             ]);
+    }
+
+    public function removeLineItem(string $orderUuid, string $itemUuid)
+    {
+        return LineItem::where('uuid', $itemUuid)->get()->each(function ($item) {
+            $item->delete();
+        });
     }
 
     public function calculateTotals(Order $order)
