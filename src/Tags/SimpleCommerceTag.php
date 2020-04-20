@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Auth;
+use Statamic\Support\Arr;
 use Statamic\Tags\Tags;
 
 class SimpleCommerceTag extends Tags
@@ -136,15 +137,19 @@ class SimpleCommerceTag extends Tags
             $productArray["$attribute->key"] = $attribute->value;
         });
 
-        $newProduct['variants'] = $product->variants->map(function (Variant $variant) {
+        $productArray['variants'] = $product->variants->map(function (Variant $variant) use ($productArray) {
             $variantArray = $variant->toArray();
 
             $variant->attributes->each(function (Attribute $attribute) use (&$variantArray) {
                 $variantArray["$attribute->key"] = $attribute->value;
             });
 
+            $variantArray['product'] = Arr::except($productArray, 'variants');
+
             return $variantArray;
-        });
+        })->toArray();
+
+        dd($productArray);
 
         return $productArray;
     }
