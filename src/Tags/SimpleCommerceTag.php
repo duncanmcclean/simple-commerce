@@ -149,8 +149,6 @@ class SimpleCommerceTag extends Tags
             return $variantArray;
         })->toArray();
 
-        dd($productArray);
-
         return $productArray;
     }
 
