@@ -90,6 +90,12 @@ class Cart
             throw new \Exception("You are not allowed to add more than {$variant->max_quantity} of this item.");
         }
 
+        if ($lineItem = Order::notCompleted()->where('uuid', $uuid)->first()->lineItems()->where('variant_id', $variant->id)) {
+            return $lineItem->update([
+                'quantity' => $lineItem->quantity + $quantity,
+            ]);
+        }
+
         // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
 
         return Order::notCompleted()
@@ -134,10 +140,9 @@ class Cart
                 $shippingTotal = $lineItem->shippingRate->rate;
                 $overallTotal = $itemTotal + $taxTotal + $shippingTotal;
 
-                // TODO: come back to this - the whole request just crashes when it reaches the commented out code
 //                $lineItem
 //                    ->update([
-//                        'total' => $overallTotal,
+//                        'total' => $itemTotal,
 //                    ]);
 
                 $totals['total'] += $overallTotal;
