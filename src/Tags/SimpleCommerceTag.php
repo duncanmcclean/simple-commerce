@@ -143,7 +143,7 @@ class SimpleCommerceTag extends Tags
             $variant->attributes->each(function (Attribute $attribute) use (&$variantArray) {
                 $variantArray["$attribute->key"] = $attribute->value;
             });
-            
+
             $variantArray['product'] = $productArray;
 
             return $variantArray;
