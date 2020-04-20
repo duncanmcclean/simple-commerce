@@ -6,9 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartDestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartUpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Support\Facades\Session;
-use test\Mockery\MockingVariadicArgumentsTest;
 
 class CartController extends Controller
 {
@@ -28,8 +26,6 @@ class CartController extends Controller
 
     public function update(CartUpdateRequest $request)
     {
-        // update line item's quantity
-
         Cart::updateLineItem(
             Session::get(config('simple-commerce.cart_session_key')),
             $request->line_item,

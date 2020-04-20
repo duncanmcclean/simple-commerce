@@ -14,7 +14,6 @@ class CartStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'product'   => 'required|string',
             'variant'   => 'required|string',
             'quantity'  => 'required|string',
             'redirect'  => 'nullable|string',
