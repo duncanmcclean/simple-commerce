@@ -153,15 +153,17 @@ class Cart
         $order
             ->lineItems
             ->each(function (LineItem $lineItem) use (&$totals) {
+                // TODO: allow for some tax rates to include shipping as part of tax calculation
+
                 $itemTotal = ($lineItem->price * $lineItem->quantity);
+                $shippingTotal = $lineItem->shippingRate->rate; // TODO: make this 0 if item needs shipping (eloquent model)
 
                 if (! config('simple-commerce.entered_with_tax')) {
-                    $taxTotal = ($lineItem->taxRate->rate / 100) * $itemTotal;
+                    $taxTotal = ($lineItem->taxRate->rate / 100) * ($itemTotal + $shippingTotal);
                 } else {
                     $taxTotal = 00.00;
                 }
 
-                $shippingTotal = $lineItem->shippingRate->rate;
                 $overallTotal = $itemTotal + $taxTotal + $shippingTotal;
 
 //                $lineItem
