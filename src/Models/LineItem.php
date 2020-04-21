@@ -33,12 +33,8 @@ class LineItem extends Model
         return $this->belongsTo(ShippingRate::class);
     }
 
-    public static function boot()
+    public function recalculate()
     {
-        parent::boot();
-
-        static::saved(function ($model) {
-            \DoubleThreeDigital\SimpleCommerce\Facades\Cart::calculateTotals($model->order);
-        });
+        return $this->order->recalculate();
     }
 }

@@ -101,9 +101,11 @@ class Cart
         }
 
         if ($lineItem = Order::notCompleted()->where('uuid', $orderUuid)->first()->lineItems()->where('variant_id', $variant->id)->first()) {
-            return $lineItem->update([
+            $lineItem->update([
                 'quantity' => $lineItem->quantity + $quantity,
             ]);
+
+            return $lineItem->recalculate();
         }
 
         // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
@@ -124,21 +126,25 @@ class Cart
                 'total'                 => $variant->price, // price + shipping for item dimensions + tax rate
                 'quantity'              => $quantity,
                 'note'                  => $note,
-            ]);
+            ])
+            ->recalculate();
     }
 
     public function updateLineItem(string $orderUuid, string $itemUuid, array $updateOptions)
     {
-        return LineItem::where('uuid', $itemUuid)
-            ->first()
-            ->update($updateOptions);
+        $lineItem = LineItem::where('uuid', $itemUuid)->first();
+
+        $lineItem->update($updateOptions);
+        $lineItem->recalculate();
     }
 
     public function removeLineItem(string $orderUuid, string $itemUuid)
     {
-        return LineItem::where('uuid', $itemUuid)->get()->each(function ($item) {
+        LineItem::where('uuid', $itemUuid)->get()->each(function ($item) {
             $item->delete();
         });
+
+        return Order::where('uuid', $orderUuid)->first()->recalculate();
     }
 
     public function calculateTotals(Order $order)
@@ -166,10 +172,10 @@ class Cart
 
                 $overallTotal = $itemTotal + $taxTotal + $shippingTotal;
 
-//                $lineItem
-//                    ->update([
-//                        'total' => $itemTotal,
-//                    ]);
+                $lineItem
+                    ->update([
+                        'total' => $itemTotal,
+                    ]);
 
                 $totals['total'] += $overallTotal;
                 $totals['item_total'] += $itemTotal;

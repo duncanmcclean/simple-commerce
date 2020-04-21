@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartDestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartStoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartUpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller

@@ -79,4 +79,9 @@ class Order extends Model
     {
         return $query->where('is_completed', false);
     }
+
+    public function recalculate()
+    {
+        return \DoubleThreeDigital\SimpleCommerce\Facades\Cart::calculateTotals($this);
+    }
 }
