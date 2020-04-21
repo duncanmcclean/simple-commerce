@@ -6,24 +6,22 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use DoubleThreeDigital\SimpleCommerce\Support\Cart;
-use Illuminate\Http\Request;
+use Faker\Generator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Statamic\Stache\Stache;
 
 class CheckoutController
 {
-    public function store(Request $request)
+    public function store(CheckoutRequest $request)
     {
         $order = Order::where('uuid', Session::get(config('simple-commerce.cart_session_key')))->first();
 
@@ -55,6 +53,10 @@ class CheckoutController
                         $customer->{$key} = $value;
                     })
                     ->toArray();
+
+                if (! $customer->password) {
+                    $customer->password = Hash::make((new Generator())->password);
+                }
 
                 $customer->save();
             }
