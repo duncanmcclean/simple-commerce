@@ -35,7 +35,7 @@ class SimpleCommerce
 
                 return [
                     'name' => $instance->name(),
-                    'class' => $gateway[0],
+                    'class' => addslashes($gateway[0]),
                     'rules' => $instance->rules(),
                     'payment_form' => $instance->paymentForm()->render(),
                     'config' => $gateway[1],
