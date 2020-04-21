@@ -20,9 +20,6 @@ class CheckoutRequest extends FormRequest
         $customerModel = new $customerModel();
 
         return array_merge($gateway->rules(), $customerModel->rules(), [
-            'gateway'                           => 'required|string',
-            'use_shipping_address_for_billing'  => 'required|in:on,off',
-
             'shipping_address_1'                => 'required|string',
             'shipping_address_2'                => '',
             'shipping_address_3'                => '',
@@ -30,7 +27,6 @@ class CheckoutRequest extends FormRequest
             'shipping_zip_code'                 => 'required',
             'shipping_country'                  => 'required|string',
             'shipping_state'                    => 'nullable|integer',
-
             'billing_address_1'                 => 'required_if:use_shipping_address_for_billing,true|string',
             'billing_address_2'                 => '',
             'billing_address_3'                 => '',
@@ -38,7 +34,9 @@ class CheckoutRequest extends FormRequest
             'billing_zip_code'                  => 'required_if:use_shipping_address_for_billing,true',
             'billing_country'                   => 'required_if:use_shipping_address_for_billing,true|string',
             'billing_state'                     => 'nullable|integer',
+            'use_shipping_address_for_billing'  => 'required|in:on,off',
 
+            'gateway'                           => 'required|string',
             'redirect'                          => 'nullable|string',
         ]);
     }
