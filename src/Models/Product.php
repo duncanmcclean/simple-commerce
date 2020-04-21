@@ -15,11 +15,12 @@ class Product extends Model
     use HasAttributes, HasUuid, SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description', 'tax_rate_id',
+        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description', 'tax_rate_id', 'needs_shipping',
     ];
 
     protected $casts = [
-        'is_enabled' => 'boolean',
+        'is_enabled'        => 'boolean',
+        'needs_shipping'    => 'boolean',
     ];
 
     protected $appends = [
