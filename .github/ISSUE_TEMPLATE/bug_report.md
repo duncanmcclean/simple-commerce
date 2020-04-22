@@ -3,43 +3,48 @@ name: '🐛 Bug Report'
 about: Report a bug or issue in Simple Commerce
 title: ''
 labels: bug
-assignees: ''
 ---
 
-**Please try to fill out as much of the template as you can. Otherwise, we'll just close your issue straight away.**
+<!-- Please try and fill in as much information as you can -->
 
-## Describe the bug
-A quick description of the bug
+Quick description of the bug...
 
-## Steps to reproduce
-1. Go to this page
-2. Click on that
-3. Type in this
-4. See the bad red error
+If you can, add a screenshot of the bug and/or a link to the exception in Flare.
 
-## Expected behaviour
-I expected...
+<details>
+  <summary>Steps to reproduce</summary>
+  
+  1. Go to this page
+  2. Click on that
+  3. Type in this
+  4. See the bad red error
+</details>
 
-## Screenshots or Flare
-Add some screenshots or a link to see the exception in Flare.
+<details>
+  <summary>Expected behaviour</summary>
 
-## Environment information
+  I expected...
+</details>
 
-**Simple Commerce version:** v1.0.0-beta-{replace_this}
-_run `php artisan simple-commerce:version` to find it._
+<details>
+  <summary>Environment information</summary>
+  
+  **Simple Commerce version:** v1.0.0-beta-{replace_this}
+  _run `php artisan simple-commerce:version` to find it._
 
-**Statamic version:** 3.0.0.-beta-{replace_me}
-_run `php please -V` to find it._
+  **Statamic version:** 3.0.0.-beta-{replace_me}
+  _run `php please -V` to find it._
 
-**PHP version:** 7.{replace_me}
-_run `php -v` to find it_
+  **PHP version:** 7.{replace_me}
+  _run `php -v` to find it_
 
-**Operating System:**
-- [ ] MacOS
-- [ ] Linux
-- [ ] Windows
+  **Operating System:**
+  - [ ] MacOS
+  - [ ] Linux
+  - [ ] Windows
 
-**Browser:**
-- [ ] Chrome
-- [ ] Firefox
-- [ ] Safari
+  **Browser:**
+  - [ ] Chrome
+  - [ ] Firefox
+  - [ ] Safari
+</details>
