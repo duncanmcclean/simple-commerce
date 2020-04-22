@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Variant extends Model
 {
-    use HasAttributes, HasUuid, SoftDeletes;
+    use HasAttributes, HasUuid;
 
     protected $fillable = [
         'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name', 'weight',

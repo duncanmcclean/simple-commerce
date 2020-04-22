@@ -12,7 +12,7 @@ use Statamic\Facades\Blueprint;
 
 class Product extends Model
 {
-    use HasAttributes, HasUuid, SoftDeletes;
+    use HasAttributes, HasUuid;
 
     protected $fillable = [
         'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description', 'tax_rate_id', 'needs_shipping',

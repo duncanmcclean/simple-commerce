@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attribute extends Model
 {
-    use HasUuid, SoftDeletes;
+    use HasUuid;
 
     protected $guarded = [];
 
