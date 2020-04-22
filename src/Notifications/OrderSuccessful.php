@@ -8,12 +8,10 @@ use Illuminate\Notifications\Notification;
 class OrderSuccessful extends Notification
 {
     public $order;
-    public $customer;
 
-    public function __construct($order, $customer)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->customer = $customer;
     }
 
     public function via($notifiable)
@@ -23,14 +21,12 @@ class OrderSuccessful extends Notification
 
     public function toMail($notifiable)
     {
-        // TODO: fix tables in this view, the formatting is way off
-
         return (new MailMessage())
             ->success()
-            ->subject("Your order #{$this->order->id}")
+            ->subject("Order #{$this->order->id}")
             ->markdown('simple-commerce::mail.order-successful', [
                 'order' => $this->order,
-                'customer' => $this->customer,
+                'customer' => $this->order->customer,
             ]);
     }
 }

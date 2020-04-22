@@ -70,7 +70,7 @@ class CheckoutController
 
         $billing = Address::updateOrCreate(
             [
-                'customer_id'   => $request->customer_id,
+                'customer_id'   => $customer->id,
                 'address1'      => $request->shipping_address_1,
                 'zip_code'      => $request->shipping_zip_code,
             ],
@@ -93,7 +93,7 @@ class CheckoutController
         } else {
             $shipping = Address::updateOrCreate(
                 [
-                    'customer_id' => $request->customer_id,
+                    'customer_id' => $customer->id,
                     'address1' => $request->shipping_address_1,
                     'zip_code' => $request->shipping_zip_code,
                 ],
@@ -111,6 +111,11 @@ class CheckoutController
                 ]
             );
         }
+
+        $order->update([
+            'billing_address_id'    => $billing->id,
+            'shipping_address_id'   => $shipping->id,
+        ]);
 
         collect($order->lineItems)
             ->reject(function (LineItem $lineItem) {

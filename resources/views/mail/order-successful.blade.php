@@ -1,72 +1,70 @@
 @component('mail::message')
-# Your Order #{{ $order->id }}
+# Thanks!
 
-Hi {{ $customer->name }},
+Hello {{ $customer->name }},
 
-Thanks for ordering from {{ config('app.name') }}. This email is the receipt for your purchase.
+Your order has been completed successfully. You can find all the information about your order below. Let us know if you have any questions.
 
-{{--@component('mail::table')--}}
-{{--| Product       | Quantity         | Price                  |--}}
-{{--| ------------- |:----------------:| ----------------------:|--}}
-{{--@foreach($order->items['items'] as $item)--}}
-{{--| {{ \DoubleThreeDigital\SimpleCommerce\Models\Product::find($item->product_id)->title }} ({{ \DoubleThreeDigital\SimpleCommerce\Models\Variant::find($item->variant_id)->sku }}) | {{ $item->quantity }} | $15.00 |--}}
-{{--@endforeach--}}
+@component('mail::table')
+| Product       | Quantity      | Price    |
+| ------------- |:-------------:| --------:|
+@foreach($order->lineItems as $lineItem)
+| {{ $lineItem->variant->product->title }} ({{ $lineItem->variant->sku }})       | {{ $lineItem->quantity }}      | {{ \DoubleThreeDigital\SimpleCommerce\Facades\Currency::parse($lineItem->total) }}    |
+@endforeach
+| Shipping       |        | {{ \DoubleThreeDigital\SimpleCommerce\Facades\Currency::parse($order->shipping_total) }}    |
+| Tax            |        | {{ \DoubleThreeDigital\SimpleCommerce\Facades\Currency::parse($order->tax_total) }}    |
+| **Total**          |        | {{ \DoubleThreeDigital\SimpleCommerce\Facades\Currency::parse($order->total) }}    |
+@endcomponent
 
-{{--@foreach($order->items['shipping'] as $item)--}}
-{{--| **Shipping:** {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->start_of_zip_code }} n | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\ShippingZone::find($item->shipping_zone_id)->rate }} |--}}
-{{--@endforeach--}}
+@component('mail::panel')
+## Shipping Address
 
-{{--@foreach($order->items['tax'] as $item)--}}
-{{--| **Tax:** {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->country->name }} TODO: state name, {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->start_of_zip_code }} n | N/A | {{ \DoubleThreeDigital\SimpleCommerce\Models\TaxRate::find($item->tax_rate_id)->rate }}% |--}}
-{{--@endforeach--}}
+{{ $order->shippingAddress->name }},
 
-{{--| - | Items Sub Total | {{ $order->items['totals']->items  }} |--}}
-{{--| - | Total Discount | $0.00 |--}}
-{{--| - | Total Shipping | {{ $order->items['totals']->shipping }} |--}}
-{{--| - | Total Tax | {{ $order->items['totals']->tax }} |--}}
-{{--| - | **Total Price** | **{{ $order->items['totals']->overall }}** |--}}
-{{--@endcomponent--}}
+{{ $order->shippingAddress->address1 }},
 
-{{--    @component('mail::panel')--}}
-{{--        ## Shipping Address--}}
+@if($order->shippingAddress->address2)
+{{ $order->shippingAddress->address2 }},
+@endif
 
-{{--        {{ $order->shippingAddress()->name }},--}}
-{{--        {{ $order->shippingAddress()->address1 }},--}}
-{{--        @if ($order->shippingAddress()->address2 != null)--}}
-{{--            {{ $order->shippingAddress()->address2 }}--}}
-{{--        @endif--}}
-{{--        @if ($order->shippingAddress()->address3 != null)--}}
-{{--            {{ $order->shippingAddress()->address3 }}--}}
-{{--        @endif--}}
-{{--        {{ $order->shippingAddress()->city }},--}}
-{{--        @if (isset($order->shippingAddress()->state->name))--}}
-{{--            {{ $order->shippingAddress()->city()->name }}--}}
-{{--        @endif--}}
-{{--        {{ $order->shippingAddress()->zip_code }},--}}
-{{--        {{ $order->shippingAddress()->country()->name }}--}}
-{{--    @endcomponent--}}
+@if($order->shippingAddress->address3)
+{{ $order->shippingAddress->address3 }},
+@endif
 
-{{--    @component('mail::panel')--}}
-{{--        ## Billing Address--}}
+{{ $order->shippingAddress->city }},
 
-{{--        {{ $order->billingAddress()->name }},--}}
-{{--        {{ $order->billingAddress()->address1 }},--}}
-{{--        @if ($order->billingAddress()->address2 != null)--}}
-{{--            {{ $order->billingAddress()->address2 }}--}}
-{{--        @endif--}}
-{{--        @if ($order->billingAddress()->address3 != null)--}}
-{{--            {{ $order->billingAddress()->address3 }}--}}
-{{--        @endif--}}
-{{--        {{ $order->billingAddress()->city }},--}}
-{{--        @if (isset($order->billingAddress()->state->name))--}}
-{{--            {{ $order->billingAddress()->city()->name }}--}}
-{{--        @endif--}}
-{{--        {{ $order->billingAddress()->zip_code }},--}}
-{{--        {{ $order->billingAddress()->country()->name }}--}}
-{{--    @endcomponent--}}
+@if($order->shippingAddress->state)
+{{ $order->shippingAddress->state->name }},
+@endif
 
-We'll let you know when your items have been dispatched.
+{{ $order->shippingAddress->zip_code }},
 
-Thanks,<br>
-{{ config('app.name') }}
+{{ $order->shippingAddress->country->name }}
+@endcomponent
+
+@component('mail::panel')
+## Billing Address
+
+{{ $order->billingAddress->name }},
+
+{{ $order->billingAddress->address1 }},
+
+@if($order->billingAddress->address2)
+{{ $order->billingAddress->address2 }},
+@endif
+
+@if($order->billingAddress->address3)
+{{ $order->billingAddress->address3 }},
+@endif
+
+{{ $order->billingAddress->city }},
+
+@if($order->billingAddress->state)
+{{ $order->billingAddress->state->name }},
+@endif
+
+{{ $order->billingAddress->zip_code }},
+
+{{ $order->billingAddress->country->name }}
+@endcomponent
 @endcomponent
