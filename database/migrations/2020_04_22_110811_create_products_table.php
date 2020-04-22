@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('uuid')->unique()->index();
             $table->string('title');
             $table->string('slug');
-            $table->longText('description')->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->boolean('needs_shipping')->default(true);
             $table->integer('product_category_id')->index();

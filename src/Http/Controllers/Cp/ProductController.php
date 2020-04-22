@@ -49,7 +49,6 @@ class ProductController extends CpController
         $product = Product::create([
             'title'                 => $request->title,
             'slug'                  => $request->slug,
-            'description'           => $request->description,
             'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled,
             'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
@@ -155,7 +154,6 @@ class ProductController extends CpController
         $product->update([
             'title'                 => $request->title,
             'slug'                  => $request->slug,
-            'description'           => $request->description,
             'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled,
             'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
