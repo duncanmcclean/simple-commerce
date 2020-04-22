@@ -15,12 +15,14 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid')->unique();
+            $table->string('uuid')->unique()->index();
             $table->string('title');
             $table->string('slug');
             $table->longText('description')->nullable();
-            $table->integer('product_category_id')->index()->nullable();
-            $table->boolean('is_enabled')->default(false);
+            $table->boolean('is_enabled')->default(true);
+            $table->boolean('needs_shipping')->default(true);
+            $table->integer('product_category_id')->index();
+            $table->integer('tax_rate_id')->index();
             $table->timestamps();
         });
     }

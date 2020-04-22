@@ -15,18 +15,18 @@ class CreateLineItemsTable extends Migration
     {
         Schema::create('line_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid');
+            $table->string('uuid')->unique()->index();
+            $table->string('sku');
+            $table->longText('description')->nullable();
+            $table->longText('note')->nullable();
+            $table->float('price');
+            $table->float('total');
+            $table->integer('weight');
+            $table->integer('quantity');
             $table->integer('order_id')->index();
             $table->integer('variant_id')->index();
             $table->integer('tax_rate_id')->index();
-            $table->integer('shipping_category_id')->index();
-            $table->longText('description')->nullable();
-            $table->string('sku');
-            $table->float('price');
-            $table->float('weight');
-            $table->float('total');
-            $table->integer('quantity');
-            $table->longText('note')->nullable();
+            $table->integer('shipping_rate_id')->index()->nullable();
             $table->timestamps();
         });
     }

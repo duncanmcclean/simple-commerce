@@ -15,10 +15,14 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid')->unique();
-            $table->string('payment_intent')->nullable();
-            $table->json('items');
-            $table->string('total');
+            $table->string('uuid')->unique()->index();
+            $table->string('gateway');
+            $table->boolean('is_paid')->default(false);
+            $table->boolean('is_completed')->default(false);
+            $table->float('total');
+            $table->float('item_total');
+            $table->float('tax_total');
+            $table->float('shipping_total');
             $table->integer('currency_id')->index();
             $table->integer('order_status_id')->index();
             $table->integer('billing_address_id')->index();

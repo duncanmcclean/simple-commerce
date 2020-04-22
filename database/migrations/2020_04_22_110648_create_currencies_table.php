@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShippingCategoriesTable extends Migration
+class CreateCurrenciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateShippingCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_categories', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid');
+            $table->string('uuid')->unique()->index();
             $table->string('name');
-            $table->longText('description');
-            $table->boolean('primary');
+            $table->string('iso');
+            $table->string('symbol');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateShippingCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shipping_categories');
+        Schema::dropIfExists('currencies');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeDescriptionNullableOnOrderStatuses extends Migration
+class CreateShippingZonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class MakeDescriptionNullableOnOrderStatuses extends Migration
      */
     public function up()
     {
-        Schema::table('order_statuses', function (Blueprint $table) {
-            $table->longText('description')->nullable()->change();
+        Schema::create('shipping_zones', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('uuid')->unique()->index();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +28,6 @@ class MakeDescriptionNullableOnOrderStatuses extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('shipping_zones');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartTaxTable extends Migration
+class CreateAttributesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateCartTaxTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_taxes', function (Blueprint $table) {
+        Schema::create('attributes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid')->unique();
-            $table->integer('tax_rate_id')->index();
-            $table->integer('cart_id')->index();
+            $table->string('uuid')->unique()->index();
+            $table->string('key');
+            $table->json('value');
+            $table->morphs('attributable');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateCartTaxTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_taxes');
+        Schema::dropIfExists('attributes');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartShippingTable extends Migration
+class CreateShippingRatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateCartShippingTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_shipping', function (Blueprint $table) {
+        Schema::create('shipping_rates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid')->unique();
-            $table->integer('shipping_zone_id')->index();
-            $table->integer('cart_id')->index();
+            $table->string('uuid')->unique()->index();
+            $table->string('name');
+            $table->string('type');
+            $table->float('minimum');
+            $table->float('maximum');
+            $table->integer('shipping_rate_id');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateCartShippingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_shipping');
+        Schema::dropIfExists('shipping_rates');
     }
 }
