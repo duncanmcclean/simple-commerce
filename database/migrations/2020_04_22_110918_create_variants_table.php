@@ -21,10 +21,10 @@ class CreateVariantsTable extends Migration
             $table->longText('description')->nullable();
             $table->float('weight');
             $table->float('price');
-            $table->index('stock');
+            $table->integer('stock');
             $table->boolean('unlimited_stock');
             $table->integer('max_quantity');
-            $table->index('product_id');
+            $table->integer('product_id');
             $table->timestamps();
         });
     }
