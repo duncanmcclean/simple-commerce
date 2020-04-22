@@ -10,7 +10,7 @@ class ShippingRate extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'name', 'type', 'minimum', 'maximum', 'rate', 'shipping_rate_id',
+        'uuid', 'name', 'type', 'minimum', 'maximum', 'rate', 'shipping_zone_id',
     ];
 
     public function shippingZone()
