@@ -14,12 +14,6 @@ sections:
           input_type: text
           validate: required
       -
-        handle: description
-        field:
-          type: markdown
-          localizable: false
-          display: Description
-      -
         import: product_attributes
         prefix: attributes_
       -
