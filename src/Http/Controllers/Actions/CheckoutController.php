@@ -8,8 +8,8 @@ use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
-use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Faker\Generator;
@@ -112,25 +112,25 @@ class CheckoutController
             );
         }
 
-        collect($this->cart()->get($this->cartId))
-            ->reject(function (CartItem $cartItem) {
-                if ($cartItem->variant->unlimited_stock) {
+        collect($order->lineItems)
+            ->reject(function (LineItem $lineItem) {
+                if ($lineItem->variant->unlimited_stock) {
                     return true;
                 }
 
                 return false;
             })
-            ->each(function (CartItem $cartItem) {
-                $cartItem->variant()->update([
-                    'stock' => ($cartItem->variant->stock - $cartItem->quantity),
+            ->each(function (LineItem $lineItem) {
+                $lineItem->variant()->update([
+                    'stock' => ($lineItem->variant->stock - $lineItem->quantity),
                 ]);
 
-                if ($cartItem->variant->stock <= config('simple-commerce.low_stock_counter')) {
-                    Event::dispatch(new VariantLowStock($cartItem->variant()));
+                if ($lineItem->variant->stock <= config('simple-commerce.low_stock_counter')) {
+                    Event::dispatch(new VariantLowStock($lineItem->variant()));
                 }
 
-                if ($cartItem->variant->stock === 0) {
-                    Event::dispatch(new VariantOutOfStock($cartItem->variant()));
+                if ($lineItem->variant->stock === 0) {
+                    Event::dispatch(new VariantOutOfStock($lineItem->variant()));
                 }
             });
 
