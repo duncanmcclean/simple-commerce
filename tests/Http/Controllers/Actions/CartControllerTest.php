@@ -2,22 +2,26 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class CartControllerTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        factory(OrderStatus::class)->create(['primary' => true]);
+        factory(ShippingRate::class)->create();
+    }
+
     /** @test */
     public function can_store_line_item()
     {
-//        Cart::shouldReceive('addLineItem')
-//            ->once()
-//            ->withAnyArgs()
-//            ->andReturnNull();
-
         $order = factory(Order::class)->create();
         $variant = factory(Variant::class)->create();
 
@@ -30,15 +34,11 @@ class CartControllerTest extends TestCase
             ])
             ->assertRedirect();
 
-//        dd('back here');
-//        dd(LineItem::all());
-//
-//        $this
-//            ->assertDatabaseHas('line_items', [
-//                'order_id'      => $order->id,
-//                'variant_id'    => $variant->id,
-//                'note'          => 'Pre-order',
-//            ]);
+        $this
+            ->assertDatabaseHas('line_items', [
+                'variant_id'    => $variant->id,
+                'note'          => 'Pre-order',
+            ]);
     }
 
     /** @test */
