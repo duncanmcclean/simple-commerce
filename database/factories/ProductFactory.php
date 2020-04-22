@@ -1,5 +1,6 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -12,10 +13,14 @@ $factory->define(Product::class, function (Faker $faker) {
         'uuid'                  => (new Stache())->generateId(),
         'title'                 => $title,
         'slug'                  => str_slug($title),
+        'description'           => $faker->text,
         'product_category_id'   => function () {
             return factory(ProductCategory::class)->create()->id;
         },
         'is_enabled'            => true,
-        'description'           => $faker->text,
+        'tax_rate_id'           => function () {
+            return factory(TaxRate::class)->create()->id;
+        },
+        'needs_shipping'        => true,
     ];
 });

@@ -8,7 +8,7 @@ $factory->define(OrderStatus::class, function (Faker $faker) {
     $name = $faker->word;
 
     return [
-        'uuid' => (new Stache())->generateId(),
+        'uuid'          => (new Stache())->generateId(),
         'name'          => $name,
         'slug'          => str_slug($name),
         'description'   => '',

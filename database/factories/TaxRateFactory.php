@@ -16,7 +16,7 @@ $factory->define(TaxRate::class, function (Faker $faker) {
             return factory(State::class)->create()->id;
         },
         'start_of_zip_code' => 'G72',
-        'rate'              => $faker->randomElement([5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 75, 80, 85, 90, 95, 100]),
+        'rate'              => array_rand([5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 75, 80, 85, 90, 95, 100]),
         'name'              => $faker->word,
     ];
 });
