@@ -97,7 +97,10 @@ class Product extends Model
         }
 
         if ($this->variants()->count() > 0) {
-            $this->variants()->delete();
+            $this->variants()->each(function ($variant) {
+                $variant->attributes()->delete();
+                $variant->delete();
+            });
         }
 
         parent::delete();
