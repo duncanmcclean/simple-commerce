@@ -17,7 +17,7 @@ class CreateAttributesTable extends Migration
             $table->bigIncrements('id');
             $table->string('uuid')->unique()->index();
             $table->string('key');
-            $table->json('value');
+            $table->json('value')->nullable();
             $table->morphs('attributable');
             $table->timestamps();
         });
