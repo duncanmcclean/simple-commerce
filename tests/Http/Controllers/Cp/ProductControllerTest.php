@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\ProductController;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
@@ -53,12 +54,13 @@ class ProductControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('products.store'), [
-                'title'             => $this->faker->word,
-                'slug'              => str_slug($this->faker->word),
-                'description'       => $this->faker->realText(),
-                'category'          => factory(ProductCategory::class)->create()->id,
-                'is_enabled'        => 'true',
-                'attributes_weight' => '100g',
+                'title' => $this->faker->word,
+                'slug' => str_slug($this->faker->word),
+                'category' => [factory(ProductCategory::class)->create()->id],
+                'is_enabled' => true,
+                'tax_rate_id' => [factory(TaxRate::class)->create()->id],
+                'needs_shipping' => true,
+                'attributes_featured' => 'true',
                 'variants' => [
                     [
                         'name'              => $this->faker->word,
@@ -68,7 +70,8 @@ class ProductControllerTest extends TestCase
                         'unlimited_stock'   => 'true',
                         'max_quantity'      => '5',
                         'description'       => $this->faker->realText(),
-                        'attributes_colour'  => 'Red',
+                        'weight'            => 100,
+                        'attributes_colour' => 'Red',
                     ],
                     [
                         'name'              => $this->faker->word,
@@ -78,20 +81,25 @@ class ProductControllerTest extends TestCase
                         'unlimited_stock'   => 'true',
                         'max_quantity'      => '5',
                         'description'       => $this->faker->realText(),
-                        'attributes_colour'  => 'Yellow',
+                        'weight'            => 100,
+                        'attributes_colour' => 'Yellow',
                     ],
                 ],
             ])
-            ->assertOk();
+            ->assertOk()
+            ->assertSee('redirect');
+
+        $product = Product::latest()->first();
 
         $this
             ->assertDatabaseHas('attributes', [
-                'key' => 'weight',
-                'value' => '"100g"',
+                'key'   => 'featured',
+                'attributable_id' => $product->id,
+                'attributable_type' => 'DoubleThreeDigital\\SimpleCommerce\\Models\\Product',
             ])
             ->assertDatabaseHas('attributes', [
-                'key' => 'colour',
-                'value' => '"Yellow"',
+                'key'   => 'colour',
+                'attributable_type' => 'DoubleThreeDigital\\SimpleCommerce\\Models\\Variant',
             ]);
     }
 
@@ -110,16 +118,19 @@ class ProductControllerTest extends TestCase
     /** @test */
     public function can_update_product()
     {
-        $product = factory(Product::class)->create();
+        $product = factory(Product::class)->create([
+            'needs_shipping' => false,
+        ]);
 
         $this
             ->actAsSuper()
             ->post(cp_route('products.update', ['product' => $product->uuid]), [
-                'title'                 => $this->faker->words(3),
-                'slug'                  => $product->slug,
-                'description'           => $this->faker->realText(),
-                'product_category_id'   => $product->product_category_id,
-                'is_enabled'            => 'true',
+                'title'             => $this->faker->word,
+                'slug'              => $product->slug,
+                'category'          => [$product->product_category_id],
+                'is_enabled'        => $product->is_enabled,
+                'tax_rate_id'       => [factory(TaxRate::class)->create()->id],
+                'needs_shipping'    => true,
                 'variants' => [
                     [
                         'name'              => $this->faker->word,
@@ -129,11 +140,17 @@ class ProductControllerTest extends TestCase
                         'unlimited_stock'   => 'true',
                         'max_quantity'      => 5,
                         'description'       => $this->faker->realText(),
-                        'attributes_colour' => 'Red',
+                        'weight'            => 100,
                     ],
                 ],
             ])
             ->assertOk();
+
+        $this
+            ->assertDatabaseHas('products', [
+                'uuid' => $product->uuid,
+                'needs_shipping' => true,
+            ]);
     }
 
     /** @test */
@@ -157,18 +174,17 @@ class ProductControllerTest extends TestCase
             ->delete(cp_route('products.destroy', ['product' => $product->uuid]))
             ->assertOk();
 
-        // We're not doing 'assertMissing' because we use soft deletes on these modelss
         $this
-            ->assertDatabaseHas('products', [
+            ->assertDatabaseMissing('products', [
                 'uuid'          => $product->uuid,
             ])
-            ->assertDatabaseHas('attributes', [
+            ->assertDatabaseMissing('attributes', [
                 'uuid'          => $productAttribute->uuid,
             ])
-            ->assertDatabaseHas('variants', [
+            ->assertDatabaseMissing('variants', [
                 'uuid'          => $variant->uuid,
             ])
-            ->assertDatabaseHas('attributes', [
+            ->assertDatabaseMissing('attributes', [
                 'uuid'          => $variantAttribute->uuid,
             ]);
     }
