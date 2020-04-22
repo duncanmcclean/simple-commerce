@@ -20,7 +20,8 @@ class CreateShippingRatesTable extends Migration
             $table->string('type');
             $table->float('minimum');
             $table->float('maximum');
-            $table->integer('shipping_rate_id');
+            $table->float('rate');
+            $table->integer('shipping_zone_id');
             $table->timestamps();
         });
     }

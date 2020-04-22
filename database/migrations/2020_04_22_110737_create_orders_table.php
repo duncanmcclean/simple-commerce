@@ -25,9 +25,9 @@ class CreateOrdersTable extends Migration
             $table->float('shipping_total');
             $table->integer('currency_id')->index();
             $table->integer('order_status_id')->index();
-            $table->integer('billing_address_id')->index();
-            $table->integer('shipping_address_id')->index();
-            $table->integer('customer_id')->index();
+            $table->integer('billing_address_id')->index()->nullable();
+            $table->integer('shipping_address_id')->index()->nullable();
+            $table->integer('customer_id')->index()->nullable();
             $table->timestamps();
         });
     }
