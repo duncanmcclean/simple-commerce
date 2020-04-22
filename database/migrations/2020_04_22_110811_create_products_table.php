@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->boolean('is_enabled')->default(true);
             $table->boolean('needs_shipping')->default(true);
-            $table->integer('product_category_id')->index();
+            $table->integer('product_category_id')->index()->nullable();
             $table->integer('tax_rate_id')->index();
             $table->timestamps();
         });
