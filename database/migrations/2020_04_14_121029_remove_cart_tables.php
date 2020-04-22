@@ -13,9 +13,9 @@ class RemoveCartTables extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('cart');
+        Schema::dropIfExists('carts');
         Schema::dropIfExists('cart_items');
-        Schema::dropIfExists('cart_tax');
+        Schema::dropIfExists('cart_taxes');
         Schema::dropIfExists('cart_shipping');
     }
 
