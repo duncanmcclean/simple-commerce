@@ -31,8 +31,9 @@ class CartControllerTest extends TestCase
                 'variant'   => $variant->uuid,
                 'quantity'  => 1,
                 'note'      => 'Pre-order',
+                'redirect'  => '/cart',
             ])
-            ->assertRedirect();
+            ->assertRedirect('/cart');
 
         $this
             ->assertDatabaseHas('line_items', [
@@ -44,24 +45,80 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_store_line_item_without_note()
     {
-        //
+        $order = factory(Order::class)->create();
+        $variant = factory(Variant::class)->create();
+
+        $this
+            ->session(['cart_session_key' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.store'), [
+                'variant'   => $variant->uuid,
+                'quantity'  => 1,
+                'redirect'  => '/cart',
+            ])
+            ->assertRedirect('/cart');
+
+        $this
+            ->assertDatabaseHas('line_items', [
+                'variant_id'    => $variant->id,
+            ]);
     }
 
     /** @test */
     public function can_update_line_item_quantity()
     {
-        //
+        $lineItem = factory(LineItem::class)->create();
+
+        $this
+            ->session(['cart_session_key' => $lineItem->order->uuid])
+            ->post(route('statamic.simple-commerce.cart.update'), [
+                'quantity'  => 2,
+            ])
+            ->assertRedirect();
+
+        $this
+            ->assertDatabaseHas('line_items', [
+                'id'         => $lineItem->id,
+                'quantity'   => 2,
+            ]);
     }
 
     /** @test */
     public function can_clear_order()
     {
+        $order = factory(Order::class)->create();
 
+        $this
+            ->session(['cart_session_key' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.destroy'), [
+                'clear'  => true,
+            ])
+            ->assertRedirect();
+
+        $this
+            ->assertDatabaseMissing('orders', [
+                'id' => $order->id,
+            ]);
     }
 
     /** @test */
     public function can_remove_line_item_from_order()
     {
-        //
+        $order = factory(Order::class)->create();
+        $lineItem = factory(LineItem::class, 2)->create();
+
+        $this
+            ->session(['cart_session_key' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.destroy'), [
+                'line_item'  => $lineItem[0]['uuid'],
+            ])
+            ->assertRedirect();
+
+        $this
+            ->assertDatabaseMissing('line_items', [
+                'uuid' => $lineItem[0]['uuid'],
+            ])
+            ->assertDatabaseHas('line_items', [
+                'uuid' => $lineItem[1]['uuid'],
+            ]);
     }
 }

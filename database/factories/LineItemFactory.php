@@ -14,14 +14,14 @@ $factory->define(LineItem::class, function (Faker $faker) {
         'order_id'              => function () {
             return factory(Order::class)->create()->id;
         },
-        'variant_id'            => function ($variant) {
+        'variant_id'            => function () use (&$variant) {
             return $variant->id;
         },
-        'tax_category_id'       => function () {
-            // TODO: link the factory
+        'tax_rate_id'       => function () {
+            return factory(\DoubleThreeDigital\SimpleCommerce\Models\TaxRate::class)->create()->id;
         },
-        'shipping_category_id'  => function () {
-            // TODO: link the factory
+        'shipping_rate_id'  => function () {
+            return factory(\DoubleThreeDigital\SimpleCommerce\Models\ShippingRate::class)->create()->id;
         },
         'description'           => $variant->name,
         'sku'                   => $variant->sku,
