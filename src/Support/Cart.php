@@ -84,10 +84,8 @@ class Cart
     {
         return Order::notCompleted()
             ->where('uuid', $orderUuid)
-            ->get()
-            ->each(function ($order) {
-                $order->delete();
-            });
+            ->first()
+            ->delete();
     }
 
     public function addLineItem(string $orderUuid, string $variantUuid, int $quantity, string $note = '')
