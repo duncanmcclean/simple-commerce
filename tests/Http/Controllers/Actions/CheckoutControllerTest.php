@@ -65,14 +65,101 @@ class CheckoutControllerTest extends TestCase
             'customer_id' => $customer->id,
         ]);
 
-        $this->assertDatabaseHas('variants', [
-            'id' => $lineItems[0]['id'],
-            'stock' => ($lineItems[0]['variant']['stock'] - 1),
+        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(OrderSuccessful::class);
+    }
+
+    /** @test */
+    public function can_store_checkout_as_guest_with_history()
+    {
+        Event::fake();
+
+        $customer = factory(User::class)->create([
+            'name' => 'Tom Jackson',
+            'email' => 'tom@jackson.com',
+        ]);
+        $order = factory(Order::class)->create();
+        $lineItems = factory(LineItem::class, 2)->create(['order_id' => $order->id, 'quantity' => 1]);
+
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name' => $customer->name,
+                'email' => $customer->email,
+
+                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'cardholder' => 'Mr George Murray',
+                'cardNumber' => '4242 4242 4242 4242',
+                'expiryMonth' => '01',
+                'expiryYear' => '2025',
+                'cvc' => '123',
+
+                'shipping_address_1'                => $this->faker->streetAddress,
+                'shipping_address_2'                => '',
+                'shipping_address_3'                => '',
+                'shipping_city'                     => $this->faker->city,
+                'shipping_country'                  => factory(Country::class)->create()->iso,
+                'shipping_state'                    => '',
+                'shipping_zip_code'                 => $this->faker->postcode,
+                'use_shipping_address_for_billing'  => 'on',
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('orders', [
+            'customer_id' => $customer->id,
         ]);
 
-        $this->assertDatabaseHas('variants', [
-            'id' => $lineItems[1]['id'],
-            'stock' => ($lineItems[1]['variant']['stock'] - 1),
+        $this->assertDatabaseHas('addresses', [
+            'customer_id' => $customer->id,
+        ]);
+
+        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(OrderSuccessful::class);
+    }
+
+    /** @test */
+    public function can_store_checkout_as_logged_in_user()
+    {
+        Event::fake();
+
+        $customer = factory(User::class)->create([
+            'name' => 'Jack Thomson',
+            'email' => 'jack@thomson.com',
+        ]);
+        $order = factory(Order::class)->create();
+        $lineItems = factory(LineItem::class, 2)->create(['order_id' => $order->id, 'quantity' => 1]);
+
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->actingAs($customer)
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name' => $customer->name,
+                'email' => $customer->email,
+
+                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'cardholder' => 'Mr George Murray',
+                'cardNumber' => '4242 4242 4242 4242',
+                'expiryMonth' => '01',
+                'expiryYear' => '2025',
+                'cvc' => '123',
+
+                'shipping_address_1'                => $this->faker->streetAddress,
+                'shipping_address_2'                => '',
+                'shipping_address_3'                => '',
+                'shipping_city'                     => $this->faker->city,
+                'shipping_country'                  => factory(Country::class)->create()->iso,
+                'shipping_state'                    => '',
+                'shipping_zip_code'                 => $this->faker->postcode,
+                'use_shipping_address_for_billing'  => 'on',
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('orders', [
+            'customer_id' => $customer->id,
+        ]);
+
+        $this->assertDatabaseHas('addresses', [
+            'customer_id' => $customer->id,
         ]);
 
         Event::assertDispatched(OrderPaid::class);
