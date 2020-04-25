@@ -116,14 +116,18 @@ class ShippingZoneController extends CpController
     {
         Country::where('shipping_zone_id', $zone->id)
             ->get()
-            ->each()
-            ->delete();
+            ->each(function ($country) {
+                $country->update([
+                    'shipping_zone_id' => null,
+                ]);
+            });
 
         $zone
             ->rates()
             ->get()
-            ->each()
-            ->delete();
+            ->each(function ($zone) {
+                $zone->delete();
+            });
 
         $zone->delete();
     }
