@@ -12,7 +12,7 @@ class OrderControllerTest extends TestCase
     public function can_get_order_index()
     {
         $orders = factory(Order::class, 5)->create([
-            'is_complete' => true,
+            'is_completed' => true,
         ]);
 
         $this
@@ -31,7 +31,7 @@ class OrderControllerTest extends TestCase
     {
         $status = factory(OrderStatus::class)->create();
         $orders = factory(Order::class, 5)->create([
-            'is_complete'       => true,
+            'is_completed'       => true,
             'order_status_id'   => $status->id,
         ]);
 
@@ -50,7 +50,7 @@ class OrderControllerTest extends TestCase
     public function can_get_carts_index()
     {
         $orders = factory(Order::class, 5)->create([
-            'is_complete' => false,
+            'is_completed' => false,
         ]);
 
         $this
@@ -78,7 +78,7 @@ class OrderControllerTest extends TestCase
     public function can_edit_order()
     {
         $order = factory(Order::class)->create();
-
+        
         $this
             ->actAsSuper()
             ->get(cp_route('orders.edit', ['order' => $order->uuid]))

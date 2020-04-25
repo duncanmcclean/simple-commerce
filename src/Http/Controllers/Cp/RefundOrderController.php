@@ -14,19 +14,21 @@ class RefundOrderController extends CpController
     {
         $this->authorize('refund', $order);
 
-        if ($order->is_refunded) {
-            return back()->with('error', 'Order has already been refunded.');
-        }
+        // TODO: this needs to be brought back
 
-        $refund = (new $order->gateway_data['gateway'])->refund($order->gateway_data);
+        // if ($order->is_refunded) {
+        //     return back()->with('error', 'Order has already been refunded.');
+        // }
 
-        if ($refund != true) {
-            return back()->with('error', $refund);
-        }
+        // $refund = (new $order->gateway_data['gateway'])->refund($order->gateway_data);
 
-        $order->update(['is_refunded' => true]);
+        // if ($refund != true) {
+        //     return back()->with('error', $refund);
+        // }
 
-        Event::dispatch(new OrderRefunded($order));
+        // $order->update(['is_refunded' => true]);
+
+        // Event::dispatch(new OrderRefunded($order));
 
         return back()->with('success', 'Order has been refunded.');
     }

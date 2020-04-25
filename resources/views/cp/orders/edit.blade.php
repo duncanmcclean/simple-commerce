@@ -7,7 +7,7 @@
         :blueprint='@json($blueprint)'
         :meta='@json($meta)'
         :values='@json($values)'
-        title="Order #{{ $values['id'] }}"
+        title="{{ $title }}"
         name="order-publish-form"
         :breadcrumbs='@json($crumbs)'
         action="{{ $action }}"

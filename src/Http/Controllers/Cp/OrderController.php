@@ -75,6 +75,7 @@ class OrderController extends CpController
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
             'action'    => cp_route('orders.update', ['order' => $order->uuid]),
+            'title'     => "Order #{$order->id}"
         ]);
     }
 
