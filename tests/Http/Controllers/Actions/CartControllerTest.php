@@ -26,7 +26,7 @@ class CartControllerTest extends TestCase
         $variant = factory(Variant::class)->create();
 
         $this
-            ->session(['cart_session_key' => $order->uuid])
+            ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.store'), [
                 'variant'   => $variant->uuid,
                 'quantity'  => 1,
@@ -49,7 +49,7 @@ class CartControllerTest extends TestCase
         $variant = factory(Variant::class)->create();
 
         $this
-            ->session(['cart_session_key' => $order->uuid])
+            ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.store'), [
                 'variant'   => $variant->uuid,
                 'quantity'  => 1,
@@ -69,7 +69,7 @@ class CartControllerTest extends TestCase
         $lineItem = factory(LineItem::class)->create();
 
         $this
-            ->session(['cart_session_key' => $lineItem->order->uuid])
+            ->session(['simple_commerce_cart' => $lineItem->order->uuid])
             ->post(route('statamic.simple-commerce.cart.update'), [
                 'quantity'  => 2,
             ])
@@ -88,7 +88,7 @@ class CartControllerTest extends TestCase
         $order = factory(Order::class)->create();
 
         $this
-            ->session(['cart_session_key' => $order->uuid])
+            ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.destroy'), [
                 'clear'  => true,
             ])
@@ -107,7 +107,7 @@ class CartControllerTest extends TestCase
         $lineItem = factory(LineItem::class, 2)->create();
 
         $this
-            ->session(['cart_session_key' => $order->uuid])
+            ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.destroy'), [
                 'line_item'  => $lineItem[0]['uuid'],
             ])

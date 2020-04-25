@@ -3,17 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Actions;
 
 use App\User;
-use DoubleThreeDigital\SimpleCommerce\Events\CheckoutComplete;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
-use DoubleThreeDigital\SimpleCommerce\Models\Cart;
-use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Models\Product;
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
-use DoubleThreeDigital\SimpleCommerce\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 
@@ -28,71 +24,55 @@ class CheckoutControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_store_checkout()
+    public function can_store_checkout_as_guest_with_no_history()
     {
         Event::fake();
 
-        $product = factory(Product::class)->create();
-        $variant = factory(Variant::class)->create([
-            'product_id' => $product->id,
-        ]);
+        $order = factory(Order::class)->create();
+        $lineItems = factory(LineItem::class, 2)->create(['order_id' => $order->id, 'quantity' => 1]);
 
-        $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uuid]);
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name' => 'George Murray',
+                'email' => 'george@murray.com',
 
-        $cartItem = factory(CartItem::class)->create([
-            'cart_id'       => $cart->id,
-            'product_id'    => $product->id,
-            'variant_id'    => $variant->id,
-            'quantity'      => 1,
-        ]);
+                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'cardholder' => 'Mr George Murray',
+                'cardNumber' => '4242 4242 4242 4242',
+                'expiryMonth' => '01',
+                'expiryYear' => '2025',
+                'cvc' => '123',
 
-        $data = [
-            'gateway'                           => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
-            'cardholder'                        => 'Mr Joe Bloggs',
-            'cardNumber'                        => '4242 4242 4242 4242',
-            'expiryMonth'                       => '07',
-            'expiryYear'                        => '2025',
-            'cvc'                               => '123',
+                'shipping_address_1'                => $this->faker->streetAddress,
+                'shipping_address_2'                => '',
+                'shipping_address_3'                => '',
+                'shipping_city'                     => $this->faker->city,
+                'shipping_country'                  => factory(Country::class)->create()->iso,
+                'shipping_state'                    => '',
+                'shipping_zip_code'                 => $this->faker->postcode,
+                'use_shipping_address_for_billing'  => 'on',
+            ])
+            ->assertRedirect();
 
-            'name'                              => $this->faker->name,
-            'email'                             => $this->faker->email,
-            'password'                          => $this->faker->password,
-            'shipping_address_1'                => $this->faker->streetAddress,
-            'shipping_address_2'                => '',
-            'shipping_address_3'                => '',
-            'shipping_city'                     => $this->faker->city,
-            'shipping_country'                  => factory(Country::class)->create()->iso,
-            'shipping_state'                    => '',
-            'shipping_zip_code'                 => $this->faker->postcode,
-            'use_shipping_address_for_billing'  => 'on',
-            'redirect'                          => '/thank-you',
-        ];
-
-        $response = $this->post(route('statamic.simple-commerce.checkout.store'), $data);
-
-        $response->assertRedirect('/thank-you');
-        $response->assertSessionHas('commerce_cart_id');
-
-        $this->assertDatabaseHas('users', [
-            'name'  => $data['name'],
-            'email' => $data['email'],
-        ]);
-
-        $user = User::where('email', $data['email'])->first();
-
-        $this->assertDatabaseHas('addresses', [
-            'name'          => $data['name'],
-            'address1'      => $data['shipping_address_1'],
-            'customer_id'   => $user->id,
-        ]);
+        $customer = User::where('email', 'george@murray.com')->first(); 
 
         $this->assertDatabaseHas('orders', [
-            'customer_id'   => $user->id,
+            'customer_id' => $customer->id,
         ]);
 
-        $this->assertDatabaseMissing('carts', [
-            'uuid'  => $cart->uuid,
+        $this->assertDatabaseHas('addresses', [
+            'customer_id' => $customer->id,
+        ]);
+
+        $this->assertDatabaseHas('variants', [
+            'id' => $lineItems[0]['id'],
+            'stock' => ($lineItems[0]['variant']['stock'] - 1),
+        ]);
+
+        $this->assertDatabaseHas('variants', [
+            'id' => $lineItems[1]['id'],
+            'stock' => ($lineItems[1]['variant']['stock'] - 1),
         ]);
 
         Event::assertDispatched(OrderPaid::class);

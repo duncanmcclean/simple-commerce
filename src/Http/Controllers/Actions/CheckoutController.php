@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use Faker\Generator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
@@ -55,7 +54,7 @@ class CheckoutController
                     ->toArray();
 
                 if (! $customer->password) {
-                    $customer->password = Hash::make((new Generator())->password);
+                    $customer->password = Hash::make(uniqid().'ssspppp');
                 }
 
                 $customer->save();
@@ -131,11 +130,11 @@ class CheckoutController
                 ]);
 
                 if ($lineItem->variant->stock <= config('simple-commerce.low_stock_counter')) {
-                    Event::dispatch(new VariantLowStock($lineItem->variant()));
+                    Event::dispatch(new VariantLowStock($lineItem->variant));
                 }
 
                 if ($lineItem->variant->stock === 0) {
-                    Event::dispatch(new VariantOutOfStock($lineItem->variant()));
+                    Event::dispatch(new VariantOutOfStock($lineItem->variant));
                 }
             });
 
