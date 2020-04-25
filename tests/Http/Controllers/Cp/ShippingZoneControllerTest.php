@@ -93,6 +93,6 @@ class ShippingZoneControllerTest extends TestCase
 
         $this->assertDatabaseMissing('shipping_zones', [
             'id' => $zone->id,
-        ])    
+        ]);    
     }
 }
