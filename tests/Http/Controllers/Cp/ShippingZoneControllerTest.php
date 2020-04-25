@@ -33,13 +33,26 @@ class ShippingZoneControllerTest extends TestCase
     /** @test */
     public function can_store_shipping_zone()
     {
+        $uk = factory(Country::class)->create([
+            'name' => 'United Kingdom',
+            'iso' => 'UK',
+        ]);
+
         $this
             ->actAsSuper()
             ->post(cp_route('shipping-zones.store'), [
-                'country' => [factory(Country::class)->create()->id],
-                'state' => [factory(State::class)->create()->id],
-                'start_of_zip_code' => 'G72 A12',
-                'price' => '10.25',
+                'name' => 'United Kingdom',
+                'countries' => [
+                    $uk->id,
+                ],
+                'rates' => [
+                    'name' => '2nd Class',
+                    'type' => 'price-based',
+                    'minimum' => 0,
+                    'maximum' => 100,
+                    'rate' => 2.50,
+                    'note' => '',
+                ],
             ])
             ->assertCreated();
     }
@@ -52,10 +65,18 @@ class ShippingZoneControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
-                'country' => [$zone->country_id],
-                'state' => [$zone->state_id],
-                'start_of_zip_code' => $zone->start_of_zip_code,
-                'price' => '10.30',
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    $zone->country_id,
+                ],
+                'rates' => [
+                    'name' => $zone['rates'][0]['name'],
+                    'type' => $zone['rates'][0]['type'],
+                    'minimum' => $zone['rates'][0]['minimum'],
+                    'maximum' => $zone['rates'][0]['maximum'],
+                    'rate' => $zone['rates'][0]['rate'],
+                    'note' => $zone['rates'][0]['note'],
+                ],
             ])
             ->assertOk();
     }
@@ -69,5 +90,9 @@ class ShippingZoneControllerTest extends TestCase
             ->actAsSuper()
             ->delete(cp_route('shipping-zones.destroy', ['zone' => $zone->uuid]))
             ->assertRedirect();
+
+        $this->assertDatabaseMissing('shipping_zones', [
+            'id' => $zone->id,
+        ])    
     }
 }
