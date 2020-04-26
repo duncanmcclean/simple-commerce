@@ -44,15 +44,17 @@ class ShippingZoneControllerTest extends TestCase
             ->post(cp_route('shipping-zones.store'), [
                 'name' => 'United Kingdom',
                 'countries' => [
-                    $uk->id,
+                    0 => $uk->id,
                 ],
                 'rates' => [
-                    'name' => '2nd Class',
-                    'type' => 'price-based',
-                    'minimum' => 0,
-                    'maximum' => 100,
-                    'rate' => 2.50,
-                    'note' => '',
+                    [
+                        'name' => '2nd Class',
+                        'type' => 'price-based',
+                        'minimum' => '0',
+                        'maximum' => '100',
+                        'rate' => '2.50',
+                        'note' => 'Delivery within 2-3 days',
+                    ],
                 ],
             ])
             ->assertCreated();
@@ -68,16 +70,16 @@ class ShippingZoneControllerTest extends TestCase
             ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
                 'name' => 'New Shipping Zone Name',
                 'countries' => [
-                    $zone->country_id,
+                    0 => $zone->country_id,
                 ],
                 'rates' => [
                     [
-                        'name' => 'Royal Mail 2nd Class',
+                        'name' => '2nd Class',
                         'type' => 'price-based',
-                        'minimum' => 00.00,
-                        'maximum' => 20.00,
-                        'rate' => 2.50,
-                        'note' => '',
+                        'minimum' => '0',
+                        'maximum' => '100',
+                        'rate' => '2.50',
+                        'note' => 'Delivery within 2-3 days',
                     ],
                 ],
             ])

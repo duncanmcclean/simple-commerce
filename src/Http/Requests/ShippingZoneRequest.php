@@ -15,11 +15,11 @@ class ShippingZoneRequest extends FormRequest
     {
         return [
             'name'              => 'required|string',
-            'countries'         => '', // TODO: add some validation around this
+            'countries.*'       => 'required|numeric',
             'rates.*.name'      => 'required|string',
             'rates.*.type'      => 'required|string|in:price-based,weight-based',
-            'rates.*.minimum'   => '',
-            'rates.*.maximum'   => '',
+            'rates.*.minimum'   => 'required|numeric',
+            'rates.*.maximum'   => 'required|numeric',
             'rates.*.rate'      => 'required|string',
             'rates.*.note'      => '',
         ];
