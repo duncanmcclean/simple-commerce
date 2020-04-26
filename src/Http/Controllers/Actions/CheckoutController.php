@@ -67,7 +67,7 @@ class CheckoutController
             'customer_id' => $customer->id,
         ]);
 
-        $billing = Address::updateOrCreate(
+        $shipping = Address::updateOrCreate(
             [
                 'customer_id'   => $customer->id,
                 'address1'      => $request->shipping_address_1,
@@ -88,25 +88,25 @@ class CheckoutController
         );
 
         if ($request->use_shipping_address_for_billing === 'on') {
-            $shipping = $billing;
+            $billing = $shipping;
         } else {
-            $shipping = Address::updateOrCreate(
+            $billing = Address::updateOrCreate(
                 [
-                    'customer_id' => $customer->id,
-                    'address1' => $request->shipping_address_1,
-                    'zip_code' => $request->shipping_zip_code,
+                    'customer_id'   => $customer->id,
+                    'address1'      => $request->billing_address_1,
+                    'zip_code'      => $request->billing_zip_code,
                 ],
                 [
-                    'uuid' => (new Stache())->generateId(),
-                    'name' => $customer->name,
-                    'address1' => $request->shipping_address_1,
-                    'address2' => $request->shipping_address_2,
-                    'address3' => $request->shipping_address_3,
-                    'city' => $request->shipping_city,
-                    'zip_code' => $request->shipping_zip_code,
-                    'country_id' => Country::where('iso', $request->shipping_country)->first()->id,
-                    'state_id' => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
-                    'customer_id' => $customer->id,
+                    'uuid'          => (new Stache())->generateId(),
+                    'name'          => $customer->name,
+                    'address1'      => $request->billing_address_1,
+                    'address2'      => $request->billing_address_2,
+                    'address3'      => $request->billing_address_3,
+                    'city'          => $request->billing_city,
+                    'zip_code'      => $request->billing_zip_code,
+                    'country_id'    => Country::where('iso', $request->billing_country)->first()->id,
+                    'state_id'      => State::where('abbreviation', $request->billing_state)->first()->id ?? null,
+                    'customer_id'   => $customer->id,
                 ]
             );
         }
