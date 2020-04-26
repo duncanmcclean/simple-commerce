@@ -94,7 +94,7 @@ class ShippingZoneControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->delete(cp_route('shipping-zones.destroy', ['zone' => $zone->uuid]))
-            ->assertRedirect();
+            ->assertOk();
 
         $this->assertDatabaseMissing('shipping_zones', [
             'id' => $zone->id,
