@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
@@ -52,8 +53,6 @@ class OrderController extends CpController
 
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Orders', 'url' => cp_route('orders.index')]]);
 
-        // TODO: remember to pass in the line items in a parseable format
-
         $values = $order->toArray();
 
         collect($order->billingAddress->getAttributes())
@@ -65,6 +64,20 @@ class OrderController extends CpController
             ->each(function ($value, $key) use (&$values) {
                 $values["shipping_{$key}"] = $value;
             });
+
+        $values['line_items'] = [
+            'totals' => [
+                'items'     => Currency::parse($order->item_total),
+                'tax'       => Currency::parse($order->tax_total),
+                'shipping'  => Currency::parse($order->shipping_total),
+                'overall'   => Currency::parse($order->total),
+            ],
+            'items' => $order->lineItems()->with('variant', 'variant.product')->get()->map(function ($lineItem) {
+                return array_merge($lineItem->toArray(), [
+                    'formatted_total' => Currency::parse($lineItem->total),
+                ]);
+            })->toArray(),
+        ];
 
         $blueprint = (new Order())->blueprint();
         $fields = $blueprint->fields()->addValues($values)->preProcess();
