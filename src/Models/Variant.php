@@ -13,7 +13,11 @@ class Variant extends Model
     use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'uuid', 'name', 'sku', 'description', 'weight', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id',
+        'uuid', 'name', 'sku', 'description', 'images', 'weight', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id',
+    ];
+
+    protected $casts = [
+        'images' => 'json',
     ];
 
     protected $appends = [

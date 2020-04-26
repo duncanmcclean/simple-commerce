@@ -11,6 +11,7 @@ $factory->define(Variant::class, function (Faker $faker) {
         'name'              => $faker->word,
         'sku'               => $faker->slug,
         'description'       => $faker->text,
+        'images'            => [],
         'price'             => 25.99,
         'stock'             => $faker->numberBetween(50, 250),
         'unlimited_stock'   => false,

@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Auth;
-use Statamic\Support\Arr;
 use Statamic\Tags\Tags;
 
 class SimpleCommerceTag extends Tags
@@ -92,20 +91,25 @@ class SimpleCommerceTag extends Tags
 
         $products = $products->map(function (Product $product) {
             $newProduct = $product->toArray();
+            $newProduct['images'] = [];
 
             $product->attributes->each(function (Attribute $attribute) use (&$newProduct) {
                 $newProduct["$attribute->key"] = $attribute->value;
             });
 
-            $newProduct['variants'] = $product->variants->map(function (Variant $variant) {
+            $newProduct['variants'] = $product->variants->map(function (Variant $variant) use (&$newProduct) {
                 $newVariant = $variant->toArray();
+
+                collect($variant->images)->each(function ($image) use (&$newProduct) {
+                    $newProduct['images'][] = $image;
+                });
 
                 $variant->attributes->each(function (Attribute $attribute) use (&$newVariant) {
                     $newVariant["$attribute->key"] = $attribute->value;
                 });
 
                 return $newVariant;
-            });
+            })->toArray();
 
             return $newProduct;
         });
@@ -132,13 +136,18 @@ class SimpleCommerceTag extends Tags
         }
 
         $productArray = $product->toArray();
+        $productArray['images'] = [];
 
         $product->attributes->each(function (Attribute $attribute) use (&$productArray) {
             $productArray["$attribute->key"] = $attribute->value;
         });
 
-        $productArray['variants'] = $product->variants->map(function (Variant $variant) use ($productArray) {
+        $productArray['variants'] = $product->variants->map(function (Variant $variant) use (&$productArray) {
             $variantArray = $variant->toArray();
+
+            collect($variant->images)->each(function ($image) use (&$productArray) {
+                $productArray['images'][] = $image;
+            });
 
             $variant->attributes->each(function (Attribute $attribute) use (&$variantArray) {
                 $variantArray["$attribute->key"] = $attribute->value;

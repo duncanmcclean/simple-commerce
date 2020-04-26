@@ -19,6 +19,7 @@ class CreateVariantsTable extends Migration
             $table->string('name');
             $table->string('sku')->unique()->index();
             $table->longText('description')->nullable();
+            $table->jsonb('images')->nullable();
             $table->float('weight');
             $table->float('price');
             $table->integer('stock');

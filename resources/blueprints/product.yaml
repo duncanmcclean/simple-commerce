@@ -78,6 +78,22 @@ sections:
                 width: 33
                 display: 'Unlimited stock?'
             -
+              handle: description
+              field:
+                type: markdown
+                localizable: false
+                display: Description
+            -
+              handle: images
+              field:
+                mode: grid
+                restrict: false
+                allow_uploads: true
+                type: assets
+                localizable: false
+                listable: hidden
+                display: Images
+            -
               handle: weight
               field:
                 input_type: number
@@ -86,12 +102,6 @@ sections:
                 listable: hidden
                 display: Weight
                 validate: required
-            -
-              handle: description
-              field:
-                type: markdown
-                localizable: false
-                display: Description
             -
               import: variant_attributes
               prefix: attributes_
