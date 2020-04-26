@@ -8,7 +8,9 @@ use Statamic\Stache\Stache;
 $factory->define(Variant::class, function (Faker $faker) {
     return [
         'uuid'              => (new Stache())->generateId(),
+        'name'              => $faker->word,
         'sku'               => $faker->slug,
+        'description'       => $faker->text,
         'price'             => 10.55,
         'stock'             => $faker->numberBetween(50, 250),
         'unlimited_stock'   => false,
@@ -16,8 +18,6 @@ $factory->define(Variant::class, function (Faker $faker) {
         'product_id'        => function () {
             return factory(Product::class)->create()->id;
         },
-        'description'       => $faker->text,
-        'name'              => $faker->word,
         'weight'            => 15.05,
     ];
 });
