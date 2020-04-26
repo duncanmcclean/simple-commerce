@@ -15,7 +15,7 @@ $factory->define(Address::class, function (Faker $faker) {
         'address2'      => null,
         'address3'      => null,
         'city'          => $faker->city,
-        'zip_code'      => $faker->zip_code,
+        'zip_code'      => $faker->postcode,
         'state_id'      => function () {
             return factory(State::class)->create()->id;
         },
