@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -70,15 +71,17 @@ class ShippingZoneControllerTest extends TestCase
                     $zone->country_id,
                 ],
                 'rates' => [
-                    'name' => $zone['rates'][0]['name'],
-                    'type' => $zone['rates'][0]['type'],
-                    'minimum' => $zone['rates'][0]['minimum'],
-                    'maximum' => $zone['rates'][0]['maximum'],
-                    'rate' => $zone['rates'][0]['rate'],
-                    'note' => $zone['rates'][0]['note'],
+                    [
+                        'name' => 'Royal Mail 2nd Class',
+                        'type' => 'price-based',
+                        'minimum' => 00.00,
+                        'maximum' => 20.00,
+                        'rate' => 2.50,
+                        'note' => '',
+                    ],
                 ],
             ])
-            ->assertOk();
+            ->assertRedirect();
     }
 
     /** @test */
