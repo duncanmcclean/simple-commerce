@@ -10,7 +10,7 @@ class Currency extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'iso', 'symbol', 'name',
+        'uuid', 'name', 'iso', 'symbol',
     ];
 
     public function orders()

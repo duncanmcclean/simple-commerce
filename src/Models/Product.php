@@ -15,12 +15,12 @@ class Product extends Model
     use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'tax_rate_id', 'needs_shipping',
+        'uuid', 'title', 'slug', 'is_enabled', 'needs_shipping', 'product_category_id', 'tax_rate_id',
     ];
 
     protected $casts = [
-        'is_enabled'        => 'boolean',
-        'needs_shipping'    => 'boolean',
+        'is_enabled'     => 'boolean',
+        'needs_shipping' => 'boolean',
     ];
 
     protected $appends = [

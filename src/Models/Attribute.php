@@ -11,7 +11,9 @@ class Attribute extends Model
 {
     use HasUuid;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'uuid', 'key', 'value',
+    ];
 
     protected $dispatchesEvents = [
         'updated' => AttributeUpdated::class,

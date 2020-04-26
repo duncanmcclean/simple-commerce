@@ -13,15 +13,11 @@ class Variant extends Model
     use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name', 'weight',
+        'uuid', 'name', 'sku', 'description', 'weight', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id',
     ];
 
     protected $appends = [
         'outOfStock',
-    ];
-
-    protected $dates = [
-        'deleted_at',
     ];
 
     protected $dispatchesEvents = [
