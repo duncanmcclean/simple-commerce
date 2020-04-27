@@ -167,7 +167,7 @@ class SimpleCommerceTagTest extends TestCase
         $products = factory(Product::class, 5)->create();
 
         $this->tag->setParameters([
-            'limit' => 3
+            'limit' => '3',
         ]);
 
         $run = $this->tag->products();

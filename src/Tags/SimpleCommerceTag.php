@@ -64,8 +64,8 @@ class SimpleCommerceTag extends Tags
                 });
         }
 
-        if ($limit = $this->getParam('limit')) {
-            $products = $products->take($limit);
+        if ($this->hasParam('limit')) {
+            $products = $products->take($this->getInt('limit'));
         }
 
         if ($this->getParam('count')) {
