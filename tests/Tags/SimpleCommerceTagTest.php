@@ -144,12 +144,10 @@ class SimpleCommerceTagTest extends TestCase
     {
         $enabledProduct = factory(Product::class)->create([
             'is_enabled'    => true,
-            'title'         => 'Amazon Alexa',
         ]);
 
         $disabledProduct = factory(Product::class)->create([
             'is_enabled'    => false,
-            'title'         => 'Sunglasses',
         ]);
 
         $this->tag->setParameters([
