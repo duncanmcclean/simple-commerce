@@ -43,15 +43,6 @@ class CheckoutControllerTest extends TestCase
                 'expiryMonth' => '01',
                 'expiryYear' => '2025',
                 'cvc' => '123',
-
-                'shipping_address_1'                => $this->faker->streetAddress,
-                'shipping_address_2'                => '',
-                'shipping_address_3'                => '',
-                'shipping_city'                     => $this->faker->city,
-                'shipping_country'                  => factory(Country::class)->create()->iso,
-                'shipping_state'                    => '',
-                'shipping_zip_code'                 => $this->faker->postcode,
-                'use_shipping_address_for_billing'  => 'on',
             ])
             ->assertRedirect();
 
@@ -60,11 +51,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'customer_id' => $customer->id,
         ]);
-
-        $this->assertDatabaseHas('addresses', [
-            'customer_id' => $customer->id,
-        ]);
-
+        
         Event::assertDispatched(OrderPaid::class);
         Event::assertDispatched(OrderSuccessful::class);
     }
@@ -93,23 +80,10 @@ class CheckoutControllerTest extends TestCase
                 'expiryMonth' => '01',
                 'expiryYear' => '2025',
                 'cvc' => '123',
-
-                'shipping_address_1'                => $this->faker->streetAddress,
-                'shipping_address_2'                => '',
-                'shipping_address_3'                => '',
-                'shipping_city'                     => $this->faker->city,
-                'shipping_country'                  => factory(Country::class)->create()->iso,
-                'shipping_state'                    => '',
-                'shipping_zip_code'                 => $this->faker->postcode,
-                'use_shipping_address_for_billing'  => 'on',
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('orders', [
-            'customer_id' => $customer->id,
-        ]);
-
-        $this->assertDatabaseHas('addresses', [
             'customer_id' => $customer->id,
         ]);
 
@@ -142,23 +116,10 @@ class CheckoutControllerTest extends TestCase
                 'expiryMonth' => '01',
                 'expiryYear' => '2025',
                 'cvc' => '123',
-
-                'shipping_address_1'                => $this->faker->streetAddress,
-                'shipping_address_2'                => '',
-                'shipping_address_3'                => '',
-                'shipping_city'                     => $this->faker->city,
-                'shipping_country'                  => factory(Country::class)->create()->iso,
-                'shipping_state'                    => '',
-                'shipping_zip_code'                 => $this->faker->postcode,
-                'use_shipping_address_for_billing'  => 'on',
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('orders', [
-            'customer_id' => $customer->id,
-        ]);
-
-        $this->assertDatabaseHas('addresses', [
             'customer_id' => $customer->id,
         ]);
 

@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
-use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
@@ -67,51 +66,12 @@ class CheckoutController
             'customer_id' => $customer->id,
         ]);
 
-        $shipping = $customer->addresses()->updateOrCreate(
-            [
-                'customer_id'   => $customer->id,
-                'address1'      => $request->shipping_address_1,
-                'zip_code'      => $request->shipping_zip_code,
-            ],
-            [
-                'uuid'          => (new Stache())->generateId(),
-                'name'          => $customer->name,
-                'address1'      => $request->shipping_address_1,
-                'address2'      => $request->shipping_address_2,
-                'address3'      => $request->shipping_address_3,
-                'city'          => $request->shipping_city,
-                'zip_code'      => $request->shipping_zip_code,
-                'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
-                'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
-            ]
-        );
+        $order->billingAddress->update([
+            'customer_id' => $customer->id,
+        ]);
 
-        if ($request->use_shipping_address_for_billing === 'on') {
-            $billing = $shipping;
-        } else {
-            $billing = $customer->addresses()->updateOrCreate(
-                [
-                    'customer_id'   => $customer->id,
-                    'address1'      => $request->billing_address_1,
-                    'zip_code'      => $request->billing_zip_code,
-                ],
-                [
-                    'uuid'          => (new Stache())->generateId(),
-                    'name'          => $customer->name,
-                    'address1'      => $request->billing_address_1,
-                    'address2'      => $request->billing_address_2,
-                    'address3'      => $request->billing_address_3,
-                    'city'          => $request->billing_city,
-                    'zip_code'      => $request->billing_zip_code,
-                    'country_id'    => Country::where('iso', $request->billing_country)->first()->id,
-                    'state_id'      => State::where('abbreviation', $request->billing_state)->first()->id ?? null,
-                ]
-            );
-        }
-
-        $order->update([
-            'billing_address_id'    => $billing->id,
-            'shipping_address_id'   => $shipping->id,
+        $order->shippingAddress->update([
+            'customer_id' => $customer->id,
         ]);
 
         collect($order->lineItems)

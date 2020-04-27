@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Actions;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
@@ -82,6 +84,34 @@ class CartControllerTest extends TestCase
             ->assertDatabaseHas('line_items', [
                 'id'         => $lineItem->id,
                 'quantity'   => 2,
+            ]);
+    }
+
+    /** @test */
+    public function can_update_order_addresses()
+    {
+        $order = factory(Order::class)->create();
+
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.update'), [
+                'shipping_address_1'                => '11 Statamic Way',
+                'shipping_address_2'                => '',
+                'shipping_address_3'                => '',
+                'shipping_city'                     => $this->faker->city,
+                'shipping_country'                  => factory(Country::class)->create()->iso,
+                'shipping_state'                    => '',
+                'shipping_zip_code'                 => $this->faker->postcode,
+                'use_shipping_address_for_billing'  => 'on',
+            ])
+            ->assertRedirect();
+
+        $address = Address::where('address1', '11 Statamic Way')->first();    
+
+        $this
+            ->assertDatabaseHas('orders', [
+                'billing_address_id'    => $address->id,
+                'shipping_address_id'   => $address->id,
             ]);
     }
 
