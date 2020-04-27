@@ -11,7 +11,6 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Fieldset;
-use Statamic\Fields\BlueprintRepository;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
