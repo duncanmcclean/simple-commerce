@@ -6,8 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
 
