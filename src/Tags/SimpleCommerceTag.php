@@ -95,8 +95,8 @@ class SimpleCommerceTag extends Tags
             return $newProduct;
         });
 
-        if ($this->getParam('first')) {
-            return $products->toArray()[0];
+        if ($this->getBool('first')) {
+            return $products->first();
         }
 
         return $products->toArray();
