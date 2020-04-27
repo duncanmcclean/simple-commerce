@@ -67,7 +67,7 @@ class CheckoutController
             'customer_id' => $customer->id,
         ]);
 
-        $shipping = $customer->updateOrCreate(
+        $shipping = $customer->addresses()->updateOrCreate(
             [
                 'customer_id'   => $customer->id,
                 'address1'      => $request->shipping_address_1,
@@ -89,7 +89,7 @@ class CheckoutController
         if ($request->use_shipping_address_for_billing === 'on') {
             $billing = $shipping;
         } else {
-            $billing = $customer->updateOrCreate(
+            $billing = $customer->addresses()->updateOrCreate(
                 [
                     'customer_id'   => $customer->id,
                     'address1'      => $request->billing_address_1,
