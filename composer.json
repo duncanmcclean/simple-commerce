@@ -2,11 +2,6 @@
     "name": "doublethreedigital/simple-commerce",
     "type": "statamic-addon",
     "description": "A perfectly simple e-commerce solution for Statamic",
-    "tags": [
-        "statamic-v3",
-        "statamic-addon",
-        "ecommerce"
-    ],
     "autoload": {
         "psr-4": {
             "DoubleThreeDigital\\SimpleCommerce\\": "src"
