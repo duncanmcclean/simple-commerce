@@ -347,7 +347,7 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function simple_commerce_form_tag()
+    public function simple_commerce_form_tag_with_for_param()
     {
         $this->tag->setParameters([
             'for' => 'checkout',
@@ -363,7 +363,30 @@ class SimpleCommerceTagTest extends TestCase
         $run = $this->tag->form();
 
         $this->assertIsString($run);
-        $this->assertStringContainsString('/!/simple-commerce/checkout', $run);
+        $this->assertStringContainsString('checkout" ', $run);
+        $this->assertStringContainsString('<input type="text" name="name" value="Duncan McClean">', $run);
+        $this->assertStringContainsString('<input type="email" name="email" value="duncan@example.com">', $run);
+        $this->assertStringContainsString('name="_token"', $run);
+    }
+
+    /** @test */
+    public function simple_commerce_form_tag_with_in_param()
+    {
+        $this->tag->setParameters([
+            'in' => 'checkout',
+        ]);
+
+        $this->tag->setContent('
+            <input type="text" name="name" value="Duncan McClean">
+            <input type="email" name="email" value="duncan@example.com">
+            
+            <button type="submit">Submit</button>
+        ');
+
+        $run = $this->tag->form();
+
+        $this->assertIsString($run);
+        $this->assertStringContainsString('checkout" ', $run);
         $this->assertStringContainsString('<input type="text" name="name" value="Duncan McClean">', $run);
         $this->assertStringContainsString('<input type="email" name="email" value="duncan@example.com">', $run);
         $this->assertStringContainsString('name="_token"', $run);

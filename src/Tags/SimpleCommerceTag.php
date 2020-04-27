@@ -201,7 +201,11 @@ class SimpleCommerceTag extends Tags
 
     public function form()
     {
-        return FormBuilder::build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
+        return FormBuilder::build(
+            $this->getParam('for') ?? $this->getParam('in'), 
+            collect($this->params)->toArray(), 
+            $this->parse()
+        );
     }
 
     public function errors()
