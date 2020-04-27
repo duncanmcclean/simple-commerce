@@ -106,8 +106,6 @@ class Cart
             return $lineItem->recalculate();
         }
 
-        // TODO: need to get shipping zone so we can calculate the rate for the weight of the product
-
         return Order::notCompleted()
             ->where('uuid', $orderUuid)
             ->first()
@@ -116,7 +114,7 @@ class Cart
                 'uuid'                  => (new Stache())->generateId(),
                 'variant_id'            => $variant->id,
                 'tax_rate_id'           => $variant->product->tax_rate_id,
-                'shipping_rate_id'      => ShippingRate::first()->id,
+                'shipping_rate_id'      => null,
                 'description'           => $variant->name,
                 'sku'                   => $variant->sku,
                 'price'                 => $variant->price,
