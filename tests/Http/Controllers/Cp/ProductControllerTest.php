@@ -142,7 +142,7 @@ class ProductControllerTest extends TestCase
                         'unlimited_stock'   => 'true',
                         'max_quantity'      => 5,
                         'description'       => $this->faker->realText(),
-                        'image'             => [],
+                        'images'            => [],
                         'weight'            => 100,
                     ],
                 ],
