@@ -2,13 +2,11 @@
     "name": "doublethreedigital/simple-commerce",
     "type": "statamic-addon",
     "description": "A perfectly simple e-commerce solution for Statamic",
-    "authors": [
-        {
-            "name": "Duncan McClean",
-            "email": "duncan@doublethree.digital",
-            "homepage": "http://duncanm.dev",
-            "role": "Founder of Double Three Digital"
-        }
+    "license": "proprietary",
+    "tags": [
+        "statamic-v3",
+        "statamic-addon",
+        "ecommerce"
     ],
     "autoload": {
         "psr-4": {
@@ -33,12 +31,13 @@
     },
     "require": {
         "doctrine/dbal": "2.10.x-dev",
-        "laravel/helpers": "^1.0@dev",
+        "laravel/helpers": "^1.1",
         "laravel/slack-notification-channel": "^3.0@dev",
         "statamic/cms": "^3.0@beta"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0"
+        "orchestra/testbench": "^5.0",
+        "nunomaduro/collision": "^4.2"
     },
     "minimum-stability": "dev",
     "scripts": {
