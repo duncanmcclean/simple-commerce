@@ -24,7 +24,7 @@ class CreateAddressesTable extends Migration
             $table->string('zip_code');
             $table->integer('state_id')->index()->nullable();
             $table->integer('country_id')->index();
-            $table->integer('customer_id')->index();
+            $table->integer('customer_id')->index()->nullable();
             $table->timestamps();
         });
     }
