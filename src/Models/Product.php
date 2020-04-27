@@ -27,10 +27,6 @@ class Product extends Model
         'variant_count',
     ];
 
-    protected $dates = [
-        'deleted_at',
-    ];
-
     protected $dispatchesEvents = [
         'updated' => ProductUpdated::class,
     ];
