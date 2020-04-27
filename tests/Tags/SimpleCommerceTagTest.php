@@ -168,7 +168,7 @@ class SimpleCommerceTagTest extends TestCase
         $removeProduct = factory(Product::class)->create();
 
         $this->tag->setParameters([
-            'not' => $removeProduct->id,
+            'not' => $removeProduct->uuid,
         ]);
 
         $run = $this->tag->products();
