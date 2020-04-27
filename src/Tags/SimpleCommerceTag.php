@@ -48,7 +48,9 @@ class SimpleCommerceTag extends Tags
             $products = $products->where('product_category_id', $category->id);
         }
 
-        if ($where = $this->getParam('where')) {
+        if ($this->hasParam('where')) {
+            $where = $this->getParam('where');
+
             $key = explode(':', $where)[0];
             $value = explode(':', $where)[1];
 
@@ -226,5 +228,14 @@ class SimpleCommerceTag extends Tags
         }
 
         return session()->has("form.{$this->getParam('for')}.success");
+    }
+
+    protected function hasParam(string $param)
+    {
+        if (isset($this->params[$param])) {
+            return true;
+        }
+
+        return false;
     }
 }
