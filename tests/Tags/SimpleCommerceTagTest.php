@@ -162,40 +162,6 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
-    public function simple_commerce_products_tag_not_with_uuid()
-    {
-        $keepProduct = factory(Product::class)->create();
-        $removeProduct = factory(Product::class)->create();
-
-        $this->tag->setParameters([
-            'not' => $removeProduct->uuid,
-        ]);
-
-        $run = $this->tag->products();
-
-        $this->assertIsArray($run);
-        $this->assertStringContainsString($keepProduct->title, json_encode($run));
-        $this->assertStringNotContainsString($removeProduct->title, json_encode($run));
-    }
-
-    /** @test */
-    public function simple_commerce_products_tag_not_with_slug()
-    {
-        $keepProduct = factory(Product::class)->create();
-        $removeProduct = factory(Product::class)->create();
-
-        $this->tag->setParameters([
-            'not' => $removeProduct->slug,
-        ]);
-
-        $run = $this->tag->products();
-
-        $this->assertIsArray($run);
-        $this->assertStringContainsString($keepProduct->title, json_encode($run));
-        $this->assertStringNotContainsString($removeProduct->title, json_encode($run));
-    }
-
-    /** @test */
     public function simple_commerce_products_tag_limit()
     {
         $products = factory(Product::class, 5)->create();

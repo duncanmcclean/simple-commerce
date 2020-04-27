@@ -62,23 +62,8 @@ class SimpleCommerceTag extends Tags
                 });
         }
 
-        if ($this->getParam('not')) {
-            $not = $this->getParam('not');
-
-            $products = $products
-                ->reject(function ($product) use ($not) {
-                    if ($product->uuid === $not) {
-                        return true;
-                    }
-
-                    if ($product->slug === $not) {
-                        return true;
-                    }
-                });
-        }
-
-        if ($this->getParam('limit')) {
-            $products = $products->take($this->getParam('limit'));
+        if ($limit = $this->getParam('limit')) {
+            $products = $products->take($limit);
         }
 
         if ($this->getParam('count')) {

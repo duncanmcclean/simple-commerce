@@ -39,7 +39,7 @@ class ProductCategoryControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->get(cp_route('product-categories.create'))
-            ->assertOk('<publish-form')
+            ->assertOk('publish-form')
             ->assertSee('Create Product Category');
     }
 
@@ -83,7 +83,7 @@ class ProductCategoryControllerTest extends TestCase
             ->actAsSuper()
             ->get(cp_route('product-categories.edit', ['category' => $category->uuid]))
             ->assertOk()
-            ->assertSee('<publish-form')
+            ->assertSee('publish-form')
             ->assertSee($category->title);
     }
 

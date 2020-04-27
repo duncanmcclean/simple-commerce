@@ -71,7 +71,7 @@ class OrderControllerTest extends TestCase
             ->actAsSuper()
             ->get(cp_route('orders.index'))
             ->assertOk()
-            ->assertSee("There's nothing to show");
+            ->assertSee("nothing to show");
     }
 
     /** @test */
@@ -83,7 +83,7 @@ class OrderControllerTest extends TestCase
             ->actAsSuper()
             ->get(cp_route('orders.edit', ['order' => $order->uuid]))
             ->assertOk()
-            ->assertSee('<publish-form')
+            ->assertSee('publish-form')
             ->assertSee('Order #'.$order->id);
     }
 

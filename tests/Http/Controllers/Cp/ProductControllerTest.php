@@ -44,7 +44,7 @@ class ProductControllerTest extends TestCase
             ->actAsSuper()
             ->get(cp_route('products.create'))
             ->assertOk()
-            ->assertSee('<publish-form')
+            ->assertSee('publish-form')
             ->assertSee('Create Product');
     }
 
