@@ -143,11 +143,13 @@ class SimpleCommerceTagTest extends TestCase
     public function simple_commerce_products_tag_and_include_disabled()
     {
         $enabledProduct = factory(Product::class)->create([
-            'is_enabled' => true,
+            'is_enabled'    => true,
+            'title'         => 'Amazon Alexa',
         ]);
 
         $disabledProduct = factory(Product::class)->create([
-            'is_enabled' => false,
+            'is_enabled'    => false,
+            'title'         => 'Sunglasses',
         ]);
 
         $this->tag->setParameters([
