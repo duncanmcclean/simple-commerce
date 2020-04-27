@@ -24,9 +24,9 @@ class ProductRequest extends FormRequest
             'variants.*.sku'                => 'required|string',
             'variants.*.price'              => 'required|numeric',
             'variants.*.stock'              => 'required|numeric',
-            'variants.*.unlimited_stock'    => 'boolean',
+            'variants.*.unlimited_stock'    => '',
             'variants.*.max_quantity'       => 'nullable|numeric',
-            'variants.*.description'        => 'nullable|text',
+            'variants.*.description'        => 'nullable|string',
             'variants.*.images'             => '',
             'variants.*.weight'             => 'nullable|numeric',
         ];
