@@ -67,10 +67,6 @@ class SimpleCommerceTag extends Tags
 
             $products = $products
                 ->reject(function ($product) use ($not) {
-                    if ($product->id === $not) {
-                        return true;
-                    }
-
                     if ($product->uuid === $not) {
                         return true;
                     }
