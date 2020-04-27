@@ -91,6 +91,7 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.users', require(__DIR__.'/__fixtures__/config/statamic/users.php'));
         $app['config']->set('auth', require(__DIR__.'/__fixtures__/config/auth.php'));
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
+        $app['config']->set('filesystems', require(__DIR__.'/__fixtures__/config/filesystems.php'));
     }
 
     public function actAsUser()
