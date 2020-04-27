@@ -3,10 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
@@ -143,6 +145,54 @@ class Cart
         return Order::where('uuid', $orderUuid)->first()->recalculate();
     }
 
+    public function decideShipping(Order $order)
+    {
+        $zone = Country::find($order->shippingAddress->country_id)->shippingZone;
+
+        $order
+            ->lineItems
+            ->reject(function (LineItem $lineItem) {
+                if ($lineItem->variant->product->needs_shipping) {
+                    return false;
+                }
+
+                return true;
+            })
+            ->each(function (LineItem $lineItem) use (&$zone) {
+                $complete = false;
+
+                collect($zone->rates)
+                    ->where('type', 'weight-based')
+                    ->each(function (ShippingRate $rate) use (&$lineItem, &$complete) {
+                        $weight = $lineItem->variant->weight;
+
+                        if ($weight >= $rate->minimum && $weight <= $rate->maximum) {
+                            $lineItem->update([
+                                'shipping_rate_id' => $rate->id,
+                            ]);
+
+                            $complete = true;
+                        }
+                    });
+
+                if (! $complete) {
+                    collect($zone->rates)
+                        ->where('type', 'price-based')
+                        ->each(function (ShippingRate $rate) use (&$lineItem, &$complete) {
+                            $price = $lineItem->variant->price;
+
+                            if ($price >= $rate->minimum && $price <= $rate->maximum) {
+                                $lineItem->update([
+                                    'shipping_rate_id' => $rate->id,
+                                ]);
+    
+                                $complete = true;
+                            }
+                        });
+                }     
+            });
+    }
+
     public function calculateTotals(Order $order)
     {
         $totals = [
@@ -155,11 +205,9 @@ class Cart
         $order
             ->lineItems
             ->each(function (LineItem $lineItem) use (&$totals) {
-                // TODO: allow for some tax rates to include shipping as part of tax calculation
-
                 $itemTotal = ($lineItem->price * $lineItem->quantity);
 
-                if ($lineItem->variant->product->needs_shipping) {
+                if ($lineItem->variant->product->needs_shipping && $lineItem->order->shipping_address_id != null) {
                     $shippingTotal = $lineItem->shippingRate->rate;
                 } else {
                     $shippingTotal = 00.00;
