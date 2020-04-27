@@ -28,7 +28,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::setUp();
 
         $this->withFactories(realpath(__DIR__.'/../database/factories'));
-        $this->loadMigrationsFrom(__DIR__ . '/__fixtures__/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/__fixtures__/database/migrations');
 
         if ($this->shouldFakeVersion) {
             \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.0.0-testing');
