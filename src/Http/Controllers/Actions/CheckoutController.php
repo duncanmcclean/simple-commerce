@@ -67,7 +67,7 @@ class CheckoutController
             'customer_id' => $customer->id,
         ]);
 
-        $shipping = Address::updateOrCreate(
+        $shipping = $customer->updateOrCreate(
             [
                 'customer_id'   => $customer->id,
                 'address1'      => $request->shipping_address_1,
@@ -83,14 +83,13 @@ class CheckoutController
                 'zip_code'      => $request->shipping_zip_code,
                 'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
                 'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
-                'customer_id'   => $customer->id,
             ]
         );
 
         if ($request->use_shipping_address_for_billing === 'on') {
             $billing = $shipping;
         } else {
-            $billing = Address::updateOrCreate(
+            $billing = $customer->updateOrCreate(
                 [
                     'customer_id'   => $customer->id,
                     'address1'      => $request->billing_address_1,
@@ -106,7 +105,6 @@ class CheckoutController
                     'zip_code'      => $request->billing_zip_code,
                     'country_id'    => Country::where('iso', $request->billing_country)->first()->id,
                     'state_id'      => State::where('abbreviation', $request->billing_state)->first()->id ?? null,
-                    'customer_id'   => $customer->id,
                 ]
             );
         }
