@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "doctrine/dbal": "2.10",
+        "doctrine/dbal": "^2.10",
         "laravel/helpers": "^1.1",
         "laravel/slack-notification-channel": "^3.0@dev",
         "statamic/cms": "^3.0@beta"
