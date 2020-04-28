@@ -1,0 +1,114 @@
+title: 'Simple Commerce: Coupon'
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: name
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: Name
+          validate: required
+      -
+        handle: code
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Coupon Code'
+          validate: required
+      -
+        handle: affect
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: Affect
+      -
+        handle: type
+        field:
+          options:
+            percent_discount: 'Percentage Discount'
+            fixed_discount: 'Fixed Discount'
+            free_shipping: 'Free Shipping'
+          clearable: false
+          multiple: false
+          searchable: false
+          taggable: false
+          push_tags: false
+          cast_booleans: false
+          type: select
+          localizable: false
+          width: 50
+          listable: hidden
+          display: Type
+          validate: required
+      -
+        handle: value
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: Value
+      -
+        handle: minimum_total
+        field:
+          read_only: false
+          type: money
+          instructions: 'What''s the minimum a customer can spend to be eligible for this discount?'
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Minimum Total'
+      -
+        handle: total_uses
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Total Uses'
+          width: 50
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: start_date
+        field:
+          mode: single
+          time_enabled: true
+          time_required: true
+          earliest_date: '1900-01-01'
+          full_width: true
+          inline: false
+          columns: 1
+          rows: 1
+          type: date
+          instructions: 'Leave blank if you''d like it to start immediately.'
+          localizable: false
+          listable: hidden
+          display: 'Start Date'
+      -
+        handle: end_date
+        field:
+          mode: single
+          time_enabled: true
+          time_required: true
+          earliest_date: '1900-01-01'
+          full_width: true
+          inline: false
+          columns: 1
+          rows: 1
+          type: date
+          instructions: 'Leave blank if you wish this coupon to be forever valid.'
+          localizable: false
+          listable: hidden
+          display: 'End Date'
