@@ -207,7 +207,7 @@ class Cart
             ->each(function (LineItem $lineItem) use (&$totals) {
                 $itemTotal = ($lineItem->price * $lineItem->quantity);
 
-                if ($lineItem->variant->product->needs_shipping && $lineItem->order->shipping_address_id != null) {
+                if ($lineItem->variant->product->needs_shipping && $lineItem->shipping_rate_id) {
                     $shippingTotal = $lineItem->shippingRate->rate;
                 } else {
                     $shippingTotal = 00.00;
