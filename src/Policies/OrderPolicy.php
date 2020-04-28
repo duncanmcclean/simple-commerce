@@ -10,11 +10,6 @@ class OrderPolicy
 {
     use HandlesAuthorization;
 
-    public function create(User $user)
-    {
-        return $user->hasPermission('create orders');
-    }
-
     public function view(User $user)
     {
         return $user->hasPermission('view orders');
