@@ -149,6 +149,10 @@ class Cart
     {
         $zone = Country::find($order->shippingAddress->country_id)->shippingZone;
 
+        if (! $zone) {
+            return ;
+        }
+
         $order
             ->lineItems
             ->reject(function (LineItem $lineItem) {
