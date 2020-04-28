@@ -29,11 +29,13 @@ use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotificati
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantOutOfStockNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantStockRunningLowNotification;
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Modifiers\PriceModifier;
+use DoubleThreeDigital\SimpleCommerce\Policies\CouponPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
@@ -98,7 +100,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $policies = [
-        Customer::class => CustomerPolicy::class,
+        Coupon::class => CouponPolicy::class,
         Order::class => OrderPolicy::class,
         ProductCategory::class => ProductCategoryPolicy::class,
         Product::class => ProductPolicy::class,
