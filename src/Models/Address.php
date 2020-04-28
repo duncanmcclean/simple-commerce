@@ -10,7 +10,7 @@ class Address extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'name', 'address1', 'address2', 'address3', 'city', 'zip_code', 'state_id'. 'country_id', 'customer_id,'
+        'uuid', 'name', 'address1', 'address2', 'address3', 'city', 'zip_code', 'state_id', 'country_id', 'customer_id',
     ];
 
     public function country()
