@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
@@ -11,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use ErrorException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Stache\Stache;
@@ -143,6 +145,23 @@ class Cart
         });
 
         return Order::where('uuid', $orderUuid)->first()->recalculate();
+    }
+
+    public function redeemCoupon(string $orderUuid, string $couponCode)
+    {   
+        $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
+        $coupon = Coupon::where('code', $couponCode)->first();
+
+        if (! $coupon) {
+            throw new ErrorException('The coupon code provided does not exist.');
+        }
+
+        if (! $coupon->isActive()) {
+            throw new ErrorException('The coupon code provided is not active.');
+        }
+
+        // set the coupon against each item of the cart
+        // recalculate the totals
     }
 
     public function decideShipping(Order $order)

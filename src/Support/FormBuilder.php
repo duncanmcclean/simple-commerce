@@ -33,6 +33,11 @@ class FormBuilder
         return $this->compose(route('statamic.simple-commerce.checkout.store'), 'POST', $params, $contents);
     }
 
+    public function redeemCoupon(array $params, string $contents)
+    {
+        return $this->compose(route('statamic.simple-commerce.redeem-coupon'), 'POST', $params, $contents);
+    }
+
     protected function compose(string $action, string $method, array $params, string $contents)
     {
         $errors = $this->getErrorBag();
