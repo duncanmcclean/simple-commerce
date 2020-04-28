@@ -33,7 +33,7 @@ class CartControllerTest extends TestCase
                 'variant'   => $variant->uuid,
                 'quantity'  => 1,
                 'note'      => 'Pre-order',
-                'redirect'  => '/cart',
+                '_redirect'  => '/cart',
             ])
             ->assertRedirect('/cart');
 
@@ -55,7 +55,7 @@ class CartControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart.store'), [
                 'variant'   => $variant->uuid,
                 'quantity'  => 1,
-                'redirect'  => '/cart',
+                '_redirect'  => '/cart',
             ])
             ->assertRedirect('/cart');
 
@@ -95,6 +95,7 @@ class CartControllerTest extends TestCase
         $this
             ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.update'), [
+                'shipping_name'                     => 'Ross Geller',
                 'shipping_address_1'                => '11 Statamic Way',
                 'shipping_address_2'                => '',
                 'shipping_address_3'                => '',
@@ -103,8 +104,9 @@ class CartControllerTest extends TestCase
                 'shipping_state'                    => '',
                 'shipping_zip_code'                 => $this->faker->postcode,
                 'use_shipping_address_for_billing'  => 'on',
+                '_redirect'                         => '/checkout',
             ])
-            ->assertRedirect();
+            ->assertRedirect('/checkout');
 
         $address = Address::where('address1', '11 Statamic Way')->first();    
 
