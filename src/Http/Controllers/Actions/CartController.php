@@ -31,6 +31,8 @@ class CartController extends Controller
 
     public function update(CartUpdateRequest $request)
     {
+        $this->dealWithSession();
+
         if ($request->has('line_item') && $request->has('quantity')) {
             Cart::updateLineItem(
                 Session::get(config('simple-commerce.cart_session_key')),
