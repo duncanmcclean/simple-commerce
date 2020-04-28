@@ -21,7 +21,7 @@ class CheckoutRequest extends FormRequest
 
         return array_merge($gateway->rules(), $customerModel->rules(), [
             'gateway'                           => 'required|string',
-            'redirect'                          => 'nullable|string',
+            '_redirect'                         => 'nullable|string',
         ]);
     }
 }

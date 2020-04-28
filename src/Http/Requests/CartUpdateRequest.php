@@ -35,7 +35,7 @@ class CartUpdateRequest extends FormRequest
             'billing_state'                     => 'nullable|integer',
             'use_shipping_address_for_billing'  => 'nullable|in:on,off',
 
-            'redirect'                          => 'nullable|string',
+            '_redirect'                         => 'nullable|string',
         ];
     }
 }

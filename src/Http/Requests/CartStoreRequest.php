@@ -16,8 +16,8 @@ class CartStoreRequest extends FormRequest
         return [
             'variant'   => 'required|string',
             'quantity'  => 'required',
-            'redirect'  => 'nullable|string',
             'note'      => 'nullable|string',
+            '_redirect' => 'nullable|string',
         ];
     }
 }
