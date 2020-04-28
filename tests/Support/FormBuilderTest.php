@@ -23,7 +23,7 @@ class FormBuilderTest extends TestCase
 
         $this->assertIsString($build);
         $this->assertStringContainsString('/!/simple-commerce/checkout', $build);
-        $this->assertStringContainsString('<input type="hidden" name="redirect" value="/thanks">', $build);
+        $this->assertStringContainsString('<input type="hidden" name="_redirect" value="/thanks">', $build);
         $this->assertStringContainsString('<input type="text" name="name">', $build);
     }
 
@@ -59,7 +59,7 @@ class FormBuilderTest extends TestCase
         $this->assertStringContainsString('name="variant"', $form);
         $this->assertStringContainsString('name="quantity"', $form);
         $this->assertStringContainsString('name="_token"', $form);
-        $this->assertStringContainsString('name="redirect" value="/thanks"', $form);
+        $this->assertStringContainsString('name="_redirect" value="/thanks"', $form);
         $this->assertStringContainsString('action="http://localhost/!/simple-commerce/cart/create"', $form);
         $this->assertStringContainsString('method="POST"', $form);
     }
@@ -112,7 +112,7 @@ class FormBuilderTest extends TestCase
         $this->assertStringContainsString('name="item_id"', $form);
         $this->assertStringContainsString('name="quantity"', $form);
         $this->assertStringContainsString('name="_token"', $form);
-        $this->assertStringContainsString('name="redirect" value="/thanks"', $form);
+        $this->assertStringContainsString('name="_redirect" value="/thanks"', $form);
         $this->assertStringContainsString('action="http://localhost/!/simple-commerce/cart/update"', $form);
         $this->assertStringContainsString('method="POST"', $form);
     }
@@ -163,7 +163,7 @@ class FormBuilderTest extends TestCase
         $this->assertStringContainsString('name="item_id"', $form);
         $this->assertStringContainsString('name="quantity"', $form);
         $this->assertStringContainsString('name="_token"', $form);
-        $this->assertStringContainsString('name="redirect" value="/thanks"', $form);
+        $this->assertStringContainsString('name="_redirect" value="/thanks"', $form);
         $this->assertStringContainsString('action="http://localhost/!/simple-commerce/cart/delete"', $form);
         $this->assertStringContainsString('method="POST"', $form);
     }
@@ -216,7 +216,7 @@ class FormBuilderTest extends TestCase
         $this->assertStringContainsString('name="name"', $form);
         $this->assertStringContainsString('name="email"', $form);
         $this->assertStringContainsString('name="_token"', $form);
-        $this->assertStringContainsString('name="redirect" value="/thanks"', $form);
+        $this->assertStringContainsString('name="_redirect" value="/thanks"', $form);
         $this->assertStringContainsString('action="http://localhost/!/simple-commerce/checkout"', $form);
         $this->assertStringContainsString('method="POST"', $form);
     }

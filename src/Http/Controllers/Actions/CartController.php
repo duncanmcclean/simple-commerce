@@ -26,7 +26,7 @@ class CartController extends Controller
             $request->note ?? ''
         );
 
-        return $request->redirect ? redirect($request->redirect) : back();
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 
     public function update(CartUpdateRequest $request)
@@ -85,7 +85,7 @@ class CartController extends Controller
             Cart::calculateTotals($order);
         }
 
-        return $request->redirect ? redirect($request->redirect) : back();
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 
     public function destroy(CartDestroyRequest $request)
@@ -106,7 +106,7 @@ class CartController extends Controller
             );
         }
 
-        return $request->redirect ? redirect($request->redirect) : back();
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 
     protected function dealWithSession()

@@ -103,6 +103,6 @@ class CheckoutController
         Event::dispatch(new OrderSuccessful($order));
         Session::remove(config('simple-commerce.cart_session_key'));
 
-        return $request->redirect ? redirect($request->redirect) : back();
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 }

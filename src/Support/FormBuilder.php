@@ -41,12 +41,12 @@ class FormBuilder
         $body .= csrf_field();
 
         if (array_key_exists('redirect', $params)) {
-            $body .= '<input type="hidden" name="redirect" value="'.$params['redirect'].'">';
+            $body .= '<input type="hidden" name="_redirect" value="'.$params['redirect'].'">';
             unset($params['redirect']);
         }
 
         $formParameters = '';
-        unset($params['for']);
+        unset($params['for'], $params['in']);
 
         foreach ($params as $key => $value) {
             $formParameters .= ' '.$key.'="'.$value.'" ';
