@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Illuminate\Database\Eloquent\Model;
 use Statamic\Facades\Blueprint;
 
@@ -19,8 +20,9 @@ class Coupon extends Model
         'affect',
     ];
 
-    protected $dates = [
-        'start_date', 'end_date',
+    protected $casts = [
+        'start_date'    => 'datetime:Y-m-d',
+        'end_date'      => 'datetime:Y-m-d',
     ];
 
     public function createUrl()
@@ -54,7 +56,8 @@ class Coupon extends Model
             case 'percent_discount':
                 return "{$this->value}% Off";
             case 'fixed_discount':
-                return "${Currency::parse($this->value)} Off";
+                $amount = Currency::parse($this->value);
+                return "{$amount} Off";
             case 'free_shipping':
                 return 'Free Shipping';        
         }

@@ -29,7 +29,7 @@
                                 </div>
                             </td>
                             <td>{{ $coupon->code }}</td>
-                            <td>{{ $coupon->affect}}</td>
+                            <td>{{ $coupon->affect }}</td>
 
                             <td class="flex justify-end">
                                 <simple-commerce-actions>

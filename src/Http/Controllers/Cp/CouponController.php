@@ -51,8 +51,8 @@ class CouponController extends CpController
             'value' => $request->value,
             'minimum_total' => $request->minimum_total,
             'total_uses' => $request->total_uses,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'start_date' => $request->start_date ?? null,
+            'end_date' => $request->end_date ?? null,
         ]);
 
         return [
@@ -94,8 +94,8 @@ class CouponController extends CpController
             'value' => $request->value,
             'minimum_total' => $request->minimum_total,
             'total_uses' => $request->total_uses,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'start_date' => $request->start_date ?? $coupon->start_date ?? null,
+            'end_date' => $request->end_date ?? $coupon->end_date ?? null,
         ]);
 
         return $coupon;
