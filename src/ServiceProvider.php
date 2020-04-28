@@ -204,6 +204,15 @@ class ServiceProvider extends AddonServiceProvider
 
         Nav::extend(function ($nav) {
             $nav
+                ->create('Coupons')
+                ->section('Simple Commerce')
+                ->route('coupons.index')
+                ->can('view coupons')
+                ->icon('tags');
+        });
+
+        Nav::extend(function ($nav) {
+            $nav
                 ->create('Settings')
                 ->section('Simple Commerce')
                 ->route('settings.index')
@@ -270,6 +279,19 @@ class ServiceProvider extends AddonServiceProvider
                         ]),
                 ]);
             })->label('View Product Categories');
+
+            Permission::register('view coupons', function ($permission) {
+                $permission->children([
+                    Permission::make('edit coupons')
+                        ->label('Edit Coupons')
+                        ->children([
+                            Permission::make('create coupons')
+                                ->label('Create Coupons'),
+                            Permission::make('delete coupons')
+                                ->label('Delete Coupons'),
+                        ]),
+                ]);
+            })->label('View Coupons');
         });
     }
 }

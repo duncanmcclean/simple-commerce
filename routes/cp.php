@@ -31,6 +31,15 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::delete('/delete/{order}', 'OrderController@destroy')->name('.destroy');
     });
 
+    Route::prefix('coupons')->as('coupons')->group(function () {
+        Route::get('/', 'CouponController@index')->name('.index');
+        Route::get('/create', 'CouponController@create')->name('.create');
+        Route::post('/create', 'CouponController@store')->name('.store');
+        Route::get('/edit/{coupon}', 'CouponController@edit')->name('.edit');
+        Route::post('/edit/{coupon}', 'CouponController@update')->name('.update');
+        Route::delete('/delete/{coupon}', 'CouponController@destroy')->name('.destroy');
+    });
+
     Route::prefix('settings')->as('settings')->middleware(AccessSettings::class)->group(function () {
         Route::get('/', 'Settings\SettingsHomeController@index')->name('.index');
         Route::get('/order-statuses', 'Settings\OrderStatusController@index')->name('.order-statuses.index');
