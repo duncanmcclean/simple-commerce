@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Error;
 use ErrorException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -158,7 +159,14 @@ class Cart
         }
 
         if (! $coupon->isActive()) {
-            return false;
+            return 'The coupon provided is not active.';
+        }
+
+        if ($coupon->minimum_total) {
+            if ($order->total < $coupon->minimum_total) {
+                $amount = Currency::parse($coupon->minimum_total);
+                return "The coupon provided can only be used when the minimum cart total is {$amount}";
+            }
         }
 
         $order
@@ -168,6 +176,8 @@ class Cart
             });
 
         $order->recalculate();
+
+        return false;
     }
 
     public function decideShipping(Order $order)
@@ -253,7 +263,7 @@ class Cart
                             $itemTotal -= $lineItem->coupon->value;
                         case 'free_shipping':
                             $couponTotal = $shippingTotal;
-                            $shippingTotal = 00.00;        
+                            $shippingTotal = 00.00;
                     }
                 }
 
@@ -273,7 +283,7 @@ class Cart
                 $totals['item_total'] += $itemTotal;
                 $totals['tax_total'] += $taxTotal;
                 $totals['shipping_total'] += $shippingTotal;
-                $totals['coupon_total'] += $couponTotal;
+                $totals['coupon_total'] += $couponTotal ?? 00.00;
             });
 
         $order->update($totals);
