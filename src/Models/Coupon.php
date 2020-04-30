@@ -25,6 +25,11 @@ class Coupon extends Model
         'end_date'      => 'datetime:Y-m-d',
     ];
 
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
+    }
+
     public function createUrl()
     {
         return cp_route('coupons.create');

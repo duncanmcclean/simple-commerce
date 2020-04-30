@@ -27,6 +27,7 @@ class CreateLineItemsTable extends Migration
             $table->integer('variant_id')->index();
             $table->integer('tax_rate_id')->index();
             $table->integer('shipping_rate_id')->index()->nullable();
+            $table->integer('coupon_id')->index()->nullable();
             $table->timestamps();
         });
     }

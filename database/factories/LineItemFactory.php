@@ -1,5 +1,6 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use Statamic\Stache\Stache;
@@ -31,6 +32,9 @@ $factory->define(LineItem::class, function (Faker $faker) {
         },
         'shipping_rate_id'  => function () {
             return factory(ShippingRate::class)->create()->id;
+        },
+        'coupon_id'         => function () {
+            return factory(Coupon::class)->create()->id;
         },
     ];
 });

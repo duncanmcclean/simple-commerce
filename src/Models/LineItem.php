@@ -10,7 +10,7 @@ class LineItem extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'sku', 'description', 'note', 'price', 'total', 'weight', 'quantity', 'order_id', 'variant_id', 'tax_rate_id', 'shipping_rate_id',
+        'uuid', 'sku', 'description', 'note', 'price', 'total', 'weight', 'quantity', 'order_id', 'variant_id', 'tax_rate_id', 'shipping_rate_id', 'coupon_id',
     ];
 
     public function order()
@@ -31,6 +31,11 @@ class LineItem extends Model
     public function shippingRate()
     {
         return $this->belongsTo(ShippingRate::class);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     public function recalculate()
