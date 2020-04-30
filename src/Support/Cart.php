@@ -9,7 +9,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
-use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use ErrorException;
@@ -119,6 +118,7 @@ class Cart
                 'variant_id'            => $variant->id,
                 'tax_rate_id'           => $variant->product->tax_rate_id,
                 'shipping_rate_id'      => null,
+                'coupon_id'             => null,
                 'description'           => $variant->name,
                 'sku'                   => $variant->sku,
                 'price'                 => $variant->price,
@@ -157,11 +157,16 @@ class Cart
         }
 
         if (! $coupon->isActive()) {
-            throw new ErrorException('The coupon code provided is not active.');
+            return false;
         }
 
-        // set the coupon against each item of the cart
-        // recalculate the totals
+        $order
+            ->lineItems
+            ->each(function ($lineItem) use ($coupon) {
+                $lineItem->update(['coupon_id' => $coupon->id]);
+            });
+
+        $order->recalculate();
     }
 
     public function decideShipping(Order $order)
@@ -223,6 +228,7 @@ class Cart
             'item_total'        => 00.00,
             'tax_total'         => 00.00,
             'shipping_total'    => 00.00,
+            'coupon_total'      => 00.00,
         ];
 
         $order
@@ -234,6 +240,20 @@ class Cart
                     $shippingTotal = $lineItem->shippingRate->rate;
                 } else {
                     $shippingTotal = 00.00;
+                }
+
+                if ($lineItem->coupon) {
+                    switch ($lineItem->coupon->type) {
+                        case 'percent_discount';
+                            $couponTotal = ($lineItem->coupon->value / 100) * ($itemTotal);
+                            $itemTotal -= $couponTotal;
+                        case 'fixed_discount':
+                            $couponTotal = $lineItem->coupon->value;
+                            $itemTotal -= $lineItem->coupon->value;
+                        case 'free_shipping':
+                            $couponTotal = $shippingTotal;
+                            $shippingTotal = 00.00;        
+                    }
                 }
 
                 if (! config('simple-commerce.entered_with_tax')) {
@@ -252,6 +272,7 @@ class Cart
                 $totals['item_total'] += $itemTotal;
                 $totals['tax_total'] += $taxTotal;
                 $totals['shipping_total'] += $shippingTotal;
+                $totals['coupon_tital'] += $couponTotal;
             });
 
         $order->update($totals);
