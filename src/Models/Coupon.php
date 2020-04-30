@@ -71,6 +71,11 @@ class Coupon extends Model
 
     public function isActive()
     {
+        // If the coupon has maxed out the uses
+        if ($this->uses() >= $this->total_uses) {
+            return false;
+        }
+
         // If there are no dates set...
         if ($this->start_date === null && $this->end_date === null) {
             return true;
