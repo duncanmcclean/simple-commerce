@@ -15,9 +15,8 @@ class ProductCategoryFieldtype extends Relationship
         $category = ProductCategory::find($id);
 
         return [
-            'id' => $category->id,
+            'id'    => $category->id,
             'title' => $category->title,
-            'slug' => $category->slug,
         ];
     }
 
@@ -30,6 +29,7 @@ class ProductCategoryFieldtype extends Relationship
     {
         return [
             Column::make('title'),
+            Column::make('slug'),
         ];
     }
 

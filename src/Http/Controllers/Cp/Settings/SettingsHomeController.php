@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\Settings;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\SettingsUpdateRequest;
-use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
 
 class SettingsHomeController extends CpController
@@ -19,9 +18,9 @@ class SettingsHomeController extends CpController
                     'icon' => 'select',
                 ],
                 [
-                    'title' => 'Shipping Zones',
-                    'description' => 'Shipping Zones gives you the ability to charge customers a fixed price for shipping to them.',
-                    'url' => cp_route('settings.shipping-zones.index'),
+                    'title' => 'Shipping',
+                    'description' => 'Manage Shipping Categories and Shipping Methods available to your customers.',
+                    'url' => cp_route('settings.shipping.index'),
                     'icon' => 'pin',
                 ],
                 [

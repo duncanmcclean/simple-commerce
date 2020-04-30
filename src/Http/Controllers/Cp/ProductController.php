@@ -6,8 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -49,9 +47,10 @@ class ProductController extends CpController
         $product = Product::create([
             'title'                 => $request->title,
             'slug'                  => $request->slug,
-            'description'           => $request->description,
             'product_category_id'   => $request->category[0] ?? null,
-            'is_enabled'            => $request->is_enabled === 'true' ? true : false,
+            'is_enabled'            => $request->is_enabled,
+            'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
+            'needs_shipping'        => $request->needs_shipping,
         ]);
 
         collect($request)
@@ -79,6 +78,8 @@ class ProductController extends CpController
                     'unlimited_stock'   => $theVariant['unlimited_stock'] === 'true' ? true : false,
                     'max_quantity'      => $theVariant['max_quantity'],
                     'description'       => $theVariant['description'],
+                    'images'            => $theVariant['images'],
+                    'weight'            => $theVariant['weight'],
                 ]);
 
                 collect($theVariant)
@@ -134,13 +135,12 @@ class ProductController extends CpController
         ]);
 
         $blueprint = (new Product())->blueprint();
-        $fields = $blueprint->fields();
-        $fields = $fields->preProcess();
+        $fields = $blueprint->fields()->addValues($values)->preProcess();
 
         return view('simple-commerce::cp.products.edit', [
             'crumbs'    => $crumbs,
             'blueprint' => $blueprint->toPublishArray(),
-            'values'    => $values,
+            'values'    => $fields->values(),
             'meta'      => $fields->meta(),
             'action'    => $product->updateUrl(),
         ]);
@@ -153,9 +153,10 @@ class ProductController extends CpController
         $product->update([
             'title'                 => $request->title,
             'slug'                  => $request->slug,
-            'description'           => $request->description,
-            'product_category_id'   => $request->category,
-            'is_enabled'            => $request->is_enabled === 'true' ? true : false,
+            'product_category_id'   => $request->category[0] ?? null,
+            'is_enabled'            => $request->is_enabled,
+            'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
+            'needs_shipping'        => $request->needs_shipping,
         ]);
 
         collect($request)
@@ -187,6 +188,8 @@ class ProductController extends CpController
                     'unlimited_stock'   => $variant['unlimited_stock'] === 'true' ? true : false,
                     'max_quantity'      => $variant['max_quantity'],
                     'description'       => $variant['description'],
+                    'images'            => $variant['images'],
+                    'weight'            => $variant['weight'],
                     'product_id'        => $product->id,
                 ]);
 

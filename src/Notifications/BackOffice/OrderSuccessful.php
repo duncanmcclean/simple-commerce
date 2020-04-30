@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Notifications\BackOffice;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
@@ -18,7 +18,7 @@ class OrderSuccessful extends Notification
         $this->order = $order;
         $this->customer = $customer;
 
-        $this->total = (new Currency)->parse($this->order->total);
+        $this->total = Currency::parse($this->order->total);
     }
 
     public function via($notifiable)

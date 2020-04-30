@@ -80,5 +80,6 @@ return [
     'calculate_tax_from' => 'billingAddress', // Options: billingAddress, shippingAddress or businessAddress
     'shop_prices_with_tax' => true,
     'low_stock_counter' => 5,
+    'cart_session_key' => 'simple_commerce_cart',
 
 ];

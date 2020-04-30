@@ -12,7 +12,12 @@ class ProductFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        return Product::find($id);
+        $product = Product::find($id);
+
+        return [
+            'id'    => $product->id,
+            'title' => $product->title,
+        ];
     }
 
     public function getIndexItems($request)
@@ -24,6 +29,8 @@ class ProductFieldtype extends Relationship
     {
         return [
             Column::make('title'),
+            Column::make('slug'),
+            Column::make('variant_count')->label('Variants'),
         ];
     }
 

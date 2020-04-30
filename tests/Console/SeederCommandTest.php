@@ -5,13 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Console;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SeederCommandTest extends TestCase
 {
-    use RefreshDatabase;
-
     public $seeder;
 
     public function setUp(): void
@@ -24,7 +20,7 @@ class SeederCommandTest extends TestCase
     /** @test */
     public function can_seed_country_data()
     {
-        $seed = $this->seeder->seedCountries();
+        $this->seeder->seedCountries();
 
         $this
             ->assertDatabaseHas('countries', [
@@ -44,7 +40,7 @@ class SeederCommandTest extends TestCase
     /** @test */
     public function can_seed_currency_data()
     {
-        $seed = $this->seeder->seedCurrencies();
+        $this->seeder->seedCurrencies();
 
         $this
             ->assertDatabaseHas('currencies', [
@@ -67,7 +63,7 @@ class SeederCommandTest extends TestCase
     /** @test */
     public function can_seed_order_status_data()
     {
-        $seed = $this->seeder->seedOrderStatuses();
+        $this->seeder->seedOrderStatuses();
 
         $this
             ->assertDatabaseHas('order_statuses', [
@@ -87,9 +83,9 @@ class SeederCommandTest extends TestCase
     /** @test */
     public function can_seed_states_data()
     {
-        $usa = factory(Country::class)->create(['iso' => 'US'])->id;
+        factory(Country::class)->create(['iso' => 'US'])->id;
 
-        $seed = $this->seeder->seedStates();
+        $this->seeder->seedStates();
 
         $this
             ->assertDatabaseHas('states', [

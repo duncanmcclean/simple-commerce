@@ -6,4 +6,5 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     Route::post('/cart/delete', 'CartController@destroy')->name('cart.destroy');
 
     Route::post('/checkout', 'CheckoutController@store')->name('checkout.store');
+    Route::post('/redeem-coupon', 'RedeemCouponController')->name('redeem-coupon');
 });

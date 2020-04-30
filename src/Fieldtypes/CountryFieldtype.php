@@ -15,20 +15,27 @@ class CountryFieldtype extends Relationship
         $country = Country::find($id);
 
         return [
-            'id' => $country->id,
+            'id'    => $country->id,
             'title' => $country->name,
         ];
     }
 
     public function getIndexItems($request)
     {
-        return Country::all();
+        return Country::all()
+            ->map(function (Country $country) {
+                return [
+                    'id'    => $country->id,
+                    'title' => $country->name,
+                ];
+            });
     }
 
     public function getColumns()
     {
         return [
             Column::make('name'),
+            Column::make('iso'),
         ];
     }
 

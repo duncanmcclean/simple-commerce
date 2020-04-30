@@ -4,19 +4,19 @@
             <table class="bg-white data-table">
                 <thead>
                     <tr>
-                        <th>Location</th>
-                        <th>Price</th>
+                        <th>Name</th>
+                        <th>Countries</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="zone in items" :key="zone.id">
                         <td>{{ zone.name }}</td>
-                        <td>{{ zone.formatted_price }}</td>
+                        <td>{{ zone.listOfCountries }}</td>
                         <td class="flex justify-end">
                             <dropdown-list>
                                 <dropdown-item text="Edit" @click="updateShippingZone(zone)"></dropdown-item>
-                                <dropdown-item class="warning" text="Delete" :redirect="zone.deleteUrl"></dropdown-item>
+                                <dropdown-item class="warning" text="Delete" @click="deleteShippingZone(zone)"></dropdown-item>
                             </dropdown-list>
                         </td>
                     </tr>
@@ -44,12 +44,12 @@
         <update-stack
                 v-if="editStackOpen"
                 title="Update Shipping Zone"
-                :action="editZone.updateUrl"
+                :action="editZoneUpdateUrl"
                 :blueprint="blueprint"
                 :meta="meta"
                 :values="editZone"
                 @closed="editStackOpen = false"
-                @saved="zoneSaved"
+                @saved="zoneUpdated"
         ></update-stack>
     </div>
 </template>
@@ -83,6 +83,7 @@
 
                 items: [],
                 editZone: [],
+                editZoneUpdateUrl: '',
 
                 createStackOpen: false,
                 editStackOpen: false
@@ -96,12 +97,29 @@
                         this.items = response.data;
                     }).catch(error => {
                         this.$toast.error(error);
-                    })
+                    });
             },
 
-            updateShippingZone(zone) {
-                this.editZone = zone;
-                this.editStackOpen = true;
+            deleteShippingZone(zone) {
+                axios.delete(zone.deleteUrl)
+                    .then(response => {
+                        this.getZones();
+                    })
+                    .catch(error => {
+                        this.$toast.error(error);
+                    });
+            },
+
+            updateShippingZone(zone) {  
+                axios.get(zone.editUrl)
+                    .then(response => {
+                        this.editZone = response.data.values;
+                        this.editZoneUpdateUrl = response.data.action;
+                        this.editStackOpen = true;
+                    })
+                    .catch(error => {
+                        alert('Something happened: '+ error);
+                    })
             },
 
             zoneSaved() {

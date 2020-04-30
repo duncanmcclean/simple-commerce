@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Modifiers;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Modifiers\Modifier;
 
 class PriceModifier extends Modifier
@@ -11,6 +11,6 @@ class PriceModifier extends Modifier
 
     public function index($value, $params, $context)
     {
-        return (new Currency())->parse($value, true, true);
+        return Currency::parse($value, true, true);
     }
 }

@@ -8,11 +8,11 @@ $factory->define(OrderStatus::class, function (Faker $faker) {
     $name = $faker->word;
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
-        'description' => '',
-        'color' => 'green' ?? 'blue' ?? 'orange',
-        'uuid' => (new Stache())->generateId(),
-        'primary' => false,
+        'uuid'          => (new Stache())->generateId(),
+        'name'          => $name,
+        'slug'          => str_slug($name),
+        'description'   => '',
+        'color'         => 'green' ?? 'blue' ?? 'orange',
+        'primary'       => false,
     ];
 });

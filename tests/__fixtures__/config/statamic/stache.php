@@ -60,7 +60,7 @@ return [
 
         'asset-containers' => [
             'class' => Stores\AssetContainersStore::class,
-            'directory' => base_path('content/assets'),
+            'directory' => __DIR__.'/../../content/assets',
         ],
 
 //        'users' => [

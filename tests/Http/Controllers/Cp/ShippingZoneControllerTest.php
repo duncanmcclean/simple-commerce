@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -33,15 +34,45 @@ class ShippingZoneControllerTest extends TestCase
     /** @test */
     public function can_store_shipping_zone()
     {
+        $uk = factory(Country::class)->create([
+            'name' => 'United Kingdom',
+            'iso' => 'UK',
+        ]);
+
         $this
             ->actAsSuper()
             ->post(cp_route('shipping-zones.store'), [
-                'country' => [factory(Country::class)->create()->id],
-                'state' => [factory(State::class)->create()->id],
-                'start_of_zip_code' => 'G72 A12',
-                'price' => '10.25',
+                'name' => 'United Kingdom',
+                'countries' => [
+                    0 => $uk->id,
+                ],
+                'rates' => [
+                    [
+                        'name' => '2nd Class',
+                        'type' => 'price-based',
+                        'minimum' => '0',
+                        'maximum' => '100',
+                        'rate' => '2.50',
+                        'note' => 'Delivery within 2-3 days',
+                    ],
+                ],
             ])
             ->assertCreated();
+    }
+    
+    /** @test */
+    public function can_edit_shipping_zone()
+    {
+        $zone = factory(ShippingZone::class)->create();
+        $rates = factory(ShippingRate::class, 2)->create(['shipping_zone_id' => $zone->id]);
+
+        $this
+            ->actAsSuper()
+            ->get(cp_route('shipping-zones.edit', ['zone' => $zone->uuid]))
+            ->assertOk()
+            ->assertSee($zone->name)
+            ->assertSee($rates[0]['name'])
+            ->assertSee($rates[1]['name']);
     }
 
     /** @test */
@@ -52,12 +83,22 @@ class ShippingZoneControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
-                'country' => [$zone->country_id],
-                'state' => [$zone->state_id],
-                'start_of_zip_code' => $zone->start_of_zip_code,
-                'price' => '10.30',
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    0 => $zone->country_id,
+                ],
+                'rates' => [
+                    [
+                        'name' => '2nd Class',
+                        'type' => 'price-based',
+                        'minimum' => '0',
+                        'maximum' => '100',
+                        'rate' => '2.50',
+                        'note' => 'Delivery within 2-3 days',
+                    ],
+                ],
             ])
-            ->assertOk();
+            ->assertRedirect();
     }
 
     /** @test */
@@ -68,6 +109,10 @@ class ShippingZoneControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->delete(cp_route('shipping-zones.destroy', ['zone' => $zone->uuid]))
-            ->assertRedirect();
+            ->assertOk();
+
+        $this->assertDatabaseMissing('shipping_zones', [
+            'id' => $zone->id,
+        ]);    
     }
 }

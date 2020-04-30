@@ -2,145 +2,127 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions;
 
+use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
-use DoubleThreeDigital\SimpleCommerce\Models\Address;
-use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Statamic\Stache\Stache;
 
 class CheckoutController
 {
-    use UsesCart;
-
-    public function store(Request $request)
+    public function store(CheckoutRequest $request)
     {
-        $this->createCart();
+        $order = Order::where('uuid', Session::get(config('simple-commerce.cart_session_key')))->first();
 
         $payment = (new $request->gateway)->completePurchase($request->all());
-        $payment['gateway'] = $request->gateway;
 
-        $customerModel = config('simple-commerce.customers.model');
-        $customerModel = new $customerModel();
+        if ($payment === true) {
+            $order->update([
+                'is_paid' => true,
+            ]);
 
-        // TODO: needs tidy up
-        try {
-            $customer = $customerModel::where('email', $request->email)->first();
-            $email = $customer->email;
-        } catch (\ErrorException $e) {
-            $fields = $customerModel->fields;
-
-            $customer = new $customerModel();
-            collect($request->all())
-                ->reject(function ($value, $key) use ($fields) {
-                    return !in_array($key, $fields);
-                })
-                ->each(function ($value, $key) use ($customer) {
-                    $customer->{$key} = $value;
-                })
-                ->toArray();
-            $customer->save();
-        }
-
-        $billing = Address::updateOrCreate(
-            [
-                'customer_id'   => $request->customer_id,
-                'address1'      => $request->shipping_address_1,
-                'zip_code'      => $request->shipping_zip_code,
-            ],
-            [
-                'uuid'          => (new Stache())->generateId(),
-                'name'          => $customer->name,
-                'address1'      => $request->shipping_address_1,
-                'address2'      => $request->shipping_address_2,
-                'address3'      => $request->shipping_address_3,
-                'city'          => $request->shipping_city,
-                'zip_code'      => $request->shipping_zip_code,
-                'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
-                'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
-                'customer_id'   => $customer->id,
-            ]
-        );
-
-        if ($request->use_shipping_address_for_billing === 'on') {
-            $shipping = $billing;
-        } else {
-            $shipping = Address::updateOrCreate(
-                [
-                    'customer_id'   => $request->customer_id,
-                    'address1'      => $request->shipping_address_1,
-                    'zip_code'      => $request->shipping_zip_code,
-                ],
-                [
-                    'uuid'          => (new Stache())->generateId(),
-                    'name'          => $customer->name,
-                    'address1'      => $request->shipping_address_1,
-                    'address2'      => $request->shipping_address_2,
-                    'address3'      => $request->shipping_address_3,
-                    'city'          => $request->shipping_city,
-                    'zip_code'      => $request->shipping_zip_code,
-                    'country_id'    => Country::where('iso', $request->shipping_country)->first()->id,
-                    'state_id'      => State::where('abbreviation', $request->shipping_state)->first()->id ?? null,
-                    'customer_id'   => $customer->id,
-                ]
-            );
-        }
-
-        $order = Order::create([
-            'uuid'                  => (new Stache())->generateId(),
-            'billing_address_id'    => $billing->id,
-            'shipping_address_id'   => $shipping->id,
-            'customer_id'           => $customer->id,
-            'order_status_id'       => OrderStatus::where('primary', true)->first()->id,
-            'items'                 => $this->cart()->orderItems($this->cartId),
-            'total'                 => $this->cart()->total($this->cartId),
-            'currency_id'           => (new Currency())->primary()->id,
-            'gateway_data'          => $payment,
-            'is_paid'               => $payment['is_paid'],
-            'is_refunded'           => false,
-        ]);
-
-        if ($payment['is_paid']) {
             Event::dispatch(new OrderPaid($order));
         }
 
-        Event::dispatch(new OrderSuccessful($order));
+        if (Auth::guest()) {
+            $customerModel = config('simple-commerce.customers.model');
+            $customerModel = new $customerModel();
 
-        collect($this->cart()->get($this->cartId))
-            ->reject(function (CartItem $cartItem) {
-                if ($cartItem->variant->unlimited_stock) {
+            $customer = $customerModel::where('email', $request->email)->first();
+
+            if ($customer === null) {
+                $customer = new $customerModel();
+                $fields = $customerModel->fields;
+
+                collect($request->all())
+                    ->reject(function ($value, $key) use ($fields) {
+                        return !in_array($key, $fields);
+                    })
+                    ->each(function ($value, $key) use ($customer) {
+                        $customer->{$key} = $value;
+                    })
+                    ->toArray();
+
+                if (! $customer->password) {
+                    $customer->password = Hash::make(uniqid().'ssspppp');
+                }
+
+                $customer->save();
+            }
+        } else {
+            $customer = Auth::user();
+        }
+
+        $order->update([
+            'customer_id' => $customer->id,
+        ]);
+
+        $order->billingAddress->update([
+            'customer_id' => $customer->id,
+        ]);
+
+        $order->shippingAddress->update([
+            'customer_id' => $customer->id,
+        ]);
+
+        // Manage variant totals
+        collect($order->lineItems)
+            ->reject(function (LineItem $lineItem) {
+                if ($lineItem->variant->unlimited_stock) {
                     return true;
                 }
 
                 return false;
             })
-            ->each(function (CartItem $cartItem) {
-                $cartItem->variant()->update([
-                    'stock' => ($cartItem->variant->stock - $cartItem->quantity),
+            ->each(function (LineItem $lineItem) {
+                $lineItem->variant()->update([
+                    'stock' => ($lineItem->variant->stock - $lineItem->quantity),
                 ]);
 
-                if ($cartItem->variant->stock <= config('simple-commerce.low_stock_counter')) {
-                    Event::dispatch(new VariantLowStock($cartItem->variant()));
+                if ($lineItem->variant->stock <= config('simple-commerce.low_stock_counter')) {
+                    Event::dispatch(new VariantLowStock($lineItem->variant));
                 }
 
-                if ($cartItem->variant->stock === 0) {
-                    Event::dispatch(new VariantOutOfStock($cartItem->variant()));
+                if ($lineItem->variant->stock === 0) {
+                    Event::dispatch(new VariantOutOfStock($lineItem->variant));
                 }
             });
 
-        $this->replaceCart();
+        // Do some coupon stuff
+        collect($order->lineItems)
+            ->reject(function (LineItem $lineItem) {
+                if (! $lineItem->coupon_id) {
+                    return true;
+                }
 
-        return $request->redirect ? redirect($request->redirect) : back();
+                return false;
+            })
+            ->map(function (LineItem $lineItem) {
+                return $lineItem->coupon_id;
+            })
+            ->unique()
+            ->each(function ($couponId) use ($order) {
+                Event::dispatch(new CouponRedeemed(Coupon::find($couponId), $order));
+            });
+
+        $order->update([
+            'is_completed' => true,
+        ]);
+
+        Event::dispatch(new OrderSuccessful($order));
+        Session::remove(config('simple-commerce.cart_session_key'));
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 }

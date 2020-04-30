@@ -10,40 +10,24 @@ sections:
           localizable: false
           display: Name
           listable: hidden
-      -
-        handle: country
-        field:
-          mode: default
-          type: country
-          localizable: false
           width: 50
-          display: Country
-          listable: hidden
-          max_items: 1
-      -
-        handle: state
-        field:
-          type: state
-          localizable: false
-          width: 50
-          display: State
-          listable: hidden
-          max_items: 1
-          mode: default
-      -
-        handle: start_of_zip_code
-        field:
-          type: text
-          localizable: false
-          width: 50
-          display: 'Start of Zip Code'
-          listable: hidden
+          input_type: text
+          validate: required
       -
         handle: rate
         field:
-          type: integer
-          instructions: 'What % should be taxed?'
+          input_type: number
+          append: '%'
+          type: text
           localizable: false
           width: 50
-          display: Rate
           listable: hidden
+          display: Rate
+          validate: required
+      -
+        handle: description
+        field:
+          type: textarea
+          display: Description
+          listable: hidden
+          localizable: false

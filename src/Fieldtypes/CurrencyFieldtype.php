@@ -12,7 +12,12 @@ class CurrencyFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        return Currency::find($id);
+        $currency = Currency::find($id);
+
+        return [
+            'id' => $currency->id,
+            'title' => "$currency->symbol $currency->name",
+        ];
     }
 
     public function getIndexItems($request)
@@ -24,6 +29,7 @@ class CurrencyFieldtype extends Relationship
     {
         return [
             Column::make('name'),
+            Column::make('iso'),
         ];
     }
 

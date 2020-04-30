@@ -22,15 +22,7 @@ class DummyGateway implements Gateway
             $isPaid = false;
         }
 
-        return [
-            'is_paid' => $isPaid,
-            'cardholder' => $data['cardholder'],
-            'cardNumber' => $data['cardNumber'],
-            'expiryMonth' => $data['expiryMonth'],
-            'expiryYear' => $data['expiryYear'],
-            'cvc' => $data['cvc'],
-            'transaction_id' => uniqid(),
-        ];
+        return $isPaid;
     }
 
     public function rules(): array

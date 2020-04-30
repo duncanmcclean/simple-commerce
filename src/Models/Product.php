@@ -12,22 +12,19 @@ use Statamic\Facades\Blueprint;
 
 class Product extends Model
 {
-    use HasAttributes, HasUuid, SoftDeletes;
+    use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'uuid', 'title', 'slug', 'product_category_id', 'is_enabled', 'description',
+        'uuid', 'title', 'slug', 'is_enabled', 'needs_shipping', 'product_category_id', 'tax_rate_id',
     ];
 
     protected $casts = [
-        'is_enabled' => 'boolean',
+        'is_enabled'     => 'boolean',
+        'needs_shipping' => 'boolean',
     ];
 
     protected $appends = [
         'variant_count',
-    ];
-
-    protected $dates = [
-        'deleted_at',
     ];
 
     protected $dispatchesEvents = [
@@ -42,6 +39,21 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class);
+    }
+
+    public function taxRate()
+    {
+        return $this->hasOne(TaxRate::class);
+    }
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('is_enabled', true);
+    }
+
+    public function scopeDisabled($query)
+    {
+        return $query->where('is_enabled', false);
     }
 
     public function getVariantCountAttribute()
@@ -81,7 +93,10 @@ class Product extends Model
         }
 
         if ($this->variants()->count() > 0) {
-            $this->variants()->delete();
+            $this->variants()->each(function ($variant) {
+                $variant->attributes()->delete();
+                $variant->delete();
+            });
         }
 
         parent::delete();

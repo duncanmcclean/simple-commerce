@@ -11,7 +11,6 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Fieldset;
-use Statamic\Fields\BlueprintRepository;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
@@ -23,13 +22,12 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function setUp(): void
     {
-        require_once(__DIR__.'/ExceptionHandler.php');
         require_once(__DIR__.'/__fixtures__/app/User.php');
 
         parent::setUp();
 
         $this->withFactories(realpath(__DIR__.'/../database/factories'));
-        $this->loadMigrationsFrom(__DIR__ . '/__fixtures__/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/__fixtures__/database/migrations');
 
         if ($this->shouldFakeVersion) {
             \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.0.0-testing');
@@ -80,8 +78,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::resolveApplicationConfiguration($app);
 
         $configs = [
-            'assets', 'cp', 'forms', 'static_caching',
-            'sites', 'stache', 'system', 'users'
+            'assets', 'cp', 'forms', 'static_caching', 'sites', 'stache', 'system', 'users'
         ];
 
         foreach ($configs as $config) {
@@ -91,8 +88,9 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.stache', require(__DIR__.'/__fixtures__/config/statamic/stache.php'));
         $app['config']->set('statamic.users', require(__DIR__.'/__fixtures__/config/statamic/users.php'));
         $app['config']->set('auth', require(__DIR__.'/__fixtures__/config/auth.php'));
-
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
+        $app['config']->set('filesystems', require(__DIR__.'/__fixtures__/config/filesystems.php'));
+        $app['config']->set('database.connections.mysql.strict', false);
     }
 
     public function actAsUser()

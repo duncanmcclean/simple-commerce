@@ -10,7 +10,7 @@ class Country extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'name', 'iso',
+        'uuid', 'name', 'iso', 'shipping_zone_id',
     ];
 
     public function addresses()
@@ -23,13 +23,8 @@ class Country extends Model
         return $this->hasMany(State::class);
     }
 
-    public function taxRates()
+    public function shippingZone()
     {
-        return $this->hasMany(TaxRate::class);
-    }
-
-    public function shippingZones()
-    {
-        return $this->hasMany(ShippingZone::class);
+        return $this->belongsTo(ShippingZone::class);
     }
 }

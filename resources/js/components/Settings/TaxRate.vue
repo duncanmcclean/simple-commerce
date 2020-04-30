@@ -5,23 +5,14 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Applies to</th>
                         <th>Rate</th>
                         <th></th>
                     </tr>
                 </thead>
-
                 <tbody>
                     <tr v-for="rate in items" :key="rate.id">
-                        <td>
-                            {{ rate.name }}
-                        </td>
-
-                        <td v-if="rate.state_id">{{ rate.country.name }}, {{ rate.state.name }}, {{ rate.start_of_zip_code }}</td>
-                        <td v-else>{{ rate.country.name }}, {{ rate.start_of_zip_code }}</td>
-
+                        <td>{{ rate.name }}</td>
                         <td>{{ rate.rate }}%</td>
-
                         <td class="flex justify-end">
                             <dropdown-list>
                                 <dropdown-item text="Edit" @click="updateTaxRate(rate)"></dropdown-item>
@@ -58,7 +49,7 @@
                 :meta="meta"
                 :values="editRate"
                 @closed="editStackOpen = false"
-                @saved="rateSaved"
+                @saved="rateUpdated"
         ></update-stack>
     </div>
 </template>
@@ -69,7 +60,7 @@
     import UpdateStack from "../Stacks/UpdateStack";
 
     export default {
-        name: "OrderStatus",
+        name: "TaxRate",
 
         components: {
             CreateStack,

@@ -17,7 +17,10 @@ class SimpleCommerce
     {
         return app()->booted(function () {
             foreach (config('simple-commerce.gateways') as $class => $config) {
-                static::$gateways[] = $class;
+                static::$gateways[] = [
+                    $class,
+                    $config,
+                ];
             }
 
             return new static;
@@ -28,14 +31,15 @@ class SimpleCommerce
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
-                $instance = new $gateway;
+                $instance = new $gateway[0];
 
-                // TODO: add the config in here too (the array after the gateway class)
                 return [
-                    'name' => $instance->name(),
-                    'class' => $gateway,
-                    'rules' => $instance->rules(),
-                    'payment_form' => $instance->paymentForm()->render(),
+                    'name'              => $instance->name(),
+                    'class'             => $gateway[0],
+                    'formatted_class'   => addslashes($gateway[0]),
+                    'rules'             => $instance->rules(),
+                    'payment_form'      => $instance->paymentForm()->render(),
+                    'config'            => $gateway[1],
                 ];
             })
             ->toArray();

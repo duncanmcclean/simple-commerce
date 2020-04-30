@@ -12,7 +12,12 @@ class OrderStatusFieldtype extends Relationship
 
     protected function toItemArray($id)
     {
-        return OrderStatus::find($id);
+        $status = OrderStatus::find($id);
+
+        return [
+            'id'    => $status->id,
+            'title' => $status->name,
+        ];
     }
 
     public function getIndexItems($request)

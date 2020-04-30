@@ -2,12 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\FormBuilder;
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency as CurrencyHelper;
+use DoubleThreeDigital\SimpleCommerce\Facades\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
@@ -22,12 +20,12 @@ class SimpleCommerceTag extends Tags
 
     public function currencyCode()
     {
-        return (new CurrencyHelper())->iso();
+        return \DoubleThreeDigital\SimpleCommerce\Facades\Currency::iso();
     }
 
     public function currencySymbol()
     {
-        return (new CurrencyHelper())->symbol();
+        return \DoubleThreeDigital\SimpleCommerce\Facades\Currency::symbol();
     }
 
     public function categories()
@@ -50,7 +48,9 @@ class SimpleCommerceTag extends Tags
             $products = $products->where('product_category_id', $category->id);
         }
 
-        if ($where = $this->getParam('where')) {
+        if ($this->hasParam('where')) {
+            $where = $this->getParam('where');
+
             $key = explode(':', $where)[0];
             $value = explode(':', $where)[1];
 
@@ -64,27 +64,8 @@ class SimpleCommerceTag extends Tags
                 });
         }
 
-        if ($this->getParam('not')) {
-            $not = $this->getParam('not');
-
-            $products = $products
-                ->reject(function ($product) use ($not) {
-                    if ($product->id === $not) {
-                        return true;
-                    }
-
-                    if ($product->uuid === $not) {
-                        return true;
-                    }
-
-                    if ($product->slug === $not) {
-                        return true;
-                    }
-                });
-        }
-
-        if ($this->getParam('limit')) {
-            $products = $products->take($this->getParam('limit'));
+        if ($this->hasParam('limit')) {
+            $products = $products->take($this->getInt('limit'));
         }
 
         if ($this->getParam('count')) {
@@ -93,26 +74,31 @@ class SimpleCommerceTag extends Tags
 
         $products = $products->map(function (Product $product) {
             $newProduct = $product->toArray();
+            $newProduct['images'] = [];
 
             $product->attributes->each(function (Attribute $attribute) use (&$newProduct) {
                 $newProduct["$attribute->key"] = $attribute->value;
             });
 
-            $newProduct['variants'] = $product->variants->map(function (Variant $variant) {
+            $newProduct['variants'] = $product->variants->map(function (Variant $variant) use (&$newProduct) {
                 $newVariant = $variant->toArray();
+
+                collect($variant->images)->each(function ($image) use (&$newProduct) {
+                    $newProduct['images'][] = $image;
+                });
 
                 $variant->attributes->each(function (Attribute $attribute) use (&$newVariant) {
                     $newVariant["$attribute->key"] = $attribute->value;
                 });
 
                 return $newVariant;
-            });
+            })->toArray();
 
             return $newProduct;
         });
 
-        if ($this->getParam('first')) {
-            return $products->toArray()[0];
+        if ($this->getBool('first')) {
+            return $products->first();
         }
 
         return $products->toArray();
@@ -126,23 +112,34 @@ class SimpleCommerceTag extends Tags
             throw new \Exception('You must pass in a slug to the simple-commerce:product tag.');
         }
 
-        $product = Product::where('slug', $slug)->first();
+        $product = Product::enabled()->where('slug', $slug)->first();
+
+        if (! $product) {
+            throw new \Exception('Product Not Found');
+        }
 
         $productArray = $product->toArray();
+        $productArray['images'] = [];
 
         $product->attributes->each(function (Attribute $attribute) use (&$productArray) {
             $productArray["$attribute->key"] = $attribute->value;
         });
 
-        $newProduct['variants'] = $product->variants->map(function (Variant $variant) {
+        $productArray['variants'] = $product->variants->map(function (Variant $variant) use (&$productArray) {
             $variantArray = $variant->toArray();
+
+            collect($variant->images)->each(function ($image) use (&$productArray) {
+                $productArray['images'][] = $image;
+            });
 
             $variant->attributes->each(function (Attribute $attribute) use (&$variantArray) {
                 $variantArray["$attribute->key"] = $attribute->value;
             });
 
+            $variantArray['product'] = $productArray;
+
             return $variantArray;
-        });
+        })->toArray();
 
         return $productArray;
     }
@@ -204,12 +201,16 @@ class SimpleCommerceTag extends Tags
 
     public function form()
     {
-        return (new FormBuilder())->build($this->getParam('for'), collect($this->params)->toArray(), $this->parse());
+        return FormBuilder::build(
+            $this->getParam('for') ?? $this->getParam('in'), 
+            collect($this->params)->toArray(), 
+            $this->parse()
+        );
     }
 
     public function errors()
     {
-        if (! (new FormBuilder())->hasErrors()) {
+        if (! FormBuilder::hasErrors()) {
             return false;
         }
 
@@ -231,5 +232,14 @@ class SimpleCommerceTag extends Tags
         }
 
         return session()->has("form.{$this->getParam('for')}.success");
+    }
+
+    protected function hasParam(string $param)
+    {
+        if (isset($this->params[$param])) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -2,123 +2,160 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Cart;
-use DoubleThreeDigital\SimpleCommerce\Models\CartItem;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Address;
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CartControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function setUp(): void
     {
         parent::setUp();
 
-        factory(Currency::class)->create();
+        factory(OrderStatus::class)->create(['primary' => true]);
+        factory(ShippingRate::class)->create();
     }
 
     /** @test */
-    public function can_add_item_to_cart()
+    public function can_store_line_item()
     {
-        $product = factory(Product::class)->create();
-        $variant = factory(Variant::class)->create([
-            'product_id' => $product->id,
-        ]);
+        $order = factory(Order::class)->create();
+        $variant = factory(Variant::class)->create();
 
-        $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uuid]);
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.store'), [
+                'variant'   => $variant->uuid,
+                'quantity'  => 1,
+                'note'      => 'Pre-order',
+                '_redirect'  => '/cart',
+            ])
+            ->assertRedirect('/cart');
 
-        $response = $this->post(route('statamic.simple-commerce.cart.store'), [
-            'product'   => $product->id,
-            'variant'   => $variant->id,
-            'quantity'  => '1',
-        ]);
-
-        $response->assertStatus(302);
+        $this
+            ->assertDatabaseHas('line_items', [
+                'variant_id'    => $variant->id,
+                'note'          => 'Pre-order',
+            ]);
     }
 
     /** @test */
-    public function can_update_item_in_cart()
+    public function can_store_line_item_without_note()
     {
-        $product = factory(Product::class)->create();
-        $variant = factory(Variant::class)->create([
-            'product_id' => $product->id,
-        ]);
+        $order = factory(Order::class)->create();
+        $variant = factory(Variant::class)->create();
 
-        $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uuid]);
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.store'), [
+                'variant'   => $variant->uuid,
+                'quantity'  => 1,
+                '_redirect'  => '/cart',
+            ])
+            ->assertRedirect('/cart');
 
-        $cartItem = factory(CartItem::class)->create([
-            'cart_id'       => $cart->id,
-            'product_id'    => $product->id,
-            'variant_id'    => $variant->id,
-            'quantity'      => '1',
-        ]);
-
-        $response = $this->post(route('statamic.simple-commerce.cart.update'), [
-            'item_id' => $cartItem->id,
-            'quantity'  => '3',
-        ]);
-
-        $response->assertStatus(302);
+        $this
+            ->assertDatabaseHas('line_items', [
+                'variant_id'    => $variant->id,
+            ]);
     }
 
     /** @test */
-    public function can_remove_item_from_cart()
+    public function can_update_line_item_quantity()
     {
-        $product = factory(Product::class)->create();
-        $variant = factory(Variant::class)->create([
-            'product_id'    => $product->id,
+        $lineItem = factory(LineItem::class)->create([
+            'quantity' => 1,
         ]);
 
-        $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uuid]);
+        $this
+            ->session(['simple_commerce_cart' => $lineItem->order->uuid])
+            ->post(route('statamic.simple-commerce.cart.update'), [
+                'line_item' => $lineItem->uuid,
+                'quantity'  => 2,
+            ])
+            ->assertRedirect();
 
-        $cartItem = factory(CartItem::class)->create([
-            'cart_id'       => $cart->id,
-            'product_id'    => $product->id,
-            'variant_id'    => $variant->id,
-            'quantity'      => 1,
-        ]);
-
-        $response = $this->post(route('statamic.simple-commerce.cart.destroy'), [
-            'item_id'   => $cartItem->uuid,
-        ]);
-
-        $response->assertStatus(302);
+        $this
+            ->assertDatabaseHas('line_items', [
+                'id'         => $lineItem->id,
+                'quantity'   => 2,
+            ]);
     }
 
     /** @test */
-    public function can_clear_the_cart()
+    public function can_update_order_addresses()
     {
-        $product = factory(Product::class)->create();
-        $variant = factory(Variant::class)->create([
-            'product_id'    => $product->id,
-        ]);
+        $order = factory(Order::class)->create();
 
-        $cart = factory(Cart::class)->create();
-        $this->session(['commerce_cart_id' => $cart->uuid]);
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.update'), [
+                'shipping_name'                     => 'Ross Geller',
+                'shipping_address_1'                => '11 Statamic Way',
+                'shipping_address_2'                => '',
+                'shipping_address_3'                => '',
+                'shipping_city'                     => $this->faker->city,
+                'shipping_country'                  => factory(Country::class)->create()->iso,
+                'shipping_state'                    => '',
+                'shipping_zip_code'                 => $this->faker->postcode,
+                'use_shipping_address_for_billing'  => 'on',
+                '_redirect'                         => '/checkout',
+            ])
+            ->assertRedirect('/checkout');
 
-        $cartItem = factory(CartItem::class)->create([
-            'cart_id'       => $cart->id,
-            'product_id'    => $product->id,
-            'variant_id'    => $variant->id,
-            'quantity'      => 1,
-        ]);
+        $address = Address::where('address1', '11 Statamic Way')->first();    
 
-        $response = $this->post(route('statamic.simple-commerce.cart.destroy'), [
-            'clear'     => 'true',
-        ]);
+        $this
+            ->assertDatabaseHas('orders', [
+                'billing_address_id'    => $address->id,
+                'shipping_address_id'   => $address->id,
+            ]);
+    }
 
-        $response->assertRedirect();
-        $response->assertSessionHas('commerce_cart_id');
+    /** @test */
+    public function can_clear_order()
+    {
+        $this->markTestIncomplete();
 
-        $this->assertDatabaseMissing('carts', [
-            'uuid'  => $cart->uuid,
-        ]);
+        // $order = factory(Order::class)->create();
+
+        // $this
+        //     ->session(['simple_commerce_cart' => $order->uuid])
+        //     ->post(route('statamic.simple-commerce.cart.destroy'), [
+        //         'clear'  => true,
+        //     ])
+        //     ->assertRedirect();
+
+        // $this
+        //     ->assertDatabaseMissing('orders', [
+        //         'id' => $order->id,
+        //     ]);
+    }
+
+    /** @test */
+    public function can_remove_line_item_from_order()
+    {
+        $order = factory(Order::class)->create();
+        $lineItem = factory(LineItem::class, 2)->create();
+
+        $this
+            ->session(['simple_commerce_cart' => $order->uuid])
+            ->post(route('statamic.simple-commerce.cart.destroy'), [
+                'line_item'  => $lineItem[0]['uuid'],
+            ])
+            ->assertRedirect();
+
+        $this
+            ->assertDatabaseMissing('line_items', [
+                'uuid' => $lineItem[0]['uuid'],
+            ])
+            ->assertDatabaseHas('line_items', [
+                'uuid' => $lineItem[1]['uuid'],
+            ]);
     }
 }

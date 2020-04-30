@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Variant extends Model
 {
-    use HasAttributes, HasUuid, SoftDeletes;
+    use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'uuid', 'sku', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id', 'description', 'name',
+        'uuid', 'name', 'sku', 'description', 'images', 'weight', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id',
+    ];
+
+    protected $casts = [
+        'images' => 'json',
     ];
 
     protected $appends = [
         'outOfStock',
-    ];
-
-    protected $dates = [
-        'deleted_at',
     ];
 
     protected $dispatchesEvents = [
@@ -31,6 +31,11 @@ class Variant extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
     }
 
     public function getOutOfStockAttribute()

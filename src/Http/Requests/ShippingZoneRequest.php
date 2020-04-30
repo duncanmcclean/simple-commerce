@@ -14,10 +14,14 @@ class ShippingZoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'country.*' => 'required|integer',
-            'state.*' => 'nullable|integer',
-            'start_of_zip_code' => 'nullable|string',
-            'price' => 'required|string',
+            'name'              => 'required|string',
+            'countries.*'       => 'required|numeric',
+            'rates.*.name'      => 'required|string',
+            'rates.*.type'      => 'required|string|in:price-based,weight-based',
+            'rates.*.minimum'   => 'required|numeric',
+            'rates.*.maximum'   => 'required|numeric',
+            'rates.*.rate'      => 'required|numeric',
+            'rates.*.note'      => '',
         ];
     }
 }

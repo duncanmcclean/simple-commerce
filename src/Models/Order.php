@@ -11,16 +11,18 @@ class Order extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'billing_address_id', 'shipping_address_id', 'customer_id', 'order_status_id', 'items', 'total', 'currency_id', 'gateway_data', 'is_paid', 'is_refunded',
+        'uuid', 'gateway', 'is_paid', 'is_completed', 'total', 'item_total', 'tax_total', 'shipping_total', 'coupon_total', 'currency_id', 'order_status_id', 'billing_address_id', 'shipping_address_id', 'customer_id',
     ];
 
     protected $casts = [
-        'is_completed'  => 'boolean',
         'is_paid'       => 'boolean',
-        'is_refunded'   => 'boolean',
-        'items'         => 'json',
-        'gateway_data'  => 'json',
+        'is_completed'  => 'boolean',
     ];
+
+    public function lineItems()
+    {
+        return $this->hasMany(LineItem::class);
+    }
 
     public function billingAddress()
     {
@@ -66,5 +68,20 @@ class Order extends Model
     public function blueprint()
     {
         return Blueprint::find('order');
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('is_completed', true);
+    }
+
+    public function scopeNotCompleted($query)
+    {
+        return $query->where('is_completed', false);
+    }
+
+    public function recalculate()
+    {
+        return \DoubleThreeDigital\SimpleCommerce\Facades\Cart::calculateTotals($this);
     }
 }

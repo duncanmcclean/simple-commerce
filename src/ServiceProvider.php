@@ -4,18 +4,14 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\VersionCommand;
-use DoubleThreeDigital\SimpleCommerce\Events\AddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\CartCreated;
+use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductCategoryUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\RemovedFromCart;
-use DoubleThreeDigital\SimpleCommerce\Events\ShippingAddedToCart;
-use DoubleThreeDigital\SimpleCommerce\Events\TaxAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
@@ -23,21 +19,24 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CurrencyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CustomerOrdersFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderItemsFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\LineItemsFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\OrderStatusFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductCategoryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\StateFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Fieldtypes\TaxRateFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderRefundedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderStatusUpdatedNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendOrderSuccessfulNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantOutOfStockNotification;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendVariantStockRunningLowNotification;
-use DoubleThreeDigital\SimpleCommerce\Models\Customer;
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Modifiers\PriceModifier;
+use DoubleThreeDigital\SimpleCommerce\Policies\CouponPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
@@ -53,9 +52,8 @@ use Statamic\Providers\AddonServiceProvider;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $listen = [
-        AddedToCart::class => [],
         AttributeUpdated::class => [],
-        CartCreated::class => [],
+        CouponRedeemed::class => [],
         OrderPaid::class => [],
         OrderRefunded::class => [
             SendOrderRefundedNotification::class,
@@ -68,9 +66,6 @@ class ServiceProvider extends AddonServiceProvider
         ],
         ProductCategoryUpdated::class => [],
         ProductUpdated::class => [],
-        RemovedFromCart::class => [],
-        ShippingAddedToCart::class => [],
-        TaxAddedToCart::class => [],
         VariantLowStock::class => [
             SendVariantStockRunningLowNotification::class,
         ],
@@ -90,11 +85,12 @@ class ServiceProvider extends AddonServiceProvider
         CurrencyFieldtype::class,
         CustomerOrdersFieldtype::class,
         MoneyFieldtype::class,
-        OrderItemsFieldtype::class,
+        LineItemsFieldtype::class,
         OrderStatusFieldtype::class,
         ProductCategoryFieldtype::class,
         ProductFieldtype::class,
         StateFieldtype::class,
+        TaxRateFieldtype::class,
     ];
 
     protected $modifiers = [
@@ -106,7 +102,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $policies = [
-        Customer::class => CustomerPolicy::class,
+        Coupon::class => CouponPolicy::class,
         Order::class => OrderPolicy::class,
         ProductCategory::class => ProductCategoryPolicy::class,
         Product::class => ProductPolicy::class,
@@ -140,9 +136,6 @@ class ServiceProvider extends AddonServiceProvider
             ], 'simple-commerce');
 
         $this
-            ->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
-
-        $this
             ->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         $this->app->booted(function () {
@@ -166,6 +159,10 @@ class ServiceProvider extends AddonServiceProvider
         if (! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
         }
+
+        $this->app->bind('Cart', \DoubleThreeDigital\SimpleCommerce\Support\Cart::class);
+        $this->app->bind('Currency', \DoubleThreeDigital\SimpleCommerce\Support\Currency::class);
+        $this->app->bind('FormBuilder', \DoubleThreeDigital\SimpleCommerce\Support\FormBuilder::class);
     }
 
     protected function navigation()
@@ -191,7 +188,31 @@ class ServiceProvider extends AddonServiceProvider
                 ->section('Simple Commerce')
                 ->route('orders.index')
                 ->can('view orders')
-                ->icon('list');
+                ->icon('list')
+                ->children(array_merge([
+                    $nav
+                        ->item('All Orders')
+                        ->route('orders.index')
+                        ->can('view orders'),
+                    $nav
+                        ->item('Carts')
+                        ->url(cp_route('orders.index').'?view-carts=true')
+                        ->can('view orders'),
+                ], OrderStatus::all()->map(function ($status) use ($nav) {
+                    return $nav
+                        ->item($status->name)
+                        ->url(cp_route('orders.index').'?status='.$status->slug)
+                        ->can('view orders');
+                })->toArray()));
+        });
+
+        Nav::extend(function ($nav) {
+            $nav
+                ->create('Coupons')
+                ->section('Simple Commerce')
+                ->route('coupons.index')
+                ->can('view coupons')
+                ->icon('tags');
         });
 
         Nav::extend(function ($nav) {
@@ -207,8 +228,8 @@ class ServiceProvider extends AddonServiceProvider
                         ->route('settings.order-statuses.index')
                         ->can('view simple commerce settings'),
                     $nav
-                        ->item('Shipping Zones')
-                        ->route('settings.shipping-zones.index')
+                        ->item('Shipping')
+                        ->route('settings.shipping.index')
                         ->can('view simple commerce settings'),
                     $nav
                         ->item('Tax Rates')
@@ -262,6 +283,19 @@ class ServiceProvider extends AddonServiceProvider
                         ]),
                 ]);
             })->label('View Product Categories');
+
+            Permission::register('view coupons', function ($permission) {
+                $permission->children([
+                    Permission::make('edit coupons')
+                        ->label('Edit Coupons')
+                        ->children([
+                            Permission::make('create coupons')
+                                ->label('Create Coupons'),
+                            Permission::make('delete coupons')
+                                ->label('Delete Coupons'),
+                        ]),
+                ]);
+            })->label('View Coupons');
         });
     }
 }

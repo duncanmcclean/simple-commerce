@@ -2,16 +2,24 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Fields\Fieldtype;
 
 class MoneyFieldtype extends Fieldtype
 {
     protected $icon = 'generic';
 
+    protected $configFields = [
+        'read_only' => [
+            'type' => 'toggle',
+            'instructions' => 'Should this field be read only?',
+            'width' => 50,
+        ],
+    ];
+
     public function preload()
     {
-        return (new Currency())->primary();
+        return Currency::primary();
     }
 
     public function preProcess($data)

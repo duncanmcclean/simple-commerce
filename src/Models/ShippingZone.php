@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Statamic\Facades\Blueprint;
 
 class ShippingZone extends Model
@@ -11,26 +12,45 @@ class ShippingZone extends Model
     use HasUuid;
 
     protected $fillable = [
-        'uuid', 'country_id', 'state_id', 'start_of_zip_code', 'price',
+        'uuid', 'name',
     ];
 
     protected $appends = [
-        'formatted_price', 'name',
+        'listOfCountries',
     ];
-
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
-    }
-
-    public function state()
-    {
-        return $this->belongsTo(State::class);
-    }
 
     public function carts()
     {
         return $this->hasMany(CartShipping::class);
+    }
+
+    public function rates()
+    {
+        return $this->hasMany(ShippingRate::class);
+    }
+
+    public function countries()
+    {
+        return $this->hasMany(Country::class);
+    }
+
+    public function getListOfCountriesAttribute()
+    {
+        $countries = [];
+
+        $this->countries()
+            ->select('name')
+            ->get()
+            ->each(function ($country) use (&$countries) {
+                $countries[] = $country->name;
+            });
+
+        return implode(', ', $countries);
+    }
+
+    public function editUrl()
+    {
+        return cp_route('shipping-zones.edit', ['zone' => $this->attributes['uuid']]);
     }
 
     public function updateUrl()
@@ -41,20 +61,6 @@ class ShippingZone extends Model
     public function deleteUrl()
     {
         return cp_route('shipping-zones.destroy', ['zone' => $this->attributes['uuid']]);
-    }
-
-    public function getFormattedPriceAttribute()
-    {
-        return (new \DoubleThreeDigital\SimpleCommerce\Helpers\Currency())->parse($this->attributes['price']);
-    }
-
-    public function getNameAttribute()
-    {
-        if ($this->state != null) {
-            return $this->country->name.', '.$this->state->name.', '.$this->start_of_zip_code;
-        }
-
-        return $this->country->name.', '.$this->start_of_zip_code;
     }
 
     public function blueprint()

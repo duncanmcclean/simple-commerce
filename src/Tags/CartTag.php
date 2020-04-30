@@ -2,62 +2,59 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Helpers\Currency;
-use DoubleThreeDigital\SimpleCommerce\Http\UsesCart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use Illuminate\Support\Facades\Session;
 use Statamic\Tags\Tags;
 
 class CartTag extends Tags
 {
-    use UsesCart;
-
     protected static $handle = 'cart';
-
-    public function __construct()
-    {
-        $this->createCart();
-    }
 
     public function index()
     {
-        return $this->cart()->get($this->cartId)->toArray();
+        return $this->items();
     }
 
     public function items()
     {
-        return $this->index();
-    }
+        $this->dealWithSession();
 
-    public function shipping()
-    {
-        return $this->cart()->getShipping($this->cartId);
-    }
-
-    public function tax()
-    {
-        return $this->cart()->getTax($this->cartId);
+        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('line_items');
     }
 
     public function count()
     {
-        return $this->cart()->count($this->cartId);
+        $this->dealWithSession();
+
+        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('items_count');
     }
 
     public function total()
     {
-        $total = $this->cart()->total($this->cartId);
-
         if ($this->getParam('items')) {
-            $total = $this->cart()->total($this->cartId, 'items');
+            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('item_total'));
         }
 
         if ($this->getParam('shipping')) {
-            $total = $this->cart()->total($this->cartId, 'shipping');
+            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('shipping_total'));
         }
 
         if ($this->getParam('tax')) {
-            $total = $this->cart()->total($this->cartId, 'tax');
+            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('tax_total'));
         }
 
-        return (new Currency())->parse($total, true, true);
+        if ($this->getParam('coupon')) {
+            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('coupon_total'));
+        }
+
+        return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('total'));
+    }
+
+    protected function dealWithSession()
+    {
+        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+            Session::put(config('simple-commerce.cart_session_key'), Cart::make()->uuid);
+        }
     }
 }

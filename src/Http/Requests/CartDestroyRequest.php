@@ -16,7 +16,7 @@ class CartDestroyRequest extends FormRequest
         return [
             'clear'     => 'required_if:item_id,null|in:true',
             'item_id'   => 'required_if:clear,null|string',
-            'redirect'  => 'nullable|string',
+            '_redirect' => 'nullable|string',
         ];
     }
 }

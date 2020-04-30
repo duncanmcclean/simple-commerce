@@ -7,8 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\Order;
 
 trait IsACustomer
 {
-    public $fields = ['name', 'email', 'password'];
-
     public function addresses()
     {
         return $this->hasMany(Address::class, 'customer_id', 'id');

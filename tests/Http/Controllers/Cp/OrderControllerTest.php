@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class OrderControllerTest extends TestCase
@@ -10,11 +11,51 @@ class OrderControllerTest extends TestCase
     /** @test */
     public function can_get_order_index()
     {
-        $orders = factory(Order::class, 5)->create();
+        $orders = factory(Order::class, 5)->create([
+            'is_completed' => true,
+        ]);
 
         $this
             ->actAsSuper()
             ->get(cp_route('orders.index'))
+            ->assertOk()
+            ->assertSee('Order #'.$orders[0]['id'])
+            ->assertSee('Order #'.$orders[1]['id'])
+            ->assertSee('Order #'.$orders[2]['id'])
+            ->assertSee('Order #'.$orders[3]['id'])
+            ->assertSee('Order #'.$orders[4]['id']);
+    }
+
+    /** @test */
+    public function can_get_orders_index_with_status()
+    {
+        $status = factory(OrderStatus::class)->create();
+        $orders = factory(Order::class, 5)->create([
+            'is_completed'       => true,
+            'order_status_id'   => $status->id,
+        ]);
+
+        $this
+            ->actAsSuper()
+            ->get(cp_route('orders.index').'?status='.$status->slug)
+            ->assertOk()
+            ->assertSee('Order #'.$orders[0]['id'])
+            ->assertSee('Order #'.$orders[1]['id'])
+            ->assertSee('Order #'.$orders[2]['id'])
+            ->assertSee('Order #'.$orders[3]['id'])
+            ->assertSee('Order #'.$orders[4]['id']);
+    }
+
+    /** @test */
+    public function can_get_carts_index()
+    {
+        $orders = factory(Order::class, 5)->create([
+            'is_completed' => false,
+        ]);
+
+        $this
+            ->actAsSuper()
+            ->get(cp_route('orders.index').'?view-carts=true')
             ->assertOk()
             ->assertSee('Order #'.$orders[0]['id'])
             ->assertSee('Order #'.$orders[1]['id'])
@@ -30,19 +71,19 @@ class OrderControllerTest extends TestCase
             ->actAsSuper()
             ->get(cp_route('orders.index'))
             ->assertOk()
-            ->assertSee("There's nothing to show");
+            ->assertSee("nothing to show");
     }
 
     /** @test */
     public function can_edit_order()
     {
         $order = factory(Order::class)->create();
-
+        
         $this
             ->actAsSuper()
             ->get(cp_route('orders.edit', ['order' => $order->uuid]))
             ->assertOk()
-            ->assertSee('<publish-form')
+            ->assertSee('publish-form')
             ->assertSee('Order #'.$order->id);
     }
 

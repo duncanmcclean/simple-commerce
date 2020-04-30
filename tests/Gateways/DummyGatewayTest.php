@@ -27,9 +27,7 @@ class DummyGatewayTest extends TestCase
             'cvc' => '123',
         ]);
 
-        $this->assertIsArray($completePurchase);
-        $this->assertArrayHasKey('is_paid', $completePurchase);
-        $this->assertSame(true, $completePurchase['is_paid']);
+        $this->assertTrue($completePurchase);
     }
 
     /** @test */
@@ -57,9 +55,7 @@ class DummyGatewayTest extends TestCase
             'cvc' => '123',
         ]);
 
-        $this->assertIsArray($completePurchase);
-        $this->assertArrayHasKey('is_paid', $completePurchase);
-        $this->assertSame(false, $completePurchase['is_paid']);
+        $this->assertFalse($completePurchase);
     }
 
     /** @test */
@@ -80,9 +76,13 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_return_payment_form()
     {
-        $form = $this->gateway->paymentForm();
+        $form = $this
+            ->gateway
+            ->paymentForm()
+            ->render();
 
-        // TODO: assert view is returned
+        $this->assertIsString($form);
+        $this->assertStringContainsString('type="number" name="cardNumber"', $form);
     }
 
     /** @test */
@@ -98,8 +98,7 @@ class DummyGatewayTest extends TestCase
             'transaction_id' => uniqid(),
         ]);
 
-        $this->assertIsBool($refund);
-        $this->assertSame(true, $refund);
+        $this->assertTrue($refund);
     }
 
     /** @test */
