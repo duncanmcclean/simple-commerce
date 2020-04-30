@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Statamic\Facades\Blueprint;
 
 class Coupon extends Model
@@ -78,5 +79,23 @@ class Coupon extends Model
         // TODO: deal with the state here
         
         return false;
+    }
+
+    public function uses()
+    {
+        $couponId = $this->id;
+
+        $count = Order::completed()
+            ->get()
+            ->reject(function ($order) use ($couponId) {
+                if ($order->lineItems->where('coupon_id', $couponId)->count() > 0) {
+                    return false;
+                }
+
+                return true;
+            })
+            ->count(); 
+
+        return sprintf('%s %s', $count = $count, Str::plural('use', $count));
     }
 }

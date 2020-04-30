@@ -15,6 +15,7 @@
                         <th>Name</th>
                         <th>Coupon Code</th>
                         <th>Affect</th>
+                        <th>Uses</th>
                         <th class="actions-column"></th>
                     </tr>
                 </thead>
@@ -30,7 +31,7 @@
                             </td>
                             <td>{{ $coupon->code }}</td>
                             <td>{{ $coupon->affect }}</td>
-
+                            <td>{{ $coupon->uses() }}</td>
                             <td class="flex justify-end">
                                 <simple-commerce-actions>
                                     <simple-commerce-action-item
