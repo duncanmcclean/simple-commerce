@@ -68,6 +68,7 @@ class Cart
             'item_total' => 00.00,
             'tax_total' => 00.00,
             'shipping_total' => 00.00,
+            'coupon_total' => 00.00,
             'total' => 00.00,
             'currency_id' => \DoubleThreeDigital\SimpleCommerce\Facades\Currency::primary()->id,
             'is_completed'  => false,

@@ -22,6 +22,7 @@ $factory->define(Order::class, function (Faker $faker) {
         'item_total'            => 00.00,
         'tax_total'             => 00.00,
         'shipping_total'        => 00.00,
+        'coupon_total'          => 00.00,
         'currency_id'           => function () {
             return factory(Currency::class)->create()->id;
         },

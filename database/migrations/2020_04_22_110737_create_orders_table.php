@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->float('item_total');
             $table->float('tax_total');
             $table->float('shipping_total');
+            $table->float('coupon_total');
             $table->integer('currency_id')->index();
             $table->integer('order_status_id')->index();
             $table->integer('billing_address_id')->index()->nullable();
