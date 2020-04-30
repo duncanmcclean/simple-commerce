@@ -44,6 +44,10 @@ class CartTag extends Tags
             return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('tax_total'));
         }
 
+        if ($this->getParam('coupon')) {
+            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('coupon_total'));
+        }
+
         return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('total'));
     }
 
