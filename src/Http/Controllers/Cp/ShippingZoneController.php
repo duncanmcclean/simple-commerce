@@ -66,6 +66,11 @@ class ShippingZoneController extends CpController
     public function edit(ShippingZone $zone)
     {
         $values = $zone->toArray();
+
+        collect($zone->countries)
+            ->each(function ($country) use (&$values) {
+                $values['countries'][] = $country->id;
+            });
         
         collect($zone->rates)
             ->each(function ($rate) use (&$values) {
@@ -85,16 +90,17 @@ class ShippingZoneController extends CpController
 
     public function update(ShippingZone $zone, ShippingZoneRequest $request): ShippingZone
     {
-        $zone = $zone->update([
+        $zone->update([
             'name' => $request->name,
         ]);
 
         collect($request->countries)
             ->each(function ($country) use ($zone) {
-                if (! $zone->countries()->find($country)) {
-                    Country::find($country)->update([
-                        'shipping_zone_id' => $zone->id,
-                    ]);
+                if (! $zone->countries->where('id', $country)->first()) {
+                    Country::find($country)
+                        ->update([
+                            'shipping_zone_id' => $zone->id,
+                        ]);
                 }
 
                 // TODO: figure out a good way of dealing with the situation if a country is removed by the user in the CP
@@ -102,7 +108,7 @@ class ShippingZoneController extends CpController
 
         collect($request->rates)
             ->each(function ($rate) use ($zone) {
-                if (! is_null($rate->uuid)) {
+                if (! is_null($rate['uuid'])) {
                     $zone->rates()->create([
                         'uuid'      => (new Stache())->generateId(),
                         'name'      => $rate['name'],
@@ -115,7 +121,7 @@ class ShippingZoneController extends CpController
                 } else {
                     $zone
                         ->rates()
-                        ->where('uuid', $rate->uuid)
+                        ->where('uuid', $rate['uuid'])
                         ->first()
                         ->update([
                             'name'      => $rate['name'],

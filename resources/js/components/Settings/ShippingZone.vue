@@ -44,12 +44,12 @@
         <update-stack
                 v-if="editStackOpen"
                 title="Update Shipping Zone"
-                :action="editZone.updateUrl"
+                :action="editZoneUpdateUrl"
                 :blueprint="blueprint"
                 :meta="meta"
                 :values="editZone"
                 @closed="editStackOpen = false"
-                @saved="zoneSaved"
+                @saved="zoneUpdated"
         ></update-stack>
     </div>
 </template>
@@ -83,6 +83,7 @@
 
                 items: [],
                 editZone: [],
+                editZoneUpdateUrl: '',
 
                 createStackOpen: false,
                 editStackOpen: false
@@ -109,9 +110,16 @@
                     });
             },
 
-            updateShippingZone(zone) {
-                this.editZone = zone;
-                this.editStackOpen = true;
+            updateShippingZone(zone) {  
+                axios.get(zone.editUrl)
+                    .then(response => {
+                        this.editZone = response.data.values;
+                        this.editZoneUpdateUrl = response.data.action;
+                        this.editStackOpen = true;
+                    })
+                    .catch(error => {
+                        alert('Something happened: '+ error);
+                    })
             },
 
             zoneSaved() {

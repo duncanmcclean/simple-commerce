@@ -20,7 +20,7 @@ class ShippingZoneRequest extends FormRequest
             'rates.*.type'      => 'required|string|in:price-based,weight-based',
             'rates.*.minimum'   => 'required|numeric',
             'rates.*.maximum'   => 'required|numeric',
-            'rates.*.rate'      => 'required|string',
+            'rates.*.rate'      => 'required|numeric',
             'rates.*.note'      => '',
         ];
     }
