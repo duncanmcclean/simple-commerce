@@ -272,7 +272,7 @@ class Cart
                 $totals['item_total'] += $itemTotal;
                 $totals['tax_total'] += $taxTotal;
                 $totals['shipping_total'] += $shippingTotal;
-                $totals['coupon_tital'] += $couponTotal;
+                $totals['coupon_total'] += $couponTotal;
             });
 
         $order->update($totals);
