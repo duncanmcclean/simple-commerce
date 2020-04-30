@@ -2,12 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions;
 
+use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
@@ -74,6 +76,7 @@ class CheckoutController
             'customer_id' => $customer->id,
         ]);
 
+        // Manage variant totals
         collect($order->lineItems)
             ->reject(function (LineItem $lineItem) {
                 if ($lineItem->variant->unlimited_stock) {
@@ -94,6 +97,23 @@ class CheckoutController
                 if ($lineItem->variant->stock === 0) {
                     Event::dispatch(new VariantOutOfStock($lineItem->variant));
                 }
+            });
+
+        // Do some coupon stuff
+        collect($order->lineItems)
+            ->reject(function (LineItem $lineItem) {
+                if (! $lineItem->coupon_id) {
+                    return true;
+                }
+
+                return false;
+            })
+            ->map(function (LineItem $lineItem) {
+                return $lineItem->coupon_id;
+            })
+            ->unique()
+            ->each(function ($couponId) use ($order) {
+                Event::dispatch(new CouponRedeemed(Coupon::find($couponId), $order));
             });
 
         $order->update([

@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\VersionCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
@@ -52,6 +53,7 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $listen = [
         AttributeUpdated::class => [],
+        CouponRedeemed::class => [],
         OrderPaid::class => [],
         OrderRefunded::class => [
             SendOrderRefundedNotification::class,
