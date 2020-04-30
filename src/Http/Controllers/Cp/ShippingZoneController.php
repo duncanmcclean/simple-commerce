@@ -25,6 +25,7 @@ class ShippingZoneController extends CpController
                         ->flatten()
                         ->toArray(),
                     'rates' => $zone->rates->toArray(),
+                    'editUrl' => $zone->editUrl(),
                     'updateUrl' => $zone->updateUrl(),
                     'deleteUrl' => $zone->deleteUrl(),
                 ]);
@@ -60,6 +61,26 @@ class ShippingZoneController extends CpController
             });
 
         return $zone->refresh();
+    }
+
+    public function edit(ShippingZone $zone)
+    {
+        $values = $zone->toArray();
+        
+        collect($zone->rates)
+            ->each(function ($rate) use (&$values) {
+                $values['rates'][] = $rate->toArray();
+            });
+
+        $blueprint = $zone->blueprint();
+        $fields = $blueprint->fields()->addValues($values)->preProcess();
+
+        return [
+            'blueprint' => $blueprint->toPublishArray(),
+            'values'    => $fields->values(),
+            'meta'      => $fields->meta(),
+            'action'    => $zone->updateUrl(),
+        ];
     }
 
     public function update(ShippingZone $zone, ShippingZoneRequest $request): ShippingZone

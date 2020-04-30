@@ -59,6 +59,21 @@ class ShippingZoneControllerTest extends TestCase
             ])
             ->assertCreated();
     }
+    
+    /** @test */
+    public function can_edit_shipping_zone()
+    {
+        $zone = factory(ShippingZone::class)->create();
+        $rates = factory(ShippingRate::class, 2)->create(['shipping_zone_id' => $zone->id]);
+
+        $this
+            ->actAsSuper()
+            ->get(cp_route('shipping-zones.edit', ['zone' => $zone->uuid]))
+            ->assertOk()
+            ->assertSee($zone->name)
+            ->assertSee($rates[0]['name'])
+            ->assertSee($rates[1]['name']);
+    }
 
     /** @test */
     public function can_update_shipping_zone()

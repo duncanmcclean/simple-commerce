@@ -48,6 +48,11 @@ class ShippingZone extends Model
         return implode(', ', $countries);
     }
 
+    public function editUrl()
+    {
+        return cp_route('shipping-zones.edit', ['zone' => $this->attributes['uuid']]);
+    }
+
     public function updateUrl()
     {
         return cp_route('shipping-zones.update', ['zone' => $this->attributes['uuid']]);
