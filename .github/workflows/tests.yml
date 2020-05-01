@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Setup PHPUnit config
-      run: cp phpunit-example.xml phpunit.xml
+      run: cp .github/workflows/phpunit.xml phpunit.xml
 
     - name: Shutdown Ubuntu MySQL
       run: sudo service mysql stop
