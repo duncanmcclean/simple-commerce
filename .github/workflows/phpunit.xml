@@ -8,30 +8,27 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
+         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer"
+>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-        </whitelist>
-    </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:xRIcDp1ReW8Y8rd9V9D7hOVV4TI7ThCF3FKxRg01Rm8="/>
-        <env name="APP_DEBUG" value="true" />
         <env name="DB_CONNECTION" value="mysql" />
-        <env name="DB_HOST" value="localhost" />
+        <env name="DB_HOST" value="127.0.0.1" />
         <env name="DB_PORT" value="3306" />
         <env name="DB_DATABASE" value="simple-commerce-testing" />
-        <env name="DB_USERNAME" value="homestead" />
-        <env name="DB_PASSWORD" value="secret" />
+        <env name="DB_USERNAME" value="root" />
+        <env name="DB_PASSWORD" value="a.k-ZWzdKyWw@QyeP6rKAxg*" />
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="MAIL_DRIVER" value="array"/>
+        <env name="STRIPE_KEY" value=""/>
+        <env name="STRIPE_SECRET" value=""/>
     </php>
 </phpunit>
