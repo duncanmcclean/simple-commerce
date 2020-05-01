@@ -32,7 +32,7 @@ jobs:
         mysql database: 'simple-commerce-testing'
         mysql root password: 'a.k-ZWzdKyWw@QyeP6rKAxg*'
         mysql user: 'root'
-        mysql password: ''
+        mysql password: null
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v1
