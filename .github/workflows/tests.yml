@@ -17,6 +17,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v1
+     
+    - name: Copy PHPUnit config
+      run: cp -nf .github/workflows/phpunit.xml phpunit.xml  
 
     - name: Shutdown Ubuntu MySQL
       run: sudo service mysql stop
@@ -30,9 +33,9 @@ jobs:
         collation server: 'utf8_general_ci'
         mysql version: '5.7'
         mysql database: 'simple-commerce-testing'
-        mysql root password: 'scotland'
-        mysql user: 'root'
-        mysql password: null
+        mysql root password: 'secret'
+        mysql user: 'homestead'
+        mysql password: 'secret'
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v1
