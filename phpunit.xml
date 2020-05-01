@@ -28,7 +28,7 @@
         <env name="DB_PORT" value="3306" />
         <env name="DB_DATABASE" value="simple-commerce-testing" />
         <env name="DB_USERNAME" value="root" />
-        <env name="DB_PASSWORD" value="null" />
+        <env name="DB_PASSWORD" value="" />
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>

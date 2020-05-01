@@ -30,7 +30,7 @@ jobs:
         collation server: 'utf8_general_ci'
         mysql version: '5.7'
         mysql database: 'simple-commerce-testing'
-        mysql root password: 'a.k-ZWzdKyWw@QyeP6rKAxg*'
+        mysql root password: null
         mysql user: 'root'
         mysql password: null
 
