@@ -23,7 +23,7 @@ class InstallCommand extends Command
             ->publish()
             ->migrate()
             ->seed()
-            ->seedTestData()
+            // ->seedTestData()
             ->replaceUserModel();
     }
 
@@ -54,14 +54,14 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function seedTestData()
-    {
-        if ($this->confirm('Would you like test data to be added to your database?')) {
-            // TODO: add some test data here
-        }
+    // protected function seedTestData()
+    // {
+    //     if ($this->confirm('Would you like test data to be added to your database?')) {
+    //         // TODO: add some test data here
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     protected function replaceUserModel()
     {
