@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Console\Commands\SeederCommand;
+use DoubleThreeDigital\SimpleCommerce\Console\Commands\InstallCommand;
 use DoubleThreeDigital\SimpleCommerce\Console\Commands\VersionCommand;
 use DoubleThreeDigital\SimpleCommerce\Events\AttributeUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
@@ -37,7 +37,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Modifiers\PriceModifier;
 use DoubleThreeDigital\SimpleCommerce\Policies\CouponPolicy;
-use DoubleThreeDigital\SimpleCommerce\Policies\CustomerPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\OrderPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductCategoryPolicy;
 use DoubleThreeDigital\SimpleCommerce\Policies\ProductPolicy;
@@ -109,7 +108,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $commands = [
-        SeederCommand::class,
+        InstallCommand::class,
         VersionCommand::class,
     ];
 
@@ -126,17 +125,10 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
-        $this
-            ->publishes([
-                __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
-                __DIR__.'/../database/migrations' => database_path('migrations'),
-                __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
-                __DIR__.'/../resources/fieldsets' => resource_path('fieldsets'),
-                __DIR__.'/../resources/dist/js/cp.js' => public_path('vendor/doublethreedigital/simple-commerce/js'),
-            ], 'simple-commerce');
+        $this->publishVendorStuff();
 
-        $this
-            ->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
 
         $this->app->booted(function () {
             $this->navigation();
@@ -163,6 +155,25 @@ class ServiceProvider extends AddonServiceProvider
         $this->app->bind('Cart', \DoubleThreeDigital\SimpleCommerce\Support\Cart::class);
         $this->app->bind('Currency', \DoubleThreeDigital\SimpleCommerce\Support\Currency::class);
         $this->app->bind('FormBuilder', \DoubleThreeDigital\SimpleCommerce\Support\FormBuilder::class);
+    }
+
+    protected function publishVendorStuff()
+    {
+        $this->publishes([
+            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+        ], 'simple-commerce-config');
+
+        $this->publishes([
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+        ], 'simple-commerce-blueprints');
+
+        $this->publishes([
+            __DIR__.'/../resources/fieldsets' => resource_path('fieldsets'),
+        ], 'simple-commerce-fieldsets');
+
+        $this->publishes([
+            __DIR__.'/../resources/dist' => public_path('vendor/doublethreedigital/simple-commerce'),
+        ], 'simple-commerce-assets');
     }
 
     protected function navigation()
