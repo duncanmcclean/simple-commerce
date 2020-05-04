@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
-use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Illuminate\Database\Eloquent\Model;

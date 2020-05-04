@@ -18,12 +18,7 @@ class ShippingZone extends Model
     protected $appends = [
         'listOfCountries',
     ];
-
-    public function carts()
-    {
-        return $this->hasMany(CartShipping::class);
-    }
-
+    
     public function rates()
     {
         return $this->hasMany(ShippingRate::class);

@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Statamic\Facades\Blueprint;
 
