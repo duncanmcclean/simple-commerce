@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Statamic\Facades\Blueprint;
 
 class ShippingZone extends Model
@@ -18,7 +17,7 @@ class ShippingZone extends Model
     protected $appends = [
         'listOfCountries',
     ];
-    
+
     public function rates()
     {
         return $this->hasMany(ShippingRate::class);
