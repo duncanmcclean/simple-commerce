@@ -41,10 +41,10 @@ class SimpleCommerceTag extends Tags
 
     public function products()
     {
-        $products = Product::with('productCategory')->get();
+        $products = Product::get();
 
         if ($this->getParam('category') != null) {
-            $category = ProductCategory::where('slug', $this->getParam('category'))->first();
+            $category = ProductCategory::select('id')->where('slug', $this->getParam('category'))->first();
             $products = $products->where('product_category_id', $category->id);
         }
 
@@ -154,7 +154,7 @@ class SimpleCommerceTag extends Tags
         $states = State::all();
 
         if ($this->getParam('country')) {
-            $states = $states->where('country_id', Country::where('iso', $this->getParam('country')))->get();
+            $states = $states->where('country_id', Country::select('id')->where('iso', $this->getParam('country')->first()->id));
         }
 
         if ($this->getParam('count')) {

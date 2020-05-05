@@ -32,23 +32,25 @@ class CartTag extends Tags
 
     public function total()
     {
+        $cart = Cart::find(Session::get(config('simple-commerce.cart_session_key'));
+
         if ($this->getParam('items')) {
-            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('item_total'));
+            return Currency::parse($cart->get('item_total'));
         }
 
         if ($this->getParam('shipping')) {
-            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('shipping_total'));
+            return Currency::parse($cart->get('shipping_total'));
         }
 
         if ($this->getParam('tax')) {
-            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('tax_total'));
+            return Currency::parse($cart->get('tax_total'));
         }
 
         if ($this->getParam('coupon')) {
-            return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('coupon_total'));
+            return Currency::parse($cart->get('coupon_total'));
         }
 
-        return Currency::parse(Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('total'));
+        return Currency::parse($cart->get('total'));
     }
 
     protected function dealWithSession()
