@@ -17,10 +17,12 @@ class SimpleCommerce
     {
         return app()->booted(function () {
             foreach (config('simple-commerce.gateways') as $class => $config) {
-                static::$gateways[] = [
-                    $class,
-                    $config,
-                ];
+                if ($class) {
+                    static::$gateways[] = [
+                        $class,
+                        $config,
+                    ];   
+                }
             }
 
             return new static;
