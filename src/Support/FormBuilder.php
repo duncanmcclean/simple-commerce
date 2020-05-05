@@ -6,39 +6,39 @@ class FormBuilder
 {
     public $form;
 
-    public function build(string $form, array $params, string $contents)
+    public function build(string $form, array $params, string $contents): string
     {
         $this->form = $form;
 
         return $this->{$form}($params, $contents);
     }
 
-    public function cartCreate(array $params, string $contents)
+    public function cartCreate(array $params, string $contents): string
     {
         return $this->compose(route('statamic.simple-commerce.cart.store'), 'POST', $params, $contents);
     }
 
-    public function cartUpdate(array $params, string $contents)
+    public function cartUpdate(array $params, string $contents): string
     {
         return $this->compose(route('statamic.simple-commerce.cart.update'), 'POST', $params, $contents);
     }
 
-    public function cartDelete(array $params, string $contents)
+    public function cartDelete(array $params, string $contents): string
     {
         return $this->compose(route('statamic.simple-commerce.cart.destroy'), 'POST', $params, $contents);
     }
 
-    public function checkout(array $params, string $contents)
+    public function checkout(array $params, string $contents): string
     {
         return $this->compose(route('statamic.simple-commerce.checkout.store'), 'POST', $params, $contents);
     }
 
-    public function redeemCoupon(array $params, string $contents)
+    public function redeemCoupon(array $params, string $contents): string
     {
         return $this->compose(route('statamic.simple-commerce.redeem-coupon'), 'POST', $params, $contents);
     }
 
-    protected function compose(string $action, string $method, array $params, string $contents)
+    protected function compose(string $action, string $method, array $params, string $contents): string
     {
         $errors = $this->getErrorBag();
 

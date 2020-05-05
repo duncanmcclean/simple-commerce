@@ -148,7 +148,7 @@ class Cart
         return Order::where('uuid', $orderUuid)->first()->recalculate();
     }
 
-    public function redeemCoupon(string $orderUuid, string $couponCode)
+    public function redeemCoupon(string $orderUuid, string $couponCode): bool
     {   
         $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
         $coupon = Coupon::where('code', $couponCode)->first();
