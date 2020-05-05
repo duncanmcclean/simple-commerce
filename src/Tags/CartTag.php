@@ -32,7 +32,7 @@ class CartTag extends Tags
 
     public function total()
     {
-        $cart = Cart::find(Session::get(config('simple-commerce.cart_session_key'));
+        $cart = Cart::find(Session::get(config('simple-commerce.cart_session_key')));
 
         if ($this->getParam('items')) {
             return Currency::parse($cart->get('item_total'));
