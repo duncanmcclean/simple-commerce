@@ -3,8 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Statamic\Facades\Blueprint;
@@ -23,7 +25,7 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'variant_count',
+        'variant_count', 'from_price', 'to_price',
     ];
 
     protected $dispatchesEvents = [
@@ -58,6 +60,30 @@ class Product extends Model
     public function getVariantCountAttribute()
     {
         return sprintf('%s %s', $count = $this->variants->count(), Str::plural('variant', $count));
+    }
+
+    public function getFromPriceAttribute()
+    {
+        $price = $this
+            ->variants()
+            ->select('price')
+            ->orderBy('price', 'asc')
+            ->first()
+            ->price;
+
+        return Currency::parse($price);
+    }
+
+    public function getToPriceAttribute()
+    {
+        $price = $this
+            ->variants()
+            ->select('price')
+            ->orderBy('price', 'desc')
+            ->first()
+            ->price;
+
+        return Currency::parse($price);
     }
 
     public function createUrl()
