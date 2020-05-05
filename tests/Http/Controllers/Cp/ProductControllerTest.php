@@ -4,14 +4,24 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\ProductController;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Support\Facades\Config;
 
 class ProductControllerTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $currency = factory(Currency::class)->create();
+        Config::set('simple-commerce.currency.iso', $currency->iso);
+    }
+
     /** @test */
     public function can_get_product_index()
     {
@@ -109,6 +119,7 @@ class ProductControllerTest extends TestCase
     public function can_edit_product()
     {
         $product = factory(Product::class)->create();
+        $variants = factory(Variant::class, 2)->create(['product_id' => $product->id]);
 
         $this
             ->actAsSuper()
@@ -123,6 +134,7 @@ class ProductControllerTest extends TestCase
         $product = factory(Product::class)->create([
             'needs_shipping' => false,
         ]);
+        $variants = factory(Variant::class, 2)->create(['product_id' => $product->id]);
 
         $this
             ->actAsSuper()
