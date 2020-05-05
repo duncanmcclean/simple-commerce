@@ -62,7 +62,7 @@ class CurrencyTest extends TestCase
     {
         $parse = $this->currency->parse(15, false, false);
 
-        $this->assertSame($parse, 15.0);
+        $this->assertSame($parse, '15');
     }
 
     /** @test */
