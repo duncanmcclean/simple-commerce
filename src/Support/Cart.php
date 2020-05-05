@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Error;
 use ErrorException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
