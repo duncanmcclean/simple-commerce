@@ -18,6 +18,8 @@ class SimpleCommerce
         return app()->booted(function () {
             foreach (config('simple-commerce.gateways') as $class => $config) {
                 if ($class) {
+                    $class = str_replace('::class', '', $class);
+
                     static::$gateways[] = [
                         $class,
                         $config,
