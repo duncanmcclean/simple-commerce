@@ -26,6 +26,9 @@ class SimpleCommerceTagTest extends TestCase
     {
         parent::setUp();
 
+        $this->currency = factory(Currency::class)->create();
+        Config::set('simple-commerce.currency.iso', $this->currency->iso);
+
         $this->tag = (new SimpleCommerceTag())
             ->setParser(Antlers::parser())
             ->setContext([]);
@@ -40,33 +43,17 @@ class SimpleCommerceTagTest extends TestCase
     /** @test */
     public function simple_commerce_currency_code_tag()
     {
-        Config::set('simple-commerce.currency.iso', 'USD');
-
-        $currency = factory(Currency::class)->create([
-            'iso' => 'USD',
-            'symbol' => '$',
-            'name' => 'United States Dollar',
-        ]);
-
         $run = $this->tag->currencyCode();
 
-        $this->assertSame($run, 'USD');
+        $this->assertSame($run, $this->currency->iso);
     }
 
     /** @test */
     public function simple_commerce_currency_symbol_tag()
     {
-        Config::set('simple-commerce.currency.iso', 'GBP');
-
-        $currency = factory(Currency::class)->create([
-            'iso' => 'GBP',
-            'symbol' => '£',
-            'name' => 'Great British Pound',
-        ]);
-
         $run = $this->tag->currencySymbol();
 
-        $this->assertSame($run, '£');
+        $this->assertSame($run, $this->currency->symbol);
     }
 
     /** @test */
@@ -96,7 +83,9 @@ class SimpleCommerceTagTest extends TestCase
     /** @test */
     public function simple_commerce_products_tag()
     {
-        $products = factory(Product::class, 5)->create();
+        $products = factory(Product::class, 2)->create();
+        factory(Variant::class)->create(['product_id' => $products[0]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[1]['id']]);
 
         $this->tag->setParameters([]);
 
@@ -109,9 +98,11 @@ class SimpleCommerceTagTest extends TestCase
     public function simple_commerce_products_tag_in_category()
     {
         $category = factory(ProductCategory::class)->create();
-        $products = factory(Product::class, 5)->create([
+        $products = factory(Product::class, 2)->create([
             'product_category_id' => $category->id,
         ]);
+        factory(Variant::class)->create(['product_id' => $products[0]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[1]['id']]);
 
         $this->tag->setParameters([
             'category' => $category->slug,
@@ -120,7 +111,7 @@ class SimpleCommerceTagTest extends TestCase
         $run = $this->tag->products();
 
         $this->assertIsArray($run);
-        $this->assertStringContainsString($products[2]['title'], json_encode($run));
+        $this->assertStringContainsString($products[1]['title'], json_encode($run));
     }
 
     /** @test */
@@ -128,7 +119,9 @@ class SimpleCommerceTagTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $products = factory(Product::class, 5)->create();
+        $products = factory(Product::class, 2)->create();
+        factory(Variant::class)->create(['product_id' => $products[0]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[1]['id']]);
 
         $this->tag->setParameters([
             'where' => 'slug:'.$products[0]['slug'],
@@ -147,10 +140,12 @@ class SimpleCommerceTagTest extends TestCase
         $enabledProduct = factory(Product::class)->create([
             'is_enabled'    => true,
         ]);
+        factory(Variant::class)->create(['product_id' => $enabledProduct->id]);
 
         $disabledProduct = factory(Product::class)->create([
             'is_enabled'    => false,
         ]);
+        factory(Variant::class)->create(['product_id' => $disabledProduct->id]);
 
         $this->tag->setParameters([
             'include_disabled' => true,
@@ -168,23 +163,28 @@ class SimpleCommerceTagTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $products = factory(Product::class, 5)->create();
+        $products = factory(Product::class, 3)->create();
+        factory(Variant::class)->create(['product_id' => $products[0]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[1]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[2]['id']]);
 
         $this->tag->setParameters([
-            'limit' => '3',
+            'limit' => '2',
         ]);
 
         $run = $this->tag->products();
 
         $this->assertIsArray($run);
         $this->assertStringContainsString($products[0]['title'], json_encode($run));
-        $this->assertStringNotContainsString($products[4]['title'], json_encode($run));
+        $this->assertStringNotContainsString($products[2]['title'], json_encode($run));
     }
 
     /** @test */
     public function simple_commerce_products_tag_count()
     {
-        $products = factory(Product::class, 5)->create();
+        $products = factory(Product::class, 2)->create();
+        factory(Variant::class)->create(['product_id' => $products[0]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[1]['id']]);
 
         $this->tag->setParameters([
             'count' => true,
@@ -193,7 +193,7 @@ class SimpleCommerceTagTest extends TestCase
         $run = $this->tag->products();
 
         $this->assertIsInt($run);
-        $this->assertSame($run, 5);
+        $this->assertSame($run, 2);
     }
 
     /** @test */
@@ -202,6 +202,8 @@ class SimpleCommerceTagTest extends TestCase
         $this->markTestIncomplete();
 
         $products = factory(Product::class, 2)->create();
+        factory(Variant::class)->create(['product_id' => $products[0]['id']]);
+        factory(Variant::class)->create(['product_id' => $products[1]['id']]);
 
         $this->tag->setParameters([
             'first' => 'true',
