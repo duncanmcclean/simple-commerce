@@ -12,7 +12,7 @@ class LineItemsFieldtype extends Fieldtype
     public function preload()
     {
         return [
-            'currency' => Currency::primary(),
+            'currency' => Currency::get(),
         ];
     }
 

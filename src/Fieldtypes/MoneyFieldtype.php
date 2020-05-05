@@ -19,7 +19,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
-        return Currency::primary();
+        return Currency::get();
     }
 
     public function preProcess($data)

@@ -6,23 +6,30 @@ use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
 
 class Currency
 {
-    public function primary()
+    public static $currency = [];
+
+    public function __construct()
     {
         if (config('simple-commerce.currency.iso') === null) {
             throw new \Exception('Please configure your store\'s currency.');
         }
 
-        return CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first();
+        static::$currency = CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first()->toArray();
+    }
+
+    public function get()
+    {
+        return self::$currency;
     }
 
     public function symbol()
     {
-        return $this->primary()->symbol;
+        return self::$currency['symbol'];
     }
 
     public function iso()
     {
-        return $this->primary()->iso;
+        return self::$currency['iso'];
     }
 
     public function parse(float $total, bool $showSeparator = true, bool $showSymbol = true)
@@ -32,7 +39,7 @@ class Currency
         }
 
         if ($showSymbol == true) {
-            $symbol = $this->primary()->symbol;
+            $symbol = self::$currency['symbol'];
 
             if (config('simple-commerce.currency.position') === 'left') {
                 $total = $symbol.$total;

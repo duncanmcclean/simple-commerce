@@ -23,12 +23,12 @@ class CurrencyTest extends TestCase
     }
 
     /** @test */
-    public function can_get_primary_currency()
+    public function can_get_currency()
     {
-        $currency = $this->currency->primary();
+        $currency = $this->currency->get();
 
-        $this->assertIsObject($currency);
-        $this->assertSame($currency->iso, $this->currencies[2]->iso);
+        $this->assertIsArray($currency);
+        $this->assertSame($currency['iso'], $this->currencies[2]['iso']);
     }
 
     /** @test */
