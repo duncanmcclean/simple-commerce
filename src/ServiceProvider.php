@@ -172,7 +172,7 @@ class ServiceProvider extends AddonServiceProvider
         ], 'simple-commerce-fieldsets');
 
         $this->publishes([
-            __DIR__.'/../resources/dist' => public_path('vendor/doublethreedigital/simple-commerce'),
+            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce-assets');
     }
 
