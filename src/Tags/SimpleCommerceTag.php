@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency as FacadesCurrency;
 use DoubleThreeDigital\SimpleCommerce\Facades\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
@@ -181,15 +182,63 @@ class SimpleCommerceTag extends Tags
         }
 
         if ($this->getParam('get')) {
-            return auth()->user()->orders()
+            $order = auth()->user()->orders()
                 ->where('uuid', $this->getParam('get'))
-                ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer')
+                ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer', 'lineItems')
                 ->first()
                 ->toArray();
+
+            $order['line_items'] = collect($order['line_items'])
+                ->map(function ($data) {
+                    $variant = function () use ($data) {
+                        $originalVariant = Variant::find($data['variant_id']);
+                        
+                        $variant = $originalVariant->toArray();
+                        
+                        collect($originalVariant->images)->each(function ($image) use (&$variant) {
+                            $variant['images'][] = $image;
+                        });
+
+                        $originalVariant->attributes->each(function (Attribute $attribute) use (&$variant) {
+                            $variant["$attribute->key"] = $attribute->value;
+                        });
+
+                        return $variant;
+                    };
+
+                    $data['variant'] = $variant();
+
+                    $product = function () use ($data) {
+                        $originalProduct = Product::find($data['variant']['product_id']);
+
+                        $product = $originalProduct->toArray();
+                        $product['images'] = [];
+
+                        $originalProduct->attributes->each(function (Attribute $attribute) use (&$product) {
+                            $product["$attribute->key"] = $attribute->value;
+                        });
+
+                        return $product;
+                    };
+                    
+                    $data['product'] = $product();
+                    $data['total'] = FacadesCurrency::parse($data['total']);
+
+                    return $data;
+                })
+                ->toArray();
+
+            $order['item_total'] = FacadesCurrency::parse($order['item_total']);
+            $order['shipping_total'] = FacadesCurrency::parse($order['shipping_total']);
+            $order['tax_total'] = FacadesCurrency::parse($order['tax_total']);
+            $order['coupon_total'] = FacadesCurrency::parse($order['coupon_total']);
+            $order['total'] = FacadesCurrency::parse((float) $order['total']);
+
+            return $order;    
         }
 
         $orders = auth()->user()->orders()
-            ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer')
+            ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer', 'lineItems')
             ->get();
 
         if ($this->getParam('count')) {
