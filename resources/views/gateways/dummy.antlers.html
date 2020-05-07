@@ -1,6 +1,9 @@
 <div class="flex flex-col">
     <input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="text" name="cardholder" placeholder="Cardholder">
     <input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="number" name="cardNumber" placeholder="Card Number">
-    <input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="month" name="expiryDate" placeholder="Expiry Date">
+    <div class="w-full flex flex-row items-center">
+        <input class="flex-1 mr-2 border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="number" name="expiryMonth" placeholder="Expiry Month">
+        <input class="flex-1 ml-2 border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="number" name="expiryYear" placeholder="Expiry Year">
+    </div>
     <input class="border rounded p-2 mb-2 text-gray-600 focus:text-gray-800 outline-none" type="text" name="cvc" placeholder="Security code">
 </div>
