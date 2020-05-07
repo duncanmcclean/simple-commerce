@@ -8,11 +8,7 @@ class DummyGateway implements Gateway
 {
     public function completePurchase($data)
     {
-        $isPaid = false;
-
-        if ($data['cardNumber'] === '4242 4242 4242 4242') {
-            $isPaid = true;
-        }
+        $isPaid = true;
 
         if ($data['cardNumber'] === '1111 1111 1111 1111') {
             throw new \Exception('The card provided is invalid.');
@@ -29,7 +25,7 @@ class DummyGateway implements Gateway
     {
         return [
             'cardholder' => 'required|string',
-            'cardNumber' => 'required|string|min:19|max:22',
+            'cardNumber' => 'required|string',
             'expiryMonth' => 'required|in:01,02,03,04,05,06,07,08,09,10,11,12',
             'expiryYear' => 'required',
             'cvc' => 'required|min:3|max:4',
