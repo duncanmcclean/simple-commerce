@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use ErrorException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Stache\Stache;
 
