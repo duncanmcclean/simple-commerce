@@ -2,11 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Data\VariantData;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Variant extends Model
 {
@@ -58,5 +58,10 @@ class Variant extends Model
         if ($this->attributes()->count() > 0) {
             $this->attributes()->delete();
         }
+    }
+
+    public function templatePrep()
+    {
+        return (new VariantData)->data($this->toArray(), $this);
     }
 }

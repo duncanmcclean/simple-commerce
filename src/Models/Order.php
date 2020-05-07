@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Data\OrderData;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Statamic\Facades\Blueprint;
@@ -83,5 +84,10 @@ class Order extends Model
     public function recalculate()
     {
         return \DoubleThreeDigital\SimpleCommerce\Facades\Cart::calculateTotals($this);
+    }
+
+    public function templatePrep()
+    {
+        return (new OrderData)->data($this->toArray(), $this);
     }
 }

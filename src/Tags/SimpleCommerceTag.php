@@ -2,15 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency as FacadesCurrency;
 use DoubleThreeDigital\SimpleCommerce\Facades\FormBuilder;
-use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Tags\Tags;
@@ -74,32 +72,11 @@ class SimpleCommerceTag extends Tags
         }
 
         $products = $products->map(function (Product $product) {
-            $newProduct = $product->toArray();
-            $newProduct['images'] = [];
-
-            $product->attributes->each(function (Attribute $attribute) use (&$newProduct) {
-                $newProduct["$attribute->key"] = $attribute->value;
-            });
-
-            $newProduct['variants'] = $product->variants->map(function (Variant $variant) use (&$newProduct) {
-                $newVariant = $variant->toArray();
-
-                collect($variant->images)->each(function ($image) use (&$newProduct) {
-                    $newProduct['images'][] = $image;
-                });
-
-                $variant->attributes->each(function (Attribute $attribute) use (&$newVariant) {
-                    $newVariant["$attribute->key"] = $attribute->value;
-                });
-
-                return $newVariant;
-            })->toArray();
-
-            return $newProduct;
+            return $product->templatePrep();
         });
 
         if ($this->getBool('first')) {
-            return $products->first();
+            return $products->first()->toArray();
         }
 
         return $products->toArray();
@@ -119,30 +96,7 @@ class SimpleCommerceTag extends Tags
             throw new \Exception('Product Not Found');
         }
 
-        $productArray = $product->toArray();
-        $productArray['images'] = [];
-
-        $product->attributes->each(function (Attribute $attribute) use (&$productArray) {
-            $productArray["$attribute->key"] = $attribute->value;
-        });
-
-        $productArray['variants'] = $product->variants->map(function (Variant $variant) use (&$productArray) {
-            $variantArray = $variant->toArray();
-
-            collect($variant->images)->each(function ($image) use (&$productArray) {
-                $productArray['images'][] = $image;
-            });
-
-            $variant->attributes->each(function (Attribute $attribute) use (&$variantArray) {
-                $variantArray["$attribute->key"] = $attribute->value;
-            });
-
-            $variantArray['product'] = $productArray;
-
-            return $variantArray;
-        })->toArray();
-
-        return $productArray;
+        return $product->templatePrep();
     }
 
     public function countries()
@@ -182,70 +136,22 @@ class SimpleCommerceTag extends Tags
         }
 
         if ($this->getParam('get')) {
-            $order = auth()->user()->orders()
+            return auth()->user()->orders()
                 ->where('uuid', $this->getParam('get'))
-                ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer', 'lineItems')
                 ->first()
-                ->toArray();
-
-            $order['line_items'] = collect($order['line_items'])
-                ->map(function ($data) {
-                    $variant = function () use ($data) {
-                        $originalVariant = Variant::find($data['variant_id']);
-                        
-                        $variant = $originalVariant->toArray();
-                        
-                        collect($originalVariant->images)->each(function ($image) use (&$variant) {
-                            $variant['images'][] = $image;
-                        });
-
-                        $originalVariant->attributes->each(function (Attribute $attribute) use (&$variant) {
-                            $variant["$attribute->key"] = $attribute->value;
-                        });
-
-                        return $variant;
-                    };
-
-                    $data['variant'] = $variant();
-
-                    $product = function () use ($data) {
-                        $originalProduct = Product::find($data['variant']['product_id']);
-
-                        $product = $originalProduct->toArray();
-                        $product['images'] = [];
-
-                        $originalProduct->attributes->each(function (Attribute $attribute) use (&$product) {
-                            $product["$attribute->key"] = $attribute->value;
-                        });
-
-                        return $product;
-                    };
-                    
-                    $data['product'] = $product();
-                    $data['total'] = FacadesCurrency::parse($data['total']);
-
-                    return $data;
-                })
-                ->toArray();
-
-            $order['item_total'] = FacadesCurrency::parse($order['item_total']);
-            $order['shipping_total'] = FacadesCurrency::parse($order['shipping_total']);
-            $order['tax_total'] = FacadesCurrency::parse($order['tax_total']);
-            $order['coupon_total'] = FacadesCurrency::parse($order['coupon_total']);
-            $order['total'] = FacadesCurrency::parse((float) $order['total']);
-
-            return $order;    
+                ->templatePrep();
         }
 
-        $orders = auth()->user()->orders()
-            ->with('orderStatus', 'billingAddress', 'shippingAddress', 'currency', 'customer', 'lineItems')
-            ->get();
+        $orders = auth()->user()->orders()->get();
 
         if ($this->getParam('count')) {
             return $orders->count();
         }
 
-        return $orders->toArray();
+        return $orders
+            ->each(function (Order $order) {
+                return $order->templatePrep();
+            })->toArray();
     }
 
     public function form()

@@ -25,35 +25,12 @@ class Cart
 
     public function find(string $orderUuid): ?Collection
     {
-        $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
-
-        $attributes = $order->toArray();
-        $attributes['line_items'] = $order->lineItems->map(function ($lineItem) {
-            $attributes = $lineItem->toArray();
-
-            $attributes['variant'] = $lineItem->variant->toArray();
-            $attributes['product'] = Arr::except($lineItem->variant->product->toArray(), 'variants');
-
-            collect($lineItem->variant->attributes)
-                ->each(function (Attribute $attribute) use (&$attributes) {
-                    $attributes['variant']["$attribute->key"] = $attribute->value;
-                });
-
-            collect($lineItem->variant->product->attributes)
-                ->each(function (Attribute $attribute) use (&$attributes) {
-                    $attributes['product']["$attribute->key"] = $attribute->value;
-                });
-
-            return $attributes;
-        })->toArray();
-
-        $attributes['items_count'] = 0;
-        collect($attributes['line_items'])
-            ->each(function ($lineItem) use (&$attributes) {
-                $attributes['items_count'] += $lineItem['quantity'];
-            });
-
-        return collect($attributes);
+        return collect(
+            Order::notCompleted()
+                ->where('uuid', $orderUuid)
+                ->first()
+                ->templatePrep()
+        );
     }
 
     public function make()

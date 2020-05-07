@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Data\LineItemData;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,5 +42,10 @@ class LineItem extends Model
     public function recalculate()
     {
         return $this->order->recalculate();
+    }
+
+    public function templatePrep()
+    {
+        return (new LineItemData)->data($this->toArray(), $this);
     }
 }

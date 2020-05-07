@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Data\ProductData;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
@@ -125,5 +126,10 @@ class Product extends Model
         }
 
         parent::delete();
+    }
+
+    public function templatePrep()
+    {
+        return (new ProductData)->data($this->toArray(), $this);
     }
 }
