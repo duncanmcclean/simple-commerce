@@ -3,7 +3,7 @@
 
 This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that once Simple Commerce has been released you'll need to buy a license for each site using Simple Commerce. Licenses will cost **$199** *(probably)*. If you want to purchase a license before then or want to show your support, [get in touch](https://doublethree.digital/contact).
 
-[→ Get Started](https://simple-commerce-docs.netlify.app)
+[**→ Get Started**](https://simple-commerce-docs.netlify.app)
 
 ## Features
 * [Product Variants](https://simple-commerce-docs.netlify.app/docs/concepts.html#product-variants)
