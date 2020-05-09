@@ -234,12 +234,15 @@ class Cart
                         case 'percent_discount':
                             $couponTotal = ($lineItem->coupon->value / 100) * ($itemTotal);
                             $itemTotal -= $couponTotal;
+                            break;
                         case 'fixed_discount':
                             $couponTotal = $lineItem->coupon->value;
                             $itemTotal -= $lineItem->coupon->value;
+                            break;
                         case 'free_shipping':
                             $couponTotal = $shippingTotal;
                             $shippingTotal = 00.00;
+                            break;
                     }
                 }
 
