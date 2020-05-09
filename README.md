@@ -1,5 +1,5 @@
 # Simple Commerce
-Simple Commerce is a perfectly simple e-commerce solution for Statamic 3. 
+> Perfectly simple e-commerce for Statamic
 
 This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that once Simple Commerce has been released you'll need to buy a license for each site using Simple Commerce. Licenses will cost **$199** *(probably)*. If you want to purchase a license before then or want to show your support, [get in touch](https://doublethree.digital/contact).
 
