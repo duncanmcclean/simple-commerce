@@ -38,6 +38,7 @@ class Order extends Model
     public function customer()
     {
         $model = config('simple-commerce.customers.model');
+
         return $this->belongsTo(new $model());
     }
 

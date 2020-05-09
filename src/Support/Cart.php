@@ -125,7 +125,7 @@ class Cart
     }
 
     public function redeemCoupon(string $orderUuid, string $couponCode): bool
-    {   
+    {
         $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
         $coupon = Coupon::where('code', $couponCode)->first();
 
@@ -140,6 +140,7 @@ class Cart
         if ($coupon->minimum_total) {
             if ($order->total < $coupon->minimum_total) {
                 $amount = Currency::parse($coupon->minimum_total);
+
                 return "The coupon provided can only be used when the minimum cart total is {$amount}";
             }
         }
@@ -160,7 +161,7 @@ class Cart
         $zone = Country::find($order->shippingAddress->country_id)->shippingZone;
 
         if (! $zone) {
-            return ;
+            return;
         }
 
         $order
@@ -199,11 +200,11 @@ class Cart
                                 $lineItem->update([
                                     'shipping_rate_id' => $rate->id,
                                 ]);
-    
+
                                 $complete = true;
                             }
                         });
-                }     
+                }
             });
     }
 
@@ -230,7 +231,7 @@ class Cart
 
                 if ($lineItem->coupon) {
                     switch ($lineItem->coupon->type) {
-                        case 'percent_discount';
+                        case 'percent_discount':
                             $couponTotal = ($lineItem->coupon->value / 100) * ($itemTotal);
                             $itemTotal -= $couponTotal;
                         case 'fixed_discount':

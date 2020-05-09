@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Statamic\Facades\Blueprint;
@@ -62,9 +62,10 @@ class Coupon extends Model
                 return "{$this->value}% Off";
             case 'fixed_discount':
                 $amount = Currency::parse($this->value);
+
                 return "{$amount} Off";
             case 'free_shipping':
-                return 'Free Shipping';        
+                return 'Free Shipping';
         }
     }
 
@@ -81,7 +82,7 @@ class Coupon extends Model
         }
 
         // TODO: deal with the state here
-        
+
         return false;
     }
 
@@ -98,7 +99,7 @@ class Coupon extends Model
 
                 return true;
             })
-            ->count(); 
+            ->count();
 
         return sprintf('%s %s', $count = $count, Str::plural('use', $count));
     }

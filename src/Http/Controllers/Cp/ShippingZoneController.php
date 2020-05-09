@@ -71,7 +71,7 @@ class ShippingZoneController extends CpController
             ->each(function ($country) use (&$values) {
                 $values['countries'][] = $country->id;
             });
-        
+
         collect($zone->rates)
             ->each(function ($rate) use (&$values) {
                 $values['rates'][] = $rate->toArray();

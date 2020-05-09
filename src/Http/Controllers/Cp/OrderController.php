@@ -57,7 +57,7 @@ class OrderController extends CpController
 
         collect($order->billingAddress->getAttributes())
             ->each(function ($value, $key) use (&$values) {
-                 $values["billing_{$key}"] = $value;
+                $values["billing_{$key}"] = $value;
             });
 
         collect($order->shippingAddress->getAttributes())
@@ -88,7 +88,7 @@ class OrderController extends CpController
             'meta'      => $fields->meta(),
             'crumbs'    => $crumbs,
             'action'    => cp_route('orders.update', ['order' => $order->uuid]),
-            'title'     => "Order #{$order->id}"
+            'title'     => "Order #{$order->id}",
         ]);
     }
 

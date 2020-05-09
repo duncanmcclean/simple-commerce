@@ -23,7 +23,7 @@ class SimpleCommerce
                     static::$gateways[] = [
                         $class,
                         $config,
-                    ];   
+                    ];
                 }
             }
 

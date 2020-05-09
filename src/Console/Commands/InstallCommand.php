@@ -16,6 +16,7 @@ class InstallCommand extends Command
     {
         if (! $this->confirm('Have you already setup a database?')) {
             $this->error('Please setup a database then run this command again.');
+
             return;
         }
 

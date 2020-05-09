@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Seeders;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
-use Statamic\Stache\Stache;
 use Illuminate\Database\Seeder;
+use Statamic\Stache\Stache;
 
 class CountrySeeder extends Seeder
 {

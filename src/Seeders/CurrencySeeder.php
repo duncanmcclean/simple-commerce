@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Seeders;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
-use Statamic\Stache\Stache;
 use Illuminate\Database\Seeder;
+use Statamic\Stache\Stache;
 
 class CurrencySeeder extends Seeder
 {

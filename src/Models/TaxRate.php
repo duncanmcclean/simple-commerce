@@ -21,7 +21,7 @@ class TaxRate extends Model
 
     public function products()
     {
-        return $this->hasMany(TaxRate::class);
+        return $this->hasMany(self::class);
     }
 
     public function updateUrl()

@@ -16,7 +16,7 @@ class OrderData extends Data
                 $data['items_count'] += $lineItem->quantity;
 
                 return $lineItem->templatePrep();
-            })->toArray(); 
+            })->toArray();
 
         $data['order_status'] = $original->orderStatus->toArray();
         $data['item_total'] = Currency::parse($original->item_total);

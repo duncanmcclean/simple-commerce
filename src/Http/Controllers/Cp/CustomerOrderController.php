@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use Statamic\Contracts\Auth\User as UserContract;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Statamic\Contracts\Auth\User as UserContract;
 use Statamic\Http\Controllers\CP\CpController;
 
 class CustomerOrderController extends CpController

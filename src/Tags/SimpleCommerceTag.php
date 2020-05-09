@@ -132,7 +132,7 @@ class SimpleCommerceTag extends Tags
     public function orders()
     {
         if (Auth::guest()) {
-            return null;
+            return;
         }
 
         if ($this->getParam('get')) {
@@ -157,8 +157,8 @@ class SimpleCommerceTag extends Tags
     public function form()
     {
         return FormBuilder::build(
-            $this->getParam('for') ?? $this->getParam('in'), 
-            collect($this->params)->toArray(), 
+            $this->getParam('for') ?? $this->getParam('in'),
+            collect($this->params)->toArray(),
             $this->parse()
         );
     }
@@ -176,7 +176,7 @@ class SimpleCommerceTag extends Tags
         }
 
         return ($this->content === '')
-            ? !empty($errors)
+            ? ! empty($errors)
             : $this->parseLoop($errors);
     }
 

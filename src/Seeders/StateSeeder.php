@@ -4,8 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Seeders;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
-use Statamic\Stache\Stache;
 use Illuminate\Database\Seeder;
+use Statamic\Stache\Stache;
 
 class StateSeeder extends Seeder
 {

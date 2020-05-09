@@ -47,7 +47,7 @@ class CheckoutController
 
                 collect($request->all())
                     ->reject(function ($value, $key) use ($fields) {
-                        return !in_array($key, $fields);
+                        return ! in_array($key, $fields);
                     })
                     ->each(function ($value, $key) use ($customer) {
                         $customer->{$key} = $value;

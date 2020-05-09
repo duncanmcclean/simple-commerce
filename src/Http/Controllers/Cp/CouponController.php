@@ -16,14 +16,14 @@ class CouponController extends CpController
 
         return view('simple-commerce::cp.coupons.index', [
             'coupons' => Coupon::paginate(config('statamic.cp.pagination_size')),
-            'createUrl' => (new Coupon())->createUrl(), 
+            'createUrl' => (new Coupon())->createUrl(),
         ]);
     }
 
     public function create()
     {
         $this->authorize('create', Coupon::class);
-        
+
         $crumbs = Breadcrumbs::make(['text' => 'Simple Commerce'], ['text' => 'Coupons', 'url' => cp_route('coupons.index')]);
 
         $blueprint = (new Coupon())->blueprint();
