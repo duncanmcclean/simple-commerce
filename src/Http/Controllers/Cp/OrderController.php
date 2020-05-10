@@ -55,12 +55,12 @@ class OrderController extends CpController
 
         $values = $order->toArray();
 
-        collect($order->billingAddress->getAttributes())
+        collect($order->billingAddress)
             ->each(function ($value, $key) use (&$values) {
                 $values["billing_{$key}"] = $value;
             });
 
-        collect($order->shippingAddress->getAttributes())
+        collect($order->shippingAddress)
             ->each(function ($value, $key) use (&$values) {
                 $values["shipping_{$key}"] = $value;
             });
