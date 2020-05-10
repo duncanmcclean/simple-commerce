@@ -109,7 +109,8 @@ class Product extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('product');
+        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
+            ->find('product');
     }
 
     public function delete()

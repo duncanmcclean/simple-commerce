@@ -69,7 +69,8 @@ class Order extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('order');
+        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
+            ->find('order');
     }
 
     public function scopeCompleted($query)

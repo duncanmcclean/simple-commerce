@@ -59,6 +59,7 @@ class ShippingZone extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('shipping_zone');
+        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
+            ->find('shipping_zone');
     }
 }

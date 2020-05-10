@@ -39,6 +39,7 @@ class OrderStatus extends Model
 
     public function blueprint()
     {
-        return Blueprint::find('order_status');
+        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
+            ->find('order_status');
     }
 }
