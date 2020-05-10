@@ -10,6 +10,8 @@ class DuplicateProductController extends CpController
 {
     public function __invoke(Product $product)
     {
+        $this->authorize('update', $product);
+
         $duplicate = $product->replicate();
 
         $duplicate->title .= ' (Duplicate)';
