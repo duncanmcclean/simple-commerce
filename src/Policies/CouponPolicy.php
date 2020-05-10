@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Policies;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\User;
+use Illuminate\Database\Eloquent\Model as User;
 
 class CouponPolicy
 {
