@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use App\User;
+use Barryvdh\DomPDF\ServiceProvider as DomPDFServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,6 +41,7 @@ abstract class TestCase extends OrchestraTestCase
         return [
             StatamicServiceProvider::class,
             ServiceProvider::class,
+            DomPDFServiceProvider::class, // Our PDF package
         ];
     }
 

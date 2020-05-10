@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Models;
 
 use DoubleThreeDigital\SimpleCommerce\Data\OrderData;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
+use DoubleThreeDigital\SimpleCommerce\Support\GeneratesReceipt;
 use Illuminate\Database\Eloquent\Model;
 use Statamic\Facades\Blueprint;
 
@@ -91,5 +92,10 @@ class Order extends Model
     public function templatePrep()
     {
         return (new OrderData)->data($this->toArray(), $this);
+    }
+
+    public function generateReceipt($storagePath = false)
+    {
+        return (new GeneratesReceipt)->generate($this, $storagePath);
     }
 }

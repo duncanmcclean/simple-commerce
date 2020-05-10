@@ -25,6 +25,7 @@
         }
     },
     "require": {
+        "barryvdh/laravel-dompdf": "^0.8.0@dev",
         "doctrine/dbal": "^2.10",
         "laravel/helpers": "^1.1",
         "laravel/slack-notification-channel": "^3.0@dev",
