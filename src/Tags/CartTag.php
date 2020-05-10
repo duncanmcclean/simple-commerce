@@ -50,6 +50,10 @@ class CartTag extends Tags
             return Currency::parse($cart->get('coupon_total'));
         }
 
+        if ($this->getParam('unformatted_total')) {
+            return $cart->get('total');
+        }
+
         return Currency::parse($cart->get('total'));
     }
 
