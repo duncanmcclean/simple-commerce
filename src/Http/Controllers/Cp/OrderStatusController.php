@@ -2,13 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusDeleteRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\OrderStatusRequest;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Event;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderStatusController extends CpController

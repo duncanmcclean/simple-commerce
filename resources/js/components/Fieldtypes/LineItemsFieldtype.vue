@@ -20,14 +20,19 @@
                     <td class="text-right">{{ value.totals.items }}</td>
                 </tr>
                 <tr>
-                    <td>Tax Total</td>
+                    <td>Coupon Total</td>
                     <td></td>
-                    <td class="text-right">{{ value.totals.tax }}</td>
+                    <td class="text-right">{{ value.totals.coupon }}</td>
                 </tr>
                 <tr>
                     <td>Shipping Total</td>
                     <td></td>
                     <td class="text-right">{{ value.totals.shipping }}</td>
+                </tr>
+                <tr>
+                    <td>Tax Total</td>
+                    <td></td>
+                    <td class="text-right">{{ value.totals.tax }}</td>
                 </tr>
                 <tr>
                     <td><strong>Overall Total</strong></td>

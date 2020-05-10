@@ -68,6 +68,7 @@ class OrderController extends CpController
         $values['line_items'] = [
             'totals' => [
                 'items'     => Currency::parse($order->item_total),
+                'coupon'    => Currency::parse($order->coupon_total),
                 'tax'       => Currency::parse($order->tax_total),
                 'shipping'  => Currency::parse($order->shipping_total),
                 'overall'   => Currency::parse($order->total),
