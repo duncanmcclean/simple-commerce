@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Policies;
 
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Statamic\Auth\User;
+use App\User;
 
 class ProductCategoryPolicy
 {
