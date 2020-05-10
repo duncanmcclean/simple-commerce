@@ -18,6 +18,9 @@ class OrderData extends Data
                 return $lineItem->templatePrep();
             })->toArray();
 
+        $data['customer'] = $original->customer->toArray();
+        $data['billing_address'] = $original->billingAddress->toArray();
+        $data['shipping_address'] = $original->shippingAddress->toArray();
         $data['order_status'] = $original->orderStatus->toArray();
         $data['item_total'] = Currency::parse($original->item_total);
         $data['shipping_total'] = Currency::parse($original->shipping_total);
