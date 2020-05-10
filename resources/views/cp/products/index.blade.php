@@ -50,6 +50,11 @@
                                 <simple-commerce-actions>
                                     <simple-commerce-action-item
                                         type="standard"
+                                        text="Duplicate"
+                                        action="{{ cp_route('products.duplicate', ['product' => $product]) }}"
+                                    ></simple-commerce-action-item>
+                                    <simple-commerce-action-item
+                                        type="standard"
                                         text="Edit"
                                         action="{{ $product->editUrl() }}"
                                     ></simple-commerce-action-item>

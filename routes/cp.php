@@ -9,6 +9,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::post('/create', 'ProductController@store')->name('.store');
         Route::get('/edit/{product}', 'ProductController@edit')->name('.edit');
         Route::post('/edit/{product}', 'ProductController@update')->name('.update');
+        Route::get('/duplicate/{product}', 'DuplicateProductController')->name('.duplicate');
         Route::delete('/delete/{product}', 'ProductController@destroy')->name('.destroy');
     });
 
