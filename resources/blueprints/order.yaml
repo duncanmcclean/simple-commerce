@@ -18,6 +18,17 @@ sections:
           width: 33
           listable: hidden
           display: 'Item Total'
+          readOnly: true
+          read_only: true
+      -
+        handle: coupon_total
+        field:
+          read_only: true
+          type: money
+          localizable: false
+          width: 33
+          listable: hidden
+          display: 'Coupon Total'
       -
         handle: tax_total
         field:
@@ -26,6 +37,7 @@ sections:
           width: 33
           listable: hidden
           display: 'Tax Total'
+          read_only: true
       -
         handle: shipping_total
         field:
@@ -34,6 +46,7 @@ sections:
           width: 33
           listable: hidden
           display: 'Shipping Total'
+          read_only: true
       -
         handle: total
         field:
@@ -42,6 +55,7 @@ sections:
           width: 33
           listable: hidden
           display: 'Overall Total'
+          read_only: true
       -
         handle: line_items_section
         field:
