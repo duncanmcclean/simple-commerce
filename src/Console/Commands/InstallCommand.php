@@ -31,7 +31,6 @@ class InstallCommand extends Command
     protected function publish()
     {
         $this->call('vendor:publish', ['--tag' => 'simple-commerce-config']);
-        $this->call('vendor:publish', ['--tag' => 'simple-commerce-blueprints']);
         $this->call('vendor:publish', ['--tag' => 'simple-commerce-fieldsets']);
         $this->call('vendor:publish', ['--tag' => 'simple-commerce-assets']);
 
