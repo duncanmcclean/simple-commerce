@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Actions;
 use App\User;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
-use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
