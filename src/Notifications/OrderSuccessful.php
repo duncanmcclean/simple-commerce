@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -9,7 +10,7 @@ class OrderSuccessful extends Notification
 {
     public $order;
 
-    public function __construct($order)
+    public function __construct(Order $order)
     {
         $this->order = $order;
     }
@@ -27,6 +28,10 @@ class OrderSuccessful extends Notification
             ->markdown('simple-commerce::mail.order-successful', [
                 'order' => $this->order,
                 'customer' => $this->order->customer,
+            ])
+            ->attach($this->order->generateReceipt(true), [
+                'as' => 'receipt.pdf',
+                'mime' => 'text/pdf',
             ]);
     }
 }
