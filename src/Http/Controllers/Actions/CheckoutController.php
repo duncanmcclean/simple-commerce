@@ -22,14 +22,16 @@ class CheckoutController
     {
         $order = Order::where('uuid', Session::get(config('simple-commerce.cart_session_key')))->first();
 
-        $payment = (new $request->gateway)->completePurchase($request->all());
+        if (! $request->gateway && $order->total === 00.00) {
+            $payment = (new $request->gateway)->completePurchase($request->all());
 
-        if ($payment === true) {
-            $order->update([
-                'is_paid' => true,
-            ]);
+            if ($payment === true) {
+                $order->update([
+                    'is_paid' => true,
+                ]);
 
-            Event::dispatch(new OrderPaid($order));
+                Event::dispatch(new OrderPaid($order));
+            }
         }
 
         if (Auth::guest()) {
@@ -39,7 +41,7 @@ class CheckoutController
             $customer = $customerModel::where('email', $request->email)->first();
 
             if ($customer === null) {
-                $customer = new $customerModel();
+                $customer = new $customerModel()
                 $fields = $customerModel->fields;
 
                 collect($request->all())
