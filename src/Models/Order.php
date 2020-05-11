@@ -53,6 +53,11 @@ class Order extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function editUrl()
     {
         return cp_route('orders.edit', ['order' => $this->attributes['uuid']]);
