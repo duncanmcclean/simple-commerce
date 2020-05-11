@@ -25,7 +25,10 @@ class CartTag extends Tags
 
     public function count()
     {
-        $this->dealWithSession();
+        // We don't want to create a cart for every page request with the cart:count tag on it
+        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+            return 0;
+        }
 
         return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('items_count');
     }
