@@ -2,11 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
+use Illuminate\Support\Collection;
 use Statamic\View\View;
 
 class DummyGateway implements Gateway
 {
-    public function completePurchase($data)
+    public function completePurchase(array $data, float $total): Collection
     {
         $isPaid = true;
 
@@ -18,7 +20,13 @@ class DummyGateway implements Gateway
             $isPaid = false;
         }
 
-        return $isPaid;
+        return collect([
+            'is_complete' => $isPaid,
+            'amount'      => $total,
+            'data'        => [
+                'id' => 'DummyID',
+            ],
+        ]);
     }
 
     public function rules(): array
@@ -32,18 +40,21 @@ class DummyGateway implements Gateway
         ];
     }
 
-    public function paymentForm()
+    public function paymentForm(): string
     {
         return (new View())
             ->template('simple-commerce::gateways.dummy')
             ->with([
                 'class' => get_class($this),
-            ]);
+            ])
+            ->render();
     }
 
-    public function refund(array $gatewayData)
+    public function refund(Transaction $transaction): Collection
     {
-        return true;
+        return collect([
+            'is_refunded' => true,
+        ]);
     }
 
     public function name(): string

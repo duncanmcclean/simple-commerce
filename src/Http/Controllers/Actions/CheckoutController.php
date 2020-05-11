@@ -7,10 +7,12 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantLowStock;
 use DoubleThreeDigital\SimpleCommerce\Events\VariantOutOfStock;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
@@ -22,15 +24,32 @@ class CheckoutController
     {
         $order = Order::where('uuid', Session::get(config('simple-commerce.cart_session_key')))->first();
 
-        $payment = (new $request->gateway)->completePurchase($request->all());
+        $gateway = (new $request->gateway)->completePurchase($request->all(), $order->total);
 
-        if ($payment === true) {
-            $order->update([
-                'is_paid' => true,
-            ]);
-
+        if ($gateway->get('is_complete') === true) {
+            $order->update(['is_paid' => true]);
             Event::dispatch(new OrderPaid($order));
         }
+
+        // dd([
+        //     'gateway'   => $request->gateway,
+        //     'amount'    => $gateway->get('amount'),
+        //     'is_complete' => $gateway->get('is_complete'),
+        //     'is_refunded' => false,
+        //     'gateway_data' => $gateway->get('data'),
+        //     'order_id' => $order->id,
+        //     'currency_id' => Currency::get()['id'],
+        // ]);
+
+        $transaction = Transaction::create([
+            'gateway'   => $request->gateway,
+            'amount'    => $gateway->get('amount'),
+            'is_complete' => $gateway->get('is_complete'),
+            'is_refunded' => false,
+            'gateway_data' => $gateway->get('data'),
+            'order_id' => $order->id,
+            'currency_id' => Currency::get()['id'],
+        ]);
 
         if (Auth::guest()) {
             $customerModel = config('simple-commerce.customers.model');
@@ -70,6 +89,10 @@ class CheckoutController
         ]);
 
         $order->shippingAddress->update([
+            'customer_id' => $customer->id,
+        ]);
+
+        $transaction->update([
             'customer_id' => $customer->id,
         ]);
 
