@@ -16,15 +16,16 @@ class OrderStatusUpdated extends Notification
         $this->customer = $customer;
     }
 
-    public function via($notifiable)
+    public function via($notifiable): array
     {
-        return ['mail'];
+        return config('simple-commerce.notifications.notifications.'.static::class);
     }
 
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
             ->success()
+            ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
             ->subject('Order status updated')
             ->markdown('simple-commerce::mail.order-updated', [
                 'order' => $this->order,

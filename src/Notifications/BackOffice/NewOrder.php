@@ -7,7 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderSuccessful extends Notification
+class NewOrder extends Notification
 {
     public $order;
     public $customer;
@@ -21,20 +21,21 @@ class OrderSuccessful extends Notification
         $this->total = Currency::parse($this->order->total);
     }
 
-    public function via($notifiable)
+    public function via($notifiable): array
     {
-        return config('simple-commerce.notifications.channel');
+        return config('simple-commerce.notifications.notifications.'.static::class);
     }
 
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
             ->success()
+            ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
             ->subject('Successful Order')
             ->line("Order #{$this->order->id} has been successfully completed. The total was {$this->total}.");
     }
 
-    public function toSlack($notifiable)
+    public function toSlack($notifiable): SlackMessage
     {
         $order = $this->order;
         $customer = $this->customer;
