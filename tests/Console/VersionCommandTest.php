@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Console;
 
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Facades\Statamic\Console\Processes\Composer;
 
@@ -17,11 +18,11 @@ class VersionCommandTest extends TestCase
     /** @test */
     public function can_get_version()
     {
-        $this->markTestIncomplete();
+        $version = SimpleCommerce::getVersion();
 
-//        $this
-//            ->artisan('simple-commerce:version')
-//            ->expectsOutput('You are running Simple Commerce <Any>')
-//            ->assertExitCode(0);
+        $this
+           ->artisan('simple-commerce:version')
+           ->expectsOutput("You are running Simple Commerce $version.")
+           ->assertExitCode(0);
     }
 }
