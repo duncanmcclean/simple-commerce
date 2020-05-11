@@ -42,7 +42,7 @@ class SimpleCommerce
                     'class'             => $gateway[0],
                     'formatted_class'   => addslashes($gateway[0]),
                     'rules'             => $instance->rules(),
-                    'payment_form'      => $instance->paymentForm()->render(),
+                    'payment_form'      => $instance->paymentForm(),
                     'config'            => $gateway[1],
                 ];
             })
