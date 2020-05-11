@@ -9,8 +9,6 @@ use Illuminate\Notifications\Notifiable;
 
 trait IsACustomer
 {
-    use Notifiable;
-
     public function addresses()
     {
         return $this->hasMany(Address::class, 'customer_id', 'id');
