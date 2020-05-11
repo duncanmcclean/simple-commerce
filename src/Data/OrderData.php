@@ -10,7 +10,6 @@ class OrderData extends Data
     public function data(array $data, $original)
     {
         $data['items_count'] = 0;
-
         $data['line_items'] = $original->lineItems
             ->map(function (LineItem $lineItem) use (&$data) {
                 $data['items_count'] += $lineItem->quantity;
