@@ -31,16 +31,6 @@ class CheckoutController
             Event::dispatch(new OrderPaid($order));
         }
 
-        // dd([
-        //     'gateway'   => $request->gateway,
-        //     'amount'    => $gateway->get('amount'),
-        //     'is_complete' => $gateway->get('is_complete'),
-        //     'is_refunded' => false,
-        //     'gateway_data' => $gateway->get('data'),
-        //     'order_id' => $order->id,
-        //     'currency_id' => Currency::get()['id'],
-        // ]);
-
         $transaction = Transaction::create([
             'gateway'   => $request->gateway,
             'amount'    => $gateway->get('amount'),
