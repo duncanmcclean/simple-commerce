@@ -105,13 +105,13 @@ class ProductController extends CpController
 
     public function edit($product)
     {
-        $this->authorize('update', $product);
-
         $crumbs = Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Products', 'url' => cp_route('products.index')]]);
 
         $product = Product::with('variants', 'attributes')
             ->where('uuid', $product)
             ->first();
+
+        $this->authorize('update', $product);
 
         $fields = $product->toArray();
 

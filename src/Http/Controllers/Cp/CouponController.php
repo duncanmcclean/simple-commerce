@@ -62,13 +62,11 @@ class CouponController extends CpController
         ];
     }
 
-    public function edit($coupon)
+    public function edit(Coupon $coupon)
     {
         $this->authorize('update', $coupon);
 
         $crumbs = Breadcrumbs::make(['text' => 'Simple Commerce'], ['text' => 'Coupons', 'url' => cp_route('coupons.index')]);
-
-        $coupon = Coupon::where('uuid', $coupon)->first();
 
         $values = $coupon->toArray();
         $blueprint = (new Coupon())->blueprint();
