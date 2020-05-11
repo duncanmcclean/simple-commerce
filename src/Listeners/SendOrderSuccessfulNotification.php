@@ -27,6 +27,6 @@ class SendOrderSuccessfulNotification
     {
         Notification::route('mail', config('simple-commerce.notifications.mail.to'))
             ->route('slack', config('simple-commerce.notifications.slack.webhook_url'))
-            ->notify(new NewOrder($order, $order->customer));
+            ->notify(new NewOrder($order));
     }
 }

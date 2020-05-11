@@ -24,9 +24,9 @@ class OrderRefunded extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->success()
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
-            ->subject("Your order #{$this->order->id} has been refunded")
-            ->line('Your order from '.config('app.name').' has been refunded. The order total was '.Currency::parse($this->order->total).'.');
+            ->subject("Order #{$this->order->id} Refunded")
+            ->line("Hi, {$this->order->customer->name}")
+            ->line("As requested, your order #{$this->order->id} has been refunded. Refunds can take a while to come into your bank account due to payment processing. The total refunded was ".Currency::parse($this->order->total).".");
     }
 }

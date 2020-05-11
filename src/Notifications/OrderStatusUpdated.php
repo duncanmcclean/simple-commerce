@@ -24,12 +24,10 @@ class OrderStatusUpdated extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->success()
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
-            ->subject('Order status updated')
-            ->markdown('simple-commerce::mail.order-updated', [
-                'order' => $this->order,
-                'customer' => $this->customer,
-            ]);
+            ->subject("Order #{$this->order->id}")
+            ->line("Hi, {$this->customer->name}")
+            ->line("The status of your order #{$this->order->id} has been updated. It is now {$this->order->orderStatus->name}.")
+            ->line("If you have any questions regarding your order, please contact us.");
     }
 }

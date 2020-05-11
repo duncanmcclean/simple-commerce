@@ -24,16 +24,16 @@ class VariantOutOfStock extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->error()
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
-            ->subject('Variant out of stock')
-            ->line("{$this->variant->name} ({$this->variant->sku}) is out of stock.");
+            ->subject("Out of Stock - {$this->variant->name}")
+            ->line("The variant {$this->variant->name} ({$this->variant->sku}) is now out of stock.");
     }
 
     public function toSlack($notifiable): SlackMessage
     {
         return (new SlackMessage())
             ->error()
+            ->from('Simple Commerce', ':shopping_trolley:')
             ->content("{$this->variant->name} ({$this->variant->sku}) is out of stock.");
     }
 }

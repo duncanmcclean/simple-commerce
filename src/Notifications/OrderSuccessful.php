@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 class OrderSuccessful extends Notification
@@ -24,7 +23,6 @@ class OrderSuccessful extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->success()
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
             ->subject("Order #{$this->order->id}")
             ->markdown('simple-commerce::mail.order-successful', [

@@ -24,16 +24,16 @@ class VariantStockRunningLow extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->error()
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
-            ->subject('Variant running low on stock')
-            ->line("{$this->variant->name} ({$this->variant->sku}) is running low on stock. There are currently {$this->variant->stock} in stock.");
+            ->subject("Low Stock - {$this->variant->name}")
+            ->line("The variant {$this->variant->name} ({$this->variant->sku}) is running low on stock. The current stock level is {$this->variant->stock}.");
     }
 
     public function toSlack($notifiable): SlackMessage
     {
         return (new SlackMessage())
             ->error()
-            ->content("{$this->variant->name} ({$this->variant->sku}) is running low on stock. There are currently {$this->variant->stock} in stock.");
+            ->from('Simple Commerce', ':shopping_trolley:')
+            ->content("{$this->variant->name} ({$this->variant->sku}) is running low on stock. The current stock level is {$this->variant->stock}.");
     }
 }
