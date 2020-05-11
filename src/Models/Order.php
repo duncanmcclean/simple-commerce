@@ -21,6 +21,10 @@ class Order extends Model
         'is_completed'  => 'boolean',
     ];
 
+    protected $appends = [
+        'hasBeenRefunded'
+    ];
+
     public function lineItems()
     {
         return $this->hasMany(LineItem::class);
@@ -102,5 +106,10 @@ class Order extends Model
     public function generateReceipt($storagePath = false)
     {
         return (new GeneratesReceipt)->generate($this, $storagePath);
+    }
+
+    public function getHasBeenRefundedAttribute()
+    {
+        return isset($this->transactions[0]) ? $this->transactions[0]['is_refunded'] : false;
     }
 }
