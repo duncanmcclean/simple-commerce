@@ -28,12 +28,12 @@
         "barryvdh/laravel-dompdf": "^0.8.0@dev",
         "doctrine/dbal": "^2.10",
         "laravel/helpers": "^1.1",
-        "laravel/slack-notification-channel": "^3.0@dev",
         "statamic/cms": "^3.0@beta"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0",
-        "nunomaduro/collision": "^4.2"
+        "nunomaduro/collision": "^4.2",
+        "laravel/slack-notification-channel": "^3.0@dev"
     },
     "minimum-stability": "dev",
     "scripts": {
