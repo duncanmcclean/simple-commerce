@@ -48,15 +48,32 @@ return [
     /**
      * Notifications
      *
-     * Configure where we send your store's back
-     * office notifications.
+     * Configure what notifications we send and who we 
+     * send them to.
      */
 
     'notifications' => [
-        'channel' => ['mail'],
+        'notifications' => [
+            \DoubleThreeDigital\SimpleCommerce\Events\BackOffice\NewOrder::class => ['mail'],
+            \DoubleThreeDigital\SimpleCommerce\Events\BackOffice\VariantOutOfStock::class => ['mail'],
+            \DoubleThreeDigital\SimpleCommerce\Events\BackOffice\VariantStockRunningLow::class => ['mail'],
+            \DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded::class => ['mail'],
+            \DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated::class => ['mail'],
+            \DoubleThreeDigital\SimpleCommerce\Events\OrderSuccessful::class => ['mail'],
+        ],
 
-        'mail_to' => 'admin@example.com',
-        'slack_webhook' => '',
+        'mail' => [
+            'to' => 'hello@example.com',
+
+            'from' => [
+                'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+                'name' => env('MAIL_FROM_NAME', 'Example'),
+            ],
+        ],
+
+        'slack' => [
+            'webhook_url' => '',
+        ],
     ],
 
     /**
