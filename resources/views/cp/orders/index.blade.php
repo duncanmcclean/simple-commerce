@@ -56,16 +56,15 @@
 
                                     <div class="divider"></div>
 
-{{--                                    @if(! $order->is_refunded)--}}
-{{--                                        @if (auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())--}}
-{{--                                            <simple-commerce-action-item--}}
-{{--                                                type="standard"--}}
-{{--                                                text="Refund"--}}
-{{--                                                action="{{ cp_route('orders.refund', ['order' => $order->uuid]) }}"--}}
-{{--                                            ></simple-commerce-action-item>--}}
-{{--                                        @endif--}}
-{{--                                    @endif--}}
-
+                                    @if(! $order->hasBeenRefunded)
+                                        @if (auth()->user()->hasPermission('refund orders') || auth()->user()->isSuper())
+                                            <simple-commerce-action-item
+                                                type="standard"
+                                                text="Refund"
+                                                action="{{ cp_route('orders.refund', ['order' => $order->uuid]) }}"
+                                            ></simple-commerce-action-item>
+                                        @endif
+                                    @endif
                                     <simple-commerce-action-item
                                         type="standard"
                                         text="Edit"

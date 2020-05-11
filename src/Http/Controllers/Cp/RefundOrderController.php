@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Events\OrderRefunded;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use DoubleThreeDigital\SimpleCommerce\StripeGateway;
 use Illuminate\Support\Facades\Event;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -13,22 +12,18 @@ class RefundOrderController extends CpController
     public function store(Order $order)
     {
         $this->authorize('refund', $order);
+        
+        $transaction = (new $order->transactions[0]);
 
-        // TODO: this needs to be brought back
+        if ($order->getHasBeenRefundedAttribute()) {
+            return back()->with('error', 'Order has already been refunded.');
+        }
 
-        // if ($order->is_refunded) {
-        //     return back()->with('error', 'Order has already been refunded.');
-        // }
+        $refund = (new $transaction['gateway'])->refund($transaction);
 
-        // $refund = (new $order->gateway_data['gateway'])->refund($order->gateway_data);
+        $transaction->update($refund);
 
-        // if ($refund != true) {
-        //     return back()->with('error', $refund);
-        // }
-
-        // $order->update(['is_refunded' => true]);
-
-        // Event::dispatch(new OrderRefunded($order));
+        Event::dispatch(new OrderRefunded($order));
 
         return back()->with('success', 'Order has been refunded.');
     }
