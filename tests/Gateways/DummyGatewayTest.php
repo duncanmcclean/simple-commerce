@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
+use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class DummyGatewayTest extends TestCase
@@ -25,9 +26,11 @@ class DummyGatewayTest extends TestCase
             'expiryMonth' => '07',
             'expiryYear' => '2025',
             'cvc' => '123',
-        ]);
+        ], 10.00);
 
-        $this->assertTrue($completePurchase);
+        $this->assertIsObject($completePurchase);
+        $this->assertSame($completePurchase->get('is_complete'), true);
+        $this->assertSame($completePurchase->get('amount'), 10.00);
     }
 
     /** @test */
@@ -41,7 +44,7 @@ class DummyGatewayTest extends TestCase
             'expiryMonth' => '07',
             'expiryYear' => '2025',
             'cvc' => '123',
-        ]);
+        ], 10.00);
     }
 
     /** @test */
@@ -53,9 +56,11 @@ class DummyGatewayTest extends TestCase
             'expiryMonth' => '07',
             'expiryYear' => '2019',
             'cvc' => '123',
-        ]);
+        ], 10.00);
 
-        $this->assertFalse($completePurchase);
+        $this->assertIsObject($completePurchase);
+        $this->assertSame($completePurchase->get('is_complete'), false);
+        $this->assertSame($completePurchase->get('amount'), 10.00);
     }
 
     /** @test */
@@ -76,10 +81,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_return_payment_form()
     {
-        $form = $this
-            ->gateway
-            ->paymentForm()
-            ->render();
+        $form = $this->gateway->paymentForm();
 
         $this->assertIsString($form);
         $this->assertStringContainsString('type="number" name="cardNumber"', $form);
@@ -88,17 +90,12 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_issue_refund()
     {
-        $refund = $this->gateway->refund([
-            'is_paid' => true,
-            'cardholder' => 'Mr Joe Bloggs',
-            'cardNumber' => '4242 4242 4242 4242',
-            'expiryMonth' => '07',
-            'expiryYear' => '2019',
-            'cvc' => '123',
-            'transaction_id' => uniqid(),
-        ]);
+        $transaction = factory(Transaction::class)->create();
 
-        $this->assertTrue($refund);
+        $refund = $this->gateway->refund($transaction);
+
+        $this->assertIsObject($refund);
+        $this->assertSame($refund->get('is_refunded'), true);
     }
 
     /** @test */
