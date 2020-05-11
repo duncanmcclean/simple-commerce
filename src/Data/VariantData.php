@@ -9,6 +9,8 @@ class VariantData extends Data
 {
     public function data(array $data, $original)
     {
+        $data['images'] = [];
+
         collect($original->images)
             ->each(function ($image) use (&$data) {
                 $data['images'][] = $image;
