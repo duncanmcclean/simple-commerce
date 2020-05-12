@@ -10,7 +10,7 @@ class CountryFieldtype extends Relationship
 {
     protected $icon = 'earth';
 
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $country = Country::find($id);
 
