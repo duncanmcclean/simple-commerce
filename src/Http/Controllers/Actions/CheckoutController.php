@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
@@ -20,38 +19,63 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutController
 {
+    public $request;
+    public $order;
+
     public function store(CheckoutRequest $request)
     {
-        $order = Order::where('uuid', Session::get(config('simple-commerce.cart_session_key')))->first();
+        $this->request = $request;
+        $this->order = Order::where('uuid', Session::get(config('simple-commerce.cart_session_key')))->first();
 
-        $gateway = (new $request->gateway)->completePurchase($request->all(), $order->total);
+        $this->processPayment();
+        $this->processCustomer();
+        $this->processStockUpdates();
+        $this->processCoupon();
+
+        $this->order->update(['is_completed' => true]);
+        Event::dispatch(new OrderSuccessful($this->order));
+        Session::remove(config('simple-commerce.cart_session_key'));
+
+        return 
+            $request->_redirect ? 
+            redirect($request->_redirect)->with('order', $this->order->templatePrep())->with('receipt', $this->order->generateReceipt()) :
+            back()->with('order', $this->order->templatePrep())->with('receipt', $this->order->generateReceipt());
+    }
+
+    protected function processPayment()
+    {
+        $gateway = (new $this->request->gateway)
+            ->completePurchase($this->request->all(), $this->order->total);
 
         if ($gateway->get('is_complete') === true) {
-            $order->update(['is_paid' => true]);
-            Event::dispatch(new OrderPaid($order));
+            $this->order->update(['is_paid' => true]);
+            Event::dispatch(new OrderPaid($this->order));
         }
 
-        $transaction = Transaction::create([
-            'gateway'   => $request->gateway,
+        $this->order->transactions()->create([
+            'gateway'   => $this->request->gateway,
             'amount'    => $gateway->get('amount'),
             'is_complete' => $gateway->get('is_complete'),
             'is_refunded' => false,
             'gateway_data' => $gateway->get('data'),
-            'order_id' => $order->id,
+            'order_id' => $this->order->id,
             'currency_id' => Currency::get()['id'],
         ]);
+    }
 
+    protected function processCustomer()
+    {
         if (Auth::guest()) {
             $customerModel = config('simple-commerce.customers.model');
             $customerModel = new $customerModel();
 
-            $customer = $customerModel::where('email', $request->email)->first();
+            $customer = $customerModel::where('email', $this->request->email)->first();
 
             if ($customer === null) {
                 $customer = new $customerModel();
                 $fields = $customerModel->fields;
 
-                collect($request->all())
+                collect($this->request->all())
                     ->reject(function ($value, $key) use ($fields) {
                         return ! in_array($key, $fields);
                     })
@@ -70,24 +94,15 @@ class CheckoutController
             $customer = Auth::user();
         }
 
-        $order->update([
-            'customer_id' => $customer->id,
-        ]);
+        $this->order->update(['customer_id' => $customer->id]);
+        $this->order->billingAddress()->update(['customer_id' => $customer->id]);
+        $this->order->shippingAddress()->update(['customer_id' => $customer->id]);
+        $this->order->transactions()->update(['customer_id' => $customer->id]);
+    }
 
-        $order->billingAddress->update([
-            'customer_id' => $customer->id,
-        ]);
-
-        $order->shippingAddress->update([
-            'customer_id' => $customer->id,
-        ]);
-
-        $transaction->update([
-            'customer_id' => $customer->id,
-        ]);
-
-        // Manage variant totals
-        collect($order->lineItems)
+    public function processStockUpdates()
+    {
+        collect($this->order->lineItems)
             ->reject(function (LineItem $lineItem) {
                 if ($lineItem->variant->unlimited_stock) {
                     return true;
@@ -108,8 +123,12 @@ class CheckoutController
                     Event::dispatch(new VariantOutOfStock($lineItem->variant));
                 }
             });
+    }
 
-        // Do some coupon stuff
+    public function processCoupon()
+    {
+        $order = $this->order;
+
         collect($order->lineItems)
             ->reject(function (LineItem $lineItem) {
                 if (! $lineItem->coupon_id) {
@@ -125,17 +144,5 @@ class CheckoutController
             ->each(function ($couponId) use ($order) {
                 Event::dispatch(new CouponRedeemed(Coupon::find($couponId), $order));
             });
-
-        $order->update([
-            'is_completed' => true,
-        ]);
-
-        Event::dispatch(new OrderSuccessful($order));
-        Session::remove(config('simple-commerce.cart_session_key'));
-
-        return 
-            $request->_redirect ? 
-            redirect($request->_redirect)->with('order', $order->templatePrep())->with('receipt', $order->generateReceipt()) :
-            back()->with('order', $order->templatePrep())->with('receipt', $order->generateReceipt());
     }
 }
