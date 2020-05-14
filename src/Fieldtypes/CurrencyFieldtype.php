@@ -10,7 +10,7 @@ class CurrencyFieldtype extends Relationship
 {
     protected $icon = 'generic';
 
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $currency = Currency::find($id);
 
@@ -22,7 +22,13 @@ class CurrencyFieldtype extends Relationship
 
     public function getIndexItems($request)
     {
-        return Currency::all();
+        return Currency::all()
+            ->map(function (Currency $currency) {
+                return [
+                    'id' => $currency->id,
+                    'title' => "$currency->symbol $currency->name",
+                ];
+            });
     }
 
     public function getColumns()
