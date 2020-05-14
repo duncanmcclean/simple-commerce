@@ -4,7 +4,6 @@ labels: ''
 assignees: ''
 ---
 
-**Please try to fill out as much of the template as you can. Otherwise, we'll just close your pull request straight away.**
+<!-- Please try to fill out as much of the template as you can. Otherwise, we'll just close your pull request straight away. -->
 
-## Describe your pull request
-What have you added, changed, removed in this pull request?
+Please try and describe what you've changed/add, possible use cases and reference an issues.
