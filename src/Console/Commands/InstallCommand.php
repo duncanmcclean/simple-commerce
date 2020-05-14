@@ -69,7 +69,7 @@ class InstallCommand extends Command
             copy(__DIR__.'/stubs/AppUser.php.stub', app_path('User.php'));
         } else {
             // TODO: replace this link with one to the docs
-            $this->info("That's fine. Follow the instructions over here to make the necessary changes: https://todo.replace/me");
+            $this->info("That's fine. Follow the instructions over here to make the necessary changes: https://simple-commerce-docs.netlify.app/install.html#the-user-model");
         }
 
         return $this;
