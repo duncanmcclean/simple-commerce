@@ -40,7 +40,7 @@ class Cart
             'shipping_address_id' => null,
             'gateway' => SimpleCommerce::gateways()[0]['class'],
             'customer_id' => null,
-            'order_status_id' => OrderStatus::where('primary', true)->first()->id, // TODO: make this customisable later
+            'order_status_id' => OrderStatus::where('primary', true)->first()->id,
             'item_total' => 00.00,
             'tax_total' => 00.00,
             'shipping_total' => 00.00,
