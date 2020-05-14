@@ -23,6 +23,7 @@ class VariantDataTest extends TestCase
         $this->assertIsArray($data);
         $this->assertArrayHasKey('images', $data);
         $this->assertArrayHasKey('price', $data);
+        $this->assertArrayHasKey('unformatted_price', $data);
         $this->assertArrayHasKey('foo', $data);
     }
 }

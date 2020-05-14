@@ -22,6 +22,7 @@ class VariantData extends Data
             });
 
         $data['price'] = Currency::parse($original->price);
+        $data['unformatted_price'] = $original->price;
 
         return $data;
     }
