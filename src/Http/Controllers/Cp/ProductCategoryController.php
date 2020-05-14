@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductCategoryRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
+
 use Statamic\Http\Controllers\CP\CpController;
 
 class ProductCategoryController extends CpController
