@@ -11,7 +11,7 @@ class StateFieldtype extends Relationship
 {
     protected $icon = 'earth';
 
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $state = State::find($id);
 
@@ -23,7 +23,13 @@ class StateFieldtype extends Relationship
 
     public function getIndexItems($request)
     {
-        return State::all();
+        return State::all()
+            ->map(function ($state) {
+                return [
+                    'id' => $state->id,
+                    'title' => $state->name,
+                ];
+            });
     }
 
     public function getColumns()

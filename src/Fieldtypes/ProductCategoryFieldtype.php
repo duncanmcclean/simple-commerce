@@ -10,7 +10,7 @@ class ProductCategoryFieldtype extends Relationship
 {
     protected $icon = 'taxonomies';
 
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $category = ProductCategory::find($id);
 
@@ -22,7 +22,13 @@ class ProductCategoryFieldtype extends Relationship
 
     public function getIndexItems($request)
     {
-        return ProductCategory::all();
+        return ProductCategory::all()
+            ->map(function ($category) {
+                return [
+                    'id' => $category->id,
+                    'title' => $category->title,
+                ];
+            });
     }
 
     public function getColumns()

@@ -8,7 +8,7 @@ use Statamic\Fieldtypes\Relationship;
 
 class TaxRateFieldtype extends Relationship
 {
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $rate = TaxRate::find($id);
 
@@ -20,7 +20,13 @@ class TaxRateFieldtype extends Relationship
 
     public function getIndexItems($request)
     {
-        return TaxRate::all();
+        return TaxRate::all()
+            ->map(function ($rate) {
+                return [
+                    'id' => $rate->id,
+                    'title' => $rate->name,
+                ];
+            });
     }
 
     public function getColumns()

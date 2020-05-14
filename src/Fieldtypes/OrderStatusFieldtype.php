@@ -10,7 +10,7 @@ class OrderStatusFieldtype extends Relationship
 {
     protected $icon = 'select';
 
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $status = OrderStatus::find($id);
 
@@ -22,7 +22,13 @@ class OrderStatusFieldtype extends Relationship
 
     public function getIndexItems($request)
     {
-        return OrderStatus::all();
+        return OrderStatus::all()
+            ->map(function ($orderStatus) {
+                return [
+                    'id' => $orderStatus->id,
+                    'title' => $orderStatus->name,
+                ];
+            });
     }
 
     public function getColumns()

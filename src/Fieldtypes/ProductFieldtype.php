@@ -10,7 +10,7 @@ class ProductFieldtype extends Relationship
 {
     protected $icon = 'entries';
 
-    protected function toItemArray($id)
+    public function toItemArray($id)
     {
         $product = Product::find($id);
 
@@ -22,7 +22,13 @@ class ProductFieldtype extends Relationship
 
     public function getIndexItems($request)
     {
-        return Product::all();
+        return Product::all()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                ];
+            });
     }
 
     public function getColumns()
