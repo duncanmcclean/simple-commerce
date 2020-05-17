@@ -15,7 +15,7 @@ If you can, add a screenshot of the bug and/or a link to the exception in Flare.
 3. Type in this
 4. See the bad red error
 
-## Expected bahaviour
+## Expected behaviour
 
 I expected...
 
