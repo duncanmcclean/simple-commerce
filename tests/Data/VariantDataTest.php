@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Data;
 
-use DoubleThreeDigital\SimpleCommerce\Data\ProductData;
+use DoubleThreeDigital\SimpleCommerce\Data\VariantData;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
@@ -18,7 +18,7 @@ class VariantDataTest extends TestCase
         $variant = factory(Variant::class)->create();
         $attribute = factory(Attribute::class)->create(['key' => 'foo', 'value' => 'bar', 'attributable_type' => Variant::class, 'attributable_id' => $variant->id]);
 
-        $data = (new ProductData)->data($variant->toArray(), $variant);
+        $data = (new VariantData())->data($variant->toArray(), $variant);
 
         $this->assertIsArray($data);
         $this->assertArrayHasKey('images', $data);
