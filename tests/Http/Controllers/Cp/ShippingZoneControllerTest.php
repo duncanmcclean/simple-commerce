@@ -93,11 +93,75 @@ class ShippingZoneControllerTest extends TestCase
                         'minimum' => '0',
                         'maximum' => '100',
                         'rate' => '2.50',
-                        'note' => 'Delivery within 2-3 days',
                     ],
                 ],
             ])
             ->assertRedirect();
+    }
+
+    /** @test */
+    public function can_update_shipping_zone_and_remove_country()
+    {
+        $zone = factory(ShippingZone::class)->create();
+        $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
+        $countries = factory(Country::class, 2)->create(['shipping_zone_id' => $zone->id]);
+
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    0 => $countries[0]['id'],
+                ],
+                'rates' => [
+                    $rate->toArray(),
+                ],
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('countries', [
+            'id' => $countries[0]['id'],
+            'shipping_zone_id' => $zone->id,
+        ]);
+        
+        $this->assertDatabaseMissing('countries', [
+            'id' => $countries[1]['id'],
+            'shipping_zone_id' => $zone->id,
+        ]);
+    }
+
+    /** @test */
+    public function can_update_shipping_zone_and_add_country()
+    {
+        $zone = factory(ShippingZone::class)->create();
+        $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
+
+        $zoneCountry = factory(Country::class)->create(['shipping_zone_id' => $zone->id]);
+        $otherCountry = factory(Country::class)->create();
+
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    0 => $zoneCountry->id,
+                    1 => $otherCountry->id,
+                ],
+                'rates' => [
+                    $rate->toArray(),
+                ],
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('countries', [
+            'id' => $zoneCountry,
+            'shipping_zone_id' => $zone->id,
+        ]);
+        
+        $this->assertDatabaseHas('countries', [
+            'id' => $otherCountry,
+            'shipping_zone_id' => $zone->id,
+        ]);
     }
 
     /** @test */

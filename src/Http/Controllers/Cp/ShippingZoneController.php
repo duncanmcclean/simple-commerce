@@ -56,7 +56,6 @@ class ShippingZoneController extends CpController
                     'minimum'   => $rate['minimum'],
                     'maximum'   => $rate['maximum'],
                     'rate'      => $rate['rate'],
-                    'note'      => $rate['note'],
                 ]);
             });
 
@@ -94,20 +93,21 @@ class ShippingZoneController extends CpController
             'name' => $request->name,
         ]);
 
-        $existingCountries = $zone->countries()->select('id')->get()->flatten();
+        $existingCountries = $zone->countries->pluck('id')->toArray(); // an array, the values of each item are country IDs
+        $requestCountries = $request->countries;
 
-        dd($existingCountries);
+        // Deal with removing countries
+        collect(array_diff($existingCountries, $requestCountries))
+            ->each(function ($countryId) {
+                Country::find($countryId)
+                    ->update(['shipping_zone_id' => 0]);
+            });
 
-        collect($request->countries)
-            ->each(function ($country) use ($zone) {
-                if (! $zone->countries->where('id', $country)->first()) {
-                    Country::find($country)
-                        ->update([
-                            'shipping_zone_id' => $zone->id,
-                        ]);
-                }
-
-                // TODO: figure out a good way of dealing with the situation if a country is removed by the user in the CP
+        // And... deal with adding new countries
+        collect(array_diff($requestCountries, $existingCountries))
+            ->each(function ($countryId) use ($zone) {
+                Country::find($countryId)
+                    ->update(['shipping_zone_id' => $zone->id]);
             });
 
         collect($request->rates)
@@ -120,7 +120,6 @@ class ShippingZoneController extends CpController
                         'minimum'   => $rate['minimum'],
                         'maximum'   => $rate['maximum'],
                         'rate'      => $rate['rate'],
-                        'note'      => $rate['note'],
                     ]);
                 } else {
                     $zone
@@ -133,7 +132,6 @@ class ShippingZoneController extends CpController
                             'minimum'   => $rate['minimum'],
                             'maximum'   => $rate['maximum'],
                             'rate'      => $rate['rate'],
-                            'note'      => $rate['note'],
                         ]);
                 }
 

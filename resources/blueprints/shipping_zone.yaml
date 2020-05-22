@@ -78,14 +78,6 @@ sections:
                 listable: hidden
                 display: Rate
                 validate: required
-            -
-              handle: note
-              field:
-                input_type: text
-                type: text
-                localizable: false
-                listable: hidden
-                display: Note
           mode: stacked
           min_rows: 1
           add_row: 'Add Rate'
