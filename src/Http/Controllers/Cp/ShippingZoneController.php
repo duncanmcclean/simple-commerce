@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ShippingZoneRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use Statamic\Http\Controllers\CP\CpController;
 use Statamic\Stache\Stache;
@@ -132,9 +133,13 @@ class ShippingZoneController extends CpController
 
     protected function updateRates($request, $zone)
     {
-        
+        // Deal with removing rates
+        collect(array_diff($zone->rates()->pluck('id')->toArray(), $request->rates))
+            ->each(function ($rateId) {
+                ShippingRate::find($rateId)->delete();
+            });
 
-
+        // Deal with creates and updates
         collect($request->rates)
             ->each(function ($rate) use ($zone) {
                 if (! is_null($rate['uuid'])) {
@@ -159,8 +164,6 @@ class ShippingZoneController extends CpController
                             'rate'      => $rate['rate'],
                         ]);
                 }
-
-                // TODO: figure out a good way of dealing with if a rate is removed by the user in the CP
             });
     }
 }

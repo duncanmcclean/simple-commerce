@@ -162,6 +162,24 @@ class ShippingZoneControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_shipping_zone_and_create_shipping_rule()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_update_shipping_zone_and_update_shipping_rule()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_update_shipping_zone_and_delete_shipping_rule()
+    {
+        //
+    }
+
+    /** @test */
     public function can_destroy_shipping_zone()
     {
         $zone = factory(ShippingZone::class)->create();
