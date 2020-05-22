@@ -89,11 +89,51 @@ class ShippingZoneController extends CpController
 
     public function update(ShippingZone $zone, ShippingZoneRequest $request): ShippingZone
     {
-        $zone->update([
-            'name' => $request->name,
-        ]);
+        $zone->update(['name' => $request->name,]);
 
-        $this->updateCountries($zone, $request);
+        $this->updateCountries($request, $zone);
+        $this->updateRates($request, $zone);
+
+        return $zone->refresh();
+    }
+
+    public function destroy(ShippingZone $zone)
+    {
+        $zone->countries()->get()->each(function ($country) {
+            $country->update(['shipping_zone_id' => 0]);
+        });
+
+        $zone->rates()->get()->each(function ($zone) {
+            $zone->delete();
+        });
+
+        $zone->delete();
+    }
+
+    protected function updateCountries($request, $zone)
+    {
+        $existingCountries = $zone->countries->pluck('id')->toArray(); // an array, the values of each item are country IDs
+        $requestCountries = $request->countries;
+
+        // Deal with removing countries
+        collect(array_diff($existingCountries, $requestCountries))
+            ->each(function ($countryId) {
+                Country::find($countryId)
+                    ->update(['shipping_zone_id' => 0]);
+            });
+
+        // And... deal with adding new countries
+        collect(array_diff($requestCountries, $existingCountries))
+            ->each(function ($countryId) use ($zone) {
+                Country::find($countryId)
+                    ->update(['shipping_zone_id' => $zone->id]);
+            });
+    }
+
+    protected function updateRates($request, $zone)
+    {
+        
+
 
         collect($request->rates)
             ->each(function ($rate) use ($zone) {
@@ -121,48 +161,6 @@ class ShippingZoneController extends CpController
                 }
 
                 // TODO: figure out a good way of dealing with if a rate is removed by the user in the CP
-            });
-
-        return $zone->refresh();
-    }
-
-    public function destroy(ShippingZone $zone)
-    {
-        Country::where('shipping_zone_id', $zone->id)
-            ->get()
-            ->each(function ($country) {
-                $country->update([
-                    'shipping_zone_id' => null,
-                ]);
-            });
-
-        $zone
-            ->rates()
-            ->get()
-            ->each(function ($zone) {
-                $zone->delete();
-            });
-
-        $zone->delete();
-    }
-
-    protected function updateCountries($zone, $request)
-    {
-        $existingCountries = $zone->countries->pluck('id')->toArray(); // an array, the values of each item are country IDs
-        $requestCountries = $request->countries;
-
-        // Deal with removing countries
-        collect(array_diff($existingCountries, $requestCountries))
-            ->each(function ($countryId) {
-                Country::find($countryId)
-                    ->update(['shipping_zone_id' => 0]);
-            });
-
-        // And... deal with adding new countries
-        collect(array_diff($requestCountries, $existingCountries))
-            ->each(function ($countryId) use ($zone) {
-                Country::find($countryId)
-                    ->update(['shipping_zone_id' => $zone->id]);
             });
     }
 }
