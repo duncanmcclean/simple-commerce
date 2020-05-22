@@ -13,13 +13,13 @@ sections:
           display: Name
           validate: requried
       -
-        handle: country_id
+        handle: countries
         field:
           mode: select
           type: country
           localizable: false
           listable: hidden
-          display: Country
+          display: Countries
           validate: required
       -
         handle: rates

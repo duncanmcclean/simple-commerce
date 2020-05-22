@@ -30,16 +30,12 @@ class ShippingZone extends Model
 
     public function getListOfCountriesAttribute()
     {
-        $countries = [];
-
-        $this->countries()
+        $countries = $this->countries()
             ->select('name')
             ->get()
-            ->each(function ($country) use (&$countries) {
-                $countries[] = $country->name;
-            });
+            ->toArray();
 
-        return implode(', ', $countries);
+        return implode(', ', array_flatten($countries));
     }
 
     public function editUrl()

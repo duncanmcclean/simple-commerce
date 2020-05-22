@@ -94,6 +94,10 @@ class ShippingZoneController extends CpController
             'name' => $request->name,
         ]);
 
+        $existingCountries = $zone->countries()->select('id')->get()->flatten();
+
+        dd($existingCountries);
+
         collect($request->countries)
             ->each(function ($country) use ($zone) {
                 if (! $zone->countries->where('id', $country)->first()) {
