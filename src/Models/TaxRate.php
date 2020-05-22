@@ -36,7 +36,6 @@ class TaxRate extends Model
 
     public function blueprint()
     {
-        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
-            ->find('tax_rate');
+        return Blueprint::find('tax_rate');
     }
 }

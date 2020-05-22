@@ -162,6 +162,10 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([
             __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
         ], 'simple-commerce-config');
+
+        $this->publishes([
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+        ], 'simple-commerce-blueprints');
         
         $this->publishes([
             __DIR__.'/../resources/fieldsets' => resource_path('fieldsets'),

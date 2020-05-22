@@ -51,7 +51,6 @@ class ProductCategory extends Model
 
     public function blueprint()
     {
-        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
-            ->find('product_category');
+        return Blueprint::find('product_category');
     }
 }

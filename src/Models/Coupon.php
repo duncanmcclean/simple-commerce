@@ -52,8 +52,7 @@ class Coupon extends Model
 
     public function blueprint()
     {
-        return Blueprint::setDirectory(__DIR__.'/../../resources/blueprints')
-            ->find('coupon');
+        return Blueprint::find('coupon');
     }
 
     public function getAffectAttribute()
