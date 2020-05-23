@@ -133,6 +133,10 @@ class ShippingZoneController extends CpController
 
     protected function updateRates($request, $zone)
     {
+
+        dd($request->rates);
+        dd(array_diff_assoc($zone->rates()->pluck('id')->toArray(), $request->rates));
+
         // Deal with removing rates
         collect(array_diff($zone->rates()->pluck('id')->toArray(), $request->rates))
             ->each(function ($rateId) {

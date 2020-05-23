@@ -162,19 +162,103 @@ class ShippingZoneControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_update_shipping_zone_and_create_shipping_rule()
+    public function can_update_shipping_zone_and_create_shipping_rate()
     {
-        //
+        // Marking as incomplete... need to fix the way we send the response 
+        // or we'll get some array to string conversion errors
+        $this->markTestIncomplete();
+
+        $zone = factory(ShippingZone::class)->create();
+        $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
+        $country = factory(Country::class)->create(['shipping_zone_id' => $zone->id]);
+
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    0 => $country->id,
+                ],
+                'rates' => [
+                    $rate->toArray(),
+                    [
+                        'name' => 'Premium Postage',
+                        'type' => 'price-based',
+                        'minimum' => 50.00,
+                        'maximum' => 250.00,
+                        'rate' => 1.00,
+                    ],
+                ],
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('shipping_rates', [
+            'id' => $rate->id,
+            'shipping_zone_id' => $zone->id,
+        ]);
+
+        $this->assertDatabaseHas('shiping_rates', [
+            'name' => 'Premium Postage',
+            'shipping_zone_id' => $zone->id,
+        ]);
     }
 
     /** @test */
-    public function can_update_shipping_zone_and_update_shipping_rule()
+    public function can_update_shipping_zone_and_update_shipping_rate()
     {
-        //
+        $zone = factory(ShippingZone::class)->create();
+        $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
+        $country = factory(Country::class)->create(['shipping_zone_id' => $zone->id]);
+
+        dd($this
+        ->actAsSuper()
+        ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+            'name' => 'New Shipping Zone Name',
+            'countries' => [
+                0 => $country->id,
+            ],
+            'rates' => [
+                [
+                    'uuid' => $rate->uuid,
+                    'name' => 'Updated rate',
+                    'type' => 'price-based',
+                    'minimum' => 50.00,
+                    'maximum' => 250.00,
+                    'rate' => 1.00,
+                ],
+            ],
+        ]));
+
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    0 => $country->id,
+                ],
+                'rates' => [
+                    [
+                        'uuid' => $rate->uuid,
+                        'name' => 'Updated rate',
+                        'type' => 'price-based',
+                        'minimum' => 50.00,
+                        'maximum' => 250.00,
+                        'rate' => 1.00,
+                    ],
+                ],
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('shipping_rates', [
+            'id' => $rate->id,
+            'name' => 'Updated rate',
+            'shipping_zone_id' => $zone->id,
+        ]);
+
     }
 
     /** @test */
-    public function can_update_shipping_zone_and_delete_shipping_rule()
+    public function can_update_shipping_zone_and_delete_shipping_rate()
     {
         //
     }
