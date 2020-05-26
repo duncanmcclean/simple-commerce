@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use ErrorException;
@@ -161,7 +162,17 @@ class Cart
         $zone = Country::find($order->shippingAddress->country_id)->shippingZone;
 
         if (! $zone) {
-            return;
+            $zone = null;
+
+            foreach (ShippingZone::all() as $thisZone) {
+                if ($thisZone->countries->count() === 0) {
+                    $zone = $thisZone;
+                }
+            }
+
+            if (! $zone) {
+                return;
+            }
         }
 
         $order

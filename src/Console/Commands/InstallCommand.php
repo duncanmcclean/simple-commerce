@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 
@@ -24,7 +25,7 @@ class InstallCommand extends Command
             ->publish()
             ->migrate()
             ->seed()
-            // ->seedTestData()
+            ->seedTestData()
             ->replaceUserModel();
     }
 
@@ -55,14 +56,31 @@ class InstallCommand extends Command
         return $this;
     }
 
-    // protected function seedTestData()
-    // {
-    //     if ($this->confirm('Would you like test data to be added to your database?')) {
-    //         // TODO: add some test data here
-    //     }
+    protected function seedTestData()
+    {
+        if ($this->confirm('Would you like test data to be added to your database?')) {
+            $coupon = Coupon::create([
+                'name' => '',
+                'code' => '',
+                'type' => '',
+                'value' => '',
+                'minimum_total' => '',
+                'total_uses' => '',
+                'start_date' => '',
+                'end_date' => '',
+            ]);
 
-    //     return $this;
-    // }
+
+            // product data
+            // variant data
+            // coupon data
+            // product category data
+            // basic tax rate
+            // basic shipping zone and rate
+        }
+
+        return $this;
+    }
 
     protected function replaceUserModel()
     {
