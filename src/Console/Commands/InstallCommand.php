@@ -2,7 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
+use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 
@@ -59,24 +64,173 @@ class InstallCommand extends Command
     protected function seedTestData()
     {
         if ($this->confirm('Would you like test data to be added to your database?')) {
-            $coupon = Coupon::create([
-                'name' => '',
-                'code' => '',
-                'type' => '',
-                'value' => '',
-                'minimum_total' => '',
-                'total_uses' => '',
-                'start_date' => '',
-                'end_date' => '',
+            // Coupons
+            $freeShipping = Coupon::create([
+                'name' => 'Free Shipping',
+                'code' => 'FREE-SHIPPING',
+                'type' => 'free_shipping',
+                'value' => 0,
+                'minimum_total' => 0,
+                'total_uses' => 0,
+                'start_date' => null,
+                'end_date' => null,
             ]);
 
+            $tenPercentOff = Coupon::create([
+                'name' => '10% Off Everything',
+                'code' => '10-OFF',
+                'type' => 'percent_discount',
+                'value' => 10,
+                'minimum_total' => 0,
+                'total_uses' => 0,
+                'start_date' => null,
+                'end_date' => null,
+            ]);
 
-            // product data
-            // variant data
-            // coupon data
-            // product category data
-            // basic tax rate
-            // basic shipping zone and rate
+            // Tax Rates
+            $standardtaxRate = TaxRate::create([
+                'name' => 'Standard Tax Rate',
+                'description' => 'The standard 20% tax rate for UK goods.',
+                'rate' => 20,
+            ]);
+
+            // Product Categories
+            $desks = ProductCategory::create([
+                'title' => 'Office Desks',
+                'slug' => 'office-desks',
+            ]);
+
+            $monitors = ProductCategory::create([
+                'title' => 'Monitors',
+                'slug' => 'monitors',
+            ]);
+
+            // Products
+            $normalDesk = Product::create([
+                'title' => 'Standard Desk',
+                'slug' => 'standard-desk',
+                'is_enabled' => true,
+                'needs_shipping' => true,
+                'product_category_id' => $desks->id,
+                'tax_rate_id' => $standardtaxRate->id,
+            ]);
+            $normalDesk->variants()->create([
+                'name' => 'Black Top',
+                'sku' => 'STAN_DES_BLA',
+                'description' => 'This variant of the standard desk has a black top.',
+                'images' => [],
+                'weight' => 500,
+                'price' => 250,
+                'stock' => 50,
+                'unlimited_stock' => false,
+                'max_quantity' => 5,
+            ]);
+            $normalDesk->variants()->create([
+                'name' => 'Wooden Top',
+                'sku' => 'STAN_DES_WOO',
+                'description' => 'This variant of the standard desk has a wooden top.',
+                'images' => [],
+                'weight' => 500,
+                'price' => 250,
+                'stock' => 50,
+                'unlimited_stock' => false,
+                'max_quantity' => 5,
+            ]);
+
+            $standingDesk = Product::create([
+                'title' => 'Standing Desk',
+                'slug' => 'standing-desk',
+                'is_enabled' => true,
+                'needs_shipping' => true,
+                'product_category_id' => $desks->id,
+                'tax_rate_id' => $standardtaxRate->id,
+            ]);
+            $standingDesk->variants()->create([
+                'name' => 'Black Top',
+                'sku' => 'STAND_DES_BLA',
+                'description' => 'This variant of the standing desk has a black top.',
+                'images' => [],
+                'weight' => 500,
+                'price' => 450,
+                'stock' => 50,
+                'unlimited_stock' => false,
+                'max_quantity' => 5,
+            ]);
+            $standingDesk->variants()->create([
+                'name' => 'Wooden Top',
+                'sku' => 'STAND_DES_WOO',
+                'description' => 'This variant of the standing desk has a wooden top.',
+                'images' => [],
+                'weight' => 500,
+                'price' => 450,
+                'stock' => 50,
+                'unlimited_stock' => false,
+                'max_quantity' => 5,
+            ]);
+
+            $fourKMonitor = Product::create([
+                'title' => '4K Monitor',
+                'slug' => '4k-monitor',
+                'is_enabled' => true,
+                'needs_shipping' => true,
+                'product_category_id' => $monitors->id,
+                'tax_rate_id' => $standardtaxRate->id,
+            ]);
+            $fourKMonitor->variants()->create([
+                'name' => '23 inches',
+                'sku' => '4K_MON_23IN',
+                'description' => 'This variant of the 4k monitor is 23 inches.',
+                'images' => [],
+                'weight' => 50,
+                'price' => 160,
+                'stock' => 25,
+                'unlimited_stock' => false,
+                'max_quantity' => 2,
+            ]);
+            $fourKMonitor->variants()->create([
+                'name' => '31 inches',
+                'sku' => '4K_MON_31IN',
+                'description' => 'This variant of the 4k monitor is 31 inches.',
+                'images' => [],
+                'weight' => 50,
+                'price' => 460,
+                'stock' => 25,
+                'unlimited_stock' => false,
+                'max_quantity' => 2,
+            ]);
+            $fourKMonitor->variants()->create([
+                'name' => '42 inches',
+                'sku' => '4K_MON_42IN',
+                'description' => 'This variant of the 4k monitor is 42 inches.',
+                'images' => [],
+                'weight' => 50,
+                'price' => 740,
+                'stock' => 25,
+                'unlimited_stock' => false,
+                'max_quantity' => 2,
+            ]);
+
+            // Shipping
+            $ukShippingZone = ShippingZone::create([
+                'name' => 'United Kingdom',
+            ]);
+            $ukShippingZone->rates()->create([
+                'name' => 'Royal Mail 2nd Class',
+                'type' => 'price-based',
+                'minimum' => 0,
+                'maximum' => 150,
+                'rate' => 5.20,
+            ]);
+            $ukShippingZone->rates()->create([
+                'name' => 'Royal Mail 1st Class',
+                'type' => 'price-based',
+                'minimum' => 151,
+                'maximum' => 1000,
+                'rate' => 9.99,
+            ]);
+            Country::where('iso', 'GB')
+                ->first()
+                ->update(['shipping_zone_id' => $ukShippingZone->id]);
         }
 
         return $this;

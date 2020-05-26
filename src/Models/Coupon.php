@@ -72,7 +72,7 @@ class Coupon extends Model
     public function isActive()
     {
         // If the coupon has maxed out the uses
-        if ($this->uses() >= $this->total_uses) {
+        if ($this->uses() >= $this->total_uses && $this->total_uses != 0) {
             return false;
         }
 
