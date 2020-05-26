@@ -133,20 +133,20 @@ class ShippingZoneController extends CpController
 
     protected function updateRates($request, $zone)
     {
-
-        dd($request->rates);
-        dd(array_diff_assoc($zone->rates()->pluck('id')->toArray(), $request->rates));
-
         // Deal with removing rates
-        collect(array_diff($zone->rates()->pluck('id')->toArray(), $request->rates))
+        $requestRates = collect($request->rates)->reject(function ($rate) { return ! isset($rate['uuid']); })->map(function ($rate) {
+            return ShippingRate::where('uuid', $rate['uuid'])->first()->id;
+        })->toArray();
+
+        collect(array_diff($zone->rates()->pluck('id')->toArray(), $requestRates))
             ->each(function ($rateId) {
                 ShippingRate::find($rateId)->delete();
-            });
+            }); 
 
         // Deal with creates and updates
         collect($request->rates)
             ->each(function ($rate) use ($zone) {
-                if (! is_null($rate['uuid'])) {
+                if (! isset($rate['uuid'])) {
                     $zone->rates()->create([
                         'uuid'      => (new Stache())->generateId(),
                         'name'      => $rate['name'],

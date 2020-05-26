@@ -128,8 +128,6 @@ class ShippingZoneControllerTest extends TestCase
     /** @test */
     public function can_update_shipping_zone_and_add_country()
     {
-        $this->markTestIncomplete();
-
         $zone = factory(ShippingZone::class)->create();
         $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
 
@@ -151,12 +149,12 @@ class ShippingZoneControllerTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseHas('countries', [
-            'id' => $zoneCountry,
+            'id' => $zoneCountry->id,
             'shipping_zone_id' => $zone->id,
         ]);
         
         $this->assertDatabaseHas('countries', [
-            'id' => $otherCountry,
+            'id' => $otherCountry->id,
             'shipping_zone_id' => $zone->id,
         ]);
     }
@@ -164,10 +162,6 @@ class ShippingZoneControllerTest extends TestCase
     /** @test */
     public function can_update_shipping_zone_and_create_shipping_rate()
     {
-        // Marking as incomplete... need to fix the way we send the response 
-        // or we'll get some array to string conversion errors
-        $this->markTestIncomplete();
-
         $zone = factory(ShippingZone::class)->create();
         $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
         $country = factory(Country::class)->create(['shipping_zone_id' => $zone->id]);
@@ -197,7 +191,7 @@ class ShippingZoneControllerTest extends TestCase
             'shipping_zone_id' => $zone->id,
         ]);
 
-        $this->assertDatabaseHas('shiping_rates', [
+        $this->assertDatabaseHas('shipping_rates', [
             'name' => 'Premium Postage',
             'shipping_zone_id' => $zone->id,
         ]);
@@ -209,25 +203,6 @@ class ShippingZoneControllerTest extends TestCase
         $zone = factory(ShippingZone::class)->create();
         $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
         $country = factory(Country::class)->create(['shipping_zone_id' => $zone->id]);
-
-        dd($this
-        ->actAsSuper()
-        ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
-            'name' => 'New Shipping Zone Name',
-            'countries' => [
-                0 => $country->id,
-            ],
-            'rates' => [
-                [
-                    'uuid' => $rate->uuid,
-                    'name' => 'Updated rate',
-                    'type' => 'price-based',
-                    'minimum' => 50.00,
-                    'maximum' => 250.00,
-                    'rate' => 1.00,
-                ],
-            ],
-        ]));
 
         $this
             ->actAsSuper()
@@ -260,7 +235,39 @@ class ShippingZoneControllerTest extends TestCase
     /** @test */
     public function can_update_shipping_zone_and_delete_shipping_rate()
     {
-        //
+        $zone = factory(ShippingZone::class)->create();
+        $rates = factory(ShippingRate::class, 2)->create(['shipping_zone_id' => $zone->id]);
+        $country = factory(Country::class)->create(['shipping_zone_id' => $zone->id]);
+
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+                'name' => 'New Shipping Zone Name',
+                'countries' => [
+                    0 => $country->id,
+                ],
+                'rates' => [
+                    [
+                        'uuid' => $rates[0]['uuid'],
+                        'name' => $rates[0]['name'],
+                        'type' => $rates[0]['type'],
+                        'minimum' => $rates[0]['minimum'],
+                        'maximum' => $rates[0]['maximum'],
+                        'rate' => $rates[0]['rate'],
+                    ],
+                ],
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('shipping_rates', [
+            'id' => $rates[0]['id'],
+            'shipping_zone_id' => $zone->id,
+        ]);
+
+        $this->assertDatabaseMissing('shipping_rates', [
+            'id' => $rates[1]['id'],
+            'shipping_zone_id' => $zone->id,
+        ]);
     }
 
     /** @test */
