@@ -35,6 +35,10 @@ class ShippingZone extends Model
             ->get()
             ->toArray();
 
+        if (count($countries) === 0) {
+            return 'Rest of the World';
+        }    
+
         return implode(', ', array_flatten($countries));
     }
 

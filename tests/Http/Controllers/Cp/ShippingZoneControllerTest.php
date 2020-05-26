@@ -21,13 +21,33 @@ class ShippingZoneControllerTest extends TestCase
 
     /** @test */
     public function can_index_shipping_zones()
-    {
-        $zones = factory(ShippingZone::class, 5)->create();
+    {   
+        $firstZone = factory(ShippingZone::class)->create();
+        $firstCountry = factory(Country::class)->create(['shipping_zone_id' => $firstZone->id]);
+
+        $secondZone = factory(ShippingZone::class)->create();
+        $secondCountry = factory(Country::class)->create(['shipping_zone_id' => $secondZone->id]);
 
         $this
             ->actAsSuper()
             ->get(cp_route('shipping-zones.index'))
-            ->assertOk();
+            ->assertOk()
+            ->assertSee($firstZone->name)
+            ->assertSee($firstCountry->name)
+            ->assertSee($secondZone->name)
+            ->assertSee($secondCountry->name);
+    }
+
+    /** @test */
+    public function can_index_shipping_zones_with_rule_for_rest_of_the_world()
+    {
+        $zone = factory(ShippingZone::class)->create();
+
+        $this
+            ->actAsSuper()
+            ->get(cp_route('shipping-zones.index'))
+            ->assertOk()
+            ->assertSee('Rest of the World');
     }
 
     /** @test */

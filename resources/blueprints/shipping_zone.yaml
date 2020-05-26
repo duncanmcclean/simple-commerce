@@ -20,7 +20,7 @@ sections:
           localizable: false
           listable: hidden
           display: Countries
-          validate: required
+          instructions: Leave blank if you'd like it to handle shipping for the rest of the world.
       -
         handle: rates
         field:
