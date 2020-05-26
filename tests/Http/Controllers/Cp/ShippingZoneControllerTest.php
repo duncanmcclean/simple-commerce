@@ -77,6 +77,47 @@ class ShippingZoneControllerTest extends TestCase
                 ],
             ])
             ->assertCreated();
+
+        $this->assertDatabaseHas('shipping_zones', [
+            'name' => 'United Kingdom',
+        ]);
+
+        $this->assertDatabaseHas('shipping_rates', [
+            'name' => '2nd Class',
+        ]);
+
+        $uk->refresh();
+        $this->assertTrue($uk->shippingZone->name === 'United Kingdom');
+    }
+
+    /** @test */
+    public function can_store_shipping_zone_as_rest_of_world_option()
+    {
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.store'), [
+                'name' => 'Everywhere',
+                'countries' => [],
+                'rates' => [
+                    [
+                        'name' => 'International',
+                        'type' => 'price-based',
+                        'minimum' => '0',
+                        'maximum' => '100',
+                        'rate' => '2.50',
+                        'note' => 'Delivery within 3-4 days',
+                    ],
+                ],
+            ])
+            ->assertCreated();
+
+        $this->assertDatabaseHas('shipping_zones', [
+            'name' => 'Everywhere',
+        ]);
+    
+        $this->assertDatabaseHas('shipping_rates', [
+            'name' => 'International',
+        ]);    
     }
     
     /** @test */
@@ -103,7 +144,7 @@ class ShippingZoneControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
-                'name' => 'New Shipping Zone Name',
+                'name' => 'Our New Name',
                 'countries' => [
                     0 => $zone->country_id,
                 ],
@@ -111,7 +152,26 @@ class ShippingZoneControllerTest extends TestCase
                     $rate->toArray(),
                 ],
             ])
-            ->assertRedirect();
+            ->assertRedirect();   
+    }
+
+    /** @test */
+    public function can_update_shipping_zone_as_rest_of_world()
+    {
+        $zone = factory(ShippingZone::class)->create();
+        $rate = factory(ShippingRate::class)->create(['shipping_zone_id' => $zone->id]);
+
+        $this
+            ->actAsSuper()
+            ->post(cp_route('shipping-zones.update', ['zone' => $zone->uuid]), [
+                'name' => 'Cool New Name',
+                'countries' => [],
+                'rates' => [
+                    $rate->toArray(),
+                ],
+            ])
+            ->assertOk()
+            ->assertSee('Cool New Name');    
     }
 
     /** @test */

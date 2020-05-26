@@ -90,7 +90,7 @@ class ShippingZoneController extends CpController
 
     public function update(ShippingZone $zone, ShippingZoneRequest $request): ShippingZone
     {
-        $zone->update(['name' => $request->name,]);
+        $zone->update(['name' => $request->name]);
 
         $this->updateCountries($request, $zone);
         $this->updateRates($request, $zone);
