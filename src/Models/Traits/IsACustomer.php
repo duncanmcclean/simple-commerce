@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Models\Traits;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
-use Illuminate\Notifications\Notifiable;
 
 trait IsACustomer
 {

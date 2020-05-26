@@ -14,6 +14,7 @@ use Statamic\Facades\Blueprint;
 use Statamic\Facades\Fieldset;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
+use Illuminate\Support\Facades\Auth;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -103,5 +104,17 @@ abstract class TestCase extends OrchestraTestCase
     public function actAsSuper()
     {
         return $this->actingAs(factory(User::class)->create(['super' => true]));
+    }
+
+    public function fakeUserFacade(bool $isSuper = false)
+    {
+        $params = [];
+
+        if ($isSuper === true) {
+            $params['super'] = true;
+        }
+
+        Auth::shouldReceive('user')
+            ->andReturn($user = factory(User::class)->create($params));
     }
 }

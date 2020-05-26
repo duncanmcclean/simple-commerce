@@ -23,15 +23,10 @@
                                 <a href="{{ $order->editUrl() }}">Order #{{ $order->id }}</a>
                             </div>
                         </td>
-
+                        <td>{{ $order->created_at->toFormattedDateString() }}</td>
                         <td>
-                            {{ $order->created_at->toFormattedDateString() }}
+                            <a href="{{ $order->customer->editUrl() }}">{{ $order->customer->name }}</a>
                         </td>
-
-                        <td>
-                            <a href="{{ $order->customer->updateUrl() }}">{{ $order->customer->name }}</a>
-                        </td>
-
                         <td class="flex justify-end">
                             <dropdown-list>
                                 @foreach($statuses as $status)
