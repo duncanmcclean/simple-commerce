@@ -75,8 +75,10 @@ class Cart
             ->where('uuid', $variantUuid)
             ->first();
 
-        if ($quantity > $variant->max_quantity) {
-            throw new \Exception("You are not allowed to add more than {$variant->max_quantity} of this item.");
+        if ($quantity >= $variant->max_quantity) {
+            $lineItem->update([
+                'quantity' => $variant->max_quantity,
+            ]);
         }
 
         if ($lineItem = Order::notCompleted()->where('uuid', $orderUuid)->first()->lineItems()->where('variant_id', $variant->id)->first()) {
