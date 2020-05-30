@@ -75,13 +75,15 @@ class Cart
             ->where('uuid', $variantUuid)
             ->first();
 
-        if ($quantity >= $variant->max_quantity) {
-            $lineItem->update([
-                'quantity' => $variant->max_quantity,
-            ]);
-        }
-
         if ($lineItem = Order::notCompleted()->where('uuid', $orderUuid)->first()->lineItems()->where('variant_id', $variant->id)->first()) {
+            if ($quantity >= $variant->max_quantity) {
+                $lineItem->update([
+                    'quantity' => $variant->max_quantity,
+                ]);
+
+                return $lineItem->recalculate();
+            }
+            
             $lineItem->update([
                 'quantity' => $lineItem->quantity + $quantity,
             ]);
