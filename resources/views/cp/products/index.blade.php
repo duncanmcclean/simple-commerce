@@ -35,17 +35,14 @@
                                     <a href="{{ $product->editUrl() }}">{{ $product->title }}</a>
                                 </div>
                             </td>
-
                             <td>{{ $product->variant_count }}</td>
-
                             <td>
-                                @if($product->productCategory)
-                                    <a href="{{ $product->productCategory->showUrl() }}">{{ $product->productCategory->title }}</a>
-                                    @else
+                                @if($product->productCategories->count() > 0)
+                                    @foreach($product->productCategories as $category)<a href="{{ $category->showUrl() }}">{{ $category->title }}</a>@if(! $loop->last),@endif @endforeach
+                                @else
                                     &mdash;
                                 @endif
                             </td>
-
                             <td class="flex justify-end">
                                 <simple-commerce-actions>
                                     <simple-commerce-action-item

@@ -35,6 +35,14 @@ class SimpleCommerceTag extends Tags
             return $categories->count();
         }
 
+        $categories = $categories->map(function (ProductCategory $category) {
+            return array_merge($category->toArray(), [
+                'products' => $category->products->map(function (Product $product) {
+                    return $product->templatePrep();
+                }),
+            ]);
+        });
+
         return $categories->toArray();
     }
 
@@ -44,7 +52,7 @@ class SimpleCommerceTag extends Tags
 
         if ($this->getParam('category') != null) {
             $category = ProductCategory::select('id')->where('slug', $this->getParam('category'))->first();
-            $products = $products->where('product_category_id', $category->id);
+            $products = $category->products;
         }
 
         if ($this->hasParam('where')) {

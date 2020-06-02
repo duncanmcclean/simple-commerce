@@ -64,7 +64,7 @@ class ProductCategoryController extends CpController
 
         return view('simple-commerce::cp.product-categories.show', [
             'crumbs'    => $crumbs,
-            'products'  => Product::where('product_category_id', $category->id)->paginate(config('statamic.cp.pagination_size')),
+            'products'  => $category->products()->paginate(config('statamic.cp.pagination_size')),
             'category'  => $category,
             'createUrl' => (new Product())->createUrl(),
         ]);
@@ -103,8 +103,6 @@ class ProductCategoryController extends CpController
     public function destroy(ProductCategory $category)
     {
         $this->authorize('delete', $category);
-
-        // TODO: decide what we should do with products in this category
 
         $category->delete();
     }

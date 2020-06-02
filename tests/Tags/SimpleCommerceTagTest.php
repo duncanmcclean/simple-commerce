@@ -98,9 +98,11 @@ class SimpleCommerceTagTest extends TestCase
     public function simple_commerce_products_tag_in_category()
     {
         $category = factory(ProductCategory::class)->create();
-        $products = factory(Product::class, 2)->create([
-            'product_category_id' => $category->id,
-        ]);
+        $products = factory(Product::class, 2)->create();
+        foreach($products as $product) {
+            $product = Product::find($product['id']);
+            $product->productCategories()->attach($category->id);
+        }
         factory(Variant::class)->create(['product_id' => $products[0]['id']]);
         factory(Variant::class)->create(['product_id' => $products[1]['id']]);
 

@@ -16,7 +16,7 @@ class ProductRequest extends FormRequest
         return [
             'title'                         => 'required|string',
             'slug'                          => 'required|string',
-            'category.*'                    => 'numeric',
+            'categories.*'                    => 'numeric',
             'is_enabled'                    => 'boolean',
             'tax_rate_id'                   => 'required',
             'needs_shipping'                => 'boolean',

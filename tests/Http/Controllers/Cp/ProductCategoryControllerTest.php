@@ -59,9 +59,11 @@ class ProductCategoryControllerTest extends TestCase
     public function can_show_category()
     {
         $category = factory(ProductCategory::class)->create();
-        $products = factory(Product::class, 5)->create([
-            'product_category_id' => $category->id
-        ]);
+        $products = factory(Product::class, 5)->create();
+        foreach($products as $product) {
+            $product = Product::find($product['id']);
+            $product->productCategories()->attach($category->id);
+        }
 
         $this
             ->actAsSuper()

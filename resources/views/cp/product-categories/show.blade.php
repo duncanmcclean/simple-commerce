@@ -41,17 +41,14 @@
                                     <a href="{{ $product->editUrl() }}">{{ $product->title }}</a>
                                 </div>
                             </td>
-
                             <td>{{ $product->variants->count() }} variants</td>
-
                             <td>
-                                @if($product->productCategory)
-                                    <a href="{{ $product->productCategory->showUrl() }}">{{ $product->productCategory->title }}</a>
-                                    @else
+                                @if($product->productCategories->count() > 0)
+                                    @foreach($product->productCategories as $category)<a href="{{ $category->showUrl() }}">{{ $category->title }}</a>@if(! $loop->last),@endif @endforeach
+                                @else
                                     &mdash;
                                 @endif
                             </td>
-
                             <td class="flex justify-end">
                                 <dropdown-list>
                                     <dropdown-item text="Edit" redirect="{{ $product->editUrl() }}"></dropdown-item>

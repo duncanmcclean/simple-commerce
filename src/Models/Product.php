@@ -17,7 +17,7 @@ class Product extends Model
     use HasAttributes, HasUuid;
 
     protected $fillable = [
-        'uuid', 'title', 'slug', 'is_enabled', 'needs_shipping', 'product_category_id', 'tax_rate_id',
+        'uuid', 'title', 'slug', 'is_enabled', 'needs_shipping', 'tax_rate_id',
     ];
 
     protected $casts = [
@@ -114,6 +114,11 @@ class Product extends Model
 
     public function delete()
     {
+        collect($this->productCategories)
+            ->each(function ($category) {
+                $this->productCategories()->detach($category->id);
+            });
+
         if ($this->attributes()->count() > 0) {
             $this->attributes()->delete();
         }
