@@ -111,9 +111,9 @@ class InstallCommand extends Command
                 'slug' => 'standard-desk',
                 'is_enabled' => true,
                 'needs_shipping' => true,
-                'product_category_id' => $desks->id,
                 'tax_rate_id' => $standardtaxRate->id,
             ]);
+            $normalDesk->productCategories()->attach($desks->id);
             $normalDesk->variants()->create([
                 'name' => 'Black Top',
                 'sku' => 'STAN_DES_BLA',
@@ -142,9 +142,9 @@ class InstallCommand extends Command
                 'slug' => 'standing-desk',
                 'is_enabled' => true,
                 'needs_shipping' => true,
-                'product_category_id' => $desks->id,
                 'tax_rate_id' => $standardtaxRate->id,
             ]);
+            $standingDesk->productCategories()->attach($desks->id);
             $standingDesk->variants()->create([
                 'name' => 'Black Top',
                 'sku' => 'STAND_DES_BLA',
@@ -173,9 +173,9 @@ class InstallCommand extends Command
                 'slug' => '4k-monitor',
                 'is_enabled' => true,
                 'needs_shipping' => true,
-                'product_category_id' => $monitors->id,
                 'tax_rate_id' => $standardtaxRate->id,
             ]);
+            $fourKMonitor->productCategories()->attach($monitors->id);
             $fourKMonitor->variants()->create([
                 'name' => '23 inches',
                 'sku' => '4K_MON_23IN',

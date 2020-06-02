@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ProductRequest;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Http\Controllers\CP\CpController;
@@ -47,7 +48,6 @@ class ProductController extends CpController
         $product = Product::create([
             'title'                 => $request->title,
             'slug'                  => $request->slug,
-            'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled,
             'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
             'needs_shipping'        => $request->needs_shipping,
@@ -96,6 +96,11 @@ class ProductController extends CpController
                     });
             });
 
+        collect($request->categories)
+            ->each(function ($categoryId) use ($product) {
+                $product->productCategories()->attach($categoryId);
+            });
+
         return [
             'redirect' => cp_route('products.edit', [
                 'product' => $product->uuid,
@@ -120,8 +125,10 @@ class ProductController extends CpController
         });
 
         $values = array_merge($fields, [
-            'category'  => $product->product_category_id,
-            'variants'  => $product->variants->map(function (Variant $originalVariant, $key) {
+            'categories'    => $product->productCategories->map(function (ProductCategory $category) {
+                return $category->id;
+            })->toArray(),
+            'variants'      => $product->variants->map(function (Variant $originalVariant, $key) {
                 $variant = $originalVariant->toArray();
 
                 $originalVariant->attributes->each(function (Attribute $attribute) use (&$variant) {
@@ -153,7 +160,6 @@ class ProductController extends CpController
         $product->update([
             'title'                 => $request->title,
             'slug'                  => $request->slug,
-            'product_category_id'   => $request->category[0] ?? null,
             'is_enabled'            => $request->is_enabled,
             'tax_rate_id'           => $request->tax_rate_id[0] ?? null,
             'needs_shipping'        => $request->needs_shipping,
@@ -211,6 +217,16 @@ class ProductController extends CpController
                     });
 
                 return $variant;
+            });
+
+        collect($product->productCategories)
+            ->each(function ($category) use ($product) {
+                $product->productCategories()->detach($category->id);
+            });
+
+        collect($request->categories)
+            ->each(function ($categoryId) use ($product) {
+                $product->productCategories()->attach($categoryId);
             });
 
         return $product;

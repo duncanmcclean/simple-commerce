@@ -18,7 +18,8 @@ class ProductDataTest extends TestCase
         $currency = factory(Currency::class)->create();
 
         $category = factory(ProductCategory::class)->create();
-        $product = factory(Product::class)->create(['product_category_id' => $category->id]);
+        $product = factory(Product::class)->create();
+        $product->productCategories()->attach($category->id);
         $variant = factory(Variant::class)->create(['product_id' => $product->id]);
         $attribute = factory(Attribute::class)->create(['key' => 'IsACd', 'value' => true, 'attributable_type' => Product::class, 'attributable_id' => $product->id]);
 
@@ -28,6 +29,6 @@ class ProductDataTest extends TestCase
         $this->assertArrayHasKey('images', $data);
         $this->assertArrayHasKey('variants', $data);
         $this->assertArrayHasKey('IsACd', $data);
-        $this->assertArrayHasKey('category', $data);
+        $this->assertArrayHasKey('categories', $data);
     }
 }

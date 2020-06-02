@@ -131,9 +131,11 @@ class ProductControllerTest extends TestCase
     /** @test */
     public function can_update_product()
     {
+        $category = factory(ProductCategory::class)->create();
         $product = factory(Product::class)->create([
             'needs_shipping' => false,
         ]);
+        $product->productCategories()->attach($category->id);
         $variants = factory(Variant::class, 2)->create(['product_id' => $product->id]);
 
         $this
@@ -141,7 +143,7 @@ class ProductControllerTest extends TestCase
             ->post(cp_route('products.update', ['product' => $product->uuid]), [
                 'title'             => $this->faker->word,
                 'slug'              => $product->slug,
-                'category'          => [$product->product_category_id],
+                'categories'        => [$category->id],
                 'is_enabled'        => $product->is_enabled,
                 'tax_rate_id'       => [factory(TaxRate::class)->create()->id],
                 'needs_shipping'    => true,

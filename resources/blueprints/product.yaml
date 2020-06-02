@@ -133,13 +133,12 @@ sections:
           listable: hidden
           validate: required
       -
-        handle: category
+        handle: categories
         field:
-          max_items: 1
           mode: default
           type: product_category
           localizable: false
-          display: 'Product Category'
+          display: 'Product Categories'
       -
         handle: tax_rate_id
         field:
