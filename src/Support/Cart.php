@@ -50,6 +50,7 @@ class Cart
             'currency_id' => \DoubleThreeDigital\SimpleCommerce\Facades\Currency::get()['id'],
             'is_completed'  => false,
             'is_paid'       => false,
+            'email' => null,
         ]);
     }
 

@@ -38,5 +38,6 @@ $factory->define(Order::class, function (Faker $faker) {
         'customer_id'           => function () {
             return factory(User::class)->create()->id;
         },
+        'email' => $faker->email,
     ];
 });

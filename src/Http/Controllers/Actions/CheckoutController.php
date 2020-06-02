@@ -71,6 +71,10 @@ class CheckoutController
 
             $customer = $customerModel::where('email', $this->request->email)->first();
 
+            if (! $customer) {
+                $customer = $customerModel::where('email', $this->order->email ?? $this->request->email)->first();
+            }
+
             if ($customer === null) {
                 $customer = new $customerModel();
                 $fields = $customerModel->fields;
@@ -94,7 +98,7 @@ class CheckoutController
             $customer = Auth::user();
         }
 
-        $this->order->update(['customer_id' => $customer->id]);
+        $this->order->update(['customer_id' => $customer->id, 'email' => $customer->email]);
         $this->order->billingAddress()->update(['customer_id' => $customer->id]);
         $this->order->shippingAddress()->update(['customer_id' => $customer->id]);
         $this->order->transactions()->update(['customer_id' => $customer->id]);
