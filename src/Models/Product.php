@@ -33,9 +33,9 @@ class Product extends Model
         'updated' => ProductUpdated::class,
     ];
 
-    public function productCategory()
+    public function productCategories()
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsToMany(ProductCategory::class);
     }
 
     public function variants()
