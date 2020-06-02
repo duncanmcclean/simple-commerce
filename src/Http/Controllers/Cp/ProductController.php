@@ -99,7 +99,7 @@ class ProductController extends CpController
         collect($request->categories)
             ->each(function ($categoryId) use ($product) {
                 $product->productCategories()->attach($categoryId);
-            });  
+            });
 
         return [
             'redirect' => cp_route('products.edit', [
@@ -227,7 +227,7 @@ class ProductController extends CpController
         collect($request->categories)
             ->each(function ($categoryId) use ($product) {
                 $product->productCategories()->attach($categoryId);
-            });  
+            });
 
         return $product;
     }

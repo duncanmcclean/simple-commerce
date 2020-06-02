@@ -25,7 +25,7 @@ class DuplicateProductController extends CpController
                 $duplicateVariant->product_id = $duplicate->id;
                 $duplicateVariant->sku .= '-duplicate';
                 $duplicateVariant->save();
-            }); 
+            });
 
         return back()->with('success', 'Product has been duplicated.');
     }

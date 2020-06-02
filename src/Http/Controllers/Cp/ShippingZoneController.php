@@ -134,14 +134,16 @@ class ShippingZoneController extends CpController
     protected function updateRates($request, $zone)
     {
         // Deal with removing rates
-        $requestRates = collect($request->rates)->reject(function ($rate) { return ! isset($rate['uuid']); })->map(function ($rate) {
+        $requestRates = collect($request->rates)->reject(function ($rate) {
+            return ! isset($rate['uuid']);
+        })->map(function ($rate) {
             return ShippingRate::where('uuid', $rate['uuid'])->first()->id;
         })->toArray();
 
         collect(array_diff($zone->rates()->pluck('id')->toArray(), $requestRates))
             ->each(function ($rateId) {
                 ShippingRate::find($rateId)->delete();
-            }); 
+            });
 
         // Deal with creates and updates
         collect($request->rates)

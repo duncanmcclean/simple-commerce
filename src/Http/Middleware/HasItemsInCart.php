@@ -18,7 +18,9 @@ class HasItemsInCart
 
             $itemsTotal = Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('items_count');
 
-            if ($itemsTotal === 0) abort(401);
+            if ($itemsTotal === 0) {
+                abort(401);
+            }
         }
 
         return $next($request);

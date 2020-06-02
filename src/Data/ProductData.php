@@ -21,7 +21,7 @@ class ProductData extends Data
                 return $variant->templatePrep();
             })->toArray();
 
-        $data['categories'] = $original->productCategories->toArray();  
+        $data['categories'] = $original->productCategories->toArray();
 
         return $data;
     }

@@ -37,7 +37,7 @@ class ShippingZone extends Model
 
         if (count($countries) === 0) {
             return 'Rest of the World';
-        }    
+        }
 
         return implode(', ', array_flatten($countries));
     }

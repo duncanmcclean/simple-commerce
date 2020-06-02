@@ -36,8 +36,8 @@ class CheckoutController
         Event::dispatch(new OrderSuccessful($this->order));
         Session::remove(config('simple-commerce.cart_session_key'));
 
-        return 
-            $request->_redirect ? 
+        return
+            $request->_redirect ?
             redirect($request->_redirect)->with('order', $this->order->templatePrep())->with('receipt', $this->order->generateReceipt()) :
             back()->with('order', $this->order->templatePrep())->with('receipt', $this->order->generateReceipt());
     }
