@@ -20,8 +20,9 @@ class CheckoutRequest extends FormRequest
         $customerModel = new $customerModel();
 
         return array_merge($gateway->rules(), $customerModel->rules(), [
-            'gateway'                           => 'required|string',
-            '_redirect'                         => 'nullable|string',
+            'email'     => 'nullable|email',
+            'gateway'   => 'required|string',
+            '_redirect' => 'nullable|string',
         ]);
     }
 }
