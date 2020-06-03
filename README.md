@@ -22,7 +22,7 @@ This repository contains the code for Simple Commerce. While the code is open-so
 * [David A. Lindahl (branding)](https://github.com/austriker27)
 
 ## Resources
-* [Simple Commerce Documentation](https://simple-commerce-docs.netlify.app/)
+* [Simple Commerce Documentation](https://simple-commerce.doublethree.digital/)
 * [Simple Commerce Issues](https://github.com/doublethreedigital/simple-commerce/issues)
 * [Simple Commerce Discord](https://discord.gg/P3ACYf9)
 
