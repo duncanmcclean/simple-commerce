@@ -1,3 +1,5 @@
+<img src="./banner.jpg">
+
 # Simple Commerce
 > A perfectly simple e-commerce solution for Statamic
 
