@@ -15,6 +15,10 @@ This repository contains the code for Simple Commerce. While the code is open-so
 * [REST API](https://simple-commerce-docs.netlify.app/extending/rest-api.html)
 * Probably a few more...
 
+## Credits
+* [Duncan McClean (he built the thing)](https://github.com/damcclean)
+* [David A. Lindahl (branding)](https://github.com/austriker27)
+
 ## Resources
 * [Simple Commerce Documentation](https://simple-commerce-docs.netlify.app/)
 * [Simple Commerce Issues](https://github.com/doublethreedigital/simple-commerce/issues)
