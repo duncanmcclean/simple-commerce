@@ -115,6 +115,6 @@ abstract class TestCase extends OrchestraTestCase
         }
 
         Auth::shouldReceive('user')
-            ->andReturn($user = factory(User::class)->create($params));
+            ->andReturn(factory(User::class)->create($params));
     }
 }
