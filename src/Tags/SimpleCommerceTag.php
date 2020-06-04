@@ -16,6 +16,7 @@ use Statamic\Tags\Tags;
 class SimpleCommerceTag extends Tags
 {
     protected static $handle = 'simple-commerce';
+    protected static $aliases = ['sc'];
 
     public function currencyCode()
     {
