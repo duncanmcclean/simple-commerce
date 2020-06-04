@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
+use DoubleThreeDigital\SimpleCommerce\Data\CategoryData;
 use DoubleThreeDigital\SimpleCommerce\Events\ProductCategoryUpdated;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -52,5 +53,10 @@ class ProductCategory extends Model
     public function blueprint()
     {
         return Blueprint::find('product_category');
+    }
+
+    public function templatePrep()
+    {
+        return (new CategoryData)->data($this->toArray(), $this);
     }
 }

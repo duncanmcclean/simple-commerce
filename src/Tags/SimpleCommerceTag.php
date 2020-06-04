@@ -36,15 +36,9 @@ class SimpleCommerceTag extends Tags
             return $categories->count();
         }
 
-        $categories = $categories->map(function (ProductCategory $category) {
-            return array_merge($category->toArray(), [
-                'products' => $category->products->map(function (Product $product) {
-                    return $product->templatePrep();
-                }),
-            ]);
+        return $categories->map(function (ProductCategory $category) {
+            return $category->templatePrep();
         });
-
-        return $categories->toArray();
     }
 
     public function products()
