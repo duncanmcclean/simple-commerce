@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Illuminate\Support\Facades\Auth;
-use Statamic\Facades\User;
 use Statamic\Widgets\Widget;
 
 class RecentOrdersWidget extends Widget
