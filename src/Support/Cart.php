@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidCouponCode;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
@@ -136,7 +137,7 @@ class Cart
         $coupon = Coupon::where('code', $couponCode)->first();
 
         if (! $coupon) {
-            throw new ErrorException('The coupon code provided does not exist.');
+            throw new InvalidCouponCode();
         }
 
         if (! $coupon->isActive()) {

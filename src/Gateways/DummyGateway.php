@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidCardNumberException;
 use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use Illuminate\Support\Collection;
 use Statamic\View\View;
@@ -13,7 +14,7 @@ class DummyGateway implements Gateway
         $isPaid = true;
 
         if ($data['cardNumber'] === '1111 1111 1111 1111') {
-            throw new \Exception('The card provided is invalid.');
+            throw new InvalidCardNumberException();
         }
 
         if ($data['expiryYear'] < now()->format('Y')) {

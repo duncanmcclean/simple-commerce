@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyNotConfigured;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency as CurrencyModel;
 
 class Currency
@@ -11,7 +12,7 @@ class Currency
     public function __construct()
     {
         if (config('simple-commerce.currency.iso') === null) {
-            throw new \Exception('Please configure your store\'s currency.');
+            throw new CurrencyNotConfigured();
         }
 
         static::$currency = CurrencyModel::where('iso', config('simple-commerce.currency.iso'))->first()->toArray();

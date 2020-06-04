@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\ParamMissing;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\ThingNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\FormBuilder;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
@@ -95,13 +97,13 @@ class SimpleCommerceTag extends Tags
         $slug = $this->getParam('slug');
 
         if (! $slug) {
-            throw new \Exception('You must pass in a slug to the simple-commerce:product tag.');
+            throw new ParamMissing('slug');
         }
 
         $product = Product::enabled()->where('slug', $slug)->first();
 
         if (! $product) {
-            throw new \Exception('Product Not Found');
+            throw new ThingNotFound('Product');
         }
 
         return $product->templatePrep();
