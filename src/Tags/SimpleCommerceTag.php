@@ -50,20 +50,15 @@ class SimpleCommerceTag extends Tags
             $products = $category->products;
         }
 
-        if ($this->hasParam('where')) {
-            $where = $this->getParam('where');
-
-            $key = explode(':', $where)[0];
-            $value = explode(':', $where)[1];
-
-            $products = $products->where($key, $value);
+        if ($where = $this->hasParam('where')) {
+            $params = explode(':', $where);
+            $products = $products->where($params[0], $params[1]);
         }
 
         if (! $this->getParam('include_disabled')) {
-            $products = $products
-                ->reject(function ($product) {
-                    return ! $product->is_enabled;
-                });
+            $products = $products->reject(function ($product) {
+                return ! $product->is_enabled;
+            });
         }
 
         if ($this->hasParam('limit')) {
@@ -88,12 +83,11 @@ class SimpleCommerceTag extends Tags
     public function product()
     {
         $slug = $this->getParam('slug');
+        $product = Product::enabled()->where('slug', $slug)->first();
 
         if (! $slug) {
             throw new \Exception('You must pass in a slug to the simple-commerce:product tag.');
         }
-
-        $product = Product::enabled()->where('slug', $slug)->first();
 
         if (! $product) {
             throw new \Exception('Product Not Found');
@@ -151,10 +145,9 @@ class SimpleCommerceTag extends Tags
             return $orders->count();
         }
 
-        return $orders
-            ->each(function (Order $order) {
-                return $order->templatePrep();
-            })->toArray();
+        return $orders->map(function (Order $order) {
+            return $order->templatePrep();
+        })->toArray();
     }
 
     public function form()
