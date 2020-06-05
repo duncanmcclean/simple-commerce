@@ -8,12 +8,14 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class AttributeUpdated
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $attribute;
 
     /**
      * AttributeUpdated constructor.
+     *
      * @param Attribute $attribute
      */
     public function __construct(Attribute $attribute)

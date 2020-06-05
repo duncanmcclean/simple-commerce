@@ -26,7 +26,7 @@ class OrderStatusFieldtypeTest extends TestCase
 
         $this->assertIsArray($item);
         $this->assertSame($item, [
-            'id' => $status['id'],
+            'id'    => $status['id'],
             'title' => $status['name'],
         ]);
     }
@@ -39,15 +39,15 @@ class OrderStatusFieldtypeTest extends TestCase
         $index = $this->fieldtype->getIndexItems([]);
 
         $this->assertSame($index[0], [
-            'id' => $statuses[0]['id'],
+            'id'    => $statuses[0]['id'],
             'title' => $statuses[0]['name'],
         ]);
         $this->assertSame($index[1], [
-            'id' => $statuses[1]['id'],
+            'id'    => $statuses[1]['id'],
             'title' => $statuses[1]['name'],
         ]);
         $this->assertSame($index[2], [
-            'id' => $statuses[2]['id'],
+            'id'    => $statuses[2]['id'],
             'title' => $statuses[2]['name'],
         ]);
     }

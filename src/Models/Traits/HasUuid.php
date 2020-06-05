@@ -10,12 +10,12 @@ trait HasUuid
     public static function bootHasUuid()
     {
         static::creating(function (Model $model) {
-            $model->uuid = (new Stache)->generateId();
+            $model->uuid = (new Stache())->generateId();
         });
 
         static::saving(function (Model $model) {
             if (empty($model->uuid)) {
-                $model->uuid = (new Stache)->generateId();
+                $model->uuid = (new Stache())->generateId();
             }
         });
     }

@@ -88,13 +88,13 @@ class OrderStatusControllerTest extends TestCase
 
         $this
             ->assertDatabaseHas('order_statuses', [
-                'uuid' => $status->uuid,
+                'uuid'    => $status->uuid,
                 'primary' => true,
             ])
             ->assertDatabaseMissing('order_statuses', [
-                'uuid' => $status->uuid,
+                'uuid'    => $status->uuid,
                 'primary' => false,
-            ]);;
+            ]);
     }
 
     /** @test */

@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Illuminate\Support\Facades\Session;
 use Statamic\Tags\Tags;
 
@@ -26,7 +25,7 @@ class CartTag extends Tags
     public function count()
     {
         // We don't want to create a cart for every page request with the cart:count tag on it
-        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+        if (!Session::has(config('simple-commerce.cart_session_key'))) {
             return 0;
         }
 
@@ -58,7 +57,7 @@ class CartTag extends Tags
 
     protected function dealWithSession()
     {
-        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+        if (!Session::has(config('simple-commerce.cart_session_key'))) {
             Session::put(config('simple-commerce.cart_session_key'), Cart::make()->uuid);
         }
     }

@@ -23,7 +23,7 @@ class TaxRateFieldtype extends Relationship
         return TaxRate::all()
             ->map(function ($rate) {
                 return [
-                    'id' => $rate->id,
+                    'id'    => $rate->id,
                     'title' => $rate->name,
                 ];
             });

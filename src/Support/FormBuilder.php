@@ -8,8 +8,9 @@ class FormBuilder
 
     /**
      * @param string $form
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     public function build(string $form, array $params, string $contents): string
@@ -20,8 +21,9 @@ class FormBuilder
     }
 
     /**
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     public function cartCreate(array $params, string $contents): string
@@ -30,8 +32,9 @@ class FormBuilder
     }
 
     /**
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     public function cartUpdate(array $params, string $contents): string
@@ -40,8 +43,9 @@ class FormBuilder
     }
 
     /**
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     public function cartDelete(array $params, string $contents): string
@@ -50,8 +54,9 @@ class FormBuilder
     }
 
     /**
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     public function checkout(array $params, string $contents): string
@@ -60,8 +65,9 @@ class FormBuilder
     }
 
     /**
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     public function redeemCoupon(array $params, string $contents): string
@@ -72,8 +78,9 @@ class FormBuilder
     /**
      * @param string $action
      * @param string $method
-     * @param array $params
+     * @param array  $params
      * @param string $contents
+     *
      * @return string
      */
     protected function compose(string $action, string $method, array $params, string $contents): string

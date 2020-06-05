@@ -25,8 +25,8 @@ class ShippingZoneController extends CpController
                         })
                         ->flatten()
                         ->toArray(),
-                    'rates' => $zone->rates->toArray(),
-                    'editUrl' => $zone->editUrl(),
+                    'rates'     => $zone->rates->toArray(),
+                    'editUrl'   => $zone->editUrl(),
                     'updateUrl' => $zone->updateUrl(),
                     'deleteUrl' => $zone->deleteUrl(),
                 ]);
@@ -135,7 +135,7 @@ class ShippingZoneController extends CpController
     {
         // Deal with removing rates
         $requestRates = collect($request->rates)->reject(function ($rate) {
-            return ! isset($rate['uuid']);
+            return !isset($rate['uuid']);
         })->map(function ($rate) {
             return ShippingRate::where('uuid', $rate['uuid'])->first()->id;
         })->toArray();
@@ -148,7 +148,7 @@ class ShippingZoneController extends CpController
         // Deal with creates and updates
         collect($request->rates)
             ->each(function ($rate) use ($zone) {
-                if (! isset($rate['uuid'])) {
+                if (!isset($rate['uuid'])) {
                     $zone->rates()->create([
                         'uuid'      => (new Stache())->generateId(),
                         'name'      => $rate['name'],

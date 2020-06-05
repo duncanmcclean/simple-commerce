@@ -77,13 +77,13 @@ class Coupon extends Model
         }
 
         // If there are no dates set...
-        if (! $this->start_date && ! $this->end_date) {
+        if (!$this->start_date && !$this->end_date) {
             return true;
         }
 
         // If we are in between the start date and end date...
         if ($this->start_date->isPast()) {
-            if (! $this->end_date->isPast()) {
+            if (!$this->end_date->isPast()) {
                 return true;
             }
         }

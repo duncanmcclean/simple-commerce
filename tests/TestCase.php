@@ -8,23 +8,25 @@ use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Fieldset;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
-use Illuminate\Support\Facades\Auth;
 
 abstract class TestCase extends OrchestraTestCase
 {
-    use DatabaseMigrations, RefreshDatabase, WithFaker;
+    use DatabaseMigrations;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected $shouldFakeVersion = true;
 
     protected function setUp(): void
     {
-        require_once(__DIR__.'/__fixtures__/app/User.php');
+        require_once __DIR__.'/__fixtures__/app/User.php';
 
         parent::setUp();
 
@@ -59,16 +61,16 @@ abstract class TestCase extends OrchestraTestCase
 
         $app->make(Manifest::class)->manifest = [
             'doublethreedigital/simple-commerce' => [
-                'id' => 'doublethreedigital/simple-commerce',
+                'id'        => 'doublethreedigital/simple-commerce',
                 'namespace' => 'DoubleThreeDigital\\SimpleCommerce\\',
             ],
         ];
 
-        Statamic::pushActionRoutes(function() {
+        Statamic::pushActionRoutes(function () {
             return require_once realpath(__DIR__.'/../routes/actions.php');
         });
 
-        Statamic::pushCpRoutes(function() {
+        Statamic::pushCpRoutes(function () {
             return require_once realpath(__DIR__.'/../routes/cp.php');
         });
 
@@ -81,7 +83,7 @@ abstract class TestCase extends OrchestraTestCase
         parent::resolveApplicationConfiguration($app);
 
         $configs = [
-            'assets', 'cp', 'forms', 'static_caching', 'sites', 'stache', 'system', 'users'
+            'assets', 'cp', 'forms', 'static_caching', 'sites', 'stache', 'system', 'users',
         ];
 
         foreach ($configs as $config) {
