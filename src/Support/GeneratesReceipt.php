@@ -7,6 +7,11 @@ use DoubleThreeDigital\SimpleCommerce\Models\Order;
 
 class GeneratesReceipt
 {
+    /**
+     * @param Order $order
+     * @param bool $storagePath
+     * @return string
+     */
     public function generate(Order $order, bool $storagePath = false)
     {
         $disk = config("filesystems.disks.".config('simple-commerce.receipt_filesystem'));

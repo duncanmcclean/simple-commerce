@@ -13,17 +13,23 @@ use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingZone;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use ErrorException;
 use Illuminate\Support\Collection;
 use Statamic\Stache\Stache;
 
 class Cart
 {
+    /**
+     * @return Collection
+     */
     public function all(): Collection
     {
         return Order::notCompleted()->get();
     }
 
+    /**
+     * @param string $orderUuid
+     * @return Collection|null
+     */
     public function find(string $orderUuid): ?Collection
     {
         return collect(
@@ -34,6 +40,9 @@ class Cart
         );
     }
 
+    /**
+     * @return mixed
+     */
     public function make()
     {
         return Order::create([
@@ -55,6 +64,11 @@ class Cart
         ]);
     }
 
+    /**
+     * @param string $orderUuid
+     * @param array $attributes
+     * @return mixed
+     */
     public function update(string $orderUuid, array $attributes = [])
     {
         return Order::notCompleted()
@@ -63,6 +77,10 @@ class Cart
             ], $attributes);
     }
 
+    /**
+     * @param string $orderUuid
+     * @return mixed
+     */
     public function clear(string $orderUuid)
     {
         return Order::notCompleted()
@@ -71,6 +89,13 @@ class Cart
             ->delete();
     }
 
+    /**
+     * @param string $orderUuid
+     * @param string $variantUuid
+     * @param int $quantity
+     * @param string $note
+     * @return mixed
+     */
     public function addLineItem(string $orderUuid, string $variantUuid, int $quantity, string $note = '')
     {
         $variant = Variant::select('id', 'name', 'sku', 'price', 'max_quantity', 'product_id', 'weight')
@@ -85,7 +110,7 @@ class Cart
 
                 return $lineItem->recalculate();
             }
-            
+
             $lineItem->update([
                 'quantity' => $lineItem->quantity + $quantity,
             ]);
@@ -114,6 +139,11 @@ class Cart
             ->recalculate();
     }
 
+    /**
+     * @param string $orderUuid
+     * @param string $itemUuid
+     * @param array $updateOptions
+     */
     public function updateLineItem(string $orderUuid, string $itemUuid, array $updateOptions)
     {
         $lineItem = LineItem::where('uuid', $itemUuid)->first();
@@ -122,6 +152,11 @@ class Cart
         $lineItem->recalculate();
     }
 
+    /**
+     * @param string $orderUuid
+     * @param string $itemUuid
+     * @return mixed
+     */
     public function removeLineItem(string $orderUuid, string $itemUuid)
     {
         LineItem::where('uuid', $itemUuid)->get()->each(function ($item) {
@@ -131,6 +166,12 @@ class Cart
         return Order::where('uuid', $orderUuid)->first()->recalculate();
     }
 
+    /**
+     * @param string $orderUuid
+     * @param string $couponCode
+     * @return bool
+     * @throws InvalidCouponCode
+     */
     public function redeemCoupon(string $orderUuid, string $couponCode): bool
     {
         $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
@@ -163,6 +204,9 @@ class Cart
         return false;
     }
 
+    /**
+     * @param Order $order
+     */
     public function decideShipping(Order $order)
     {
         $zone = Country::find($order->shippingAddress->country_id)->shippingZone;
@@ -225,6 +269,9 @@ class Cart
             });
     }
 
+    /**
+     * @param Order $order
+     */
     public function calculateTotals(Order $order)
     {
         $totals = [
