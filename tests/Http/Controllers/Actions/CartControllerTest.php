@@ -30,9 +30,9 @@ class CartControllerTest extends TestCase
         $this
             ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.store'), [
-                'variant'   => $variant->uuid,
-                'quantity'  => 1,
-                'note'      => 'Pre-order',
+                'variant'    => $variant->uuid,
+                'quantity'   => 1,
+                'note'       => 'Pre-order',
                 '_redirect'  => '/cart',
             ])
             ->assertRedirect('/cart');
@@ -53,8 +53,8 @@ class CartControllerTest extends TestCase
         $this
             ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.cart.store'), [
-                'variant'   => $variant->uuid,
-                'quantity'  => 1,
+                'variant'    => $variant->uuid,
+                'quantity'   => 1,
                 '_redirect'  => '/cart',
             ])
             ->assertRedirect('/cart');
@@ -108,7 +108,7 @@ class CartControllerTest extends TestCase
             ])
             ->assertRedirect('/checkout');
 
-        $address = Address::where('address1', '11 Statamic Way')->first();    
+        $address = Address::where('address1', '11 Statamic Way')->first();
 
         $this
             ->assertDatabaseHas('orders', [

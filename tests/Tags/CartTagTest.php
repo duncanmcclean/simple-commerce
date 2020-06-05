@@ -16,7 +16,7 @@ class CartTagTest extends TestCase
 
     //public $tag;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 

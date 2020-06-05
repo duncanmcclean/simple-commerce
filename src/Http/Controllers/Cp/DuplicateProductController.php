@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use Statamic\Http\Controllers\CP\CpController;
 
 class DuplicateProductController extends CpController

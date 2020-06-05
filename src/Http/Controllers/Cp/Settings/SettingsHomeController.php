@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\Settings;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\SettingsUpdateRequest;
 use Statamic\Http\Controllers\CP\CpController;
 
 class SettingsHomeController extends CpController
@@ -12,28 +11,28 @@ class SettingsHomeController extends CpController
         return view('simple-commerce::cp.settings.index', [
             'settings' => [
                 [
-                    'title' => 'Order Statuses',
+                    'title'       => 'Order Statuses',
                     'description' => 'Order statuses help you to organise the status of orders in your store.',
-                    'url' => cp_route('settings.order-statuses.index'),
-                    'icon' => 'select',
+                    'url'         => cp_route('settings.order-statuses.index'),
+                    'icon'        => 'select',
                 ],
                 [
-                    'title' => 'Shipping',
+                    'title'       => 'Shipping',
                     'description' => 'Manage Shipping Categories and Shipping Methods available to your customers.',
-                    'url' => cp_route('settings.shipping.index'),
-                    'icon' => 'pin',
+                    'url'         => cp_route('settings.shipping.index'),
+                    'icon'        => 'pin',
                 ],
                 [
-                    'title' => 'Tax Rates',
+                    'title'       => 'Tax Rates',
                     'description' => 'Manage the tax rates that are added to customer\'s orders when checking out.',
-                    'url' => cp_route('settings.tax-rates.index'),
-                    'icon' => 'earth',
+                    'url'         => cp_route('settings.tax-rates.index'),
+                    'icon'        => 'earth',
                 ],
                 [
-                    'title' => 'More Settings',
+                    'title'       => 'More Settings',
                     'description' => 'Simple Commerce lets you configure more settings in the config/simple-commerce.php file.',
-                    'url' => '#',
-                    'icon' => 'settings-horizontal',
+                    'url'         => '#',
+                    'icon'        => 'settings-horizontal',
                 ],
             ],
         ]);

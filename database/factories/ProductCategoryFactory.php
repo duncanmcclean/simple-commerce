@@ -1,7 +1,7 @@
 <?php
 
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
+use Faker\Generator as Faker;
 use Statamic\Stache\Stache;
 
 $factory->define(ProductCategory::class, function (Faker $faker) {

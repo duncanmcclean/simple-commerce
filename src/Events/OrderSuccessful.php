@@ -8,12 +8,14 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class OrderSuccessful
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $order;
 
     /**
      * OrderSuccessful constructor.
+     *
      * @param Order $order
      */
     public function __construct(Order $order)

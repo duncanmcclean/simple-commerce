@@ -15,7 +15,7 @@ class CouponController extends CpController
         $this->authorize('view', Coupon::class);
 
         return view('simple-commerce::cp.coupons.index', [
-            'coupons' => Coupon::paginate(config('statamic.cp.pagination_size')),
+            'coupons'   => Coupon::paginate(config('statamic.cp.pagination_size')),
             'createUrl' => (new Coupon())->createUrl(),
         ]);
     }
@@ -44,15 +44,15 @@ class CouponController extends CpController
         $this->authorize('create', Coupon::class);
 
         $coupon = Coupon::create([
-            'uuid' => (new Stache())->generateId(),
-            'name' => $request->name,
-            'code' => $request->code,
-            'type' => $request->type,
-            'value' => $request->value,
+            'uuid'          => (new Stache())->generateId(),
+            'name'          => $request->name,
+            'code'          => $request->code,
+            'type'          => $request->type,
+            'value'         => $request->value,
             'minimum_total' => $request->minimum_total,
-            'total_uses' => $request->total_uses,
-            'start_date' => $request->start_date ?? null,
-            'end_date' => $request->end_date ?? null,
+            'total_uses'    => $request->total_uses,
+            'start_date'    => $request->start_date ?? null,
+            'end_date'      => $request->end_date ?? null,
         ]);
 
         return [
@@ -86,14 +86,14 @@ class CouponController extends CpController
         $this->authorize('update', $coupon);
 
         $coupon->update([
-            'name' => $request->name,
-            'code' => $request->code,
-            'type' => $request->type,
-            'value' => $request->value,
+            'name'          => $request->name,
+            'code'          => $request->code,
+            'type'          => $request->type,
+            'value'         => $request->value,
             'minimum_total' => $request->minimum_total,
-            'total_uses' => $request->total_uses,
-            'start_date' => $request->start_date ?? $coupon->start_date ?? null,
-            'end_date' => $request->end_date ?? $coupon->end_date ?? null,
+            'total_uses'    => $request->total_uses,
+            'start_date'    => $request->start_date ?? $coupon->start_date ?? null,
+            'end_date'      => $request->end_date ?? $coupon->end_date ?? null,
         ]);
 
         return $coupon;

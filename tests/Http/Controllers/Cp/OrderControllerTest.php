@@ -32,7 +32,7 @@ class OrderControllerTest extends TestCase
         $status = factory(OrderStatus::class)->create();
         $orders = factory(Order::class, 5)->create([
             'is_completed'       => true,
-            'order_status_id'   => $status->id,
+            'order_status_id'    => $status->id,
         ]);
 
         $this
@@ -71,14 +71,14 @@ class OrderControllerTest extends TestCase
             ->actAsSuper()
             ->get(cp_route('orders.index'))
             ->assertOk()
-            ->assertSee("nothing to show");
+            ->assertSee('nothing to show');
     }
 
     /** @test */
     public function can_edit_order()
     {
         $order = factory(Order::class)->create();
-        
+
         $this
             ->actAsSuper()
             ->get(cp_route('orders.edit', ['order' => $order->uuid]))

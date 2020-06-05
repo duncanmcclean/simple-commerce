@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
@@ -26,7 +25,7 @@ class StateFieldtype extends Relationship
         return State::all()
             ->map(function ($state) {
                 return [
-                    'id' => $state->id,
+                    'id'    => $state->id,
                     'title' => $state->name,
                 ];
             });

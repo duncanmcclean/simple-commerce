@@ -13,7 +13,7 @@ class LineItemDataTest extends TestCase
     {
         $lineItem = factory(LineItem::class)->create();
 
-        $data = (new LineItemData)->data($lineItem->toArray(), $lineItem);
+        $data = (new LineItemData())->data($lineItem->toArray(), $lineItem);
 
         $this->assertIsArray($data);
         $this->assertArrayHasKey('sku', $data);

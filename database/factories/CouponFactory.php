@@ -1,7 +1,7 @@
 <?php
 
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
+use Faker\Generator as Faker;
 use Statamic\Stache\Stache;
 
 $factory->define(Coupon::class, function (Faker $faker) {
@@ -13,7 +13,7 @@ $factory->define(Coupon::class, function (Faker $faker) {
     $type = $types[array_rand($types)];
 
     return [
-        'uuid'          => (new Stache)->generateId(),
+        'uuid'          => (new Stache())->generateId(),
         'name'          => '10% Off Cart',
         'code'          => '10OFFCART',
         'type'          => $type,

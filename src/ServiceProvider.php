@@ -52,9 +52,9 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $listen = [
         AttributeUpdated::class => [],
-        CouponRedeemed::class => [],
-        OrderPaid::class => [],
-        OrderRefunded::class => [
+        CouponRedeemed::class   => [],
+        OrderPaid::class        => [],
+        OrderRefunded::class    => [
             SendOrderRefundedNotification::class,
         ],
         OrderStatusUpdated::class => [
@@ -64,8 +64,8 @@ class ServiceProvider extends AddonServiceProvider
             SendOrderSuccessfulNotification::class,
         ],
         ProductCategoryUpdated::class => [],
-        ProductUpdated::class => [],
-        VariantLowStock::class => [
+        ProductUpdated::class         => [],
+        VariantLowStock::class        => [
             SendVariantStockRunningLowNotification::class,
         ],
         VariantOutOfStock::class => [
@@ -101,10 +101,10 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $policies = [
-        Coupon::class => CouponPolicy::class,
-        Order::class => OrderPolicy::class,
+        Coupon::class          => CouponPolicy::class,
+        Order::class           => OrderPolicy::class,
         ProductCategory::class => ProductCategoryPolicy::class,
-        Product::class => ProductPolicy::class,
+        Product::class         => ProductPolicy::class,
     ];
 
     protected $commands = [
@@ -118,7 +118,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',
-        'cp' => __DIR__.'/../routes/cp.php',
+        'cp'      => __DIR__.'/../routes/cp.php',
     ];
 
     public function boot()
@@ -148,7 +148,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public function register()
     {
-        if (! $this->app->configurationIsCached()) {
+        if (!$this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
         }
 
@@ -166,7 +166,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([
             __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
         ], 'simple-commerce-blueprints');
-        
+
         $this->publishes([
             __DIR__.'/../resources/fieldsets' => resource_path('fieldsets'),
         ], 'simple-commerce-fieldsets');

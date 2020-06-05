@@ -10,7 +10,7 @@ class HasItemsInCart
 {
     public function handle($request, Closure $next)
     {
-        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+        if (!Session::has(config('simple-commerce.cart_session_key'))) {
             // The customer does not have a cart key in their session
             abort(401);
         } else {

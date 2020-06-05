@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
 {
-    use HasAttributes, HasUuid;
+    use HasAttributes;
+    use HasUuid;
 
     protected $fillable = [
         'uuid', 'name', 'sku', 'description', 'images', 'weight', 'price', 'stock', 'unlimited_stock', 'max_quantity', 'product_id',
@@ -62,6 +63,6 @@ class Variant extends Model
 
     public function templatePrep()
     {
-        return (new VariantData)->data($this->toArray(), $this);
+        return (new VariantData())->data($this->toArray(), $this);
     }
 }

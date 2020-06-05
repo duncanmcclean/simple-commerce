@@ -25,7 +25,7 @@ class ProductCategoryFieldtype extends Relationship
         return ProductCategory::all()
             ->map(function ($category) {
                 return [
-                    'id' => $category->id,
+                    'id'    => $category->id,
                     'title' => $category->title,
                 ];
             });

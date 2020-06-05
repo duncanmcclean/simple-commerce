@@ -26,11 +26,11 @@ class TaxRateControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('tax-rates.store'), [
-                'name' => $this->faker->word,
-                'country' => [factory(Country::class)->create()->id],
-                'state' => [factory(State::class)->create()->id],
+                'name'              => $this->faker->word,
+                'country'           => [factory(Country::class)->create()->id],
+                'state'             => [factory(State::class)->create()->id],
                 'start_of_zip_code' => 'G72 A12',
-                'rate' => '20',
+                'rate'              => '20',
             ])
             ->assertCreated();
     }
@@ -43,11 +43,11 @@ class TaxRateControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('tax-rates.update', ['rate' => $rate->uuid]), [
-                'name' => $this->faker->word,
-                'country' => [$rate->country_id],
-                'state' => [$rate->state_id],
+                'name'              => $this->faker->word,
+                'country'           => [$rate->country_id],
+                'state'             => [$rate->state_id],
                 'start_of_zip_code' => $rate->start_of_zip_code,
-                'rate' => '20',
+                'rate'              => '20',
             ])
             ->assertOk();
     }

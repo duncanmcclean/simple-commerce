@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp\Settings;
 
-use Illuminate\Support\Facades\Config;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Support\Facades\Config;
 
 class ShippingControllerTest extends TestCase
 {
