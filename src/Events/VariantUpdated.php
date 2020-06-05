@@ -12,6 +12,10 @@ class VariantUpdated
 
     public $variant;
 
+    /**
+     * VariantUpdated constructor.
+     * @param Variant $variant
+     */
     public function __construct(Variant $variant)
     {
         $this->variant = $variant;

@@ -12,6 +12,10 @@ class OrderRefunded
 
     public $order;
 
+    /**
+     * OrderRefunded constructor.
+     * @param Order $order
+     */
     public function __construct(Order $order)
     {
         $this->order = $order;

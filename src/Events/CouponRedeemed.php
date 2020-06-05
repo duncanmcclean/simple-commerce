@@ -14,6 +14,11 @@ class CouponRedeemed
     public $coupon;
     public $order;
 
+    /**
+     * CouponRedeemed constructor.
+     * @param Coupon $coupon
+     * @param Order $order
+     */
     public function __construct(Coupon $coupon, Order $order)
     {
         $this->coupon = $coupon;

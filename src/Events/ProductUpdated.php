@@ -12,6 +12,10 @@ class ProductUpdated
 
     public $product;
 
+    /**
+     * ProductUpdated constructor.
+     * @param Product $product
+     */
     public function __construct(Product $product)
     {
         $this->product = $product;

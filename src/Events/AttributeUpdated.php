@@ -12,6 +12,10 @@ class AttributeUpdated
 
     public $attribute;
 
+    /**
+     * AttributeUpdated constructor.
+     * @param Attribute $attribute
+     */
     public function __construct(Attribute $attribute)
     {
         $this->attribute = $attribute;

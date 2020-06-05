@@ -12,6 +12,10 @@ class VariantOutOfStock
 
     public $variant;
 
+    /**
+     * VariantOutOfStock constructor.
+     * @param Variant $variant
+     */
     public function __construct(Variant $variant)
     {
         $this->variant = $variant;

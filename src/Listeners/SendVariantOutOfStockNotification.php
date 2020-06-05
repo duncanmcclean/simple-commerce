@@ -9,11 +9,17 @@ use Illuminate\Support\Facades\Notification;
 
 class SendVariantOutOfStockNotification
 {
+    /**
+     * @param VariantOutOfStock $event
+     */
     public function handle(VariantOutOfStock $event)
     {
         $this->sendBackOfficeNotification($event->variant);
     }
 
+    /**
+     * @param Variant $variant
+     */
     protected function sendBackOfficeNotification(Variant $variant)
     {
         Notification::route('mail', config('simple-commerce.notifications.mail.to'))

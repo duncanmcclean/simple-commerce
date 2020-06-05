@@ -12,6 +12,10 @@ class OrderSuccessful
 
     public $order;
 
+    /**
+     * OrderSuccessful constructor.
+     * @param Order $order
+     */
     public function __construct(Order $order)
     {
         $this->order = $order;

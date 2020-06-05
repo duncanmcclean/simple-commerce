@@ -14,6 +14,11 @@ class OrderStatusUpdated
     public $order;
     public $orderStatus;
 
+    /**
+     * OrderStatusUpdated constructor.
+     * @param Order $order
+     * @param OrderStatus $orderStatus
+     */
     public function __construct(Order $order, OrderStatus $orderStatus)
     {
         $this->order = $order;

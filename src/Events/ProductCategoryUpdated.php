@@ -12,6 +12,10 @@ class ProductCategoryUpdated
 
     public $category;
 
+    /**
+     * ProductCategoryUpdated constructor.
+     * @param ProductCategory $category
+     */
     public function __construct(ProductCategory $category)
     {
         $this->category = $category;
