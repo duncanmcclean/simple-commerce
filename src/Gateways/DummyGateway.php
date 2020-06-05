@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidCardNumberException;
 use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use Illuminate\Support\Collection;
-use Statamic\View\View;
 
 class DummyGateway implements Gateway
 {
@@ -43,12 +42,7 @@ class DummyGateway implements Gateway
 
     public function paymentForm(): string
     {
-        return (new View())
-            ->template('simple-commerce::gateways.dummy')
-            ->with([
-                'class' => get_class($this),
-            ])
-            ->render();
+        return view('simple-commerce::gateways.dummy')->render();
     }
 
     public function refund(Transaction $transaction): Collection
