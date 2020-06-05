@@ -113,7 +113,7 @@ class CartController extends Controller
 
     protected function dealWithSession()
     {
-        if (! Session::has(config('simple-commerce.cart_session_key'))) {
+        if (!Session::has(config('simple-commerce.cart_session_key'))) {
             Session::put(config('simple-commerce.cart_session_key'), Cart::make()->uuid);
         }
     }

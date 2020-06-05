@@ -57,7 +57,7 @@ class OrderStatusController extends CpController
 
         $status->orders()
             ->update([
-               'order_status_id' => $request->assign,
+                'order_status_id' => $request->assign,
             ]);
 
         $status->delete();

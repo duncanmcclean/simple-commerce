@@ -26,7 +26,7 @@ class CountryFieldtypeTest extends TestCase
 
         $this->assertIsArray($item);
         $this->assertSame($item, [
-            'id' => $country->id,
+            'id'    => $country->id,
             'title' => $country->name,
         ]);
     }
@@ -39,15 +39,15 @@ class CountryFieldtypeTest extends TestCase
         $index = $this->fieldtype->getIndexItems([]);
 
         $this->assertSame($index[0], [
-            'id' => $countries[0]['id'],
+            'id'    => $countries[0]['id'],
             'title' => $countries[0]['name'],
         ]);
         $this->assertSame($index[1], [
-            'id' => $countries[1]['id'],
+            'id'    => $countries[1]['id'],
             'title' => $countries[1]['name'],
         ]);
         $this->assertSame($index[2], [
-            'id' => $countries[2]['id'],
+            'id'    => $countries[2]['id'],
             'title' => $countries[2]['name'],
         ]);
     }

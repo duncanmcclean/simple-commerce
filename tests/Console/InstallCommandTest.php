@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Console;
 
-use DoubleThreeDigital\SimpleCommerce\Console\Commands\InstallCommand;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class InstallCommandTest extends TestCase

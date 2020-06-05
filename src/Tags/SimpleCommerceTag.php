@@ -66,10 +66,10 @@ class SimpleCommerceTag extends Tags
             $products = $products->where($key, $value);
         }
 
-        if (! $this->getParam('include_disabled')) {
+        if (!$this->getParam('include_disabled')) {
             $products = $products
                 ->reject(function ($product) {
-                    return ! $product->is_enabled;
+                    return !$product->is_enabled;
                 });
         }
 
@@ -96,13 +96,13 @@ class SimpleCommerceTag extends Tags
     {
         $slug = $this->getParam('slug');
 
-        if (! $slug) {
+        if (!$slug) {
             throw new ParamMissing('slug');
         }
 
         $product = Product::enabled()->where('slug', $slug)->first();
 
-        if (! $product) {
+        if (!$product) {
             throw new ThingNotFound('Product');
         }
 
@@ -175,7 +175,7 @@ class SimpleCommerceTag extends Tags
 
     public function errors()
     {
-        if (! FormBuilder::hasErrors()) {
+        if (!FormBuilder::hasErrors()) {
             return false;
         }
 
@@ -186,13 +186,13 @@ class SimpleCommerceTag extends Tags
         }
 
         return ($this->content === '')
-            ? ! empty($errors)
+            ? !empty($errors)
             : $this->parseLoop($errors);
     }
 
     public function success()
     {
-        if (! $this->getParam('for')) {
+        if (!$this->getParam('for')) {
             return false;
         }
 

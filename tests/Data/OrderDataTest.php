@@ -13,7 +13,7 @@ class OrderDataTest extends TestCase
     {
         $order = factory(Order::class)->create();
 
-        $data = (new OrderData)->data($order->toArray(), $order);
+        $data = (new OrderData())->data($order->toArray(), $order);
 
         $this->assertIsArray($data);
         $this->assertArrayHasKey('is_paid', $data);

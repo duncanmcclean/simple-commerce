@@ -22,7 +22,7 @@ class Order extends Model
     ];
 
     protected $appends = [
-        'hasBeenRefunded'
+        'hasBeenRefunded',
     ];
 
     public function lineItems()
@@ -99,12 +99,12 @@ class Order extends Model
 
     public function templatePrep()
     {
-        return (new OrderData)->data($this->toArray(), $this);
+        return (new OrderData())->data($this->toArray(), $this);
     }
 
     public function generateReceipt($storagePath = false)
     {
-        return (new GeneratesReceipt)->generate($this, $storagePath);
+        return (new GeneratesReceipt())->generate($this, $storagePath);
     }
 
     public function getHasBeenRefundedAttribute()

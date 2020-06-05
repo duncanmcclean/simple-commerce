@@ -8,12 +8,14 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class OrderRefunded
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $order;
 
     /**
      * OrderRefunded constructor.
+     *
      * @param Order $order
      */
     public function __construct(Order $order)

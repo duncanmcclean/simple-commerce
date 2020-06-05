@@ -10,6 +10,7 @@ interface Gateway
     /**
      * @param array $data
      * @param float $total
+     *
      * @return Collection
      */
     public function completePurchase(array $data, float $total): Collection;
@@ -26,6 +27,7 @@ interface Gateway
 
     /**
      * @param Transaction $transaction
+     *
      * @return Collection
      */
     public function refund(Transaction $transaction): Collection;

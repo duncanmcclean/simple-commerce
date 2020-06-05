@@ -9,12 +9,13 @@ class GeneratesReceipt
 {
     /**
      * @param Order $order
-     * @param bool $storagePath
+     * @param bool  $storagePath
+     *
      * @return string
      */
     public function generate(Order $order, bool $storagePath = false)
     {
-        $disk = config("filesystems.disks.".config('simple-commerce.receipt_filesystem'));
+        $disk = config('filesystems.disks.'.config('simple-commerce.receipt_filesystem'));
         $filename = now()->timestamp.$order->id;
 
         PDF::loadView('simple-commerce::receipt', $order->templatePrep())

@@ -33,24 +33,24 @@ class CheckoutControllerTest extends TestCase
         $this
             ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name' => 'George Murray',
+                'name'  => 'George Murray',
                 'email' => 'george@murray.com',
 
-                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
-                'cardholder' => 'Mr George Murray',
-                'cardNumber' => '4242 4242 4242 4242',
+                'gateway'     => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'cardholder'  => 'Mr George Murray',
+                'cardNumber'  => '4242 4242 4242 4242',
                 'expiryMonth' => '01',
-                'expiryYear' => '2025',
-                'cvc' => '123',
+                'expiryYear'  => '2025',
+                'cvc'         => '123',
             ])
             ->assertRedirect();
 
-        $customer = User::where('email', 'george@murray.com')->first(); 
+        $customer = User::where('email', 'george@murray.com')->first();
 
         $this->assertDatabaseHas('orders', [
             'customer_id' => $customer->id,
         ]);
-        
+
         Event::assertDispatched(OrderPaid::class);
         Event::assertDispatched(OrderSuccessful::class);
     }
@@ -61,7 +61,7 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $customer = factory(User::class)->create([
-            'name' => 'Tom Jackson',
+            'name'  => 'Tom Jackson',
             'email' => 'tom@jackson.com',
         ]);
         $order = factory(Order::class)->create();
@@ -70,15 +70,15 @@ class CheckoutControllerTest extends TestCase
         $this
             ->session(['simple_commerce_cart' => $order->uuid])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name' => $customer->name,
+                'name'  => $customer->name,
                 'email' => $customer->email,
 
-                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
-                'cardholder' => 'Mr George Murray',
-                'cardNumber' => '4242 4242 4242 4242',
+                'gateway'     => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'cardholder'  => 'Mr George Murray',
+                'cardNumber'  => '4242 4242 4242 4242',
                 'expiryMonth' => '01',
-                'expiryYear' => '2025',
-                'cvc' => '123',
+                'expiryYear'  => '2025',
+                'cvc'         => '123',
             ])
             ->assertRedirect();
 
@@ -96,7 +96,7 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $customer = factory(User::class)->create([
-            'name' => 'Jack Thomson',
+            'name'  => 'Jack Thomson',
             'email' => 'jack@thomson.com',
         ]);
         $order = factory(Order::class)->create();
@@ -106,15 +106,15 @@ class CheckoutControllerTest extends TestCase
             ->session(['simple_commerce_cart' => $order->uuid])
             ->actingAs($customer)
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name' => $customer->name,
+                'name'  => $customer->name,
                 'email' => $customer->email,
 
-                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
-                'cardholder' => 'Mr George Murray',
-                'cardNumber' => '4242 4242 4242 4242',
+                'gateway'     => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'cardholder'  => 'Mr George Murray',
+                'cardNumber'  => '4242 4242 4242 4242',
                 'expiryMonth' => '01',
-                'expiryYear' => '2025',
-                'cvc' => '123',
+                'expiryYear'  => '2025',
+                'cvc'         => '123',
             ])
             ->assertRedirect();
 

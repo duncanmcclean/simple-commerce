@@ -26,7 +26,7 @@ class StateFieldtypeTest extends TestCase
 
         $this->assertIsArray($item);
         $this->assertSame($item, [
-            'id' => $state['id'],
+            'id'    => $state['id'],
             'title' => $state['name'],
         ]);
     }
@@ -39,15 +39,15 @@ class StateFieldtypeTest extends TestCase
         $index = $this->fieldtype->getIndexItems([]);
 
         $this->assertSame($index[0], [
-            'id' => $states[0]['id'],
+            'id'    => $states[0]['id'],
             'title' => $states[0]['name'],
         ]);
         $this->assertSame($index[1], [
-            'id' => $states[1]['id'],
+            'id'    => $states[1]['id'],
             'title' => $states[1]['name'],
         ]);
         $this->assertSame($index[2], [
-            'id' => $states[2]['id'],
+            'id'    => $states[2]['id'],
             'title' => $states[2]['name'],
         ]);
     }

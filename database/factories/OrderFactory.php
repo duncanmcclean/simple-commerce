@@ -3,11 +3,11 @@
 use App\User;
 use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use Faker\Generator as Faker;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
-use Statamic\Stache\Stache;
 use Illuminate\Support\Facades\Config;
+use Statamic\Stache\Stache;
 
 $factory->define(Order::class, function (Faker $faker) {
     $currency = factory(Currency::class)->create();

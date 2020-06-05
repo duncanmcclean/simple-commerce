@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
-use Statamic\Facades\Blueprint;
 use Statamic\Http\Controllers\CP\CpController;
 
 class OrderController extends CpController

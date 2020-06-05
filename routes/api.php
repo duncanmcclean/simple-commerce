@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/products', function() {
+Route::get('/products', function () {
     return new \DoubleThreeDigital\SimpleCommerce\Http\Resources\ProductCollection(
         \DoubleThreeDigital\SimpleCommerce\Models\Product::with('attributes', 'variants.attributes', 'productCategory', 'variants')->paginate()
     );

@@ -26,7 +26,7 @@ class CurrencyFieldtypeTest extends TestCase
 
         $this->assertIsArray($item);
         $this->assertSame($item, [
-            'id' => $currency['id'],
+            'id'    => $currency['id'],
             'title' => $currency['symbol'].' '.$currency['name'],
         ]);
     }
@@ -39,15 +39,15 @@ class CurrencyFieldtypeTest extends TestCase
         $index = $this->fieldtype->getIndexItems([]);
 
         $this->assertSame($index[0], [
-            'id' => $currencies[0]['id'],
+            'id'    => $currencies[0]['id'],
             'title' => $currencies[0]['symbol'].' '.$currencies[0]['name'],
         ]);
         $this->assertSame($index[1], [
-            'id' => $currencies[1]['id'],
+            'id'    => $currencies[1]['id'],
             'title' => $currencies[1]['symbol'].' '.$currencies[1]['name'],
         ]);
         $this->assertSame($index[2], [
-            'id' => $currencies[2]['id'],
+            'id'    => $currencies[2]['id'],
             'title' => $currencies[2]['symbol'].' '.$currencies[2]['name'],
         ]);
     }

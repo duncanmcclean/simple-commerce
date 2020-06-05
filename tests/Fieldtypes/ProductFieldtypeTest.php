@@ -26,7 +26,7 @@ class ProductFieldtypeTest extends TestCase
 
         $this->assertIsArray($item);
         $this->assertSame($item, [
-            'id' => $product['id'],
+            'id'    => $product['id'],
             'title' => $product['title'],
         ]);
     }
@@ -39,15 +39,15 @@ class ProductFieldtypeTest extends TestCase
         $index = $this->fieldtype->getIndexItems([]);
 
         $this->assertSame($index[0], [
-            'id' => $products[0]['id'],
+            'id'    => $products[0]['id'],
             'title' => $products[0]['title'],
         ]);
         $this->assertSame($index[1], [
-            'id' => $products[1]['id'],
+            'id'    => $products[1]['id'],
             'title' => $products[1]['title'],
         ]);
         $this->assertSame($index[2], [
-            'id' => $products[2]['id'],
+            'id'    => $products[2]['id'],
             'title' => $products[2]['title'],
         ]);
     }

@@ -46,6 +46,6 @@ class LineItem extends Model
 
     public function templatePrep()
     {
-        return (new LineItemData)->data($this->toArray(), $this);
+        return (new LineItemData())->data($this->toArray(), $this);
     }
 }

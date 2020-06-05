@@ -27,7 +27,7 @@ class SimpleCommerce
                 }
             }
 
-            return new static;
+            return new static();
         });
     }
 
@@ -35,7 +35,7 @@ class SimpleCommerce
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
-                $instance = new $gateway[0];
+                $instance = new $gateway[0]();
 
                 return [
                     'name'              => $instance->name(),

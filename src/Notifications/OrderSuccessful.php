@@ -26,11 +26,11 @@ class OrderSuccessful extends Notification
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
             ->subject("Order #{$this->order->id}")
             ->markdown('simple-commerce::mail.order-successful', [
-                'order' => $this->order,
+                'order'    => $this->order,
                 'customer' => $this->order->customer,
             ])
             ->attach($this->order->generateReceipt(true), [
-                'as' => 'receipt.pdf',
+                'as'   => 'receipt.pdf',
                 'mime' => 'text/pdf',
             ]);
     }

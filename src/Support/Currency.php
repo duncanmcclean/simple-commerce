@@ -11,6 +11,7 @@ class Currency
 
     /**
      * Currency constructor.
+     *
      * @throws CurrencyNotConfigured
      */
     public function __construct()
@@ -48,8 +49,9 @@ class Currency
 
     /**
      * @param float $total
-     * @param bool $showSeparator
-     * @param bool $showSymbol
+     * @param bool  $showSeparator
+     * @param bool  $showSymbol
+     *
      * @return string
      */
     public function parse(float $total, bool $showSeparator = true, bool $showSymbol = true): string

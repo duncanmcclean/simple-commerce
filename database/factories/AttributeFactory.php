@@ -1,7 +1,7 @@
 <?php
 
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
+use Faker\Generator as Faker;
 use Statamic\Stache\Stache;
 
 $factory->define(Attribute::class, function (Faker $faker) {

@@ -14,10 +14,10 @@ class OrderStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'slug' => 'required|string',
+            'name'        => 'required|string',
+            'slug'        => 'required|string',
             'description' => 'nullable|string',
-            'color' => 'required|in:gray,green,blue,red,yellow,orange,pink,purple',
+            'color'       => 'required|in:gray,green,blue,red,yellow,orange,pink,purple',
         ];
     }
 }

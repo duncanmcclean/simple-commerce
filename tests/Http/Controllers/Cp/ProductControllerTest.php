@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Cp;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp\ProductController;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
@@ -64,14 +63,14 @@ class ProductControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('products.store'), [
-                'title' => $this->faker->word,
-                'slug' => str_slug($this->faker->word),
-                'category' => [factory(ProductCategory::class)->create()->id],
-                'is_enabled' => true,
-                'tax_rate_id' => [factory(TaxRate::class)->create()->id],
-                'needs_shipping' => true,
+                'title'               => $this->faker->word,
+                'slug'                => str_slug($this->faker->word),
+                'category'            => [factory(ProductCategory::class)->create()->id],
+                'is_enabled'          => true,
+                'tax_rate_id'         => [factory(TaxRate::class)->create()->id],
+                'needs_shipping'      => true,
                 'attributes_featured' => 'true',
-                'variants' => [
+                'variants'            => [
                     [
                         'name'              => $this->faker->word,
                         'sku'               => str_slug($this->faker->word),
@@ -105,12 +104,12 @@ class ProductControllerTest extends TestCase
 
         $this
             ->assertDatabaseHas('attributes', [
-                'key'   => 'featured',
-                'attributable_id' => $product->id,
+                'key'               => 'featured',
+                'attributable_id'   => $product->id,
                 'attributable_type' => 'DoubleThreeDigital\\SimpleCommerce\\Models\\Product',
             ])
             ->assertDatabaseHas('attributes', [
-                'key'   => 'colour',
+                'key'               => 'colour',
                 'attributable_type' => 'DoubleThreeDigital\\SimpleCommerce\\Models\\Variant',
             ]);
     }
@@ -147,7 +146,7 @@ class ProductControllerTest extends TestCase
                 'is_enabled'        => $product->is_enabled,
                 'tax_rate_id'       => [factory(TaxRate::class)->create()->id],
                 'needs_shipping'    => true,
-                'variants' => [
+                'variants'          => [
                     [
                         'name'              => $this->faker->word,
                         'sku'               => str_slug($this->faker->word),
@@ -165,7 +164,7 @@ class ProductControllerTest extends TestCase
 
         $this
             ->assertDatabaseHas('products', [
-                'uuid' => $product->uuid,
+                'uuid'           => $product->uuid,
                 'needs_shipping' => true,
             ]);
     }

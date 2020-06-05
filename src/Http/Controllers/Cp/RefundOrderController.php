@@ -12,14 +12,14 @@ class RefundOrderController extends CpController
     public function store(Order $order)
     {
         $this->authorize('refund', $order);
-        
-        $transaction = (new $order->transactions[0]);
+
+        $transaction = (new $order->transactions[0]());
 
         if ($order->getHasBeenRefundedAttribute()) {
             return back()->with('error', 'Order has already been refunded.');
         }
 
-        $refund = (new $transaction['gateway'])->refund($transaction);
+        $refund = (new $transaction['gateway']())->refund($transaction);
 
         $transaction->update($refund);
 

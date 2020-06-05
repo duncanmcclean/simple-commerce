@@ -12,18 +12,18 @@ class OrderStatusSeeder extends Seeder
     {
         $statuses = [
             [
-                'name' => 'New',
-                'slug' => 'new',
+                'name'        => 'New',
+                'slug'        => 'new',
                 'description' => 'Default status for new orders',
-                'color' => 'green',
-                'primary' => true,
+                'color'       => 'green',
+                'primary'     => true,
             ],
             [
-                'name' => 'Shipped',
-                'slug' => 'shipped',
+                'name'        => 'Shipped',
+                'slug'        => 'shipped',
                 'description' => 'Status for an order that has been shipped.',
-                'color' => 'blue',
-                'primary' => false,
+                'color'       => 'blue',
+                'primary'     => false,
             ],
         ];
 

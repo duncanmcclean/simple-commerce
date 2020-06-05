@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\LineItemsFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class LineItemsFieldtypeTest extends TestCase

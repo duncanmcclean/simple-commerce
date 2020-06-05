@@ -27,6 +27,7 @@ class Cart
 
     /**
      * @param string $orderUuid
+     *
      * @return Collection|null
      */
     public function find(string $orderUuid): ?Collection
@@ -45,27 +46,28 @@ class Cart
     public function make()
     {
         return Order::create([
-            'uuid'  => (new Stache())->generateId(),
-            'billing_address_id' => null,
+            'uuid'                => (new Stache())->generateId(),
+            'billing_address_id'  => null,
             'shipping_address_id' => null,
-            'gateway' => SimpleCommerce::gateways()[0]['class'],
-            'customer_id' => null,
-            'order_status_id' => OrderStatus::where('primary', true)->first()->id,
-            'item_total' => 00.00,
-            'tax_total' => 00.00,
-            'shipping_total' => 00.00,
-            'coupon_total' => 00.00,
-            'total' => 00.00,
-            'currency_id' => \DoubleThreeDigital\SimpleCommerce\Facades\Currency::get()['id'],
-            'is_completed'  => false,
-            'is_paid'       => false,
-            'email' => null,
+            'gateway'             => SimpleCommerce::gateways()[0]['class'],
+            'customer_id'         => null,
+            'order_status_id'     => OrderStatus::where('primary', true)->first()->id,
+            'item_total'          => 00.00,
+            'tax_total'           => 00.00,
+            'shipping_total'      => 00.00,
+            'coupon_total'        => 00.00,
+            'total'               => 00.00,
+            'currency_id'         => \DoubleThreeDigital\SimpleCommerce\Facades\Currency::get()['id'],
+            'is_completed'        => false,
+            'is_paid'             => false,
+            'email'               => null,
         ]);
     }
 
     /**
      * @param string $orderUuid
-     * @param array $attributes
+     * @param array  $attributes
+     *
      * @return mixed
      */
     public function update(string $orderUuid, array $attributes = [])
@@ -78,6 +80,7 @@ class Cart
 
     /**
      * @param string $orderUuid
+     *
      * @return mixed
      */
     public function clear(string $orderUuid)
@@ -91,8 +94,9 @@ class Cart
     /**
      * @param string $orderUuid
      * @param string $variantUuid
-     * @param int $quantity
+     * @param int    $quantity
      * @param string $note
+     *
      * @return mixed
      */
     public function addLineItem(string $orderUuid, string $variantUuid, int $quantity, string $note = '')
@@ -141,7 +145,7 @@ class Cart
     /**
      * @param string $orderUuid
      * @param string $itemUuid
-     * @param array $updateOptions
+     * @param array  $updateOptions
      */
     public function updateLineItem(string $orderUuid, string $itemUuid, array $updateOptions)
     {
@@ -154,6 +158,7 @@ class Cart
     /**
      * @param string $orderUuid
      * @param string $itemUuid
+     *
      * @return mixed
      */
     public function removeLineItem(string $orderUuid, string $itemUuid)
@@ -168,19 +173,21 @@ class Cart
     /**
      * @param string $orderUuid
      * @param string $couponCode
-     * @return bool
+     *
      * @throws InvalidCouponCode
+     *
+     * @return bool
      */
     public function redeemCoupon(string $orderUuid, string $couponCode): bool
     {
         $order = Order::notCompleted()->where('uuid', $orderUuid)->first();
         $coupon = Coupon::where('code', $couponCode)->first();
 
-        if (! $coupon) {
+        if (!$coupon) {
             throw new InvalidCouponCode();
         }
 
-        if (! $coupon->isActive()) {
+        if (!$coupon->isActive()) {
             return 'The coupon provided is not active.';
         }
 
@@ -210,7 +217,7 @@ class Cart
     {
         $zone = Country::find($order->shippingAddress->country_id)->shippingZone;
 
-        if (! $zone) {
+        if (!$zone) {
             $zone = null;
 
             foreach (ShippingZone::all() as $thisZone) {
@@ -219,7 +226,7 @@ class Cart
                 }
             }
 
-            if (! $zone) {
+            if (!$zone) {
                 return;
             }
         }
@@ -250,7 +257,7 @@ class Cart
                         }
                     });
 
-                if (! $complete) {
+                if (!$complete) {
                     collect($zone->rates)
                         ->where('type', 'price-based')
                         ->each(function (ShippingRate $rate) use (&$lineItem, &$complete) {
@@ -309,7 +316,7 @@ class Cart
                     }
                 }
 
-                if (! config('simple-commerce.entered_with_tax')) {
+                if (!config('simple-commerce.entered_with_tax')) {
                     $taxTotal = ($lineItem->taxRate->rate / 100) * ($itemTotal + $shippingTotal);
                 } else {
                     $taxTotal = 00.00;

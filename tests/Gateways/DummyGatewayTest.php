@@ -21,11 +21,11 @@ class DummyGatewayTest extends TestCase
     public function can_complete_purchase_with_valid_card()
     {
         $completePurchase = $this->gateway->completePurchase([
-            'cardholder' => 'Mr Joe Bloggs',
-            'cardNumber' => '4242 4242 4242 4242',
+            'cardholder'  => 'Mr Joe Bloggs',
+            'cardNumber'  => '4242 4242 4242 4242',
             'expiryMonth' => '07',
-            'expiryYear' => '2025',
-            'cvc' => '123',
+            'expiryYear'  => '2025',
+            'cvc'         => '123',
         ], 10.00);
 
         $this->assertIsObject($completePurchase);
@@ -39,11 +39,11 @@ class DummyGatewayTest extends TestCase
         $this->expectExceptionMessage('The card provided is invalid.');
 
         $completePurchase = $this->gateway->completePurchase([
-            'cardholder' => 'Mr Joe Bloggs',
-            'cardNumber' => '1111 1111 1111 1111',
+            'cardholder'  => 'Mr Joe Bloggs',
+            'cardNumber'  => '1111 1111 1111 1111',
             'expiryMonth' => '07',
-            'expiryYear' => '2025',
-            'cvc' => '123',
+            'expiryYear'  => '2025',
+            'cvc'         => '123',
         ], 10.00);
     }
 
@@ -51,11 +51,11 @@ class DummyGatewayTest extends TestCase
     public function cant_complete_purchase_with_expired_card()
     {
         $completePurchase = $this->gateway->completePurchase([
-            'cardholder' => 'Mr Joe Bloggs',
-            'cardNumber' => '4242 4242 4242 4242',
+            'cardholder'  => 'Mr Joe Bloggs',
+            'cardNumber'  => '4242 4242 4242 4242',
             'expiryMonth' => '07',
-            'expiryYear' => '2019',
-            'cvc' => '123',
+            'expiryYear'  => '2019',
+            'cvc'         => '123',
         ], 10.00);
 
         $this->assertIsObject($completePurchase);
@@ -70,11 +70,11 @@ class DummyGatewayTest extends TestCase
 
         $this->assertIsArray($rules);
         $this->assertSame($rules, [
-            'cardholder' => 'required|string',
-            'cardNumber' => 'required|string',
+            'cardholder'  => 'required|string',
+            'cardNumber'  => 'required|string',
             'expiryMonth' => 'required|in:01,02,03,04,05,06,07,08,09,10,11,12',
-            'expiryYear' => 'required',
-            'cvc' => 'required|min:3|max:4',
+            'expiryYear'  => 'required',
+            'cvc'         => 'required|min:3|max:4',
         ]);
     }
 
