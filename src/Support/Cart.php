@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidCouponCode;
-use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;

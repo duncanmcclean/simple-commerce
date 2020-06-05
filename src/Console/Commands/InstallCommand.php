@@ -241,8 +241,7 @@ class InstallCommand extends Command
         if ($this->confirm('Would you like for your App\User class to be replaced by Simple Commerce stub?')) {
             copy(__DIR__.'/stubs/AppUser.php.stub', app_path('User.php'));
         } else {
-            // TODO: replace this link with one to the docs
-            $this->info("That's fine. Follow the instructions over here to make the necessary changes: https://simple-commerce-docs.netlify.app/install.html#the-user-model");
+            $this->info("That's fine. Follow the instructions over here to make the necessary changes: https://simple-commerce.doublethree.digital/install.html#the-user-model");
         }
 
         return $this;
