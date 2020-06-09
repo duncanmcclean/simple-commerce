@@ -31,6 +31,11 @@ class OrderStatusFieldtype extends Relationship
             });
     }
 
+    public function getSelectionFilters()
+    {
+        return [];
+    }
+
     public function getColumns()
     {
         return [

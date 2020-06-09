@@ -31,6 +31,11 @@ class StateFieldtype extends Relationship
             });
     }
 
+    public function getSelectionFilters()
+    {
+        return [];
+    }
+
     public function getColumns()
     {
         return [
