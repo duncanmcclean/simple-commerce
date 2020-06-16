@@ -47,6 +47,7 @@ use Illuminate\Support\Facades\Route;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
+use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -130,7 +131,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
 
-        $this->app->booted(function () {
+        Statamic::booted(function () {
             $this->navigation();
             $this->permissions();
         });

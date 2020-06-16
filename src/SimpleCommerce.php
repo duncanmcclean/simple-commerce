@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Facades\Statamic\Console\Processes\Composer;
+use Statamic\Statamic;
 
 class SimpleCommerce
 {
@@ -15,7 +16,7 @@ class SimpleCommerce
 
     public static function bootGateways()
     {
-        return app()->booted(function () {
+        return Statamic::booted(function () {
             foreach (config('simple-commerce.gateways') as $class => $config) {
                 if ($class) {
                     $class = str_replace('::class', '', $class);
