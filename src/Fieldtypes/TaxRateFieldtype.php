@@ -25,20 +25,21 @@ class TaxRateFieldtype extends Relationship
                 return [
                     'id'    => $rate->id,
                     'title' => $rate->name,
+                    'description' => is_null($rate->description) ? '&mdash;' : $rate->description,
                 ];
             });
     }
 
     public function getSelectionFilters()
     {
-        return [];
+        return ['id', 'title', 'description'];
     }
 
     public function getColumns()
     {
         return [
-            Column::make('name'),
-            Column::make('rate'),
+            Column::make('title'),
+            Column::make('description'),
         ];
     }
 
