@@ -27,13 +27,14 @@ class ProductCategoryFieldtype extends Relationship
                 return [
                     'id'    => $category->id,
                     'title' => $category->title,
+                    'slug'  => $category->slug,
                 ];
             });
     }
 
     public function getSelectionFilters()
     {
-        return [];
+        return ['id', 'title', 'slug'];
     }
 
     public function getColumns()
