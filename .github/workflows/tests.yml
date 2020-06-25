@@ -49,5 +49,8 @@ jobs:
         composer validate
         composer install --no-interaction
 
+    - name: Set the Composer Process Timeout
+      run: export COMPOSER_PROCESS_TIMEOUT=600    
+
     - name: Run PHPUnit
       run: composer test
