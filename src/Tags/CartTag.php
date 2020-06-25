@@ -19,7 +19,7 @@ class CartTag extends Tags
     {
         $this->dealWithSession();
 
-        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('line_items');
+        return $this->findCart()->get('line_items');
     }
 
     public function count()
@@ -29,12 +29,12 @@ class CartTag extends Tags
             return 0;
         }
 
-        return Cart::find(Session::get(config('simple-commerce.cart_session_key')))->get('items_count');
+        return $this->findCart()->get('items_count');
     }
 
     public function total()
     {
-        $cart = Cart::find(Session::get(config('simple-commerce.cart_session_key')));
+        $cart = $this->findCart();
 
         if ($this->getParam('items')) {
             return $cart->get('item_total');
@@ -60,5 +60,10 @@ class CartTag extends Tags
         if (!Session::has(config('simple-commerce.cart_session_key'))) {
             Session::put(config('simple-commerce.cart_session_key'), Cart::make()->uuid);
         }
+    }
+
+    protected function findCart()
+    {
+        return Cart::find(Session::get(config('simple-commerce.cart_session_key')));
     }
 }

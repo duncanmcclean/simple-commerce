@@ -18,6 +18,7 @@ use Statamic\Tags\Tags;
 class SimpleCommerceTag extends Tags
 {
     protected static $handle = 'simple-commerce';
+    protected static $aliases = ['sc'];
 
     public function currencyCode()
     {
@@ -37,15 +38,9 @@ class SimpleCommerceTag extends Tags
             return $categories->count();
         }
 
-        $categories = $categories->map(function (ProductCategory $category) {
-            return array_merge($category->toArray(), [
-                'products' => $category->products->map(function (Product $product) {
-                    return $product->templatePrep();
-                }),
-            ]);
-        });
-
-        return $categories->toArray();
+        return $categories->map(function (ProductCategory $category) {
+            return $category->templatePrep();
+        })->toArray();
     }
 
     public function products()
@@ -57,20 +52,15 @@ class SimpleCommerceTag extends Tags
             $products = $category->products;
         }
 
-        if ($this->hasParam('where')) {
-            $where = $this->getParam('where');
-
-            $key = explode(':', $where)[0];
-            $value = explode(':', $where)[1];
-
-            $products = $products->where($key, $value);
+        if ($where = $this->hasParam('where')) {
+            $params = explode(':', $where);
+            $products = $products->where($params[0], $params[1]);
         }
 
-        if (!$this->getParam('include_disabled')) {
-            $products = $products
-                ->reject(function ($product) {
-                    return !$product->is_enabled;
-                });
+        if (! $this->getParam('include_disabled')) {
+            $products = $products->reject(function ($product) {
+                return ! $product->is_enabled;
+            });
         }
 
         if ($this->hasParam('limit')) {
@@ -95,12 +85,11 @@ class SimpleCommerceTag extends Tags
     public function product()
     {
         $slug = $this->getParam('slug');
+        $product = Product::enabled()->where('slug', $slug)->first();
 
         if (!$slug) {
             throw new ParamMissing('slug');
         }
-
-        $product = Product::enabled()->where('slug', $slug)->first();
 
         if (!$product) {
             throw new ThingNotFound('Product');
@@ -158,10 +147,9 @@ class SimpleCommerceTag extends Tags
             return $orders->count();
         }
 
-        return $orders
-            ->each(function (Order $order) {
-                return $order->templatePrep();
-            })->toArray();
+        return $orders->map(function (Order $order) {
+            return $order->templatePrep();
+        })->toArray();
     }
 
     public function form()
