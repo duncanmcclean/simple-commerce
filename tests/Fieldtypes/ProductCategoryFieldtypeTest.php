@@ -41,14 +41,17 @@ class ProductCategoryFieldtypeTest extends TestCase
         $this->assertSame($index[0], [
             'id'    => $categories[0]['id'],
             'title' => $categories[0]['title'],
+            'slug'  => $categories[0]['slug'],
         ]);
         $this->assertSame($index[1], [
             'id'    => $categories[1]['id'],
             'title' => $categories[1]['title'],
+            'slug'  => $categories[1]['slug'],
         ]);
         $this->assertSame($index[2], [
             'id'    => $categories[2]['id'],
             'title' => $categories[2]['title'],
+            'slug'  => $categories[2]['slug'],
         ]);
     }
 

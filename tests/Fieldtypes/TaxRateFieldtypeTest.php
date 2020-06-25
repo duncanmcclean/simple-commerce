@@ -41,14 +41,17 @@ class TaxRateFieldtypeTest extends TestCase
         $this->assertSame($index[0], [
             'id'    => $rates[0]['id'],
             'title' => $rates[0]['name'],
+            'description' => $rates[0]['description'],
         ]);
         $this->assertSame($index[1], [
             'id'    => $rates[1]['id'],
             'title' => $rates[1]['name'],
+            'description' => $rates[1]['description'],
         ]);
         $this->assertSame($index[2], [
             'id'    => $rates[2]['id'],
             'title' => $rates[2]['name'],
+            'description' => $rates[2]['description'],
         ]);
     }
 
