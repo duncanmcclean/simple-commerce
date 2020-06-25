@@ -60,7 +60,7 @@ class ProductCategoryControllerTest extends TestCase
     {
         $category = factory(ProductCategory::class)->create();
         $products = factory(Product::class, 5)->create();
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $product = Product::find($product['id']);
             $product->productCategories()->attach($category->id);
         }
@@ -98,7 +98,7 @@ class ProductCategoryControllerTest extends TestCase
             ->actAsSuper()
             ->post(cp_route('product-categories.update', ['category' => $category->uuid]), [
                 'title' => 'Bedding',
-                'slug' => 'bedding',
+                'slug'  => 'bedding',
             ])
             ->assertOk();
     }

@@ -67,10 +67,10 @@ class StateSeeder extends Seeder
 
         foreach ($states as $state) {
             State::create([
-                'uuid' => (new Stache())->generateId(),
-                'name' => $state['name'],
+                'uuid'         => (new Stache())->generateId(),
+                'name'         => $state['name'],
                 'abbreviation' => $state['abbreviation'],
-                'country_id' => Country::where('iso', 'US')->first()->id,
+                'country_id'   => Country::where('iso', 'US')->first()->id,
             ]);
         }
     }

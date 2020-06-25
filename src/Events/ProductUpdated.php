@@ -8,10 +8,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class ProductUpdated
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $product;
 
+    /**
+     * ProductUpdated constructor.
+     *
+     * @param Product $product
+     */
     public function __construct(Product $product)
     {
         $this->product = $product;

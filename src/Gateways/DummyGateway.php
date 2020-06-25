@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidCardNumberException;
 use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use Illuminate\Support\Collection;
-use Statamic\View\View;
 
 class DummyGateway implements Gateway
 {
@@ -13,7 +13,7 @@ class DummyGateway implements Gateway
         $isPaid = true;
 
         if ($data['cardNumber'] === '1111 1111 1111 1111') {
-            throw new \Exception('The card provided is invalid.');
+            throw new InvalidCardNumberException();
         }
 
         if ($data['expiryYear'] < now()->format('Y')) {
@@ -32,22 +32,17 @@ class DummyGateway implements Gateway
     public function rules(): array
     {
         return [
-            'cardholder' => 'required|string',
-            'cardNumber' => 'required|string',
+            'cardholder'  => 'required|string',
+            'cardNumber'  => 'required|string',
             'expiryMonth' => 'required|in:01,02,03,04,05,06,07,08,09,10,11,12',
-            'expiryYear' => 'required',
-            'cvc' => 'required|min:3|max:4',
+            'expiryYear'  => 'required',
+            'cvc'         => 'required|min:3|max:4',
         ];
     }
 
     public function paymentForm(): string
     {
-        return (new View())
-            ->template('simple-commerce::gateways.dummy')
-            ->with([
-                'class' => get_class($this),
-            ])
-            ->render();
+        return view('simple-commerce::gateways.dummy')->render();
     }
 
     public function refund(Transaction $transaction): Collection

@@ -14,10 +14,10 @@ class ShippingController extends CpController
         $fields = $blueprint->fields()->preProcess();
 
         return view('simple-commerce::cp.settings.shipping', [
-            'crumbs' => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
+            'crumbs'    => Breadcrumbs::make([['text' => 'Simple Commerce'], ['text' => 'Settings', 'link' => cp_route('settings.index')]]),
             'blueprint' => $blueprint->toPublishArray(),
-            'meta' => $fields->meta(),
-            'values' => $fields->values(),
+            'meta'      => $fields->meta(),
+            'values'    => $fields->values(),
         ]);
     }
 }

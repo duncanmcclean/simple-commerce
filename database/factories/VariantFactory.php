@@ -1,8 +1,8 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Faker\Generator as Faker;
 use Statamic\Stache\Stache;
 
 $factory->define(Variant::class, function (Faker $faker) {

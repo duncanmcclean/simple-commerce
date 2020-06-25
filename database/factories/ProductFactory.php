@@ -1,9 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Models\ProductCategory;
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\Product;
+use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
+use Faker\Generator as Faker;
 use Statamic\Stache\Stache;
 
 $factory->define(Product::class, function (Faker $faker) {

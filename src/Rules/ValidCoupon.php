@@ -11,7 +11,7 @@ class ValidCoupon implements Rule
     {
         $coupon = Coupon::where('code', $value)->first();
 
-        if (! $coupon) {
+        if (!$coupon) {
             return false;
         }
 

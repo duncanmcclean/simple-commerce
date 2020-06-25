@@ -8,7 +8,7 @@ class AccessSettings
 {
     public function handle($request, Closure $next)
     {
-        if (! auth()->user()->hasPermission('edit simple commerce settings') && ! auth()->user()->isSuper()) {
+        if (!auth()->user()->hasPermission('edit simple commerce settings') && !auth()->user()->isSuper()) {
             abort(401);
         }
 

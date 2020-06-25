@@ -11,8 +11,8 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'is_complete' => 'boolean',
-        'is_refunded' => 'boolean',
+        'is_complete'  => 'boolean',
+        'is_refunded'  => 'boolean',
         'gateway_data' => 'json',
     ];
 

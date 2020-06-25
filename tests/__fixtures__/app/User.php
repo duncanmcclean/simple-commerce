@@ -3,13 +3,14 @@
 namespace App;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\IsACustomer;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Statamic\Facades\User as StatamicUserFacade;
 
 class User extends Authenticatable
 {
-    use Notifiable, IsACustomer;
+    use Notifiable;
+    use IsACustomer;
 
     protected $fillable = [
         'name', 'email', 'password',
@@ -36,7 +37,7 @@ class User extends Authenticatable
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
         ];
     }

@@ -26,7 +26,7 @@ class CouponControllerTest extends TestCase
             ->assertOk()
             ->assertSee($coupons[0]['name'])
             ->assertSee($coupons[1]['name'])
-            ->assertSee($coupons[2]['name']);    
+            ->assertSee($coupons[2]['name']);
     }
 
     /** @test */
@@ -45,14 +45,14 @@ class CouponControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('coupons.store'), [
-                'name' => 'Five Dollar Discount',
-                'code' => 'fivedollar',
-                'type' => 'fixed_discount',
-                'value' => '5',
+                'name'          => 'Five Dollar Discount',
+                'code'          => 'fivedollar',
+                'type'          => 'fixed_discount',
+                'value'         => '5',
                 'minimum_total' => '0',
-                'total_uses' => '0',
-                'start_date' => '',
-                'end_date' => '',
+                'total_uses'    => '0',
+                'start_date'    => '',
+                'end_date'      => '',
             ])
             ->assertOk();
 
@@ -83,14 +83,14 @@ class CouponControllerTest extends TestCase
         $this
             ->actAsSuper()
             ->post(cp_route('coupons.update', ['coupon' => $coupon->uuid]), [
-                'name' => 'Tenner Discount',
-                'code' => 'tenner',
-                'type' => 'fixed_discount',
-                'value' => '5',
+                'name'          => 'Tenner Discount',
+                'code'          => 'tenner',
+                'type'          => 'fixed_discount',
+                'value'         => '5',
                 'minimum_total' => '0',
-                'total_uses' => '0',
-                'start_date' => '',
-                'end_date' => '',
+                'total_uses'    => '0',
+                'start_date'    => '',
+                'end_date'      => '',
             ])
             ->assertOk()
             ->assertSee('Tenner Discount')
@@ -102,7 +102,7 @@ class CouponControllerTest extends TestCase
                 'code' => $coupon->code,
             ])
             ->assertDatabaseHas('coupons', [
-                'name' => 'Tenner Discount' ,
+                'name' => 'Tenner Discount',
                 'code' => 'tenner',
             ]);
     }

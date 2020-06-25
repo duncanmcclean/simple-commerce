@@ -10,12 +10,18 @@ use Illuminate\Support\Facades\Notification;
 
 class SendOrderSuccessfulNotification
 {
+    /**
+     * @param OrderSuccessfulEvent $event
+     */
     public function handle(OrderSuccessfulEvent $event)
     {
         $this->sendCustomerNotification($event->order);
         $this->sendBackOfficeNotification($event->order);
     }
 
+    /**
+     * @param Order $order
+     */
     protected function sendCustomerNotification(Order $order)
     {
         $order
@@ -23,6 +29,9 @@ class SendOrderSuccessfulNotification
             ->notify(new OrderSuccessful($order));
     }
 
+    /**
+     * @param Order $order
+     */
     protected function sendBackOfficeNotification(Order $order)
     {
         Notification::route('mail', config('simple-commerce.notifications.mail.to'))

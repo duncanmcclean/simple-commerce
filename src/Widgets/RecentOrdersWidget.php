@@ -18,7 +18,7 @@ class RecentOrdersWidget extends Widget
         }
 
         return view('simple-commerce::widgets.recent-orders', [
-            'orders' => isset($orders) ? $orders : collect([]),
+            'orders'   => isset($orders) ? $orders : collect([]),
             'statuses' => OrderStatus::all(),
         ]);
     }

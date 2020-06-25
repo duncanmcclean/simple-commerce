@@ -1,13 +1,13 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Models\Coupon;
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\LineItem;
-use Statamic\Stache\Stache;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use DoubleThreeDigital\SimpleCommerce\Models\ShippingRate;
 use DoubleThreeDigital\SimpleCommerce\Models\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
+use Faker\Generator as Faker;
+use Statamic\Stache\Stache;
 
 $factory->define(LineItem::class, function (Faker $faker) {
     $variant = factory(Variant::class)->create();

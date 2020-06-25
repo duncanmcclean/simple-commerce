@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Data;
 
 use DoubleThreeDigital\SimpleCommerce\Data\VariantData;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Attribute;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 

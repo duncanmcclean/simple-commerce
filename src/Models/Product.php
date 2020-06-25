@@ -7,14 +7,14 @@ use DoubleThreeDigital\SimpleCommerce\Events\ProductUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasAttributes;
 use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Statamic\Facades\Blueprint;
 
 class Product extends Model
 {
-    use HasAttributes, HasUuid;
+    use HasAttributes;
+    use HasUuid;
 
     protected $fillable = [
         'uuid', 'title', 'slug', 'is_enabled', 'needs_shipping', 'tax_rate_id',
@@ -135,6 +135,6 @@ class Product extends Model
 
     public function templatePrep()
     {
-        return (new ProductData)->data($this->toArray(), $this);
+        return (new ProductData())->data($this->toArray(), $this);
     }
 }

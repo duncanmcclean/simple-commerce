@@ -9,11 +9,18 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class OrderStatusUpdated
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $order;
     public $orderStatus;
 
+    /**
+     * OrderStatusUpdated constructor.
+     *
+     * @param Order       $order
+     * @param OrderStatus $orderStatus
+     */
     public function __construct(Order $order, OrderStatus $orderStatus)
     {
         $this->order = $order;

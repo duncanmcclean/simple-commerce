@@ -8,10 +8,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class ProductCategoryUpdated
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $category;
 
+    /**
+     * ProductCategoryUpdated constructor.
+     *
+     * @param ProductCategory $category
+     */
     public function __construct(ProductCategory $category)
     {
         $this->category = $category;

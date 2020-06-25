@@ -8,11 +8,17 @@ use DoubleThreeDigital\SimpleCommerce\Notifications\OrderRefunded as OrderRefund
 
 class SendOrderRefundedNotification
 {
+    /**
+     * @param OrderRefunded $event
+     */
     public function handle(OrderRefunded $event)
     {
         $this->sendCustomerNotification($event->order);
     }
 
+    /**
+     * @param Order $order
+     */
     protected function sendCustomerNotification(Order $order)
     {
         $order

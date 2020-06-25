@@ -1,6 +1,5 @@
 {
     "name": "doublethreedigital/simple-commerce",
-    "type": "statamic-addon",
     "description": "A perfectly simple e-commerce solution for Statamic",
     "license": "proprietary",
     "autoload": {

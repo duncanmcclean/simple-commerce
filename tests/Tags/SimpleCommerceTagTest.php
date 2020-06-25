@@ -13,7 +13,6 @@ use DoubleThreeDigital\SimpleCommerce\Models\State;
 use DoubleThreeDigital\SimpleCommerce\Models\Variant;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Antlers;
@@ -22,7 +21,7 @@ class SimpleCommerceTagTest extends TestCase
 {
     public $tag;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -99,7 +98,7 @@ class SimpleCommerceTagTest extends TestCase
     {
         $category = factory(ProductCategory::class)->create();
         $products = factory(Product::class, 2)->create();
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $product = Product::find($product['id']);
             $product->productCategories()->attach($category->id);
         }

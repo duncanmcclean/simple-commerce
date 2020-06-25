@@ -44,7 +44,7 @@ class CheckoutController
 
     protected function processPayment()
     {
-        $gateway = (new $this->request->gateway)
+        $gateway = (new $this->request->gateway())
             ->completePurchase($this->request->all(), $this->order->total);
 
         if ($gateway->get('is_complete') === true) {
@@ -53,13 +53,13 @@ class CheckoutController
         }
 
         $this->order->transactions()->create([
-            'gateway'   => $this->request->gateway,
-            'amount'    => $gateway->get('amount'),
-            'is_complete' => $gateway->get('is_complete'),
-            'is_refunded' => false,
+            'gateway'      => $this->request->gateway,
+            'amount'       => $gateway->get('amount'),
+            'is_complete'  => $gateway->get('is_complete'),
+            'is_refunded'  => false,
             'gateway_data' => $gateway->get('data'),
-            'order_id' => $this->order->id,
-            'currency_id' => Currency::get()['id'],
+            'order_id'     => $this->order->id,
+            'currency_id'  => Currency::get()['id'],
         ]);
     }
 
@@ -71,7 +71,7 @@ class CheckoutController
 
             $customer = $customerModel::where('email', $this->request->email)->first();
 
-            if (! $customer) {
+            if (!$customer) {
                 $customer = $customerModel::where('email', $this->order->email ?? $this->request->email)->first();
             }
 
@@ -81,14 +81,14 @@ class CheckoutController
 
                 collect($this->request->all())
                     ->reject(function ($value, $key) use ($fields) {
-                        return ! in_array($key, $fields);
+                        return !in_array($key, $fields);
                     })
                     ->each(function ($value, $key) use ($customer) {
                         $customer->{$key} = $value;
                     })
                     ->toArray();
 
-                if (! $customer->password) {
+                if (!$customer->password) {
                     $customer->password = Hash::make(uniqid().'ssspppp');
                 }
 
@@ -135,7 +135,7 @@ class CheckoutController
 
         collect($order->lineItems)
             ->reject(function (LineItem $lineItem) {
-                if (! $lineItem->coupon_id) {
+                if (!$lineItem->coupon_id) {
                     return true;
                 }
 

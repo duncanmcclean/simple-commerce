@@ -11,9 +11,9 @@ class MoneyFieldtype extends Fieldtype
 
     protected $configFields = [
         'read_only' => [
-            'type' => 'toggle',
+            'type'         => 'toggle',
             'instructions' => 'Should this field be read only?',
-            'width' => 50,
+            'width'        => 50,
         ],
     ];
 

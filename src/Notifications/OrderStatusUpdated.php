@@ -28,6 +28,6 @@ class OrderStatusUpdated extends Notification
             ->subject("Order #{$this->order->id}")
             ->line("Hi, {$this->customer->name}")
             ->line("The status of your order #{$this->order->id} has been updated. It is now {$this->order->orderStatus->name}.")
-            ->line("If you have any questions regarding your order, please contact us.");
+            ->line('If you have any questions regarding your order, please contact us.');
     }
 }

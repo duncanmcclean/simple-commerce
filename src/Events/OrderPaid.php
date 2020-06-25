@@ -8,10 +8,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class OrderPaid
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $order;
 
+    /**
+     * OrderPaid constructor.
+     *
+     * @param Order $order
+     */
     public function __construct(Order $order)
     {
         $this->order = $order;

@@ -55,7 +55,7 @@ class ProductController extends CpController
 
         collect($request)
             ->reject(function ($value, $key) {
-                if (! str_contains($key, 'attributes_')) {
+                if (!str_contains($key, 'attributes_')) {
                     return true;
                 }
             })
@@ -167,7 +167,7 @@ class ProductController extends CpController
 
         collect($request)
             ->reject(function ($value, $key) {
-                if (! str_contains($key, 'attributes_')) {
+                if (!str_contains($key, 'attributes_')) {
                     return true;
                 }
             })
@@ -201,7 +201,7 @@ class ProductController extends CpController
 
                 collect($variant)
                     ->reject(function ($value, $key) {
-                        if (! str_contains($key, 'attributes')) {
+                        if (!str_contains($key, 'attributes')) {
                             return true;
                         }
                     })

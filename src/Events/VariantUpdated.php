@@ -8,10 +8,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class VariantUpdated
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $variant;
 
+    /**
+     * VariantUpdated constructor.
+     *
+     * @param Variant $variant
+     */
     public function __construct(Variant $variant)
     {
         $this->variant = $variant;

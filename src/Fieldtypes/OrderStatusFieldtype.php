@@ -25,10 +25,15 @@ class OrderStatusFieldtype extends Relationship
         return OrderStatus::all()
             ->map(function ($orderStatus) {
                 return [
-                    'id' => $orderStatus->id,
+                    'id'    => $orderStatus->id,
                     'title' => $orderStatus->name,
                 ];
             });
+    }
+
+    public function getSelectionFilters()
+    {
+        return [];
     }
 
     public function getColumns()

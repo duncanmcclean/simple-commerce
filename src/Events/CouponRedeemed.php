@@ -9,11 +9,18 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class CouponRedeemed
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $coupon;
     public $order;
 
+    /**
+     * CouponRedeemed constructor.
+     *
+     * @param Coupon $coupon
+     * @param Order  $order
+     */
     public function __construct(Coupon $coupon, Order $order)
     {
         $this->coupon = $coupon;

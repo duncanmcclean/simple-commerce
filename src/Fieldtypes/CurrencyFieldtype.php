@@ -15,7 +15,7 @@ class CurrencyFieldtype extends Relationship
         $currency = Currency::find($id);
 
         return [
-            'id' => $currency->id,
+            'id'    => $currency->id,
             'title' => "$currency->symbol $currency->name",
         ];
     }
@@ -25,10 +25,15 @@ class CurrencyFieldtype extends Relationship
         return Currency::all()
             ->map(function (Currency $currency) {
                 return [
-                    'id' => $currency->id,
+                    'id'    => $currency->id,
                     'title' => "$currency->symbol $currency->name",
                 ];
             });
+    }
+
+    public function getSelectionFilters()
+    {
+        return [];
     }
 
     public function getColumns()

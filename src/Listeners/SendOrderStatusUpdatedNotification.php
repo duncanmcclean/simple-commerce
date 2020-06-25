@@ -7,11 +7,17 @@ use DoubleThreeDigital\SimpleCommerce\Models\Order;
 
 class SendOrderStatusUpdatedNotification
 {
+    /**
+     * @param OrderStatusUpdated $event
+     */
     public function handle(OrderStatusUpdated $event)
     {
         $this->sendCustomerNotification($event->order);
     }
 
+    /**
+     * @param Order $order
+     */
     protected function sendCustomerNotification(Order $order)
     {
         $order

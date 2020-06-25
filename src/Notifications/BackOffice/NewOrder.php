@@ -24,12 +24,12 @@ class NewOrder extends Notification
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->from(config('simple-commerce.notifications.mail.from.address'), config('simple-commerce.notifications.mail.from.name'))
             ->subject('New Order')
-            ->line("A new order has been created. The total of the order is ".Currency::parse($this->order->total).". The customer's receipt has been attached to this email for reference.")
+            ->line('A new order has been created. The total of the order is '.Currency::parse($this->order->total).". The customer's receipt has been attached to this email for reference.")
             ->attach($this->order->generateReceipt(true), [
-                'as' => 'receipt.pdf',
+                'as'   => 'receipt.pdf',
                 'mime' => 'text/pdf',
             ]);
     }
@@ -38,7 +38,7 @@ class NewOrder extends Notification
     {
         $order = $this->order;
 
-        return (new SlackMessage)
+        return (new SlackMessage())
             ->success()
             ->from('Simple Commerce', ':shopping_trolley:')
             ->content('A new order has been created.')
@@ -46,8 +46,8 @@ class NewOrder extends Notification
                 $attachment->title("Order #{$order->id}")
                     ->fields([
                         'Customer' => "{$order->customer->name} ({$order->customer->email})",
-                        'Total' => $order->total,
-                        'Items' => join(', ', $order->lineItems->pluck('description')->toArray()),
+                        'Total'    => $order->total,
+                        'Items'    => implode(', ', $order->lineItems->pluck('description')->toArray()),
                     ]);
             });
     }

@@ -1,10 +1,10 @@
 <?php
 
 use App\User;
+use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\State;
 use Faker\Generator as Faker;
-use DoubleThreeDigital\SimpleCommerce\Models\Address;
 use Statamic\Stache\Stache;
 
 $factory->define(Address::class, function (Faker $faker) {
@@ -25,5 +25,5 @@ $factory->define(Address::class, function (Faker $faker) {
         'customer_id'   => function () {
             return factory(User::class)->create()->id;
         },
-    ];  
+    ];
 });

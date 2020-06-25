@@ -1,7 +1,7 @@
 <?php
 
-use Faker\Generator as Faker;
 use DoubleThreeDigital\SimpleCommerce\Models\OrderStatus;
+use Faker\Generator as Faker;
 use Statamic\Stache\Stache;
 
 $factory->define(OrderStatus::class, function (Faker $faker) {
