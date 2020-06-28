@@ -52,7 +52,7 @@ class SimpleCommerceTag extends Tags
             $products = $category->products;
         }
 
-        if ($where = $this->hasParam('where')) {
+        if ($where = $this->getParam('where')) {
             $params = explode(':', $where);
             $products = $products->where($params[0], $params[1]);
         }
