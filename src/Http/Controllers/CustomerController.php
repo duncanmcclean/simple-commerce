@@ -24,15 +24,12 @@ class CustomerController extends BaseActionController
             return back()->with('errors', 'You can only save a customer when logged in.');
         }
 
-        dd($request->all());
-
         $user = User::current();
 
         $values = $user
             ->blueprint()
             ->fields()
-            ->addValues(Arr::except($request->all(), ['_token', '_params']))
-            // ->validate([])
+            ->addValues($request->all())
             ->process()
             ->values()
             ->except([
@@ -45,25 +42,8 @@ class CustomerController extends BaseActionController
 
         if ($request->has('email')) $user->email($request->email);
 
-        if (User::current()->can('edit roles')) {
-            $user->roles($request->roles);
-        }
-
-        if (User::current()->can('edit user groups')) {
-            $user->groups($request->groups);
-        }
-
         $user->save();
 
         return $this->withSuccess($request);
-
-
-
-        
-        // dd($request->all());
-
-        // return $request->has('redirect') ?
-        //     redirect($request->redirect) :
-        //     back();
     }
 }
