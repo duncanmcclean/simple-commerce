@@ -1,21 +1,8 @@
-title: 'Simple Commerce: Product'
+title: Product
 sections:
   main:
     display: Main
     fields:
-      -
-        handle: title
-        field:
-          character_limit: 0
-          type: text
-          localizable: false
-          display: Title
-          listable: hidden
-          input_type: text
-          validate: required
-      -
-        import: product_attributes
-        prefix: attributes_
       -
         handle: variants
         field:
@@ -23,137 +10,53 @@ sections:
             -
               handle: name
               field:
-                character_limit: 0
+                input_type: text
                 type: text
                 localizable: false
-                display: 'Variant Name'
+                width: 66
                 listable: hidden
-                input_type: text
-                validate: required
-            -
-              handle: price
-              field:
-                type: money
-                localizable: false
-                width: 50
-                display: Price
-                listable: hidden
-                validate: required
+                display: Name
+                factory: word
             -
               handle: sku
               field:
-                generate: false
-                type: slug
+                input_type: text
+                type: text
                 localizable: false
-                width: 50
+                width: 33
+                listable: hidden
                 display: SKU
-                listable: hidden
-                validate: required
+                factory: slug
             -
-              handle: max_quantity
+              handle: price
               field:
-                type: integer
+                input_type: text
+                type: money
                 localizable: false
-                width: 33
-                display: 'Max Quantity'
                 listable: hidden
-                validate: required
-                default: 1
-            -
-              handle: stock
-              field:
-                type: integer
-                localizable: false
-                width: 33
-                display: 'Stock Number'
-                listable: hidden
-                validate: required
-                unless:
-                  unlimited_stock: 'equals true'
-            -
-              handle: unlimited_stock
-              field:
-                type: toggle
-                localizable: false
-                width: 33
-                display: 'Unlimited stock?'
+                display: Price
+                factory: 'numberBetween(20, 50)'
             -
               handle: description
               field:
-                type: markdown
-                localizable: false
-                display: Description
-            -
-              handle: images
-              field:
-                mode: grid
-                restrict: false
-                allow_uploads: true
-                type: assets
+                type: textarea
                 localizable: false
                 listable: hidden
-                display: Images
+                display: Description
+                factory: 'paragraphs(3, true)'
             -
-              handle: weight
+              handle: stock
               field:
                 input_type: number
                 type: text
                 localizable: false
                 listable: hidden
-                display: Weight
-                validate: required
-            -
-              import: variant_attributes
-              prefix: attributes_
+                display: Stock
           mode: stacked
           min_rows: 1
-          add_row: 'New Variant'
           reorderable: false
           type: grid
           localizable: false
+          listable: hidden
           display: Variants
-          listable: hidden
-  sidebar:
-    display: Sidebar
-    fields:
-      -
-        handle: is_enabled
-        field:
-          type: toggle
-          localizable: false
-          display: 'Is Enabled?'
-          default: true
-      -
-        handle: slug
-        field:
-          generate: true
-          type: slug
-          localizable: false
-          display: Slug
-          listable: hidden
-          validate: required
-      -
-        handle: categories
-        field:
-          mode: default
-          type: product_category
-          localizable: false
-          display: 'Product Categories'
-      -
-        handle: tax_rate_id
-        field:
-          type: tax_rate
-          localizable: false
-          listable: hidden
-          display: 'Tax Rate'
-          max_items: 1
-          mode: default
-      -
-        handle: needs_shipping
-        field:
-          type: toggle
-          instructions: 'Does this product need to be shipped?'
-          localizable: false
-          listable: hidden
-          display: 'Needs Shipping?'
-          default: true
+          purchasable: true

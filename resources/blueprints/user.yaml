@@ -1,0 +1,149 @@
+title: User
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: name
+        field:
+          type: text
+          display: Name
+      -
+        handle: email
+        field:
+          type: text
+          input: email
+          display: 'Email Address'
+      -
+        handle: roles
+        field:
+          type: user_roles
+          width: 50
+      -
+        handle: groups
+        field:
+          type: user_groups
+          width: 50
+      -
+        handle: avatar
+        field:
+          type: assets
+          max_files: 1
+  addresses:
+    display: Addresses
+    fields:
+      -
+        handle: shipping_section
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: Shipping
+      -
+        handle: shipping_name
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Shipping Name'
+      -
+        handle: shipping_address
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Shipping Address'
+      -
+        handle: shipping_city
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Shipping City'
+      -
+        handle: shipping_country
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Shipping Country'
+      -
+        handle: shipping_postal_code
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Shipping Postal Code'
+      -
+        handle: billing_section
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: Billing
+      -
+        handle: use_shipping_address_for_billing
+        field:
+          type: toggle
+          localizable: false
+          listable: hidden
+          display: 'Use shipping address for billing?'
+      -
+        handle: billing_name
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Billing Name'
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+      -
+        handle: billing_address
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Billing Address'
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+      -
+        handle: billing_city
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Billing City'
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+      -
+        handle: billing_country
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Billing Country'
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+      -
+        handle: billing_postal_code
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Billing Postal Code'
+          unless:
+            use_shipping_address_for_billing: 'equals true'

@@ -2,113 +2,26 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Models;
 
-use DoubleThreeDigital\SimpleCommerce\Data\OrderData;
-use DoubleThreeDigital\SimpleCommerce\Models\Traits\HasUuid;
-use DoubleThreeDigital\SimpleCommerce\Support\GeneratesReceipt;
 use Illuminate\Database\Eloquent\Model;
-use Statamic\Facades\Blueprint;
+use Statamic\Facades\Entry;
+use Sushi\Sushi;
 
 class Order extends Model
 {
-    use HasUuid;
+    use Sushi;
 
-    protected $fillable = [
-        'uuid', 'gateway', 'is_paid', 'is_completed', 'total', 'item_total', 'tax_total', 'shipping_total', 'coupon_total', 'currency_id', 'order_status_id', 'billing_address_id', 'shipping_address_id', 'customer_id', 'email',
-    ];
-
-    protected $casts = [
-        'is_paid'       => 'boolean',
-        'is_completed'  => 'boolean',
-    ];
-
-    protected $appends = [
-        'hasBeenRefunded',
-    ];
-
-    public function lineItems()
+    public function getRows()
     {
-        return $this->hasMany(LineItem::class);
+        return Entry::whereCollection('orders');
     }
 
-    public function billingAddress()
+    public function scopeByCart($query)
     {
-        return $this->belongsTo(Address::class);
+        $query->where('status', 'cart');
     }
 
-    public function shippingAddress()
+    public function scopeByOrder($query)
     {
-        return $this->belongsTo(Address::class);
-    }
-
-    public function customer()
-    {
-        $model = config('simple-commerce.customers.model');
-
-        return $this->belongsTo(new $model());
-    }
-
-    public function orderStatus()
-    {
-        return $this->belongsTo(OrderStatus::class);
-    }
-
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
-    public function editUrl()
-    {
-        return cp_route('orders.edit', ['order' => $this->attributes['uuid']]);
-    }
-
-    public function updateUrl()
-    {
-        return cp_route('orders.update', ['order' => $this->attributes['uuid']]);
-    }
-
-    public function deleteUrl()
-    {
-        return cp_route('orders.destroy', ['order' => $this->attributes['uuid']]);
-    }
-
-    public function blueprint()
-    {
-        return Blueprint::find('order');
-    }
-
-    public function scopeCompleted($query)
-    {
-        return $query->where('is_completed', true);
-    }
-
-    public function scopeNotCompleted($query)
-    {
-        return $query->where('is_completed', false);
-    }
-
-    public function recalculate()
-    {
-        return \DoubleThreeDigital\SimpleCommerce\Facades\Cart::calculateTotals($this);
-    }
-
-    public function templatePrep()
-    {
-        return (new OrderData())->data($this->toArray(), $this);
-    }
-
-    public function generateReceipt($storagePath = false)
-    {
-        return (new GeneratesReceipt())->generate($this, $storagePath);
-    }
-
-    public function getHasBeenRefundedAttribute()
-    {
-        return isset($this->transactions[0]) ? $this->transactions[0]['is_refunded'] : false;
+        $query->where('status', 'order');
     }
 }

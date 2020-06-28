@@ -1,10 +1,4 @@
 {
-  "dependencies": {
-    "axios": "^0.19.0",
-    "cross-env": "^6.0.3",
-    "laravel-mix": "^5.0.0",
-    "vue": "^2.6.11"
-  },
   "scripts": {
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -13,6 +7,11 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.2",
+    "laravel-mix": "^5.0.4",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "vue-template-compiler": "^2.6.11"

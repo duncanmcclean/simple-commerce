@@ -1,6 +1,6 @@
 {
     "name": "doublethreedigital/simple-commerce",
-    "description": "A perfectly simple e-commerce solution for Statamic",
+    "description": "A Statamic 3 addon boilerplate, ready for testing.",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
@@ -14,8 +14,8 @@
     },
     "extra": {
         "statamic": {
-            "name": "Simple Commerce",
-            "description": "A perfectly simple e-commerce solution for Statamic"
+            "name": "Addon Boilerplate",
+            "description": "A Statamic 3 addon boilerplate, ready for testing."
         },
         "laravel": {
             "providers": [
@@ -24,15 +24,14 @@
         }
     },
     "require": {
-        "barryvdh/laravel-dompdf": "^0.8.0@dev",
-        "doctrine/dbal": "^2.10",
-        "laravel/helpers": "^1.1",
+        "calebporzio/sushi": "dev-master",
+        "moneyphp/money": "^3.0@dev",
         "statamic/cms": "^3.0@beta"
     },
     "require-dev": {
-        "orchestra/testbench": "^5.0",
         "nunomaduro/collision": "^4.2",
-        "laravel/slack-notification-channel": "^3.0@dev"
+        "orchestra/testbench": "^5.0",
+        "aerni/statamic-factory": "dev-master"
     },
     "minimum-stability": "dev",
     "scripts": {
@@ -40,7 +39,7 @@
             "php-cs-fixer fix ./src"
         ],
         "test": [
-            "vendor/bin/phpunit"
+            "./vendor/bin/phpunit"
         ]
     },
     "config": {
