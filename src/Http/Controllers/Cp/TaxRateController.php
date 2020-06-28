@@ -13,6 +13,7 @@ class TaxRateController extends CpController
         return TaxRate::get()->map(function (TaxRate $rate) {
             return array_merge($rate->toArray(), [
                 'updateUrl' => $rate->updateUrl(),
+                'deleteUrl' => $rate->deleteUrl(),
             ]);
         });
     }

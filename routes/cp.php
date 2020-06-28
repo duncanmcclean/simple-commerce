@@ -59,7 +59,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Cp')->grou
         Route::get('/', 'TaxRateController@index')->name('.index');
         Route::post('/create', 'TaxRateController@store')->name('.store');
         Route::post('/{rate}', 'TaxRateController@update')->name('.update');
-        Route::delete('/{rate}', 'TaxRateController@destroy')->name('.destroy');
+        Route::get('/delete/{rate}', 'TaxRateController@destroy')->name('.destroy');
     });
 
     Route::prefix('shipping-zones')->as('shipping-zones')->middleware(AccessSettings::class)->group(function () {
