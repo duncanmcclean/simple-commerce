@@ -98,4 +98,9 @@ class CartRepository
             ->set('customer_id', $user->id())
             ->save();
     }
+
+    public function calculateTotals()
+    {
+        
+    }
 }
