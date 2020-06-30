@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
+use Exception;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
@@ -32,7 +33,7 @@ class CartRepository
         $cart = Entry::find($id);
 
         $this->id = $cart->id();
-        $this->items = $cart->data()->get('items') ?? 0;
+        $this->items = $cart->data()->get('items') ?? [];
         $this->grandTotal = $cart->data()->get('grand_total') ?? 0;
         $this->itemsTotal = $cart->data()->get('items_total') ?? 0;
         $this->taxTotal = $cart->data()->get('tax_total') ?? 0;
@@ -44,10 +45,7 @@ class CartRepository
 
     public function save()
     {
-        $entry = collect(Entry::whereCollection('orders')->toArray())
-            ->where('status', 'cart')
-            ->where('id', $this->id)
-            ->first();
+        $entry = Entry::find($this->id);
 
         if ($entry === null) {
             $entry = Entry::make()
@@ -65,6 +63,25 @@ class CartRepository
                 'status' => 'cart',
                 'items' => $this->items,
             ])
+            ->save();
+
+        return $this;    
+    }
+
+    public function update(array $data, bool $mergeData = true)
+    {
+        $entry = Entry::find($this->id);  
+
+        if (! $entry) {
+            throw new Exception('Cart not found');
+        }
+
+        if ($mergeData) {
+            $data = array_merge($entry->data()->toArray(), $data);
+        }
+
+        $entry
+            ->data($data)
             ->save();
 
         return $this;    
@@ -101,6 +118,6 @@ class CartRepository
 
     public function calculateTotals()
     {
-        
+        //
     }
 }

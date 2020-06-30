@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 
@@ -22,6 +23,8 @@ class CartController extends BaseActionController
         } else {
             $cart = Cart::make();
         }
+
+        $product = Entry::find($request->product);
         
         $cart = $cart->items([
             [
@@ -29,7 +32,7 @@ class CartController extends BaseActionController
                 'product' => $request->product,
                 'sku' => $request->sku,
                 'quantity' => (int) $request->quantity,
-                'total' => 0,
+                'total' => (int) $product->data()->get('price'),
             ],
         ])->save();
 
@@ -41,7 +44,7 @@ class CartController extends BaseActionController
             $request->session()->put('simple-commerce-cart', $cart->id);
         }
 
-        return back();
+        return $this->withSuccess($request);
     }
 
     public function update()
@@ -49,12 +52,24 @@ class CartController extends BaseActionController
         //
     }
 
-    public function destroy(Request $request, $id = null)
+    public function destroy(Request $request, string $item = null)
     {
-        if (! $id) {
-            // empty cart
+        $cart = Cart::find($request->session()->get('simple-commerce-cart'));
+
+        if (! $item) {
+            $cart->update([
+                'items' => []
+            ]);
         }
 
-        // remove cart item wth id
+        $cart->update([
+            'items' => collect($cart->items)
+                ->reject(function ($item) {
+                    return $item['id'] != $item;
+                })
+                ->toArray()
+        ]);
+
+        return $this->withSuccess($request);
     }
 }

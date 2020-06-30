@@ -8,6 +8,13 @@ sections:
         field:
           fields:
             -
+              handle: id
+              field:
+                type: hidden
+                localizable: false
+                listable: hidden
+                display: ID
+            -
               handle: product
               field:
                 max_items: 1
