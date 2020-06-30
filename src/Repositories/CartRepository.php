@@ -29,9 +29,7 @@ class CartRepository
 
     public function find(string $id)
     {
-        $cart = Entry::query()
-            ->where('id', $id)
-            ->first();
+        $cart = Entry::find($id);
 
         $this->id = $cart->id();
         $this->items = $cart->data()->get('items') ?? 0;
