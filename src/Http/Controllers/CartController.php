@@ -22,10 +22,6 @@ class CartController extends BaseActionController
         } else {
             $cart = Cart::make();
         }
-
-        if (! Auth::guest()) {
-            $cart->attachCustomer(User::current());
-        }
         
         $cart = $cart->items([
             [
@@ -36,6 +32,10 @@ class CartController extends BaseActionController
                 'total' => 0,
             ],
         ])->save();
+
+        if (! Auth::guest()) {
+            Cart::find($cart->id)->attachCustomer(User::current());
+        }
 
         if (! $request->session()->has('simple-commerce-cart')) {
             $request->session()->put('simple-commerce-cart', $cart->id);

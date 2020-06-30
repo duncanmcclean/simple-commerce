@@ -90,13 +90,13 @@ class CartRepository
 
     public function entry()
     {
-        return Entry::query()->where('id', $this->id)->first();
+        return Entry::find($this->id);
     }
 
     public function attachCustomer($user)
     {
         $this
-            ->entry
+            ->entry()
             ->set('customer_id', $user->id())
             ->save();
     }
