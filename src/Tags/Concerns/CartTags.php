@@ -63,7 +63,7 @@ trait CartTags
     public function updateCartItem()
     {
         return $this->createForm(
-            route('statamic.simple-commerce.cart.destroy', [
+            route('statamic.simple-commerce.cart.update', [
                 'item' => $this->getParam('item'),
             ]),
             [],
