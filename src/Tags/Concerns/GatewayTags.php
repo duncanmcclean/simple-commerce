@@ -14,7 +14,7 @@ trait GatewayTags
     public function gateway()
     {
         return collect(SimpleCommerce::gateways())
-            ->where('name', $this->getParam('name'))
+            ->where('handle', $this->getParam('handle'))
             ->first();
     }
 }

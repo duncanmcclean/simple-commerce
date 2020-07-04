@@ -28,12 +28,23 @@ class StripeGateway implements Gateway
 
         return [
             'intent' => $intent->id,
+            'client_secret' => $intent->client_secret,
         ];
     }
 
     public function purchase(array $data): array
     {
-        return PaymentMethod::retrieve($data['payment_method']);
+        $this->setUpWithStripe();
+
+        $paymentMethod = PaymentMethod::retrieve($data['payment_method']);
+
+        return [
+            'id'       => $paymentMethod->id,
+            'object'   => $paymentMethod->object,
+            'card'     => $paymentMethod->card->toArray(),
+            'customer' => $paymentMethod->customer,
+            'livemode' => $paymentMethod->livemode,
+        ];
     }
 
     public function purchaseRules(): array
