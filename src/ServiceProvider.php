@@ -48,6 +48,8 @@ class ServiceProvider extends AddonServiceProvider
                 ->contentSetup()
                 ->bindRepositories();
         });
+
+        SimpleCommerce::bootGateways();
     }
 
     public function contentSetup()
