@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use Statamic\Sites\Site;
+use Statamic\Facades\Site;
 use Stripe\Stripe;
 use Stripe\Exception\AuthenticationException;
 use Stripe\PaymentIntent;
@@ -17,16 +17,18 @@ class StripeGateway implements Gateway
         return 'Stripe';
     }
 
-    public function prepare(array $data)
+    public function prepare(array $data): array
     {
         $this->setUpWithStripe();
 
         $intent = PaymentIntent::create([
-            'amount' => $data['amount'],
+            'amount' => $data['grand_total'],
             'currency' => Currency::get(Site::current())['code'],
         ]);
 
-        return $intent;
+        return [
+            'intent' => $intent->id,
+        ];
     }
 
     public function purchase(array $data): array

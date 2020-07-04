@@ -27,7 +27,7 @@
         "calebporzio/sushi": "dev-master",
         "moneyphp/money": "^3.0@dev",
         "statamic/cms": "^3.0@beta",
-        "stripe/stripe-php": "^2.0@dev"
+        "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
         "nunomaduro/collision": "^4.2",

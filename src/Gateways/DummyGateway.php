@@ -11,9 +11,9 @@ class DummyGateway implements Gateway
         return 'Dummy';
     }
 
-    public function prepare(array $data)
+    public function prepare(array $data): array
     {
-        // Nothing needs done here.
+        return [];
     }
 
     public function purchase(array $data): array
