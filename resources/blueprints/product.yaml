@@ -4,59 +4,34 @@ sections:
     display: Main
     fields:
       -
-        handle: variants
+        handle: description
         field:
-          fields:
-            -
-              handle: name
-              field:
-                input_type: text
-                type: text
-                localizable: false
-                width: 66
-                listable: hidden
-                display: Name
-                factory: word
-            -
-              handle: sku
-              field:
-                input_type: text
-                type: text
-                localizable: false
-                width: 33
-                listable: hidden
-                display: SKU
-                factory: slug
-            -
-              handle: price
-              field:
-                input_type: text
-                type: money
-                localizable: false
-                listable: hidden
-                display: Price
-                factory: 'numberBetween(20, 50)'
-            -
-              handle: description
-              field:
-                type: textarea
-                localizable: false
-                listable: hidden
-                display: Description
-                factory: 'paragraphs(3, true)'
-            -
-              handle: stock
-              field:
-                input_type: number
-                type: text
-                localizable: false
-                listable: hidden
-                display: Stock
-          mode: stacked
-          min_rows: 1
-          reorderable: false
-          type: grid
+          restrict: false
+          automatic_line_breaks: true
+          automatic_links: false
+          escape_markup: false
+          smartypants: false
+          type: markdown
           localizable: false
           listable: hidden
-          display: Variants
-          purchasable: true
+          display: Description
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: price
+        field:
+          read_only: false
+          type: money
+          localizable: false
+          listable: hidden
+          display: Price
+          factory: 'numberBetween(20, 50)'
+      -
+        handle: sku
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: SKU

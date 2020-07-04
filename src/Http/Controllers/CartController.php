@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
@@ -47,9 +48,30 @@ class CartController extends BaseActionController
         return $this->withSuccess($request);
     }
 
-    public function update()
+    public function update(Request $request, string $item = null)
     {
-        //
+        $cart = Cart::find($request->session()->get('simple-commerce-cart'));
+
+        if (! Auth::guest()) {
+            $cart->attachCustomer(User::current());
+        }
+
+        $data = [];
+
+        if ($item) {
+            $data = [
+                'items' => [
+                    array_merge([ 'id' => $item ], Arr::except($request->all(), ['_token', '_params'])),
+                ],
+            ];
+        } else {
+            $data = Arr::except($request->all(), ['_token', '_params']);
+        }
+
+        $cart = Cart::find($request->session()->get('simple-commerce-cart'))
+            ->update($data);
+
+        return $this->withSuccess($request);
     }
 
     public function destroy(Request $request, string $item = null)
