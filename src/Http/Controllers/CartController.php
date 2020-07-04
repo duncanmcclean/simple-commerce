@@ -24,8 +24,6 @@ class CartController extends BaseActionController
         } else {
             $cart = Cart::make();
         }
-
-        $product = Entry::find($request->product);
         
         $cart = $cart->items([
             [
@@ -33,9 +31,9 @@ class CartController extends BaseActionController
                 'product' => $request->product,
                 'sku' => $request->sku,
                 'quantity' => (int) $request->quantity,
-                'total' => (int) $product->data()->get('price'),
+                'total' => 0000,
             ],
-        ])->save();
+        ])->save()->calculateTotals();
 
         if (! Auth::guest()) {
             Cart::find($cart->id)->attachCustomer(User::current());
@@ -61,15 +59,16 @@ class CartController extends BaseActionController
         if ($item) {
             $data = [
                 'items' => [
-                    array_merge([ 'id' => $item ], Arr::except($request->all(), ['_token', '_params'])),
+                    0 => array_merge([
+                        'id' => $item,
+                    ], Arr::except($request->all(), ['_token', '_params'])),
                 ],
             ];
         } else {
             $data = Arr::except($request->all(), ['_token', '_params']);
         }
 
-        $cart = Cart::find($request->session()->get('simple-commerce-cart'))
-            ->update($data);
+        $cart = $cart->update($data)->calculateTotals();
 
         return $this->withSuccess($request);
     }
@@ -81,16 +80,18 @@ class CartController extends BaseActionController
         if (! $item) {
             $cart->update([
                 'items' => []
-            ]);
+            ])->calculateTotals();
         }
 
-        $cart->update([
-            'items' => collect($cart->items)
-                ->reject(function ($item) {
-                    return $item['id'] != $item;
-                })
-                ->toArray()
-        ]);
+        $cart
+            ->update([
+                'items' => collect($cart->items)
+                    ->reject(function ($item) {
+                        return $item['id'] != $item;
+                    })
+                    ->toArray()
+            ])
+            ->calculateTotals();
 
         return $this->withSuccess($request);
     }
