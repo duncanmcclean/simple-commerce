@@ -118,6 +118,35 @@ class CartRepository
 
     public function calculateTotals()
     {
-        //
+        $data = [
+            'grand_total'       => 0000,
+            'items_total'       => 0000,
+            'shipping_total'    => 0000,
+            'tax_total'         => 0000,
+            'coupon_total'      => 0000,
+        ];
+
+        $data['items'] = collect($this->items())
+            ->map(function ($item) use (&$data) {
+                $product = Entry::find($item['product']);
+
+                $itemTotal = ($product->data()->get('price') * $item['quantity']);
+
+                // TODO: shipping
+                // TODO: tax
+                // TODO: coupon
+
+                $data['grand_total'] += $itemTotal;
+
+                return array_merge($item, [
+                    'total' => $itemTotal,
+                ]);
+            })
+            ->toArray();
+        
+        $this->update($data);
+        $this->find($this->id);
+
+        return $this;
     }
 }
