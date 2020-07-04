@@ -118,6 +118,8 @@ class CartRepository
 
     public function calculateTotals()
     {
+        $this->find($this->id);
+
         $data = [
             'grand_total'       => 0000,
             'items_total'       => 0000,
@@ -126,7 +128,7 @@ class CartRepository
             'coupon_total'      => 0000,
         ];
 
-        $data['items'] = collect($this->items())
+        $data['items'] = collect($this->items)
             ->map(function ($item) use (&$data) {
                 $product = Entry::find($item['product']);
 

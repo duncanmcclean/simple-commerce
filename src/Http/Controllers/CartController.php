@@ -57,18 +57,17 @@ class CartController extends BaseActionController
         $data = [];
 
         if ($item) {
-            $data = [
-                'items' => [
-                    0 => array_merge([
-                        'id' => $item,
-                    ], Arr::except($request->all(), ['_token', '_params'])),
-                ],
-            ];
+            $data['items'][] = array_merge(
+                collect($cart->entry()->get('items'))->where('id', $item)->first(),
+                Arr::except($request->all(), ['_token', '_params'])
+            );
         } else {
             $data = Arr::except($request->all(), ['_token', '_params']);
         }
 
-        $cart = $cart->update($data)->calculateTotals();
+        $cart = $cart->update($data);
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request);
     }
@@ -80,18 +79,18 @@ class CartController extends BaseActionController
         if (! $item) {
             $cart->update([
                 'items' => []
-            ])->calculateTotals();
-        }
-
-        $cart
-            ->update([
+            ]);
+        } else {
+            $cart->update([
                 'items' => collect($cart->items)
                     ->reject(function ($item) {
                         return $item['id'] != $item;
                     })
                     ->toArray()
-            ])
-            ->calculateTotals();
+            ]);
+        }
+        
+        // $cart->calculateTotals();
 
         return $this->withSuccess($request);
     }
