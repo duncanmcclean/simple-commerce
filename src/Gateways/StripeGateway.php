@@ -12,8 +12,10 @@ use Stripe\PaymentMethod;
 
 class StripeGateway implements Gateway
 {
-    public static $name = 'Stripe';
-    public static $description = 'First-party Stripe gateway for Simple Commerce';
+    public function name(): string
+    {
+        return 'Stripe';
+    }
 
     public function prepare(array $data)
     {

@@ -4,8 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 interface Gateway
 {
-    public static $name;
-    public static $description;
+    public function name(): string;
 
     public function prepare(array $data);
     public function purchase(array $data): array;

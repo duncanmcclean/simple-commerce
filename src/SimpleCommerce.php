@@ -33,12 +33,11 @@ class SimpleCommerce
                 $instance = new $gateway[0]();
 
                 return [
-                    'name'              => $instance->name(),
-                    'class'             => $gateway[0],
-                    'formatted_class'   => addslashes($gateway[0]),
-                    'rules'             => $instance->rules(),
-                    'payment_form'      => $instance->paymentForm(),
-                    'config'            => $gateway[1],
+                    'name'            => $instance->name(),
+                    'class'           => $gateway[0],
+                    'formatted_class' => addslashes($gateway[0]),
+                    'purchaseRules'   => $instance->purchaseRules(),
+                    'config'          => $gateway[1],
                 ];
             })
             ->toArray();

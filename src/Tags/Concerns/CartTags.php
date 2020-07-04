@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Session;
 
 trait CartTags
 {
+    public function cart()
+    {
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray();
+    }
+
     public function cartItems()
     {
         return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['items']->value();
@@ -23,32 +28,32 @@ trait CartTags
 
     public function total()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->grandTotal;
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['grand_total']->value();
     }
 
     public function grandTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->grandTotal;
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['grand_total']->value();
     }
 
     public function itemsTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->itemsTotal;
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['items_total']->value();
     }
 
     public function shippingTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->shippingTotal;
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['shipping_total']->value();
     }
 
     public function taxTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->taxTotal;
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['tax_total']->value();
     }
 
     public function couponTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->couponTotal;
+        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['coupon_total']->value();
     }
 
     public function addCartItem()

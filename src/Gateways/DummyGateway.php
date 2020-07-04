@@ -6,8 +6,10 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 
 class DummyGateway implements Gateway
 {
-    public static $name = 'Dummy';
-    public static $description = 'A dummy payment gateway to testing with.';
+    public function name(): string
+    {
+        return 'Dummy';
+    }
 
     public function prepare(array $data)
     {
