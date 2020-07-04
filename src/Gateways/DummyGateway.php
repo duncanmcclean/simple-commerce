@@ -43,6 +43,6 @@ class DummyGateway implements Gateway
 
     public function refundCharge(array $data): array
     {
-        return true;
+        return [];
     }
 }
