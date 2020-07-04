@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Illuminate\Support\Str;
 use Statamic\Statamic;
 
 class SimpleCommerce
@@ -34,6 +35,7 @@ class SimpleCommerce
 
                 return [
                     'name'            => $instance->name(),
+                    'handle'          => Str::camel($instance->name()),
                     'class'           => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
                     'purchaseRules'   => $instance->purchaseRules(),

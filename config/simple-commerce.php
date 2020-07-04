@@ -6,4 +6,8 @@ return [
             'currency' => 'USD',
         ],
     ],
+
+    'gateways' => [
+        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+    ],
 ];
