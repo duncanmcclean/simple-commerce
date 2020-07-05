@@ -3,7 +3,12 @@
 return [
     'sites' => [
         'default' => [
-            'currency' => 'USD',
+            'currency' => 'GBP',
+
+            'tax' => [
+                'rate' => 20,
+                'included_in_prices' => false,
+            ],
         ],
     ],
 
