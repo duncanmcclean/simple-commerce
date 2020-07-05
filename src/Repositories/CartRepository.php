@@ -2,11 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
+use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 
 class CartRepository
 {
@@ -61,6 +64,7 @@ class CartRepository
             ->data([
                 'title' => 'Order #'.uniqid(),
                 'items' => $this->items,
+                'is_paid' => false,
             ])
             ->save();
 
@@ -128,7 +132,9 @@ class CartRepository
             ]))
             ->save();
 
-        return $this;    
+        Mail::to(User::find($this->entry()->data()->get('customer'))->email())->send(new OrderConfirmation($this->id));
+
+        return $this;
     }
 
     public function calculateTotals()

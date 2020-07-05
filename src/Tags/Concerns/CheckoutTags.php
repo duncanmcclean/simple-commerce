@@ -23,7 +23,9 @@ trait CheckoutTags
             $data = array_merge($data, $class->prepare($cartData));
         }
 
-        $data['is_paid'] = $cartData['is_paid'];
+        if (isset($data['is_paid'])) {
+            $data['is_paid'] = $cartData['is_paid'];
+        }
 
         if ($cartData['is_paid'] === true) {
             $data['receipt_url'] = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [

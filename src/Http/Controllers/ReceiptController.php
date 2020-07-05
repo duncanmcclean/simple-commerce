@@ -15,13 +15,7 @@ class ReceiptController extends BaseActionController
         }
 
         $order = Entry::find($orderId);
-
         $data = $order->toAugmentedArray();
-        // $data = $order->data()->toArray();
-        // $data['id'] = $order->id();
-        // $data['title'] = $order->title;
-
-        // dd($data['items']->value());
 
         return PDFFacade::loadView('simple-commerce::receipt', $data)
             ->download('receipt.pdf');
