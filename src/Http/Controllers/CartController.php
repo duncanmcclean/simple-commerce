@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 
