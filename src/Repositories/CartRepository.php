@@ -60,7 +60,6 @@ class CartRepository
         $entry
             ->data([
                 'title' => 'Order #'.uniqid(),
-                'status' => 'cart',
                 'items' => $this->items,
             ])
             ->save();

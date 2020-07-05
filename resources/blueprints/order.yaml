@@ -149,19 +149,3 @@ sections:
           localizable: false
           listable: hidden
           display: 'Is Paid?'
-      -
-        handle: type
-        field:
-          options:
-            cart: Cart
-            order: Order
-          clearable: false
-          multiple: false
-          searchable: false
-          taggable: false
-          push_tags: false
-          cast_booleans: false
-          type: select
-          localizable: false
-          listable: hidden
-          display: Type
