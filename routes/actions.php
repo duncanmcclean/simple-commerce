@@ -4,6 +4,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ReceiptController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ShippingOptionController;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
@@ -26,4 +27,6 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
 
     Route::post('/coupon', [CouponController::class, 'store'])->name('coupon.store');
     Route::delete('/coupon', [CouponController::class, 'destroy'])->name('coupon.destroy');
+
+    Route::get('/receipt/{orderId}', [ReceiptController::class, 'show'])->name('receipt.show');
 });

@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 
 trait CheckoutTags
 {
@@ -25,7 +26,9 @@ trait CheckoutTags
         $data['is_paid'] = $cartData['is_paid'];
 
         if ($cartData['is_paid'] === true) {
-            $data['receipt_url'] = 'url';
+            $data['receipt_url'] = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
+                'orderId' => Session::get('simple-commerce-cart'),
+            ]);
         }
 
         return $this->createForm(

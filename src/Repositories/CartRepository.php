@@ -124,6 +124,7 @@ class CartRepository
             ->published(true)
             ->data(array_merge($this->entry()->data()->toArray(), [
                 'is_paid' => true,
+                'paid_date' => now(),
             ]))
             ->save();
 

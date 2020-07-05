@@ -24,6 +24,7 @@
         }
     },
     "require": {
+        "barryvdh/laravel-dompdf": "^0.8.0@dev",
         "calebporzio/sushi": "dev-master",
         "moneyphp/money": "^3.0@dev",
         "statamic/cms": "^3.0@beta",
