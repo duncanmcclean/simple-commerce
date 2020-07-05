@@ -112,8 +112,23 @@ class CartRepository
     {
         $this
             ->entry()
-            ->set('customer_id', $user->id())
+            ->set('customer', $user->id())
             ->save();
+
+        return $this;    
+    }
+
+    public function markAsCompleted()
+    {
+        $this
+            ->entry()
+            ->published(true)
+            ->data(array_merge($this->entry()->data()->toArray(), [
+                'is_paid' => true,
+            ]))
+            ->save();
+
+        return $this;    
     }
 
     public function calculateTotals()

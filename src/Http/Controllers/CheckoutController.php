@@ -52,7 +52,9 @@ class CheckoutController extends BaseActionController
             $cartData[$key] = $value;
         }
 
-        $cart->update($cartData);
+        $cart
+            ->update($cartData)
+            ->markAsCompleted();
 
         return $this->withSuccess($request);
     }
