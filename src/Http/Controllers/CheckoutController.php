@@ -26,6 +26,8 @@ class CheckoutController extends BaseActionController
             'email' => 'sometimes|email',
         ]));
 
+        // TODO: maybe we could merge in blueprint validation too, for custom fields?
+
         if (isset($requestData['name']) && isset($requestData['email'])) {
             $customer = User::findByEmail($requestData['email']);
 
@@ -50,6 +52,8 @@ class CheckoutController extends BaseActionController
 
         foreach (Arr::except($requestData, $this->excludedKeys) as $key => $value) {
             $cartData[$key] = $value;
+
+            // TODO: convert 'on' to true, and 'off' to false
         }
 
         $cart

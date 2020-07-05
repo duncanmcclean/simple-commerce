@@ -11,12 +11,21 @@ trait CheckoutTags
     public function checkout()
     {
         $data = [];
-        $cartData = Cart::find(Session::get('simple-commerce-cart'))->entry()->data()->toArray();
+        $cartData = Cart::find(Session::get('simple-commerce-cart'))
+            ->entry()
+            ->data()
+            ->toArray();
 
         foreach (SimpleCommerce::gateways() as $gateway) {
             $class = new $gateway['class']();
 
             $data = array_merge($data, $class->prepare($cartData));
+        }
+
+        $data['is_paid'] = $cartData['is_paid'];
+
+        if ($cartData['is_paid'] === true) {
+            $data['receipt_url'] = 'url';
         }
 
         return $this->createForm(
