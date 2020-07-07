@@ -1,21 +1,24 @@
-# Addon Boilerplate
-> Boilerplate for building testable Statamic 3 addons
+<img src="./banner.jpg">
 
-This repository contains some boilerplate code to help you build testable Statamic 3 addons. Simply clone the repo, change the namespace references and get stuck in!
+# Simple Commerce
+> A perfectly simple e-commerce solution for Statamic
 
-We try to keep this boilerplate as fresh as possible, but things are always changing, especially while Statamic is in beta. If you spot something that needs to be updated, fork and make a pull request!
+This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that you'll need to purchase a license before using this addon in production. Licenses cost $199 and can be purchased from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce).
 
-*This boilerplate is unofficial, it's not built by Statamic, it's built by [Double Three Digital](https://doublethree.digital).*
+[**→ Read Documentation**](https://github.com/doublethreedigital/simple-commerce/wiki)
 
-## Documentation
-[Read](./DOCUMENTATION.md) this addon's documentation.
+## Credits
+* [Duncan McClean (Developer)](https://github.com/damcclean)
+* [David A. Lindahl (Logo & Banner Design)](https://github.com/austriker27)
 
 ## Resources
-* [Statamic 3 Docs](https://statamic.dev)
-* [Statamic Discord](https://statamic.com/discord)
-* [Simple Commerce (a big addon that does a lot of common things)](https://github.com/doublethreedigital/simple-commerce)
+* [Simple Commerce Documentation](https://github.com/doublethreedigital/simple-commerce/wiki)
+* [Simple Commerce Issues](https://github.com/doublethreedigital/simple-commerce/issues)
+* [Simple Commerce Discord](https://discord.gg/P3ACYf9)
+
+---
 
 <p>
 <a href="https://statamic.com"><img src="https://img.shields.io/badge/Statamic-3.0+-FF269E?style=for-the-badge" alt="Compatible with Statamic v3"></a>
-<a href="https://packagist.org/packages/doublethreedigital/addon-boilerplate/stats"><img src="https://img.shields.io/packagist/v/doublethreedigital/addon-boilerplate?style=for-the-badge" alt="Simple Commerce on Packagist"></a>
+<a href="https://packagist.org/packages/doublethreedigital/simple-commerce/stats"><img src="https://img.shields.io/packagist/v/doublethreedigital/simple-commerce?style=for-the-badge" alt="Simple Commerce on Packagist"></a>
 </p>
