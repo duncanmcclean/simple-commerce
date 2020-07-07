@@ -141,6 +141,7 @@ class CartRepository
     public function calculateTotals()
     {
         $this->find($this->id);
+        $entry = $this->entry();
 
         $data = [
             'grand_total'       => 0000,
@@ -149,12 +150,13 @@ class CartRepository
             'tax_total'         => 0000,
             'coupon_total'      => 0000,
         ];
-        
-        $siteTax = collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax'];
 
         $data['items'] = collect($this->items)
-            ->map(function ($item) use (&$data, $siteTax) {
+            ->map(function ($item) use (&$data) {
                 $product = Entry::find($item['product']);
+
+                $siteTax = collect(Config::get('simple-commerce.sites'))
+                    ->get(Site::current()->handle())['tax'];
 
                 $itemTotal = ($product->data()->get('price') * $item['quantity']);
 
@@ -165,7 +167,6 @@ class CartRepository
                     );
                 }
 
-                // TODO: shipping
                 // TODO: coupon
 
                 $data['items_total'] += $itemTotal;
@@ -176,7 +177,25 @@ class CartRepository
             })
             ->toArray();
 
-        // If order has address, pass it along to shipping methods    
+        if ($entry->data()->get('shipping_name') != null) {
+            // TODO: let the user pick which method is used?
+
+            // $address = [
+            //     'name' => $entry->data()->get('shipping_name'),
+            //     'address' => $entry->data()->get('shipping_address'),
+            //     'city' => $entry->data()->get('shipping_city'),
+            //     'country' => $entry->data()->get('shipping_country'),
+            //     'zip_code' => $entry->data()->get('shipping_zip_code')
+            // ];
+
+            $method = collect(Config::get('simple-commerce.sites'))
+                ->get(Site::current()->handle())['shipping']['methods'][0];
+
+            if ($method) {
+                $method = new $method();
+                $data['shipping_total'] = $method->calculateCost($entry);
+            }    
+        }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total'] + $data['coupon_total']); 
 
