@@ -159,7 +159,10 @@ class CartRepository
                 $itemTotal = ($product->data()->get('price') * $item['quantity']);
 
                 if (! $siteTax['included_in_prices']) {
-                    // get x percent from item total and add to the existing tax total
+                    $data['tax_total'] += (int) str_replace('.', '', round(
+                        ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * 
+                        $siteTax['rate'], 2)
+                    );
                 }
 
                 // TODO: shipping
@@ -171,9 +174,7 @@ class CartRepository
                     'total' => $itemTotal,
                 ]);
             })
-            ->toArray();
-
-        // dd($data);    
+            ->toArray();  
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total'] + $data['coupon_total']); 
 
