@@ -10,9 +10,11 @@ class BaseActionController extends Controller
 {
     protected function withSuccess(Request $request, array $data = []): RedirectResponse
     {
-        return $request->has('_params') ? 
-            redirect(decrypt($request->all()['_params'])[0])->with($data) : 
-            back()->with($data);
+        return back()->with($data);
+
+        // return $request->has('_params') ? 
+        //     redirect(decrypt($request->all()['_params'])[0])->with($data) : 
+        //     back()->with($data);
     }
 
     protected function withErrors(Request $request, string $errorMessage): RedirectResponse
