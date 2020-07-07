@@ -174,7 +174,9 @@ class CartRepository
                     'total' => $itemTotal,
                 ]);
             })
-            ->toArray();  
+            ->toArray();
+
+        // If order has address, pass it along to shipping methods    
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total'] + $data['coupon_total']); 
 
