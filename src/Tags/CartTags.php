@@ -1,23 +1,25 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Support\Facades\Session;
 
-trait CartTags
+class CartTags extends SubTag
 {
-    public function cart()
+    use Concerns\FormBuilder;
+
+    public function index()
     {
         return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray();
     }
 
-    public function cartItems()
+    public function items()
     {
         return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['items']->value();
     }
 
-    public function cartItemsCount()
+    public function count()
     {
         if (! Session::has('simple-commerce-cart')) {
             return 0;
@@ -56,7 +58,7 @@ trait CartTags
         return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['coupon_total']->value();
     }
 
-    public function addCartItem()
+    public function addItem()
     {
         return $this->createForm(
             route('statamic.simple-commerce.cart.store'),
@@ -65,7 +67,7 @@ trait CartTags
         );
     }
 
-    public function updateCartItem()
+    public function updateItem()
     {
         return $this->createForm(
             route('statamic.simple-commerce.cart.update', [
@@ -76,7 +78,7 @@ trait CartTags
         );
     }
 
-    public function removeCartItem()
+    public function removeItem()
     {
         return $this->createForm(
             route('statamic.simple-commerce.cart.destroy', [
@@ -87,7 +89,7 @@ trait CartTags
         );
     }
 
-    public function emptyCart()
+    public function empty()
     {
         return $this->createForm(
             route('statamic.simple-commerce.cart.empty'),

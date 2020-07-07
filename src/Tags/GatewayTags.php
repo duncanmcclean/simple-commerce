@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
-trait GatewayTags
+class GatewayTags extends SubTag
 {
     public function gateways()
     {

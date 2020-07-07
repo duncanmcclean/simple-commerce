@@ -1,10 +1,17 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-trait CouponTags
+class CouponTags extends SubTag
 {
-    public function redeemCoupon()
+    use Concerns\FormBuilder;
+
+    public function redeemed()
+    {
+        return false;
+    }
+
+    public function redeem()
     {
         return $this->createForm(
             route('statamic.simple-commerce.coupon.store'),
@@ -13,7 +20,7 @@ trait CouponTags
         );
     }
 
-    public function removeCoupon()
+    public function remove()
     {
         return $this->createForm(
             route('statamic.simple-commerce.coupon.destroy'),

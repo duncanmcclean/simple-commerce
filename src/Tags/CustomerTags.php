@@ -1,21 +1,22 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use Illuminate\Support\Facades\Auth;
 use Statamic\Entries\Entry as EntriesEntry;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 
-trait CustomerTags
+class CustomerTags extends SubTag
 {
-    public function customer()
+    use Concerns\FormBuilder;
+
+    public function index()
     {
         return User::current();
     }
 
-    public function updateCustomer()
+    public function update()
     {
         return $this->createForm(
             route('statamic.simple-commerce.customer.update'),

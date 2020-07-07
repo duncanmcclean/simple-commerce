@@ -1,15 +1,17 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
+namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 
-trait CheckoutTags
+class CheckoutTags extends SubTag
 {
-    public function checkout()
+    use Concerns\FormBuilder;
+
+    public function index()
     {
         $data = [];
         $cartData = Cart::find(Session::get('simple-commerce-cart'))

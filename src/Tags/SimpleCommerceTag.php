@@ -3,23 +3,50 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
+use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use Statamic\Tags\Tags;
 
 class SimpleCommerceTag extends Tags
 {
-    use Concerns\FormBuilder, 
-        Concerns\CartTags, 
-        Concerns\CheckoutTags, 
-        Concerns\CouponTags, 
-        Concerns\CustomerTags, 
-        Concerns\GatewayTags, 
-        Concerns\ShippingTags;
-
     protected static $handle = 'sc';
     protected static $aliases = ['simple-commerce'];
+
+    protected $tagClasses = [
+        'cart'     => CartTags::class,
+        'checkout' => CheckoutTags::class,
+        'coupon'   => CouponTags::class,
+        'customer' => CustomerTags::class,
+        'gateway'  => GatewayTags::class,
+        'shipping' => ShippingTags::class,
+    ];
+
+    public function wildcard($tag)
+    {
+        $tag = explode(':', $tag);
+
+        $class = collect($this->tagClasses)
+            ->map(function ($value, $key) {
+                return [
+                    'key' => $key,
+                    'value' => $value,
+                ];
+            })
+            ->where('key', $tag[0])
+            ->first()
+            ['value'];
+
+        $method = isset($tag[1]) ? $tag[1] : 'index';
+
+        return (new $class($this))->{$method}();
+    }
 
     public function countries()
     {
         return Country::all()->toArray();
+    }
+
+    public function currencies()
+    {
+        return Currency::all()->toArray();
     }
 }
