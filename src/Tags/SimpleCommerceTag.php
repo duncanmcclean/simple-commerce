@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use Exception;
 use Statamic\Tags\Tags;
 
 class SimpleCommerceTag extends Tags
@@ -16,11 +17,11 @@ class SimpleCommerceTag extends Tags
         'checkout' => CheckoutTags::class,
         'coupon'   => CouponTags::class,
         'customer' => CustomerTags::class,
-        'gateway'  => GatewayTags::class,
+        'gateways' => GatewayTags::class,
         'shipping' => ShippingTags::class,
     ];
 
-    public function wildcard($tag)
+    public function wildcard(string $tag)
     {
         $tag = explode(':', $tag);
 
@@ -37,7 +38,11 @@ class SimpleCommerceTag extends Tags
 
         $method = isset($tag[1]) ? $tag[1] : 'index';
 
-        return (new $class($this))->{$method}();
+        try {
+            return (new $class($this))->{$method}();
+        } catch (Exception $e) {
+            return (new $class($this))->wildcard($method);
+        }
     }
 
     public function countries()

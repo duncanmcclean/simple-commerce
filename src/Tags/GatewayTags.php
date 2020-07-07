@@ -6,12 +6,13 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 class GatewayTags extends SubTag
 {
-    public function gateways()
+    public function index()
     {
         return SimpleCommerce::gateways();
     }
 
-    public function gateway()
+    // {{ sc:gateways:stripe }}
+    public function wildcard(string $tag)
     {
         return collect(SimpleCommerce::gateways())
             ->where('handle', $this->getParam('handle'))
