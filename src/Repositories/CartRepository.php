@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Exception;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
@@ -148,27 +149,37 @@ class CartRepository
             'tax_total'         => 0000,
             'coupon_total'      => 0000,
         ];
+        
+        $siteTax = collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax'];
 
         $data['items'] = collect($this->items)
-            ->map(function ($item) use (&$data) {
+            ->map(function ($item) use (&$data, $siteTax) {
                 $product = Entry::find($item['product']);
 
                 $itemTotal = ($product->data()->get('price') * $item['quantity']);
 
+                if (! $siteTax['included_in_prices']) {
+                    // get x percent from item total and add to the existing tax total
+                }
+
                 // TODO: shipping
-                // TODO: tax
                 // TODO: coupon
 
-                $data['grand_total'] += $itemTotal;
+                $data['items_total'] += $itemTotal;
 
                 return array_merge($item, [
                     'total' => $itemTotal,
                 ]);
             })
             ->toArray();
-        
-        $this->update($data);
-        $this->find($this->id);
+
+        // dd($data);    
+
+        $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total'] + $data['coupon_total']); 
+
+        $this
+            ->update($data)
+            ->find($this->id);
 
         return $this;
     }
