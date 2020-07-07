@@ -10,20 +10,21 @@ class BaseActionController extends Controller
 {
     protected function withSuccess(Request $request, array $data = []): RedirectResponse
     {
-        return $this->redirect('redirect', $request)->with([
-            'simple-commerce' => $data,
-        ]);
+        return $request->has('_params') ? 
+            redirect(decrypt($request->all()['_params'])[0])->with($data) : 
+            back()->with($data);
     }
 
     protected function withErrors(Request $request, string $errorMessage): RedirectResponse
     {
-        return $this->redirect('error_redirect', $request)->withErrors($errorMessage, 'charge');
+        return back()
+            ->withErrors($errorMessage, 'simple-commerce');
     }
 
-    protected function redirect($field, Request $request): RedirectResponse
-    {
-        $redirect = $request->input($field, false);
+    // protected function redirect($field, Request $request): RedirectResponse
+    // {
+    //     $redirect = $request->input($field, false);
 
-        return $redirect ? redirect($redirect) : back();
-    }
+    //     return $redirect ? redirect($redirect) : back();
+    // }
 }
