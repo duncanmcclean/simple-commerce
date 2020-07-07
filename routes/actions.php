@@ -1,6 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartItemController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
@@ -9,10 +10,12 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ShippingOptionController;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::post('/cart/{item}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/{item}', [CartController::class, 'destroy'])->name('cart.destroy');
-    Route::delete('/cart/empty', [CartController::class, 'destroy'])->name('cart.empty');
+    Route::post('/cart', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart', [CartController::class, 'destroy'])->name('cart.empty');
+
+    Route::post('/cart-items', [CartItemController::class, 'store'])->name('cart-items.store');
+    Route::post('/cart-items/{item}', [CartItemController::class, 'update'])->name('cart-items.update');
+    Route::delete('/cart-items/{item}', [CartItemController::class, 'destroy'])->name('cart-items.destroy');
 
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 

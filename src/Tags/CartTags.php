@@ -61,7 +61,7 @@ class CartTags extends SubTag
     public function addItem()
     {
         return $this->createForm(
-            route('statamic.simple-commerce.cart.store'),
+            route('statamic.simple-commerce.cart-items.store'),
             [],
             'POST'
         );
@@ -70,7 +70,7 @@ class CartTags extends SubTag
     public function updateItem()
     {
         return $this->createForm(
-            route('statamic.simple-commerce.cart.update', [
+            route('statamic.simple-commerce.cart-items.update', [
                 'item' => $this->getParam('item'),
             ]),
             [],
@@ -81,11 +81,20 @@ class CartTags extends SubTag
     public function removeItem()
     {
         return $this->createForm(
-            route('statamic.simple-commerce.cart.destroy', [
+            route('statamic.simple-commerce.cart-items.destroy', [
                 'item' => $this->getParam('item'),
             ]),
             [],
             'DELETE'
+        );
+    }
+
+    public function update()
+    {
+        return $this->createForm(
+            route('statamic.simple-commerce.cart.update'),
+            [],
+            'POST'
         );
     }
 
