@@ -10,7 +10,7 @@ class CartController extends BaseActionController
 {
     public function index(Request $request)
     {
-        return Cart::find($request->session()->get('simple-commerce-cart'))
+        return Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->entry()->data();
     }
 
@@ -28,7 +28,7 @@ class CartController extends BaseActionController
             $data[$key] = $value;
         }
 
-        Cart::find($request->session()->get('simple-commerce-cart'))
+        Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->update($data)
             ->calculateTotals();
 
@@ -37,7 +37,7 @@ class CartController extends BaseActionController
 
     public function destroy(Request $request)
     {
-        Cart::find($request->session()->get('simple-commerce-cart'))
+        Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->update([
                 'items' => [],
             ])

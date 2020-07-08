@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Facades\Site;
 use Stripe\Stripe;
-use Stripe\Exception\AuthenticationException;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 
@@ -67,7 +66,7 @@ class StripeGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (! env('STRIPE_SECRET')) {
+        if (!env('STRIPE_SECRET')) {
             throw new StripeSecretMissing("Your Stripe secret couldn't be found. Make sure to add it to your gateway configuration.");
         }
 

@@ -13,8 +13,8 @@ class CartItemController extends BaseActionController
 {
     public function store(Request $request)
     {   
-        if ($request->session()->has('simple-commerce-cart')) {
-            $cart = Cart::find($request->session()->get('simple-commerce-cart'));
+        if ($request->session()->has(config('simple-commerce.cart_key'))) {
+            $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
         } else {
             $cart = Cart::make();
         }
@@ -33,8 +33,8 @@ class CartItemController extends BaseActionController
             Cart::find($cart->id)->attachCustomer(User::current());
         }
 
-        if (! $request->session()->has('simple-commerce-cart')) {
-            $request->session()->put('simple-commerce-cart', $cart->id);
+        if (! $request->session()->has(config('simple-commerce.cart_key'))) {
+            $request->session()->put(config('simple-commerce.cart_key'), $cart->id);
         }
 
         return $this->withSuccess($request);
@@ -42,7 +42,7 @@ class CartItemController extends BaseActionController
 
     public function update(Request $request, string $item)
     {
-        $cart = Cart::find($request->session()->get('simple-commerce-cart'));
+        $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
 
         if (! Auth::guest()) {
             $cart->attachCustomer(User::current());
@@ -68,7 +68,7 @@ class CartItemController extends BaseActionController
 
     public function destroy(Request $request, string $item)
     {
-        $cart = Cart::find($request->session()->get('simple-commerce-cart'));
+        $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
 
         $cart->update([
             'items' => collect($cart->items)

@@ -15,7 +15,7 @@ class CheckoutController extends BaseActionController
 
     public function store(Request $request)
     {
-        $cart = Cart::find(Session::get('simple-commerce-cart'));
+        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
         $gateway = (new $request->gateway());
 
         $requestData = Arr::except($request->all(), $this->excludedKeys);
