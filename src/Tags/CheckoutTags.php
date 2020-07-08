@@ -14,7 +14,7 @@ class CheckoutTags extends SubTag
     public function index()
     {
         $data = [];
-        $cartData = Cart::find(Session::get('simple-commerce-cart'))
+        $cartData = Cart::find(Session::get(config('simple-commerce.cart_key')))
             ->entry()
             ->data()
             ->toArray();
@@ -31,7 +31,7 @@ class CheckoutTags extends SubTag
 
         if ($cartData['is_paid'] === true) {
             $data['receipt_url'] = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
-                'orderId' => Session::get('simple-commerce-cart'),
+                'orderId' => Session::get(config('simple-commerce.cart_key')),
             ]);
         }
 

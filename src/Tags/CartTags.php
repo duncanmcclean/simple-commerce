@@ -11,51 +11,51 @@ class CartTags extends SubTag
 
     public function index()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray();
     }
 
     public function items()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['items']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['items']->value();
     }
 
     public function count()
     {
-        if (! Session::has('simple-commerce-cart')) {
+        if (! Session::has(config('simple-commerce.cart_key'))) {
             return 0;
         }
 
-        return Cart::find(Session::get('simple-commerce-cart'))->count();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->count();
     }
 
     public function total()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['grand_total']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['grand_total']->value();
     }
 
     public function grandTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['grand_total']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['grand_total']->value();
     }
 
     public function itemsTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['items_total']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['items_total']->value();
     }
 
     public function shippingTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['shipping_total']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['shipping_total']->value();
     }
 
     public function taxTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['tax_total']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['tax_total']->value();
     }
 
     public function couponTotal()
     {
-        return Cart::find(Session::get('simple-commerce-cart'))->entry()->toAugmentedArray()['coupon_total']->value();
+        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['coupon_total']->value();
     }
 
     public function addItem()
