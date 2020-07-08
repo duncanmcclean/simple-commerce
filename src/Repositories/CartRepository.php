@@ -69,7 +69,7 @@ class CartRepository
             ])
             ->save();
 
-        return $this;    
+        return $this;
     }
 
     public function update(array $data, bool $mergeData = true)
@@ -88,7 +88,7 @@ class CartRepository
             ->data($data)
             ->save();
 
-        return $this;    
+        return $this;
     }
 
     public function items(array $items = [])
