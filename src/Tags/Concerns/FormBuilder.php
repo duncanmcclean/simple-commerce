@@ -15,7 +15,9 @@ trait FormBuilder
     {
         $html = $this->formOpen($action, $method, static::$knownParams);
 
-        $html .= $this->hideParams();
+        if ($this->getParam('redirect') != null) {
+            $html .= $this->redirectField();
+        }
 
         $html .= $this->parse($this->sessionData($data));
 
@@ -33,9 +35,9 @@ trait FormBuilder
         return $data;
     }
 
-    private function hideParams(): string
+    private function redirectField()
     {
-        return '<input type="hidden" name="_params" value="'.Crypt::encrypt($this->params()).'" />';
+        return '<input type="hidden" name="_redirect" value="'.$this->getParam('redirect').'" />';
     }
 
     private function params(): array
