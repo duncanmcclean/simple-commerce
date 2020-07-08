@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Repositories\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Repositories\CurrencyRepository;
-use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Taxonomy;
 use Statamic\Providers\AddonServiceProvider;
@@ -17,16 +16,23 @@ class ServiceProvider extends AddonServiceProvider
         MoneyFieldtype::class,
     ];
 
+    protected $listen = [
+        Events\CartCompleted::class => [],
+        Events\CartSaved::class => [],
+        Events\CartUpdated::class => [],
+        Events\CustomerAddedToCart::class => [],
+    ];
+
+    protected $routes = [
+        'actions' => __DIR__.'/../routes/actions.php',
+    ];
+
     protected $scripts = [
         __DIR__.'/../resources/dist/js/cp.js',
     ];
 
     protected $tags = [
-        SimpleCommerceTag::class,
-    ];
-
-    protected $routes = [
-        'actions' => __DIR__.'/../routes/actions.php',
+        Tags\SimpleCommerceTag::class,
     ];
 
     public function boot()
