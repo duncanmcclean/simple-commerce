@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartR
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use Exception;
 use Illuminate\Support\Facades\Config;
@@ -81,7 +82,7 @@ class CartRepository implements ContractsCartRepository
         $entry = Entry::find($this->id);  
 
         if (! $entry) {
-            throw new Exception('Cart not found');
+            throw new CartNotFound("We could not find a cart with the ID of {$this->id}.");
         }
 
         if ($mergeData) {
@@ -115,7 +116,13 @@ class CartRepository implements ContractsCartRepository
 
     public function entry(): EntriesEntry
     {
-        return Entry::find($this->id);
+        $entry = Entry::find($this->id);
+
+        if (! $entry) {
+            throw new CartNotFound("We could not find a cart with the ID of {$this->id}.");
+        }
+
+        return $entry;
     }
 
     public function attachCustomer($user): self

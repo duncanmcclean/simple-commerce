@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Facades\Site;
 use Stripe\Stripe;
@@ -66,10 +67,10 @@ class StripeGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        try {
-            Stripe::setApiKey(env('STRIPE_SECRET'));
-        } catch (AuthenticationException $e) {
-            throw new \Exception('Authentication to Stripe failed. Check your API keys are valid.');
+        if (! env('STRIPE_SECRET')) {
+            throw new StripeSecretMissing("Your Stripe secret couldn't be found. Make sure to add it to your gateway configuration.");
         }
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
     }
 }

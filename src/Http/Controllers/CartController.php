@@ -5,9 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Statamic\Facades\Stache;
-use Statamic\Facades\User;
 
 class CartController extends BaseActionController
 {
