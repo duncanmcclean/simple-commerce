@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
-use DoubleThreeDigital\SimpleCommerce\Models\Order;
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
