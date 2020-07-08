@@ -2,6 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
+use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
+use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use Exception;
 use Illuminate\Support\Facades\Config;
@@ -68,6 +71,8 @@ class CartRepository
             ])
             ->save();
 
+        event(new CartSaved($this->entry()));    
+
         return $this;
     }
 
@@ -86,6 +91,8 @@ class CartRepository
         $entry
             ->data($data)
             ->save();
+
+            event(new CartUpdated($this->entry()));
 
         return $this;
     }
@@ -118,6 +125,8 @@ class CartRepository
             ->set('customer', $user->id())
             ->save();
 
+            event(new CustomerAddedToCart($this->entry()));    
+
         return $this;    
     }
 
@@ -132,6 +141,7 @@ class CartRepository
             ]))
             ->save();
 
+        event(new CustomerAddedToCart($this->entry()));
         Mail::to(User::find($this->entry()->data()->get('customer'))->email())->send(new OrderConfirmation($this->id));
 
         return $this;
