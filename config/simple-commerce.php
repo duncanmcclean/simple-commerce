@@ -21,4 +21,6 @@ return [
     'gateways' => [
         \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
     ],
+
+    'cart_key' => 'simple-commerce-cart',
 ];
