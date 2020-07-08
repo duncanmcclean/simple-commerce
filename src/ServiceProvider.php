@@ -35,6 +35,10 @@ class ServiceProvider extends AddonServiceProvider
         Tags\SimpleCommerceTag::class,
     ];
 
+    protected $widgets = [
+        Widgets\SalesWidget::class,
+    ];
+
     public function boot()
     {
         parent::boot();
