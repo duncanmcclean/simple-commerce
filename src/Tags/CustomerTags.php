@@ -13,7 +13,7 @@ class CustomerTags extends SubTag
 
     public function index()
     {
-        return User::current();
+        return User::current()->data();
     }
 
     public function update()

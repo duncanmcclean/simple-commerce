@@ -40,7 +40,7 @@ class CartItemController extends BaseActionController
         return $this->withSuccess($request);
     }
 
-    public function update(Request $request, string $item = null)
+    public function update(Request $request, string $item)
     {
         $cart = Cart::find($request->session()->get('simple-commerce-cart'));
 
@@ -66,7 +66,7 @@ class CartItemController extends BaseActionController
         return $this->withSuccess($request);
     }
 
-    public function destroy(Request $request, string $item = null)
+    public function destroy(Request $request, string $item)
     {
         $cart = Cart::find($request->session()->get('simple-commerce-cart'));
 

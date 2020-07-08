@@ -51,9 +51,13 @@ class CheckoutController extends BaseActionController
         foreach($gateway->purchaseRules() as $key => $rule) $this->excludedKeys[] = $key;
 
         foreach (Arr::except($requestData, $this->excludedKeys) as $key => $value) {
-            $cartData[$key] = $value;
+            if ($value === 'on') {
+                $value = true;
+            } elseif ($value === 'off') {
+                $value = false;
+            }
 
-            // TODO: convert 'on' to true, and 'off' to false
+            $cartData[$key] = $value;
         }
 
         $cart

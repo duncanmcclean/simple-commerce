@@ -8,21 +8,34 @@ use Illuminate\Support\Arr;
 
 class CartController extends BaseActionController
 {
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return Cart::find($request->session()->get('simple-commerce-cart'))
+            ->entry()->data();
     }
 
     public function update(Request $request)
     {
+        $data = Arr::except($request->all(), ['_token', '_params']);
+
+        foreach ($data as $key => $value) {
+            if ($value === 'on') {
+                $value = true;
+            } elseif ($value === 'off') {
+                $value = false;
+            }
+
+            $data[$key] = $value;
+        }
+
         Cart::find($request->session()->get('simple-commerce-cart'))
-            ->update(Arr::except($request->all(), ['_token', '_params']))
+            ->update($data)
             ->calculateTotals();
 
         return $this->withSuccess($request);
     }
 
-    public function destroy(Request $request, string $item = null)
+    public function destroy(Request $request)
     {
         Cart::find($request->session()->get('simple-commerce-cart'))
             ->update([

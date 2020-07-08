@@ -3,13 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Facades\User;
 
 class CustomerController extends BaseActionController
 {
-    public function show()
+    public function index()
     {
         if (Auth::guest()) {
             return back()->with('errors', 'You can only get a customer when logged in.');
