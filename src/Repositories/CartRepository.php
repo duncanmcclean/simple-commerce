@@ -125,7 +125,7 @@ class CartRepository implements ContractsCartRepository
             ->set('customer', $user->id())
             ->save();
 
-            event(new CustomerAddedToCart($this->entry()));    
+        event(new CustomerAddedToCart($this->entry()));    
 
         return $this;    
     }
