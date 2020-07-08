@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
@@ -9,15 +10,14 @@ use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 
-class CartRepository
+class CartRepository implements ContractsCartRepository
 {
-    // TODO: create the big boi interface for the repo
-
     public string $id;
     public array $items = [];
 
@@ -27,14 +27,14 @@ class CartRepository
     public int $shippingTotal = 0000;
     public int $couponTotal = 0000;
 
-    public function make()
+    public function make(): self
     {
         $this->id = (string) Stache::generateId();
 
         return $this;
     }
 
-    public function find(string $id)
+    public function find(string $id): self
     {
         $cart = Entry::find($id);
 
@@ -49,7 +49,7 @@ class CartRepository
         return $this;
     }
 
-    public function save()
+    public function save(): self
     {
         $entry = Entry::find($this->id);
 
@@ -76,7 +76,7 @@ class CartRepository
         return $this;
     }
 
-    public function update(array $data, bool $mergeData = true)
+    public function update(array $data, bool $mergeData = true): self
     {
         $entry = Entry::find($this->id);  
 
@@ -97,7 +97,7 @@ class CartRepository
         return $this;
     }
 
-    public function items(array $items = [])
+    public function items(array $items = []): self
     {
         if ($items === []) {
             return $this->items;
@@ -108,17 +108,17 @@ class CartRepository
         return $this;
     }
 
-    public function count()
+    public function count(): int
     {
         return collect($this->items)->count();
     }
 
-    public function entry()
+    public function entry(): EntriesEntry
     {
         return Entry::find($this->id);
     }
 
-    public function attachCustomer($user)
+    public function attachCustomer($user): self
     {
         $this
             ->entry()
@@ -130,7 +130,7 @@ class CartRepository
         return $this;    
     }
 
-    public function markAsCompleted()
+    public function markAsCompleted(): self
     {
         $this
             ->entry()
@@ -147,7 +147,7 @@ class CartRepository
         return $this;
     }
 
-    public function calculateTotals()
+    public function calculateTotals(): self
     {
         $this->find($this->id);
         $entry = $this->entry();
