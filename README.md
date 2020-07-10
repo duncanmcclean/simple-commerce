@@ -9,7 +9,7 @@ This repository contains the code for Simple Commerce. While the code is open-so
 
 ## Credits
 * [Duncan McClean (Developer)](https://github.com/damcclean)
-* [David A. Lindahl (Logo & Banner Design)](https://github.com/austriker27)
+* [David A. Lindahl (Designer)](https://github.com/austriker27)
 
 ## Resources
 * [Simple Commerce Documentation](https://github.com/doublethreedigital/simple-commerce/wiki)
