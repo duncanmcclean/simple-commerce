@@ -9,7 +9,7 @@ class ExampleTest extends TestCase
     {
         // $this->assertTrue(true);
 
-        $run = $this->factory()->run('Collection', 'products', 'product', 5);
-        dd($run);
+        // $run = $this->factory()->run('Collection', 'products', 'product', 5);
+        // dd($run);
     }
 }
