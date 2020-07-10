@@ -18,7 +18,7 @@ class DummyGateway implements Gateway
 
     public function purchase(array $data): array
     {
-        if ($data['card_number'] === '1212 1212 1212 1212') return null;
+        // if ($data['card_number'] === '1212 1212 1212 1212') return null;
 
         return $this->getCharge([]);
     }
@@ -38,7 +38,7 @@ class DummyGateway implements Gateway
         return [
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
-            'date'      => now()->subDays(14),
+            'date'      => (string) now()->subDays(14),
             'refunded'  => false,
         ];
     }
