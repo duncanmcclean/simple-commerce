@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Models\Country;
 use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use Exception;
+use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;
 
 class SimpleCommerceTag extends Tags
@@ -41,7 +42,11 @@ class SimpleCommerceTag extends Tags
         try {
             return (new $class($this))->{$method}();
         } catch (Exception $e) {
-            return (new $class($this))->wildcard($method);
+            if (method_exists($class, 'wildcard')) {
+                return (new $class($this))->wildcard($method);   
+            }
+
+            throw new TagNotFoundException("Could not find files to load the `{$tag[0]}` tag.");
         }
     }
 
