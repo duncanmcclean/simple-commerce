@@ -13,23 +13,20 @@ class CheckoutTags extends SubTag
 
     public function index()
     {
-        $data = [];
-        $cartData = Cart::find(Session::get(config('simple-commerce.cart_key')))
+        $data = Cart::find(Session::get(config('simple-commerce.cart_key')))
             ->entry()
             ->data()
             ->toArray();
 
-        foreach (SimpleCommerce::gateways() as $gateway) {
-            $class = new $gateway['class']();
-
-            $data = array_merge($data, $class->prepare($cartData));
+        if (! isset($data['is_paid'])) {
+            foreach (SimpleCommerce::gateways() as $gateway) {
+                $class = new $gateway['class']();
+    
+                $data = array_merge($data, $class->prepare($data));
+            }
         }
 
-        if (isset($data['is_paid'])) {
-            $data['is_paid'] = $cartData['is_paid'];
-        }
-
-        if ($cartData['is_paid'] === true) {
+        if ($data['is_paid'] === true) {
             $data['receipt_url'] = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
                 'orderId' => Session::get(config('simple-commerce.cart_key')),
             ]);
