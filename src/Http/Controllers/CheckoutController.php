@@ -11,7 +11,7 @@ use Statamic\Facades\User;
 class CheckoutController extends BaseActionController
 {
     // After a key has been used, put it here so we exclude it on update.
-    public $excludedKeys = ['_token', '_params'];
+    public $excludedKeys = ['_token', '_params', '_redirect'];
 
     public function store(Request $request)
     {
