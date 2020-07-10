@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ad553415bb991f45aa0c0589aa26aab",
+    "content-hash": "c78c84269656784d268784e87a90e33b",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -8279,6 +8279,69 @@
             "time": "2020-06-26T12:18:43+00:00"
         },
         {
+            "name": "spatie/test-time",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/test-time.git",
+                "reference": "c6ca8a5150029c8f6267b8bde4c859ddb6bbab20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/test-time/zipball/c6ca8a5150029c8f6267b8bde4c859ddb6bbab20",
+                "reference": "c6ca8a5150029c8f6267b8bde4c859ddb6bbab20",
+                "shasum": ""
+            },
+            "require": {
+                "nesbot/carbon": "^2.19",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.2|^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\TestTime\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alex Vanderbist",
+                    "email": "alex@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A small package to control the flow time",
+            "homepage": "https://github.com/spatie/test-time",
+            "keywords": [
+                "spatie",
+                "test-time"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/spatie",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-06-26T08:04:04+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.1.3",
             "source": {
@@ -8375,7 +8438,8 @@
         "calebporzio/sushi": 20,
         "moneyphp/money": 20,
         "statamic/cms": 10,
-        "aerni/statamic-factory": 20
+        "aerni/statamic-factory": 20,
+        "spatie/test-time": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -31,9 +31,10 @@
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
+        "aerni/statamic-factory": "dev-master",
         "nunomaduro/collision": "^4.2",
         "orchestra/testbench": "^5.0",
-        "aerni/statamic-factory": "dev-master"
+        "spatie/test-time": "dev-master"
     },
     "minimum-stability": "dev",
     "scripts": {
