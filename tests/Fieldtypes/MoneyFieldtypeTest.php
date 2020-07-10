@@ -3,57 +3,64 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class MoneyFieldtypeTest extends TestCase
 {
-    public $fieldtype;
-
-    public function setUp(): void
+    /** @test */
+    public function can_preload_currency()
     {
-        parent::setUp();
+        $preload = (new MoneyFieldtype)->preload();
 
-        factory(Currency::class)->create();
-
-        $this->fieldtype = new MoneyFieldtype();
+        $this->assertIsArray($preload);
+        $this->assertArrayHasKey('code', $preload);
+        $this->assertArrayHasKey('name', $preload);
+        $this->assertArrayHasKey('symbol', $preload);
     }
 
     /** @test */
-    public function it_can_return_preload_data()
+    public function can_pre_process_data()
     {
-        $this->markTestIncomplete();
+        $value = 2550;
+
+        $process = (new MoneyFieldtype)->preProcess($value);
+
+        $this->assertSame('25.50', $process);
     }
 
     /** @test */
-    public function it_can_preProcess_data()
+    public function can_process_data()
     {
-        $preProcess = $this->fieldtype->preProcess([]);
+        $value = '12.65';
 
-        $this->assertIsArray($preProcess);
+        $process = (new MoneyFieldtype)->process($value);
+
+        $this->assertSame(1265, $process);
     }
 
     /** @test */
-    public function it_can_process_data()
+    public function has_a_title()
     {
-        $process = $this->fieldtype->process([]);
+        $title = (new MoneyFieldtype)->title();
 
-        $this->assertIsArray($process);
+        $this->assertSame('Money', $title);
     }
 
     /** @test */
-    public function it_can_return_title()
+    public function has_a_component()
     {
-        $title = $this->fieldtype->title();
+        $title = (new MoneyFieldtype)->component();
 
-        $this->assertSame($title, 'Money');
+        $this->assertSame('money', $title);
     }
 
     /** @test */
-    public function it_can_return_component()
+    public function can_augment_data()
     {
-        $component = $this->fieldtype->component();
+        $value = 1945;
 
-        $this->assertSame($component, 'money');
+        $augment = (new MoneyFieldtype)->augment($value);
+
+        $this->assertSame('£19.45', $augment);
     }
 }

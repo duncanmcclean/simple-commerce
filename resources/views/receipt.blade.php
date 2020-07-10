@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Order #{{ $id }}</title>
+        <title>{{ (string) $title }}</title>
 
         <style>
             body {
@@ -69,7 +69,7 @@
         </style>
     </head>
     <body>
-        <h1>Receipt #{{ $id }}</h1>
+        <h1>{{ (string) $title }}</h1>
 
         <table class="table-auto w-full" style="margin-top: 10px; margin-bottom: 15px;">
             <thead>
@@ -81,29 +81,29 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong class="font-bold">Customer: </strong>{{ $customer['email'] }}</td>
-                    <td><strong class="font-bold">{{ $shipping_address['name'] }}</strong></td>
-                    <td><strong class="font-bold">{{ $billing_address['name'] }}</strong></td>
+                    <td><strong class="font-bold">Customer: </strong>{{ $customer->value()->data()->get('name') }}</td>
+                    <td><strong class="font-bold">Shipping Name</strong></td>
+                    <td><strong class="font-bold">Billing Name</strong></td>
                 </tr>
                 <tr>
-                    <td><strong class="font-bold">Total: </strong>{{ $total }}</td>
-                    <td>{{ $shipping_address['address1'] }}, {{ $shipping_address['address2'] }}, {{ $shipping_address['address3'] }}</td>
-                    <td>{{ $billing_address['address1'] }}, {{ $billing_address['address2'] }}, {{ $billing_address['address3'] }}</td>
+                    <td><strong class="font-bold">Total: </strong>{{ (string) $grand_total }}</td>
+                    {{-- <td>{{ $shipping_address['address1'] }}, {{ $shipping_address['address2'] }}, {{ $shipping_address['address3'] }}</td>
+                    <td>{{ $billing_address['address1'] }}, {{ $billing_address['address2'] }}, {{ $billing_address['address3'] }}</td> --}}
                 </tr>
                 <tr>
-                    <td><strong class="font-bold">Amount Paid: </strong>{{ $total }}</td>
-                    <td>{{ $shipping_address['city'] }}</td>
-                    <td>{{ $billing_address['city'] }}</td>
+                    <td><strong class="font-bold">Amount Paid: </strong>{{ (string) $grand_total }}</td>
+                    {{-- <td>{{ $shipping_address['city'] }}</td>
+                    <td>{{ $billing_address['city'] }}</td> --}}
                 </tr>
                 <tr>
-                    <td><strong class="font-bold">Date: </strong>{{ $created_at }}</td>
+                    {{-- <td><strong class="font-bold">Date: </strong>{{ $created_at }}</td>
                     <td>{{ $shipping_address['zip_code'] }}</td>
-                    <td>{{ $billing_address['zip_code'] }}</td>
+                    <td>{{ $billing_address['zip_code'] }}</td> --}}
                 </tr>
                 <tr>
                     <td><strong class="font-bold"></strong></td>
-                    <td>{{ $shipping_address['zip_code'] }}</td>
-                    <td>{{ $billing_address['zip_code'] }}</td>
+                    {{-- <td>{{ $shipping_address['zip_code'] }}</td>
+                    <td>{{ $billing_address['zip_code'] }}</td> --}}
                 </tr>
             </tbody>
         </table>
@@ -117,36 +117,36 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($line_items as $lineItem)
+                @foreach($items->value() as $item)
                     <tr>
-                        <td class="border px-4 py-2">{{ $lineItem['variant']['name'] }} ({{ $lineItem['variant']['sku'] }})</td>
+                        <td class="border px-4 py-2">{{ $item['product']->value()->data()->get('title') }}</td>
                         <td class="border px-4 py-2">
                             <div class="flex justify-center items-center">
-                                {{ $lineItem['quantity'] }}
+                                {{ (string) $item['quantity'] }}
                             </div>
                         </td>
-                        <td class="border px-4 py-2">{{ $lineItem['total'] }}</td>
+                        <td class="border px-4 py-2">{{ (string) $item['total'] }}</td>
                     </tr>
                 @endforeach
                 <tr>
                     <td class="px-4 py-2"></td>
                     <td class="border px-4 py-2 font-semibold">Shipping</td>
-                    <td class="border px-4 py-2">{{ $shipping_total }}</td>
+                    <td class="border px-4 py-2">{{ (string) $shipping_total }}</td>
                 </tr>
                 <tr>
                     <td class="px-4 py-2"></td>
                     <td class="border px-4 py-2 font-semibold">Tax</td>
-                    <td class="border px-4 py-2">{{ $tax_total }}</td>
+                    <td class="border px-4 py-2">{{ (string) $tax_total }}</td>
                 </tr>
                 <tr>
                     <td class="px-4 py-2"></td>
                     <td class="border px-4 py-2 font-semibold">Coupons</td>
-                    <td class="border px-4 py-2">{{ $coupon_total }}</td>
+                    <td class="border px-4 py-2">{{ (string) $coupon_total }}</td>
                 </tr>
                 <tr>
                     <td class="px-4 py-2"></td>
                     <td class="border px-4 py-2 font-semibold">Total</td>
-                    <td class="border px-4 py-2">{{ $total }}</td>
+                    <td class="border px-4 py-2">{{ (string) $grand_total }}</td>
                 </tr>
             </tbody>
         </table>

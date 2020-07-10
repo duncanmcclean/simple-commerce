@@ -3,26 +3,16 @@
 # Simple Commerce
 > A perfectly simple e-commerce solution for Statamic
 
-This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that once Simple Commerce has been released you'll need to buy a license for each site using Simple Commerce. Licenses will cost **$199** *(probably)*. If you want to purchase a license before then or want to show your support, [get in touch](https://doublethree.digital/contact).
+This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that you'll need to purchase a license before using this addon in production. Licenses cost $199 and can be purchased from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce).
 
-[**→ Get Started**](https://simple-commerce.doublethree.digital)
-
-## Features
-* [Product Variants](https://simple-commerce.doublethree.digital/docs/concepts.html#product-variants)
-* Flexible - you're not stuck to a certain front-end stack, go crazy!
-* Permissions - limit what actions certain users can do in the Control Panel
-* Simple [Tax](https://simple-commerce.doublethree.digital/docs/concepts.html#tax) and [Shipping](https://simple-commerce.doublethree.digital/docs/concepts.html#shipping) Rules
-* [Coupons](https://simple-commerce.doublethree.digital/docs/concepts.html#coupons)
-* Payment Gateways - we've built a [Stripe gateway](https://github.com/doublethreedigital/simple-commerce-stripe), but it's [really easy](https://simple-commerce.doublethree.digital/extending/gateways.html#creating-your-own-gateway) to use whatever you want
-* [REST API](https://simple-commerce.doublethree.digital/extending/rest-api.html)
-* Probably a few more...
+[**→ Read Documentation**](https://github.com/doublethreedigital/simple-commerce/wiki)
 
 ## Credits
-* [Duncan McClean (he built the thing)](https://github.com/damcclean)
-* [David A. Lindahl (branding)](https://github.com/austriker27)
+* [Duncan McClean (Developer)](https://github.com/damcclean)
+* [David A. Lindahl (Logo & Banner Design)](https://github.com/austriker27)
 
 ## Resources
-* [Simple Commerce Documentation](https://simple-commerce.doublethree.digital/)
+* [Simple Commerce Documentation](https://github.com/doublethreedigital/simple-commerce/wiki)
 * [Simple Commerce Issues](https://github.com/doublethreedigital/simple-commerce/issues)
 * [Simple Commerce Discord](https://discord.gg/P3ACYf9)
 

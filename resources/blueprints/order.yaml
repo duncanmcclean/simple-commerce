@@ -1,229 +1,217 @@
-title: 'Simple Commerce: Order'
+title: Order
 sections:
   main:
     display: Main
     fields:
-      -
-        handle: totals_section
+      - handle: items
+        field:
+          fields:
+            - handle: id
+              field:
+                type: hidden
+                localizable: false
+                listable: hidden
+                display: ID
+            - handle: product
+              field:
+                max_items: 1
+                mode: default
+                collections:
+                  - products
+                type: entries
+                localizable: false
+                listable: hidden
+                display: Product
+                validate: required
+            - handle: sku
+              field:
+                input_type: text
+                type: text
+                localizable: false
+                listable: hidden
+                display: SKU
+            - handle: quantity
+              field:
+                input_type: number
+                type: text
+                localizable: false
+                listable: hidden
+                display: Quantity
+            - handle: total
+              field:
+                read_only: false
+                type: money
+                localizable: false
+                listable: hidden
+                display: Total
+                validate: required
+          mode: stacked
+          reorderable: true
+          type: grid
+          localizable: false
+          listable: hidden
+          display: Items
+      - handle: totals
         field:
           type: section
           localizable: false
           listable: hidden
           display: Totals
-      -
-        handle: item_total
-        field:
-          type: money
-          localizable: false
-          width: 33
-          listable: hidden
-          display: 'Item Total'
-          readOnly: true
-          read_only: true
-      -
-        handle: coupon_total
+      - handle: grand_total
         field:
           read_only: true
           type: money
           localizable: false
           width: 33
           listable: hidden
-          display: 'Coupon Total'
-      -
-        handle: tax_total
+          display: "Grand Total"
+          validate: required
+      - handle: items_total
         field:
+          read_only: true
           type: money
           localizable: false
           width: 33
           listable: hidden
-          display: 'Tax Total'
-          read_only: true
-      -
-        handle: shipping_total
+          display: "Items Total"
+          validate: required
+      - handle: shipping_total
         field:
+          read_only: true
           type: money
           localizable: false
           width: 33
           listable: hidden
-          display: 'Shipping Total'
-          read_only: true
-      -
-        handle: total
+          display: "Shipping Total"
+          validate: required
+      - handle: tax_total
         field:
+          read_only: true
           type: money
           localizable: false
           width: 33
           listable: hidden
-          display: 'Overall Total'
+          display: "Tax Total"
+          validate: required
+      - handle: coupon_total
+        field:
           read_only: true
-      -
-        handle: line_items_section
+          type: money
+          localizable: false
+          width: 33
+          listable: hidden
+          display: "Coupon Total"
+          validate: required
+  addresses:
+    display: Addresses
+    fields:
+      - handle: shipping_section
         field:
           type: section
-          instructions: 'List of the line items included in this order.'
           localizable: false
           listable: hidden
-          display: 'Line Items'
-      -
-        handle: line_items
+          display: Shipping
+      - handle: shipping_name
         field:
-          type: line_items
-          localizable: false
-          listable: hidden
-          display: 'Line Items'
-  billing_address:
-    display: 'Billing Address'
-    fields:
-      -
-        handle: billing_uuid
-        field:
-          type: hidden
-          localizable: false
-          listable: hidden
-          display: 'Billing Address Uuid'
-          validate: required
-      -
-        handle: billing_address1
-        field:
-          character_limit: 0
-          type: text
-          localizable: false
-          display: 'Address 1'
-          listable: hidden
           input_type: text
-      -
-        handle: billing_address2
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: 'Address 2'
-          width: 50
           listable: hidden
+          display: "Shipping Name"
+      - handle: shipping_address
+        field:
           input_type: text
-      -
-        handle: billing_addres3
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: 'Address 3'
-          width: 50
           listable: hidden
+          display: "Shipping Address"
+      - handle: shipping_city
+        field:
           input_type: text
-      -
-        handle: billing_city
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: City
-          width: 75
           listable: hidden
+          display: "Shipping City"
+      - handle: shipping_country
+        field:
           input_type: text
-      -
-        handle: billing_zip_code
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: 'Zip Code'
-          width: 25
-      -
-        handle: billing_country
-        field:
-          max_items: 1
-          mode: default
-          type: country
-          localizable: false
           width: 50
-          display: Country
-      -
-        handle: billing_state
-        field:
-          type: state
-          localizable: false
-          width: 50
-          display: State
           listable: hidden
-  shipping_address:
-    display: 'Shipping Address'
-    fields:
-      -
-        handle: shipping_uuid
+          display: "Shipping Country"
+      - handle: shipping_postal_code
         field:
-          type: hidden
-          localizable: false
-          listable: hidden
-          display: 'Shipping Address Uuid'
-          validate: required
-      -
-        handle: shipping_address1
-        field:
-          character_limit: 0
-          type: text
-          localizable: false
-          display: 'Address 1'
-          listable: hidden
           input_type: text
-      -
-        handle: shipping_address2
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: 'Address 2'
           width: 50
           listable: hidden
+          display: "Shipping Postal Code"
+      - handle: billing_section
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: Billing
+      - handle: use_shipping_address_for_billing
+        field:
+          type: toggle
+          localizable: false
+          listable: hidden
+          display: "Use shipping address for billing?"
+      - handle: billing_name
+        field:
           input_type: text
-      -
-        handle: shipping_address3
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: 'Address 3'
-          width: 50
           listable: hidden
+          display: "Billing Name"
+          unless:
+            use_shipping_address_for_billing: "equals true"
+      - handle: billing_address
+        field:
           input_type: text
-      -
-        handle: shipping_city
-        field:
-          character_limit: 0
           type: text
           localizable: false
-          display: City
-          width: 75
-      -
-        handle: shipping_zip_code
-        field:
-          character_limit: 0
-          type: text
-          localizable: false
-          display: 'Zip Code'
-          width: 25
-      -
-        handle: shipping_country
-        field:
-          max_items: 1
-          mode: default
-          type: country
-          localizable: false
-          width: 50
-          display: Country
-      -
-        handle: shipping_state
-        field:
-          type: state
-          localizable: false
-          width: 50
-          display: State
           listable: hidden
+          display: "Billing Address"
+          unless:
+            use_shipping_address_for_billing: "equals true"
+      - handle: billing_city
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: "Billing City"
+          unless:
+            use_shipping_address_for_billing: "equals true"
+      - handle: billing_country
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: "Billing Country"
+          unless:
+            use_shipping_address_for_billing: "equals true"
+      - handle: billing_postal_code
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: "Billing Postal Code"
+          unless:
+            use_shipping_address_for_billing: "equals true"
+
   sidebar:
     display: Sidebar
     fields:
-      -
-        handle: customer_id
+      - handle: customer
         field:
           max_items: 1
           mode: select
@@ -231,36 +219,24 @@ sections:
           localizable: false
           listable: hidden
           display: Customer
-      -
-        handle: order_status_id
+      - handle: order_date
         field:
-          max_items: 1
-          mode: select
-          type: order_status
+          mode: single
+          time_enabled: true
+          time_required: true
+          earliest_date: "1900-01-01"
+          full_width: false
+          inline: false
+          columns: 1
+          rows: 1
+          type: date
           localizable: false
-          display: Status
-      -
-        handle: currency_id
-        field:
-          max_items: 1
-          mode: default
-          type: currency
-          localizable: false
-          display: Currency
           listable: hidden
-      -
-        handle: is_paid
+          display: "Order Date"
+          validate: required
+      - handle: is_paid
         field:
           type: toggle
-          instructions: 'Has this order been paid for?'
           localizable: false
           listable: hidden
-          display: 'Is Paid?'
-      -
-        handle: is_completed
-        field:
-          type: toggle
-          instructions: 'If false, this order will be displayed as a cart, if true, it will become a full order.'
-          localizable: false
-          listable: hidden
-          display: 'Is Completed?'
+          display: "Is Paid?"

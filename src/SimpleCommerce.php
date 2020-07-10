@@ -2,17 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use Facades\Statamic\Console\Processes\Composer;
+use Illuminate\Support\Str;
 use Statamic\Statamic;
 
 class SimpleCommerce
 {
     protected static $gateways = [];
-
-    public static function getVersion()
-    {
-        return Composer::installedVersion('doublethreedigital/simple-commerce');
-    }
 
     public static function bootGateways()
     {
@@ -39,12 +34,12 @@ class SimpleCommerce
                 $instance = new $gateway[0]();
 
                 return [
-                    'name'              => $instance->name(),
-                    'class'             => $gateway[0],
-                    'formatted_class'   => addslashes($gateway[0]),
-                    'rules'             => $instance->rules(),
-                    'payment_form'      => $instance->paymentForm(),
-                    'config'            => $gateway[1],
+                    'name'            => $instance->name(),
+                    'handle'          => Str::camel($instance->name()),
+                    'class'           => $gateway[0],
+                    'formatted_class' => addslashes($gateway[0]),
+                    'purchaseRules'   => $instance->purchaseRules(),
+                    'config'          => $gateway[1],
                 ];
             })
             ->toArray();

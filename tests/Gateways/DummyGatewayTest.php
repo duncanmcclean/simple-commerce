@@ -3,106 +3,92 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Models\Transaction;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Spatie\TestTime\TestTime;
 
 class DummyGatewayTest extends TestCase
 {
-    public $gateway;
-
-    public function setUp(): void
+    /** @test */
+    public function has_a_name()
     {
-        parent::setUp();
+        $name = (new DummyGateway)->name();
 
-        $this->gateway = new DummyGateway();
+        $this->assertSame('Dummy', $name);
     }
 
     /** @test */
-    public function can_complete_purchase_with_valid_card()
+    public function can_prepare()
     {
-        $completePurchase = $this->gateway->completePurchase([
-            'cardholder'  => 'Mr Joe Bloggs',
-            'cardNumber'  => '4242 4242 4242 4242',
-            'expiryMonth' => '07',
-            'expiryYear'  => '2025',
-            'cvc'         => '123',
-        ], 10.00);
+        $prepare = (new DummyGateway)->prepare([]);
 
-        $this->assertIsObject($completePurchase);
-        $this->assertSame($completePurchase->get('is_complete'), true);
-        $this->assertSame($completePurchase->get('amount'), 10.00);
+        $this->assertIsArray($prepare);
+        $this->assertSame([], $prepare);
     }
 
     /** @test */
-    public function cant_complete_purchase_with_invalid_card()
+    public function can_purchase()
     {
-        $this->expectExceptionMessage('The card provided is invalid.');
+        TestTime::freeze();
 
-        $completePurchase = $this->gateway->completePurchase([
-            'cardholder'  => 'Mr Joe Bloggs',
-            'cardNumber'  => '1111 1111 1111 1111',
-            'expiryMonth' => '07',
-            'expiryYear'  => '2025',
-            'cvc'         => '123',
-        ], 10.00);
+        $purchase = (new DummyGateway)->purchase([
+            'card_number' => '4242 4242 4242 4242',
+        ]);
+
+        $this->assertIsArray($purchase);
+        $this->assertSame([
+            'id'        => '123456789abcdefg',
+            'last_four' => '4242',
+            'date'      => (string) now()->subDays(14),
+            'refunded'  => false,
+        ], $purchase);
     }
 
-    /** @test */
-    public function cant_complete_purchase_with_expired_card()
-    {
-        $completePurchase = $this->gateway->completePurchase([
-            'cardholder'  => 'Mr Joe Bloggs',
-            'cardNumber'  => '4242 4242 4242 4242',
-            'expiryMonth' => '07',
-            'expiryYear'  => '2019',
-            'cvc'         => '123',
-        ], 10.00);
+    // /** @test */
+    // public function cant_purchase_with_invalid_card()
+    // {
+    //     $purchase = (new DummyGateway)->purchase([
+    //         'card_number' => '1212 1212 1212 1212',
+    //     ]);
 
-        $this->assertIsObject($completePurchase);
-        $this->assertSame($completePurchase->get('is_complete'), false);
-        $this->assertSame($completePurchase->get('amount'), 10.00);
-    }
+    //     $this->assertNull($purchase);
+    // }
 
     /** @test */
-    public function can_return_validation_rules()
+    public function has_purchase_rules()
     {
-        $rules = $this->gateway->rules();
+        $rules = (new DummyGateway)->purchaseRules();
 
         $this->assertIsArray($rules);
-        $this->assertSame($rules, [
-            'cardholder'  => 'required|string',
-            'cardNumber'  => 'required|string',
-            'expiryMonth' => 'required|in:01,02,03,04,05,06,07,08,09,10,11,12',
-            'expiryYear'  => 'required',
-            'cvc'         => 'required|min:3|max:4',
-        ]);
+        $this->assertSame([
+            'card_number'   => 'required|string',
+            'expiry_month'  => 'required',
+            'expiry_year'   => 'required',
+            'cvc'           => 'required',
+        ], $rules);
     }
 
     /** @test */
-    public function can_return_payment_form()
+    public function can_get_charge()
     {
-        $form = $this->gateway->paymentForm();
+        TestTime::freeze();
 
-        $this->assertIsString($form);
-        $this->assertStringContainsString('type="number" name="cardNumber"', $form);
+        $charge = (new DummyGateway)->getCharge([]); // Most of the time, we'll pass in an entry, but we'll just keep it empty here
+
+        $this->assertIsArray($charge);
+        $this->assertSame([
+            'id'        => '123456789abcdefg',
+            'last_four' => '4242',
+            'date'      => (string) now()->subDays(14),
+            'refunded'  => false,
+        ], $charge);
     }
 
     /** @test */
-    public function can_issue_refund()
+    public function can_refund_charge()
     {
-        $transaction = factory(Transaction::class)->create();
+        $refund = (new DummyGateway)->refundCharge([]);
 
-        $refund = $this->gateway->refund($transaction);
-
-        $this->assertIsObject($refund);
-        $this->assertSame($refund->get('is_refunded'), true);
-    }
-
-    /** @test */
-    public function can_return_name()
-    {
-        $name = $this->gateway->name();
-
-        $this->assertSame($name, 'Dummy');
+        $this->assertIsArray($refund);
+        $this->assertSame([], $refund);
     }
 }
