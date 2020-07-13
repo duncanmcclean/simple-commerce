@@ -1,6 +1,6 @@
 {
     "name": "doublethreedigital/simple-commerce",
-    "description": "A Statamic 3 addon boilerplate, ready for testing.",
+    "description": "A perfectly simple e-commerce addon for Statamic",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
@@ -14,8 +14,8 @@
     },
     "extra": {
         "statamic": {
-            "name": "Addon Boilerplate",
-            "description": "A Statamic 3 addon boilerplate, ready for testing."
+            "name": "Simple Commerce",
+            "description": "A perfectly simple e-commerce addon for Statamic"
         },
         "laravel": {
             "providers": [
