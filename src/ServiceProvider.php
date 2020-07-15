@@ -51,6 +51,10 @@ class ServiceProvider extends AddonServiceProvider
             __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
         ], 'simple-commerce-config');
 
+        $this->publishes([
+            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
+        ], 'simple-commerce-assets');
+
         $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
 
         Statamic::booted(function () {
