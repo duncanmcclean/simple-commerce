@@ -7,7 +7,8 @@
 * Some sort of web server, like Nginx
 
 ## Install Guide
-1. Install Simple Commerce from Composer composer require doublethreedigital/simple-commerce
+1. Install Simple Commerce from Composer `composer require doublethreedigital/simple-commerce`
+2. Publish blueprints, fieldtypes and the config file `php artisan vendor:publish --provider="DoubleThreeDigital\SimpleCommerce\ServiceProvider"`
 2. Start developing!
 
 ## Quick Start
