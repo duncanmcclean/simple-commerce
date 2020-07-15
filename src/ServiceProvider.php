@@ -2,9 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Repositories\CartRepository;
-use DoubleThreeDigital\SimpleCommerce\Repositories\CurrencyRepository;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Taxonomy;
 use Statamic\Providers\AddonServiceProvider;
@@ -13,7 +10,7 @@ use Statamic\Statamic;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $fieldtypes = [
-        MoneyFieldtype::class,
+        Fieldtypes\MoneyFieldtype::class,
     ];
 
     protected $listen = [
@@ -36,7 +33,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $widgets = [
-        Widgets\SalesWidget::class,
+        Widgets\RevenueWidget::class,
     ];
 
     public function boot()
@@ -104,8 +101,8 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bindRepositories()
     {
-        $this->app->bind('Cart', CartRepository::class);
-        $this->app->bind('Currency', CurrencyRepository::class);
+        $this->app->bind('Cart', Repositories\CartRepository::class);
+        $this->app->bind('Currency', Repositories\CurrencyRepository::class);
 
         return $this;
     }
