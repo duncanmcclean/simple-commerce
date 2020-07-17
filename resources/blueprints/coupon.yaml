@@ -67,6 +67,7 @@ sections:
           localizable: false
           listable: hidden
           display: 'Minimum Cart Value'
+          width: 50
   sidebar:
     display: Sidebar
     fields:
