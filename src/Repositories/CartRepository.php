@@ -139,17 +139,19 @@ class CartRepository implements ContractsCartRepository
 
     public function redeemCoupon(string $code): bool
     {
-        $coupon = Entry::whereCollection('coupons')
-            ->where('slug', $code)
-            ->get();
-
-        $coupon = Coupon::find($coupon->id());
+        $coupon = Coupon::find(Entry::findBySlug($code)->id());
 
         if ($coupon->isValid($this->entry())) {
-            // apply coupon to order
+            $this
+                ->update([
+                    'coupon' => $coupon->id,
+                ])
+                ->calculateTotals();
+
+            return true;
         }
 
-        // Coupon is not valid
+        return false;
     }
 
     public function markAsCompleted(): self
