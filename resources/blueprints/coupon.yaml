@@ -4,6 +4,15 @@ sections:
     display: Main
     fields:
       -
+        handle: title
+        field:
+          type: textarea
+          instructions: 'Give yourself a reminder of what this coupon is for.'
+          localizable: false
+          listable: hidden
+          display: Description
+          validate: required
+      -
         handle: type
         field:
           options:
@@ -20,6 +29,7 @@ sections:
           listable: hidden
           display: Type
           validate: required
+          width: 50    
       -
         handle: value
         field:
@@ -29,6 +39,7 @@ sections:
           listable: hidden
           display: Value
           validate: required
+          width: 50
       -
         handle: optional_settings
         field:
@@ -58,6 +69,14 @@ sections:
   sidebar:
     display: Sidebar
     fields:
+      -
+        handle: slug
+        field:
+          generate: true
+          type: slug
+          localizable: false
+          listable: hidden
+          display: 'Coupon Code'
       -
         handle: redeemed
         field:
