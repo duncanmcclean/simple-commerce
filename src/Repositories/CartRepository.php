@@ -136,7 +136,7 @@ class CartRepository implements ContractsCartRepository
         return $this;    
     }
 
-    public function redeemCoupon(string $code)
+    public function redeemCoupon(string $code): bool
     {
         // Find coupon by code
 
