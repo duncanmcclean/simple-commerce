@@ -136,6 +136,19 @@ class CartRepository implements ContractsCartRepository
         return $this;    
     }
 
+    public function redeemCoupon(string $code)
+    {
+        // Find coupon by code
+
+        // Find out if coupon is valid, with provided order data
+
+        // If yes, apply coupon to order
+
+        // If not, don't
+
+        // Return a true/false value
+    }
+
     public function markAsCompleted(): self
     {
         $this
