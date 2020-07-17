@@ -14,7 +14,7 @@ class CouponController extends BaseActionController
         ]);
 
         $redeem = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
-            ->redeemCoupon($request->coupon);
+            ->redeemCoupon($request->code);
 
         dd($redeem);
 
