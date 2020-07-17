@@ -1,0 +1,71 @@
+title: Coupon
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: type
+        field:
+          options:
+            percentage: 'Percentage Discount'
+            fixed: 'Fixed Discount'
+          clearable: false
+          multiple: false
+          searchable: false
+          taggable: false
+          push_tags: false
+          cast_booleans: false
+          type: select
+          localizable: false
+          listable: hidden
+          display: Type
+          validate: required
+      -
+        handle: value
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: Value
+          validate: required
+      -
+        handle: optional_settings
+        field:
+          type: section
+          localizable: false
+          listable: hidden
+          display: 'Optional Settings'
+      -
+        handle: maximum_uses
+        field:
+          input_type: text
+          type: text
+          instructions: 'If set, this coupon will only be able to be used a certain amount of times.'
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Maximum Uses'
+      -
+        handle: minimum_cart_value
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: 'Minimum Cart Value'
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: redeemed
+        field:
+          input_type: number
+          type: text
+          instructions: 'Amount of times this coupon has been redeemed.'
+          localizable: false
+          listable: hidden
+          display: Redeemed
+          read_only: true
+          default: 0
