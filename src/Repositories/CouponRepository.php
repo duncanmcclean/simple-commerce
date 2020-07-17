@@ -50,9 +50,16 @@ class CouponRepository implements ContractsCouponRepository
         return $this;    
     }
 
-    public function isValid(): bool
+    public function isValid(Entry $order): bool
     {
-        //
+        // If type is 'percentage'
+            // Get value
+
+        // If type is 'fixed'
+            // Get value
+
+        // check if coupon has been used max times
+        // check if cart value is more than minimum cart value
 
         return true;
     }

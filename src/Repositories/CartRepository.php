@@ -15,6 +15,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use Stripe\Coupon;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -138,15 +139,17 @@ class CartRepository implements ContractsCartRepository
 
     public function redeemCoupon(string $code): bool
     {
-        // Find coupon by code
+        $coupon = Entry::whereCollection('coupons')
+            ->where('slug', $code)
+            ->get();
 
-        // Find out if coupon is valid, with provided order data
+        $coupon = Coupon::find($coupon->id());
 
-        // If yes, apply coupon to order
+        if ($coupon->isValid($this->entry())) {
+            // apply coupon to order
+        }
 
-        // If not, don't
-
-        // Return a true/false value
+        // Coupon is not valid
     }
 
     public function markAsCompleted(): self
