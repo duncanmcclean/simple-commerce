@@ -110,6 +110,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bindRepositories()
     {
         $this->app->bind('Cart', Repositories\CartRepository::class);
+        $this->app->bind('Coupon', Repositories\CouponRepository::class);
         $this->app->bind('Currency', Repositories\CurrencyRepository::class);
 
         return $this;
