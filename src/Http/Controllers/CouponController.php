@@ -17,7 +17,7 @@ class CouponController extends BaseActionController
             ->redeemCoupon($request->code);
 
         if (! $redeem) {
-            return $this->withErrors($request, ['Coupon is not valid.']);
+            return $this->withErrors($request, 'Coupon is not valid.');
         }
 
         return $this->withSuccess($request, ['message' => 'Coupon added to cart.']);

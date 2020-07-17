@@ -15,6 +15,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -138,7 +139,7 @@ class CartRepository implements ContractsCartRepository
 
     public function redeemCoupon(string $code): bool
     {
-        $coupon = Coupon::find(Entry::findBySlug($code)->id());
+        $coupon = Coupon::find(Entry::findBySlug($code, 'coupons')->id());
 
         if ($coupon->isValid($this->entry())) {
             $this
