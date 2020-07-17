@@ -11,5 +11,5 @@ interface CouponRepository
     public function all(): Collection;
     public function find(string $id): self;
     public function update(array $data): self;
-    public function isValid(): bool;
+    public function isValid(Entry $order): bool;
 }
