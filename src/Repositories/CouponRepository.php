@@ -52,14 +52,15 @@ class CouponRepository implements ContractsCouponRepository
 
     public function isValid(Entry $order): bool
     {
-        // If type is 'percentage'
-            // Get value
+        if (isset($this->data['minimum_cart_value']) && isset($order->data()->get('items_total'))) {
+            if ($order->data()->get('items_total') < $this->data['minimum_cart_value']) {
+                return false;
+            }
+        }
 
-        // If type is 'fixed'
-            // Get value
-
-        // check if coupon has been used max times
-        // check if cart value is more than minimum cart value
+        if ($this->data['redeemed'] >= $this->data['redeemed']) {
+            return false;
+        }
 
         return true;
     }
