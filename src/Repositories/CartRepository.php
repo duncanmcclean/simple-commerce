@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
-use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Statamic\Entries\Entry as EntriesEntry;
