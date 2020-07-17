@@ -200,8 +200,6 @@ class CartRepository implements ContractsCartRepository
                     );
                 }
 
-                // TODO: coupon
-
                 $data['items_total'] += $itemTotal;
 
                 return array_merge($item, [
@@ -228,6 +226,21 @@ class CartRepository implements ContractsCartRepository
                 $method = new $method();
                 $data['shipping_total'] = $method->calculateCost($entry);
             }    
+        }
+
+        if (isset($entry->data()->get('coupon'))) {
+            $coupon = Coupon::find($entry->data()->get('coupon'));
+
+            if ($coupon->data['type'] === 'percentage') {
+                $data['coupon_total'] += (int) str_replace('.', '', round(
+                    ((float) substr_replace($data['item_total'], '.', -2, 0) / 100) * 
+                    $coupon->data['value'], 2)
+                );
+            }
+
+            if ($coupon->data['type'] === 'fixed') {
+                $data['coupon_total'] = ($data['items_total'] - str_replace('.', '', $coupon->data['value']));
+            }
         }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total'] + $data['coupon_total']); 
