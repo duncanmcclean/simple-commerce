@@ -15,7 +15,6 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
-use Stripe\Coupon;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -228,7 +227,7 @@ class CartRepository implements ContractsCartRepository
             }    
         }
 
-        if (isset($entry->data()->get('coupon'))) {
+        if ($entry->data()->get('coupon') != null) {
             $coupon = Coupon::find($entry->data()->get('coupon'));
 
             if ($coupon->data['type'] === 'percentage') {
