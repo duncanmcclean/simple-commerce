@@ -16,13 +16,21 @@ class CouponController extends BaseActionController
         $redeem = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->redeemCoupon($request->code);
 
-        dd($redeem);
+        if (! $redeem) {
+            return $this->withErrors($request, ['Coupon is not valid.']);
+        }
 
-        // Return something...
+        return $this->withSuccess($request, ['message' => 'Coupon added to cart.']);
     }
 
     public function destroy(Request $request)
     {
-        //
+        $destroy = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
+            ->update([
+                'coupon' => null,
+            ])
+            ->calculateTotals();
+
+        return $this->withSuccess($request, ['message' => 'Coupon removed from cart.']);
     }
 }
