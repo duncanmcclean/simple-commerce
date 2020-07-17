@@ -84,6 +84,14 @@ class ServiceProvider extends AddonServiceProvider
                 ->save();
         }
 
+        if (! Collection::handleExists('coupons')) {
+            Collection::make('coupons')
+                ->title('Coupons')
+                ->entryBlueprints(['coupon'])
+                ->sites(['default'])
+                ->save();
+        }
+
         if (! Taxonomy::handleExists('product_categories')) {
             Taxonomy::make('product_categories')
                 ->title('Product Categories')
