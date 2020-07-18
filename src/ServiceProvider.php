@@ -84,6 +84,14 @@ class ServiceProvider extends AddonServiceProvider
                 ->save();
         }
 
+        if (! Collection::handleExists('coupons')) {
+            Collection::make('coupons')
+                ->title('Coupons')
+                ->entryBlueprints(['coupon'])
+                ->sites(['default'])
+                ->save();
+        }
+
         if (! Taxonomy::handleExists('product_categories')) {
             Taxonomy::make('product_categories')
                 ->title('Product Categories')
@@ -102,6 +110,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bindRepositories()
     {
         $this->app->bind('Cart', Repositories\CartRepository::class);
+        $this->app->bind('Coupon', Repositories\CouponRepository::class);
         $this->app->bind('Currency', Repositories\CurrencyRepository::class);
 
         return $this;

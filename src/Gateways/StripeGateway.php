@@ -66,7 +66,7 @@ class StripeGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (!env('STRIPE_SECRET')) {
+        if (! env('STRIPE_SECRET')) {
             throw new StripeSecretMissing("Your Stripe secret couldn't be found. Make sure to add it to your gateway configuration.");
         }
 

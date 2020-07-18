@@ -5,10 +5,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
-use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Statamic\Entries\Entry as EntriesEntry;
@@ -16,6 +16,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -137,6 +138,25 @@ class CartRepository implements ContractsCartRepository
         return $this;    
     }
 
+    public function redeemCoupon(string $code): bool
+    {
+        $coupon = Coupon::find(Entry::findBySlug($code, 'coupons')->id());
+
+        if ($coupon->isValid($this->entry())) {
+            $this
+                ->update([
+                    'coupon' => $coupon->id,
+                ])
+                ->calculateTotals();
+
+            event(new CouponRedeemed($coupon->entry()));    
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function markAsCompleted(): self
     {
         $this
@@ -149,7 +169,10 @@ class CartRepository implements ContractsCartRepository
             ->save();
 
         event(new CustomerAddedToCart($this->entry()));
-        Mail::to(User::find($this->entry()->data()->get('customer'))->email())->send(new OrderConfirmation($this->id));
+
+        if ($customer = User::find($this->entry()->data()->get('customer'))) {
+            Mail::to($customer->email())->send(new OrderConfirmation($this->id));
+        }
 
         return $this;
     }
@@ -183,8 +206,6 @@ class CartRepository implements ContractsCartRepository
                     );
                 }
 
-                // TODO: coupon
-
                 $data['items_total'] += $itemTotal;
 
                 return array_merge($item, [
@@ -213,7 +234,24 @@ class CartRepository implements ContractsCartRepository
             }    
         }
 
-        $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total'] + $data['coupon_total']); 
+        $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
+
+        if ($entry->data()->get('coupon') != null) {
+            $coupon = Coupon::find($entry->data()->get('coupon'));
+
+            if ($coupon->data['type'] === 'percentage') {
+                $data['coupon_total'] += (int) str_replace('.', '', round(
+                    ((float) substr_replace($data['grand_total'], '.', -2, 0) / 100) * 
+                    $coupon->data['value'], 2)
+                );
+            }
+
+            if ($coupon->data['type'] === 'fixed') {
+                $data['coupon_total'] = ($data['grand_total'] - str_replace('.', '', $coupon->data['value']));
+            }
+
+            $data['grand_total'] = ($data['grand_total'] - $data['coupon_total']);
+        }
 
         $this
             ->update($data)
