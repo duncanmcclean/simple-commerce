@@ -70,7 +70,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public function contentSetup()
     {
-        if (! Collection::handleExists(config('simple-commerce.taxonoomies.products'))) {
+        if (! Collection::handleExists(config('simple-commerce.collections.products'))) {
             Collection::make(config('simple-commerce.collections.products'))
                 ->title(__('simple-commerce:messages.default_collections.products'))
                 ->pastDateBehavior('public')
