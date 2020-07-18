@@ -169,7 +169,10 @@ class CartRepository implements ContractsCartRepository
             ->save();
 
         event(new CustomerAddedToCart($this->entry()));
-        Mail::to(User::find($this->entry()->data()->get('customer'))->email())->send(new OrderConfirmation($this->id));
+
+        if ($customer = User::find($this->entry()->data()->get('customer'))) {
+            Mail::to($customer->email())->send(new OrderConfirmation($this->id));
+        }
 
         return $this;
     }
