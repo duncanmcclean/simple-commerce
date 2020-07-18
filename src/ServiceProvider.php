@@ -49,11 +49,16 @@ class ServiceProvider extends AddonServiceProvider
         ], 'simple-commerce-translators');
 
         $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/simple-commerce'),
+        ], 'simple-commerce-views');
+
+        $this->publishes([
             __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce-assets');
 
         $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
 
         Statamic::booted(function () {
             $this
