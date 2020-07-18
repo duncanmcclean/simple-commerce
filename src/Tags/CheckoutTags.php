@@ -18,7 +18,7 @@ class CheckoutTags extends SubTag
             ->data()
             ->toArray();
 
-        if (! isset($data['is_paid'])) {
+        if (! isset($data['is_paid']) || $data['is_paid'] === false) {
             foreach (SimpleCommerce::gateways() as $gateway) {
                 $class = new $gateway['class']();
     
