@@ -50,7 +50,7 @@ class CouponRepository implements ContractsCouponRepository
         return $this;    
     }
 
-    public function entry()
+    public function entry(): Entry
     {
         return FacadesEntry::find($this->id);
     }
