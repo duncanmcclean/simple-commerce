@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
@@ -147,6 +148,8 @@ class CartRepository implements ContractsCartRepository
                     'coupon' => $coupon->id,
                 ])
                 ->calculateTotals();
+
+            event(new CouponRedeemed($coupon->entry()));    
 
             return true;
         }
