@@ -233,7 +233,7 @@ class CartRepository implements ContractsCartRepository
 
             if ($coupon->data['type'] === 'percentage') {
                 $data['coupon_total'] += (int) str_replace('.', '', round(
-                    ((float) substr_replace($data['item_total'], '.', -2, 0) / 100) * 
+                    ((float) substr_replace($data['items_total'], '.', -2, 0) / 100) * 
                     $coupon->data['value'], 2)
                 );
             }
