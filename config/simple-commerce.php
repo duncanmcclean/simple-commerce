@@ -22,5 +22,13 @@ return [
         \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
     ],
 
+    'collections' => [
+        'products' => 'products',
+        'orders' => 'orders',
+        'coupons' => 'coupons',
+        'product_categories' => 'product_categories',
+        'order_statuses' => 'Order Statuses',
+    ],
+
     'cart_key' => 'simple-commerce-cart',
 ];
