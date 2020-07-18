@@ -11,7 +11,7 @@ class CustomerController extends BaseActionController
     public function index()
     {
         if (Auth::guest()) {
-            return back()->with('errors', 'You can only get a customer when logged in.');
+            return back()->with('errors', __('simple-commerce:customers.requires_login'));
         }
 
         return User::current()->data();
@@ -20,7 +20,7 @@ class CustomerController extends BaseActionController
     public function update(Request $request)
     {
         if (Auth::guest()) {
-            return back()->with('errors', 'You can only save a customer when logged in.');
+            return back()->with('errors', __('simple-commerce:customers.requires_login'));
         }
 
         $user = User::current();

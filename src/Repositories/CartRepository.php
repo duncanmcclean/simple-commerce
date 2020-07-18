@@ -83,7 +83,7 @@ class CartRepository implements ContractsCartRepository
         $entry = Entry::find($this->id);  
 
         if (! $entry) {
-            throw new CartNotFound("We could not find a cart with the ID of {$this->id}.");
+            throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $this->id]));
         }
 
         if ($mergeData) {
@@ -120,7 +120,7 @@ class CartRepository implements ContractsCartRepository
         $entry = Entry::find($this->id);
 
         if (! $entry) {
-            throw new CartNotFound("We could not find a cart with the ID of {$this->id}.");
+            throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $this->id]));
         }
 
         return $entry;

@@ -4,12 +4,14 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Facades\Site;
+use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
 
 class MoneyFieldtype extends Fieldtype
 {
     protected $icon = 'generic';
 
+    // TODO: translate these
     protected $configFields = [
         'read_only' => [
             'type'         => 'toggle',
@@ -48,7 +50,7 @@ class MoneyFieldtype extends Fieldtype
 
     public static function title()
     {
-        return 'Money';
+        return __('simple-commerce::fieldtypes.money.title');
     }
 
     public function component(): string

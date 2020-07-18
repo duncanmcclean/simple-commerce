@@ -9,12 +9,12 @@ class StandardPost implements ShippingMethod
 {
     public function name(): string
     {
-        return 'Standard Post';
+        return __('simple-commerce::shipping.standard_post.name');
     }
 
     public function description(): string
     {
-        return 'Posted through the national post service. Usually delivered within 1-2 working days.';
+        return __('simple-commerce::shipping.standard_post.description');
     }
 
     public function calculateCost(Entry $order): int

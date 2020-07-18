@@ -8,5 +8,5 @@ interface CurrencyRepository
 {
     public function get(Site $site): array;
 
-    public function parse($price, Site $site): string;
+    public function parse($price = 00.00, Site $site): string;
 }

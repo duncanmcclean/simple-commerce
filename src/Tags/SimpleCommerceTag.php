@@ -46,7 +46,7 @@ class SimpleCommerceTag extends Tags
                 return (new $class($this))->wildcard($method);   
             }
 
-            throw new TagNotFoundException("Could not find files to load the `{$tag[0]}` tag.");
+            throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
         }
     }
 

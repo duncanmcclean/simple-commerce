@@ -41,18 +41,23 @@ class ServiceProvider extends AddonServiceProvider
         parent::boot();
 
         $this->publishes([
+            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+        ], 'simple-commerce-config');
+
+        $this->publishes([
             __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
         ], 'simple-commerce-blueprints');
 
         $this->publishes([
-            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
-        ], 'simple-commerce-config');
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
+        ], 'simple-commerce-translators');
 
         $this->publishes([
             __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce-assets');
 
         $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
 
         Statamic::booted(function () {
             $this
