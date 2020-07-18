@@ -5,6 +5,7 @@ updated_by: 651d06a4-b013-467f-a19a-b4d38b6209a6
 updated_at: 1595078091
 id: 6b491282-e792-431a-bc6a-912ee9b60edc
 is_documentation: true
+nav_order: 5
 ---
 Simple Commerce provides a set of tags that'll help you to integrate with it in your templates.
 

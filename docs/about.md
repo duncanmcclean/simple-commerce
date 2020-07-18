@@ -6,6 +6,7 @@ blueprint: documentation
 parent: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
 id: ee90f3bc-748c-48fa-9f5b-73eab1cc4ccc
 is_documentation: true
+nav_order: 1
 ---
 Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allows you to enjoy the awesome of flat-files while giving you the power you need to power small-medium sized e-commerce websites.
 
