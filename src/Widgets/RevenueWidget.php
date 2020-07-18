@@ -24,7 +24,7 @@ class RevenueWidget extends Widget
 
     protected function orderQuery()
     {
-        return Entry::whereCollection('orders')
+        return Entry::whereCollection(config('simple-commerce.collectins.orders'))
             ->map(function (EntriesEntry $entry) {
                 return [
                     'id' => $entry->id(),

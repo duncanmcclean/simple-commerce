@@ -27,7 +27,7 @@ class CustomerTags extends SubTag
 
     public function orders()
     {
-        return Entry::whereCollection('orders')
+        return Entry::whereCollection(config('simple-commerce.collections.orders'))
             ->where('customer', Auth::user()->id)
             ->map(function (EntriesEntry $entry) {
                 return $entry->toAugmentedArray();

@@ -57,7 +57,7 @@ class CartRepository implements ContractsCartRepository
 
         if ($entry === null) {
             $entry = Entry::make()
-                ->collection('orders')
+                ->collection(config('simple-commerce.collections.orders'))
                 ->blueprint('order')
                 ->locale(Site::current()->handle())
                 ->published(false)

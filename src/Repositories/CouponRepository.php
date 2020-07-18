@@ -23,7 +23,7 @@ class CouponRepository implements ContractsCouponRepository
 
     public function all(): Collection
     {
-        return Entry::whereCollection('coupons');
+        return Entry::whereCollection(config('simple-commerce.collections.coupons'));
     }
 
     public function find(string $id): self
