@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
@@ -46,6 +47,14 @@ class CheckoutController extends BaseActionController
 
         $cartData['gateway'] = $requestData['gateway'];
         $cartData['gateway_data'] = $gateway->purchase($requestData);
+
+        if ($cart->entry()->data()->get('coupon') != null) {
+            $coupon = Coupon::find($cart->entry()->data()->get('coupon'));
+
+            $coupon->update([
+                'redeemed' => $coupon->data['redeemed'],
+            ]);
+        }
 
         $this->excludedKeys[] = 'gateway';
         foreach($gateway->purchaseRules() as $key => $rule) $this->excludedKeys[] = $key;
