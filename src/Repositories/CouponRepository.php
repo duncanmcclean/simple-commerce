@@ -50,6 +50,11 @@ class CouponRepository implements ContractsCouponRepository
         return $this;    
     }
 
+    public function entry()
+    {
+        return FacadesEntry::find($this->id);
+    }
+
     public function isValid(Entry $order): bool
     {
         if ($this->data['minimum_cart_value'] != null && $order->data()->get('items_total') != null) {
@@ -58,7 +63,7 @@ class CouponRepository implements ContractsCouponRepository
             }
         }
 
-        if ($this->data['redeemed'] >= $this->data['redeemed']) {
+        if ($this->data['redeemed'] >= $this->data['maximum_uses']) {
             return false;
         }
 
