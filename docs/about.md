@@ -3,8 +3,9 @@ title: 'About Simple Commerce'
 updated_by: 651d06a4-b013-467f-a19a-b4d38b6209a6
 updated_at: 1595079300
 blueprint: documentation
-addon: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
+parent: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
 id: ee90f3bc-748c-48fa-9f5b-73eab1cc4ccc
+is_documentation: true
 ---
 Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allows you to enjoy the awesome of flat-files while giving you the power you need to power small-medium sized e-commerce websites.
 

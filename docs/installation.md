@@ -1,9 +1,10 @@
 ---
 title: Installation
-addon: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
+parent: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
 updated_by: 651d06a4-b013-467f-a19a-b4d38b6209a6
 updated_at: 1595083324
 id: fe33ff01-b30c-45e7-8537-017f34a6c09d
+is_documentation: true
 ---
 ## System Requirements
 * PHP 7.2 or higher
