@@ -26,6 +26,9 @@ return [
         'products' => 'products',
         'orders' => 'orders',
         'coupons' => 'coupons',
+    ],
+
+    'taxonomies' => [
         'product_categories' => 'product_categories',
         'order_statuses' => 'Order Statuses',
     ],
