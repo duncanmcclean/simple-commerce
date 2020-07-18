@@ -1,5 +1,10 @@
-# Configuring
-
+---
+title: Configuring
+addon: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
+updated_by: 651d06a4-b013-467f-a19a-b4d38b6209a6
+updated_at: 1595077970
+id: 74427f4f-8485-4ee9-a0ec-a729a78e59a5
+---
 Simple Commerce provides a configuration file that lets you configure how your store is run, including what currencies are used and the payment gateways available to customers.
 
 After you've installed Simple Commerce, you should find a `simple-commerce.php` file in your projects' `config` directory. That's your configuration file.

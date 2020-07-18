@@ -1,5 +1,10 @@
-# Payment Gateways
-
+---
+title: Gateways
+addon: c4d878eb-af7d-47e7-bfc8-c5baa162d7bf
+updated_by: 651d06a4-b013-467f-a19a-b4d38b6209a6
+updated_at: 1595078038
+id: 55b09797-572a-483b-b5af-9d277c1744c6
+---
 Simple Commerce ~~has~~ will have built-in support for popular payment gateways, like Stripe. However, if we don't support your gateway of choice, it's easy enough to build one yourself.
 
 Gateways are configured in your `config/simple-commerce.php` file. Like so:
