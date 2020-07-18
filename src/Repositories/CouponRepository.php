@@ -63,8 +63,10 @@ class CouponRepository implements ContractsCouponRepository
             }
         }
 
-        if ($this->data['redeemed'] >= $this->data['maximum_uses']) {
-            return false;
+        if ($this->data['redeemed'] != null && $this->data['maximum_uses']) {
+            if ($this->data['redeemed'] >= $this->data['maximum_uses']) {
+                return false;
+            }
         }
 
         return true;
