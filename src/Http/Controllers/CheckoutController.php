@@ -52,7 +52,7 @@ class CheckoutController extends BaseActionController
             $coupon = Coupon::find($cart->entry()->data()->get('coupon'));
 
             $coupon->update([
-                'redeemed' => $coupon->data['redeemed'],
+                'redeemed' => $coupon->data['redeemed']++,
             ]);
         }
 
