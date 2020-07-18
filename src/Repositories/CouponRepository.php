@@ -4,8 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository as ContractsCouponRepository;
 use Illuminate\Support\Collection;
-use Statamic\Entries\Entry;
-use Statamic\Facades\Entry as FacadesEntry;
+use Statamic\Entries\Entry as EntryInstance;
+use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
 class CouponRepository implements ContractsCouponRepository
@@ -23,12 +23,12 @@ class CouponRepository implements ContractsCouponRepository
 
     public function all(): Collection
     {
-        return FacadesEntry::whereCollection('coupons');
+        return Entry::whereCollection('coupons');
     }
 
     public function find(string $id): self
     {
-        $entry = FacadesEntry::find($id);
+        $entry = Entry::find($id);
 
         $this->id = $entry->id();
         $this->code = $entry->slug();
@@ -43,19 +43,19 @@ class CouponRepository implements ContractsCouponRepository
             $data = array_merge($this->data, $data);
         }
 
-        FacadesEntry::find($this->id)
+        Entry::find($this->id)
             ->data($data)
             ->save();
 
         return $this;    
     }
 
-    public function entry(): Entry
+    public function entry(): EntryInstance
     {
-        return FacadesEntry::find($this->id);
+        return Entry::find($this->id);
     }
 
-    public function isValid(Entry $order): bool
+    public function isValid(EntryInstance $order): bool
     {
         if ($this->data['minimum_cart_value'] != null && $order->data()->get('items_total') != null) {
             if ($order->data()->get('items_total') < $this->data['minimum_cart_value']) {
