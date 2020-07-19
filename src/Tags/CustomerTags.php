@@ -37,6 +37,8 @@ class CustomerTags extends SubTag
 
     public function order()
     {
-        //
+        $orderId = $this->getParam('id');
+
+        return Entry::find($orderId)->toAugmentedArray();
     }
 }
