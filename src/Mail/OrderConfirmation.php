@@ -42,6 +42,7 @@ class OrderConfirmation extends Mailable
         Storage::put(($receiptFilename), $pdf->stream('receipt.pdf'));
 
         return $this->markdown('simple-commerce::order-confirmation')
+            ->subject(__('simple-commerce::mail.order_confirmation.subject'))
             ->with('order', $data)
             ->attachFromStorage($receiptFilename);
     }
