@@ -4,7 +4,7 @@ about: Report a bug or other issue
 labels: bug
 ---
 
-<!-- Please use the provided issue template, makes it easier to get all the information needed to look into your issue. -->
+<!-- Please use the provided issue template, it makes it easier to get all the information needed to look into your issue. -->
 
 Quick description of the bug...
 
