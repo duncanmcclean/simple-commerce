@@ -7,67 +7,88 @@ id: 74427f4f-8485-4ee9-a0ec-a729a78e59a5
 is_documentation: true
 nav_order: 4
 ---
-Simple Commerce provides a configuration file that lets you configure how your store is run, including what currencies are used and the payment gateways available to customers.
+To allow for Simple Commerce to be flexible, it gives you some configuration options so you can decide how you want to run your store.
 
-After you've installed Simple Commerce, you should find a `simple-commerce.php` file in your projects' `config` directory. That's your configuration file.
+You can find your Simple Commerce config file in `config/simple-commerce.php` in your project.
 
-```
-<?php
+## Site configuration
+Statamic has a concept of sites. Each Statamic instance can have one or more sites. For each of those sites you can use a different currency, a different tax configuration and different shipping methods.
 
-return [
-    'sites' => [
-        'default' => [
-            'currency' => 'GBP',
+```php
+'sites' => [
+    'default' => [
+        'currency' => 'GBP',
 
-            'tax' => [
-                'rate' => 20,
-                'included_in_prices' => false,
-            ],
+        'tax' => [
+            'rate' => 20,
+            'included_in_prices' => false,
+        ],
 
-            'shipping' => [
-                'methods' => [
-                    \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
-                ],
+        'shipping' => [
+            'methods' => [
+                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
             ],
         ],
     ],
-
-    'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
-    ],
-
-    'cart_key' => 'simple-commerce-cart',
-];
-```
-
-## Site configuration
-Simple Commerce allows you to run multiple e-commerce stores under a single Statamic instance by making use of Statamic's multi-site functionality. You can learn more about multi-site on the [Statamic documentation](https://statamic.dev/multi-site#content).
-
-> **Hot Tip:** To use multi-sites in Statamic, you'll need to purchase and enable Statamic Pro.
-
-By default, with all Statamic sites, there's a `default` site already setup (you don't need Pro for a single site). We automatically ship with some basic configuration.
-
-Each site can have it's own set of currency, tax and shipping settings.
-
-The value of `currency` should be the three letter code for the currency you wish to use. This would be `GBP` for Great British Pound or `USD` for the United States Dollar.
-
-You'll also need to configure tax for your store. You can configure the tax rate to used and if prices in your store already include tax, in which case, we don't add it to order totals.
-
-You can also configure different shipping methods for use in your store, you can read more about them over here. Essentially, all you need to do is include the class name like this and you'll have registered a shipping method.
-
-```
-'shipping' => [
-  'methods' => [
-    \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
-  ],
 ],
 ```
 
+Whenever you want to add another site to Simple Commerce, just change the array key from `default` to your new one. Remember to keep the site key the same between the Simple Commerce config and the Statamic config.
+
+```
+'sites' => [
+    'default' => [...],
+    'french' => [...],
+],
+```
+
+> **Hot Tip:** Also remember that if you're wanting to use multiple sites, you'll need to [purchase & enable Statamic Pro](https://statamic.dev/licensing).
+
+Let's walk through some of the configuration options you have with each site.
+
+* The first option is currency, you can use a variety of different currencies in Simple Commerce. To configure one, just put in the three letter currency code and it should be picked up.
+
+* Tax is another thing you can configure. In the default configuration, we have tax setup at 20% and we have it set so our product prices include tax. You can obviusly change this to whatever you'd like. 
+
+* Each site can have its own set of shipping methods. A lot of sites have custom shipping rules, so we recommend you build one specifically for your site. <!-- TODO: write documentation on doing this -->
+
 ## Gateways
-We also allow you to choose which payment gateways you'd like to use in your store. Feel free to create your own or provide ones that Simple Commerce provides out of the box.
+Simple Commerce has quite a few [built-in payment gateways](/simple-commerce/gateways), as always its something you build custom for your store.
 
-Again, these can be configured with the `Something::class` syntax.
+```php
+'gateways' => [
+    \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+],
+```
 
-## And the other settings...
+To add a gateway, just add the gateway's class name (`DummyGateway::class` syntax) as the array key and an array as the value. The value is normally used for any gateway configuration. If your gateway doesn't have any configuration options, just leave it as an empty array.
 
-* `cart_key` - this determines the session key used for storing the customer's cart ID
+## Collections & Taxonomies
+```
+'collections' => [
+    'products' => 'products',
+    'orders' => 'orders',
+    'coupons' => 'coupons',
+],
+
+'taxonomies' => [
+    'product_categories' => 'product_categories',
+    'order_statuses' => 'Order Statuses',
+],
+```
+
+If you'd like to change the collections and handles used for certain things in Simple Commerce, we allow you to do that. Just change the appropriate value to the handle of the collection you'd like to use instead.
+
+For example, to use a collection called `Discounts`, with a handle of `discounts` for your orders, you could configure that like this:
+
+```
+'collections' => [
+    ...,
+    'coupons' => 'discounts',
+],
+```
+
+## Various other options
+There's some small configuration options too so they're documented below.
+
+* `cart_key` will determine the session key used for a customers' cart.

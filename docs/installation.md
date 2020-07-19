@@ -7,26 +7,27 @@ id: fe33ff01-b30c-45e7-8537-017f34a6c09d
 is_documentation: true
 nav_order: 2
 ---
-## System Requirements
-* PHP 7.2 or higher
-* Composer
-* A Statamic 3 site
-* Some sort of web server, like Nginx
+## Requirements
+Simple Commerce doesn't really have its own set of requirements, basically as long as [Statamic 3 works](https://statamic.dev/requirements), Simple Commerce should work too.
 
-## Install Guide
-1. Install Simple Commerce via Composer, we recommend doing this instead of via the Control Panel.
+We do however recommend that your site has SSL setup because you're going to be processing credit cards after all. [Lets Encrypt](https://letsencrypt.org/) can give you SSL certificates for free.
+
+## Recommended Install
+We recommend installing Simple Commerce via the command line instead of through the Statamic Control Panel.
+
+1. Install Simple Commerce with Composer
 
 ```
 composer require doublethreedigital/simple-commerce
 ```
 
-2. Publish everything Simple Commerce related: config file, fieldtypes, blueprints, etc
+2. Publish Simple Commerce's vendor assets. This will give you our default blueprints, fieldtypes and configuration file.
 
 ```
 php artisan vendor:publish --provider="DoubleThreeDigital\SimpleCommerce\ServiceProvider"
 ```
 
-3. Start developing!
+3. Get Started!
 
 ## Quick Start
-If you'd like to start with Simple Commerce already installed, and a basic front-end boilerplate, check out the [Simple Commerce starter kit](https://github.com/doublethreedigital/simple-commerce-starter).
+If you'd prefer to get started with some boilerplate views and Simple Commerce already installed, you should checkout our the [Simple Commerce Starter Kit](https://github.com/doublethreedigital/simple-commerce-starter).

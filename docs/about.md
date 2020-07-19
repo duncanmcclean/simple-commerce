@@ -18,4 +18,4 @@ Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allow
 
 **Full control over the blueprints.** Apart from a title, a price and an SKU, you can add whatever you'd like to your product blueprint. Same goes for other blueprints. We don't want to invade on your happy developer experience.
 
-To get started, [read the documentation](https://github.com/doublethreedigital/simple-commerce/tree/master/docs). If you have any feedback or find bugs, [create an issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) and if you need some help, join the [Simple Commerce](https://discord.gg/hYQxFPK) discord.
+## Limitations
