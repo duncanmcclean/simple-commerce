@@ -73,6 +73,9 @@ class CheckoutController extends BaseActionController
             ->update($cartData)
             ->markAsCompleted();
 
+        Session::forget(config('simple-commerce.cart_key'));
+        $request->session()->flash(config('simple-commerce.cart_key'), $cart->id);
+
         return $this->withSuccess($request);
     }
 }
