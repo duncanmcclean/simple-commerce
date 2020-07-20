@@ -43,7 +43,7 @@ class SimpleCommerceTag extends Tags
             return (new $class($this))->{$method}();
         } catch (Exception $e) {
             if (method_exists($class, 'wildcard')) {
-                return (new $class($this))->wildcard($method);   
+                return (new $class($this))->wildcard($method);
             }
 
             throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));

@@ -53,7 +53,9 @@ class CheckoutController extends BaseActionController
         }
 
         $this->excludedKeys[] = 'gateway';
-        foreach($gateway->purchaseRules() as $key => $rule) $this->excludedKeys[] = $key;
+        foreach ($gateway->purchaseRules() as $key => $rule) {
+            $this->excludedKeys[] = $key;
+        }
 
         foreach (Arr::except($requestData, $this->excludedKeys) as $key => $value) {
             if ($value === 'on') {

@@ -47,7 +47,7 @@ class CouponRepository implements ContractsCouponRepository
             ->data($data)
             ->save();
 
-        return $this;    
+        return $this;
     }
 
     public function entry(): EntryInstance

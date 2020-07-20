@@ -12,7 +12,7 @@ use Statamic\Facades\User;
 class CartItemController extends BaseActionController
 {
     public function store(Request $request)
-    {   
+    {
         if ($request->session()->has(config('simple-commerce.cart_key'))) {
             $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
         } else {

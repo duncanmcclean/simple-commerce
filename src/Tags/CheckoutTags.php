@@ -21,7 +21,7 @@ class CheckoutTags extends SubTag
         if ($data['grand_total'] === 0) {
             Cart::find(Session::get(config('simple-commerce.cart_key')))->markAsCompleted();
             $data['is_paid'] = true;
-        }    
+        }
 
         if (! isset($data['is_paid']) || $data['is_paid'] === false) {
             foreach (SimpleCommerce::gateways() as $gateway) {

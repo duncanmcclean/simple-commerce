@@ -15,7 +15,7 @@ class CouponTags extends SubTag
         $coupon = Cart::find(Session::get(config('simple-commerce.cart_key')))
             ->entry()
             ->data()
-            ->get('coupon');    
+            ->get('coupon');
 
         // TODO: ideally, here we'd use an augmented array from Statamic but it wasn't working when trying to implement it
         

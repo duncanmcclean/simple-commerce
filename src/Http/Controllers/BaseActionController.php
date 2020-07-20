@@ -10,8 +10,8 @@ class BaseActionController extends Controller
 {
     protected function withSuccess(Request $request, array $data = []): RedirectResponse
     {
-        return $request->_redirect ? 
-            redirect($request->_redirect)->with($data) : 
+        return $request->_redirect ?
+            redirect($request->_redirect)->with($data) :
             back()->with($data);
     }
 

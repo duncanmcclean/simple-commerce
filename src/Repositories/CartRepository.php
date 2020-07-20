@@ -73,14 +73,14 @@ class CartRepository implements ContractsCartRepository
             ])
             ->save();
 
-        event(new CartSaved($this->entry()));    
+        event(new CartSaved($this->entry()));
 
         return $this;
     }
 
     public function update(array $data, bool $mergeData = true): self
     {
-        $entry = Entry::find($this->id);  
+        $entry = Entry::find($this->id);
 
         if (! $entry) {
             throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $this->id]));
@@ -94,7 +94,7 @@ class CartRepository implements ContractsCartRepository
             ->data($data)
             ->save();
 
-            event(new CartUpdated($this->entry()));
+        event(new CartUpdated($this->entry()));
 
         return $this;
     }
@@ -133,9 +133,9 @@ class CartRepository implements ContractsCartRepository
             ->set('customer', $user->id())
             ->save();
 
-        event(new CustomerAddedToCart($this->entry()));    
+        event(new CustomerAddedToCart($this->entry()));
 
-        return $this;    
+        return $this;
     }
 
     public function redeemCoupon(string $code): bool
@@ -149,7 +149,7 @@ class CartRepository implements ContractsCartRepository
                 ])
                 ->calculateTotals();
 
-            event(new CouponRedeemed($coupon->entry()));    
+            event(new CouponRedeemed($coupon->entry()));
 
             return true;
         }
@@ -200,9 +200,14 @@ class CartRepository implements ContractsCartRepository
                 $itemTotal = ($product->data()->get('price') * $item['quantity']);
 
                 if (! $siteTax['included_in_prices']) {
-                    $data['tax_total'] += (int) str_replace('.', '', round(
-                        ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * 
-                        $siteTax['rate'], 2)
+                    $data['tax_total'] += (int) str_replace(
+                        '.',
+                        '',
+                        round(
+                        ((float) substr_replace($itemTotal, '.', -2, 0) / 100) *
+                        $siteTax['rate'],
+                        2
+                    )
                     );
                 }
 
@@ -231,7 +236,7 @@ class CartRepository implements ContractsCartRepository
             if ($method) {
                 $method = new $method();
                 $data['shipping_total'] = $method->calculateCost($entry);
-            }    
+            }
         }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
@@ -240,9 +245,14 @@ class CartRepository implements ContractsCartRepository
             $coupon = Coupon::find($entry->data()->get('coupon'));
 
             if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] += (int) str_replace('.', '', round(
-                    ((float) substr_replace($data['grand_total'], '.', -2, 0) / 100) * 
-                    $coupon->data['value'], 2)
+                $data['coupon_total'] += (int) str_replace(
+                    '.',
+                    '',
+                    round(
+                    ((float) substr_replace($data['grand_total'], '.', -2, 0) / 100) *
+                    $coupon->data['value'],
+                    2
+                )
                 );
             }
 

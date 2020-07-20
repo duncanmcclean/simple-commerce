@@ -39,7 +39,9 @@ class CustomerController extends BaseActionController
             $user->set($key, $value);
         }
 
-        if ($request->has('email')) $user->email($request->email);
+        if ($request->has('email')) {
+            $user->email($request->email);
+        }
 
         $user->save();
 
