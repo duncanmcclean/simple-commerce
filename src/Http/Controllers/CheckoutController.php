@@ -22,12 +22,8 @@ class CheckoutController extends BaseActionController
         $requestData = Arr::except($request->all(), $this->excludedKeys);
         $cartData = [];
 
-        $request->validate(array_merge($gateway->purchaseRules(), [
-            'name' => 'sometimes|string',
-            'email' => 'sometimes|email',
-        ]));
-
-        // TODO: maybe we could merge in blueprint validation too, for custom fields?
+        $request->validate($gateway->purchaseRules());
+        // $request->validate($cart->entry()->blueprint()->fields()->validator()->rules());
 
         if (isset($requestData['name']) && isset($requestData['email'])) {
             $customer = User::findByEmail($requestData['email']);
