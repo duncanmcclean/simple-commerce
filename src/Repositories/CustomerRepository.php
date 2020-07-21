@@ -36,6 +36,20 @@ class CustomerRepository
         return $this;
     }
 
+    public function findByEmail(string $email): self
+    {
+        $entry = Entry::query()
+            ->where('collection', config('simple-commerce.collections.customers'))
+            ->where('slug', Str::slug($email))
+            ->first();
+
+        if (! $entry) {
+            // TODO: the exception
+        }
+
+        return $this->find($entry->id());
+    }
+
     public function data(array $data = [])
     {
         if ($data = []) {
