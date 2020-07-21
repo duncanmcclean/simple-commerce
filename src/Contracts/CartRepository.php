@@ -16,5 +16,6 @@ interface CartRepository
     public function attachCustomer($user): self;
     public function redeemCoupon(string $code): bool;
     public function markAsCompleted(): self;
+    public function buildReceipt(): string;
     public function calculateTotals(): self;
 }

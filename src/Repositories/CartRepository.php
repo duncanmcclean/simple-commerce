@@ -17,6 +17,7 @@ use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use Illuminate\Support\Facades\URL;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -179,6 +180,13 @@ class CartRepository implements ContractsCartRepository
         }
 
         return $this;
+    }
+
+    public function buildReceipt()
+    {
+        return URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
+            'orderId' => $this->id,
+        ]);
     }
 
     public function calculateTotals(): self
