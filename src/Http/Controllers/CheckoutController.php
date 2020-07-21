@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -26,12 +27,16 @@ class CheckoutController extends BaseActionController
         $cartData = [];
 
         $request->validate($gateway->purchaseRules());
+        $request->validate([
+            'name' => 'sometimes|string',
+            'email' => 'sometimes|email',
+        ]);
         // $request->validate($cart->entry()->blueprint()->fields()->validator()->rules());
 
         if (isset($requestData['name']) && isset($requestData['email'])) {
             try {
                 $customer = Customer::findByEmail($requestData['email']);
-            } catch (\Exception $e) {
+            } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
                     ->data([
                         'name' => $requestData['name'],
@@ -40,7 +45,7 @@ class CheckoutController extends BaseActionController
                     ->save();
             }
 
-            $cart->customer($customer);
+            $cart->customer($customer->id);
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';
