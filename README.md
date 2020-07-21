@@ -10,6 +10,7 @@ This repository contains the code for Simple Commerce. While the code is open-so
 ## Credits
 * [Duncan McClean (Developer)](https://github.com/damcclean)
 * [David A. Lindahl (Designer)](https://github.com/austriker27)
+* [And all of the other collaborators](https://github.com/doublethreedigital/simple-commerce/graphs/contributors)
 
 ## Resources
 * [Simple Commerce Documentation](https://doublethree.digital/simple-commerce/about)
