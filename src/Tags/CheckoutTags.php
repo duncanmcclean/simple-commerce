@@ -18,23 +18,12 @@ class CheckoutTags extends SubTag
             ->data()
             ->toArray();
 
-        if ($data['grand_total'] === 0) {
-            Cart::find(Session::get(config('simple-commerce.cart_key')))->markAsCompleted();
-            $data['is_paid'] = true;
-        }
-
         if (! isset($data['is_paid']) || $data['is_paid'] === false) {
             foreach (SimpleCommerce::gateways() as $gateway) {
                 $class = new $gateway['class']();
     
                 $data = array_merge($data, $class->prepare($data));
             }
-        }
-
-        if ($data['is_paid'] === true) {
-            $data['receipt_url'] = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
-                'orderId' => Session::get(config('simple-commerce.cart_key')),
-            ]);
         }
 
         return $this->createForm(
