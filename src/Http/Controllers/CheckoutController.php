@@ -4,9 +4,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 
 class CheckoutController extends BaseActionController
@@ -26,16 +29,18 @@ class CheckoutController extends BaseActionController
         // $request->validate($cart->entry()->blueprint()->fields()->validator()->rules());
 
         if (isset($requestData['name']) && isset($requestData['email'])) {
-            $customer = User::findByEmail($requestData['email']);
-
-            if (! $customer) {
-                $customer = User::make()
-                    ->email($requestData['email'])
-                    ->data(['name' => $requestData['name']])
+            try {
+                $customer = Customer::findByEmail($requestData['email']);
+            } catch (\Exception $e) {
+                $customer = Customer::make()
+                    ->data([
+                        'name' => $requestData['name'],
+                        'email' => $requestData['email'],
+                    ])
                     ->save();
             }
 
-            $cart->attachCustomer($customer);
+            $cart->customer($customer);
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';
