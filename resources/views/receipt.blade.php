@@ -81,7 +81,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong class="font-bold">Customer: </strong>{{ $customer->value()->data()->get('name') }}</td>
+                    @if(isset($customer))
+                        <td><strong class="font-bold">Customer: </strong>{{ $customer->value()->data()->get('name') }}</td>
+                    @endif
                     <td><strong class="font-bold">Shipping Name</strong></td>
                     <td><strong class="font-bold">Billing Name</strong></td>
                 </tr>
