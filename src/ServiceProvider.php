@@ -71,21 +71,26 @@ class ServiceProvider extends AddonServiceProvider
 
     public function contentSetup()
     {
+        if (! Taxonomy::handleExists('product_categories')) {
+            Taxonomy::make('product_categories')
+                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
+                ->save();
+        }
+
         if (! Collection::handleExists('products')) {
             Collection::make('products')
                 ->title(__('simple-commerce::messages.default_collections.products'))
                 ->pastDateBehavior('public')
                 ->futureDateBehavior('private')
-                ->entryBlueprints(['product'])
                 ->sites(['default'])
                 ->routes('/products/{slug}')
+                ->taxonomies(['product_categories'])
                 ->save();
         }
 
         if (! Collection::handleExists('orders')) {
             Collection::make('orders')
                 ->title(__('simple-commerce::messages.default_collections.orders'))
-                ->entryBlueprints(['order'])
                 ->sites(['default'])
                 ->save();
         }
@@ -93,14 +98,7 @@ class ServiceProvider extends AddonServiceProvider
         if (! Collection::handleExists('coupons')) {
             Collection::make('coupons')
                 ->title(__('simple-commerce::messages.default_collections.coupons'))
-                ->entryBlueprints(['coupon'])
                 ->sites(['default'])
-                ->save();
-        }
-
-        if (! Taxonomy::handleExists('product_categories')) {
-            Taxonomy::make('product_categories')
-                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
                 ->save();
         }
 
