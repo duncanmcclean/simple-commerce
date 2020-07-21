@@ -1,0 +1,44 @@
+title: Customers
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: title
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: Title
+      -
+        handle: name
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: Name
+          validate: required
+      -
+        handle: email
+        field:
+          input_type: email
+          type: text
+          localizable: false
+          width: 50
+          listable: hidden
+          display: Email
+          validate: required
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: slug
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: Slug
