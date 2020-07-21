@@ -132,10 +132,10 @@ This tag removes all the items in the cart.
 ```
 
 ## Checkout
-This tag allows you to checkout the cart. Inside the tag, you can use any of the data from your cart.
+This tag allows you to checkout the cart. Inside the tag, you can use any of the data from your cart. The `redirect` parameter is recommended so you can redirect the customer to a success page when they're order has been confirmed.
 
 ```
-{{ sc:checkout }}
+{{ sc:checkout redirect="/thanks" }}
   {{ if is_paid }}
   <p>Checkout complete! <a href="{{ receipt_url }}">Download</a> your receipt.</p>
   {{ else }}
