@@ -65,9 +65,9 @@ sections:
           type: money
           instructions: 'What''s the minimum items total a cart should have before this coupon can be redeemed?'
           localizable: false
+          width: 50
           listable: hidden
           display: 'Minimum Cart Value'
-          width: 50
   sidebar:
     display: Sidebar
     fields:
@@ -89,3 +89,4 @@ sections:
           listable: hidden
           display: Redeemed
           read_only: true
+          default: 0
