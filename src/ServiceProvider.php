@@ -73,7 +73,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         if (! Collection::handleExists(config('simple-commerce.collections.products'))) {
             Collection::make(config('simple-commerce.collections.products'))
-                ->title(__('simple-commerce:messages.default_collections.products'))
+                ->title(__('simple-commerce::messages.default_collections.products'))
                 ->pastDateBehavior('public')
                 ->futureDateBehavior('private')
                 ->entryBlueprints(['product'])
@@ -84,7 +84,7 @@ class ServiceProvider extends AddonServiceProvider
 
         if (! Collection::handleExists(config('simple-commerce.collections.orders'))) {
             Collection::make(config('simple-commerce.collections.orders'))
-                ->title(__('simple-commerce:messages.default_collections.orders'))
+                ->title(__('simple-commerce::messages.default_collections.orders'))
                 ->entryBlueprints(['order'])
                 ->sites(['default'])
                 ->save();
@@ -92,7 +92,7 @@ class ServiceProvider extends AddonServiceProvider
 
         if (! Collection::handleExists(config('simple-commerce.collections.coupons'))) {
             Collection::make(config('simple-commerce.collections.coupons'))
-                ->title(__('simple-commerce:messages.default_collections.coupons'))
+                ->title(__('simple-commerce::messages.default_collections.coupons'))
                 ->entryBlueprints(['coupon'])
                 ->sites(['default'])
                 ->save();
@@ -100,13 +100,13 @@ class ServiceProvider extends AddonServiceProvider
 
         if (! Taxonomy::handleExists(config('simple-commerce.taxonomies.product_categories'))) {
             Taxonomy::make(config('simple-commerce.taxonomies.product_categories'))
-                ->title(__('simple-commerce:messages.default_taxonomies.product_categories'))
+                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
                 ->save();
         }
 
         if (! Taxonomy::handleExists(config('simple-commerce.taxonomies.order_statuses'))) {
             Taxonomy::make(config('simple-commerce.taxonomies.order_statuses'))
-                ->title(__('simple-commerce:messages.default_taxonomies.order_statuses'))
+                ->title(__('simple-commerce::messages.default_taxonomies.order_statuses'))
                 ->save();
         }
 
