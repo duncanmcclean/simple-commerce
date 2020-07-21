@@ -38,19 +38,19 @@ class CartRepository implements ContractsCartRepository
 
     public function find(string $id): self
     {
-        $cart = Entry::find($id);
+        $entry = Entry::find($id);
 
-        if (! $cart) {
+        if (! $entry) {
             throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $id]));
         }
 
-        $this->id = $cart->id();
-        $this->items = $cart->data()->get('items') ?? [];
-        $this->grandTotal = $cart->data()->get('grand_total') ?? 0;
-        $this->itemsTotal = $cart->data()->get('items_total') ?? 0;
-        $this->taxTotal = $cart->data()->get('tax_total') ?? 0;
-        $this->shippingTotal = $cart->data()->get('shipping_total') ?? 0;
-        $this->couponTotal = $cart->data()->get('coupon_total') ?? 0;
+        $this->id = $entry->id();
+        $this->items = $entry->data()->get('items') ?? [];
+        $this->grandTotal = $entry->data()->get('grand_total') ?? 0;
+        $this->itemsTotal = $entry->data()->get('items_total') ?? 0;
+        $this->taxTotal = $entry->data()->get('tax_total') ?? 0;
+        $this->shippingTotal = $entry->data()->get('shipping_total') ?? 0;
+        $this->couponTotal = $entry->data()->get('coupon_total') ?? 0;
 
         return $this;
     }
