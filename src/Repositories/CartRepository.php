@@ -183,7 +183,7 @@ class CartRepository implements ContractsCartRepository
         return $this;
     }
 
-    public function buildReceipt()
+    public function buildReceipt(): string
     {
         return URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
             'orderId' => $this->id,
