@@ -199,15 +199,35 @@ class CartRepository implements ContractsCartRepository
 
                 $itemTotal = ($product->data()->get('price') * $item['quantity']);
 
-                if (! $siteTax['included_in_prices']) {
+                // if tax inclded in prices
+                    // item total = item total - tax total
+                    // tax total = tax total
+
+                // if tax not included in prices
+                    // item total = item total
+                    // tax total = tax total
+
+
+                if ($siteTax['included_in_prices']) {
+                    $itemTax = str_replace(
+                        '.',
+                        '',
+                        round(
+                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100 ) * $siteTax['rate'],
+                            2
+                        )
+                    );
+
+                    $itemTotal -= $itemTax;
+                    $data['tax_total'] += $itemTax;
+                } else {
                     $data['tax_total'] += (int) str_replace(
                         '.',
                         '',
                         round(
-                        ((float) substr_replace($itemTotal, '.', -2, 0) / 100) *
-                        $siteTax['rate'],
-                        2
-                    )
+                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                            2
+                        )
                     );
                 }
 
