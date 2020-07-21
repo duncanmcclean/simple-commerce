@@ -17,7 +17,7 @@ class CustomerController extends BaseActionController
         return User::current()->data();
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $customer)
     {
         if (Auth::guest()) {
             return back()->with('errors', __('simple-commerce:customers.requires_login'));

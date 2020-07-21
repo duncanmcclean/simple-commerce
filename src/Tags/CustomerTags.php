@@ -13,20 +13,25 @@ class CustomerTags extends SubTag
 
     public function index()
     {
-        return User::current()->data();
+        // TODO: update tag documentation
+        return Customer::find($this->getParam('id'))->entry()->toAugmentedArray();
     }
 
     public function update()
     {
         return $this->createForm(
             route('statamic.simple-commerce.customer.update'),
-            [],
+            [
+                'customer' => $this->getParam('id'),
+            ],
             'POST'
         );
     }
 
     public function orders()
     {
+        // TODO
+
         return Entry::whereCollection(config('simple-commerce.collections.orders'))
             ->where('customer', Auth::user()->id)
             ->map(function (EntriesEntry $entry) {
@@ -37,6 +42,8 @@ class CustomerTags extends SubTag
 
     public function order()
     {
+        // TODO:
+
         $orderId = $this->getParam('id');
 
         return Entry::find($orderId)->toAugmentedArray();
