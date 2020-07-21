@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Support\Facades\Session;
+use Statamic\Facades\Entry;
 
 class CartTags extends SubTag
 {
@@ -16,12 +17,15 @@ class CartTags extends SubTag
 
     public function has()
     {
-        try {
-            Cart::find(Session::get(config('simple-commerce.cart_key')));
-            return true;
-        } catch(\Exception $e) {
+        if (! Session::has(config('simple-commerce.cart_key'))) {
             return false;
         }
+
+        if (! Entry::find(Session::get(config('simple-commerce.cart_key')))) {
+            return false;
+        }
+
+        return true;
     }
 
     public function items()
