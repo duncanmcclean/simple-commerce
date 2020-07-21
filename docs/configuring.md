@@ -73,7 +73,6 @@ To add a gateway, just add the gateway's class name (`DummyGateway::class` synta
 
 'taxonomies' => [
     'product_categories' => 'product_categories',
-    'order_statuses' => 'Order Statuses',
 ],
 ```
 

@@ -30,7 +30,6 @@ return [
 
     'taxonomies' => [
         'product_categories' => 'product_categories',
-        'order_statuses' => 'Order Statuses',
     ],
 
     'cart_key' => 'simple-commerce-cart',

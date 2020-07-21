@@ -11,6 +11,5 @@ return [
 
     'default_taxonomies' => [
         'product_categories'    => 'Product Categories',
-        'order_statuses'        => 'Order Statuses',
     ],
 ];

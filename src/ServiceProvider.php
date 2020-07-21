@@ -104,12 +104,6 @@ class ServiceProvider extends AddonServiceProvider
                 ->save();
         }
 
-        if (! Taxonomy::handleExists('order_statuses')) {
-            Taxonomy::make('order_statuses')
-                ->title(__('simple-commerce::messages.default_taxonomies.order_statuses'))
-                ->save();
-        }
-
         return $this;
     }
 
