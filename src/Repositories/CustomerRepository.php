@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
@@ -44,15 +45,15 @@ class CustomerRepository
             ->first();
 
         if (! $entry) {
-            // TODO: the exception
+            throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
         }
 
         return $this->find($entry->id());
     }
 
-    public function data(array $data = [])
+    public function data(array $data = []): self
     {
-        if ($data = []) {
+        if ($data === []) {
             return $this->data;
         }
 
@@ -64,9 +65,9 @@ class CustomerRepository
 
     public function save(): self
     {
-        $entry = $this->entry();
+        // $entry = $this->entry();
 
-        if (! $entry) {
+        // if (! $entry) {
             $entry = Entry::make()
                 ->collection(config('simple-commerce.collections.customers'))
                 ->blueprint('customer')
@@ -74,7 +75,7 @@ class CustomerRepository
                 ->published(false)
                 ->slug($this->slug)
                 ->id($this->id);
-        }
+        // }
 
         $entry
             ->data(array_merge($this->data, [
@@ -102,9 +103,13 @@ class CustomerRepository
 
     public function entry()
     {
-        // TODO: CustomerNotFound exception
+        $entry = Entry::find($this->id);
 
-        return Entry::find($this->id);
+        if (! $entry) {
+            throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $this->id]));
+        }
+
+        return $entry;
     }
 
     protected function generateTitleAndSlug(): self
