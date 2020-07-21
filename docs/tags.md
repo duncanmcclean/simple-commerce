@@ -20,6 +20,15 @@ Gets the customer's cart so you can get details from it. Say you wanted the id o
 {{ /sc:cart }}
 ```
 
+### Cart Check
+This tag allows you to check whether or not the customer currently has a cart attached to their session, it returns a boolean.
+
+```
+{{ if {sc:cart:has} === true }}
+  ...
+{{ /if }}
+```
+
 ### Cart Items
 Returns a loop of all the items in the customer's cart.
 

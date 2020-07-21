@@ -14,6 +14,16 @@ class CartTags extends SubTag
         return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray();
     }
 
+    public function has()
+    {
+        try {
+            Cart::find(Session::get(config('simple-commerce.cart_key')));
+            return true;
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
     public function items()
     {
         return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['items']->value();
