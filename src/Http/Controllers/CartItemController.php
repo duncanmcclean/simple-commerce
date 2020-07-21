@@ -29,10 +29,6 @@ class CartItemController extends BaseActionController
             ],
         ])->save()->calculateTotals();
 
-        if (! Auth::guest()) {
-            Cart::find($cart->id)->attachCustomer(User::current());
-        }
-
         if (! $request->session()->has(config('simple-commerce.cart_key'))) {
             $request->session()->put(config('simple-commerce.cart_key'), $cart->id);
         }
@@ -43,10 +39,6 @@ class CartItemController extends BaseActionController
     public function update(Request $request, string $item)
     {
         $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
-
-        if (! Auth::guest()) {
-            $cart->attachCustomer(User::current());
-        }
 
         $data = [];
 
