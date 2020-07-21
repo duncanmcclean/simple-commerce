@@ -40,6 +40,10 @@ class CartRepository implements ContractsCartRepository
     {
         $cart = Entry::find($id);
 
+        if (! $cart) {
+            throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $id]));
+        }
+
         $this->id = $cart->id();
         $this->items = $cart->data()->get('items') ?? [];
         $this->grandTotal = $cart->data()->get('grand_total') ?? 0;
