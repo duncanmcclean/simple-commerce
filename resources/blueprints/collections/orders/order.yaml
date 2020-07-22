@@ -4,6 +4,11 @@ sections:
     display: Main
     fields:
       -
+        handle: title
+        field:
+          type: text
+          required: true
+      -
         handle: items
         field:
           fields:
@@ -239,8 +244,10 @@ sections:
         handle: customer
         field:
           max_items: 1
-          mode: select
-          type: users
+          mode: default
+          collections:
+            - customers
+          type: entries
           localizable: false
           listable: hidden
           display: Customer
@@ -278,3 +285,9 @@ sections:
           localizable: false
           listable: hidden
           display: 'Is Paid?'
+      -
+        handle: slug
+        field:
+          type: slug
+          required: true
+          localizable: true

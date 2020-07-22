@@ -88,6 +88,13 @@ class ServiceProvider extends AddonServiceProvider
                 ->save();
         }
 
+        if (! Collection::handleExists('customers')) {
+            Collection::make('customers')
+                ->title(__('simple-commerce::messages.default_collections.customers'))
+                ->sites(['default'])
+                ->save();
+        }
+
         if (! Collection::handleExists('orders')) {
             Collection::make('orders')
                 ->title(__('simple-commerce::messages.default_collections.orders'))
@@ -110,6 +117,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->app->bind('Cart', Repositories\CartRepository::class);
         $this->app->bind('Coupon', Repositories\CouponRepository::class);
         $this->app->bind('Currency', Repositories\CurrencyRepository::class);
+        $this->app->bind('Customer', Repositories\CustomerRepository::class);
 
         return $this;
     }

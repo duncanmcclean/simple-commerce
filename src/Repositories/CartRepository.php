@@ -115,6 +115,19 @@ class CartRepository implements ContractsCartRepository
         return $this;
     }
 
+    public function customer(string $customer = ''): self
+    {
+        if ($customer === '') {
+            return $this->entry()->data()->get('customer');
+        }
+
+        $this->update([
+            'customer' => $customer,
+        ]);
+
+        return $this;
+    }
+
     public function count(): int
     {
         return collect($this->items)->count();
@@ -129,18 +142,6 @@ class CartRepository implements ContractsCartRepository
         }
 
         return $entry;
-    }
-
-    public function attachCustomer($user): self
-    {
-        $this
-            ->entry()
-            ->set('customer', $user->id())
-            ->save();
-
-        event(new CustomerAddedToCart($this->entry()));
-
-        return $this;
     }
 
     public function redeemCoupon(string $code): bool

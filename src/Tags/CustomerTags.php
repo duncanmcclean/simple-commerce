@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
@@ -13,14 +14,18 @@ class CustomerTags extends SubTag
 
     public function index()
     {
-        return User::current()->data();
+        return Customer::find($this->getParam('id'))->entry()->toAugmentedArray();
     }
 
     public function update()
     {
+        $params = [
+            'customer' => $this->getParam('id'),
+        ];
+
         return $this->createForm(
             route('statamic.simple-commerce.customer.update'),
-            [],
+            $params,
             'POST'
         );
     }
@@ -28,7 +33,7 @@ class CustomerTags extends SubTag
     public function orders()
     {
         return Entry::whereCollection(config('simple-commerce.collections.orders'))
-            ->where('customer', Auth::user()->id)
+            ->where('customer', $this->getParam('customer'))
             ->map(function (EntriesEntry $entry) {
                 return $entry->toAugmentedArray();
             })
@@ -38,7 +43,8 @@ class CustomerTags extends SubTag
     public function order()
     {
         $orderId = $this->getParam('id');
+        $customerId = $this->getParam('customer');
 
-        return Entry::find($orderId)->toAugmentedArray();
+        return Entry::find($orderId);
     }
 }

@@ -11,9 +11,9 @@ interface CartRepository
     public function save(): self;
     public function update(array $data, bool $mergeData = true): self;
     public function items(array $items = []): self;
+    public function customer(string $customer = ''): self;
     public function count(): int;
     public function entry(): Entry;
-    public function attachCustomer($user): self;
     public function redeemCoupon(string $code): bool;
     public function markAsCompleted(): self;
     public function buildReceipt(): string;

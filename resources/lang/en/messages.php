@@ -7,6 +7,7 @@ return [
         'products'  => 'Products',
         'orders'    => 'Orders',
         'coupons'   => 'Coupons',
+        'customers' => 'Customers',
     ],
 
     'default_taxonomies' => [

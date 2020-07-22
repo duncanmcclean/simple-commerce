@@ -2,48 +2,21 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Statamic\Facades\User;
+use Illuminate\Support\Arr;
 
 class CustomerController extends BaseActionController
 {
-    public function index()
+    public function index(Request $request, $customer)
     {
-        if (Auth::guest()) {
-            return back()->with('errors', __('simple-commerce:customers.requires_login'));
-        }
-
-        return User::current()->data();
+        return Customer::find($customer)->toArray();
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $customer)
     {
-        if (Auth::guest()) {
-            return back()->with('errors', __('simple-commerce:customers.requires_login'));
-        }
-
-        $user = User::current();
-
-        $values = $user
-            ->blueprint()
-            ->fields()
-            ->addValues($request->all())
-            ->process()
-            ->values()
-            ->except([
-                'email', 'groups', 'roles',
-            ]);
-
-        foreach ($values as $key => $value) {
-            $user->set($key, $value);
-        }
-
-        if ($request->has('email')) {
-            $user->email($request->email);
-        }
-
-        $user->save();
+        Customer::find($customer)
+            ->update(Arr::except($request->all, ['_params', '_redirect', '_token']));
 
         return $this->withSuccess($request);
     }
