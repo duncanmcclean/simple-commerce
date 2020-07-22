@@ -2,16 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as ContractsCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Illuminate\Support\Str;
 
-class CustomerRepository
+class CustomerRepository implements ContractsCustomerRepository
 {
-    // TODO: make interface
-
     public string $id;
     public string $title;
     public string $slug;
