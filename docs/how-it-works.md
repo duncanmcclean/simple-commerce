@@ -64,3 +64,4 @@ Last but not least, it's probably best you understand some of the core concepts.
 * **Orders** are pretty self explanitory. 
 * **Carts** under the hood are the same as orders but we use it to describe orders that haven't been completed yet (so if a customer hasn't purchased the order)
 * **Coupons** are a way of giving customers discounts on their cart. 
+* **Customers** is a collection by Simple Commerce where all of your customers are stored. Each order has a customer assigned to it.
