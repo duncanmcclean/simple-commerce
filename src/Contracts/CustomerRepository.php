@@ -11,4 +11,5 @@ interface CustomerRepository
     public function save(): self;
     public function update(array $data, bool $mergeData = true): self;
     public function entry();
+    public function toArray(): array
 }

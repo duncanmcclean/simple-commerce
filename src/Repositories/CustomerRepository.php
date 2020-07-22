@@ -105,6 +105,16 @@ class CustomerRepository implements ContractsCustomerRepository
         return $entry;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'name' => isset($this->data['name']) ? $this->data['name'] : null,
+            'email' => isset($this->data['email']) ? $this->data['email'] : null,
+        ];
+    }
+
     protected function generateTitleAndSlug(): self
     {
         $name = $this->data['name'];
