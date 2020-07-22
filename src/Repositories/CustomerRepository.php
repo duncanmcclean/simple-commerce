@@ -64,19 +64,13 @@ class CustomerRepository implements ContractsCustomerRepository
 
     public function save(): self
     {
-        // $entry = $this->entry();
-
-        // if (! $entry) {
-            $entry = Entry::make()
-                ->collection(config('simple-commerce.collections.customers'))
-                ->blueprint('customer')
-                ->locale(Site::current()->handle())
-                ->published(false)
-                ->slug($this->slug)
-                ->id($this->id);
-        // }
-
-        $entry
+        Entry::make()
+            ->collection(config('simple-commerce.collections.customers'))
+            ->blueprint('customer')
+            ->locale(Site::current()->handle())
+            ->published(false)
+            ->slug($this->slug)
+            ->id($this->id)
             ->data(array_merge($this->data, [
                 'title' => $this->title,
             ]))
