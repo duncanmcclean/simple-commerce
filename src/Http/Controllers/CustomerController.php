@@ -8,7 +8,7 @@ use Statamic\Facades\User;
 
 class CustomerController extends BaseActionController
 {
-    public function index()
+    public function index(Request $request, $customer)
     {
         if (Auth::guest()) {
             return back()->with('errors', __('simple-commerce:customers.requires_login'));

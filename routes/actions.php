@@ -19,7 +19,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
 
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
-    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::get('/customer/{customer}', [CustomerController::class, 'index'])->name('customer.index');
     Route::post('/customer/{customer}', [CustomerController::class, 'update'])->name('customer.update');
 
     Route::get('/shipping-options', [ShippingOptionController::class, 'index'])->name('shipping-options.index');
