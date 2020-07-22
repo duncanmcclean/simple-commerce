@@ -2,7 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -16,6 +18,7 @@ class CartController extends BaseActionController
 
     public function update(Request $request)
     {
+        $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
         $data = Arr::except($request->all(), ['_token', '_params']);
 
         foreach ($data as $key => $value) {
@@ -28,7 +31,25 @@ class CartController extends BaseActionController
             $data[$key] = $value;
         }
 
-        Cart::find($request->session()->get(config('simple-commerce.cart_key')))
+        if ($data['name'] && $data['email']) {
+            try {
+                $customer = Customer::findByEmail($data['email']);
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::make()
+                    ->data([
+                        'name' => $data['name'],
+                        'email' => $data['email'],
+                    ])
+                    ->save();
+            }
+
+            $cart->customer($customer->id);
+
+            unset($data['name']);
+            unset($data['email']);
+        }
+
+        $cart
             ->update($data)
             ->calculateTotals();
 
