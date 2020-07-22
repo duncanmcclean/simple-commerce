@@ -8,6 +8,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Illuminate\Support\Str;
+use Statamic\Entries\Entry as EntriesEntry;
 
 class CustomerRepository implements ContractsCustomerRepository
 {
@@ -81,20 +82,18 @@ class CustomerRepository implements ContractsCustomerRepository
 
     public function update(array $data, bool $mergeData = true): self
     {
-        $entry = $this->entry();
-
         if ($mergeData) {
-            $data = array_merge($entry->data()->toArray(), $data);
+            $data = array_merge($this->data, $data);
         }
 
-        $entry
+        $this->entry()
             ->data($data)
             ->save();
 
         return $this;
     }
 
-    public function entry()
+    public function entry(): EntriesEntry
     {
         $entry = Entry::find($this->id);
 

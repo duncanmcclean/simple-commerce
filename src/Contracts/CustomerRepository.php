@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
+use Statamic\Entries\Entry;
+
 interface CustomerRepository
 {
     public function make(): self;
@@ -10,6 +12,6 @@ interface CustomerRepository
     public function data(array $data = []): self;
     public function save(): self;
     public function update(array $data, bool $mergeData = true): self;
-    public function entry();
-    public function toArray(): array
+    public function entry(): Entry;
+    public function toArray(): array;
 }

@@ -31,7 +31,7 @@ class CartController extends BaseActionController
             $data[$key] = $value;
         }
 
-        if ($data['name'] && $data['email']) {
+        if (isset($data['name']) && isset($data['email'])) {
             try {
                 $customer = Customer::findByEmail($data['email']);
             } catch (CustomerNotFound $e) {
