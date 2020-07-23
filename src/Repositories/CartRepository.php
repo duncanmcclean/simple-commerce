@@ -26,14 +26,6 @@ class CartRepository implements ContractsCartRepository
     public string $slug = '';
     public array $data = [];
 
-    public array $items = [];
-
-    public int $grandTotal = 0000;
-    public int $itemsTotal = 0000;
-    public int $taxTotal = 0000;
-    public int $shippingTotal = 0000;
-    public int $couponTotal = 0000;
-
     public function make(): self
     {
         $this->id = (string) Stache::generateId();
@@ -62,13 +54,6 @@ class CartRepository implements ContractsCartRepository
         $this->title = $entry->title;
         $this->slug = $entry->slug();
         $this->data = $entry->data()->toArray();
-
-        $this->items = $entry->data()->get('items') ?? [];
-        $this->grandTotal = $entry->data()->get('grand_total') ?? 0;
-        $this->itemsTotal = $entry->data()->get('items_total') ?? 0;
-        $this->taxTotal = $entry->data()->get('tax_total') ?? 0;
-        $this->shippingTotal = $entry->data()->get('shipping_total') ?? 0;
-        $this->couponTotal = $entry->data()->get('coupon_total') ?? 0;
 
         return $this;
     }
@@ -224,7 +209,7 @@ class CartRepository implements ContractsCartRepository
             'coupon_total'      => 0000,
         ];
 
-        $data['items'] = collect($this->items)
+        $data['items'] = collect($this->data['items'])
             ->map(function ($item) use (&$data) {
                 $product = Entry::find($item['product']);
 

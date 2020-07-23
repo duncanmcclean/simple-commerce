@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
 
 class CheckoutTags extends SubTag
 {
@@ -13,10 +12,8 @@ class CheckoutTags extends SubTag
 
     public function index()
     {
-        $data = Cart::find(Session::get(config('simple-commerce.cart_key')))
-            ->entry()
-            ->data()
-            ->toArray();
+        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+        $data = $cart->data;
 
         if (! isset($data['is_paid']) || $data['is_paid'] === false) {
             foreach (SimpleCommerce::gateways() as $gateway) {
