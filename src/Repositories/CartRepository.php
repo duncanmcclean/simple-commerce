@@ -17,6 +17,7 @@ use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\URL;
 
 class CartRepository implements ContractsCartRepository
@@ -29,7 +30,7 @@ class CartRepository implements ContractsCartRepository
     public function make(): self
     {
         $this->id = (string) Stache::generateId();
-        $this->title = 'Order #'.uniqid(); // TODO: make it something like 'Order #2001' instead, using the cache
+        $this->title = '#'.SimpleCommerce::freshOrderNumber();
         $this->slug = $this->id;
         $this->data = [
             'title' => $this->title,
@@ -153,6 +154,8 @@ class CartRepository implements ContractsCartRepository
             'is_paid' => true,
             'paid_date' => now(),
         ]);
+
+        $this->entry()->published(true)->save();
 
         event(new CustomerAddedToCart($this->entry()));
 

@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Illuminate\Support\Str;
+use Statamic\Facades\Collection;
 use Statamic\Statamic;
 
 class SimpleCommerce
@@ -43,5 +44,29 @@ class SimpleCommerce
                 ];
             })
             ->toArray();
+    }
+
+    public static function freshOrderNumber()
+    {
+        $minimum = 2000;
+
+        $query = Collection::find(config('simple-commerce.collections.orders'))
+            ->queryEntries()
+            ->orderBy('title', 'asc')
+            ->where('title', '!=', null)
+            ->get()
+            ->map(function ($order) {
+                $order->title = str_replace('Order ', '', $order->title);
+                $order->title = str_replace('#', '', $order->title);
+
+                return $order->title;
+            })
+            ->last();
+
+        if (! $query) {
+            return $minimum + 1;
+        }
+
+        return ((int) $query) + 1;
     }
 }
