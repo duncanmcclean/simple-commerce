@@ -30,7 +30,11 @@ class CartTags extends SubTag
 
     public function items()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['items']->value();
+        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+
+        return isset($cart->data['items']) && $cart->data['items'] != [] ?
+            $cart->entry()->toAugmentedArray()['items']->value() :
+            [];
     }
 
     public function count()
@@ -39,7 +43,11 @@ class CartTags extends SubTag
             return 0;
         }
 
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->count();
+        return collect(
+            Cart::find(Session::get(config('simple-commerce.cart_key')))
+            ->toArray()
+            ['items']
+        )->count();
     }
 
     public function total()

@@ -15,13 +15,17 @@ use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
-use Statamic\Facades\User;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Illuminate\Support\Facades\URL;
 
 class CartRepository implements ContractsCartRepository
 {
-    public string $id;
+    public string $id = '';
+    public string $title = '';
+    public string $slug = '';
+    public array $data = [];
+
     public array $items = [];
 
     public int $grandTotal = 0000;
@@ -33,19 +37,32 @@ class CartRepository implements ContractsCartRepository
     public function make(): self
     {
         $this->id = (string) Stache::generateId();
+        $this->title = 'Order #'.uniqid(); // TODO: make it something like 'Order #2001' instead, using the cache
+        $this->slug = $this->id;
+        $this->data = [
+            'title' => $this->title,
+            'items' => [],
+            'is_paid' => false,
+            'grand_total' => 0,
+            'items_total' => 0,
+            'tax_total' => 0,
+            'shipping_total' => 0,
+            'coupon_total' => 0,
+        ];
 
         return $this;
     }
 
     public function find(string $id): self
     {
-        $entry = Entry::find($id);
+        $this->id = $id;
 
-        if (! $entry) {
-            throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $id]));
-        }
+        $entry = $this->entry();
 
-        $this->id = $entry->id();
+        $this->title = $entry->title;
+        $this->slug = $entry->slug();
+        $this->data = $entry->data()->toArray();
+
         $this->items = $entry->data()->get('items') ?? [];
         $this->grandTotal = $entry->data()->get('grand_total') ?? 0;
         $this->itemsTotal = $entry->data()->get('items_total') ?? 0;
@@ -56,26 +73,26 @@ class CartRepository implements ContractsCartRepository
         return $this;
     }
 
-    public function save(): self
+    public function data(array $data = [])
     {
-        $entry = Entry::find($this->id);
-
-        if ($entry === null) {
-            $entry = Entry::make()
-                ->collection(config('simple-commerce.collections.orders'))
-                ->blueprint('order')
-                ->locale(Site::current()->handle())
-                ->published(false)
-                ->slug($this->id)
-                ->id($this->id);
+        if ($data === []) {
+            return $this->data;
         }
 
-        $entry
-            ->data([
-                'title' => 'Order #'.uniqid(),
-                'items' => $this->items,
-                'is_paid' => false,
-            ])
+        $this->data = $data;
+
+        return $this;
+    }
+
+    public function save(): self
+    {
+        $entry = Entry::make()
+            ->collection(config('simple-commerce.collections.orders'))
+            ->locale(Site::current()->handle())
+            ->published(false)
+            ->slug($this->id)
+            ->id($this->id)
+            ->data($this->data)
             ->save();
 
         event(new CartSaved($this->entry()));
@@ -85,52 +102,19 @@ class CartRepository implements ContractsCartRepository
 
     public function update(array $data, bool $mergeData = true): self
     {
-        $entry = Entry::find($this->id);
-
-        if (! $entry) {
-            throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $this->id]));
-        }
-
         if ($mergeData) {
-            $data = array_merge($entry->data()->toArray(), $data);
+            $data = array_merge($this->data, $data);
         }
 
-        $entry
+        $this->entry()
             ->data($data)
             ->save();
+
+        $this->find($this->id);    
 
         event(new CartUpdated($this->entry()));
 
         return $this;
-    }
-
-    public function items(array $items = []): self
-    {
-        if ($items === []) {
-            return $this->items;
-        }
-
-        $this->items = $items;
-
-        return $this;
-    }
-
-    public function customer(string $customer = ''): self
-    {
-        if ($customer === '') {
-            return $this->entry()->data()->get('customer');
-        }
-
-        $this->update([
-            'customer' => $customer,
-        ]);
-
-        return $this;
-    }
-
-    public function count(): int
-    {
-        return collect($this->items)->count();
     }
 
     public function entry(): EntriesEntry
@@ -144,9 +128,52 @@ class CartRepository implements ContractsCartRepository
         return $entry;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'is_paid' => isset($this->data['is_paid']) ? $this->data['is_paid'] : false,
+            'paid_date' => isset($this->data['paid_date']) ? $this->data['paid_date'] : null,
+            'gateway' => isset($this->data['gateway']) ? $this->data['gateway'] : null,
+            'gateway_data' => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
+            'customer' => isset($this->data['customer']) ? $this->data['customer'] : null,
+            'items' => isset($this->data['items']) ? $this->data['items'] : [],
+        ];
+    }
+
+    // TODO: maybe this could be removed
+    public function items(array $items = []): self
+    {
+        if ($items === []) {
+            return $this->data['items'];
+        }
+
+        $this->update([
+            'items' => $items,
+        ]);
+
+        return $this;
+    }
+
+    // TODO: maybe this could be removed
+    public function customer(string $customer = ''): self
+    {
+        if ($customer === '') {
+            return $this->data['customer'];
+        }
+
+        $this->update([
+            'customer' => $customer,
+        ]);
+
+        return $this;
+    }
+
     public function redeemCoupon(string $code): bool
     {
-        $coupon = Coupon::find(Entry::findBySlug($code, 'coupons')->id());
+        $coupon = Coupon::findByCode($code);
 
         if ($coupon->isValid($this->entry())) {
             $this
@@ -165,19 +192,16 @@ class CartRepository implements ContractsCartRepository
 
     public function markAsCompleted(): self
     {
-        $this
-            ->entry()
-            ->published(true)
-            ->data(array_merge($this->entry()->data()->toArray(), [
-                'is_paid' => true,
-                'paid_date' => now(),
-            ]))
-            ->save();
+        $this->update([
+            'is_paid' => true,
+            'paid_date' => now(),
+        ]);
 
         event(new CustomerAddedToCart($this->entry()));
 
-        if ($customer = User::find($this->entry()->data()->get('customer'))) {
-            Mail::to($customer->email())->send(new OrderConfirmation($this->id));
+        if ($customer = Customer::find($this->data['customer'])) {
+            Mail::to($customer->data['email'])
+                ->send(new OrderConfirmation($this->id));
         }
 
         return $this;
@@ -192,9 +216,6 @@ class CartRepository implements ContractsCartRepository
 
     public function calculateTotals(): self
     {
-        $this->find($this->id);
-        $entry = $this->entry();
-
         $data = [
             'grand_total'       => 0000,
             'items_total'       => 0000,
@@ -211,15 +232,6 @@ class CartRepository implements ContractsCartRepository
                     ->get(Site::current()->handle())['tax'];
 
                 $itemTotal = ($product->data()->get('price') * $item['quantity']);
-
-                // if tax inclded in prices
-                    // item total = item total - tax total
-                    // tax total = tax total
-
-                // if tax not included in prices
-                    // item total = item total
-                    // tax total = tax total
-
 
                 if ($siteTax['included_in_prices']) {
                     $itemTax = str_replace(
@@ -252,29 +264,20 @@ class CartRepository implements ContractsCartRepository
             })
             ->toArray();
 
-        if ($entry->data()->get('shipping_name') != null) {
+        if (isset($this->data['shipping_name']) && $this->data['shipping_name'] !== null) {
             // TODO: let the user pick which method is used?
-
-            // $address = [
-            //     'name' => $entry->data()->get('shipping_name'),
-            //     'address' => $entry->data()->get('shipping_address'),
-            //     'city' => $entry->data()->get('shipping_city'),
-            //     'country' => $entry->data()->get('shipping_country'),
-            //     'zip_code' => $entry->data()->get('shipping_zip_code')
-            // ];
-
             $method = collect(Config::get('simple-commerce.sites'))
                 ->get(Site::current()->handle())['shipping']['methods'][0];
 
             if ($method) {
                 $method = new $method();
-                $data['shipping_total'] = $method->calculateCost($entry);
+                $data['shipping_total'] = $method->calculateCost($this->entry());
             }
         }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
 
-        if ($entry->data()->get('coupon') != null) {
+        if (isset($this->data['coupon']) && $this->data['coupon'] !== null) {
             $coupon = Coupon::find($entry->data()->get('coupon'));
 
             if ($coupon->data['type'] === 'percentage') {

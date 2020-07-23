@@ -71,7 +71,6 @@ class CouponRepository implements ContractsCouponRepository
     {
         Entry::make()
             ->collection(config('simple-commerce.collections.coupons'))
-            ->blueprint('coupon')
             ->locale(Site::current()->handle())
             ->published(false)
             ->slug($this->slug)
