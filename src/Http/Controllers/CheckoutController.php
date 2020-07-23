@@ -45,7 +45,9 @@ class CheckoutController extends BaseActionController
                     ->save();
             }
 
-            $cart->customer($customer->id);
+            $cart->update([
+                'customer' => $customer->id,
+            ]);
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';

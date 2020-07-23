@@ -128,34 +128,6 @@ class CartRepository implements ContractsCartRepository
         ];
     }
 
-    // TODO: maybe this could be removed
-    public function items(array $items = []): self
-    {
-        if ($items === []) {
-            return $this->data['items'];
-        }
-
-        $this->update([
-            'items' => $items,
-        ]);
-
-        return $this;
-    }
-
-    // TODO: maybe this could be removed
-    public function customer(string $customer = ''): self
-    {
-        if ($customer === '') {
-            return $this->data['customer'];
-        }
-
-        $this->update([
-            'customer' => $customer,
-        ]);
-
-        return $this;
-    }
-
     public function redeemCoupon(string $code): bool
     {
         $coupon = Coupon::findByCode($code);

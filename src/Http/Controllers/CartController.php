@@ -43,7 +43,9 @@ class CartController extends BaseActionController
                     ->save();
             }
 
-            $cart->customer($customer->id);
+            $cart->update([
+                'customer' => $customer->id,
+            ]);
 
             unset($data['name']);
             unset($data['email']);
