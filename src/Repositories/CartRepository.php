@@ -131,6 +131,13 @@ class CartRepository implements ContractsCartRepository
             'gateway_data' => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
             'customer' => isset($this->data['customer']) ? $this->data['customer'] : null,
             'items' => isset($this->data['items']) ? $this->data['items'] : [],
+            'shipping_address' => [
+                'name' => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
+                'address' => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
+                'city' => isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
+                'country' => isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
+                'zip_code' => isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
+            ],
         ];
     }
 
@@ -229,21 +236,17 @@ class CartRepository implements ContractsCartRepository
             })
             ->toArray();
 
-        if (isset($this->data['shipping_name']) && $this->data['shipping_name'] !== null) {
-            // TODO: let the user pick which method is used?
-            $method = collect(Config::get('simple-commerce.sites'))
-                ->get(Site::current()->handle())['shipping']['methods'][0];
+        if (isset($this->data['shipping_method'])) {
+            $method = $this->data['shipping_method'];
 
-            if ($method) {
-                $method = new $method();
-                $data['shipping_total'] = $method->calculateCost($this->entry());
-            }
+            $instance = new $method();
+            $data['shipping_total'] = $instance->calculateCost($this->entry());
         }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
 
         if (isset($this->data['coupon']) && $this->data['coupon'] !== null) {
-            $coupon = Coupon::find($entry->data()->get('coupon'));
+            $coupon = Coupon::find($this->data['coupon']);
 
             if ($coupon->data['type'] === 'percentage') {
                 $data['coupon_total'] += (int) str_replace(

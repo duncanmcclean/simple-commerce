@@ -113,9 +113,11 @@ class CartTags extends SubTag
 
     public function update()
     {
+        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+
         return $this->createForm(
             route('statamic.simple-commerce.cart.update'),
-            [],
+            $cart->entry()->toAugmentedArray(),
             'POST'
         );
     }

@@ -2,15 +2,40 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
+use Statamic\Facades\Site;
+
 class ShippingTags extends SubTag
 {
-    public function options()
+    public function methods()
     {
-        //
-    }
+        $cart = Cart::find(Session::get(Config::get('simple-commerce.cart_key')));
 
-    public function updateOption()
-    {
-        //
+        $siteConfig = collect(Config::get('simple-commerce.sites'))
+            ->get(Site::current()->handle());
+
+        return collect($siteConfig['shipping']['methods'])
+            ->map(function ($method) use ($cart) {
+                $instance = new $method();
+
+                if ($instance->checkAvailability($cart->toArray()['shipping_address']) === false) {
+                    dd('ww');
+                    return null;
+                }
+
+                $cost = $instance->calculateCost($cart->entry());
+
+                return [
+                    'handle' => $method,
+                    'name' => $instance->name(),
+                    'description' => $instance->description(),
+                    'cost' => Currency::parse($cost, Site::current()),
+                ];
+            })
+            ->whereNotNull()
+            ->toArray();
     }
 }
