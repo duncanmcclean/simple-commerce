@@ -2,8 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use Statamic\Facades\Collection;
-use Statamic\Facades\Taxonomy;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 
