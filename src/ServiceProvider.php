@@ -36,83 +36,49 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
-        $this->publishes([
-            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
-        ], 'simple-commerce-config');
-
-        $this->publishes([
-            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
-        ], 'simple-commerce-blueprints');
-
-        $this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
-        ], 'simple-commerce-translators');
-
-        $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/simple-commerce'),
-        ], 'simple-commerce-views');
-
-        $this->publishes([
-            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
-        ], 'simple-commerce-assets');
-
-        $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
-
         Statamic::booted(function () {
             $this
-                ->contentSetup()
-                ->bindRepositories();
+                ->bootVendorAssets()
+                ->bootRepositories();
+        });
+
+        Statamic::afterInstalled(function () {
+            (new Content)->setup();
         });
 
         SimpleCommerce::bootGateways();
     }
 
-    public function contentSetup()
+    protected function bootVendorAssets()
     {
-        if (! Taxonomy::handleExists('product_categories')) {
-            Taxonomy::make('product_categories')
-                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
-                ->save();
-        }
+        $this->publishes([
+            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+        ], 'simple-commerce');
 
-        if (! Collection::handleExists('products')) {
-            Collection::make('products')
-                ->title(__('simple-commerce::messages.default_collections.products'))
-                ->pastDateBehavior('public')
-                ->futureDateBehavior('private')
-                ->sites(['default'])
-                ->routes('/products/{slug}')
-                ->taxonomies(['product_categories'])
-                ->save();
-        }
+        $this->publishes([
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+        ], 'simple-commerce');
 
-        if (! Collection::handleExists('customers')) {
-            Collection::make('customers')
-                ->title(__('simple-commerce::messages.default_collections.customers'))
-                ->sites(['default'])
-                ->save();
-        }
+        $this->publishes([
+            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
+        ], 'simple-commerce');
 
-        if (! Collection::handleExists('orders')) {
-            Collection::make('orders')
-                ->title(__('simple-commerce::messages.default_collections.orders'))
-                ->sites(['default'])
-                ->save();
-        }
+        $this->publishes([
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
+        ], 'simple-commerce-translations');
 
-        if (! Collection::handleExists('coupons')) {
-            Collection::make('coupons')
-                ->title(__('simple-commerce::messages.default_collections.coupons'))
-                ->sites(['default'])
-                ->save();
-        }
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/simple-commerce'),
+        ], 'simple-commerce-views');
+
+        $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
 
         return $this;
     }
 
-    public function bindRepositories()
+    protected function bootRepositories()
     {
         $this->app->bind('Cart', Repositories\CartRepository::class);
         $this->app->bind('Coupon', Repositories\CouponRepository::class);
