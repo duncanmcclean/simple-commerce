@@ -8,8 +8,9 @@ use Statamic\Entries\Entry;
 
 class CouponRedeemed
 {
-    use Dispatchable, InteractsWithSockets;
-    
+    use Dispatchable;
+    use InteractsWithSockets;
+
     public $coupon;
 
     public function __construct(Entry $coupon)

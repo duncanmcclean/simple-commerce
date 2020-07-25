@@ -9,9 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
-use Statamic\Facades\User;
 
 class CheckoutController extends BaseActionController
 {
@@ -28,7 +26,7 @@ class CheckoutController extends BaseActionController
 
         $request->validate($gateway->purchaseRules());
         $request->validate([
-            'name' => 'sometimes|string',
+            'name'  => 'sometimes|string',
             'email' => 'sometimes|email',
         ]);
         // $request->validate($cart->entry()->blueprint()->fields()->validator()->rules());
@@ -39,7 +37,7 @@ class CheckoutController extends BaseActionController
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
                     ->data([
-                        'name' => $requestData['name'],
+                        'name'  => $requestData['name'],
                         'email' => $requestData['email'],
                     ])
                     ->save();

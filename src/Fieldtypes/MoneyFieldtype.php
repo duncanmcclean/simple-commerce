@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Facades\Site;
-use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
 
 class MoneyFieldtype extends Fieldtype
@@ -32,7 +31,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preProcess($data)
     {
-        if (! $this->config('store_as_float')) {
+        if (!$this->config('store_as_float')) {
             return substr_replace($data, '.', -2, 0);
         }
 
@@ -41,7 +40,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function process($data)
     {
-        if (! $this->config('store_as_float')) {
+        if (!$this->config('store_as_float')) {
             return (int) str_replace('.', '', $data);
         }
 

@@ -15,10 +15,10 @@ class CheckoutTags extends SubTag
         $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
         $data = $cart->data;
 
-        if (! isset($data['is_paid']) || $data['is_paid'] === false) {
+        if (!isset($data['is_paid']) || $data['is_paid'] === false) {
             foreach (SimpleCommerce::gateways() as $gateway) {
                 $class = new $gateway['class']();
-    
+
                 $data = array_merge($data, $class->prepare($data));
             }
         }

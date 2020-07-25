@@ -10,7 +10,7 @@ class ReceiptController extends BaseActionController
 {
     public function show(Request $request, $orderId)
     {
-        if (! $request->hasValidSignature()) {
+        if (!$request->hasValidSignature()) {
             abort(401);
         }
 

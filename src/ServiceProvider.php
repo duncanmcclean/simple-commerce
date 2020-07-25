@@ -12,9 +12,9 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
-        Events\CartCompleted::class => [],
-        Events\CartSaved::class => [],
-        Events\CartUpdated::class => [],
+        Events\CartCompleted::class       => [],
+        Events\CartSaved::class           => [],
+        Events\CartUpdated::class         => [],
         Events\CustomerAddedToCart::class => [],
     ];
 
@@ -41,7 +41,7 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         Statamic::afterInstalled(function () {
-            (new Content)->setup();
+            (new Content())->setup();
         });
 
         SimpleCommerce::bootGateways();

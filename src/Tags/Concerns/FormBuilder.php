@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
 
-use Illuminate\Support\Facades\Crypt;
 use Statamic\Tags\Concerns\RendersForms;
 
 trait FormBuilder
@@ -56,7 +55,7 @@ trait FormBuilder
      */
     public function errors()
     {
-        if (! $this->hasErrors()) {
+        if (!$this->hasErrors()) {
             return false;
         }
 
@@ -67,7 +66,7 @@ trait FormBuilder
         }
 
         return ($this->content === '')    // If this is a single tag...
-            ? ! empty($errors)             // just output a boolean.
+            ? !empty($errors)             // just output a boolean.
             : $errors;  // Otherwise, parse the content loop.
     }
 

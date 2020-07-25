@@ -63,7 +63,7 @@ class SimpleCommerce
             })
             ->last();
 
-        if (! $query) {
+        if (!$query) {
             return $minimum + 1;
         }
 

@@ -17,11 +17,11 @@ class CartTags extends SubTag
 
     public function has()
     {
-        if (! Session::has(config('simple-commerce.cart_key'))) {
+        if (!Session::has(config('simple-commerce.cart_key'))) {
             return false;
         }
 
-        if (! Entry::find(Session::get(config('simple-commerce.cart_key')))) {
+        if (!Entry::find(Session::get(config('simple-commerce.cart_key')))) {
             return false;
         }
 
@@ -39,14 +39,13 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (! Session::has(config('simple-commerce.cart_key'))) {
+        if (!Session::has(config('simple-commerce.cart_key'))) {
             return 0;
         }
 
         return collect(
             Cart::find(Session::get(config('simple-commerce.cart_key')))
-            ->toArray()
-            ['items']
+            ->toArray()['items']
         )->count();
     }
 

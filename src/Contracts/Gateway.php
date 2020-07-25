@@ -7,8 +7,12 @@ interface Gateway
     public function name(): string;
 
     public function prepare(array $data): array;
+
     public function purchase(array $data): array;
+
     public function purchaseRules(): array;
+
     public function getCharge(array $data): array;
+
     public function refundCharge(array $data): array;
 }
