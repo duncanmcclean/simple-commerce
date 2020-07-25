@@ -16,8 +16,8 @@ class Content
 
     protected function setupTaxonomies()
     {
-        if (! Taxonomy::handleExists('product_categories')) {
-            Taxonomy::make('product_categories')
+        if (! Taxonomy::handleExists(config('simple-commerce.taxonomies.product_categories'))) {
+            Taxonomy::make(config('simple-commerce.taxonomies.product_categories'))
                 ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
                 ->save();
         }
@@ -27,8 +27,8 @@ class Content
 
     protected function setupCollections()
     {
-        if (! Collection::handleExists('products')) {
-            Collection::make('products')
+        if (! Collection::handleExists(config('simple-commerce.collections.products'))) {
+            Collection::make(config('simple-commerce.collections.products'))
                 ->title(__('simple-commerce::messages.default_collections.products'))
                 ->pastDateBehavior('public')
                 ->futureDateBehavior('private')
@@ -38,22 +38,22 @@ class Content
                 ->save();
         }
 
-        if (! Collection::handleExists('customers')) {
-            Collection::make('customers')
+        if (! Collection::handleExists(config('simple-commerce.collections.customers'))) {
+            Collection::make(config('simple-commerce.collections.customers'))
                 ->title(__('simple-commerce::messages.default_collections.customers'))
                 ->sites(['default'])
                 ->save();
         }
 
-        if (! Collection::handleExists('orders')) {
-            Collection::make('orders')
+        if (! Collection::handleExists(config('simple-commerce.collections.orders'))) {
+            Collection::make(config('simple-commerce.collections.orders'))
                 ->title(__('simple-commerce::messages.default_collections.orders'))
                 ->sites(['default'])
                 ->save();
         }
 
-        if (! Collection::handleExists('coupons')) {
-            Collection::make('coupons')
+        if (! Collection::handleExists(config('simple-commerce.collections.coupons'))) {
+            Collection::make(config('simple-commerce.collections.coupons'))
                 ->title(__('simple-commerce::messages.default_collections.coupons'))
                 ->sites(['default'])
                 ->save();
