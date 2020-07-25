@@ -4,11 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use Aerni\Factory\Factory;
 use Aerni\Factory\Mapper;
-use Statamic\Extend\Manifest;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Faker\Generator as Faker;
-use Generator;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
@@ -36,7 +35,7 @@ abstract class TestCase extends OrchestraTestCase
 
         $app->make(Manifest::class)->manifest = [
             'doublethreedigital/simple-commerce' => [
-                'id' => 'doublethreedigital/simple-commerce',
+                'id'        => 'doublethreedigital/simple-commerce',
                 'namespace' => 'DoubleThreeDigital\\SimpleCommerce\\',
             ],
         ];
@@ -48,7 +47,7 @@ abstract class TestCase extends OrchestraTestCase
 
         $configs = [
             'assets', 'cp', 'forms', 'static_caching',
-            'sites', 'stache', 'system', 'users'
+            'sites', 'stache', 'system', 'users',
         ];
 
         foreach ($configs as $config) {
@@ -60,8 +59,8 @@ abstract class TestCase extends OrchestraTestCase
 
         $app['config']->set('factory', [
             'published' => true,
-            'title' => [
-                'chars' => [$min = 10, $max = 20],
+            'title'     => [
+                'chars'     => [$min = 10, $max = 20],
                 'real_text' => false,
             ],
         ]);
@@ -71,7 +70,7 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function factory()
     {
-        $factory = new Factory(new Faker(), new Mapper);
+        $factory = new Factory(new Faker(), new Mapper());
 
         return $factory;
     }

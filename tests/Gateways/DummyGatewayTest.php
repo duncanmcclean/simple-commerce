@@ -11,7 +11,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function has_a_name()
     {
-        $name = (new DummyGateway)->name();
+        $name = (new DummyGateway())->name();
 
         $this->assertSame('Dummy', $name);
     }
@@ -19,7 +19,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_prepare()
     {
-        $prepare = (new DummyGateway)->prepare([]);
+        $prepare = (new DummyGateway())->prepare([]);
 
         $this->assertIsArray($prepare);
         $this->assertSame([], $prepare);
@@ -30,7 +30,7 @@ class DummyGatewayTest extends TestCase
     {
         TestTime::freeze();
 
-        $purchase = (new DummyGateway)->purchase([
+        $purchase = (new DummyGateway())->purchase([
             'card_number' => '4242 4242 4242 4242',
         ]);
 
@@ -56,7 +56,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function has_purchase_rules()
     {
-        $rules = (new DummyGateway)->purchaseRules();
+        $rules = (new DummyGateway())->purchaseRules();
 
         $this->assertIsArray($rules);
         $this->assertSame([
@@ -72,7 +72,7 @@ class DummyGatewayTest extends TestCase
     {
         TestTime::freeze();
 
-        $charge = (new DummyGateway)->getCharge([]); // Most of the time, we'll pass in an entry, but we'll just keep it empty here
+        $charge = (new DummyGateway())->getCharge([]); // Most of the time, we'll pass in an entry, but we'll just keep it empty here
 
         $this->assertIsArray($charge);
         $this->assertSame([
@@ -86,7 +86,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_refund_charge()
     {
-        $refund = (new DummyGateway)->refundCharge([]);
+        $refund = (new DummyGateway())->refundCharge([]);
 
         $this->assertIsArray($refund);
         $this->assertSame([], $refund);

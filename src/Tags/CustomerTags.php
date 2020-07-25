@@ -3,10 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use Illuminate\Support\Facades\Auth;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
-use Statamic\Facades\User;
 
 class CustomerTags extends SubTag
 {

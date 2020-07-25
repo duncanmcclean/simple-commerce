@@ -29,13 +29,12 @@ class SimpleCommerceTag extends Tags
         $class = collect($this->tagClasses)
             ->map(function ($value, $key) {
                 return [
-                    'key' => $key,
+                    'key'   => $key,
                     'value' => $value,
                 ];
             })
             ->where('key', $tag[0])
-            ->first()
-            ['value'];
+            ->first()['value'];
 
         $method = isset($tag[1]) ? $tag[1] : 'index';
 

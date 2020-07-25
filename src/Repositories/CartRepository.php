@@ -9,17 +9,17 @@ use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Facades\URL;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -34,14 +34,14 @@ class CartRepository implements ContractsCartRepository
         $this->title = '#'.SimpleCommerce::freshOrderNumber();
         $this->slug = $this->id;
         $this->data = [
-            'title' => $this->title,
-            'items' => [],
-            'is_paid' => false,
-            'grand_total' => 0,
-            'items_total' => 0,
-            'tax_total' => 0,
+            'title'          => $this->title,
+            'items'          => [],
+            'is_paid'        => false,
+            'grand_total'    => 0,
+            'items_total'    => 0,
+            'tax_total'      => 0,
             'shipping_total' => 0,
-            'coupon_total' => 0,
+            'coupon_total'   => 0,
         ];
 
         return $this;
@@ -97,10 +97,10 @@ class CartRepository implements ContractsCartRepository
             ->data($data)
             ->save();
 
-        $this->find($this->id);    
+        $this->find($this->id);
 
         event(new CartUpdated($this->entry()));
-        
+
         if (isset($data['customer'])) {
             event(new CustomerAddedToCart($this->entry()));
         }
@@ -112,7 +112,7 @@ class CartRepository implements ContractsCartRepository
     {
         $entry = Entry::find($this->id);
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CartNotFound(__('simple-commerce::cart.cart_not_found', ['id' => $this->id]));
         }
 
@@ -122,20 +122,20 @@ class CartRepository implements ContractsCartRepository
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'slug' => $this->slug,
-            'is_paid' => isset($this->data['is_paid']) ? $this->data['is_paid'] : false,
-            'paid_date' => isset($this->data['paid_date']) ? $this->data['paid_date'] : null,
-            'gateway' => isset($this->data['gateway']) ? $this->data['gateway'] : null,
-            'gateway_data' => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
-            'customer' => isset($this->data['customer']) ? $this->data['customer'] : null,
-            'items' => isset($this->data['items']) ? $this->data['items'] : [],
+            'id'               => $this->id,
+            'title'            => $this->title,
+            'slug'             => $this->slug,
+            'is_paid'          => isset($this->data['is_paid']) ? $this->data['is_paid'] : false,
+            'paid_date'        => isset($this->data['paid_date']) ? $this->data['paid_date'] : null,
+            'gateway'          => isset($this->data['gateway']) ? $this->data['gateway'] : null,
+            'gateway_data'     => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
+            'customer'         => isset($this->data['customer']) ? $this->data['customer'] : null,
+            'items'            => isset($this->data['items']) ? $this->data['items'] : [],
             'shipping_address' => [
-                'name' => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
-                'address' => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
-                'city' => isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
-                'country' => isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
+                'name'     => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
+                'address'  => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
+                'city'     => isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
+                'country'  => isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
                 'zip_code' => isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
             ],
         ];
@@ -163,7 +163,7 @@ class CartRepository implements ContractsCartRepository
     public function markAsCompleted(): self
     {
         $this->update([
-            'is_paid' => true,
+            'is_paid'   => true,
             'paid_date' => now(),
         ]);
 
@@ -210,7 +210,7 @@ class CartRepository implements ContractsCartRepository
                         '.',
                         '',
                         round(
-                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100 ) * $siteTax['rate'],
+                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
                             2
                         )
                     );
@@ -253,10 +253,10 @@ class CartRepository implements ContractsCartRepository
                     '.',
                     '',
                     round(
-                    ((float) substr_replace($data['grand_total'], '.', -2, 0) / 100) *
+                        ((float) substr_replace($data['grand_total'], '.', -2, 0) / 100) *
                     $coupon->data['value'],
-                    2
-                )
+                        2
+                    )
                 );
             }
 

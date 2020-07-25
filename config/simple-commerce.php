@@ -6,7 +6,7 @@ return [
             'currency' => 'GBP',
 
             'tax' => [
-                'rate' => 20,
+                'rate'               => 20,
                 'included_in_prices' => false,
             ],
 
@@ -23,9 +23,9 @@ return [
     ],
 
     'collections' => [
-        'products' => 'products',
-        'orders' => 'orders',
-        'coupons' => 'coupons',
+        'products'  => 'products',
+        'orders'    => 'orders',
+        'coupons'   => 'coupons',
         'customers' => 'customers',
     ],
 

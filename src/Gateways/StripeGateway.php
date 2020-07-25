@@ -6,9 +6,9 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Facades\Site;
-use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
+use Stripe\Stripe;
 
 class StripeGateway implements Gateway
 {
@@ -22,12 +22,12 @@ class StripeGateway implements Gateway
         $this->setUpWithStripe();
 
         $intent = PaymentIntent::create([
-            'amount' => $data['grand_total'],
+            'amount'   => $data['grand_total'],
             'currency' => Currency::get(Site::current())['code'],
         ]);
 
         return [
-            'intent' => $intent->id,
+            'intent'        => $intent->id,
             'client_secret' => $intent->client_secret,
         ];
     }
@@ -66,7 +66,7 @@ class StripeGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (! env('STRIPE_SECRET')) {
+        if (!env('STRIPE_SECRET')) {
             throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
         }
 

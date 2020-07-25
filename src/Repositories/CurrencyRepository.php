@@ -24,12 +24,12 @@ class CurrencyRepository implements ContractsCurrencyRepository
             ->toArray();
     }
 
-    public function parse($price = 00.00, Site $site): string
+    public function parse($price, Site $site): string
     {
         $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
-        
+
         $numberFormatter = new NumberFormatter('en_US', \NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
         return $moneyFormatter->format($money);
     }

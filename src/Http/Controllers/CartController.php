@@ -37,7 +37,7 @@ class CartController extends BaseActionController
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
                     ->data([
-                        'name' => $data['name'],
+                        'name'  => $data['name'],
                         'email' => $data['email'],
                     ])
                     ->save();

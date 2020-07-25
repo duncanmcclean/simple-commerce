@@ -16,7 +16,7 @@ class CouponController extends BaseActionController
         $redeem = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->redeemCoupon($request->code);
 
-        if (! $redeem) {
+        if (!$redeem) {
             return $this->withErrors($request, __('simple-commerce::coupons.invalid_coupon'));
         }
 

@@ -4,11 +4,11 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as ContractsCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use Illuminate\Support\Str;
+use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
-use Illuminate\Support\Str;
-use Statamic\Entries\Entry as EntriesEntry;
 
 class CustomerRepository implements ContractsCustomerRepository
 {
@@ -44,7 +44,7 @@ class CustomerRepository implements ContractsCustomerRepository
             ->where('slug', Str::slug($email))
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
         }
 
@@ -76,7 +76,7 @@ class CustomerRepository implements ContractsCustomerRepository
             ]))
             ->save();
 
-        return $this;    
+        return $this;
     }
 
     public function update(array $data, bool $mergeData = true): self
@@ -96,7 +96,7 @@ class CustomerRepository implements ContractsCustomerRepository
     {
         $entry = Entry::find($this->id);
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $this->id]));
         }
 
@@ -106,9 +106,9 @@ class CustomerRepository implements ContractsCustomerRepository
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
+            'id'    => $this->id,
             'title' => $this->title,
-            'name' => isset($this->data['name']) ? $this->data['name'] : null,
+            'name'  => isset($this->data['name']) ? $this->data['name'] : null,
             'email' => isset($this->data['email']) ? $this->data['email'] : null,
         ];
     }

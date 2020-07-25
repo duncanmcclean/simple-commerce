@@ -10,7 +10,7 @@ class MoneyFieldtypeTest extends TestCase
     /** @test */
     public function can_preload_currency()
     {
-        $preload = (new MoneyFieldtype)->preload();
+        $preload = (new MoneyFieldtype())->preload();
 
         $this->assertIsArray($preload);
         $this->assertArrayHasKey('code', $preload);
@@ -23,7 +23,7 @@ class MoneyFieldtypeTest extends TestCase
     {
         $value = 2550;
 
-        $process = (new MoneyFieldtype)->preProcess($value);
+        $process = (new MoneyFieldtype())->preProcess($value);
 
         $this->assertSame('25.50', $process);
     }
@@ -33,7 +33,7 @@ class MoneyFieldtypeTest extends TestCase
     {
         $value = '12.65';
 
-        $process = (new MoneyFieldtype)->process($value);
+        $process = (new MoneyFieldtype())->process($value);
 
         $this->assertSame(1265, $process);
     }
@@ -41,7 +41,7 @@ class MoneyFieldtypeTest extends TestCase
     /** @test */
     public function has_a_title()
     {
-        $title = (new MoneyFieldtype)->title();
+        $title = (new MoneyFieldtype())->title();
 
         $this->assertSame('Money', $title);
     }
@@ -49,7 +49,7 @@ class MoneyFieldtypeTest extends TestCase
     /** @test */
     public function has_a_component()
     {
-        $title = (new MoneyFieldtype)->component();
+        $title = (new MoneyFieldtype())->component();
 
         $this->assertSame('money', $title);
     }
@@ -59,7 +59,7 @@ class MoneyFieldtypeTest extends TestCase
     {
         $value = 1945;
 
-        $augment = (new MoneyFieldtype)->augment($value);
+        $augment = (new MoneyFieldtype())->augment($value);
 
         $this->assertSame('£19.45', $augment);
     }

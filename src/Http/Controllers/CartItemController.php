@@ -3,9 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
@@ -23,11 +23,11 @@ class CartItemController extends BaseActionController
         $cart->update([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $request->product,
-                    'sku' => $request->sku,
+                    'id'       => Stache::generateId(),
+                    'product'  => $request->product,
+                    'sku'      => $request->sku,
                     'quantity' => (int) $request->quantity,
-                    'total' => 0000,
+                    'total'    => 0000,
                 ],
             ],
         ])->calculateTotals();
@@ -35,7 +35,7 @@ class CartItemController extends BaseActionController
         // dd($cart->entry());
         // dd($cart->entry());
 
-        if (! Session::has(config('simple-commerce.cart_key'))) {
+        if (!Session::has(config('simple-commerce.cart_key'))) {
             Session::put(config('simple-commerce.cart_key'), $cart->id);
         }
 
@@ -69,9 +69,9 @@ class CartItemController extends BaseActionController
                 ->reject(function ($item) {
                     return $item['id'] != $item;
                 })
-                ->toArray()
+                ->toArray(),
         ]);
-        
+
         $cart->calculateTotals();
 
         return $this->withSuccess($request);

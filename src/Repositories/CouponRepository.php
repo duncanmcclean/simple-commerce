@@ -49,9 +49,9 @@ class CouponRepository implements ContractsCouponRepository
             ->where('slug', $code)
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found', ['code' => $code]));
-        }    
+        }
 
         return $this->find($entry->id());
     }
@@ -80,7 +80,7 @@ class CouponRepository implements ContractsCouponRepository
             ]))
             ->save();
 
-        return $this;    
+        return $this;
     }
 
     public function update(array $data, bool $mergeData = true): self
@@ -100,9 +100,9 @@ class CouponRepository implements ContractsCouponRepository
     {
         $entry = Entry::find($this->id);
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found', ['code' => $this->slug]));
-        }    
+        }
 
         return $entry;
     }
@@ -110,10 +110,10 @@ class CouponRepository implements ContractsCouponRepository
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
+            'id'    => $this->id,
             'title' => $this->title,
-            'code' => $this->slug,
-            'type' => isset($this->data['type']) ? $this->data['type'] : null,
+            'code'  => $this->slug,
+            'type'  => isset($this->data['type']) ? $this->data['type'] : null,
             'value' => isset($this->data['value']) ? $this->data['value'] : null,
         ];
     }

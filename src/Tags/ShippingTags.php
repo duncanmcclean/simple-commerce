@@ -4,8 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag
@@ -23,16 +23,17 @@ class ShippingTags extends SubTag
 
                 if ($instance->checkAvailability($cart->toArray()['shipping_address']) === false) {
                     dd('ww');
+
                     return null;
                 }
 
                 $cost = $instance->calculateCost($cart->entry());
 
                 return [
-                    'handle' => $method,
-                    'name' => $instance->name(),
+                    'handle'      => $method,
+                    'name'        => $instance->name(),
                     'description' => $instance->description(),
-                    'cost' => Currency::parse($cost, Site::current()),
+                    'cost'        => Currency::parse($cost, Site::current()),
                 ];
             })
             ->whereNotNull()

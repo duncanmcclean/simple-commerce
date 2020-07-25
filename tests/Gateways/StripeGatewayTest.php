@@ -10,7 +10,7 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function has_a_name()
     {
-        $name = (new StripeGateway)->name();
+        $name = (new StripeGateway())->name();
 
         $this->assertSame('Stripe', $name);
     }
@@ -30,7 +30,7 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function has_purchase_rules()
     {
-        $rules = (new StripeGateway)->purchaseRules();
+        $rules = (new StripeGateway())->purchaseRules();
 
         $this->assertIsArray($rules);
         $this->assertSame([
@@ -41,7 +41,7 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_get_charge()
     {
-        $charge = (new StripeGateway)->getCharge([]);
+        $charge = (new StripeGateway())->getCharge([]);
 
         $this->assertIsArray($charge);
         $this->assertSame([], $charge);
@@ -50,7 +50,7 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_refund_charge()
     {
-        $refund = (new StripeGateway)->refundCharge([]);
+        $refund = (new StripeGateway())->refundCharge([]);
 
         $this->assertIsArray($refund);
         $this->assertSame([], $refund);

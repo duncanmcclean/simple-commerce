@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'order_confirmation' => [
-		'subject' => 'Order Confirmation',
-	],
+    'order_confirmation' => [
+        'subject' => 'Order Confirmation',
+    ],
 ];

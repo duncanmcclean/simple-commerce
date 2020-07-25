@@ -2,17 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Mail;
 
+use Barryvdh\DomPDF\Facade as PDFFacade;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Statamic\Facades\Entry;
-use Barryvdh\DomPDF\Facade as PDFFacade;
 
 class OrderConfirmation extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $orderId;
 
@@ -37,7 +37,7 @@ class OrderConfirmation extends Mailable
         $data = $order->toAugmentedArray();
 
         $pdf = PDFFacade::loadView('simple-commerce::receipt', $data);
-        $receiptFilename = "receipt-".$order->id().".pdf";
+        $receiptFilename = 'receipt-'.$order->id().'.pdf';
 
         Storage::put(($receiptFilename), $pdf->stream('receipt.pdf'));
 
