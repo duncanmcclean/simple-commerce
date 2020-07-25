@@ -26,6 +26,7 @@ return [
         'products' => 'products',
         'orders' => 'orders',
         'coupons' => 'coupons',
+        'customers' => 'customers',
     ],
 
     'taxonomies' => [

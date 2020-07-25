@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartRepository;
+use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
@@ -99,6 +100,10 @@ class CartRepository implements ContractsCartRepository
         $this->find($this->id);    
 
         event(new CartUpdated($this->entry()));
+        
+        if (isset($data['customer'])) {
+            event(new CustomerAddedToCart($this->entry()));
+        }
 
         return $this;
     }
@@ -157,7 +162,7 @@ class CartRepository implements ContractsCartRepository
 
         $this->entry()->published(true)->save();
 
-        event(new CustomerAddedToCart($this->entry()));
+        event(new CartCompleted($this->entry()));
 
         if ($customer = Customer::find($this->data['customer'])) {
             Mail::to($customer->data['email'])
