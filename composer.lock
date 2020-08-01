@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1052a16c90ed2492892f5db4a050fcdc",
+    "content-hash": "c0cb1b1b5bedd768747775bdc6704087",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1494,12 +1494,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "40c212197075183755b89a8bedf6d77794406ebf"
+                "reference": "fba984b05081f8aee19447caa0d92624bcf04312"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/40c212197075183755b89a8bedf6d77794406ebf",
-                "reference": "40c212197075183755b89a8bedf6d77794406ebf",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/fba984b05081f8aee19447caa0d92624bcf04312",
+                "reference": "fba984b05081f8aee19447caa0d92624bcf04312",
                 "shasum": ""
             },
             "require": {
@@ -1643,7 +1643,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-07-31T13:31:49+00:00"
+            "time": "2020-08-01T14:39:30+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -9135,5 +9135,8 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
+    "platform-overrides": {
+        "php": "7.4"
+    },
     "plugin-api-version": "1.1.0"
 }
