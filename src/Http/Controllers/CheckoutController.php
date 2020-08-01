@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Events\Precheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
@@ -23,6 +24,8 @@ class CheckoutController extends BaseActionController
 
         $requestData = Arr::except($request->all(), $this->excludedKeys);
         $cartData = [];
+
+        event(new PreCheckout($requestData));
 
         $request->validate($gateway->purchaseRules());
         $request->validate([
