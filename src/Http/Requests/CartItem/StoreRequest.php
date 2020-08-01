@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem;
 
+use DoubleThreeDigital\SimpleCommerce\Rules\EntryExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -13,6 +14,10 @@ class StoreRequest extends FormRequest
 
     public function rules()
     {
-        return [];
+        return [
+            'product' => ['required', 'string', new EntryExists],
+            'sku' => 'required|string',
+            'quantity' => 'required|numeric',
+        ];
     }
 }

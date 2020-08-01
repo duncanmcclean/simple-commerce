@@ -10,10 +10,6 @@ class ReceiptController extends BaseActionController
 {
     public function show(ReceiptShowRequest $request, $orderId)
     {
-        if (!$request->hasValidSignature()) {
-            abort(401);
-        }
-
         $order = Entry::find($orderId);
         $data = $order->toAugmentedArray();
 

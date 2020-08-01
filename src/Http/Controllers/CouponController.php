@@ -10,10 +10,6 @@ class CouponController extends BaseActionController
 {
     public function store(StoreRequest $request)
     {
-        $request->validate([
-            'code' => 'required|string',
-        ]);
-
         $redeem = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->redeemCoupon($request->code);
 
@@ -26,7 +22,7 @@ class CouponController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $destroy = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
+        Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->update([
                 'coupon' => null,
             ])
