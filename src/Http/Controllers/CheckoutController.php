@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\Precheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
@@ -85,6 +86,8 @@ class CheckoutController extends BaseActionController
             ->markAsCompleted();
 
         Session::forget(config('simple-commerce.cart_key'));
+
+        event(new PostCheckout(Arr::except($requestData, $this->excludedKeys)));
 
         return $this->withSuccess($request);
     }
