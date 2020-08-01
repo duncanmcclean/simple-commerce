@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "350e999f8aa18a711dc0e0a74c0d81b0",
+    "content-hash": "1052a16c90ed2492892f5db4a050fcdc",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -122,16 +122,16 @@
         },
         {
             "name": "calebporzio/sushi",
-            "version": "dev-master",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/calebporzio/sushi.git",
-                "reference": "e70c92c6895bdb83ca070a3f6b581f21f46e185c"
+                "reference": "df69a1af1fbbc0aed96f6563770f8d79fe0eb6a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/e70c92c6895bdb83ca070a3f6b581f21f46e185c",
-                "reference": "e70c92c6895bdb83ca070a3f6b581f21f46e185c",
+                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/df69a1af1fbbc0aed96f6563770f8d79fe0eb6a5",
+                "reference": "df69a1af1fbbc0aed96f6563770f8d79fe0eb6a5",
                 "shasum": ""
             },
             "require": {
@@ -168,7 +168,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-03-15T20:35:25+00:00"
+            "time": "2020-03-04T02:49:53+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -8020,61 +8020,6 @@
             "time": "2020-07-31T07:49:38+00:00"
         },
         {
-            "name": "phpunit/php-token-stream",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "29bfe17c0fbef3d0bff3f8219663a29a6bbb442e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/29bfe17c0fbef3d0bff3f8219663a29a6bbb442e",
-                "reference": "29bfe17c0fbef3d0bff3f8219663a29a6bbb442e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-tokenizer": "*",
-                "php": "^7.3 || ^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
-            "description": "Wrapper around PHP's tokenizer extension.",
-            "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
-            "keywords": [
-                "tokenizer"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-07-31T07:49:47+00:00"
-        },
-        {
             "name": "phpunit/phpunit",
             "version": "dev-master",
             "source": {
@@ -9182,9 +9127,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "barryvdh/laravel-dompdf": 20,
-        "calebporzio/sushi": 20,
-        "moneyphp/money": 20,
         "statamic/cms": 10,
         "aerni/statamic-factory": 20,
         "spatie/test-time": 20
