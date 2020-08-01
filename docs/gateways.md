@@ -13,7 +13,7 @@ Gateways are configured in your `config/simple-commerce.php` file. Like so:
 
 ```
 'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+    \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
 ],
 ```
 
@@ -49,9 +49,9 @@ We include an example of the payment form for the Stripe gateway in the [Simple 
 
 ## Build a gateway
 
-If you need to use a gateway that's not provided, you can build it yourself. The first thing you'll need to do is create a class, for example in `App\Gateways` called `SuperCoolGateway`.
+Sometimes you'll want to use a gateway that Simple Commerce doesn't provide out of the box. In that case, you'll need to make your own gateway.
 
-You'll want that class to implement Simple Commerce's `Gateway` interface which defines all the required method for a gateway. A boilerplate gateway class looks something like this:
+1. Create a gateway from a stub, you can copy over the stub by running `php please make:gateway {gateway name}`. The gateway will be created in your `App\Gateways` folder.
 
 ```
 <?php
@@ -94,7 +94,7 @@ class SuperCoolGateway implements Gateway
 }
 ```
 
-Here's what each of those methods do:
+2. Now all you need to do is fill in the blank methods to make them work for your gateway. Here's a quick overview of what each of the methods do:
 
 * **name** - This method should return the name of your gateway. It's recommended this name should be recognisable.
 * **prepare** - This method is called while loading the `sc:checkout` form. If you need to, you can return an array of stuff which will be available as variables inside the form.
