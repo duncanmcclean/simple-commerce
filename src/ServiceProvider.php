@@ -15,7 +15,10 @@ class ServiceProvider extends AddonServiceProvider
         Events\CartCompleted::class       => [],
         Events\CartSaved::class           => [],
         Events\CartUpdated::class         => [],
+        Events\CouponRedeemed::class      => [],
         Events\CustomerAddedToCart::class => [],
+        Events\PostCheckout::class        => [],
+        Events\PreCheckout::class         => [],
     ];
 
     protected $routes = [
