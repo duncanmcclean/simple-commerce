@@ -22,3 +22,5 @@ Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allow
 Simple Commerce is pretty lightweight, meaning it doesn't have as much functionality as something like Shopify or WooCommerce. So there's a few limitations it has compared to other solutions.
 
 * Simple Commerce doesn't currently support the concept of variants or product additions. It's something we might look at implementing later but we don't have it right now.
+* It doesn't support multiple tax rates, everything in your store is stuck to the single tax rate.
+* We don't support the ability to create complex shipping rules. All we have are [shipping methods](./shipping).
