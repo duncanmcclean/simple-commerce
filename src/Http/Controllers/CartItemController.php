@@ -2,25 +2,23 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Http\SessionCart;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
-{
+{  
+    use SessionCart;
+
     public function store(StoreRequest $request)
     {
-        if (Session::has(config('simple-commerce.cart_key'))) {
-            $cart = Cart::find(
-                Session::get(config('simple-commerce.cart_key'))
-            );
+        if ($this->hasSessionCart()) {
+            $cart = $this->getSessionCart();
         } else {
-            $cart = Cart::make()->save();
+            $cart = $this->makeSessionCart();
         }
 
         $cart->update([
@@ -35,44 +33,42 @@ class CartItemController extends BaseActionController
             ],
         ])->calculateTotals();
 
-        if (!Session::has(config('simple-commerce.cart_key'))) {
-            Session::put(config('simple-commerce.cart_key'), $cart->id);
-        }
-
         return $this->withSuccess($request);
     }
 
-    public function update(UpdateRequest $request, string $item)
+    public function update(UpdateRequest $request, string $requestItem)
     {
-        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+        $cart = $this->getSessionCart();
 
-        $data = [];
-        $item = collect($cart->data['items'])->where('id', $item)->first();
+        $cart->update([
+            'items' => collect($cart->data['items'] ?? [])
+                ->map(function ($item) use ($request, $requestItem) {
+                    if ($item['id'] !== $requestItem) {
+                        return $item;
+                    }
 
-        $data['items'][] = array_merge(
-            $item,
-            Arr::except($request->all(), ['_token', '_params', '_redirect'])
-        );
-
-        $cart->update($data)
-            ->calculateTotals();
+                    return array_merge(
+                        $item,
+                        Arr::except($request->all(), ['_token', '_params', '_redirect']),
+                    );
+                })
+                ->toArray(),
+        ])->calculateTotals();
 
         return $this->withSuccess($request);
     }
 
     public function destroy(DestroyRequest $request, string $item)
     {
-        $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
+        $cart = $this->getSessionCart();
 
         $cart->update([
-            'items' => collect($cart->items)
+            'items' => collect($cart->data['items'])
                 ->reject(function ($item) {
                     return $item['id'] != $item;
                 })
                 ->toArray(),
-        ]);
-
-        $cart->calculateTotals();
+        ])->calculateTotals();
 
         return $this->withSuccess($request);
     }
