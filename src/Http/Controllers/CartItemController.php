@@ -26,7 +26,6 @@ class CartItemController extends BaseActionController
                 [
                     'id'       => Stache::generateId(),
                     'product'  => $request->product,
-                    'sku'      => $request->sku,
                     'quantity' => (int) $request->quantity,
                     'total'    => 0000,
                 ],

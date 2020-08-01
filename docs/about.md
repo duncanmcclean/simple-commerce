@@ -16,7 +16,7 @@ Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allow
 
 **Support for popular gateways.** Out of the box, Simple Commerce has support for some of the popular online payment gateways, including Stripe.
 
-**Full control over the blueprints.** Apart from a title, a price and an SKU, you can add whatever you'd like to your product blueprint. Same goes for other blueprints. We don't want to invade on your happy developer experience.
+**Full control over the blueprints.** Apart from a title and a price, you can add whatever you'd like to your product blueprint. Same goes for other blueprints. We don't want to invade on your happy developer experience.
 
 ## Limitations
 Simple Commerce is pretty lightweight, meaning it doesn't have as much functionality as something like Shopify or WooCommerce. So there's a few limitations it has compared to other solutions.

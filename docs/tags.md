@@ -89,7 +89,6 @@ This tag allows you to add an item to your cart.
 ```
 {{ sc:cart:addItem }}
   <input type="hidden" name="product" value="{{ id }}">
-  <input type="hidden" name="sku" value="{{ sku }}">
   <input type="number" name="quantity" value="2">
 {{ /sc:cart:addItem }}
 ```
@@ -280,7 +279,6 @@ Firstly, you can add a `redirect` param so you can redirect your user once they 
 ```
 {{ sc:cart:addItem redirect="/cart" }}
     <input type="hidden" name="product" value="{{ id }}">
-    <input type="hidden" name="sku" value="test-1">  
     <input type="hidden" name="quantity" value="1">
     <button class="button-primary">Add to Cart</button>
 {{ /sc:cart:addItem }}

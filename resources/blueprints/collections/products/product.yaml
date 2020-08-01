@@ -27,11 +27,3 @@ sections:
           listable: hidden
           display: Price
           factory: 'numberBetween(20, 50)'
-      -
-        handle: sku
-        field:
-          input_type: text
-          type: text
-          localizable: false
-          listable: hidden
-          display: SKU

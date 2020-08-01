@@ -36,7 +36,6 @@ For example: to add an item to your cart, you can use a Simple Commerce tag whic
 ```
 {{ sc:cart:addItem }}
     <input type="hidden" name="product" value="{{ id }}">
-    <input type="hidden" name="sku" value="test-1">  
     <input type="hidden" name="quantity" value="1">
     <button class="button-primary">Add to Cart</button>
 {{ /sc:cart:addItem }}
@@ -47,7 +46,6 @@ Would be output like this:
 ```
 <form action="/!/simple-commerce/cart-items" method="post">
     <input type="hidden" name="product" value="84b28c73-3a04-478f-9447-68df026c44fe">
-    <input type="hidden" name="sku" value="test-1">  
     <input type="hidden" name="quantity" value="1">
     <button class="button-primary">Add to Cart</button>
 </form>

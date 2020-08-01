@@ -16,7 +16,6 @@ class StoreRequest extends FormRequest
     {
         return [
             'product' => ['required', 'string', new EntryExists],
-            'sku' => 'required|string',
             'quantity' => 'required|numeric',
         ];
     }
