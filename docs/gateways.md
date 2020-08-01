@@ -9,6 +9,8 @@ nav_order: 6
 ---
 Simple Commerce ~~has~~ will have built-in support for popular payment gateways, like Stripe. However, if we don't support your gateway of choice, it's easy enough to build one yourself.
 
+## Configuration
+
 Gateways are configured in your `config/simple-commerce.php` file. Like so:
 
 ```
@@ -19,7 +21,9 @@ Gateways are configured in your `config/simple-commerce.php` file. Like so:
 
 The array key is the gateway class and the key should contain an array of settings for the gateway, such as API keys.
 
-## Included Gateways
+## Built-in gateways
+
+Here's the list of popular payment gateways that Simple Commerce supports out of the box.
 
 * Stripe (recommended)
 * More coming soon!
@@ -47,7 +51,7 @@ We would highly recommend making use of [environment variables](https://statamic
 
 We include an example of the payment form for the Stripe gateway in the [Simple Commerce starter kit](https://github.com/doublethreedigital/simple-commerce-starter). 
 
-## Build a gateway
+## Build your own gateway
 
 Sometimes you'll want to use a gateway that Simple Commerce doesn't provide out of the box. In that case, you'll need to make your own gateway.
 

@@ -55,10 +55,10 @@ class FirstClass implements ShippingMethod
 
 Here's a quick explanation of what each method does.
 
-* **`name`:** Should return the name of your shipping method (will be shown to customers)
-* **`description`: ** Should return a description for your shipping method
-* **`calculateCost`:** This method should be where you return the cost of the shipping, based on the order's entry data.
-* **`checkAvailability`:** This method is where an address array is passed in and you should return a boolean of whether or not you ship to that location.
+* **name:** Should return the name of your shipping method (will be shown to customers)
+* **description: ** Should return a description for your shipping method
+* **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
+* **checkAvailability:** This method is where an address array is passed in and you should return a boolean of whether or not you ship to that location.
 
 ## Configuration
 
