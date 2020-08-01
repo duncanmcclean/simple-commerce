@@ -77,9 +77,11 @@ class ServiceProvider extends AddonServiceProvider
             __DIR__.'/../resources/views' => resource_path('views/vendor/simple-commerce'),
         ], 'simple-commerce-views');
 
-        $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
+        if (app()->environment() !== 'testing') {
+            $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
+            $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
+        }
 
         return $this;
     }
