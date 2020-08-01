@@ -1,0 +1,38 @@
+<?php
+
+namespace DummyNamespace;
+
+use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+
+class DummyClass implements Gateway
+{
+    public function name(): string
+    {
+        return 'Name of your gateway';
+    }
+
+    public function prepare(array $data): array
+    {
+        return [];
+    }
+
+    public function purchase(array $data): array
+    {
+        return [];
+    }
+
+    public function purchaseRules(): array
+    {
+        return [];
+    }
+
+    public function getCharge(array $data): array
+    {
+        return [];
+    }
+
+    public function refundCharge(array $data): array
+    {
+        return [];
+    }
+}

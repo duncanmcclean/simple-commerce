@@ -7,6 +7,10 @@ use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $commands = [
+        Console\Commands\MakeGateway::class,
+    ];
+
     protected $fieldtypes = [
         Fieldtypes\MoneyFieldtype::class,
     ];
