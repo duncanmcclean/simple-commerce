@@ -9,6 +9,7 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $commands = [
         Console\Commands\MakeGateway::class,
+        Console\Commands\MakeShippingMethod::class,
     ];
 
     protected $fieldtypes = [

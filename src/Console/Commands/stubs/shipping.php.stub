@@ -1,0 +1,29 @@
+<?php
+
+namespace DummyNamespace;
+
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
+use Statamic\Entries\Entry;
+
+class DummyClass implements ShippingMethod
+{
+    public function name(): string
+    {
+        return 'Name of your shipping method';
+    }
+
+    public function description(): string
+    {
+        return 'Description of your shipping method';
+    }
+
+    public function calculateCost(Entry $order): int
+    {
+        return 0;
+    }
+
+    public function checkAvailability(array $address): bool
+    {
+        return true;
+    }
+}
