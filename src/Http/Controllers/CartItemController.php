@@ -3,6 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
@@ -10,7 +13,7 @@ use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
 {
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         if (Session::has(config('simple-commerce.cart_key'))) {
             $cart = Cart::find(
@@ -32,9 +35,6 @@ class CartItemController extends BaseActionController
             ],
         ])->calculateTotals();
 
-        // dd($cart->entry());
-        // dd($cart->entry());
-
         if (!Session::has(config('simple-commerce.cart_key'))) {
             Session::put(config('simple-commerce.cart_key'), $cart->id);
         }
@@ -42,7 +42,7 @@ class CartItemController extends BaseActionController
         return $this->withSuccess($request);
     }
 
-    public function update(Request $request, string $item)
+    public function update(UpdateRequest $request, string $item)
     {
         $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
 
@@ -60,7 +60,7 @@ class CartItemController extends BaseActionController
         return $this->withSuccess($request);
     }
 
-    public function destroy(Request $request, string $item)
+    public function destroy(DestroyRequest $request, string $item)
     {
         $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
 

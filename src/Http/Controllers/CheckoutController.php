@@ -8,17 +8,16 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
-use Statamic\Facades\Entry;
 
 class CheckoutController extends BaseActionController
 {
     // After a key has been used, put it here so we exclude it on update.
     public $excludedKeys = ['_token', '_params', '_redirect'];
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
         $gateway = (new $request->gateway());

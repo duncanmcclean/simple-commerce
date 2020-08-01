@@ -3,11 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\DestroyRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\StoreRequest;
 
 class CouponController extends BaseActionController
 {
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $request->validate([
             'code' => 'required|string',
@@ -23,7 +24,7 @@ class CouponController extends BaseActionController
         return $this->withSuccess($request, ['message' => __('simple-commerce::coupons.coupon_added_to_cart')]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(DestroyRequest $request)
     {
         $destroy = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->update([

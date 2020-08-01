@@ -5,18 +5,20 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
 use Illuminate\Support\Arr;
 
 class CartController extends BaseActionController
 {
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
         return Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->entry()->data();
     }
 
-    public function update(Request $request)
+    public function update(UpdateRequest $request)
     {
         $cart = Cart::find($request->session()->get(config('simple-commerce.cart_key')));
         $data = Arr::except($request->all(), ['_token', '_params']);
@@ -58,7 +60,7 @@ class CartController extends BaseActionController
         return $this->withSuccess($request);
     }
 
-    public function destroy(Request $request)
+    public function destroy(DestroyRequest $request)
     {
         Cart::find($request->session()->get(config('simple-commerce.cart_key')))
             ->update([

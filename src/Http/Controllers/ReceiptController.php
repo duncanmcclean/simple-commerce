@@ -3,12 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use Barryvdh\DomPDF\Facade as PDFFacade;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\ReceiptShowRequest;
 use Statamic\Facades\Entry;
 
 class ReceiptController extends BaseActionController
 {
-    public function show(Request $request, $orderId)
+    public function show(ReceiptShowRequest $request, $orderId)
     {
         if (!$request->hasValidSignature()) {
             abort(401);
