@@ -36,7 +36,7 @@ trait FormBuilder
 
     private function redirectField()
     {
-        return '<input type="hidden" name="_redirect" value="'.$this->getParam('redirect').'" />';
+        return '<input type="hidden" name="_redirect" value="'.$this->params->get('redirect').'" />';
     }
 
     private function params(): array

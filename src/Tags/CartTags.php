@@ -92,7 +92,7 @@ class CartTags extends SubTag
     {
         return $this->createForm(
             route('statamic.simple-commerce.cart-items.update', [
-                'item' => $this->getParam('item'),
+                'item' => $this->params->get('item'),
             ]),
             [],
             'POST'
@@ -103,7 +103,7 @@ class CartTags extends SubTag
     {
         return $this->createForm(
             route('statamic.simple-commerce.cart-items.destroy', [
-                'item' => $this->getParam('item'),
+                'item' => $this->params->get('item'),
             ]),
             [],
             'DELETE'

@@ -12,13 +12,13 @@ class CustomerTags extends SubTag
 
     public function index()
     {
-        return Customer::find($this->getParam('id'))->entry()->toAugmentedArray();
+        return Customer::find($this->params->get('id'))->entry()->toAugmentedArray();
     }
 
     public function update()
     {
         $params = [
-            'customer' => $this->getParam('id'),
+            'customer' => $this->params->get('id'),
         ];
 
         return $this->createForm(
@@ -31,7 +31,7 @@ class CustomerTags extends SubTag
     public function orders()
     {
         return Entry::whereCollection(config('simple-commerce.collections.orders'))
-            ->where('customer', $this->getParam('customer'))
+            ->where('customer', $this->params->get('customer'))
             ->map(function (EntriesEntry $entry) {
                 return $entry->toAugmentedArray();
             })
@@ -40,9 +40,6 @@ class CustomerTags extends SubTag
 
     public function order()
     {
-        $orderId = $this->getParam('id');
-        $customerId = $this->getParam('customer');
-
-        return Entry::find($orderId);
+        return Entry::find($this->params->get('id'));
     }
 }

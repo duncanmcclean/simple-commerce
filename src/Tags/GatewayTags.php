@@ -15,7 +15,7 @@ class GatewayTags extends SubTag
     public function wildcard(string $tag)
     {
         return collect(SimpleCommerce::gateways())
-            ->where('handle', $this->getParam('handle'))
+            ->where('handle', $this->params->get('handle'))
             ->first();
     }
 }
