@@ -16,7 +16,7 @@ class DummyGateway implements Gateway
         return [];
     }
 
-    public function purchase(array $data): array
+    public function purchase(array $data, $request): array
     {
         // if ($data['card_number'] === '1212 1212 1212 1212') return null;
 

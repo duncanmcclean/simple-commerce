@@ -32,7 +32,7 @@ class StripeGateway implements Gateway
         ];
     }
 
-    public function purchase(array $data): array
+    public function purchase(array $data, $request): array
     {
         $this->setUpWithStripe();
 

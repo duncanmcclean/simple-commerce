@@ -57,7 +57,7 @@ class CheckoutController extends BaseActionController
         }
 
         $cartData['gateway'] = $requestData['gateway'];
-        $cartData['gateway_data'] = $gateway->purchase($requestData);
+        $cartData['gateway_data'] = $gateway->purchase($requestData, $request);
 
         if ($cart->entry()->data()->get('coupon') != null) {
             $coupon = Coupon::find($cart->entry()->data()->get('coupon'));

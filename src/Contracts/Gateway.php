@@ -8,7 +8,7 @@ interface Gateway
 
     public function prepare(array $data): array;
 
-    public function purchase(array $data): array;
+    public function purchase(array $data, $request): array;
 
     public function purchaseRules(): array;
 
