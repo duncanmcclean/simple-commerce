@@ -132,6 +132,13 @@ class CartRepository implements ContractsCartRepository
             'gateway_data'     => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
             'customer'         => isset($this->data['customer']) ? $this->data['customer'] : null,
             'items'            => isset($this->data['items']) ? $this->data['items'] : [],
+            'billing_address' => [
+                'name'     => isset($this->data['billing_name']) ? $this->data['billing_name'] : null,
+                'address'  => isset($this->data['billing_address']) ? $this->data['billing_address'] : null,
+                'city'     => isset($this->data['billing_city']) ? $this->data['billing_city'] : null,
+                'country'  => isset($this->data['billing_country']) ? $this->data['billing_country'] : null,
+                'zip_code' => isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : null,
+            ],
             'shipping_address' => [
                 'name'     => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
                 'address'  => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
