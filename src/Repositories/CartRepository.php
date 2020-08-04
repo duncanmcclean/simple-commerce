@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
@@ -198,12 +199,12 @@ class CartRepository implements ContractsCartRepository
 
         $data['items'] = collect($this->data['items'])
             ->map(function ($item) use (&$data) {
-                $product = Entry::find($item['product']);
+                $product = Product::find($item['product']);
 
                 $siteTax = collect(Config::get('simple-commerce.sites'))
                     ->get(Site::current()->handle())['tax'];
 
-                $itemTotal = ($product->data()->get('price') * $item['quantity']);
+                $itemTotal = ($product->data['price'] * $item['quantity']);
 
                 if ($siteTax['included_in_prices']) {
                     $itemTax = str_replace(
