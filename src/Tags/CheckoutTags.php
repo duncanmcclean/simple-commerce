@@ -2,17 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
 {
-    use Concerns\FormBuilder;
+    use Concerns\FormBuilder,
+        SessionCart;
 
     public function index()
     {
-        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+        $cart = $this->getSessionCart();
         $data = $cart->data;
 
         if (!isset($data['is_paid']) || $data['is_paid'] === false) {
