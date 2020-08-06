@@ -32,4 +32,13 @@ trait SessionCart
 
         return $cart;
     }
+
+    protected function getOrMakeSessionCart(): CartRepository
+    {
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart();
+        }
+
+        return $this->makeSessionCart();
+    }
 }
