@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
 
 class CartController extends BaseActionController

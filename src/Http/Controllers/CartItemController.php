@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Stache;
 

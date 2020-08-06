@@ -8,7 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 
