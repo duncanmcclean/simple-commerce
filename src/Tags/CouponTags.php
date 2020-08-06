@@ -2,20 +2,21 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use Illuminate\Support\Facades\Session;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 
 class CouponTags extends SubTag
 {
-    use Concerns\FormBuilder;
+    use Concerns\FormBuilder,
+        SessionCart;
 
-    public function index()
+    public function index(): array
     {
-        $coupon = Cart::find(Session::get(config('simple-commerce.cart_key')))
-            ->entry()
-            ->data()
-            ->get('coupon');
+        if (! $this->hasSessionCart()) return [];
+
+        $coupon = isset($this->getSessionCart()->data['coupon']) ? $this->getSessionCart()->data['coupon'] : null;
+
+        if ($coupon === null) return [];
 
         // TODO: ideally, here we'd use an augmented array from Statamic but it wasn't working when trying to implement it
 
@@ -30,10 +31,9 @@ class CouponTags extends SubTag
 
     public function has()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))
-            ->entry()
-            ->data()
-            ->has('coupon');
+        if (! $this->hasSessionCart()) return false;
+
+        return isset($this->getSessionCart()->data['coupon']);
     }
 
     public function redeem()

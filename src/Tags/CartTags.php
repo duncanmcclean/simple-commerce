@@ -2,35 +2,26 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Illuminate\Support\Facades\Session;
-use Statamic\Facades\Entry;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 
 class CartTags extends SubTag
 {
-    use Concerns\FormBuilder;
+    use Concerns\FormBuilder,
+        SessionCart;
 
     public function index()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray();
+        return $this->getOrMakeSessionCart()->entry()->toAugmentedArray();
     }
 
-    public function has()
+    public function has(): bool
     {
-        if (!Session::has(config('simple-commerce.cart_key'))) {
-            return false;
-        }
-
-        if (!Entry::find(Session::get(config('simple-commerce.cart_key')))) {
-            return false;
-        }
-
-        return true;
+        return $this->hasSessionCart();
     }
 
-    public function items()
+    public function items(): array
     {
-        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+        $cart = $this->getOrMakeSessionCart();
 
         return isset($cart->data['items']) && $cart->data['items'] != [] ?
             $cart->entry()->toAugmentedArray()['items']->value() :
@@ -39,44 +30,68 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (!Session::has(config('simple-commerce.cart_key'))) {
+        if (! $this->hasSessionCart()) {
             return 0;
         }
 
         return collect(
-            Cart::find(Session::get(config('simple-commerce.cart_key')))
+            $this->getSessionCart()
             ->toArray()['items']
         )->count();
     }
 
     public function total()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['grand_total']->value();
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart()->entry()->toAugmentedArray()['grand_total']->value();
+        }
+
+        return 0;
     }
 
     public function grandTotal()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['grand_total']->value();
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart()->entry()->toAugmentedArray()['grand_total']->value();
+        }
+
+        return 0;
     }
 
     public function itemsTotal()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['items_total']->value();
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart()->entry()->toAugmentedArray()['items_total']->value();
+        }
+
+        return 0;
     }
 
     public function shippingTotal()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['shipping_total']->value();
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart()->entry()->toAugmentedArray()['shipping_total']->value();
+        }
+
+        return 0;
     }
 
     public function taxTotal()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['tax_total']->value();
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart()->entry()->toAugmentedArray()['tax_total']->value();
+        }
+
+        return 0;
     }
 
     public function couponTotal()
     {
-        return Cart::find(Session::get(config('simple-commerce.cart_key')))->entry()->toAugmentedArray()['coupon_total']->value();
+        if ($this->hasSessionCart()) {
+            return $this->getSessionCart()->entry()->toAugmentedArray()['coupon_total']->value();
+        }
+
+        return 0;
     }
 
     public function addItem()
@@ -112,7 +127,7 @@ class CartTags extends SubTag
 
     public function update()
     {
-        $cart = Cart::find(Session::get(config('simple-commerce.cart_key')));
+        $cart = $this->getSessionCart();
 
         return $this->createForm(
             route('statamic.simple-commerce.cart.update'),
