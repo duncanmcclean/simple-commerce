@@ -14,12 +14,12 @@ class CartTags extends SubTag
         return $this->getOrMakeSessionCart()->entry()->toAugmentedArray();
     }
 
-    public function has(): bool
+    public function has()
     {
         return $this->hasSessionCart();
     }
 
-    public function items(): array
+    public function items()
     {
         $cart = $this->getOrMakeSessionCart();
 
