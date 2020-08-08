@@ -150,8 +150,8 @@ class CartRepository implements ContractsCartRepository
                 'grand_total' => isset($this->data['grand_total']) ? $this->data['grand_total'] : 0,
                 'items_total' => isset($this->data['items_total']) ? $this->data['items_total'] : 0,
                 'shipping_total' => isset($this->data['shipping_total']) ? $this->data['shipping_total'] : 0,
-                'tax_total' => isset($this->data['tax_total']) ? $this->data['tax_totak'] : 0,
-                'coupon_total' => isset($this->data['coupon_total']) ? $this->data['coupon_totak'] : 0,
+                'tax_total' => isset($this->data['tax_total']) ? $this->data['tax_total'] : 0,
+                'coupon_total' => isset($this->data['coupon_total']) ? $this->data['coupon_total'] : 0,
             ],
         ];
     }
