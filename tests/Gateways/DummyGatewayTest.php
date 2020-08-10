@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Http\Request;
 use Spatie\TestTime\TestTime;
 
 class DummyGatewayTest extends TestCase
@@ -32,7 +33,7 @@ class DummyGatewayTest extends TestCase
 
         $purchase = (new DummyGateway())->purchase([
             'card_number' => '4242 4242 4242 4242',
-        ]);
+        ], new Request());
 
         $this->assertIsArray($purchase);
         $this->assertSame([
