@@ -15,7 +15,7 @@ Simple Commerce has a few requiements:
 
 We do however recommend that your site has SSL setup because you're going to be dealing with ecommerce and credit card information. [Lets Encrypt](https://letsencrypt.org/) can give you SSL certificates for free.
 
-## Recommended Install
+## Standard Install
 We recommend installing Simple Commerce via the command line instead of through the Statamic Control Panel.
 
 1. Install Simple Commerce with Composer
