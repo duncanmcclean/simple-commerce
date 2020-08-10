@@ -8,9 +8,12 @@ is_documentation: true
 nav_order: 2
 ---
 ## Requirements
-Simple Commerce doesn't really have its own set of requirements, basically as long as [Statamic 3 works](https://statamic.dev/requirements), Simple Commerce should work too.
+Simple Commerce has a few requiements:
+* Statamic 3 - it has it's [own set of requirements](https://statamic.dev/requirements)
+* PHP 7.4
+* `php-intl` PHP extension
 
-We do however recommend that your site has SSL setup because you're going to be processing credit cards after all. [Lets Encrypt](https://letsencrypt.org/) can give you SSL certificates for free.
+We do however recommend that your site has SSL setup because you're going to be dealing with ecommerce and credit card information. [Lets Encrypt](https://letsencrypt.org/) can give you SSL certificates for free.
 
 ## Recommended Install
 We recommend installing Simple Commerce via the command line instead of through the Statamic Control Panel.
