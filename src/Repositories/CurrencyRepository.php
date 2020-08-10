@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CurrencyRepository as ContractsCurrencyRepository;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currencies;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
@@ -19,9 +19,8 @@ class CurrencyRepository implements ContractsCurrencyRepository
         $siteSettings = collect(Config::get('simple-commerce.sites'))
             ->get($site->handle());
 
-        return Currency::where('code', $siteSettings['currency'])
-            ->first()
-            ->toArray();
+        return Currencies::where('code', $siteSettings['currency'])
+            ->first();
     }
 
     public function parse($price, Site $site): string

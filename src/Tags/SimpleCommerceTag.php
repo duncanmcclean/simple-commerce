@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Models\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currencies;
 use Exception;
 use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;
@@ -56,6 +56,6 @@ class SimpleCommerceTag extends Tags
 
     public function currencies()
     {
-        return Currency::all()->toArray();
+        return Currencies::toArray();
     }
 }

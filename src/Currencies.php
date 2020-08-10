@@ -1,15 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Models;
+namespace DoubleThreeDigital\SimpleCommerce;
 
-use Illuminate\Database\Eloquent\Model;
-use Sushi\Sushi;
-
-class Currency extends Model
+class Currencies
 {
-    use Sushi;
-
-    protected $rows = [
+    protected static $currencies = [
         ['code' => 'AFN', 'name' => 'Afghani', 'symbol' => '؋'],
         ['code' => 'ALL', 'name' => 'Lek', 'symbol' => 'Lek'],
         ['code' => 'ANG', 'name' => 'Netherlands Antillian Guilder', 'symbol' => 'ƒ'],
@@ -114,4 +109,9 @@ class Currency extends Model
         ['code' => 'YER', 'name' => 'Yemeni Rial', 'symbol' => '﷼'],
         ['code' => 'ZAR', 'name' => 'Rand', 'symbol' => 'R'],
     ];
+
+    public static function __callStatic($method, $parameters)
+    {
+        return collect(static::$currencies)->{$method}(...$parameters);
+    }
 }
