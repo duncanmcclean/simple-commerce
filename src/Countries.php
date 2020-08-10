@@ -1,15 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Models;
+namespace DoubleThreeDigital\SimpleCommerce;
 
-use Illuminate\Database\Eloquent\Model;
-use Sushi\Sushi;
-
-class Country extends Model
+class Countries
 {
-    use Sushi;
-
-    protected $rows = [
+    protected static $countries = [
         ['iso' => 'US', 'name' => 'United States'],
         ['iso' => 'CA', 'name' => 'Canada'],
         ['iso' => 'AF', 'name' => 'Afghanistan'],
@@ -253,4 +248,9 @@ class Country extends Model
         ['iso' => 'ZM', 'name' => 'Zambia'],
         ['iso' => 'ZW', 'name' => 'Zimbabwe'],
     ];
+
+    public static function __callStatic($method, $parameters)
+    {
+        return collect(static::$countries)->{$method}(...$parameters);
+    }
 }
