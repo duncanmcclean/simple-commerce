@@ -62,12 +62,12 @@ class ServiceProvider extends AddonServiceProvider
         ], 'simple-commerce');
 
         $this->publishes([
-            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce');
 
         $this->publishes([
-            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
-        ], 'simple-commerce');
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+        ], 'simple-commerce-blueprints');
 
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
