@@ -13,19 +13,24 @@
 <script>
     export default {
         name: 'money-fieldtype',
+
         mixins: [Fieldtype],
+
         props: ['meta'],
+
         data() {
             return {
                 symbol: this.meta.symbol,
                 formattedValue: this.value,
             }
         },
+
         computed: {
             inputType() {
-                return this.show;
+                return this.show
             },
         },
+
         mounted() {
             if (isNaN(parseFloat(this.value)) == false) {
                 this.formattedValue = parseFloat(this.value).toFixed(2)
