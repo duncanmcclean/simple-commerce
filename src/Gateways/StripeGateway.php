@@ -5,9 +5,11 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use Exception;
 use Statamic\Facades\Site;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
+use Stripe\Refund;
 use Stripe\Stripe;
 
 class StripeGateway implements Gateway
@@ -27,8 +29,8 @@ class StripeGateway implements Gateway
         ]);
 
         return [
-            'intent'        => $intent->id,
-            'client_secret' => $intent->client_secret,
+            'intent'         => $intent->id,
+            'client_secret'  => $intent->client_secret,
         ];
     }
 
@@ -61,12 +63,18 @@ class StripeGateway implements Gateway
 
     public function refundCharge(array $data): array
     {
-        return [];
+        if (! isset($data['intent'])) {
+            throw new Exception('No payment method defined in gateway data. Refund not possible.'); // Better exception and localize text
+        }
+
+        return Refund::create([
+            'payment_intent' => $data['intent'],
+        ]);
     }
 
     protected function setUpWithStripe()
     {
-        if (!env('STRIPE_SECRET')) {
+        if (! env('STRIPE_SECRET')) {
             throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
         }
 
