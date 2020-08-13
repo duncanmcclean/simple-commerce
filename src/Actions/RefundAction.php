@@ -34,7 +34,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $cart = Cart::find($entry->id());
 
-                if (! isset($cart['data']['gateway'])) {
+                if (! isset($cart->data['gateway'])) {
                     // might want to create sc exception and localize text
                     throw new Exception('This order does not have an attached gateway.');
                 }

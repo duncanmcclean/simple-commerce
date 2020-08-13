@@ -63,13 +63,17 @@ class StripeGateway implements Gateway
 
     public function refundCharge(array $data): array
     {
+        $this->setUpWithStripe();
+
         if (! isset($data['intent'])) {
             throw new Exception('No payment method defined in gateway data. Refund not possible.'); // Better exception and localize text
         }
 
-        return Refund::create([
+        $refund = Refund::create([
             'payment_intent' => $data['intent'],
         ]);
+
+        return json_decode($refund->toJSON(), true);
     }
 
     protected function setUpWithStripe()

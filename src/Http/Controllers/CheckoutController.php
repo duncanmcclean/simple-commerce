@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class CheckoutController extends BaseActionController
 {
@@ -96,11 +97,14 @@ class CheckoutController extends BaseActionController
         }
 
         $gateway = new $this->request->gateway();
+        $gatewayHandle = Str::camel($gateway->name());
+
         $purchase = $gateway->purchase($this->request->all(), $this->request);
 
         $this->cart->update([
             'gateway' => $this->request->get('gateway'),
-            'gateway_data' => $purchase,
+            'gateway_data' => array_merge($purchase, $this->cart->data[$gatewayHandle]),
+            $gatewayHandle => [],
         ]);
 
         $this->excludedKeys[] = 'gateway';

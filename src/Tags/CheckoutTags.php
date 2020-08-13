@@ -20,7 +20,7 @@ class CheckoutTags extends SubTag
             $prepare = $class->prepare($cart->data);
 
             $cart->update([
-                'gateway_data' => $prepare,
+                $gateway['handle'] => $prepare,
             ]);
 
             $data = array_merge($data, $prepare);
