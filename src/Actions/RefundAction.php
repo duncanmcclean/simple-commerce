@@ -18,9 +18,8 @@ class RefundAction extends Action
     {
         return $item instanceof Entry &&
             $item->collectionHandle() === config('simple-commerce.collections.orders') &&
-            ($item->data()->has('is_paid') && $item->data()->get('is_paid'));
-
-            // also might want to check if order has been refunded
+            ($item->data()->has('is_paid') && $item->data()->get('is_paid')) &&
+            (! $item->data()->has('is_refunded') || $item->data()->get('has_refunded') === false);
     }
 
     public function visibleToBulk($items)
@@ -33,11 +32,6 @@ class RefundAction extends Action
         collect($items)
             ->each(function ($entry) {
                 $cart = Cart::find($entry->id());
-
-                if (! isset($cart->data['gateway'])) {
-                    // might want to create sc exception and localize text
-                    throw new Exception('This order does not have an attached gateway.');
-                }
 
                 $gateway = new $cart->data['gateway']();
 
