@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon;
 
-use DoubleThreeDigital\SimpleCommerce\Rules\EntryExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\CouponExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'coupon' => ['required', 'string', new EntryExists],
+            'code' => ['required', 'string', new CouponExists],
         ];
     }
 }
