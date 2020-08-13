@@ -31,7 +31,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preProcess($data)
     {
-        if (!$this->config('store_as_float')) {
+        if (! $this->config('store_as_float') && $data !== null) {
             return substr_replace($data, '.', -2, 0);
         }
 
@@ -40,7 +40,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function process($data)
     {
-        if (!$this->config('store_as_float')) {
+        if (! $this->config('store_as_float')) {
             return (int) str_replace('.', '', $data);
         }
 
