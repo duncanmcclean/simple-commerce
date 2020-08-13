@@ -2,18 +2,19 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 
 class CouponController extends BaseActionController
 {
+    use SessionCart;
+
     public function store(StoreRequest $request)
     {
-        $redeem = Cart::find($request->session()->get(config('simple-commerce.cart_key')))
-            ->redeemCoupon($request->code);
+        $redeem = $this->getSessionCart()->redeemCoupon($request->code);
 
-        if (!$redeem) {
+        if (! $redeem) {
             return $this->withErrors($request, __('simple-commerce::coupons.invalid_coupon'));
         }
 
@@ -22,7 +23,7 @@ class CouponController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        Cart::find($request->session()->get(config('simple-commerce.cart_key')))
+        $this->getSessionCart()
             ->update([
                 'coupon' => null,
             ])
