@@ -40,7 +40,7 @@ class SimpleCommerce
                     'class'           => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
                     'purchaseRules'   => $instance->purchaseRules(),
-                    'config'          => $gateway[1],
+                    'gateway-config'  => $gateway[1],
                 ];
             })
             ->toArray();
