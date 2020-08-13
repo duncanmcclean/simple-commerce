@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 
@@ -53,6 +54,7 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
+        RefundAction::register();
     }
 
     protected function bootVendorAssets()
