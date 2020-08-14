@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeNoPaymentIntentProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Exception;
@@ -66,7 +67,7 @@ class StripeGateway implements Gateway
         $this->setUpWithStripe();
 
         if (! isset($data['intent'])) {
-            throw new Exception('No payment method defined in gateway data. Refund not possible.'); // Better exception and localize text
+            throw new StripeNoPaymentIntentProvided(__('simple-commerce::gateways.stripe.no_payment_intent_provided'));
         }
 
         $refund = Refund::create([

@@ -6,6 +6,8 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\Precheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
@@ -56,7 +58,10 @@ class CheckoutController extends BaseActionController
 
         if ($this->request->has('gateway')) {
             $gatewayClass = $this->request->gateway;
-            // TODO: validate the gateway is a real class
+
+            if (! class_exists($gatewayClass)) {
+                throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist'));
+            }
 
             $gateway = new $gatewayClass();
             $this->request->validate($gateway->purchaseRules());
@@ -93,7 +98,7 @@ class CheckoutController extends BaseActionController
     protected function handlePayment()
     {
         if (! $this->request->has('gateway') && $this->cart->toArray()['is_paid'] === false && $this->cart->data['grand_total'] !== 0) {
-            // throw exception, you aint gettin stuff for free ma man
+            throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
         $gateway = new $this->request->gateway();
