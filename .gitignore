@@ -5,3 +5,6 @@ node_modules
 package-lock.json
 .php_cs.cache
 .idea
+
+resources/dist/js/*.js
+resources/dist/mix-manifest.json
