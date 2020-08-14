@@ -3,7 +3,7 @@ name: Release
 # This workflow tags a release, builds front-end assets and sends various notifications & webhooks when a release has been created.
 # How to use:
 # 1. Create a git tag - `git tag <version number>`
-# 2. Push up to origin
+# 2. Push tags to the origin - `git push origin --tags`
 # 3. This Github Action will do its stuff...
 # 4. Wait for a Slack notification, then it should be good to add a release changelog.
 
@@ -13,7 +13,7 @@ on:
       - 'v*'
 
 jobs:
-  prepare:
+  release:
     name: Prepare & Create Release
     runs-on: ubuntu-latest
     steps:
@@ -47,18 +47,10 @@ jobs:
           asset_path: ./dist.tar.gz
           asset_name: dist.tar.gz
           asset_content_type: application/tar+gz
-  post_release:
-    name: Post Release
-    runs-on: ubuntu-latest
-    steps:
       - name: Send Slack Notification
         uses: rtCamp/action-slack-notify@master
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: Github
-          SLACK_ICON: ''
-          SLACK_ICON_EMOJI: ':bell:'
-          SLACK_TITLE: Release tagged, time for a changelog...
       # - name: Discord Notification
       #   uses: appleboy/discord-action@master
       #   with:
