@@ -13,6 +13,10 @@
         }
     },
     "extra": {
+        "download-dist": {
+            "url": "https://github.com/doublethreedigital/simple-commerce/releases/download/{$version}/dist.tar.gz",
+            "path": "resources/dist"
+        },
         "statamic": {
             "name": "Simple Commerce",
             "description": "A perfectly simple e-commerce addon for Statamic"
@@ -27,7 +31,8 @@
         "barryvdh/laravel-dompdf": "^0.8.0",
         "moneyphp/money": "^3.0",
         "statamic/cms": "^3.0@beta",
-        "stripe/stripe-php": "^7.7"
+        "stripe/stripe-php": "^7.7",
+        "pixelfear/composer-dist-plugin": "^0.1.0"
     },
     "require-dev": {
         "aerni/statamic-factory": "dev-master",
