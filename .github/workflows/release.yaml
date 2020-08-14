@@ -1,0 +1,71 @@
+name: Release
+
+# This workflow tags a release, builds front-end assets and sends various notifications & webhooks when a release has been created.
+# How to use:
+# 1. Create a git tag - `git tag <version number>`
+# 2. Push up to origin
+# 3. This Github Action will do its stuff...
+# 4. Wait for a Slack notification, then it should be good to add a release changelog.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  prepare:
+    name: Prepare & Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile assets
+        run: npm run production
+
+      - name: Create zip
+        run: tar -czvf dist.tar.gz resources/dist
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+
+      - name: Upload zip to release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist.tar.gz
+          asset_name: dist.tar.gz
+          asset_content_type: application/tar+gz
+  post_release:
+    name: Post Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: Github
+          SLACK_ICON: ''
+          SLACK_ICON_EMOJI: ':bell:'
+          SLACK_TITLE: Release tagged, time for a changelog...
+      # - name: Discord Notification
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+      - name: Deploy Documentation
+        uses: distributhor/workflow-webhook@v1
+        env:
+          webhook_url: ${{ secrets.FORGE_WEBHOOK_URL }}
+          webhook_secret: ${{ secrets.FORGE_WEBHOOK_SECRET }}
