@@ -90,6 +90,8 @@ class DummyGatewayTest extends TestCase
         $refund = (new DummyGateway())->refundCharge([]);
 
         $this->assertIsArray($refund);
-        $this->assertSame([], $refund);
+        $this->assertSame([
+            'refund_complete' => true,
+        ], $refund);
     }
 }

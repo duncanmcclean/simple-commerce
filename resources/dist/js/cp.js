@@ -373,7 +373,7 @@ Statamic.$components.register('money-fieldtype', _components_MoneyFieldtype_vue_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/duncan/Sites/simple-v2/addon/resources/js/cp.js */"./resources/js/cp.js");
+module.exports = __webpack_require__(/*! /Users/duncan/Sites/simple-commerce/resources/js/cp.js */"./resources/js/cp.js");
 
 
 /***/ })

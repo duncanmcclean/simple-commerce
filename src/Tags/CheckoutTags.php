@@ -15,12 +15,15 @@ class CheckoutTags extends SubTag
         $cart = $this->getSessionCart();
         $data = $cart->data;
 
-        if (!isset($data['is_paid']) || $data['is_paid'] === false) {
-            foreach (SimpleCommerce::gateways() as $gateway) {
-                $class = new $gateway['class']();
+        foreach (SimpleCommerce::gateways() as $gateway) {
+            $class = new $gateway['class']();
+            $prepare = $class->prepare($cart->data);
 
-                $data = array_merge($data, $class->prepare($data));
-            }
+            $cart->update([
+                $gateway['handle'] => $prepare,
+            ]);
+
+            $data = array_merge($data, $prepare);
         }
 
         return $this->createForm(

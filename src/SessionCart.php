@@ -41,4 +41,9 @@ trait SessionCart
 
         return $this->makeSessionCart();
     }
+
+    protected function forgetSessionCart()
+    {
+        Session::forget(config('simple-commerce.cart_key'));
+    }
 }
