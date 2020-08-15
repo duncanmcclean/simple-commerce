@@ -8,11 +8,11 @@ id: ee90f3bc-748c-48fa-9f5b-73eab1cc4ccc
 is_documentation: true
 nav_order: 1
 ---
-Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allows you to enjoy the awesome of flat-files while giving you the power you need to power small-medium sized e-commerce websites.
+Simple Commerce is a perfectly simple e-commerce solution for Statamic. It allows you to enjoy the benefits of flat-files while giving you the power you need to power small-medium sized e-commerce websites.
 
 **Everything's just an entry.** Literally everything from your products to your orders and coupons are just entries sitting in collections.
 
-**Full power of the front-end.** You're not glued to a set of predefined templates or a certain JavaScript framework, use whatever you need to make your site unique. 
+**Full power of the front-end.** You're not glued to a set of predefined templates or a certain JavaScript framework, use whatever you need to make your site unique.
 
 **Support for popular gateways.** Out of the box, Simple Commerce has support for some of the popular online payment gateways, including Stripe.
 
@@ -24,3 +24,6 @@ Simple Commerce is pretty lightweight, meaning it doesn't have as much functiona
 * Simple Commerce doesn't currently support the concept of variants or product additions. It's something we might look at implementing later but we don't have it right now.
 * It doesn't support multiple tax rates, everything in your store is stuck to the single tax rate.
 * We don't support the ability to create complex shipping rules. All we have are [shipping methods](./shipping).
+
+## Licensing
+Simple Commerce is a commercial addon. To use it in production, you'll need to purchase a license from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce), which costs a one-time fee of $199.
