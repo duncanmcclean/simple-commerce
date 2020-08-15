@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdd95b0b7c376065df92bf5d5feee1e2",
+    "content-hash": "cebaff23b008035eb5e71bd5aa45a1fc",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1657,12 +1657,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "4431e8c283c959baff74417509d3d29fa2ecb786"
+                "reference": "7c783c8887455720cab81d0a748f44f4b985235c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/4431e8c283c959baff74417509d3d29fa2ecb786",
-                "reference": "4431e8c283c959baff74417509d3d29fa2ecb786",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/7c783c8887455720cab81d0a748f44f4b985235c",
+                "reference": "7c783c8887455720cab81d0a748f44f4b985235c",
                 "shasum": ""
             },
             "require": {
@@ -1744,7 +1744,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-19T22:46:18+00:00"
+            "time": "2020-08-15T12:49:21+00:00"
         },
         {
             "name": "league/csv",
@@ -1829,12 +1829,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "78261db2f1b793af55a963513783839eaf8629f2"
+                "reference": "ab6a6135aae982aeb8694b9761f671a9bc8a40ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/78261db2f1b793af55a963513783839eaf8629f2",
-                "reference": "78261db2f1b793af55a963513783839eaf8629f2",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/ab6a6135aae982aeb8694b9761f671a9bc8a40ae",
+                "reference": "ab6a6135aae982aeb8694b9761f671a9bc8a40ae",
                 "shasum": ""
             },
             "require": {
@@ -1912,7 +1912,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2020-08-14T11:40:03+00:00"
+            "time": "2020-08-15T08:21:24+00:00"
         },
         {
             "name": "league/glide",
@@ -7567,12 +7567,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "584a54ca0dadeee4e07c959e24fe61ffa4df22a2"
+                "reference": "f3ab30788f7d3e90c065c70a1658a464b8beff91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/584a54ca0dadeee4e07c959e24fe61ffa4df22a2",
-                "reference": "584a54ca0dadeee4e07c959e24fe61ffa4df22a2",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/f3ab30788f7d3e90c065c70a1658a464b8beff91",
+                "reference": "f3ab30788f7d3e90c065c70a1658a464b8beff91",
                 "shasum": ""
             },
             "require": {
@@ -7611,7 +7611,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-08-12T17:52:10+00:00"
+            "time": "2020-08-15T12:16:28+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -8026,12 +8026,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a552a2eb61f28cccab331245b2e4ed33a9be4547"
+                "reference": "19e27be279ab0056984a42f93dace950d9116ba7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a552a2eb61f28cccab331245b2e4ed33a9be4547",
-                "reference": "a552a2eb61f28cccab331245b2e4ed33a9be4547",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/19e27be279ab0056984a42f93dace950d9116ba7",
+                "reference": "19e27be279ab0056984a42f93dace950d9116ba7",
                 "shasum": ""
             },
             "require": {
@@ -8117,7 +8117,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-08-12T10:56:09+00:00"
+            "time": "2020-08-15T09:12:43+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -9187,10 +9187,9 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "platform-overrides": {
-        "php": "7.4"
+    "platform": {
+        "php": "^7.4"
     },
+    "platform-dev": [],
     "plugin-api-version": "1.1.0"
 }

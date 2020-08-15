@@ -28,6 +28,7 @@
         }
     },
     "require": {
+        "php": "^7.4",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "moneyphp/money": "^3.0",
         "statamic/cms": "^3.0@beta",
@@ -52,9 +53,6 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true,
-        "platform": {
-            "php": "7.4"
-        }
+        "sort-packages": true
     }
 }
