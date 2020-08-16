@@ -76,17 +76,17 @@ abstract class TestCase extends OrchestraTestCase
         return $factory;
     }
 
-    protected function runOnlyInCI()
-    {
-        if ($_SERVER['HOME'] !== '/home/runner') {
-            $this->markTestSkipped();
-        }
-    }
+    // protected function runOnlyInCI()
+    // {
+    //     if ($_SERVER['HOME'] !== '/home/runner') {
+    //         $this->markTestSkipped();
+    //     }
+    // }
 
-    protected function runOnlyLocally()
-    {
-        if (! Str::contains('/Users/', $_SERVER['HOME'])) {
-            $this->markTestSkipped();
-        }
-    }
+    // protected function runOnlyLocally()
+    // {
+    //     if (! Str::contains('/Users/', $_SERVER['HOME'])) {
+    //         $this->markTestSkipped();
+    //     }
+    // }
 }

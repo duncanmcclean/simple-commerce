@@ -4,13 +4,24 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Http\Request;
+use Stripe\PaymentIntent;
 
 class StripeGatewayTest extends TestCase
 {
+    public $gateway;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->gateway = new StripeGateway();
+    }
+
     /** @test */
     public function has_a_name()
     {
-        $name = (new StripeGateway())->name();
+        $name = $this->gateway->name();
 
         $this->assertSame('Stripe', $name);
     }
@@ -18,17 +29,26 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_prepare()
     {
-        $this->runOnlyInCI();
+        if (! isset($_SERVER['STRIPE_KEY']) && ! isset($_SERVER['STRIPE_SECRET'])) {
+            $this->markTestSkipped();
+        }
 
-        dd(array_merge($_SERVER, $_ENV));
+        $prepare = $this->gateway->prepare([
+            'grand_total' => 1200,
+        ]);
 
-        // TODO: stripe calls its api now
+        $this->assertArrayHasKey('intent', $prepare);
+        $this->assertArrayHasKey('client_secret', $prepare);
     }
 
     /** @test */
     public function can_purchase()
     {
-        // TODO: stripe calls its api now
+        // if (! isset($_SERVER['STRIPE_KEY']) && ! isset($_SERVER['STRIPE_SECRET'])) {
+            $this->markTestSkipped();
+        // }
+
+        // TODO: need to figure out how to make a payment intent for testing, as its created on the client side
     }
 
     /** @test */
