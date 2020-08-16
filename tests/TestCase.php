@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
+use Illuminate\Support\Str;
 use Aerni\Factory\Factory;
 use Aerni\Factory\Mapper;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
@@ -77,16 +78,14 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function runOnlyInCI()
     {
-        dd($_SERVER['HOME']);
-
-        if (isset($_SERVER['HOME']) && !str_contains($_SERVER['HOME'], '/Users/')) {
+        if ($_SERVER['HOME'] !== '/home/runner') {
             $this->markTestSkipped();
         }
     }
 
     protected function runOnlyLocally()
     {
-        if (isset($_SERVER['HOME']) && str_contains($_SERVER['HOME'], '/Users/')) {
+        if (! Str::contains('/Users/', $_SERVER['HOME'])) {
             $this->markTestSkipped();
         }
     }
