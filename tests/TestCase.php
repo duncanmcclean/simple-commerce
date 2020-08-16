@@ -77,6 +77,8 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function runOnlyInCI()
     {
+        dd($_SERVER['HOME']);
+
         if (isset($_SERVER['HOME']) && !str_contains($_SERVER['HOME'], '/Users/')) {
             $this->markTestSkipped();
         }
