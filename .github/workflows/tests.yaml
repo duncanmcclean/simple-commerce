@@ -34,6 +34,6 @@ jobs:
 
       - name: Run PHPUnit
         run: composer test
-        with:
+        env:
           STRIPE_KEY: ${{ secrets.STRIPE_TEST_KEY }}
           STRIPE_SERET: ${{ secrets.STRIPE_TEST_SECRET }}

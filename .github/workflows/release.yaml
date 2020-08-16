@@ -47,15 +47,18 @@ jobs:
           asset_path: ./dist.tar.gz
           asset_name: dist.tar.gz
           asset_content_type: application/tar+gz
+
       - name: Send Slack Notification
         uses: rtCamp/action-slack-notify@master
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
       # - name: Discord Notification
       #   uses: appleboy/discord-action@master
       #   with:
       #     webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
       #     webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+
       - name: Deploy Documentation
         uses: distributhor/workflow-webhook@v1
         env:
