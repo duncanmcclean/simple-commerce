@@ -20,7 +20,7 @@ class StripeGatewayTest extends TestCase
     {
         $this->runOnlyInCI();
 
-        dd('prep in stripe, this should only been seen on ci');
+        dd(array_merge($_SERVER, $_ENV));
 
         // TODO: stripe calls its api now
     }
