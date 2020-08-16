@@ -77,19 +77,14 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function runOnlyInCI()
     {
-        // if ($_)
-        // HOME
-
-        dd($_ENV);
-
-        if (isset($_SERVER['IS_CI_ENV']) && $_SERVER['IS_CI_ENV'] === true) {
+        if (isset($_SERVER['HOME']) && !str_contains($_SERVER['HOME'], '/Users/')) {
             $this->markTestSkipped();
         }
     }
 
     protected function runOnlyLocally()
     {
-        if (! isset($_SERVER['IS_CI_ENV']) || (isset($_SERVER['IS_CI_ENV']) && $_SERVER['IS_CI_ENV'] === false)) {
+        if (isset($_SERVER['HOME']) && str_contains($_SERVER['HOME'], '/Users/')) {
             $this->markTestSkipped();
         }
     }
