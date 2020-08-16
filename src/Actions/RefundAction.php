@@ -19,7 +19,7 @@ class RefundAction extends Action
         return $item instanceof Entry &&
             $item->collectionHandle() === config('simple-commerce.collections.orders') &&
             ($item->data()->has('is_paid') && $item->data()->get('is_paid')) &&
-            (! $item->data()->has('is_refunded') || $item->data()->get('has_refunded') === false);
+            ($item->data()->get('is_refunded') === false || $item->data()->get('is_refunded') === null);
     }
 
     public function visibleToBulk($items)

@@ -18,6 +18,10 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_prepare()
     {
+        $this->runOnlyInCI();
+
+        dd('prep in stripe, this should only been seen on ci');
+
         // TODO: stripe calls its api now
     }
 
