@@ -62,12 +62,12 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootVendorAssets()
     {
         $this->publishes([
-            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce');
 
         $this->publishes([
-            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
-        ], 'simple-commerce');
+            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+        ], 'simple-commerce-config');
 
         $this->publishes([
             __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
