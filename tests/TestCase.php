@@ -68,25 +68,4 @@ abstract class TestCase extends OrchestraTestCase
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
     }
-
-    protected function factory()
-    {
-        $factory = new Factory(new Faker(), new Mapper());
-
-        return $factory;
-    }
-
-    // protected function runOnlyInCI()
-    // {
-    //     if ($_SERVER['HOME'] !== '/home/runner') {
-    //         $this->markTestSkipped();
-    //     }
-    // }
-
-    // protected function runOnlyLocally()
-    // {
-    //     if (! Str::contains('/Users/', $_SERVER['HOME'])) {
-    //         $this->markTestSkipped();
-    //     }
-    // }
 }
