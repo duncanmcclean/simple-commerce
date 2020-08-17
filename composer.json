@@ -36,7 +36,6 @@
         "pixelfear/composer-dist-plugin": "^0.1.0"
     },
     "require-dev": {
-        "aerni/statamic-factory": "dev-master",
         "nunomaduro/collision": "^4.2",
         "orchestra/testbench": "^5.0",
         "spatie/test-time": "dev-master"

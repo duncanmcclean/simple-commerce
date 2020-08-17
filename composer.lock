@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cebaff23b008035eb5e71bd5aa45a1fc",
+    "content-hash": "fcedee2e6752bfeac31543df8866cabd",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -6726,68 +6726,6 @@
     ],
     "packages-dev": [
         {
-            "name": "aerni/statamic-factory",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aerni/statamic-factory.git",
-                "reference": "fc2ae1b25027923d7ef92ad2373987e445af769c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aerni/statamic-factory/zipball/fc2ae1b25027923d7ef92ad2373987e445af769c",
-                "reference": "fc2ae1b25027923d7ef92ad2373987e445af769c",
-                "shasum": ""
-            },
-            "require": {
-                "fzaninotto/faker": "^1.9.1",
-                "php": "^7.2.5",
-                "statamic/cms": "^3.0@beta"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "nunomaduro/collision": "^5.0",
-                "orchestra/testbench": "^5.0",
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "statamic-addon",
-            "extra": {
-                "statamic": {
-                    "name": "Factory",
-                    "description": "Quicly whip up fake content"
-                },
-                "laravel": {
-                    "providers": [
-                        "Aerni\\Factory\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Aerni\\Factory\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Aerni",
-                    "email": "hello@michaelaerni.ch",
-                    "homepage": "https://www.michaelaerni.ch",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Quickly whip up fake content",
-            "homepage": "https://github.com/aerni/statamic-factory",
-            "keywords": [
-                "factory",
-                "statamic"
-            ],
-            "time": "2020-06-18T13:13:35+00:00"
-        },
-        {
             "name": "doctrine/instantiator",
             "version": "dev-master",
             "source": {
@@ -9182,7 +9120,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "statamic/cms": 10,
-        "aerni/statamic-factory": 20,
         "spatie/test-time": 20
     },
     "prefer-stable": false,
