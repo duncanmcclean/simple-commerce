@@ -8,8 +8,6 @@ use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $publishAfterInstall = false;
-
     protected $commands = [
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
