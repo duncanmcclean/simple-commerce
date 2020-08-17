@@ -4,8 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Statamic\Facades\Site;
-use Statamic\Fields\ConfigFields;
-use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
 
 class MoneyFieldtype extends Fieldtype
@@ -20,11 +18,6 @@ class MoneyFieldtype extends Fieldtype
                 'instructions' => __('simple-commerce::fieldtypes.money.config_fields.read_only'),
                 'width'        => 50,
             ],
-            'store_as_float' => [
-                'type'         => 'toggle',
-                'instructions' => __('simple-commerce::fieldtypes.money.config_fields.store_as_float'),
-                'width'        => 50,
-            ],
         ];
     }
 
@@ -35,7 +28,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preProcess($data)
     {
-        if (! $this->config('store_as_float') && $data !== null) {
+        if ($data !== null) {
             return substr_replace($data, '.', -2, 0);
         }
 
@@ -44,15 +37,11 @@ class MoneyFieldtype extends Fieldtype
 
     public function process($data)
     {
-        if (! $this->config('store_as_float')) {
-            if (! str_contains($data, '.')) {
-                $data = $data * 100;
-            }
-
-            return (int) str_replace('.', '', $data);
+        if (! str_contains($data, '.')) {
+            $data = $data * 100;
         }
 
-        return (int) $data;
+        return (int) str_replace('.', '', $data);
     }
 
     public static function title()

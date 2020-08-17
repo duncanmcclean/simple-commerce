@@ -61,7 +61,6 @@ sections:
         handle: minimum_cart_value
         field:
           read_only: false
-          store_as_float: false
           type: money
           instructions: 'What''s the minimum items total a cart should have before this coupon can be redeemed?'
           localizable: false
