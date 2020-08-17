@@ -13,7 +13,6 @@ class SubTag extends Tags
         $this->params = $passedStuff->params;
         $this->tag = $passedStuff->tag;
         $this->method = $passedStuff->method;
-        $this->parameters = $passedStuff->parameters;
         $this->parser = $passedStuff->parser;
     }
 }

@@ -14,7 +14,7 @@ trait FormBuilder
     {
         $html = $this->formOpen($action, $method, static::$knownParams);
 
-        if ($this->getParam('redirect') != null) {
+        if ($this->params->get('redirect') != null) {
             $html .= $this->redirectField();
         }
 
