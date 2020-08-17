@@ -45,6 +45,10 @@ class MoneyFieldtype extends Fieldtype
     public function process($data)
     {
         if (! $this->config('store_as_float')) {
+            if (! str_contains($data, '.')) {
+                $data = $data * 100;
+            }
+
             return (int) str_replace('.', '', $data);
         }
 
