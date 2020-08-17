@@ -27,7 +27,7 @@ jobs:
         run: npm run production
 
       - name: Create zip
-        run: tar -czvf dist.tar.gz resources/dist
+        run: cd resources && tar -czvf dist.tar.gz dist
 
       - name: Create release
         id: create_release
