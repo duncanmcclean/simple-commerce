@@ -264,15 +264,7 @@ class CartRepository implements ContractsCartRepository
             $coupon = Coupon::find($this->data['coupon']);
 
             if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] += (int) str_replace(
-                    '.',
-                    '',
-                    round(
-                        ((float) substr_replace($data['grand_total'], '.', -2, 0) / 100) *
-                    $coupon->data['value'],
-                        2
-                    )
-                );
+                $data['coupon_total'] = ($coupon->data['value'] * $data['grand_total']) / 100;
             }
 
             if ($coupon->data['type'] === 'fixed') {
