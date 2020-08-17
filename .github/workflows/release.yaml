@@ -44,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist.tar.gz
+          asset_path: ./resources/dist.tar.gz
           asset_name: dist.tar.gz
           asset_content_type: application/tar+gz
 
