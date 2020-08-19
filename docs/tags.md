@@ -6,8 +6,9 @@ updated_at: 1595078091
 id: 6b491282-e792-431a-bc6a-912ee9b60edc
 is_documentation: true
 nav_order: 5
+blueprint: documentation
 ---
-Simple Commerce provides a bunch of tags to help you to integrate it inside your templates. 
+Simple Commerce provides a bunch of tags to help you to integrate it inside your templates.
 
 ## Cart
 
@@ -122,7 +123,7 @@ This tag allows you to update data in your cart.
 ```
 
 ### Empty cart
-This tag removes all the items in the cart. 
+This tag removes all the items in the cart.
 
 ```
 {{ sc:cart:empty }}

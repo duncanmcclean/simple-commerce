@@ -6,6 +6,7 @@ updated_at: 1595078000
 id: 22499319-3c9f-4546-b792-4054d47d57fd
 is_documentation: true
 nav_order: 7
+blueprint: documentation
 ---
 Simple Commerce automatically sends emails when things like orders are created or the status on a customer's order is updated.
 

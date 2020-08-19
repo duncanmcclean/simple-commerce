@@ -6,6 +6,7 @@ updated_at: 1595078014
 id: cca48c13-5085-4c70-be0a-2dd82c7849a5
 is_documentation: true
 nav_order: 8
+blueprint: documentation
 ---
 If you're selling physical products on your store, you'll need a way to ship those products to your customers. Thankfully, Simple Commerce has an easy way to create custom shipping methods for your store.
 

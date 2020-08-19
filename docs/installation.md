@@ -6,6 +6,7 @@ updated_at: 1595083324
 id: fe33ff01-b30c-45e7-8537-017f34a6c09d
 is_documentation: true
 nav_order: 2
+blueprint: documentation
 ---
 ## Requirements
 Simple Commerce has a few requiements:

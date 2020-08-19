@@ -6,6 +6,7 @@ updated_at: 1595078052
 id: 84b28c73-3a04-478f-9447-68df026c44fe
 is_documentation: true
 nav_order: 3
+blueprint: documentation
 ---
 
 Before getting started with your first Simple Commerce store, it's helpful to understand a bit of how it works under the hood.
@@ -58,8 +59,8 @@ This allows you to design and develop your site however you'd like and you just 
 ## Core Concepts
 Last but not least, it's probably best you understand some of the core concepts. Without them, you'd be pretty lost.
 
-* **Products** are the things that a customer can purchase. 
-* **Orders** are pretty self explanitory. 
+* **Products** are the things that a customer can purchase.
+* **Orders** are pretty self explanitory.
 * **Carts** under the hood are the same as orders but we use it to describe orders that haven't been completed yet (so if a customer hasn't purchased the order)
-* **Coupons** are a way of giving customers discounts on their cart. 
+* **Coupons** are a way of giving customers discounts on their cart.
 * **Customers** is a collection by Simple Commerce where all of your customers are stored. Each order has a customer assigned to it.

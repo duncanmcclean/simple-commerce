@@ -6,6 +6,7 @@ updated_at: 1595077970
 id: 74427f4f-8485-4ee9-a0ec-a729a78e59a5
 is_documentation: true
 nav_order: 4
+blueprint: documentation
 ---
 To allow for Simple Commerce to be flexible, it gives you some configuration options so you can decide how you want to run your store.
 
@@ -48,7 +49,7 @@ Let's walk through some of the configuration options you have with each site.
 
 * The first option is currency, you can use a variety of different currencies in Simple Commerce. To configure one, just put in the three letter currency code and it should be picked up.
 
-* Tax is another thing you can configure. In the default configuration, we have tax setup at 20% and we have it set so our product prices include tax. You can obviusly change this to whatever you'd like. 
+* Tax is another thing you can configure. In the default configuration, we have tax setup at 20% and we have it set so our product prices include tax. You can obviusly change this to whatever you'd like.
 
 * Each site can have its own set of shipping methods. A lot of sites have custom shipping rules, so we recommend you build one specifically for your site. <!-- TODO: write documentation on doing this -->
 

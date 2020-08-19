@@ -6,6 +6,7 @@ updated_at: 1595078038
 id: 55b09797-572a-483b-b5af-9d277c1744c6
 is_documentation: true
 nav_order: 6
+blueprint: documentation
 ---
 Simple Commerce ~~has~~ will have built-in support for popular payment gateways, like Stripe. However, if we don't support your gateway of choice, it's easy enough to build one yourself.
 
@@ -49,7 +50,7 @@ Stripe is the gateway we recommend, mostly because its modern and easy to use fo
 
 We would highly recommend making use of [environment variables](https://statamic.dev/configuration#environment-variables) to store your Stripe API details so they don't get leaked in version control (even if it's private).
 
-We include an example of the payment form for the Stripe gateway in the [Simple Commerce starter kit](https://github.com/doublethreedigital/simple-commerce-starter). 
+We include an example of the payment form for the Stripe gateway in the [Simple Commerce starter kit](https://github.com/doublethreedigital/simple-commerce-starter).
 
 ## Build your own gateway
 
