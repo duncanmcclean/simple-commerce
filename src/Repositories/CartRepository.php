@@ -197,7 +197,7 @@ class CartRepository implements ContractsCartRepository
 
         event(new CartCompleted($this->entry()));
 
-        if ($customer = Customer::find($this->data['customer'])) {
+        if (isset($this->data['customer']) && $customer = Customer::find($this->data['customer'])) {
             Mail::to($customer->data['email'])
                 ->send(new OrderConfirmation($this->id));
         }
