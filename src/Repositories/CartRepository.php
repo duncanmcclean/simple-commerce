@@ -155,6 +155,17 @@ class CartRepository implements ContractsCartRepository
             ],
         ];
     }
+    
+    public function shippingAddress(): array
+    {
+        return [
+            'name'     => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
+            'address'  => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
+            'city'     => isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
+            'country'  => isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
+            'zip_code' => isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
+        ];
+    }
 
     public function redeemCoupon(string $code): bool
     {
