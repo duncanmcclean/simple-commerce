@@ -94,11 +94,11 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootRepositories()
     {
-        $this->app->bind('Cart', Repositories\CartRepository::class);
-        $this->app->bind('Coupon', Repositories\CouponRepository::class);
-        $this->app->bind('Currency', Repositories\CurrencyRepository::class);
-        $this->app->bind('Customer', Repositories\CustomerRepository::class);
-        $this->app->bind('Product', Repositories\ProductRepository::class);
+        $this->app->bind(Contracts\CartRepository::class, Repositories\CartRepository::class);
+        $this->app->bind(Contracts\CouponRepository::class, Repositories\CouponRepository::class);
+        $this->app->bind(Contracts\CurrencyRepository::class, Repositories\CurrencyRepository::class);
+        $this->app->bind(Contracts\CustomerRepository::class, Repositories\CustomerRepository::class);
+        $this->app->bind(Contracts\ProoductRepositry::class, Repositories\ProductRepository::class);
 
         return $this;
     }
