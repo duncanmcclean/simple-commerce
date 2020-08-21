@@ -31,7 +31,7 @@
         "php": "^7.4",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "moneyphp/money": "^3.0",
-        "statamic/cms": "^3.0@beta",
+        "statamic/cms": "3.0.*",
         "stripe/stripe-php": "^7.7",
         "pixelfear/composer-dist-plugin": "^0.1.0"
     },
