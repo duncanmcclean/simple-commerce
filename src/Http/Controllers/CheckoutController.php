@@ -108,7 +108,7 @@ class CheckoutController extends BaseActionController
 
         $this->cart->update([
             'gateway' => $this->request->get('gateway'),
-            'gateway_data' => array_merge($purchase, $this->cart->data[$gatewayHandle]),
+            'gateway_data' => array_merge($purchase, (isset($this->cart->data[$gatewayHandle]) ? $this->cart->data[$gatewayHandle] : [])),
             $gatewayHandle => [],
         ]);
 
