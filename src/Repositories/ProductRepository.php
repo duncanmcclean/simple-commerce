@@ -8,7 +8,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 
-class ProductRepository
+class ProductRepository implements \DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository
 {
     public string $id = '';
     public string $title = '';
@@ -90,7 +90,7 @@ class ProductRepository
     {
         return [
             'id'    => $this->id,
-            'slug'  => $this->slug, 
+            'slug'  => $this->slug,
             'title' => $this->title,
             'price' => $this->data['price'],
         ];

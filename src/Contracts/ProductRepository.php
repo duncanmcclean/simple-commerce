@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use Statamic\Entries\Entry;
 
-interface ProoductRepositry
+interface ProductRepository
 {
     public function make(): self;
 
