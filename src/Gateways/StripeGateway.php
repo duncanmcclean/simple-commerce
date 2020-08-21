@@ -84,5 +84,9 @@ class StripeGateway implements Gateway
         }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
+        
+        if ($version = env('STRIPE_API_VERSION')) {
+            Stripe::setApiVersion($version);
+        }
     }
 }
