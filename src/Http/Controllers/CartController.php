@@ -38,23 +38,32 @@ class CartController extends BaseActionController
         }
 
         if (isset($data['name']) && isset($data['email'])) {
+            $data['customer']['name'] = $data['name'];
+            $data['customer']['email'] = $data['email'];
+
+            unset($data['name']);
+            unset($data['email']);
+        }
+
+        if (isset($data['customer'])) {
             try {
-                $customer = Customer::findByEmail($data['email']);
+                $customer = Customer::findByEmail($data['customer']['email']);
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
                     ->data([
-                        'name'  => $data['name'],
-                        'email' => $data['email'],
+                        'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                        'email' => $data['customer']['email'],
                     ])
                     ->save();
             }
+
+            $customer->update($data['customer']);
 
             $cart->update([
                 'customer' => $customer->id,
             ]);
 
-            unset($data['name']);
-            unset($data['email']);
+            unset($data['customer']);
         }
 
         $cart

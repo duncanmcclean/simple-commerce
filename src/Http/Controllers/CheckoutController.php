@@ -72,25 +72,34 @@ class CheckoutController extends BaseActionController
 
     protected function handleCustomerDetails()
     {
-        if ($this->request->has('name') && $this->request->has('email')) {
-            try {
-                $customer = Customer::findByEmail($this->request->get('email'));
-            } catch (CustomerNotFound $e) {
-                $customer = Customer::make()
-                    ->data([
-                        'name'  => $this->request->get('name'),
-                        'email' => $this->request->get('email'),
-                    ])
-                    ->save();
-            }
+        $customerData = $this->request->has('customer') ? $this->request->get('customer') : [];
 
-            $this->cart->update([
-                'customer' => $customer->id,
-            ]);
+        if ($this->request->has('name') && $this->request->has('email')) {
+            $customerData['name'] = $this->request->get('name');
+            $customerData['email'] = $this->request->get('email');
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';
         }
+
+        try {
+            $customer = Customer::findByEmail($customerData['email']);
+        } catch (CustomerNotFound $e) {
+            $customer = Customer::make()
+                ->data([
+                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
+                    'email' => $customerData['email'],
+                ])
+                ->save();
+        }
+
+        $customer->update($customerData);
+
+        $this->cart->update([
+            'customer' => $customer->id,
+        ]);
+
+        $this->excludedKeys[] = 'customer';
 
         return $this;
     }
