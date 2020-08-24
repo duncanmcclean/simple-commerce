@@ -97,7 +97,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->app->bind(Contracts\CouponRepository::class, Repositories\CouponRepository::class);
         $this->app->bind(Contracts\CurrencyRepository::class, Repositories\CurrencyRepository::class);
         $this->app->bind(Contracts\CustomerRepository::class, Repositories\CustomerRepository::class);
-        $this->app->bind(Contracts\ProductRepositry::class, Repositories\ProductRepository::class);
+        $this->app->bind(Contracts\ProductRepository::class, Repositories\ProductRepository::class);
 
         return $this;
     }
