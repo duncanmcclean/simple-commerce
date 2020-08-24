@@ -2,13 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository as ContractsProductRepository;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 
-class ProductRepository implements \DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository
+class ProductRepository implements ContractsProductRepository
 {
     public string $id = '';
     public string $title = '';
