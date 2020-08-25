@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
 use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
-{  
+{
     use SessionCart;
 
     public function store(StoreRequest $request)
@@ -21,15 +21,17 @@ class CartItemController extends BaseActionController
             $cart = $this->makeSessionCart();
         }
 
+        $items = $cart->data['items'];
+
         $cart->update([
-            'items' => [
+            'items' => array_merge($items, [
                 [
                     'id'       => Stache::generateId(),
                     'product'  => $request->product,
                     'quantity' => (int) $request->quantity,
                     'total'    => 0000,
-                ],
-            ],
+                ]
+            ]),
         ])->calculateTotals();
 
         return $this->withSuccess($request);
