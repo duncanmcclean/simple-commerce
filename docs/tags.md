@@ -113,13 +113,19 @@ This tag allows you to remove an existing item from the cart.
 ```
 
 ### Update cart
-This tag allows you to update data in your cart.
+This tag allows you to update data in the cart. Any form inputs will automatically be saved to the order entry.
 
 ```
 {{ sc:cart:update }}
-  <input type="text" name="name">
-  <input type="text" name="email">
+  <input type="text" name="delivery_note">
 {{ /sc:cart:update }}
+```
+
+> **Hot Tip:** If you want to also update the customer at the same time, something like the below should work. Remember the `email`, it's required.
+
+```
+<input type="text" name="customer[name]">
+<input type="email" name="customer[email]">
 ```
 
 ### Empty cart
@@ -134,13 +140,17 @@ This tag removes all the items in the cart.
 ## Checkout
 This tag allows you to checkout the cart. Inside the tag, you can use any of the data from your cart. The `redirect` parameter is recommended so you can redirect the customer to a success page when they're order has been confirmed.
 
+Like with the update cart tag, you can also pass information to the customer entry. Don't forget the `email` field though as it's required.
+
 ```
 {{ sc:checkout redirect="/thanks" }}
   {{ if is_paid }}
   <p>Checkout complete! <a href="{{ receipt_url }}">Download</a> your receipt.</p>
   {{ else }}
-    <input type="text" name="name" placeholder="Full Name" value="{{ old:name }}">
-    <input type="email" name="email" placeholder="Email" value="{{ old:email }}">
+    <input type="text" name="customer[name]" placeholder="Full Name">
+    <input type="email" name="customer[email]" placeholder="Email">
+
+    <input type="text" name="gift_note" placeholder="Gift Note">
 
     <select name="gateway">
       {{ simple-commerce:gateways }}
