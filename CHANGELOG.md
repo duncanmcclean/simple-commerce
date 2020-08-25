@@ -1,0 +1,75 @@
+# Changelog
+
+## Unreleased
+
+TODO
+
+## v2.0.11 (2020-08-24)
+
+* [fix] Fixed issue with ProductRepository not being bound properly because of a spelling mistake 🤦‍♂️ #287
+
+## v2.0.10 (2020-08-22)
+
+* [new] You can now specify the version of the Stripe API you want to use.
+* [fix] Fixed issue caused when using a gateway that doesn't return anything from the prepare method.
+* [fix] Fixed `checkAvailability` failing for shipping methods
+* [fix] Fixed issue with completing cart without a customer being attached to the order.
+* Changed version constraint of `statamic/cms` due to v3 release
+
+## v2.0.9 (2020-08-18)
+
+* [fix] Simple Commerce releases should now include built assets.
+* [fix] Issue when entering value inside Money fieldtype without separator and it converts it to cents/penies
+* [fix] Percentage coupons #281
+
+## v2.0.8 (2020-08-17)
+
+* [fix] Simple Commerce tags were broken after beta 44
+
+
+## v2.0.7 (2020-08-17)
+
+* [fix] Config, blueprint etc should no longer be overwritten on composer update
+* Simple Commerce only supports PHP 7.4
+
+## v2.0.6 (2020-08-14)
+
+* [new] Refunds - somehow managed to ship without refunds but they're here now!
+* [new] The output from prepare methods in gateways is now saved in the order so it can be used again in the gateway
+* [break] Really small breaking change, inside the `{{ sc:gateways }}` loop, change `{{ config:* }}` to `{{ gateway-config:* }}` to grab gateway configuration values.
+* [fix] Fixed initial state for the money fieldtype, should no longer show .
+* [fix] Exceptions should now be thrown for when gateways don't exist or none is required at checkout
+* [fix] `_redirect` should no longer be passed into cart when updating cart
+* [fix] Fixed issue with coupon validation, where an error was being thrown as we were validation the wrong thing 🤦‍♂️ #276
+
+## v2.0.5 (2020-08-11)
+
+* [fix] Blueprints being re-published after every Simple Commerce update
+
+## v2.0.4 (2020-08-10)
+
+* [fix] Simple Commerce no longer relies on calebporzio/sushi for Currency and Country models
+* [fix] Incorrect typehint causing issues when getting cart items
+*[fix] Typos
+
+## v2.0.3 (2020-08-06)
+
+* [new] Introduced a `Product` facade, repository and related things...
+* [fix] Fixed bug where you'd run into an error if you visit the cart/checkout when you have no cart in the session. Fixes #275
+* [break] The `$request` variable is now passed in as a second parameter of the `purchase` method to a gateway.
+
+## v2.0.2 (2020-08-01)
+
+* [new] Introduced two new commands: `make:gateway` and `make:shipping-method`
+* [fix] Use FormRequests for validating action endpoints
+* [fix] Officially only supports PHP 7.4
+* [break] Removed `/shipping-options` endpoints.
+* [break] Removed need for SKUs, you can have them if you want them but they won't be saved in orders anymore.
+
+## v2.0.1 (2020-07-31)
+
+* [new] Added `PreCheckout` and `PostCheckout` events, triggered by the Checkout controller.
+
+## 2.0.0 (2020-07-25)
+
+* **Simple Commerce v2.0 has launched!**
