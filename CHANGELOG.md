@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-TODO
+* [new] You can now send customer metadata when using `{{ sc:cart:update }}` and `{{ sc:checkout }}` tags. #289
+* [new] You can now toggle if Simple Commerce sends an `Order Confirmation` email to your customers after checkout. It's enabled by default. #288
+* [fix] Fixed issue where adding items to cart would overwrite what is already there. #290
 
 ## v2.0.11 (2020-08-24)
 
