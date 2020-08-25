@@ -30,7 +30,8 @@ class CartControllerTest extends TestCase
             ->slug($id)
             ->locale('default') // TODO: wont need this soon
             ->data([
-                'title' => '#'.SimpleCommerce::freshOrderNumber(),
+                // 'title' => '#'.SimpleCommerce::freshOrderNumber(),
+                'title'          => 'Test',
                 'items'          => [],
                 'is_paid'        => false,
                 'grand_total'    => 0,
