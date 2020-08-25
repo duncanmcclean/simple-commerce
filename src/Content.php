@@ -16,15 +16,19 @@ class Content
 
     protected function setupTaxonomies()
     {
-        if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.product_categories'))) {
-            Taxonomy::make(config('simple-commerce.taxonomies.product_categories'))
-                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
-                ->save();
-        }
+        // if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.product_categories'))) {
+        //     Taxonomy::make(config('simple-commerce.taxonomies.product_categories'))
+        //         ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
+        //         ->save();
+        // }
 
         return $this;
     }
 
+    /**
+     * Basically all of this collection setup is also done in the
+     * CollectionSetup trait used for testing.
+     */
     protected function setupCollections()
     {
         if (!Collection::handleExists(config('simple-commerce.collections.products'))) {

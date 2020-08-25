@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use Illuminate\Support\Str;
 use Aerni\Factory\Factory;
 use Aerni\Factory\Mapper;
+use DoubleThreeDigital\SimpleCommerce\Content;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Faker\Generator as Faker;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
