@@ -12,5 +12,12 @@ return [
 
     'default_taxonomies' => [
         'product_categories'    => 'Product Categories',
+        'order_statuses'        => 'Order Statuses',
+    ],
+
+    'default_terms' => [
+        'cart'      => 'Cart',
+        'completed' => 'Completed',
+        'refunded'  => 'Refunded',
     ],
 ];

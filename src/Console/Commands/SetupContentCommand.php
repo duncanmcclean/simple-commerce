@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Taxonomy;
+use Statamic\Facades\Term;
 
 class SetupContentCommand extends Command
 {
@@ -31,6 +32,40 @@ class SetupContentCommand extends Command
                 ->save();
         } else {
             $this->warn('Skipping: Product Categories');
+        }
+
+        if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))) {
+            $this->info('Creating: Order Statuses');
+
+            Taxonomy::make(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
+                ->title(__('simple-commerce::messages.default_taxonomies.order_statuses'))
+                ->save();
+
+            Term::make()
+                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
+                ->slug('cart')
+                ->data([
+                    'title' => __('simple-commerce::messages.default_terms.cart'),
+                ])
+                ->save();
+
+            Term::make()
+                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
+                ->slug('completed')
+                ->data([
+                    'title' => __('simple-commerce::messages.default_terms.completed'),
+                ])
+                ->save();
+
+            Term::make()
+                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
+                ->slug('refunded')
+                ->data([
+                    'title' => __('simple-commerce::messages.default_terms.refunded'),
+                ])
+                ->save();
+        } else {
+            $this->warn('Skipping: Order Statuses');
         }
 
         return $this;
@@ -70,6 +105,7 @@ class SetupContentCommand extends Command
             Collection::make(config('simple-commerce.collections.orders'))
                 ->title(__('simple-commerce::messages.default_collections.orders'))
                 ->sites(['default'])
+                // ->taxonomies(['order_statuses'])
                 ->save();
         } else {
             $this->warn('Skipping: Orders');

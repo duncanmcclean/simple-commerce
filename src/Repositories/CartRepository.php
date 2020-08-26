@@ -21,6 +21,7 @@ use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Facades\Term;
 
 class CartRepository implements ContractsCartRepository
 {
@@ -43,6 +44,7 @@ class CartRepository implements ContractsCartRepository
             'tax_total'      => 0,
             'shipping_total' => 0,
             'coupon_total'   => 0,
+            'order_status'   => 'cart',
         ];
 
         return $this;
@@ -191,6 +193,7 @@ class CartRepository implements ContractsCartRepository
         $this->update([
             'is_paid'   => true,
             'paid_date' => now(),
+            'order_status' => 'completed',
         ]);
 
         $this->entry()->published(true)->save();

@@ -42,6 +42,7 @@ class RefundAction extends Action
                     'gateway_data' => array_merge($cart->data['gateway_data'], [
                         'refund' => $refund,
                     ]),
+                    'order_status' => 'refunded',
                 ]);
             });
     }

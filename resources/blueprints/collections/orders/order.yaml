@@ -32,6 +32,14 @@ sections:
                 display: Product
                 validate: required
             -
+              handle: sku
+              field:
+                input_type: text
+                type: text
+                localizable: false
+                listable: hidden
+                display: SKU
+            -
               handle: quantity
               field:
                 input_type: number
@@ -270,6 +278,18 @@ sections:
           listable: hidden
           display: 'Order Date'
           validate: required
+      -
+        handle: order_status
+        field:
+          max_items: 1
+          mode: default
+          taxonomies:
+            - order_statuses
+          type: terms
+          localizable: false
+          listable: hidden
+          display: 'Order Status'
+          default: cart
       -
         handle: is_paid
         field:
