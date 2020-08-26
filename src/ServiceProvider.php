@@ -13,6 +13,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $commands = [
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
+        Console\Commands\SetupContentCommand::class,
     ];
 
     protected $fieldtypes = [
@@ -49,10 +50,6 @@ class ServiceProvider extends AddonServiceProvider
             $this
                 ->bootVendorAssets()
                 ->bootRepositories();
-        });
-
-        Statamic::afterInstalled(function () {
-            (new Content())->setup();
         });
 
         SimpleCommerce::bootGateways();

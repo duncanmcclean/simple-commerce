@@ -31,7 +31,13 @@ composer require doublethreedigital/simple-commerce
 php artisan vendor:publish --provider="DoubleThreeDigital\SimpleCommerce\ServiceProvider"
 ```
 
-3. Get Started!
+3. Lastly, you'll need to setup the collections & taxonomies needed for Simple Commerce. You could do this manually or you can use the command that will do it for you.
+
+```
+php please simple-commerce:setup-content
+```
+
+4. Get Started!
 
 ## Quick Start
 If you'd prefer to get started with some boilerplate views and Simple Commerce already installed, you should checkout our the [Simple Commerce Starter Kit](https://github.com/doublethreedigital/simple-commerce-starter).
