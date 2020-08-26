@@ -5,9 +5,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeNoPaymentIntentProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer as SCCustomer;
 use Exception;
 use Statamic\Facades\Site;
+use Stripe\Customer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Refund;
@@ -22,12 +25,30 @@ class StripeGateway implements Gateway
 
     public function prepare(array $data): array
     {
+        $cart = Cart::find(request()->session()->get(config('simple-commerce.cart_key')));
         $this->setUpWithStripe();
 
-        $intent = PaymentIntent::create([
+        $intentData = [
             'amount'   => $data['grand_total'],
             'currency' => Currency::get(Site::current())['code'],
-        ]);
+            'description' => "Order: {$cart->title}",
+            'metadata' => [
+                'order_id' => $cart->id,
+            ],
+        ];
+
+        if (isset($cart->data['customer'])) {
+            $customer = SCCustomer::find($cart->data['customer']);
+
+            $stripeCustomer = Customer::create([
+                'name' => $customer->data['name'],
+                'email' => $customer->data['email'],
+            ]);
+
+            $intentData['customer'] = $stripeCustomer->id;
+        }
+
+        $intent = PaymentIntent::create($intentData);
 
         return [
             'intent'         => $intent->id,
@@ -84,7 +105,7 @@ class StripeGateway implements Gateway
         }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
-        
+
         if ($version = env('STRIPE_API_VERSION')) {
             Stripe::setApiVersion($version);
         }
