@@ -7,6 +7,16 @@ This repository contains the code for Simple Commerce. While the code is open-so
 
 [**→ Read Documentation**](https://doublethree.digital/simple-commerce/about)
 
+## Features
+
+**Everything's just an entry.** Literally everything from your products to your orders and coupons are just entries sitting in collections.
+
+**Full power of the front-end.** You're not glued to a set of predefined templates or a certain JavaScript framework, use whatever you need to make your site unique.
+
+**Support for popular gateways.** Out of the box, Simple Commerce has support for some of the popular online payment gateways, including Stripe.
+
+**Full control over the blueprints.** Apart from a title and a price, you can add whatever you'd like to your product blueprint. Same goes for other blueprints. We don't want to invade on your happy developer experience.
+
 ## Credits
 * [Duncan McClean (Developer)](https://github.com/damcclean)
 * [David A. Lindahl (Designer)](https://github.com/austriker27)
