@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v2.0.12 (2020-08-26)
 
 * [new] Brought back Order Statuses, you may want to run `php please simple-commerce:setup-command` to create the relevant taxonomies and terms.
 * [new] You can now send customer metadata when using `{{ sc:cart:update }}` and `{{ sc:checkout }}` tags. #289
