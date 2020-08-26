@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+* [new] Brought back Order Statuses, you may want to run `php please simple-commerce:setup-command` to create the relevant taxonomies and terms.
 * [new] You can now send customer metadata when using `{{ sc:cart:update }}` and `{{ sc:checkout }}` tags. #289
 * [new] You can now toggle if Simple Commerce sends an `Order Confirmation` email to your customers after checkout. It's enabled by default. #288
+* [new] Customer & Order information is now passed to Stripe when preparing payment intent #292
+* [new] Brand new `php please simple-commerce:setup-command` command for setting up collections & taxonomies when installing Simple Commerce
 * [fix] Fixed issue where adding items to cart would overwrite what is already there. #290
 
 ## v2.0.11 (2020-08-24)
