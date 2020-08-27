@@ -201,9 +201,15 @@ class CartRepository implements ContractsCartRepository
         event(new CartCompleted($this->entry()));
 
         if (Config::get('simple-commerce.notifications.cart_confirmation', true)) {
-            if (isset($this->data['customer']) && $customer = Customer::find($this->data['customer'])) {
-                Mail::to($customer->data['email'])
-                    ->send(new OrderConfirmation($this->id));
+            if (isset($this->data['customer'])) {
+                try {
+                    $customer = Customer::find($this->data['customer']);
+
+                    Mail::to($customer->data['email'])
+                        ->send(new OrderConfirmation($this->id));
+                } catch (\Exception $e) {
+                    // Do nthing
+                }
             }
         }
 
