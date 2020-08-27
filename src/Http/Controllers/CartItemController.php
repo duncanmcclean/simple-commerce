@@ -21,7 +21,7 @@ class CartItemController extends BaseActionController
             $cart = $this->makeSessionCart();
         }
 
-        $items = $cart->data['items'];
+        $items = isset($cart->data['items']) ? $cart->data['items'] : [];
 
         $cart->update([
             'items' => array_merge($items, [
