@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v2.0.13 (2020-08-27)
 
 * [fix] Fixes issue when adding to the cart when you've already deleted items from the cart. #293
 * [fix] Generate a title and slug for customer if they don't already have one - fixes a type error #296
