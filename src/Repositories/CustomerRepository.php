@@ -30,9 +30,19 @@ class CustomerRepository implements ContractsCustomerRepository
 
         $entry = $this->entry();
 
-        $this->title = $entry->title;
-        $this->slug = $entry->slug();
+        if (! $entry) {
+            throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $id]));
+        }
+
         $this->data = $entry->data()->toArray();
+
+        // If for some reason the customer does not have a title or a slug... generate one.
+        if (! $entry->title || ! $entry->slug) {
+            $this->generateTitleAndSlug();
+        } else {
+            $this->title = $entry->title;
+            $this->slug = $entry->slug;
+        }
 
         return $this;
     }
