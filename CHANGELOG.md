@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+* [fix] Fixes issue when adding to the cart when you've already deleted items from the cart. #293
+* [fix] Generate a title and slug for customer if they don't already have one - fixes a type error #296
+* [fix] Fixed issue when the `CheckoutController` tries to call the `PreCheckout` event on case sensitive systems. #294
+
 ## v2.0.12 (2020-08-26)
 
 * [new] Brought back Order Statuses, you may want to run `php please simple-commerce:setup-command` to create the relevant taxonomies and terms.
