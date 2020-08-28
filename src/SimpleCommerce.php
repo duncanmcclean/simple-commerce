@@ -46,6 +46,11 @@ class SimpleCommerce
             ->toArray();
     }
 
+    public static function registerGateway(string $gateway, array $config = [])
+    {
+        static::$gateways[] = [$gateway, $config];
+    }
+
     public static function freshOrderNumber()
     {
         $minimum = 2000;
