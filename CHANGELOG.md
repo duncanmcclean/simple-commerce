@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* [new] You can now register gateways on-demand with `SimpleCommerce::registerGateway(PayPalGateway::class, [])`
+* [fix] Fixed issue where deleting a single cart item would clear the cart instead (again) #293
+
 ## v2.0.13 (2020-08-27)
 
 * [fix] Fixes issue when adding to the cart when you've already deleted items from the cart. #293
