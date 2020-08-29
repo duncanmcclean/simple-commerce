@@ -4,8 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
 {
@@ -78,9 +80,6 @@ class CartControllerTest extends TestCase
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart.update'), $data);
 
-            $this->withoutExceptionHandling();
-            dd($response);
-
         $response->assertRedirect('/cart');
 
         $cart->find($cart->id);
@@ -109,6 +108,29 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart()
     {
-        //
+        $product = Product::make()->save()->update(['price' => 1000]);
+
+        $cart = Cart::make()
+            ->save()
+            ->update([
+                'items' => [
+                    [
+                        'id' => Stache::generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 1000,
+                    ],
+                ],
+            ]);
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->delete(route('statamic.simple-commerce.cart.empty'));
+
+        $response->assertRedirect();
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->data['items'], []);
     }
 }
