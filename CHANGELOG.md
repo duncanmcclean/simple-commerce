@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [fix] The money fieldtype will now default to 0 when nothing is entered instead of throwing an exception.
+* [fix] Fixed issue where you couldn't remove the last item from the cart
 
 ## v2.0.14 (2020-08-29)
 

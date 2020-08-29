@@ -36,6 +36,28 @@ class ProductRepository implements ContractsProductRepository
         return $this;
     }
 
+    public function title(string $title = ''): self
+    {
+        if ($title === '') {
+            return $this->title;
+        }
+
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function slug(string $slug = ''): self
+    {
+        if ($slug === '') {
+            return $this->slug;
+        }
+
+        $this->title = $slug;
+
+        return $this;
+    }
+
     public function data(array $data = []): self
     {
         if ($data === []) {

@@ -65,9 +65,7 @@ class CartItemController extends BaseActionController
 
         $cart->update([
             'items' => collect($cart->data['items'])
-                ->reject(function ($cartItem) use ($item) {
-                    return $cartItem['id'] != $item;
-                })
+                ->where('id', '!==', $item)
                 ->toArray(),
         ])->calculateTotals();
 
