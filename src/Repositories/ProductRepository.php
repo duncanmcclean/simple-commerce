@@ -51,7 +51,6 @@ class ProductRepository implements ContractsProductRepository
     {
         Entry::make()
             ->collection(config('simple-commerce.collections.products'))
-            ->locale(Site::current()->handle())
             ->published(false)
             ->slug($this->slug)
             ->id($this->id)

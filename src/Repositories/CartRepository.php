@@ -78,7 +78,6 @@ class CartRepository implements ContractsCartRepository
     {
         $entry = Entry::make()
             ->collection(config('simple-commerce.collections.orders'))
-            ->locale(Site::current()->handle())
             ->published(false)
             ->slug($this->id)
             ->id($this->id)
