@@ -2,17 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Content;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
-use DoubleThreeDigital\SimpleCommerce\Tests\PreventSavingStacheItemsToDisk;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Support\Facades\Session;
-use Statamic\Auth\File\User;
-use Statamic\Facades\Collection;
+use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 
 class CartControllerTest extends TestCase
 {
@@ -21,14 +16,20 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_get_cart_index()
     {
+        Config::set('statamic.system.track_last_update', false);
+
         $id = (string) Stache::generateId();
         $this->setupCollections();
+
+        $user = User::make()
+            ->email('chew@bacca.com')
+            ->data(['name' => 'Chewbacca'])
+            ->makeSuper();
 
         $entry = Entry::make()
             ->collection('orders')
             ->id($id)
             ->slug($id)
-            ->locale('default') // TODO: wont need this soon
             ->data([
                 // 'title' => '#'.SimpleCommerce::freshOrderNumber(),
                 'title'          => 'Test',
@@ -41,6 +42,8 @@ class CartControllerTest extends TestCase
                 'coupon_total'   => 0,
             ])
             ->save();
+
+        dd($entry);
 
         // $cart = Cart::make()->save();
 
