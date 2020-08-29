@@ -12,10 +12,10 @@ use Statamic\Facades\Stache;
 
 class CustomerRepository implements ContractsCustomerRepository
 {
-    public string $id;
-    public string $title;
-    public string $slug;
-    public array $data;
+    public string $id = '';
+    public string $title = '';
+    public string $slug = '';
+    public array $data = [];
 
     public function make(): self
     {
@@ -58,13 +58,14 @@ class CustomerRepository implements ContractsCustomerRepository
         }
 
         $this->data = $data;
-        $this->generateTitleAndSlug();
 
         return $this;
     }
 
     public function save(): self
     {
+        $this->generateTitleAndSlug();
+
         Entry::make()
             ->collection(config('simple-commerce.collections.customers'))
             ->locale(Site::current()->handle())
@@ -85,7 +86,9 @@ class CustomerRepository implements ContractsCustomerRepository
             $data = array_merge($this->data, $data);
         }
 
-        $this->entry()
+        $this
+            ->generateTitleAndSlug()
+            ->entry()
             ->data($data)
             ->save();
 
