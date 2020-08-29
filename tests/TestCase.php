@@ -2,15 +2,16 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
-use Illuminate\Support\Str;
-use Aerni\Factory\Factory;
-use Aerni\Factory\Mapper;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
-use Faker\Generator as Faker;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\App;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
+use Statamic\Facades\User;
 use Statamic\Providers\StatamicServiceProvider;
+use Statamic\Stache\Stores\UsersStore;
 use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
@@ -47,24 +48,32 @@ abstract class TestCase extends OrchestraTestCase
         parent::resolveApplicationConfiguration($app);
 
         $configs = [
-            'assets', 'cp', 'forms', 'static_caching',
-            'sites', 'stache', 'system', 'users',
+            'assets',
+            'cp',
+            'forms',
+            'static_caching',
+            'sites',
+            'stache',
+            'system',
+            'users',
         ];
 
         foreach ($configs as $config) {
-            $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
+            $app['config']->set(
+                "statamic.$config",
+                require(__DIR__."/../vendor/statamic/cms/config/{$config}.php")
+            );
         }
 
+        $app['config']->set('app.key', 'base64:'.base64_encode(
+            Encrypter::generateKey($app['config']['app.cipher'])
+        ));
         $app['config']->set('statamic.users.repository', 'file');
-        $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
-
-        $app['config']->set('factory', [
-            'published' => true,
-            'title'     => [
-                'chars'     => [$min = 10, $max = 20],
-                'real_text' => false,
-            ],
+        $app['config']->set('statamic.stache.stores.users', [
+            'class' => UsersStore::class,
+            'directory' => __DIR__.'/__fixtures/users',
         ]);
+        $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
     }
