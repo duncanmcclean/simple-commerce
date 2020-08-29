@@ -92,7 +92,7 @@ class CartRepository implements ContractsCartRepository
     public function update(array $data, bool $mergeData = true): self
     {
         if ($mergeData) {
-            $data = array_merge($this->data, $data);
+            $data = array_merge($data, $this->data);
         }
 
         $this->entry()
@@ -189,13 +189,19 @@ class CartRepository implements ContractsCartRepository
 
     public function markAsCompleted(): self
     {
-        $this->update([
-            'is_paid'   => true,
-            'paid_date' => now(),
-            'order_status' => 'completed',
-        ]);
+        // Doing this directly so we can override some repo code.
+        $this
+            ->entry()
+            ->data(array_merge($this->data, [
+                'is_paid'   => true,
+                'paid_date' => (string) now(),
+                'order_status' => 'completed',
+            ]))
+            ->published(true)
+            ->save();
 
-        $this->entry()->published(true)->save();
+        // Then we need to rehydrate
+        $this->find($this->id);
 
         event(new CartCompleted($this->entry()));
 

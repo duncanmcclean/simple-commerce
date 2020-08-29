@@ -87,7 +87,7 @@ class ProductRepository implements ContractsProductRepository
     public function update(array $data, bool $mergeData = true): self
     {
         if ($mergeData) {
-            $data = array_merge($this->data, $data);
+            $data = array_merge($data, $this->data);
         }
 
         $this->entry()
