@@ -82,22 +82,24 @@ class CheckoutController extends BaseActionController
             $this->excludedKeys[] = 'email';
         }
 
-        try {
-            $customer = Customer::findByEmail($customerData['email']);
-        } catch (CustomerNotFound $e) {
-            $customer = Customer::make()
-                ->data([
-                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                    'email' => $customerData['email'],
-                ])
-                ->save();
+        if (isset($customerData['email'])) {
+            try {
+                $customer = Customer::findByEmail($customerData['email']);
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::make()
+                    ->data([
+                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
+                        'email' => $customerData['email'],
+                    ])
+                    ->save();
+            }
+
+            $customer->update($customerData);
+
+            $this->cart->update([
+                'customer' => $customer->id,
+            ]);
         }
-
-        $customer->update($customerData);
-
-        $this->cart->update([
-            'customer' => $customer->id,
-        ]);
 
         $this->excludedKeys[] = 'customer';
 
