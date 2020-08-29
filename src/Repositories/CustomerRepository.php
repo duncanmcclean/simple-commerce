@@ -77,7 +77,6 @@ class CustomerRepository implements ContractsCustomerRepository
     {
         Entry::make()
             ->collection(config('simple-commerce.collections.customers'))
-            ->locale(Site::current()->handle())
             ->published(false)
             ->slug($this->slug)
             ->id($this->id)
