@@ -37,6 +37,10 @@ class MoneyFieldtype extends Fieldtype
 
     public function process($data)
     {
+        if ($data === '' || $data === null) {
+            return (int) 0000;
+        }
+
         if (! str_contains($data, '.')) {
             $data = $data * 100;
         }
