@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
 {
@@ -45,25 +44,4 @@ class CartControllerTest extends TestCase
     {
         //
     }
-
-    // protected function makeOrder()
-    // {
-    //     $id = Stache::generateId();
-
-    //     return Entry::make()
-    //         ->collection('orders')
-    //         ->id($id)
-    //         ->slug($id)
-    //         ->data([
-    //             'title' => '#'.SimpleCommerce::freshOrderNumber(),
-    //             'items'          => [],
-    //             'is_paid'        => false,
-    //             'grand_total'    => 0,
-    //             'items_total'    => 0,
-    //             'tax_total'      => 0,
-    //             'shipping_total' => 0,
-    //             'coupon_total'   => 0,
-    //         ])
-    //         ->save();
-    // }
 }
