@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] The money fieldtype will now default to 0 when nothing is entered instead of throwing an exception.
+
 ## v2.0.14 (2020-08-29)
 
 * [new] You can now register gateways on-demand with `SimpleCommerce::registerGateway(PayPalGateway::class, [])`
