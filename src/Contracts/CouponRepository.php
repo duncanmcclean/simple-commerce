@@ -23,4 +23,6 @@ interface CouponRepository
     public function toArray(): array;
 
     public function isValid(Entry $order): bool;
+
+    public function redeem(): self;
 }
