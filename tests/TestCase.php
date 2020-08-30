@@ -4,15 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Illuminate\Encryption\Encrypter;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\App;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
-use Statamic\Facades\User;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Stache\Stores\UsersStore;
 use Statamic\Statamic;
+use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -21,6 +19,7 @@ abstract class TestCase extends OrchestraTestCase
         return [
             StatamicServiceProvider::class,
             ServiceProvider::class,
+            PDFServiceProvider::class,
         ];
     }
 

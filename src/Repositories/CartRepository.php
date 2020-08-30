@@ -191,7 +191,7 @@ class CartRepository implements ContractsCartRepository
     {
         $this->update([
             'is_paid'   => true,
-            'paid_date' => now(),
+            'paid_date' => now()->toDateTimeString(),
             'order_status' => 'completed',
         ]);
 
