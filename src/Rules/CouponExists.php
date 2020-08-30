@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -9,7 +10,11 @@ class CouponExists implements Rule
 {
     public function passes($attribute, $value)
     {
-        return Coupon::findByCode($value) === null ? false : true;
+        try {
+            return Coupon::findByCode($value) === null ? false : true;
+        } catch (CouponNotFound $e) {
+            return false;
+        }
     }
 
     public function message()
