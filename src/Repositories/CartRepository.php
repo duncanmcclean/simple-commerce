@@ -76,7 +76,7 @@ class CartRepository implements ContractsCartRepository
 
     public function save(): self
     {
-        $entry = Entry::make()
+        Entry::make()
             ->collection(config('simple-commerce.collections.orders'))
             ->published(false)
             ->slug($this->id)

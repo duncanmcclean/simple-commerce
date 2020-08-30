@@ -21,4 +21,6 @@ interface CustomerRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function generateTitleAndSlug(): self;
 }

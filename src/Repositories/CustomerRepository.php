@@ -125,7 +125,7 @@ class CustomerRepository implements ContractsCustomerRepository
         ];
     }
 
-    protected function generateTitleAndSlug(): self
+    public function generateTitleAndSlug(): self
     {
         $name = $this->data['name'];
         $email = $this->data['email'];
