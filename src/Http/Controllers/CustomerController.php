@@ -17,7 +17,7 @@ class CustomerController extends BaseActionController
     public function update(UpdateRequest $request, $customer)
     {
         Customer::find($customer)
-            ->update(Arr::except($request->all, ['_params', '_redirect', '_token']));
+            ->update(Arr::except($request->all(), ['_params', '_redirect', '_token']));
 
         return $this->withSuccess($request);
     }
