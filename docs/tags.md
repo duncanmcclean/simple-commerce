@@ -262,7 +262,17 @@ This tag lets you get a particular gateway and its information, where `stripe` i
 ```
 
 ## Shipping
-TODO - this still needs to be built
+### Get Shipping Methods
+This tag can be used to give the user the option to select which shipping method they'd like their order to go through. The tag will loop through all of your configured shipping methods, see if they are available for the order's shipping address and if they are, the details and price will be outputted.
+
+```
+<select name="shipping_method" value="{{ old:shipping_method }}">
+  <option value="" disabled selected>Select a Shipping Method</option>
+  {{ sc:shipping:methods }}
+    <option value="{{ handle }}">{{ name }} - {{ cost }}</option>
+  {{ /sc:shipping:methods }}
+</select>
+```
 
 ## Get countries
 This tag lets you loop through countries.
