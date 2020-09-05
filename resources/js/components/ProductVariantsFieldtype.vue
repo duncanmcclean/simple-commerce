@@ -105,6 +105,7 @@ export default {
                     values: [],
                 },
             ],
+            options: [],
         }
     },
 
@@ -113,7 +114,7 @@ export default {
     // and when a variant is updated, we want to re-do the process in a watcher
 
     computed: {
-        options() {
+        cartesian() {
             let data = this.variants.filter((variant) => {
                 return variant.values.length != 0
             }).flatMap((variant) => [variant.values])
@@ -123,6 +124,36 @@ export default {
             }
 
             return data.reduce((acc, curr) => acc.flatMap(c => curr.map(n => [].concat(c, n))))
+        },
+    },
+
+    watch: {
+        variants: {
+            handler: (value) => {
+                // console.log('avriants')
+
+                console.log(this.cartesian)
+                console.log(typeof this.cartesian)
+
+                this.options = this.cartesian.map((item) => {
+                    if (typeof item === 'string') {
+                        console.log('string')
+
+                        return {
+                            variant: item,
+                            price: 0,
+                        }
+                    }
+
+                    console.log('normal')
+
+                    return {
+                        variant: item,
+                        price: 0,
+                    }
+                })
+            },
+            deep: true
         },
     },
 
