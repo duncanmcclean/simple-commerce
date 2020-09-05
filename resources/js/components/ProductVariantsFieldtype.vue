@@ -39,6 +39,45 @@
         </div>
 
         <!-- Variant Prices -->
+        <div class="grid-fieldtype-container">
+            <table class="grid-table" v-if="options.length > 0">
+                <thead>
+                    <tr>
+                        <grid-header-cell
+                            v-for="field in meta.option_fields"
+                            :key="field.handle"
+                            :field="field"
+                        />
+                    </tr>
+                </thead>
+                <sortable-list
+                    :value="options"
+                    :vertical="true"
+                    @dragstart="$emit('focus')"
+                    @dragend="$emit('blur')"
+                    @input="(rows) => $emit('sorted', rows)"
+                >
+                    <tbody slot-scope="{}">
+                        <grid-row
+                            v-for="(row, index) in options"
+                            :key="`row-${index}`"
+                            :index="index"
+                            :fields="meta.option_fields"
+                            :values="row"
+                            :can-delete="true"
+                            @updated="(row, value) => $emit('updated', row, value)"
+                            @meta-updated="$emit('meta-updated', row._id, $event)"
+                            @duplicate="(row) => $emit('duplicate', row)"
+                            @removed="(row) => $emit('removed', row)"
+                            @focus="$emit('focus')"
+                            @blur="$emit('blur')"
+                        />
+                    </tbody>
+                </sortable-list>
+            </table>
+
+            <button class="btn">Add Option</button>
+        </div>
     </div>
 </template>
 
@@ -60,7 +99,25 @@ export default {
                     values: [],
                 },
             ],
+
+            options: [
+                {'variant': 'test', 'price': 500},
+            ],
         }
+    },
+
+    computed: {
+        cartesian() {
+            let data = this.variants.filter((variant) => {
+                return variant.values.length != 0
+            }).flatMap((variant) => [variant.values])
+
+            if (data.length == 0) {
+                return []
+            }
+
+            return data.reduce((acc, curr) => acc.flatMap(c => curr.map(n => [].concat(c, n))))
+        },
     },
 
     methods: {
@@ -77,9 +134,7 @@ export default {
 
         // A bunch of Publish Field events
         errors(fieldHandle) {
-            // const state = this.$store.state.publish[this.storeName]
-            // if (! state) return []
-            // return state.errors[this.errorKey(handle)] || []
+            //
         },
 
         updated(variantIndex, fieldHandle, value) {
@@ -87,9 +142,7 @@ export default {
         },
 
         metaUpdated(fieldHandle, event) {
-            // let meta = clone(this.meta)
-            // meta[fieldHandle] = value
-            // this.$emit('meta-updated', meta)
+            //
         },
     },
 }
