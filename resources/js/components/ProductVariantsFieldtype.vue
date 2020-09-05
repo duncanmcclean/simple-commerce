@@ -75,19 +75,25 @@
                     </tbody>
                 </sortable-list>
             </table>
-
-            <button class="btn">Add Option</button>
         </div>
     </div>
 </template>
 
 <script>
+import uniqid from 'uniqid'
+
+import GridRow from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Row'
+import SortableList from '../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
+import GridHeaderCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
+
 export default {
     name: 'product-variants-fieldtype',
 
-    // 1. It should allow the user to setup variants (done)
-    // 2. the user should be able to setup a price & other configurable fields per variant
-    // 2. the user should be able to toggle if a variant is available for purchase
+    components: {
+        GridHeaderCell,
+        GridRow,
+        SortableList,
+    },
 
     props: ['meta'],
 
@@ -99,15 +105,15 @@ export default {
                     values: [],
                 },
             ],
-
-            options: [
-                {'variant': 'test', 'price': 500},
-            ],
         }
     },
 
+    // computed property called cartesian that grabs the data
+    // then a data properrty that holds the options with variant, price, sku etc
+    // and when a variant is updated, we want to re-do the process in a watcher
+
     computed: {
-        cartesian() {
+        options() {
             let data = this.variants.filter((variant) => {
                 return variant.values.length != 0
             }).flatMap((variant) => [variant.values])
@@ -132,7 +138,6 @@ export default {
             this.variants.splice(variantIndex, 1)
         },
 
-        // A bunch of Publish Field events
         errors(fieldHandle) {
             //
         },
