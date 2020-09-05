@@ -36,19 +36,21 @@ class ProductVariantsFieldtype extends Fieldtype
                     'width' => 50,
                 ]))->toPublishArray(),
             ],
-            'option_fields' => [
-                (new Field('variant', [
-                    'type' => 'text',
-                    'listable' => 'hidden',
-                    'display' => 'Variant',
-                    'read_only' => true,
-                ]))->toPublishArray(),
-                (new Field('price', [
-                    'type' => 'money',
-                    'read_only' => false,
-                    'listable' => 'hidden',
-                    'display' => 'price',
-                ])),
+            'option_fields' => array_merge(
+                [
+                    (new Field('variant', [
+                        'type' => 'text',
+                        'listable' => 'hidden',
+                        'display' => 'Variant',
+                        'read_only' => true,
+                    ]))->toPublishArray(),
+                    (new Field('price', [
+                        'type' => 'money',
+                        'read_only' => false,
+                        'listable' => 'hidden',
+                        'display' => 'price',
+                    ]))->toPublishArray(),
+                ],
                 collect($this->config('option_fields'))
                     ->map(function ($field) {
                         return (
@@ -56,7 +58,7 @@ class ProductVariantsFieldtype extends Fieldtype
                         )->toPublishArray();
                     })
                     ->toArray(),
-            ],
+            )
         ];
     }
 
