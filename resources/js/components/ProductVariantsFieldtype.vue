@@ -115,10 +115,6 @@ export default {
         }
     },
 
-    // computed property called cartesian that grabs the data
-    // then a data properrty that holds the options with variant, price, sku etc
-    // and when a variant is updated, we want to re-do the process in a watcher
-
     computed: {
         cartesian() {
             let data = this.variants.filter((variant) => {
