@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Variants -->
-        <div class="grid-fieldtype-container">
+        <div class="grid-fieldtype-container mb-4">
             <div class="grid-stacked">
                 <div
                     v-for="(variant, variantIndex) in variants"
@@ -82,7 +82,8 @@
 <script>
 import uniqid from 'uniqid'
 
-import GridRow from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Row'
+// import GridRow from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Row'
+import GridRow from '../statamic/Row'
 import SortableList from '../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
 import GridHeaderCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
 
@@ -129,12 +130,7 @@ export default {
 
     watch: {
         variants: {
-            handler: (value) => {
-                // console.log('avriants')
-
-                console.log(this.cartesian)
-                console.log(typeof this.cartesian)
-
+            handler: function (value) {
                 this.options = this.cartesian.map((item) => {
                     if (typeof item === 'string') {
                         console.log('string')
@@ -146,7 +142,7 @@ export default {
                     }
 
                     return {
-                        variant: item,
+                        variant: item.join(', '),
                         price: 0,
                     }
                 })
