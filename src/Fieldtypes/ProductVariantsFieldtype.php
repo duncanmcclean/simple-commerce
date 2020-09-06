@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
+use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
 {
@@ -23,32 +24,36 @@ class ProductVariantsFieldtype extends Fieldtype
         return [
             'variant_fields' => [
                 (new Field('name', [
-                    'input_type' => 'text',
                     'type' => 'text',
                     'listable' => 'hidden',
                     'display' => 'Name',
                     'width' => 50,
+                    'input_type' => 'text',
+                    'validate' => 'required',
                 ]))->toBlueprintArray(),
                 (new Field('values', [
                     'type' => 'taggable',
                     'listable' => 'hidden',
                     'display' => 'Values',
                     'width' => 50,
+                    'validate' => 'required',
                 ]))->toPublishArray(),
             ],
             'option_fields' => array_merge(
                 [
                     (new Field('variant', [
-                        'type' => 'text',
+                        'type' => 'textarea',
                         'listable' => 'hidden',
                         'display' => 'Variant',
                         'read_only' => true,
+                        'validate' => 'required',
                     ]))->toPublishArray(),
                     (new Field('price', [
                         'type' => 'money',
                         'read_only' => false,
                         'listable' => 'hidden',
                         'display' => 'price',
+                        'validate' => 'required',
                     ]))->toPublishArray(),
                 ],
                 collect($this->config('option_fields'))
@@ -58,7 +63,9 @@ class ProductVariantsFieldtype extends Fieldtype
                         )->toPublishArray();
                     })
                     ->toArray(),
-            )
+            ),
+            'variant' => resolve(Textarea::class)->preload(),
+            'price' => resolve(MoneyFieldtype::class)->preload(),
         ];
     }
 

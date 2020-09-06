@@ -1,7 +1,7 @@
 <template>
 
     <tr :class="[sortableItemClass, { 'opacity-50': isExcessive }]">
-        <td class="drag-handle" :class="sortableHandleClass"></td>
+        <!-- <td class="drag-handle" :class="sortableHandleClass"></td> -->
         <grid-cell
             v-for="(field, i) in fields"
             :show-inner="showField(field)"
@@ -20,12 +20,11 @@
             @blur="$emit('blur')"
         />
 
-        <td class="row-controls">
+        <!-- <td class="row-controls">
             <dropdown-list>
-                <dropdown-item :text="__('Duplicate Row')" @click="$emit('duplicate', index)" />
                 <dropdown-item v-if="canDelete" :text="__('Delete Row')" class="warning" @click="$emit('removed', index)" />
             </dropdown-list>
-        </td>
+        </td> -->
     </tr>
 
 </template>
@@ -37,7 +36,8 @@
 </style>
 
 <script>
-import GridCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Cell';
+// import GridCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Cell';
+import GridCell from './Cell'
 import { ValidatesFieldConditions } from '../../../vendor/statamic/cms/resources/js/components/field-conditions/FieldConditions.js';
 
 export default {
@@ -74,14 +74,6 @@ export default {
             type: Boolean,
             default: true
         },
-    },
-
-    data() {
-        return {
-            grid: {
-                isReadOnly: false,
-            },
-        }
     },
 
     inject: [
@@ -122,7 +114,7 @@ export default {
             if (! state) return [];
             return state.errors[this.errorKey(handle)] || [];
         }
-    }
+    },
 
 }
 </script>

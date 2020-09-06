@@ -26,7 +26,7 @@
                             :value="variant[field.handle]"
                             :meta="meta[field.handle]"
                             :errors="errors(field.handle)"
-                            class="p-2"
+                            class="p-2 w-1/2"
                             @input="updated(variantIndex, field.handle, $event)"
                             @meta-updated="metaUpdated(field.handle, $event)"
                             @focus="$emit('focus')"
@@ -53,6 +53,8 @@
                 <sortable-list
                     :value="options"
                     :vertical="true"
+                    :item-class="sortableItemClass"
+                    :handle-class="sortableHandleClass"
                     @dragstart="$emit('focus')"
                     @dragend="$emit('blur')"
                     @input="(rows) => $emit('sorted', rows)"
@@ -64,11 +66,10 @@
                             :index="index"
                             :fields="meta.option_fields"
                             :values="row"
-                            :can-delete="true"
+                            :can-delete="false"
                             :meta="meta"
                             @updated="(row, value) => $emit('updated', row, value)"
                             @meta-updated="$emit('meta-updated', row._id, $event)"
-                            @duplicate="(row) => $emit('duplicate', row)"
                             @removed="(row) => $emit('removed', row)"
                             @focus="$emit('focus')"
                             @blur="$emit('blur')"
@@ -87,11 +88,12 @@ import uniqid from 'uniqid'
 import GridRow from '../statamic/Row'
 import SortableList from '../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
 import GridHeaderCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
+import View from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/View'
 
 export default {
     name: 'product-variants-fieldtype',
 
-    mixins: [Fieldtype],
+    mixins: [Fieldtype, View],
 
     components: {
         GridHeaderCell,
@@ -136,8 +138,6 @@ export default {
             handler: function (value) {
                 this.options = this.cartesian.map((item) => {
                     if (typeof item === 'string') {
-                        console.log('string')
-
                         return {
                             variant: item,
                             price: 0,
