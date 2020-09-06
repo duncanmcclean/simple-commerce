@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
@@ -57,14 +58,9 @@ class CheckoutController extends BaseActionController
         ]);
 
         if ($this->request->has('gateway')) {
-            $gatewayClass = $this->request->gateway;
-
-            if (! class_exists($gatewayClass)) {
-                throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist'));
-            }
-
-            $gateway = new $gatewayClass();
-            $this->request->validate($gateway->purchaseRules());
+            $this->request->validate(
+                Gateway::use($this->request->gateway)->purchaseRules()
+            );
         }
 
         return $this;
@@ -112,20 +108,11 @@ class CheckoutController extends BaseActionController
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
-        $gateway = new $this->request->gateway();
-        $gatewayHandle = Str::camel($gateway->name());
-
-        $purchase = $gateway->purchase($this->request->all(), $this->request);
-
-        $this->cart->update([
-            'gateway' => $this->request->get('gateway'),
-            'gateway_data' => array_merge($purchase, (isset($this->cart->data[$gatewayHandle]) ? $this->cart->data[$gatewayHandle] : [])),
-            $gatewayHandle => [],
-        ]);
+        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart->entry());
 
         $this->excludedKeys[] = 'gateway';
 
-        foreach ($gateway->purchaseRules() as $key => $rule) {
+        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
             $this->excludedKeys[] = $key;
         }
 

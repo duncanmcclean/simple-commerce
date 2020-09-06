@@ -2,21 +2,26 @@
 
 namespace DummyNamespace;
 
+use Statamic\Entries\Entry;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayResponse;
 
-class DummyClass implements Gateway
+class DummyClass extends BaseGateway implements Gateway
 {
     public function name(): string
     {
         return 'Name of your gateway';
     }
 
-    public function prepare(array $data): array
+    public function prepare(GatewayPrep $data): GatewayResponse
     {
         return [];
     }
 
-    public function purchase(array $data): array
+    public function purchase(GatewayPrep $data): GatewayResponse
     {
         return [];
     }
@@ -26,12 +31,12 @@ class DummyClass implements Gateway
         return [];
     }
 
-    public function getCharge(array $data): array
+    public function getCharge(Entry $order): GatewayResponse
     {
         return [];
     }
 
-    public function refundCharge(array $data): array
+    public function refundCharge(Entry $order): GatewayResponse
     {
         return [];
     }

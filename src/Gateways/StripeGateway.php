@@ -3,15 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeNoPaymentIntentProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as SCCustomer;
-use Exception;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
-use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -94,8 +90,8 @@ class StripeGateway extends BaseGateway implements Gateway
         $this->setUpWithStripe();
 
         if (! isset($data['intent'])) {
-            return new GatewayResponse(false)
-                ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
+            // return new GatewayResponse(false)
+            //     ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
         }
 
         $refund = Refund::create([
