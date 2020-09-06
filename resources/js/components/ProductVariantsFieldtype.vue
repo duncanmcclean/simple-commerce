@@ -90,6 +90,8 @@ import GridHeaderCell from '../../../vendor/statamic/cms/resources/js/components
 export default {
     name: 'product-variants-fieldtype',
 
+    mixins: [Fieldtype],
+
     components: {
         GridHeaderCell,
         GridRow,
@@ -146,9 +148,18 @@ export default {
                         price: 0,
                     }
                 })
+
+                this.saveData()
             },
             deep: true
         },
+    },
+
+    mounted() {
+        if (this.value.variants && this.value.options) {
+            this.variants = this.value.variants
+            this.options = this.value.options
+        }
     },
 
     methods: {
@@ -161,6 +172,13 @@ export default {
 
         deleteVariant(variantIndex) {
             this.variants.splice(variantIndex, 1)
+        },
+
+        saveData() {
+            this.$emit('input', {
+                variants: this.variants,
+                options: this.options,
+            });
         },
 
         errors(fieldHandle) {
