@@ -20,7 +20,7 @@
             @blur="$emit('blur')"
         />
 
-        <td class="row-controls" v-if="!grid.isReadOnly">
+        <td class="row-controls">
             <dropdown-list>
                 <dropdown-item :text="__('Duplicate Row')" @click="$emit('duplicate', index)" />
                 <dropdown-item v-if="canDelete" :text="__('Delete Row')" class="warning" @click="$emit('removed', index)" />
@@ -76,8 +76,16 @@ export default {
         },
     },
 
+    data() {
+        return {
+            grid: {
+                isReadOnly: false,
+            },
+        }
+    },
+
     inject: [
-        'grid',
+        // 'grid',
         'sortableItemClass',
         'sortableHandleClass',
         'storeName',

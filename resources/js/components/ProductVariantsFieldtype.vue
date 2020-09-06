@@ -65,6 +65,7 @@
                             :fields="meta.option_fields"
                             :values="row"
                             :can-delete="true"
+                            :meta="meta"
                             @updated="(row, value) => $emit('updated', row, value)"
                             @meta-updated="$emit('meta-updated', row._id, $event)"
                             @duplicate="(row) => $emit('duplicate', row)"
