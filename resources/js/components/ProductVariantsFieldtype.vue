@@ -145,8 +145,6 @@ export default {
                         }
                     }
 
-                    console.log('normal')
-
                     return {
                         variant: item,
                         price: 0,
