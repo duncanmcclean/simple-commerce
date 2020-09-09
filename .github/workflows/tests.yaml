@@ -8,13 +8,21 @@ on:
 
 jobs:
   php_tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        php: [8.0, 7.4]
+        php: [7.4]
+        laravel: [7.*, 6.*]
+        dependency-version: [prefer-lowest, prefer-stable]
+        os: [ubuntu-latest]
+        include:
+          - laravel: 7.*
+            testbench: 5.*
+          - laravel: 6.*
+            testbench: 4.*
 
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php }} L ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -29,11 +37,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer validate
-          composer install --no-interaction
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --prefer-lowest --prefer-dist --no-interaction --no-suggest
 
       - name: Run PHPUnit
         run: composer test
-        env:
-          STRIPE_KEY: ${{ secrets.STRIPE_TEST_KEY }}
-          STRIPE_SERET: ${{ secrets.STRIPE_TEST_SECRET }}
