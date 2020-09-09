@@ -22,7 +22,7 @@ jobs:
           - laravel: 6.*
             testbench: 4.*
 
-    name: P ${{ matrix.php }} S ${{ matrix.statamic }} L ${{ matrix.laravel }}
+    name: P ${{ matrix.php }} - S ${{ matrix.statamic }} - L ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
