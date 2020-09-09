@@ -22,7 +22,7 @@ jobs:
           - laravel: 6.*
             testbench: 4.*
 
-    name: PHP ${{ matrix.php }} Laravel ${{ matrix.laravel }} Statamic ${{ matrix.statamic }}
+    name: PHP ${{ matrix.php }} Statamic ${{ matrix.statamic }} Laravel ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
