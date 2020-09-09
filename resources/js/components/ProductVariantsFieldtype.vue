@@ -68,6 +68,8 @@
                             :values="row"
                             :can-delete="false"
                             :meta="meta"
+                            name="options"
+                            error-key-prefix="options"
                             @updated="(row, value) => $emit('updated', row, value)"
                             @meta-updated="$emit('meta-updated', row._id, $event)"
                             @removed="(row) => $emit('removed', row)"
@@ -112,6 +114,8 @@ export default {
                 },
             ],
             options: [],
+
+            canWatchVariants: true
         }
     },
 
@@ -132,6 +136,10 @@ export default {
     watch: {
         variants: {
             handler: function (value) {
+                if (this.canWatchVariants === false) {
+                    return
+                }
+
                 this.options = this.cartesian.map((item) => {
                     if (typeof item === 'string') {
                         return {
@@ -154,8 +162,10 @@ export default {
 
     mounted() {
         if (this.value.variants && this.value.options) {
+            this.canWatchVariants = false
             this.variants = this.value.variants
             this.options = this.value.options
+            this.canWatchVariants = true
         }
     },
 
