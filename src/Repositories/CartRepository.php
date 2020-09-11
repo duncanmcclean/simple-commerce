@@ -21,14 +21,10 @@ use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
-use Statamic\Facades\Term;
 
 class CartRepository implements ContractsCartRepository
 {
-    public string $id = '';
-    public string $title = '';
-    public string $slug = '';
-    public array $data = [];
+    use DataRepository;
 
     public function make(): self
     {
@@ -46,30 +42,6 @@ class CartRepository implements ContractsCartRepository
             'coupon_total'   => 0,
             'order_status'   => 'cart',
         ];
-
-        return $this;
-    }
-
-    public function find(string $id): self
-    {
-        $this->id = $id;
-
-        $entry = $this->entry();
-
-        $this->title = $entry->title;
-        $this->slug = $entry->slug();
-        $this->data = $entry->data()->toArray();
-
-        return $this;
-    }
-
-    public function data(array $data = [])
-    {
-        if ($data === []) {
-            return $this->data;
-        }
-
-        $this->data = $data;
 
         return $this;
     }

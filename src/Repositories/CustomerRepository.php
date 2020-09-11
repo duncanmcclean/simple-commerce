@@ -7,22 +7,10 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Illuminate\Support\Str;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
-use Statamic\Facades\Site;
-use Statamic\Facades\Stache;
 
 class CustomerRepository implements ContractsCustomerRepository
 {
-    public string $id = '';
-    public string $title = '';
-    public string $slug = '';
-    public array $data = [];
-
-    public function make(): self
-    {
-        $this->id = Stache::generateId();
-
-        return $this;
-    }
+    use DataRepository;
 
     public function find(string $id): self
     {
@@ -59,17 +47,6 @@ class CustomerRepository implements ContractsCustomerRepository
         }
 
         return $this->find($entry->id());
-    }
-
-    public function data(array $data = []): self
-    {
-        if ($data === []) {
-            return $this->data;
-        }
-
-        $this->data = $data;
-
-        return $this;
     }
 
     public function save(): self
