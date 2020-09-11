@@ -85,7 +85,8 @@ class GatewayRepository implements ContractsGatewayRepository
 
         return resolve($this->className, [
             'config' => collect(SimpleCommerce::gateways())
-                ->where('class', $this->className)->pluck('gateway_config')
+                ->where('class', $this->className)
+                ->pluck('gateway-config')
                 ->first(),
         ]);
     }
