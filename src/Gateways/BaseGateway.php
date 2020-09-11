@@ -6,8 +6,8 @@ class BaseGateway
 {
     protected array $config = [];
 
-    public function config()
+    public function config(): array
     {
-        return $this->config();
+        return $this->config;
     }
 }
