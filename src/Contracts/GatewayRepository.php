@@ -12,7 +12,7 @@ interface GatewayRepository
 
     public function purchase($request, $order);
 
-    public function purchaseRules($request, $order);
+    public function purchaseRules();
 
     public function getCharge($order);
 

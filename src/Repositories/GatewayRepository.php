@@ -47,7 +47,7 @@ class GatewayRepository implements ContractsGatewayRepository
         return $purchase;
     }
 
-    public function purchaseRules($request, $order)
+    public function purchaseRules()
     {
         return $this->resolve()->purchaseRules();
     }
