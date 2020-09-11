@@ -48,7 +48,10 @@ class SimpleCommerce
 
     public static function registerGateway(string $gateway, array $config = [])
     {
-        static::$gateways[] = [$gateway, $config];
+        static::$gateways[] = [
+            $gateway,
+            $config
+        ];
     }
 
     public static function freshOrderNumber()
