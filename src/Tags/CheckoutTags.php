@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
@@ -16,14 +17,13 @@ class CheckoutTags extends SubTag
         $data = $cart->data;
 
         foreach (SimpleCommerce::gateways() as $gateway) {
-            $class = new $gateway['class']();
-            $prepare = $class->prepare($cart->data);
+            $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
 
             $cart->update([
-                $gateway['handle'] => $prepare,
+                $gateway['handle'] => $prepare->data(),
             ]);
 
-            $data = array_merge($data, $prepare);
+            $data = array_merge($data, $prepare->data());
         }
 
         return $this->createForm(
