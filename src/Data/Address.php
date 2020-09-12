@@ -19,7 +19,7 @@ class Address
         $this->postal = $postal;
     }
 
-    public function asArray(): array
+    public function toArray(): array
     {
         return [
             'name'    => $this->name,
