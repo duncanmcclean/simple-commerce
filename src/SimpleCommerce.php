@@ -56,7 +56,7 @@ class SimpleCommerce
 
     public static function freshOrderNumber()
     {
-        $minimum = 2000;
+        $minimum = config('simple-commerce.minimum_order_number');
 
         $query = Collection::find(config('simple-commerce.collections.orders'))
             ->queryEntries()

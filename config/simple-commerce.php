@@ -95,4 +95,16 @@ return [
 
     'cart_key' => 'simple-commerce-cart',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Order Number
+    |--------------------------------------------------------------------------
+    |
+    | If you want to, you can change the minimum order number for your store. This won't
+    | affect past orders, just ones in the future.
+    |
+    */
+
+    'minimum_order_number' => 2000,
+
 ];
