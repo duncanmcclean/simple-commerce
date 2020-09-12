@@ -106,7 +106,7 @@ class CartRepository implements ContractsCartRepository
             'gateway_data'     => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
             'customer'         => isset($this->data['customer']) ? $this->data['customer'] : null,
             'items'            => isset($this->data['items']) ? $this->data['items'] : [],
-            'billing_address'  => isset($this->data['billing_name']) ? $this->billingAddress()->toArray() : null,
+            'billing_address'  => isset($this->data['billing_name']) ? $this->billingAddress()->toArray() : (isset($this->data['use_shipping_address_for_billing']) ? $this->shippingAddress()->toArray() : null),
             'shipping_address' => isset($this->data['shipping_name']) ? $this->shippingAddress()->toArray() : null,
             'totals' => [
                 'grand_total' => isset($this->data['grand_total']) ? $this->data['grand_total'] : 0,
