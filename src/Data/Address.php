@@ -8,25 +8,25 @@ class Address
     public $address;
     public $city;
     public $country;
-    public $postal;
+    public $zipCode;
 
-    public function __construct(string $name, string $address, string $city, string $country, string $postal)
+    public function __construct(string $name, string $address, string $city, string $country, string $zipCode)
     {
         $this->name = $name;
         $this->address = $address;
         $this->city = $city;
         $this->country = $country;
-        $this->postal = $postal;
+        $this->zipCode = $zipCode;
     }
 
     public function toArray(): array
     {
         return [
-            'name'    => $this->name,
-            'address' => $this->address,
-            'city'    => $this->city,
-            'country' => $this->country,
-            'postal'  => $this->postal,
+            'name'     => $this->name,
+            'address'  => $this->address,
+            'city'     => $this->city,
+            'country'  => $this->country,
+            'zip_code' => $this->postal,
         ];
     }
 
