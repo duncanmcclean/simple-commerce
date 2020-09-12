@@ -9,8 +9,9 @@ class Address
     public $city;
     public $country;
     public $zipCode;
+    public $shippingNote;
 
-    public function __construct(string $name, string $address, string $city, string $country, string $zipCode)
+    public function __construct(string $name, string $address, string $city, string $country, string $zipCode, string $shippingNote = null)
     {
         $this->name = $name;
         $this->address = $address;
@@ -35,5 +36,10 @@ class Address
         return collect($this->toArray())
             ->values()
             ->join(', ');
+    }
+
+    public function shippingNote()
+    {
+        return $this->shippingNote;
     }
 }

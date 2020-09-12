@@ -137,6 +137,7 @@ class CartRepository implements ContractsCartRepository
             isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
             isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
             isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
+            isset($this->data['shipping_note']) ? $this->data['shipping_note'] : null,
         );
     }
 
