@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>{{ title }}</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="m-12 font-sans text-gray-800 max-w-2xl mx-auto">
+    <header class="flex flex-row justify-between mb-8">
+        <div>
+            <h2 class="text-3xl">{{ site:name }}</h2>
+            <ul class="my-2">
+                <li class="text-xs mb-2">+44 07444 444 4444</li>
+                <li class="text-xs mb-2">admin@somewhere.com</li>
+            </ul>
+        </div>
+        <div>
+            <h1 class="text-2xl text-right">Receipt</h1>
+            <div class="flex flex-col my-2">
+                <div class="flex flex-row items-center">
+                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap font-medium">Order Number</span>
+                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap text-right">{{ title }}</span>
+                </div>
+
+                <div class="flex flex-row items-center">
+                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap font-medium">Date</span>
+                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap text-right">{{ paid_date }}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-row space-x-16 mb-8">
+        {{ if billing_address }}
+            <div class="flex flex-col">
+                <span class="font-medium text-xs mb-1">Billing Address</span>
+                <span class="text-xs">{{ billing_address:name }}</span>
+                <span class="text-xs">{{ billing_address:address }</span>
+                <span class="text-xs">{{ billing_address:city }}</span>
+                <span class="text-xs">{{ billing_address:country }}</span>
+                <span class="text-xs">{{ billing_address:zip_code }}</span>
+            </div>
+        {{ /if }}
+
+        {{ if shipping_address }}
+            <div class="flex flex-col">
+                <span class="font-medium text-xs mb-1">Shipping Address</span>
+                <span class="text-xs">{{ shipping_address:name }}</span>
+                <span class="text-xs">{{ shipping_address:address }}</span>
+                <span class="text-xs">{{ shipping_address:city }}</span>
+                <span class="text-xs">{{ shipping_address:country }}</span>
+                <span class="text-xs">{{ shipping_address:zip_code }}</span>
+            </div>
+        {{ /if }}
+    </div>
+
+    <table class="table-auto w-full">
+        <thead>
+            <tr class="border-b border-gray-800">
+                <th class="px-2 py-2 text-left font-semibold text-sm w-2/3">Name</th>
+                <th class="px-2 py-2 text-left font-semibold text-sm">Qty</th>
+                <th class="px-2 py-2 text-left font-semibold text-sm">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ items }}
+                <tr class="{{ switch between='bg-white|bg-gray-100' }}">
+                    <td class="text-sm px-2 py-2">{{ product:title }}</td>
+                    <td class="text-sm px-2 py-2">{{ quantity }}</td>
+                    <td class="text-sm px-2 py-2">{{ total }}</td>
+                </tr>
+            {{ /items }}
+            <tr>
+                <td></td>
+                <td class="text-sm px-2 py-2">Items Total</td>
+                <td class="text-sm px-2 py-2">{{ items_total }}</td>
+            </tr>
+            {{ if coupon }}
+                <tr>
+                    <td></td>
+                    <td class="text-sm px-2 py-2">Coupon Total</td>
+                    <td class="text-sm px-2 py-2">{{ coupon_total }}</td>
+                </tr>
+            {{ /if }}
+            {{ if shipping_method }}
+                <tr>
+                    <td></td>
+                    <td class="text-sm px-2 py-2">Shipping Total</td>
+                    <td class="text-sm px-2 py-2">{{ shipping_total }}</td>
+                </tr>
+            {{ /if }}
+            {{ if tax_total }}
+                <tr>
+                    <td></td>
+                    <td class="text-sm px-2 py-2">Tax Total</td>
+                    <td class="text-sm px-2 py-2">{{ tax_total }}</td>
+                </tr>
+            {{ /if }}
+            <tr>
+                <td></td>
+                <td class="text-sm px-2 py-2 font-semibold bg-gray-200">Grand Total</td>
+                <td class="text-sm px-2 py-2 bg-gray-200">{{ grand_total }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
