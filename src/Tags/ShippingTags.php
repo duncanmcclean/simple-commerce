@@ -21,7 +21,7 @@ class ShippingTags extends SubTag
             ->map(function ($method) use ($cart) {
                 $instance = new $method();
 
-                if ($instance->checkAvailability($cart->shippingAddress()->toArray()) === false) {
+                if ($instance->checkAvailability($cart->shippingAddress()) === false) {
                     return null;
                 }
 

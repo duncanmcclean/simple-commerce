@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
+use DoubleThreeDigital\SimpleCommerce\Data\Address;
 use Statamic\Entries\Entry;
 
 class StandardPost implements ShippingMethod
@@ -22,7 +23,7 @@ class StandardPost implements ShippingMethod
         return 120;
     }
 
-    public function checkAvailability(array $address): bool
+    public function checkAvailability(Address $address): bool
     {
         return true;
     }
