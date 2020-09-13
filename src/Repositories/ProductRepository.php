@@ -44,6 +44,16 @@ class ProductRepository implements ContractsProductRepository
             'slug'  => $this->slug,
             'title' => $this->title,
             'price' => $this->data['price'],
+            'stock' => $this->stockCount(),
         ];
+    }
+
+    public function stockCount()
+    {
+        if (! isset($this->stock)) {
+            return null;
+        }
+
+        return (int) $this->data['stock'];
     }
 }
