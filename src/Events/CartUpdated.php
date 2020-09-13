@@ -8,8 +8,7 @@ use Statamic\Entries\Entry;
 
 class CartUpdated
 {
-    use Dispatchable;
-    use InteractsWithSockets;
+    use Dispatchable, InteractsWithSockets;
 
     public $cart;
 

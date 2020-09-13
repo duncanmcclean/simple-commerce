@@ -7,8 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class PostCheckout
 {
-    use Dispatchable;
-    use InteractsWithSockets;
+    use Dispatchable, InteractsWithSockets;
 
     public array $data;
 
