@@ -5,16 +5,17 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
+use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class CheckoutController extends BaseActionController
 {
@@ -35,6 +36,7 @@ class CheckoutController extends BaseActionController
             ->handleCustomerDetails()
             ->handlePayment()
             ->handleCoupon()
+            ->handleStock()
             ->handleRemainingData()
             ->postCheckout();
 
@@ -125,6 +127,28 @@ class CheckoutController extends BaseActionController
             Coupon::find($this->cart->data['coupon'])
                 ->redeem();
         }
+
+        return $this;
+    }
+
+    protected function handleStock()
+    {
+        collect($this->cart->items)
+            ->each(function ($item) {
+                $product = Product::find($item['product']);
+                $stock = $product->data['stock'] - $item['quantity'];
+
+                $product->update(['stock' => $stock]);
+
+                if ($stock <= config('simple-commerce.low_stock_threshold')) {
+                    event(new StockRunningLow($product, $stock));
+                }
+
+                if ($stock <= 0) {
+                    event(new StockRunOut($product, $stock));
+                }
+
+            });
 
         return $this;
     }
