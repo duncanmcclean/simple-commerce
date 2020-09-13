@@ -107,4 +107,17 @@ return [
 
     'minimum_order_number' => 2000,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Stock Running Low
+    |--------------------------------------------------------------------------
+    |
+    | Simple Commerce can be configured to emit events when stock is running low for
+    | products. Here is where you can configure the threshold when we start sending
+    | those notifications.
+    |
+    */
+
+    'low_stock_threshold' => 25,
+
 ];
