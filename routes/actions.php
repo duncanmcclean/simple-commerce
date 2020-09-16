@@ -44,7 +44,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
                 // Resolve webhook method
 
                 // Return the response from gateway
-            });
+            })->name("{$gateway['handle']}.webhook");
         }
     });
 });
