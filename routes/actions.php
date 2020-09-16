@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ReceiptController;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -25,4 +26,25 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     Route::delete('/coupon', [CouponController::class, 'destroy'])->name('coupon.destroy');
 
     Route::get('/receipt/{orderId}', [ReceiptController::class, 'show'])->name('receipt.show');
+
+    Route::name('gateways.')->prefix('gateways')->group(function () {
+        foreach (SimpleCommerce::gateways() as $gateway) {
+            Route::get("/{$gateway['handle']}/callback", function () {
+                // Get redirect url from tag
+                // Redirect there
+
+                // Otherwise return to site homepage with success in session
+
+                return 'You have returned from a gateway';
+            })->name("{$gateway['handle']}.callback");
+
+            Route::post("/{$gateway['handle']}/webhook", function () {
+                // Use gateway
+
+                // Resolve webhook method
+
+                // Return the response from gateway
+            });
+        }
+    });
 });
