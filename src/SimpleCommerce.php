@@ -36,11 +36,12 @@ class SimpleCommerce
 
                 return [
                     'name'            => $instance->name(),
-                    'handle'          => Str::camel($instance->name()),
+                    'handle'          => $handle = Str::camel($instance->name()),
                     'class'           => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
+                    'webhook_url'     => route('statamic.simple-commerce.gateways.'.$handle.'.webhook'),
                 ];
             })
             ->toArray();
