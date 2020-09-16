@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Exception;
 
 class CheckoutTags extends SubTag
 {
@@ -31,5 +32,27 @@ class CheckoutTags extends SubTag
             $data,
             'POST'
         );
+    }
+
+    // {{ sc:checkout:mollie }}
+    public function wildcard(string $tag)
+    {
+        $cart = $this->getSessionCart();
+        $gatewayHandle = last(explode(':', $tag));
+
+        $gateway = collect(SimpleCommerce::gateways())
+            ->where('handle', $gatewayHandle)
+            ->first();
+
+        $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
+
+        if (! $prepare->checkoutUrl()) {
+            throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
+        }
+
+        // TODO: implement a redirect thingy
+
+        abort(redirect($prepare->checkoutUrl(), 302));
+        return;
     }
 }
