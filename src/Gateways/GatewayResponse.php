@@ -6,11 +6,11 @@ class GatewayResponse
 {
     protected bool $success = false;
     protected array $data = [];
-    protected string $checkoutUrl = null;
+    protected string $checkoutUrl = '';
 
     protected string $error = '';
 
-    public function __construct(bool $success = false, array $data = [], string $checkoutUrl = null)
+    public function __construct(bool $success = false, array $data = [], string $checkoutUrl = '')
     {
         $this->success = $success;
         $this->data = $data;
