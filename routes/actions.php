@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ReceiptController;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Http\Request;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -30,15 +31,13 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     Route::name('gateways.')->prefix('gateways')->group(function () {
         foreach (SimpleCommerce::gateways() as $gateway) {
             Route::get("/{$gateway['handle']}/callback", function () {
-                // Get redirect url from tag
-                // Redirect there
+                // TODO: deal with redirect param
 
-                // Otherwise return to site homepage with success in session
-
-                return 'You have returned from a gateway';
+                return redirect('/')
+                    ->with('success', 'Successful checkout.');
             })->name("{$gateway['handle']}.callback");
 
-            Route::post("/{$gateway['handle']}/webhook", function () use ($gateway) {
+            Route::post("/{$gateway['handle']}/webhook", function (Request $request) use ($gateway) {
                 return \DoubleThreeDigital\SimpleCommerce\Facades\Gateway::use($gateway['class'])->webhook($request);
             })->name("{$gateway['handle']}.webhook");
         }
