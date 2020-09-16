@@ -31,7 +31,7 @@ class MollieGateway extends BaseGateway implements Gateway
             ],
             'description' => 'Order {$cart->title}',
             'redirectUrl' => $this->callbackUrl(),
-            'webhookUrl' => $this->webhookUrl(),
+            'webhookUrl'  => $this->webhookUrl(),
             'metadata' => [
                 'order_id' => $cart->id,
             ],
