@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Http\Request;
 
 class GatewayRepository implements ContractsGatewayRepository
 {
@@ -71,6 +72,11 @@ class GatewayRepository implements ContractsGatewayRepository
         ]);
 
         return $refund;
+    }
+
+    public function webhook(Request $request)
+    {
+        return $this->resolve()->webhook($request);
     }
 
     protected function resolve()

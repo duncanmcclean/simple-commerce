@@ -109,6 +109,11 @@ class MollieGateway extends BaseGateway implements Gateway
         return new GatewayResponse(true, []);
     }
 
+    public function webhookUrl()
+    {
+        // Deal with payment complete or whatever
+    }
+
     protected function setupMollie()
     {
         $client = new Client([

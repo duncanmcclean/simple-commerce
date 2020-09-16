@@ -38,12 +38,8 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
                 return 'You have returned from a gateway';
             })->name("{$gateway['handle']}.callback");
 
-            Route::post("/{$gateway['handle']}/webhook", function () {
-                // Use gateway
-
-                // Resolve webhook method
-
-                // Return the response from gateway
+            Route::post("/{$gateway['handle']}/webhook", function () use ($gateway) {
+                return \DoubleThreeDigital\SimpleCommerce\Facades\Gateway::use($gateway['class'])->webhook($request);
             })->name("{$gateway['handle']}.webhook");
         }
     });
