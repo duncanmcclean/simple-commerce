@@ -28,7 +28,7 @@ class BaseGateway
     public function callbackUrl()
     {
         // TODO: make this a signed url
-        return config('app.url').route('statamic.simple-commerce.gateways.'.$this->handle.'.callback');
+        return route('statamic.simple-commerce.gateways.'.$this->handle.'.callback');
     }
 
     public function webhookUrl()
