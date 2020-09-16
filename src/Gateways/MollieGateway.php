@@ -29,7 +29,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'currency' => Currency::get(Site::current())['code'],
                 'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
             ],
-            'description' => 'Order {$cart->title}',
+            'description' => "Order {$cart->title}",
             'redirectUrl' => $this->callbackUrl(),
             'webhookUrl'  => $this->webhookUrl(),
             'metadata' => [
