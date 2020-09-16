@@ -30,8 +30,8 @@ class MollieGateway extends BaseGateway implements Gateway
                 'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
             ],
             'description' => 'Order {$cart->title}',
-            'redirectUrl' => '',
-            'webhookUrl' => '',
+            'redirectUrl' => $this->callbackUrl(),
+            'webhookUrl' => $this->webhookUrl(),
             'metadata' => [
                 'order_id' => $cart->id,
             ],
