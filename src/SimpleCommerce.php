@@ -41,7 +41,9 @@ class SimpleCommerce
                     'formatted_class' => addslashes($gateway[0]),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
-                    'webhook_url'     => route('statamic.simple-commerce.gateways.'.$handle.'.webhook'),
+                    'webhook_url'     => Statamic::booted(function () use ($handle) {
+                        return route('statamic.simple-commerce.gateways.'.$handle.'.webhook');
+                    }),
                 ];
             })
             ->toArray();
