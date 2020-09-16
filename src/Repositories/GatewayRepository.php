@@ -90,6 +90,7 @@ class GatewayRepository implements ContractsGatewayRepository
         return resolve($this->className, [
             'config' => $gateway['gateway-config'],
             'handle' => $gateway['handle'],
+            'webhookUrl' => $gateway['webhook_url'],
         ]);
     }
 }
