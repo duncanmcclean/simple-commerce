@@ -87,10 +87,15 @@ class GatewayRepository implements ContractsGatewayRepository
             ->where('class', $this->className)
             ->first();
 
-        return resolve($this->className, [
+        $data = [
             'config' => $gateway['gateway-config'],
             'handle' => $gateway['handle'],
-            'webhookUrl' => $gateway['webhook_url'],
-        ]);
+        ];
+
+        if (isset($gateway['webhook_url'])) {
+            $data['webhookUrl'] = $gateway['webhook_url'];
+        }
+
+        return resolve($this->className, $data);
     }
 }
