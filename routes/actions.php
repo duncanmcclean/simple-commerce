@@ -32,6 +32,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
         foreach (SimpleCommerce::gateways() as $gateway) {
             Route::get("/{$gateway['handle']}/callback", function () {
                 // TODO: deal with redirect param
+                // TODO: clear order from session
 
                 return redirect('/')
                     ->with('success', 'Successful checkout.');

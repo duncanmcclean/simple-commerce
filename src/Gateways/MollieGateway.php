@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
@@ -109,7 +110,7 @@ class MollieGateway extends BaseGateway implements Gateway
         return new GatewayResponse(true, []);
     }
 
-    public function webhookUrl()
+    public function webhook(Request $request)
     {
         // Deal with payment complete or whatever
     }
