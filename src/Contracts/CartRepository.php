@@ -20,6 +20,8 @@ interface CartRepository
 
     public function toArray(): array;
 
+    public function coupon(): CouponRepository;
+
     public function redeemCoupon(string $code): bool;
 
     public function markAsCompleted(): self;
