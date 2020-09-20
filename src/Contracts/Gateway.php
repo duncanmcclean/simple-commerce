@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayResponse;
+use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
 
 interface Gateway
@@ -20,4 +21,6 @@ interface Gateway
     public function getCharge(Entry $order): GatewayResponse;
 
     public function refundCharge(Entry $order): GatewayResponse;
+
+    public function webhook(Request $request);
 }

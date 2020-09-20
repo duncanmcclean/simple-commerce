@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as SCCustomer;
+use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
 use Stripe\Customer;
@@ -99,6 +100,11 @@ class StripeGateway extends BaseGateway implements Gateway
         ]);
 
         return new GatewayResponse(true, $refund->toArray());
+    }
+
+    public function webhook(Request $request)
+    {
+        return null;
     }
 
     protected function setUpWithStripe()

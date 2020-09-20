@@ -124,8 +124,7 @@ class CheckoutController extends BaseActionController
     protected function handleCoupon()
     {
         if (isset($this->cart->data['coupon'])) {
-            Coupon::find($this->cart->data['coupon'])
-                ->redeem();
+            $this->cart->coupon()->redeem();
         }
 
         return $this;

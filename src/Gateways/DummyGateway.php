@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
 
 class DummyGateway extends BaseGateway implements Gateway
@@ -47,5 +48,10 @@ class DummyGateway extends BaseGateway implements Gateway
     public function refundCharge(Entry $entry): GatewayResponse
     {
         return new GatewayResponse(true, []);
+    }
+
+    public function webhook(Request $request)
+    {
+        return null;
     }
 }

@@ -9,10 +9,12 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Http\Request;
 
 class GatewayRepository implements ContractsGatewayRepository
 {
     protected $className;
+    protected $redirectUrl;
 
     public function use($className): self
     {
@@ -73,6 +75,18 @@ class GatewayRepository implements ContractsGatewayRepository
         return $refund;
     }
 
+    public function webhook(Request $request)
+    {
+        return $this->resolve()->webhook($request);
+    }
+
+    public function withRedirectUrl(string $redirectUrl): self
+    {
+        $this->redirectUrl = $redirectUrl;
+
+        return $this;
+    }
+
     protected function resolve()
     {
         if (! $this->className) {
@@ -83,10 +97,23 @@ class GatewayRepository implements ContractsGatewayRepository
             throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist'));
         }
 
-        return resolve($this->className, [
-            'config' => collect(SimpleCommerce::gateways())
-                ->where('class', $this->className)->pluck('gateway_config')
-                ->first(),
-        ]);
+        $gateway = collect(SimpleCommerce::gateways())
+            ->where('class', $this->className)
+            ->first();
+
+        $data = [
+            'config' => $gateway['gateway-config'],
+            'handle' => $gateway['handle'],
+        ];
+
+        if (isset($gateway['webhook_url'])) {
+            $data['webhookUrl'] = $gateway['webhook_url'];
+        }
+
+        if ($this->redirectUrl) {
+            $data['redirectUrl'] = $this->redirectUrl;
+        }
+
+        return resolve($this->className, $data);
     }
 }

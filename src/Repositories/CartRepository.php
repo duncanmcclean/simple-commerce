@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartRepository;
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
@@ -139,6 +140,11 @@ class CartRepository implements ContractsCartRepository
             isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
             isset($this->data['shipping_note']) ? $this->data['shipping_note'] : null,
         );
+    }
+
+    public function coupon(): CouponRepository
+    {
+        return Coupon::find($this->data['coupon']);
     }
 
     public function redeemCoupon(string $code): bool
