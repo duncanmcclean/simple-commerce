@@ -14,7 +14,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class CheckoutController extends BaseActionController
 {
