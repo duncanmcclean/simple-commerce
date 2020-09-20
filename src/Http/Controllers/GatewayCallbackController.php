@@ -3,11 +3,14 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
 class GatewayCallbackController extends BaseActionController
 {
+    use SessionCart;
+
     public function index(Request $request, $gateway)
     {
         $gateway = collect(SimpleCommerce::gateways())
@@ -16,10 +19,10 @@ class GatewayCallbackController extends BaseActionController
 
         throw_if(! $gateway, new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist')));
 
-        // TODO: deal with redirect param
-        // TODO: clear order from session
+        $this->forgetSessionCart();
 
-        return redirect('/')
-            ->with('success', 'Successful checkout.');
+        return $this->withSuccess($request, [
+            'success' => 'Successful checkout.',
+        ]);
     }
 }

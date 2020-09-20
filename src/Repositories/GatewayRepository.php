@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 class GatewayRepository implements ContractsGatewayRepository
 {
     protected $className;
+    protected $redirectUrl;
 
     public function use($className): self
     {
@@ -79,6 +80,13 @@ class GatewayRepository implements ContractsGatewayRepository
         return $this->resolve()->webhook($request);
     }
 
+    public function withRedirectUrl(string $redirectUrl): self
+    {
+        $this->redirectUrl = $redirectUrl;
+
+        return $this;
+    }
+
     protected function resolve()
     {
         if (! $this->className) {
@@ -100,6 +108,10 @@ class GatewayRepository implements ContractsGatewayRepository
 
         if (isset($gateway['webhook_url'])) {
             $data['webhookUrl'] = $gateway['webhook_url'];
+        }
+
+        if ($this->redirectUrl) {
+            $data['redirectUrl'] = $this->redirectUrl;
         }
 
         return resolve($this->className, $data);

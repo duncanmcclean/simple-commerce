@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
+use Illuminate\Support\Facades\URL;
 
 class CheckoutTags extends SubTag
 {
@@ -44,13 +45,19 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
+        if (isset($this->params['redirect'])) {
+            $redirect = $this->params['redirect'];
+        } else {
+            $redirect = null;
+        }
+
+        $prepare = Gateway::use($gateway['class'])
+            ->withCallbackUrl($this->params['redirect'])
+            ->prepare(request(), $cart->entry());
 
         if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
-
-        // TODO: implement a redirect thingy
 
         abort(redirect($prepare->checkoutUrl(), 302));
         return;
