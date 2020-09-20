@@ -52,7 +52,7 @@ class CheckoutTags extends SubTag
         }
 
         $prepare = Gateway::use($gateway['class'])
-            ->withCallbackUrl($this->params['redirect'])
+            ->withRedirectUrl($this->params['redirect'])
             ->prepare(request(), $cart->entry());
 
         if (! $prepare->checkoutUrl()) {
