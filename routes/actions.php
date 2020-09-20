@@ -5,9 +5,9 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartItemController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ReceiptController;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Http\Request;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -28,19 +28,6 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
 
     Route::get('/receipt/{orderId}', [ReceiptController::class, 'show'])->name('receipt.show');
 
-    Route::name('gateways.')->prefix('gateways')->group(function () {
-        foreach (SimpleCommerce::gateways() as $gateway) {
-            Route::get("/{$gateway['handle']}/callback", function () {
-                // TODO: deal with redirect param
-                // TODO: clear order from session
-
-                return redirect('/')
-                    ->with('success', 'Successful checkout.');
-            })->name("{$gateway['handle']}.callback");
-
-            Route::post("/{$gateway['handle']}/webhook", function (Request $request) use ($gateway) {
-                return \DoubleThreeDigital\SimpleCommerce\Facades\Gateway::use($gateway['class'])->webhook($request);
-            })->name("{$gateway['handle']}.webhook");
-        }
-    });
+    Route::get('/gateways/{gateway}/callback', [GatewayCallbackController::class, 'index'])->name('gateways.callback');
+    Route::post('/gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])->name('gateways.webhook');
 });
