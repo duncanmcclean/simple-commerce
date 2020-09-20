@@ -42,7 +42,7 @@ class SimpleCommerce
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
                     'webhook_url'     => Statamic::booted(function () use ($handle) {
-                        return route('statamic.simple-commerce.gateways.'.$handle.'.webhook');
+                        return route('statamic.simple-commerce.gateways.webhook', ['gateway' => $handle]);
                     }),
                 ];
             })
