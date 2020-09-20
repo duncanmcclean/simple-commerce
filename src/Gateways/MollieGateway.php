@@ -110,7 +110,6 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $refund = $payment->refund([]);
 
-        // TODO: add data in the response
         return new GatewayResponse(true, []);
     }
 
