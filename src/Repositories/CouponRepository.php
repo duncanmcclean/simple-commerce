@@ -90,9 +90,7 @@ class CouponRepository implements ContractsCouponRepository
         // We're doing this directry to avoid merge issues
         $this
             ->entry()
-            ->data(array_merge([
-                'redeemed' => $this->data['redeemed']++,
-            ], $this->data))
+            ->set('redeemed', $this->data['redeemed']++)
             ->save();
 
         // Then we rehydrate...
