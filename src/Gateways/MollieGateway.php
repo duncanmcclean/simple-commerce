@@ -3,11 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
+use Mollie\Api\Types\PaymentStatus;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
 
@@ -38,7 +40,9 @@ class MollieGateway extends BaseGateway implements Gateway
             ],
         ]);
 
-        return new GatewayResponse(true, [], $payment->getCheckoutUrl());
+        return new GatewayResponse(true, [
+            'id' => $payment->id,
+        ], $payment->getCheckoutUrl());
     }
 
     public function purchase(GatewayPurchase $data): GatewayResponse
@@ -112,7 +116,25 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function webhook(Request $request)
     {
-        // Deal with payment complete or whatever
+        $this->setupMollie();
+        $mollieId = $request->id;
+
+        $payment = $this->mollie->payments->get($mollieId);
+
+        if ($payment->status === PaymentStatus::STATUS_PAID) {
+            $cart = Entry::whereCollection(config('simple-commerce.collections.order'))
+                ->get()
+                ->filter(function ($entry) use ($mollieId) {
+                    return isset($entry->data()->get('gateway_data')['id']) && $entry->data()->get('gateway_data')['id'] === $mollieId;
+                })
+                ->map(function ($entry) {
+                    return Cart::find($entry->id);
+                })
+                ->first();
+
+            $cart->markAsCompleted();
+            event(new PostCheckout($cart->data));
+        }
     }
 
     protected function setupMollie()
