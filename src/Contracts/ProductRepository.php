@@ -19,4 +19,6 @@ interface ProductRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function stockCount();
 }

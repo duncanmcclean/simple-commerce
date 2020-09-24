@@ -8,8 +8,7 @@ use Statamic\Entries\Entry;
 
 class CouponRedeemed
 {
-    use Dispatchable;
-    use InteractsWithSockets;
+    use Dispatchable, InteractsWithSockets;
 
     public $coupon;
 

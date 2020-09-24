@@ -3,12 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeNoPaymentIntentProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as SCCustomer;
-use Exception;
+use Illuminate\Http\Request;
+use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
 use Stripe\Customer;
 use Stripe\PaymentIntent;
@@ -16,20 +15,20 @@ use Stripe\PaymentMethod;
 use Stripe\Refund;
 use Stripe\Stripe;
 
-class StripeGateway implements Gateway
+class StripeGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
         return 'Stripe';
     }
 
-    public function prepare(array $data): array
+    public function prepare(GatewayPrep $data): GatewayResponse
     {
-        $cart = Cart::find(request()->session()->get(config('simple-commerce.cart_key')));
         $this->setUpWithStripe();
+        $cart = $data->cart();
 
         $intentData = [
-            'amount'   => $data['grand_total'],
+            'amount'   => $cart->data['grand_total'],
             'currency' => Currency::get(Site::current())['code'],
             'description' => "Order: {$cart->title}",
             'metadata' => [
@@ -50,25 +49,25 @@ class StripeGateway implements Gateway
 
         $intent = PaymentIntent::create($intentData);
 
-        return [
+        return new GatewayResponse(true, [
             'intent'         => $intent->id,
             'client_secret'  => $intent->client_secret,
-        ];
+        ]);
     }
 
-    public function purchase(array $data, $request): array
+    public function purchase(GatewayPurchase $data): GatewayResponse
     {
         $this->setUpWithStripe();
 
-        $paymentMethod = PaymentMethod::retrieve($data['payment_method']);
+        $paymentMethod = PaymentMethod::retrieve($data->request()->payment_method);
 
-        return [
+        return new GatewayResponse(true, [
             'id'       => $paymentMethod->id,
             'object'   => $paymentMethod->object,
             'card'     => $paymentMethod->card->toArray(),
             'customer' => $paymentMethod->customer,
             'livemode' => $paymentMethod->livemode,
-        ];
+        ]);
     }
 
     public function purchaseRules(): array
@@ -78,24 +77,34 @@ class StripeGateway implements Gateway
         ];
     }
 
-    public function getCharge(array $data): array
+    public function getCharge(Entry $order): GatewayResponse
     {
-        return [];
+        $this->setUpWithStripe();
+
+        $charge = PaymentIntent::retrieve($order->data()['gateway_data']['intent']);
+
+        return new GatewayResponse(true, $charge->toArray());
     }
 
-    public function refundCharge(array $data): array
+    public function refundCharge(Entry $order): GatewayResponse
     {
         $this->setUpWithStripe();
 
         if (! isset($data['intent'])) {
-            throw new StripeNoPaymentIntentProvided(__('simple-commerce::gateways.stripe.no_payment_intent_provided'));
+            // return new GatewayResponse(false)
+            //     ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
         }
 
         $refund = Refund::create([
-            'payment_intent' => $data['intent'],
+            'payment_intent' => $order->data()['gateway_data']['intent'],
         ]);
 
-        return json_decode($refund->toJSON(), true);
+        return new GatewayResponse(true, $refund->toArray());
+    }
+
+    public function webhook(Request $request)
+    {
+        return null;
     }
 
     protected function setUpWithStripe()

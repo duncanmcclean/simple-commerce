@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
+use DoubleThreeDigital\SimpleCommerce\Data\Address;
 use Statamic\Entries\Entry;
 
 interface CartRepository
@@ -19,6 +20,12 @@ interface CartRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function billingAddress(): Address;
+
+    public function shippingAddress(): Address;
+
+    public function coupon(): CouponRepository;
 
     public function redeemCoupon(string $code): bool;
 
