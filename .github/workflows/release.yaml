@@ -59,8 +59,3 @@ jobs:
       #     webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
       #     webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
 
-      - name: Deploy Documentation
-        uses: distributhor/workflow-webhook@v1
-        env:
-          webhook_url: ${{ secrets.FORGE_WEBHOOK_URL }}
-          webhook_secret: ${{ secrets.FORGE_WEBHOOK_SECRET }}
