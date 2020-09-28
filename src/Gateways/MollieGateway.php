@@ -3,6 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;

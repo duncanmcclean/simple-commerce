@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Gateways;
+namespace DoubleThreeDigital\SimpleCommerce\Data\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Statamic\Entries\Entry;
 
-class GatewayPrep
+class GatewayPurchase
 {
     protected $request;
     protected $order;

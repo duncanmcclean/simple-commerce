@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
 

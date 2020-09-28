@@ -3,6 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
 
@@ -20,8 +24,6 @@ class DummyGateway extends BaseGateway implements Gateway
 
     public function purchase(GatewayPurchase $data): GatewayResponse
     {
-        // if ($data['card_number'] === '1212 1212 1212 1212') return null;
-
         return $this->getCharge(new Entry);
     }
 

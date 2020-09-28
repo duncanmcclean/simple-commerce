@@ -3,6 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as SCCustomer;

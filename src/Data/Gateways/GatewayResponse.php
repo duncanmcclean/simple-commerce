@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Gateways;
+namespace DoubleThreeDigital\SimpleCommerce\Data\Gateways;
 
 class GatewayResponse
 {

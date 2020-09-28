@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;

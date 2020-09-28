@@ -4,10 +4,10 @@ namespace DummyNamespace;
 
 use Statamic\Entries\Entry;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 
 class DummyClass extends BaseGateway implements Gateway
 {
