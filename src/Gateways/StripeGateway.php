@@ -35,6 +35,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'amount'   => $cart->data['grand_total'],
             'currency' => Currency::get(Site::current())['code'],
             'description' => "Order: {$cart->title}",
+            'setup_future_usage' => 'off_session',
             'metadata' => [
                 'order_id' => $cart->id,
             ],
