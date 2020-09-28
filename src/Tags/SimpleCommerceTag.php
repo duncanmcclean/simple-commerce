@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Data\Countries;
+use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
 use Exception;
 use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;

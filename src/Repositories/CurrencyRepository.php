@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CurrencyRepository as ContractsCurrencyRepository;
-use DoubleThreeDigital\SimpleCommerce\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
