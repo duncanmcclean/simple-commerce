@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.16 (2020-09-28)
+
+* [new] Payment Method's are now saved for later, with Stripe Gateway #306
+
 ## v2.0.15 (2020-09-05)
 
 * [fix] The money fieldtype will now default to 0 when nothing is entered instead of throwing an exception.
