@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'gateway_does_not_exist' => 'The provided gateway does not exist.',
+    'gateway_does_not_exist' => 'The provided gateway (:gateway) does not exist.',
     'no_gateway_provided' => 'No gateway provided, can not checkout without a gateway.',
 
     'dummy' => [],

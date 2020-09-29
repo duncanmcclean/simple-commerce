@@ -94,7 +94,7 @@ class GatewayRepository implements ContractsGatewayRepository
         }
 
         if (! resolve($this->className)) {
-            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist'));
+            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $this->className]));
         }
 
         $gateway = collect(SimpleCommerce::gateways())
