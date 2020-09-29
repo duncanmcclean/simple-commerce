@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
-use Stripe\PaymentIntent;
 
 class StripeGatewayTest extends TestCase
 {
