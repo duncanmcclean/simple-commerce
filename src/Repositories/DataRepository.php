@@ -103,6 +103,7 @@ trait DataRepository
 
     public function set(string $key, $value): self
     {
+        $this->data[$key] = $value;
         $this->entry()->set($key, $value)->save();
 
         return $this;
