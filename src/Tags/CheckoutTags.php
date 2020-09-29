@@ -20,13 +20,17 @@ class CheckoutTags extends SubTag
         $data = $cart->data;
 
         foreach (SimpleCommerce::gateways() as $gateway) {
-            $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
+            try {
+                $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
 
-            $cart->update([
-                $gateway['handle'] => $prepare->data(),
-            ]);
+                $cart->update([
+                    $gateway['handle'] => $prepare->data(),
+                ]);
 
-            $data = array_merge($data, $prepare->data());
+                $data = array_merge($data, $prepare->data());
+            } catch (\Exception $e) {
+                //
+            }
         }
 
         return $this->createForm(
