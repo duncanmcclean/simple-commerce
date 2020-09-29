@@ -281,7 +281,7 @@ class CartRepository implements ContractsCartRepository
                 $data['coupon_total'] = ($data['grand_total'] - str_replace('.', '', $coupon->data['value']));
             }
 
-            $data['grand_total'] = ($data['grand_total'] - $data['coupon_total']);
+            $data['grand_total'] = str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
         }
 
         $this
