@@ -29,7 +29,7 @@ class CheckoutTags extends SubTag
 
                 $data = array_merge($data, $prepare->data());
             } catch (\Exception $e) {
-                //
+                dd($e->getMessage());
             }
         }
 
