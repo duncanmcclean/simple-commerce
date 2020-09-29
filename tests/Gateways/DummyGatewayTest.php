@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\DummyGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
