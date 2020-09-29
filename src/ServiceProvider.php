@@ -11,6 +11,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $commands = [
+        Console\Commands\InfoCommand::class,
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\SetupContentCommand::class,
