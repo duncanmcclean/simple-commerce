@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -45,10 +46,8 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        if (isset($this->params['redirect'])) {
-            $redirect = $this->params['redirect'];
-        } else {
-            $redirect = null;
+        if (! $gateway) {
+            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist'));
         }
 
         $prepare = Gateway::use($gateway['class'])
