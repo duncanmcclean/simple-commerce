@@ -107,8 +107,6 @@ class CartRepository implements ContractsCartRepository
             'gateway_data'     => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
             'customer'         => isset($this->data['customer']) ? $this->data['customer'] : null,
             'items'            => isset($this->data['items']) ? $this->data['items'] : [],
-            'billing_address'  => isset($this->data['billing_name']) ? $this->billingAddress()->toArray() : (isset($this->data['use_shipping_address_for_billing']) ? $this->shippingAddress()->toArray() : null),
-            'shipping_address' => isset($this->data['shipping_name']) ? $this->shippingAddress()->toArray() : null,
             'totals' => [
                 'grand_total' => isset($this->data['grand_total']) ? $this->data['grand_total'] : 0,
                 'items_total' => isset($this->data['items_total']) ? $this->data['items_total'] : 0,
@@ -119,8 +117,16 @@ class CartRepository implements ContractsCartRepository
         ];
     }
 
-    public function billingAddress(): Address
+    public function billingAddress(): ?Address
     {
+        if (isset($this->data['use_shipping_address_for_billing'])) {
+            return $this->shippingAddress();
+        }
+
+        if (! isset($this->data['billing_address'])) {
+            return null;
+        }
+
         return new Address(
             isset($this->data['billing_name']) ? $this->data['billing_name'] : null,
             isset($this->data['billing_address']) ? $this->data['billing_address'] : null,
@@ -130,8 +136,12 @@ class CartRepository implements ContractsCartRepository
         );
     }
 
-    public function shippingAddress(): Address
+    public function shippingAddress(): ?Address
     {
+        if (! isset($this->data['shipping_address'])) {
+            return null;
+        }
+
         return new Address(
             isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
             isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
