@@ -12,11 +12,15 @@ class CouponTags extends SubTag
 
     public function index(): array
     {
-        if (! $this->hasSessionCart()) return [];
+        if (! $this->hasSessionCart()) {
+            return [];
+        }
 
         $coupon = isset($this->getSessionCart()->data['coupon']) ? $this->getSessionCart()->data['coupon'] : null;
 
-        if ($coupon === null) return [];
+        if ($coupon === null) {
+            return [];
+        }
 
         // TODO: ideally, here we'd use an augmented array from Statamic but it wasn't working when trying to implement it
 
@@ -31,7 +35,9 @@ class CouponTags extends SubTag
 
     public function has()
     {
-        if (! $this->hasSessionCart()) return false;
+        if (! $this->hasSessionCart()) {
+            return false;
+        }
 
         return isset($this->getSessionCart()->data['coupon']);
     }
