@@ -137,7 +137,7 @@ class CheckoutController extends BaseActionController
                 $product = Product::find($item['product']);
 
                 if (isset($product->data['stock'])) {
-                    $stock = $product->data['stock'] - $item['quantity'];
+                    $stock = $product->data['stock'] + $item['quantity'];
                 } else {
                     $stock = 1;
                 }
