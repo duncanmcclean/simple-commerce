@@ -87,14 +87,10 @@ class CouponRepository implements ContractsCouponRepository
 
     public function redeem(): self
     {
-        // We're doing this directry to avoid merge issues
-        $this
-            ->entry()
-            ->set('redeemed', $this->data['redeemed']++)
-            ->save();
-
-        // Then we rehydrate...
-        $this->find($this->id);
+        $this->set(
+            'redeemed',
+            isset($this->data['redeemed']) ? $this->data['redeemed'] + 1 : 1
+        );
 
         return $this;
     }
