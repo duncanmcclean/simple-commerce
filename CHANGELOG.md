@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.17 (2020-09-30)
+
+* [fix] Fixed issue with decimals causing incorrect totals, when using coupons on an order #304
+
 ## v2.0.16 (2020-09-28)
 
 * [new] Payment Method's are now saved for later, with Stripe Gateway #306
