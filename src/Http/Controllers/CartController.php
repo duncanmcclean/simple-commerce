@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use Exception;
 use Illuminate\Support\Arr;
 
 class CartController extends BaseActionController
@@ -37,14 +38,6 @@ class CartController extends BaseActionController
             $data[$key] = $value;
         }
 
-        if (isset($data['name']) && isset($data['email'])) {
-            $data['customer']['name'] = $data['name'];
-            $data['customer']['email'] = $data['email'];
-
-            unset($data['name']);
-            unset($data['email']);
-        }
-
         if (isset($data['customer'])) {
             try {
                 $customer = Customer::findByEmail($data['customer']['email']);
@@ -64,6 +57,22 @@ class CartController extends BaseActionController
             ]);
 
             unset($data['customer']);
+        }
+
+        if (isset($data['email'])) {
+            $customer = Customer::make()
+                ->data([
+                    'name' => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email' => $data['email'],
+                ])
+                ->save();
+
+            $cart->update([
+                'customer' => $customer->id,
+            ]);
+
+            unset($data['name']);
+            unset($data['email']);
         }
 
         $cart
