@@ -64,6 +64,33 @@ class CartControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_cart_with_customer_already_in_cart()
+    {
+        $customer = Customer::make()->data([
+            'name' => 'Dan Smith',
+            'email' => 'dan.smith@example.com',
+        ])->save();
+
+        $cart = Cart::make()->save()->update(['customer' => $customer->id]);
+
+        $data = [
+            'shipping_note' => 'Be careful pls.',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
+        $this->assertSame($cart->data['customer'], $customer->id);
+    }
+
+    /** @test */
     public function can_update_cart_and_create_new_customer()
     {
         $cart = Cart::make()->save();
