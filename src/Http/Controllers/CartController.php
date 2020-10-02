@@ -54,7 +54,9 @@ class CartController extends BaseActionController
                     ->save();
             }
 
-            $customer->update($data['customer']);
+            if (is_array($data['customer'])) {
+                $customer->update($data['customer']);
+            }
 
             $cart->update([
                 'customer' => $customer->id,
