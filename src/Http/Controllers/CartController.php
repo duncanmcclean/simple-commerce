@@ -37,17 +37,13 @@ class CartController extends BaseActionController
             $data[$key] = $value;
         }
 
-        if (isset($data['name']) && isset($data['email'])) {
-            $data['customer']['name'] = $data['name'];
-            $data['customer']['email'] = $data['email'];
-
-            unset($data['name']);
-            unset($data['email']);
-        }
-
         if (isset($data['customer'])) {
             try {
-                $customer = Customer::findByEmail($data['customer']['email']);
+                if (isset($cart->data['customer'])) {
+                    $customer = Customer::find($cart->data['customer']);
+                } elseif (isset($data['customer']['email'])) {
+                    $customer = Customer::findByEmail($data['customer']['email']);
+                }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
                     ->data([
@@ -57,13 +53,31 @@ class CartController extends BaseActionController
                     ->save();
             }
 
-            $customer->update($data['customer']);
+            if (is_array($data['customer'])) {
+                $customer->update($data['customer']);
+            }
 
             $cart->update([
                 'customer' => $customer->id,
             ]);
 
             unset($data['customer']);
+        }
+
+        if (isset($data['email'])) {
+            $customer = Customer::make()
+                ->data([
+                    'name' => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email' => $data['email'],
+                ])
+                ->save();
+
+            $cart->update([
+                'customer' => $customer->id,
+            ]);
+
+            unset($data['name']);
+            unset($data['email']);
         }
 
         $cart
