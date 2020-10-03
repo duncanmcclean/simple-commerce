@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
-use Exception;
 use Illuminate\Support\Arr;
 
 class CartController extends BaseActionController
