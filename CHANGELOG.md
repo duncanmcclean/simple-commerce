@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.18 (2020-10-03)
+
+* [fix] Fixed issues when creating/updating customers via the `{{ sc:cart:update }}` tag. #307
+
 ## v2.0.17 (2020-09-30)
 
 * [fix] Fixed issue with decimals causing incorrect totals, when using coupons on an order #304
