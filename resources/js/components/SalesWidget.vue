@@ -13,9 +13,10 @@
         <div v-if="count === 'fourteenDays'" class="text-4xl mb-2">{{ fourteenDaysCount }}</div>
         <div v-if="count === 'thirtyDays'" class="text-4xl mb-2">{{ thirtyDaysCount }}</div>
 
-        <div class="flex items-center ">
-            <!-- <span class="w-4 h-4 text-green mr-1">@svg('performance-increase')</span> -->
-            <span class="leading-none text-sm">£100 total in sales</span>
+        <div class="flex items-center">
+            <span v-if="count === 'sevenDays'" class="leading-none text-sm">{{ sevenDaysTotal }} total in sales</span>
+            <span v-if="count === 'fourteenDays'" class="leading-none text-sm">{{ fourteenDaysTotal }} total in sales</span>
+            <span v-if="count === 'thirtyDays'" class="leading-none text-sm">{{ thirtyDaysTotal }} total in sales</span>
         </div>
     </div>
 </template>
@@ -24,7 +25,14 @@
 export default {
     name: 'sales-widget',
 
-    props: ['sevenDaysCount', 'fourteenDaysCount', 'thirtyDaysCount'],
+    props: [
+        'sevenDaysCount',
+        'sevenDaysTotal',
+        'fourteenDaysCount',
+        'fourteenDaysTotal',
+        'thirtyDaysCount',
+        'thirtyDaysTotal',
+    ],
 
     data() {
         return {
