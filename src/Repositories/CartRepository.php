@@ -214,6 +214,10 @@ class CartRepository implements ContractsCartRepository
 
     public function calculateTotals(): self
     {
+        if (isset($this->data['is_paid']) && $this->data['is_paid'] === true) {
+            return $this;
+        }
+
         $data = [
             'grand_total'       => 0000,
             'items_total'       => 0000,
