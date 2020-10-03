@@ -101,6 +101,7 @@ class ServiceProvider extends AddonServiceProvider
         $this->app->bind(Contracts\CustomerRepository::class, Repositories\CustomerRepository::class);
         $this->app->bind(Contracts\GatewayRepository::class, Repositories\GatewayRepository::class);
         $this->app->bind(Contracts\ProductRepository::class, Repositories\ProductRepository::class);
+        $this->app->bind(Contracts\ShippingRepository::class, Repositories\ShippingRepository::class);
 
         return $this;
     }

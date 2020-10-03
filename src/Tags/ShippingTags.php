@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Site;
@@ -19,7 +20,7 @@ class ShippingTags extends SubTag
 
         return collect($siteConfig['shipping']['methods'])
             ->map(function ($method) use ($cart) {
-                $instance = new $method();
+                $instance = Shipping::use($method);
 
                 if (! $shipingAddress = $cart->shippingAddress()) {
                     return null;

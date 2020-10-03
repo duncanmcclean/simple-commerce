@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
@@ -262,10 +263,7 @@ class CartRepository implements ContractsCartRepository
             ->toArray();
 
         if (isset($this->data['shipping_method'])) {
-            $method = $this->data['shipping_method'];
-
-            $instance = new $method();
-            $data['shipping_total'] = $instance->calculateCost($this->entry());
+            $data['shipping_total'] = Shipping::use($this->data['shipping_method'])->calculateCost($this->entry());
         }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
