@@ -141,7 +141,11 @@ class CustomerRepository implements ContractsCustomerRepository
             $email = $this->data['email'];
         }
 
-        $this->title = "$name <$email>";
+        $this->title = __('simple-commerce::customers.customer_entry_title', [
+            'name' => $name,
+            'email' => $email,
+        ]);
+
         $this->slug = Str::slug($email);
 
         return $this;
