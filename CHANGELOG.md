@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.20 (2020-10-05)
+
+* [fix] Fixed issue where SC would presume a customer entry had a name on it, but if it didn't then stuff would break.
+
 ## v2.0.19 (2020-10-04)
 
 * [fix] Fixed issue with customer data when being passed into Stripe Gateway, from #307
