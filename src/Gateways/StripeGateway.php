@@ -7,10 +7,10 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeNoPaymentIntentProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer as SCCustomer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Exception;
 use Statamic\Facades\Site;
-use Stripe\Customer;
+use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Refund;
@@ -38,14 +38,22 @@ class StripeGateway implements Gateway
             ],
         ];
 
-        if (isset($cart->data['customer'])) {
-            $customer = SCCustomer::find($cart->data['customer']);
+        if (isset($cart->data['email']) && $cart->data['email'] !== null) {
+            $customer = Customer::findByEmail($cart->data['email']);
+        } elseif (isset($cart->data['customer']) && $cart->data['customer'] !== null && is_string($cart->data['customer'])) {
+            $customer = Customer::find($cart->data['customer']);
+        }
 
-            $stripeCustomer = Customer::create([
-                'name' => $customer->data['name'],
+        if ($customer) {
+            $stripeCustomerData = [
                 'email' => $customer->data['email'],
-            ]);
+            ];
 
+            if (isset($customer->data['name'])) {
+                $stripeCustomerData['name'] = $customer->data['name'];
+            }
+
+            $stripeCustomer = StripeCustomer::create($stripeCustomerData);
             $intentData['customer'] = $stripeCustomer->id;
         }
 
