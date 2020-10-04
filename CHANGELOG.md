@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.19 (2020-10-04)
+
+* [fix] Fixed issue with customer data when being passed into Stripe Gateway, from #307
+
 ## v2.0.18 (2020-10-03)
 
 * [fix] Fixed issues when creating/updating customers via the `{{ sc:cart:update }}` tag. #307
