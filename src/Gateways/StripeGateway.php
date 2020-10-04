@@ -44,7 +44,7 @@ class StripeGateway implements Gateway
             $customer = Customer::find($cart->data['customer']);
         }
 
-        if ($customer) {
+        if (isset($customer->data['email'])) {
             $stripeCustomerData = [
                 'email' => $customer->data['email'],
             ];

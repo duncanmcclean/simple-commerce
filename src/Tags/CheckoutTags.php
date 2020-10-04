@@ -16,8 +16,15 @@ class CheckoutTags extends SubTag
         $data = $cart->data;
 
         foreach (SimpleCommerce::gateways() as $gateway) {
-            $class = new $gateway['class']();
-            $prepare = $class->prepare($cart->data);
+            try {
+                $prepare = resolve($gateway['class'])->prepare($cart->data);
+            } catch (\Exception $e) {
+                dd($e);
+            }
+
+
+            // $class = new $gateway['class']();
+            // $prepare = $class->prepare($cart->data);
 
             $cart->update([
                 $gateway['handle'] => $prepare,
