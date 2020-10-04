@@ -39,10 +39,12 @@ class CartController extends BaseActionController
 
         if (isset($data['customer'])) {
             try {
-                if (isset($cart->data['customer'])) {
+                if (isset($cart->data['customer']) && $cart->data['customer'] !== null) {
                     $customer = Customer::find($cart->data['customer']);
-                } elseif (isset($data['customer']['email'])) {
+                } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
                     $customer = Customer::findByEmail($data['customer']['email']);
+                } else {
+                    throw new CustomerNotFound('');
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
