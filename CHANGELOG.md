@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-## v2.0.20 (2020-10-05)
+## v2.0.21 (2020-10-04)
+
+* [fix] Fixed a bug that would happen if you try and get a customer that doesn't have a title or slug set.
+
+## v2.0.20 (2020-10-04)
 
 * [fix] Fixed issue where SC would presume a customer entry had a name on it, but if it didn't then stuff would break.
 
