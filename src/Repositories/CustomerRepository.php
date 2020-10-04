@@ -53,7 +53,7 @@ class CustomerRepository implements ContractsCustomerRepository
             ->where('slug', Str::slug($email))
             ->first();
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
         }
 
@@ -94,8 +94,12 @@ class CustomerRepository implements ContractsCustomerRepository
             $data = array_merge($this->data, $data);
         }
 
+        if (! isset($data['title'])) {
+            $this->generateTitleAndSlug();
+            $data['title'] = $this->title;
+        }
+
         $this
-            ->generateTitleAndSlug()
             ->entry()
             ->data($data)
             ->save();
