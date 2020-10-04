@@ -69,7 +69,7 @@ class CartController extends BaseActionController
         if (isset($data['email'])) {
             $customer = Customer::make()
                 ->data([
-                    'name' => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'name' => isset($data['name']) ? $data['name'] : '',
                     'email' => $data['email'],
                 ])
                 ->save();

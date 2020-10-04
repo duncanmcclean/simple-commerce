@@ -111,6 +111,8 @@ class CartControllerTest extends TestCase
         $customer = Customer::findByEmail($data['email']);
 
         $this->assertSame($cart->data['customer'], $customer->id);
+        $this->assertSame($customer->title, 'John Doe <johndoe@gmail.com>');
+        $this->assertSame($customer->slug, 'johndoe-at-gmailcom');
     }
 
     /** @test */
@@ -199,6 +201,8 @@ class CartControllerTest extends TestCase
         $this->assertTrue(isset($cart->data['customer']));
         $this->assertIsString($cart->data['customer']);
         $this->assertSame($customer->data['name'], 'Rebecca Logan');
+        $this->assertSame($customer->title, 'Rebecca Logan <rebecca.logan@example.com>');
+        $this->assertSame($customer->slug, 'rebeccalogan-at-examplecom');
     }
 
     /** @test */
