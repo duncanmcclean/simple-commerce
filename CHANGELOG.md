@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.0.22 (2020-10-04)
+
+* [new] You can now update the format of the customer titles.
+* [fix] When updating a customer, sometimes the title would be removed... #311
+* [fix] If updating a customer's name using `{{ sc:cart:update }}` tag, it wouldn't work because of some copy and pasting
+* And added a bunch of customer related tests...
+
 ## v2.0.21 (2020-10-04)
 
 * [fix] Fixed a bug that would happen if you try and get a customer that doesn't have a title or slug set.
