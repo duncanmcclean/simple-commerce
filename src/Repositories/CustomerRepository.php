@@ -36,8 +36,7 @@ class CustomerRepository implements ContractsCustomerRepository
 
         $this->data = $entry->data()->toArray();
 
-        // If for some reason the customer does not have a title or a slug... generate one.
-        if ($this->title !== '' || $this->slug !== '') {
+        if ($entry->title === null || $entry->entry === '' || $entry->slug === null || $entry->slug === '') {
             $this->generateTitleAndSlug();
         } else {
             $this->title = $entry->title;
