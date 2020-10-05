@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## v2.1.0 (2020-00-00)
+
+* [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.
+* [new] First-party Mollie Gateway
+* [new] Product Stock
+* [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
+* [new] Redesigned Receipt PDF - fresh design built with [Tailwind CSS](https://tailwindcss.com/) behind the scenes
+* [fix] Various bug fixes.
+
+### Breaking Changes
+* Add the `minimum_order_number` and `low_stock_threshold` keys to your `config/simple-commerce.php` file.
+* If you've developed a custom gateway, you'll want to ugrade that to be compatible with v2.1. (TODO: documentation for upgrading)
+* If you've developed a custom shipping method, you'll want to upgrade the method signatures to be compatible with v2.1 (TODO: documentation for upgrading)
+* If you've published the Simple Commerce translations or views, you'll want to re-publish them after updating.
+
 ## v2.0.15 (2020-09-05)
 
 * [fix] The money fieldtype will now default to 0 when nothing is entered instead of throwing an exception.
