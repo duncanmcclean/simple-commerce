@@ -13,10 +13,12 @@ jobs:
     strategy:
       matrix:
         php: [7.4]
-        laravel: [7.*, 6.*]
+        laravel: [8.*, 7.*, 6.*]
         statamic: [3.0.*]
         os: [ubuntu-latest]
         include:
+          - laravel: 8.*
+            testbench: 6.*
           - laravel: 7.*
             testbench: 5.*
           - laravel: 6.*
