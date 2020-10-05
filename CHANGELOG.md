@@ -9,6 +9,7 @@
 * [new] Product Stock
 * [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 * [new] Redesigned Receipt PDF - fresh design built with [Tailwind CSS](https://tailwindcss.com/) behind the scenes
+* [new] Minimum Order Numbers
 * [fix] Various bug fixes.
 
 ### Breaking Changes
