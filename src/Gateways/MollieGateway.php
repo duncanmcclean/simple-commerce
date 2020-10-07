@@ -149,6 +149,5 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $this->mollie = new MollieApiClient($client);
         $this->mollie->setApiKey($this->config()['key']);
-        $this->mollie->setApiEndpoint('https://api.mollie.ch');
     }
 }
