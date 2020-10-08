@@ -138,12 +138,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
     protected function setupMollie()
     {
-        $client = new Client([
-            \GuzzleHttp\RequestOptions::VERIFY => \Composer\CaBundle\CaBundle::getBundledCaBundlePath(),
-            \GuzzleHttp\RequestOptions::TIMEOUT => 30, // 30 second timeout
-        ]);
-
-        $this->mollie = new MollieApiClient($client);
+        $this->mollie = new MollieApiClient();
         $this->mollie->setApiKey($this->config()['key']);
     }
 }
