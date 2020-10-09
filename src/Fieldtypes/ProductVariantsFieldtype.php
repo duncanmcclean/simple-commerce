@@ -11,13 +11,11 @@ class ProductVariantsFieldtype extends Fieldtype
 {
     public function configFieldItems(): array
     {
-        // todo: localize this
-
         return [
             'option_fields' => [
-                'display' => 'Option Fields',
+                'display' => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.display'),
                 'type' => 'fields',
-                'instructions' => 'Configure fields that will be shown when an option is created.',
+                'instructions' => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.instructions'),
             ],
         ];
     }
@@ -90,8 +88,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public static function title()
     {
-        // todo: localize this
-        return 'Product Variants';
+        return __('simple-commerce::fieldtypes.product_variants.title');
     }
 
     public function component(): string
