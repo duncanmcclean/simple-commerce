@@ -56,7 +56,15 @@ return [
     */
 
     'notifications' => [
-        'cart_confirmation' => true,
+        'customer' => [
+            'order_confirmation' => true,
+        ],
+
+        'back_office' => [
+            'to' => 'staff@example.com',
+
+            'order_paid' => true,
+        ],
     ],
 
     /*
