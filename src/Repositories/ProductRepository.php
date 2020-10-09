@@ -60,8 +60,8 @@ class ProductRepository implements ContractsProductRepository
     public function purchasableType(): string
     {
         // TODO: somehow check if any fields with the product variants fieldtype exist on the blueprint, instead of hard coding
-        if ($this->blueprint()->hasField('product_variations')) {
-            return 'variant';
+        if (isset($this->data['product_variations']['variants'])) {
+            return 'variants';
         }
 
         return 'product';
@@ -70,10 +70,27 @@ class ProductRepository implements ContractsProductRepository
     public function variants(): ?array
     {
         // TODO: also remove hard coding here
-        if (isset($this->data['product_variations'])) {
-            return $this->data['product_variations'];
+        if (isset($this->data['product_variations']['variants'])) {
+            return $this->data['product_variations']['variants'];
         }
 
         return null;
+    }
+
+    public function variantOptions(): ?array
+    {
+        // TODO: also remove hard coding here
+        if (isset($this->data['product_variations']['options'])) {
+            return $this->data['product_variations']['options'];
+        }
+
+        return null;
+    }
+
+    public function variantOption(string $optionKey): ?array
+    {
+        return collect($this->variantOptions())
+            ->where('key', $optionKey)
+            ->first();
     }
 }
