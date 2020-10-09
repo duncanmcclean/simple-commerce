@@ -1,0 +1,17 @@
+Back Office Notification: A new order has just been paid.<br>
+
+<hr>
+
+<strong>Order:</strong> {{ order:title }}<br>
+
+{{ if order:customer }}
+    <strong>Customer:</strong> {{ order:customer }}{{ email }}{{ /order:customer }}<br>
+{{ /if }}
+
+<strong>Items:</strong>
+
+<ul>
+    {{ order:items }}
+        <li>{{ quantity}}x {{ product:title }}</li><br>
+    {{ /order:items }}
+</ul>

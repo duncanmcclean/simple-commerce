@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
@@ -190,6 +191,7 @@ class CartRepository implements ContractsCartRepository
 
         event(new CartCompleted($this->entry()));
 
+        // TODO: move notification logic into an event listener
         if (Config::get('simple-commerce.notifications.customer.order_confirmation')) {
             if (isset($this->data['customer'])) {
                 try {
@@ -201,6 +203,10 @@ class CartRepository implements ContractsCartRepository
                     // Do nthing
                 }
             }
+        }
+
+        if (Config::get('simple-commerce.notifications.back_office.order_paid')) {
+            Mail::send(new OrderPaid($this->id));
         }
 
         return $this;
