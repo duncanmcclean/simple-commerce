@@ -2,8 +2,6 @@ name: Test Suite
 
 on:
   push:
-    paths-ignore:
-      - docs/*.md
   pull_request:
 
 jobs:
