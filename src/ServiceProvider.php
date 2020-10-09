@@ -22,7 +22,9 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
-        Events\CartCompleted::class       => [],
+        Events\CartCompleted::class       => [
+            Listeners\CartCompleted::class,
+        ],
         Events\CartSaved::class           => [],
         Events\CartUpdated::class         => [],
         Events\CouponRedeemed::class      => [],

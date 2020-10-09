@@ -191,24 +191,6 @@ class CartRepository implements ContractsCartRepository
 
         event(new CartCompleted($this->entry()));
 
-        // TODO: move notification logic into an event listener
-        if (Config::get('simple-commerce.notifications.customer.order_confirmation')) {
-            if (isset($this->data['customer'])) {
-                try {
-                    $customer = Customer::find($this->data['customer']);
-
-                    Mail::to($customer->data['email'])
-                        ->send(new OrderConfirmation($this->id));
-                } catch (\Exception $e) {
-                    // Do nthing
-                }
-            }
-        }
-
-        if (Config::get('simple-commerce.notifications.back_office.order_paid')) {
-            Mail::send(new OrderPaid($this->id));
-        }
-
         return $this;
     }
 
