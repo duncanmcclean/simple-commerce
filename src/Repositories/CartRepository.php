@@ -218,7 +218,14 @@ class CartRepository implements ContractsCartRepository
                 $siteTax = collect(Config::get('simple-commerce.sites'))
                     ->get(Site::current()->handle())['tax'];
 
-                $itemTotal = ($product->data['price'] * $item['quantity']);
+
+                if ($product->purchasableType() === 'variants') {
+                    $productPrice = $product->variantOption($item['variant'])['price'];
+
+                    $itemTotal = ($productPrice * $item['quantity']);
+                } else {
+                    $itemTotal = ($product->data['price'] * $item['quantity']);
+                }
 
                 if ($siteTax['included_in_prices']) {
                     $itemTax = str_replace(
