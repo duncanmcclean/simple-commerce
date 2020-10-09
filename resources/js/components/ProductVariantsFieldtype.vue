@@ -38,7 +38,7 @@
             <button class="btn" @click="addVariant">Add Variant</button>
         </div>
 
-        <!-- Variant Prices -->
+        <!-- Variant Options -->
         <div class="grid-fieldtype-container">
             <table class="grid-table" v-if="options.length > 0">
                 <thead>
@@ -69,8 +69,8 @@
                             :can-delete="false"
                             :meta="meta"
                             name="options"
-                            error-key-prefix="options"
-                            @updated="(row, value) => $emit('updated', row, value)"
+                            :error-key-prefix="options+index"
+                            @updated="optionUpdated(row, value)"
                             @meta-updated="$emit('meta-updated', row._id, $event)"
                             @removed="(row) => $emit('removed', row)"
                             @focus="$emit('focus')"
@@ -90,7 +90,8 @@ import uniqid from 'uniqid'
 import GridRow from '../statamic/Row'
 import SortableList from '../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
 import GridHeaderCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
-import View from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/View'
+// import View from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/View'
+import View from '../statamic/View'
 
 export default {
     name: 'product-variants-fieldtype',
@@ -141,16 +142,21 @@ export default {
                 }
 
                 this.options = this.cartesian.map((item) => {
-                    if (typeof item === 'string') {
-                        return {
-                            variant: item,
-                            price: 0,
-                        }
+                    let key = (typeof item === 'string') ? item : item.join('_')
+                    let variantName = (typeof item === 'string') ? item : item.join(', ')
+
+                    let existingData = this.value.options.filter((option) => {
+                        return option.key === key
+                    })[0]
+
+                    if (! existingData) {
+                        existingData.price = 0
                     }
 
                     return {
-                        variant: item.join(', '),
-                        price: 0,
+                        key: key,
+                        name: variantName,
+                        ...existingData,
                     }
                 })
 
@@ -194,6 +200,10 @@ export default {
 
         updated(variantIndex, fieldHandle, value) {
             this.variants[variantIndex][fieldHandle] = value
+        },
+
+        optionUpdated(row, value) {
+            //
         },
 
         metaUpdated(fieldHandle, event) {
