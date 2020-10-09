@@ -155,7 +155,7 @@ export default {
 
                     return {
                         key: key,
-                        name: variantName,
+                        variant: variantName,
                         ...existingData,
                     }
                 })
