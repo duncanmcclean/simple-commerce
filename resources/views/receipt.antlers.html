@@ -8,29 +8,32 @@
     </style>
 </head>
 
-<body class="m-12 font-sans text-gray-800 max-w-2xl mx-auto">
-    <header class="flex flex-row justify-between mb-8">
-        <div>
-            <h2 class="text-3xl">{{ site:name }}</h2>
-            <ul class="my-2">
-                <li class="text-xs mb-2">+44 07444 444 4444</li>
-                <li class="text-xs mb-2">admin@somewhere.com</li>
-            </ul>
-        </div>
-        <div>
-            <h1 class="text-2xl text-right">Receipt</h1>
-            <div class="flex flex-col my-2">
-                <div class="flex flex-row items-center">
-                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap font-medium">Order Number</span>
-                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap text-right">{{ title }}</span>
-                </div>
+<body class="m-10 font-sans text-gray-800 max-w-2xl mx-auto">
+    <table class="mb-8 w-full">
+        <tr>
+            <td style="float: left;">
+                <h2 class="text-3xl">{{ site.name }}</h2>
+                <ul class="my-2">
+                    <li class="text-xs mb-2">+44 07444 444 4444</li>
+                    <li class="text-xs mb-2">admin@somewhere.com</li>
+                </ul>
+            </td>
+            <td width="50%"></td>
+            <td style="float: right;">
+                <h1 class="text-2xl text-right">Receipt</h1>
+                <table class="my-2">
+                    <tr style="vertical-align: middle; text-align:center;"">
+                        <td class="text-xs mx-1 whitespace-no-wrap font-medium">Order Number</td>
+                        <td class="text-xs mx-1 whitespace-no-wrap text-right">{{ title }}</td>
+                    </tr>
 
-                <div class="flex flex-row items-center">
-                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap font-medium">Date</span>
-                    <span class="text-xs mx-1 w-1/2 whitespace-no-wrap text-right">{{ paid_date }}</span>
-                </div>
-            </div>
-        </div>
+                    <tr>
+                        <td class="text-xs mx-1 whitespace-no-wrap font-medium">Date</td>
+                        <td class="text-xs mx-1 whitespace-no-wrap text-right">{{ paid_date }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </header>
 
     <div class="flex flex-row space-x-16 mb-8">
