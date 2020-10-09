@@ -56,4 +56,24 @@ class ProductRepository implements ContractsProductRepository
 
         return (int) $this->data['stock'];
     }
+
+    public function purchasableType(): string
+    {
+        // TODO: somehow check if any fields with the product variants fieldtype exist on the blueprint, instead of hard coding
+        if ($this->blueprint()->hasField('product_variations')) {
+            return 'variant';
+        }
+
+        return 'product';
+    }
+
+    public function variants(): ?array
+    {
+        // TODO: also remove hard coding here
+        if (isset($this->data['product_variations'])) {
+            return $this->data['product_variations'];
+        }
+
+        return null;
+    }
 }

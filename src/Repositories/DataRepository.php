@@ -6,6 +6,7 @@ use Exception;
 use Statamic\Contracts\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
+use Statamic\Fields\Blueprint;
 
 trait DataRepository
 {
@@ -107,5 +108,10 @@ trait DataRepository
         $this->entry()->set($key, $value)->save();
 
         return $this;
+    }
+
+    public function blueprint(): ?Blueprint
+    {
+        return $this->entry()->blueprint();
     }
 }
