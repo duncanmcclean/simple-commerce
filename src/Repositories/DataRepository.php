@@ -95,4 +95,17 @@ trait DataRepository
     {
         return [];
     }
+
+    public function get(string $key)
+    {
+        return $this->data[$key];
+    }
+
+    public function set(string $key, $value): self
+    {
+        $this->data[$key] = $value;
+        $this->entry()->set($key, $value)->save();
+
+        return $this;
+    }
 }
