@@ -21,9 +21,9 @@ interface CartRepository
 
     public function toArray(): array;
 
-    public function billingAddress(): Address;
+    public function billingAddress(): ?Address;
 
-    public function shippingAddress(): Address;
+    public function shippingAddress(): ?Address;
 
     public function coupon(): CouponRepository;
 

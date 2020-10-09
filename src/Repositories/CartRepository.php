@@ -119,26 +119,38 @@ class CartRepository implements ContractsCartRepository
         ];
     }
 
-    public function billingAddress(): Address
+    public function billingAddress(): ?Address
     {
+        if (isset($this->data['use_shipping_address_for_billing'])) {
+            return $this->shippingAddress();
+        }
+
+        if (! isset($this->data['billing_address'])) {
+            return null;
+        }
+
         return new Address(
             isset($this->data['billing_name']) ? $this->data['billing_name'] : null,
             isset($this->data['billing_address']) ? $this->data['billing_address'] : null,
             isset($this->data['billing_city']) ? $this->data['billing_city'] : null,
             isset($this->data['billing_country']) ? $this->data['billing_country'] : null,
-            isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : null,
+            isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : '',
         );
     }
 
-    public function shippingAddress(): Address
+    public function shippingAddress(): ?Address
     {
+        if (! isset($this->data['shipping_address'])) {
+            return null;
+        }
+
         return new Address(
             isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
             isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
             isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
             isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
             isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
-            isset($this->data['shipping_note']) ? $this->data['shipping_note'] : null,
+            isset($this->data['shipping_note']) ? $this->data['shipping_note'] : '',
         );
     }
 
