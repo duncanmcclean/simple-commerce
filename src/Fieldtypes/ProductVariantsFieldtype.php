@@ -4,12 +4,15 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
+use Statamic\Fields\FieldtypeRepository;
 use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
 {
     public function configFieldItems(): array
     {
+        // todo: localize this
+
         return [
             'option_fields' => [
                 'display' => 'Option Fields',
@@ -71,16 +74,23 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function preProcess($data)
     {
-        return $data;
+        return [
+            'variants' => $this->processInsideFields($data['variants'], $this->preload()['variant_fields'], 'preProcess'),
+            'options' => $this->processInsideFields($data['options'], $this->preload()['option_fields'], 'preProcess'),
+        ];
     }
 
     public function process($data)
     {
-        return $data;
+        return [
+            'variants' => $this->processInsideFields($data['variants'], $this->preload()['variant_fields'], 'process'),
+            'options' => $this->processInsideFields($data['options'], $this->preload()['option_fields'], 'process'),
+        ];
     }
 
     public static function title()
     {
+        // todo: localize this
         return 'Product Variants';
     }
 
@@ -91,6 +101,33 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        return [];
+        return [
+            'variants' => $this->processInsideFields($value['variants'], $this->preload()['variant_fields'], 'augment'),
+            'options' => $this->processInsideFields($value['options'], $this->preload()['option_fields'], 'augment'),
+        ];
+    }
+
+    protected function processInsideFields(array $fieldValues, array $fields, string $method)
+    {
+        return collect($fieldValues)
+            ->map(function ($optionAttributes) use ($fields, $method) {
+                return collect($optionAttributes)
+                    ->map(function ($value, $key) use ($fields, $method) {
+                        if ($key === 'key') {
+                            return $value;
+                        }
+
+                        return collect($fields)
+                            ->where('handle', $key)
+                            ->map(function ($field) use ($value, $method) {
+                                return (new FieldtypeRepository())
+                                    ->find($field['type'])
+                                    ->{$method}($value);
+                            })
+                            ->first();
+                    })
+                    ->toArray();
+            })
+            ->toArray();
     }
 }
