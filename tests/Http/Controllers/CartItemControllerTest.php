@@ -49,6 +49,59 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_store_item_with_variant()
+    {
+        $product = Product::make()
+            ->title('Dog Food')
+            ->slug('dog-food')
+            ->data([
+                'product_variations' => [
+                    'variants' => [
+                        [
+                            'name' => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name' => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
+                        ],
+                    ],
+                    'options' => [
+                        [
+                            'key' => 'Red_Small',
+                            'price' => 1000,
+                        ],
+                    ],
+                ],
+            ])
+            ->save();
+
+        $data = [
+            'product' => $product->id,
+            'variant' => 'Red_Small',
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Cart::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
     public function can_store_item_with_existing_cart()
     {
         $product = Product::make()

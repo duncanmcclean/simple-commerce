@@ -23,15 +23,19 @@ class CartItemController extends BaseActionController
 
         $items = isset($cart->data['items']) ? $cart->data['items'] : [];
 
+        $item = [
+            'id'       => Stache::generateId(),
+            'product'  => $request->product,
+            'quantity' => (int) $request->quantity,
+            'total'    => 0000,
+        ];
+
+        if ($request->has('variant')) {
+            $item['variant'] = $request->variant;
+        }
+
         $cart->update([
-            'items' => array_merge($items, [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $request->product,
-                    'quantity' => (int) $request->quantity,
-                    'total'    => 0000,
-                ]
-            ]),
+            'items' => array_merge($items, [$item]),
         ])->calculateTotals();
 
         return $this->withSuccess($request);
