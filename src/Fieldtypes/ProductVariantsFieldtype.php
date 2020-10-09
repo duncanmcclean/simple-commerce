@@ -42,6 +42,13 @@ class ProductVariantsFieldtype extends Fieldtype
             ],
             'option_fields' => array_merge(
                 [
+                    (new Field('key', [
+                        'type' => 'hidden',
+                        'listable' => 'hidden',
+                        'display' => 'Key',
+                        'read_only' => true,
+                        'validate' => 'required',
+                    ]))->toPublishArray(),
                     (new Field('variant', [
                         'type' => 'textarea',
                         'listable' => 'hidden',
