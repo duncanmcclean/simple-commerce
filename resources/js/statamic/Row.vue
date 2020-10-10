@@ -95,21 +95,7 @@ export default {
     methods: {
         updated(handle, value) {
             this.values[handle] = value
-
             this.$emit('updated', handle, this.values)
-
-            // console.log('ww', this.values)
-
-
-
-
-            // let row = JSON.parse(JSON.stringify(this.values));
-            // row[handle] = value;
-
-            // console.log(handle)
-
-            // // this.$emit('updated', this.index, row);
-            // this.$emit('updated', handle, row)
         },
 
         metaUpdated(handle, value) {

@@ -25,7 +25,7 @@ class OrderPaid extends Mailable
         $order = Cart::find($this->orderId);
 
         return $this->markdown('simple-commerce::back-office.order-paid')
-            ->subject('Order Paid') // todo: add translation
+            ->subject(__('simple-commerce::mail.order_paid.subject'))
             ->to(Config::get('simple-commerce.notifications.back_office.to'))
             ->with('order', $order->entry()->toAugmentedArray());
     }

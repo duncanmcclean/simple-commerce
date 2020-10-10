@@ -14,7 +14,7 @@ export default {
         },
 
         errorKeyPrefix() {
-            return 'duncan-wip';
+            return 'variants-view-error-key-prefix';
 
             // return this.grid.errorKeyPrefix || this.grid.handle;
         }
