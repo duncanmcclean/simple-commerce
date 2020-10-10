@@ -24,8 +24,7 @@ class CustomerRepository implements ContractsCustomerRepository
 
         $this->data = $entry->data()->toArray();
 
-        // If for some reason the customer does not have a title or a slug... generate one.
-        if (! $entry->title || ! $entry->slug) {
+        if ($entry->title === null || $entry->entry === '' || $entry->slug === null || $entry->slug === '') {
             $this->generateTitleAndSlug();
         } else {
             $this->title = $entry->title;
@@ -42,7 +41,7 @@ class CustomerRepository implements ContractsCustomerRepository
             ->where('slug', Str::slug($email))
             ->first();
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
         }
 
@@ -72,8 +71,12 @@ class CustomerRepository implements ContractsCustomerRepository
             $data = array_merge($this->data, $data);
         }
 
+        if (! isset($data['title'])) {
+            $this->generateTitleAndSlug();
+            $data['title'] = $this->title;
+        }
+
         $this
-            ->generateTitleAndSlug()
             ->entry()
             ->data($data)
             ->save();
@@ -104,10 +107,22 @@ class CustomerRepository implements ContractsCustomerRepository
 
     public function generateTitleAndSlug(): self
     {
-        $name = $this->data['name'];
-        $email = $this->data['email'];
+        $name = '';
+        $email = '';
 
-        $this->title = "$name <$email>";
+        if (isset($this->data['name'])) {
+            $name = $this->data['name'];
+        }
+
+        if (isset($this->data['email'])) {
+            $email = $this->data['email'];
+        }
+
+        $this->title = __('simple-commerce::customers.customer_entry_title', [
+            'name' => $name,
+            'email' => $email,
+        ]);
+
         $this->slug = Str::slug($email);
 
         return $this;

@@ -14,6 +14,37 @@
 * [new] Minimum Order Numbers
 * [fix] Various bug fixes.
 
+## v2.0.22 (2020-10-04)
+
+* [new] You can now update the format of the customer titles.
+* [fix] When updating a customer, sometimes the title would be removed... #311
+* [fix] If updating a customer's name using `{{ sc:cart:update }}` tag, it wouldn't work because of some copy and pasting
+* And added a bunch of customer related tests...
+
+## v2.0.21 (2020-10-04)
+
+* [fix] Fixed a bug that would happen if you try and get a customer that doesn't have a title or slug set.
+
+## v2.0.20 (2020-10-04)
+
+* [fix] Fixed issue where SC would presume a customer entry had a name on it, but if it didn't then stuff would break.
+
+## v2.0.19 (2020-10-04)
+
+* [fix] Fixed issue with customer data when being passed into Stripe Gateway, from #307
+
+## v2.0.18 (2020-10-03)
+
+* [fix] Fixed issues when creating/updating customers via the `{{ sc:cart:update }}` tag. #307
+
+## v2.0.17 (2020-09-30)
+
+* [fix] Fixed issue with decimals causing incorrect totals, when using coupons on an order #304
+
+## v2.0.16 (2020-09-28)
+
+* [new] Payment Method's are now saved for later, with Stripe Gateway #306
+
 ## v2.0.15 (2020-09-05)
 
 * [fix] The money fieldtype will now default to 0 when nothing is entered instead of throwing an exception.

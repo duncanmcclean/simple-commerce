@@ -5,7 +5,7 @@
 
 This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that you'll need to purchase a license before using this addon in production. Licenses cost $199 and can be purchased from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce).
 
-[**→ Read Documentation**](https://doublethree.digital/simple-commerce/about)
+[**→ Read Documentation**](https://sc-docs.doublethree.digital)
 
 ## Features
 
@@ -23,7 +23,7 @@ This repository contains the code for Simple Commerce. While the code is open-so
 * [And other contributors](https://github.com/doublethreedigital/simple-commerce/graphs/contributors)
 
 ## Resources
-* [Simple Commerce Documentation](https://doublethree.digital/simple-commerce/about)
+* [Simple Commerce Documentation](https://sc-docs.doublethree.digital)
 * [Simple Commerce Issues](https://github.com/doublethreedigital/simple-commerce/issues)
 * [Simple Commerce Discord](https://discord.gg/P3ACYf9)
 

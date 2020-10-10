@@ -6,13 +6,23 @@ on:
 
 jobs:
   php_tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         php: [7.4]
+        laravel: [8.*, 7.*, 6.*]
+        statamic: [3.0.*]
+        os: [ubuntu-latest]
+        include:
+          - laravel: 8.*
+            testbench: 6.*
+          - laravel: 7.*
+            testbench: 5.*
+          - laravel: 6.*
+            testbench: 4.*
 
-    name: PHP ${{ matrix.php }}
+    name: ${{ matrix.php }} - ${{ matrix.statamic }} - ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -27,11 +37,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer validate
+          composer require "laravel/framework:${{ matrix.laravel }}" "statamic/cms:${{ matrix.statamic }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer install --no-interaction
 
       - name: Run PHPUnit
         run: composer test
-        env:
-          STRIPE_KEY: ${{ secrets.STRIPE_TEST_KEY }}
-          STRIPE_SERET: ${{ secrets.STRIPE_TEST_SECRET }}
