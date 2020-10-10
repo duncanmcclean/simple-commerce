@@ -21,4 +21,8 @@ interface ProductRepository
     public function toArray(): array;
 
     public function stockCount();
+
+    public function purchasableType(): string;
+
+    public function variantOption(string $optionKey): ?array;
 }
