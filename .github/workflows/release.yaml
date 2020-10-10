@@ -20,8 +20,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
 
-      - name: Install dependencies
+      - name: Install NPM Dependencies
         run: npm install
+        
+      - name: Install Composer Dependencies
+        run: composer install
 
       - name: Compile assets
         run: npm run production
