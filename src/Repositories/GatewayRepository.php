@@ -116,4 +116,9 @@ class GatewayRepository implements ContractsGatewayRepository
 
         return resolve($this->className, $data);
     }
+
+    public static function bindings(): array
+    {
+        return [];
+    }
 }

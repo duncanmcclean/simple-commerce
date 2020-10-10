@@ -46,4 +46,9 @@ class ShippingRepository implements ContractsShippingRepository
 
         return resolve($this->className);
     }
+
+    public static function bindings(): array
+    {
+        return [];
+    }
 }

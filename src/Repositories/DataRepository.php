@@ -109,4 +109,9 @@ trait DataRepository
 
         return $this;
     }
+
+    public static function bindings(): array
+    {
+        return [];
+    }
 }

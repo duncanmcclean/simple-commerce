@@ -98,13 +98,19 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootRepositories()
     {
-        $this->app->bind(Contracts\CartRepository::class, Repositories\CartRepository::class);
-        $this->app->bind(Contracts\CouponRepository::class, Repositories\CouponRepository::class);
-        $this->app->bind(Contracts\CurrencyRepository::class, Repositories\CurrencyRepository::class);
-        $this->app->bind(Contracts\CustomerRepository::class, Repositories\CustomerRepository::class);
-        $this->app->bind(Contracts\GatewayRepository::class, Repositories\GatewayRepository::class);
-        $this->app->bind(Contracts\ProductRepository::class, Repositories\ProductRepository::class);
-        $this->app->bind(Contracts\ShippingRepository::class, Repositories\ShippingRepository::class);
+        collect([
+            Contracts\CartRepository::class => Repositories\CartRepository::class,
+            Contracts\CouponRepository::class => Repositories\CouponRepository::class,
+            Contracts\CurrencyRepository::class => Repositories\CurrencyRepository::class,
+            Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
+            Contracts\GatewayRepository::class => Repositories\GatewayRepository::class,
+            Contracts\ProductRepository::class => Repositories\ProductRepository::class,
+            Contracts\ShippingRepository::class => Repositories\ShippingRepository::class,
+        ])->each(function ($concrete, $abstract) {
+            if (! $this->app->bound($abstract)) {
+                Statamic::repository($abstract, $concrete);
+            }
+        });
 
         return $this;
     }

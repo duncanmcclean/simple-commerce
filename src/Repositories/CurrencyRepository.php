@@ -32,4 +32,9 @@ class CurrencyRepository implements ContractsCurrencyRepository
 
         return $moneyFormatter->format($money);
     }
+
+    public static function bindings(): array
+    {
+        return [];
+    }
 }
