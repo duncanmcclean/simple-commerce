@@ -56,4 +56,38 @@ class ProductRepository implements ContractsProductRepository
 
         return (int) $this->data['stock'];
     }
+
+    public function purchasableType(): string
+    {
+        if (isset($this->data['product_variants']['variants'])) {
+            return 'variants';
+        }
+
+        return 'product';
+    }
+
+    public function variants(): ?array
+    {
+        if (isset($this->data['product_variants']['variants'])) {
+            return $this->data['product_variants']['variants'];
+        }
+
+        return null;
+    }
+
+    public function variantOptions(): ?array
+    {
+        if (isset($this->data['product_variants']['options'])) {
+            return $this->data['product_variants']['options'];
+        }
+
+        return null;
+    }
+
+    public function variantOption(string $optionKey): ?array
+    {
+        return collect($this->variantOptions())
+            ->where('key', $optionKey)
+            ->first();
+    }
 }

@@ -12,13 +12,10 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
-use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
@@ -133,7 +130,7 @@ class CartRepository implements ContractsCartRepository
             isset($this->data['billing_address']) ? $this->data['billing_address'] : null,
             isset($this->data['billing_city']) ? $this->data['billing_city'] : null,
             isset($this->data['billing_country']) ? $this->data['billing_country'] : null,
-            isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : null,
+            isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : '',
         );
     }
 
@@ -149,7 +146,7 @@ class CartRepository implements ContractsCartRepository
             isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
             isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
             isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
-            isset($this->data['shipping_note']) ? $this->data['shipping_note'] : null,
+            isset($this->data['shipping_note']) ? $this->data['shipping_note'] : '',
         );
     }
 
@@ -189,19 +186,6 @@ class CartRepository implements ContractsCartRepository
 
         event(new CartCompleted($this->entry()));
 
-        if (Config::get('simple-commerce.notifications.cart_confirmation')) {
-            if (isset($this->data['customer'])) {
-                try {
-                    $customer = Customer::find($this->data['customer']);
-
-                    Mail::to($customer->data['email'])
-                        ->send(new OrderConfirmation($this->id));
-                } catch (\Exception $e) {
-                    // Do nthing
-                }
-            }
-        }
-
         return $this;
     }
 
@@ -233,7 +217,14 @@ class CartRepository implements ContractsCartRepository
                 $siteTax = collect(Config::get('simple-commerce.sites'))
                     ->get(Site::current()->handle())['tax'];
 
-                $itemTotal = ($product->data['price'] * $item['quantity']);
+
+                if ($product->purchasableType() === 'variants') {
+                    $productPrice = $product->variantOption($item['variant'])['price'];
+
+                    $itemTotal = ($productPrice * $item['quantity']);
+                } else {
+                    $itemTotal = ($product->data['price'] * $item['quantity']);
+                }
 
                 if ($siteTax['included_in_prices']) {
                     $itemTax = str_replace(

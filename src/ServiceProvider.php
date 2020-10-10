@@ -19,10 +19,13 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $fieldtypes = [
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\ProductVariantsFieldtype::class,
     ];
 
     protected $listen = [
-        Events\CartCompleted::class       => [],
+        Events\CartCompleted::class       => [
+            Listeners\CartCompleted::class,
+        ],
         Events\CartSaved::class           => [],
         Events\CartUpdated::class         => [],
         Events\CouponRedeemed::class      => [],

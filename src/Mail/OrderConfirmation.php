@@ -16,21 +16,11 @@ class OrderConfirmation extends Mailable
 
     public $orderId;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(string $orderId)
     {
         $this->orderId = $orderId;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         $order = Entry::find($this->orderId);
