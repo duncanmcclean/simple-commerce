@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
