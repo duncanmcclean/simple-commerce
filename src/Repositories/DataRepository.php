@@ -6,7 +6,6 @@ use Exception;
 use Statamic\Contracts\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
-use Statamic\Fields\Blueprint;
 
 trait DataRepository
 {
