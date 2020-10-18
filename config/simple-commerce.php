@@ -48,8 +48,8 @@ return [
     | Notifications
     |--------------------------------------------------------------------------
     |
-    | Simple Commerce can automatically send notifications to customers after
-    | events occur in your store. eg. a cart being completed.
+    | Simple Commerce can automatically send notifications after events occur in your store.
+    | eg. a cart being completed.
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
     |
