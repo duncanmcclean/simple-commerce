@@ -17,10 +17,11 @@ This repository contains the code for Simple Commerce. While the code is open-so
 
 **Full control over the blueprints.** Apart from a title and a price, you can add whatever you'd like to your product blueprint. Same goes for other blueprints. We don't want to invade on your happy developer experience.
 
+<!--
 ## Credits
 * [Duncan McClean (Developer)](https://github.com/damcclean)
 * [David A. Lindahl (Designer)](https://github.com/austriker27)
-* [And other contributors](https://github.com/doublethreedigital/simple-commerce/graphs/contributors)
+* [And other contributors](https://github.com/doublethreedigital/simple-commerce/graphs/contributors) -->
 
 ## Resources
 * [Simple Commerce Documentation](https://sc-docs.doublethree.digital)
