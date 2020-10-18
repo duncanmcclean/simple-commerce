@@ -6,8 +6,8 @@
 
 **v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://sc-docs.doublethree.digital/v2.1/update-guide) to ensure your site will work with the update.**
 
-* [new] Product Variants
-* [new] Built-in Mollie Gateway
+* [new] [Product Variants](https://sc-docs.doublethree.digital/v2.1/product-variants)
+* [new] [Built-in Mollie Gateway](https://sc-docs.doublethree.digital/v2.1/gateways#builtin-gateways)
 * [new] Product Stock
 * [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 * [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.
