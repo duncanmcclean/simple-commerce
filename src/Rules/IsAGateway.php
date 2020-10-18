@@ -9,7 +9,7 @@ class IsAGateway implements Rule
 {
     public function passes($attribute, $value)
     {
-       return (new $value()) instanceof Gateway;
+        return (new $value()) instanceof Gateway;
     }
 
     public function message()

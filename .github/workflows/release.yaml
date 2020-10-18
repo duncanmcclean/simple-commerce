@@ -22,7 +22,7 @@ jobs:
 
       - name: Install NPM Dependencies
         run: npm install
-        
+
       - name: Install Composer Dependencies
         run: composer install
 

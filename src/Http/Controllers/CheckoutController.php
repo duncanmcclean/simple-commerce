@@ -5,15 +5,17 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
+use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class CheckoutController extends BaseActionController
 {
@@ -34,6 +36,7 @@ class CheckoutController extends BaseActionController
             ->handleCustomerDetails()
             ->handlePayment()
             ->handleCoupon()
+            ->handleStock()
             ->handleRemainingData()
             ->postCheckout();
 
@@ -57,14 +60,9 @@ class CheckoutController extends BaseActionController
         ]);
 
         if ($this->request->has('gateway')) {
-            $gatewayClass = $this->request->gateway;
-
-            if (! class_exists($gatewayClass)) {
-                throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist'));
-            }
-
-            $gateway = new $gatewayClass();
-            $this->request->validate($gateway->purchaseRules());
+            $this->request->validate(
+                Gateway::use($this->request->gateway)->purchaseRules()
+            );
         }
 
         return $this;
@@ -112,20 +110,11 @@ class CheckoutController extends BaseActionController
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
-        $gateway = new $this->request->gateway();
-        $gatewayHandle = Str::camel($gateway->name());
-
-        $purchase = $gateway->purchase($this->request->all(), $this->request);
-
-        $this->cart->update([
-            'gateway' => $this->request->get('gateway'),
-            'gateway_data' => array_merge($purchase, (isset($this->cart->data[$gatewayHandle]) ? $this->cart->data[$gatewayHandle] : [])),
-            $gatewayHandle => [],
-        ]);
+        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart->entry());
 
         $this->excludedKeys[] = 'gateway';
 
-        foreach ($gateway->purchaseRules() as $key => $rule) {
+        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
             $this->excludedKeys[] = $key;
         }
 
@@ -135,9 +124,34 @@ class CheckoutController extends BaseActionController
     protected function handleCoupon()
     {
         if (isset($this->cart->data['coupon'])) {
-            Coupon::find($this->cart->data['coupon'])
-                ->redeem();
+            $this->cart->coupon()->redeem();
         }
+
+        return $this;
+    }
+
+    protected function handleStock()
+    {
+        collect($this->cart->data['items'])
+            ->each(function ($item) {
+                $product = Product::find($item['product']);
+
+                if (isset($product->data['stock'])) {
+                    $stock = $product->data['stock'] + $item['quantity'];
+                } else {
+                    $stock = 1;
+                }
+
+                $product->set('stock', $stock);
+
+                if ($stock <= config('simple-commerce.low_stock_threshold')) {
+                    event(new StockRunningLow($product, $stock));
+                }
+
+                if ($stock <= 0) {
+                    event(new StockRunOut($product, $stock));
+                }
+            });
 
         return $this;
     }

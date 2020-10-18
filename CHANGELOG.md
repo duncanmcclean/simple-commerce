@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.1.0 (2020-00-00)
+
+**v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://sc-docs.doublethree.digital/v2.1/update-guide) to ensure your site will work with the update.**
+
+* [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.
+* [new] First-party Mollie Gateway
+* [new] Product Stock
+* [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
+* [new] Redesigned Receipt PDF - fresh design built with [Tailwind CSS](https://tailwindcss.com/) behind the scenes
+* [new] Minimum Order Numbers
+* [fix] Various bug fixes.
+
 ## v2.0.22 (2020-10-04)
 
 * [new] You can now update the format of the customer titles.

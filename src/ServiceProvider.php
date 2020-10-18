@@ -11,6 +11,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $commands = [
+        Console\Commands\InfoCommand::class,
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\SetupContentCommand::class,
@@ -18,10 +19,13 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $fieldtypes = [
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\ProductVariantsFieldtype::class,
     ];
 
     protected $listen = [
-        Events\CartCompleted::class       => [],
+        Events\CartCompleted::class       => [
+            Listeners\CartCompleted::class,
+        ],
         Events\CartSaved::class           => [],
         Events\CartUpdated::class         => [],
         Events\CouponRedeemed::class      => [],
@@ -40,6 +44,10 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $tags = [
         Tags\SimpleCommerceTag::class,
+    ];
+
+    protected $widgets = [
+        Widgets\SalesWidget::class,
     ];
 
     public function boot()
@@ -90,11 +98,19 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootRepositories()
     {
-        $this->app->bind(Contracts\CartRepository::class, Repositories\CartRepository::class);
-        $this->app->bind(Contracts\CouponRepository::class, Repositories\CouponRepository::class);
-        $this->app->bind(Contracts\CurrencyRepository::class, Repositories\CurrencyRepository::class);
-        $this->app->bind(Contracts\CustomerRepository::class, Repositories\CustomerRepository::class);
-        $this->app->bind(Contracts\ProductRepository::class, Repositories\ProductRepository::class);
+        collect([
+            Contracts\CartRepository::class => Repositories\CartRepository::class,
+            Contracts\CouponRepository::class => Repositories\CouponRepository::class,
+            Contracts\CurrencyRepository::class => Repositories\CurrencyRepository::class,
+            Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
+            Contracts\GatewayRepository::class => Repositories\GatewayRepository::class,
+            Contracts\ProductRepository::class => Repositories\ProductRepository::class,
+            Contracts\ShippingRepository::class => Repositories\ShippingRepository::class,
+        ])->each(function ($concrete, $abstract) {
+            if (! $this->app->bound($abstract)) {
+                Statamic::repository($abstract, $concrete);
+            }
+        });
 
         return $this;
     }

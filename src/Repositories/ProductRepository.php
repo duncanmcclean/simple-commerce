@@ -6,68 +6,10 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository as ContractsPr
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
-use Statamic\Facades\Site;
-use Statamic\Facades\Stache;
 
 class ProductRepository implements ContractsProductRepository
 {
-    public string $id = '';
-    public string $title = '';
-    public string $slug = '';
-    public array $data = [];
-
-    public function make(): self
-    {
-        $this->id = Stache::generateId();
-
-        return $this;
-    }
-
-    public function find(string $id): self
-    {
-        $this->id = $id;
-
-        $entry = $this->entry();
-
-        $this->title = $entry->title;
-        $this->slug = $entry->slug();
-        $this->data = $entry->data()->toArray();
-
-        return $this;
-    }
-
-    public function title(string $title = ''): self
-    {
-        if ($title === '') {
-            return $this->title;
-        }
-
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function slug(string $slug = ''): self
-    {
-        if ($slug === '') {
-            return $this->slug;
-        }
-
-        $this->title = $slug;
-
-        return $this;
-    }
-
-    public function data(array $data = []): self
-    {
-        if ($data === []) {
-            return $this->data;
-        }
-
-        $this->data = $data;
-
-        return $this;
-    }
+    use DataRepository;
 
     public function save(): self
     {
@@ -79,19 +21,6 @@ class ProductRepository implements ContractsProductRepository
             ->data(array_merge($this->data, [
                 'title' => $this->title,
             ]))
-            ->save();
-
-        return $this;
-    }
-
-    public function update(array $data, bool $mergeData = true): self
-    {
-        if ($mergeData) {
-            $data = array_merge($this->data, $data);
-        }
-
-        $this->entry()
-            ->data($data)
             ->save();
 
         return $this;
@@ -115,6 +44,36 @@ class ProductRepository implements ContractsProductRepository
             'slug'  => $this->slug,
             'title' => $this->title,
             'price' => $this->data['price'],
+            'stock' => $this->stockCount(),
         ];
+    }
+
+    public function stockCount()
+    {
+        if (! isset($this->stock)) {
+            return null;
+        }
+
+        return (int) $this->data['stock'];
+    }
+
+    public function purchasableType(): string
+    {
+        if (isset($this->data['product_variants']['variants'])) {
+            return 'variants';
+        }
+
+        return 'product';
+    }
+
+    public function variantOption(string $optionKey): ?array
+    {
+        if (! isset($this->data['product_variants']['options'])) {
+            return null;
+        }
+
+        return collect($this->data['product_variants']['options'])
+            ->where('key', $optionKey)
+            ->first();
     }
 }

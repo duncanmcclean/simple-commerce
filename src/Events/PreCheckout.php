@@ -7,8 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class PreCheckout
 {
-    use Dispatchable;
-    use InteractsWithSockets;
+    use Dispatchable, InteractsWithSockets;
 
     public array $data;
 

@@ -14,6 +14,8 @@ class StoreRequest extends FormRequest
 
     public function rules()
     {
+        // TODO: Need to validate we have stock left of all products before continuing
+
         return [
             'name' => 'sometimes|string',
             'email' => 'sometimes|email',

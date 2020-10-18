@@ -3,6 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository as ContractsCartRepository;
+use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
@@ -10,25 +12,19 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
+use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
-use Statamic\Facades\Term;
 
 class CartRepository implements ContractsCartRepository
 {
-    public string $id = '';
-    public string $title = '';
-    public string $slug = '';
-    public array $data = [];
+    use DataRepository;
 
     public function make(): self
     {
@@ -46,30 +42,6 @@ class CartRepository implements ContractsCartRepository
             'coupon_total'   => 0,
             'order_status'   => 'cart',
         ];
-
-        return $this;
-    }
-
-    public function find(string $id): self
-    {
-        $this->id = $id;
-
-        $entry = $this->entry();
-
-        $this->title = $entry->title;
-        $this->slug = $entry->slug();
-        $this->data = $entry->data()->toArray();
-
-        return $this;
-    }
-
-    public function data(array $data = [])
-    {
-        if ($data === []) {
-            return $this->data;
-        }
-
-        $this->data = $data;
 
         return $this;
     }
@@ -133,20 +105,6 @@ class CartRepository implements ContractsCartRepository
             'gateway_data'     => isset($this->data['gateway_data']) ? $this->data['gateway_data'] : [],
             'customer'         => isset($this->data['customer']) ? $this->data['customer'] : null,
             'items'            => isset($this->data['items']) ? $this->data['items'] : [],
-            'billing_address' => [
-                'name'     => isset($this->data['billing_name']) ? $this->data['billing_name'] : null,
-                'address'  => isset($this->data['billing_address']) ? $this->data['billing_address'] : null,
-                'city'     => isset($this->data['billing_city']) ? $this->data['billing_city'] : null,
-                'country'  => isset($this->data['billing_country']) ? $this->data['billing_country'] : null,
-                'zip_code' => isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : null,
-            ],
-            'shipping_address' => [
-                'name'     => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
-                'address'  => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
-                'city'     => isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
-                'country'  => isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
-                'zip_code' => isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
-            ],
             'totals' => [
                 'grand_total' => isset($this->data['grand_total']) ? $this->data['grand_total'] : 0,
                 'items_total' => isset($this->data['items_total']) ? $this->data['items_total'] : 0,
@@ -157,15 +115,44 @@ class CartRepository implements ContractsCartRepository
         ];
     }
 
-    public function shippingAddress(): array
+    public function billingAddress(): ?Address
     {
-        return [
-            'name'     => isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
-            'address'  => isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
-            'city'     => isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
-            'country'  => isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
-            'zip_code' => isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
-        ];
+        if (isset($this->data['use_shipping_address_for_billing'])) {
+            return $this->shippingAddress();
+        }
+
+        if (! isset($this->data['billing_address'])) {
+            return null;
+        }
+
+        return new Address(
+            isset($this->data['billing_name']) ? $this->data['billing_name'] : null,
+            isset($this->data['billing_address']) ? $this->data['billing_address'] : null,
+            isset($this->data['billing_city']) ? $this->data['billing_city'] : null,
+            isset($this->data['billing_country']) ? $this->data['billing_country'] : null,
+            isset($this->data['billing_zip_code']) ? $this->data['billing_zip_code'] : '',
+        );
+    }
+
+    public function shippingAddress(): ?Address
+    {
+        if (! isset($this->data['shipping_address'])) {
+            return null;
+        }
+
+        return new Address(
+            isset($this->data['shipping_name']) ? $this->data['shipping_name'] : null,
+            isset($this->data['shipping_address']) ? $this->data['shipping_address'] : null,
+            isset($this->data['shipping_city']) ? $this->data['shipping_city'] : null,
+            isset($this->data['shipping_country']) ? $this->data['shipping_country'] : null,
+            isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
+            isset($this->data['shipping_note']) ? $this->data['shipping_note'] : '',
+        );
+    }
+
+    public function coupon(): CouponRepository
+    {
+        return Coupon::find($this->data['coupon']);
     }
 
     public function redeemCoupon(string $code): bool
@@ -199,19 +186,6 @@ class CartRepository implements ContractsCartRepository
 
         event(new CartCompleted($this->entry()));
 
-        if (Config::get('simple-commerce.notifications.cart_confirmation', true)) {
-            if (isset($this->data['customer'])) {
-                try {
-                    $customer = Customer::find($this->data['customer']);
-
-                    Mail::to($customer->data['email'])
-                        ->send(new OrderConfirmation($this->id));
-                } catch (\Exception $e) {
-                    // Do nthing
-                }
-            }
-        }
-
         return $this;
     }
 
@@ -224,6 +198,10 @@ class CartRepository implements ContractsCartRepository
 
     public function calculateTotals(): self
     {
+        if (isset($this->data['is_paid']) && $this->data['is_paid'] === true) {
+            return $this;
+        }
+
         $data = [
             'grand_total'       => 0000,
             'items_total'       => 0000,
@@ -239,7 +217,13 @@ class CartRepository implements ContractsCartRepository
                 $siteTax = collect(Config::get('simple-commerce.sites'))
                     ->get(Site::current()->handle())['tax'];
 
-                $itemTotal = ($product->data['price'] * $item['quantity']);
+                if ($product->purchasableType() === 'variants') {
+                    $productPrice = $product->variantOption($item['variant'])['price'];
+
+                    $itemTotal = ($productPrice * $item['quantity']);
+                } else {
+                    $itemTotal = ($product->data['price'] * $item['quantity']);
+                }
 
                 if ($siteTax['included_in_prices']) {
                     $itemTax = str_replace(
@@ -273,10 +257,7 @@ class CartRepository implements ContractsCartRepository
             ->toArray();
 
         if (isset($this->data['shipping_method'])) {
-            $method = $this->data['shipping_method'];
-
-            $instance = new $method();
-            $data['shipping_total'] = $instance->calculateCost($this->entry());
+            $data['shipping_total'] = Shipping::use($this->data['shipping_method'])->calculateCost($this->entry());
         }
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
@@ -293,7 +274,7 @@ class CartRepository implements ContractsCartRepository
                 $data['coupon_total'] = (int) ($data['grand_total'] - $value);
             }
 
-            $data['grand_total'] = (int) ($data['grand_total'] - $data['coupon_total']);
+            $data['grand_total'] = str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
         }
 
         $this

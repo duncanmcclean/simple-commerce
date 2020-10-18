@@ -5,6 +5,8 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartItemController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ReceiptController;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
@@ -25,4 +27,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     Route::delete('/coupon', [CouponController::class, 'destroy'])->name('coupon.destroy');
 
     Route::get('/receipt/{orderId}', [ReceiptController::class, 'show'])->name('receipt.show');
+
+    Route::get('/gateways/{gateway}/callback', [GatewayCallbackController::class, 'index'])->name('gateways.callback');
+    Route::post('/gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])->name('gateways.webhook');
 });

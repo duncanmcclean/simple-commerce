@@ -7,9 +7,9 @@ use Statamic\Console\Commands\GeneratorCommand as StatamicGeneratorCommand;
 class GeneratorCommand extends StatamicGeneratorCommand
 {
     /**
-     * We need to do this ourselves so it uses the 
+     * We need to do this ourselves so it uses the
      * Simple Commerce stub path.
-     * 
+     *
      * @return string
      */
     protected function getStub($stub = null)

@@ -48,15 +48,23 @@ return [
     | Notifications
     |--------------------------------------------------------------------------
     |
-    | Simple Commerce can automatically send notifications to customers after
-    | events occur in your store. eg. a cart being completed.
+    | Simple Commerce can automatically send notifications after events occur in your store.
+    | eg. a cart being completed.
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
     |
     */
 
     'notifications' => [
-        'cart_confirmation' => true,
+        'customer' => [
+            'order_confirmation' => true,
+        ],
+
+        'back_office' => [
+            'to' => 'staff@example.com',
+
+            'order_paid' => true,
+        ],
     ],
 
     /*
@@ -94,5 +102,30 @@ return [
     */
 
     'cart_key' => 'simple-commerce-cart',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Order Number
+    |--------------------------------------------------------------------------
+    |
+    | If you want to, you can change the minimum order number for your store. This won't
+    | affect past orders, just ones in the future.
+    |
+    */
+
+    'minimum_order_number' => 2000,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stock Running Low
+    |--------------------------------------------------------------------------
+    |
+    | Simple Commerce can be configured to emit events when stock is running low for
+    | products. Here is where you can configure the threshold when we start sending
+    | those notifications.
+    |
+    */
+
+    'low_stock_threshold' => 25,
 
 ];

@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CurrencyRepository as ContractsCurrencyRepository;
-use DoubleThreeDigital\SimpleCommerce\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
@@ -31,5 +31,10 @@ class CurrencyRepository implements ContractsCurrencyRepository
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
         return $moneyFormatter->format($money);
+    }
+
+    public static function bindings(): array
+    {
+        return [];
     }
 }

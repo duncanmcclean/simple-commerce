@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Exception;
+use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -33,17 +33,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $cart = Cart::find($entry->id());
 
-                $gateway = new $cart->data['gateway']();
-
-                $refund = $gateway->refundCharge($cart->data['gateway_data']);
-
-                $cart->update([
-                    'is_refunded' => true,
-                    'gateway_data' => array_merge($cart->data['gateway_data'], [
-                        'refund' => $refund,
-                    ]),
-                    'order_status' => 'refunded',
-                ]);
+                return Gateway::use($cart->data['gateway'])->refundCharge($cart->entry());
             });
     }
 }

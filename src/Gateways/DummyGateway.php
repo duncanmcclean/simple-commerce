@@ -3,24 +3,28 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
+use Illuminate\Http\Request;
+use Statamic\Entries\Entry;
 
-class DummyGateway implements Gateway
+class DummyGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
         return 'Dummy';
     }
 
-    public function prepare(array $data): array
+    public function prepare(GatewayPrep $data): GatewayResponse
     {
-        return [];
+        return new GatewayResponse(true, []);
     }
 
-    public function purchase(array $data, $request): array
+    public function purchase(GatewayPurchase $data): GatewayResponse
     {
-        // if ($data['card_number'] === '1212 1212 1212 1212') return null;
-
-        return $this->getCharge([]);
+        return $this->getCharge(new Entry);
     }
 
     public function purchaseRules(): array
@@ -33,20 +37,23 @@ class DummyGateway implements Gateway
         ];
     }
 
-    public function getCharge(array $data): array
+    public function getCharge(Entry $entry): GatewayResponse
     {
-        return [
+        return new GatewayResponse(true, [
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
             'date'      => (string) now()->subDays(14),
             'refunded'  => false,
-        ];
+        ]);
     }
 
-    public function refundCharge(array $data): array
+    public function refundCharge(Entry $entry): GatewayResponse
     {
-        return [
-            'refund_complete' => true,
-        ];
+        return new GatewayResponse(true, []);
+    }
+
+    public function webhook(Request $request)
+    {
+        return null;
     }
 }

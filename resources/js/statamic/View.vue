@@ -1,0 +1,30 @@
+<script>
+export default {
+    props: ['fields', 'rows', 'meta', 'name', 'canDeleteRows'],
+
+    // inject: ['grid'],
+
+    computed: {
+        sortableItemClass() {
+            return `${this.name}-sortable-item`;
+        },
+
+        sortableHandleClass() {
+            return `${this.name}-drag-handle`;
+        },
+
+        errorKeyPrefix() {
+            return 'variants-view-error-key-prefix';
+
+            // return this.grid.errorKeyPrefix || this.grid.handle;
+        }
+    },
+
+    provide() {
+        return {
+            sortableItemClass: this.sortableItemClass,
+            sortableHandleClass: this.sortableHandleClass
+        }
+    },
+}
+</script>

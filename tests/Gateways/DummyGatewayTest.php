@@ -2,28 +2,48 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Spatie\TestTime\TestTime;
+use Statamic\Facades\Collection;
 
 class DummyGatewayTest extends TestCase
 {
+    public $gateway;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->gateway = new DummyGateway();
+
+        Collection::make('orders')->title('Order')->save();
+    }
+
     /** @test */
     public function has_a_name()
     {
-        $name = (new DummyGateway())->name();
+        $name = $this->gateway->name();
 
+        $this->assertIsString($name);
         $this->assertSame('Dummy', $name);
     }
 
     /** @test */
     public function can_prepare()
     {
-        $prepare = (new DummyGateway())->prepare([]);
+        $prepare = $this->gateway->prepare(new GatewayPrep(
+            new Request(),
+            Cart::make()->save()->entry()
+        ));
 
-        $this->assertIsArray($prepare);
-        $this->assertSame([], $prepare);
+        $this->assertIsObject($prepare);
+        $this->assertTrue($prepare->success());
+        $this->assertSame($prepare->data(), []);
     }
 
     /** @test */
@@ -31,33 +51,25 @@ class DummyGatewayTest extends TestCase
     {
         TestTime::freeze();
 
-        $purchase = (new DummyGateway())->purchase([
-            'card_number' => '4242 4242 4242 4242',
-        ], new Request());
+        $purchase = $this->gateway->purchase(new GatewayPurchase(
+            new Request(),
+            Cart::make()->save()->entry()
+        ));
 
-        $this->assertIsArray($purchase);
+        $this->assertIsObject($purchase);
+        $this->assertTrue($purchase->success());
         $this->assertSame([
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
             'date'      => (string) now()->subDays(14),
             'refunded'  => false,
-        ], $purchase);
+        ], $purchase->data());
     }
-
-    // /** @test */
-    // public function cant_purchase_with_invalid_card()
-    // {
-    //     $purchase = (new DummyGateway)->purchase([
-    //         'card_number' => '1212 1212 1212 1212',
-    //     ]);
-
-    //     $this->assertNull($purchase);
-    // }
 
     /** @test */
     public function has_purchase_rules()
     {
-        $rules = (new DummyGateway())->purchaseRules();
+        $rules = $this->gateway->purchaseRules();
 
         $this->assertIsArray($rules);
         $this->assertSame([
@@ -73,25 +85,33 @@ class DummyGatewayTest extends TestCase
     {
         TestTime::freeze();
 
-        $charge = (new DummyGateway())->getCharge([]); // Most of the time, we'll pass in an entry, but we'll just keep it empty here
+        $charge = $this->gateway->getCharge(
+            Cart::make()->save()->entry()
+        );
 
-        $this->assertIsArray($charge);
+        $this->assertIsObject($charge);
         $this->assertSame([
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
             'date'      => (string) now()->subDays(14),
             'refunded'  => false,
-        ], $charge);
+        ], $charge->data());
     }
 
     /** @test */
     public function can_refund_charge()
     {
-        $refund = (new DummyGateway())->refundCharge([]);
+        $refund = $this->gateway->refundCharge(Cart::make()->save()->entry());
 
-        $this->assertIsArray($refund);
-        $this->assertSame([
-            'refund_complete' => true,
-        ], $refund);
+        $this->assertIsObject($refund);
+        $this->assertTrue($refund->success());
+    }
+
+    /** @test */
+    public function can_hit_webhook()
+    {
+        $webhook = $this->gateway->webhook(new Request());
+
+        $this->assertSame($webhook, null);
     }
 }

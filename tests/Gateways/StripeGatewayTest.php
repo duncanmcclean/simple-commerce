@@ -2,10 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
-use Stripe\PaymentIntent;
+use Statamic\Facades\Collection;
 
 class StripeGatewayTest extends TestCase
 {
@@ -16,6 +18,8 @@ class StripeGatewayTest extends TestCase
         parent::setUp();
 
         $this->gateway = new StripeGateway();
+
+        Collection::make('orders')->title('Order')->save();
     }
 
     /** @test */
@@ -23,32 +27,30 @@ class StripeGatewayTest extends TestCase
     {
         $name = $this->gateway->name();
 
+        $this->assertIsString($name);
         $this->assertSame('Stripe', $name);
     }
 
     /** @test */
     public function can_prepare()
     {
-        // if (! isset($_SERVER['STRIPE_KEY']) && ! isset($_SERVER['STRIPE_SECRET'])) {
-            $this->markTestSkipped();
-        // }
+        $this->markTestSkipped();
 
-        $prepare = $this->gateway->prepare([
-            'grand_total' => 1200,
-        ]);
+        $prepare = $this->gateway->prepare(new GatewayPrep(
+            new Request(),
+            Cart::make()->save()->entry()
+        ));
 
-        $this->assertArrayHasKey('intent', $prepare);
-        $this->assertArrayHasKey('client_secret', $prepare);
+        $this->assertIsObject($prepare);
+        $this->assertTrue($prepare->success());
+        $this->assertArrayHasKey('intent', $prepare->data());
+        $this->assertArrayHasKey('client_secret', $prepare->data());
     }
 
     /** @test */
     public function can_purchase()
     {
-        // if (! isset($_SERVER['STRIPE_KEY']) && ! isset($_SERVER['STRIPE_SECRET'])) {
-            $this->markTestSkipped();
-        // }
-
-        // TODO: need to figure out how to make a payment intent for testing, as its created on the client side
+        // TODO: Write test for this that doesn't need to touch the Stripe API
     }
 
     /** @test */
@@ -65,9 +67,14 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_get_charge()
     {
-        $charge = (new StripeGateway())->getCharge([]);
+        // TODO: Write test for this that doesn't need to touch the Stripe API
+        $this->markTestSkipped();
 
-        $this->assertIsArray($charge);
+        $charge = (new StripeGateway())->getCharge(
+            Cart::make()->save()->entry()
+        );
+
+        $this->assertIsObject($charge);
         $this->assertSame([], $charge);
     }
 
@@ -76,9 +83,19 @@ class StripeGatewayTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $refund = (new StripeGateway())->refundCharge([]);
+        $refund = (new StripeGateway())->refundCharge(
+            Cart::make()->save()->entry()
+        );
 
-        $this->assertIsArray($refund);
-        $this->assertSame([], $refund);
+        $this->assertIsObject($refund);
+        $this->assertTrue($refund->success);
+    }
+
+    /** @test */
+    public function can_hit_webhook()
+    {
+        $webhook = $this->gateway->webhook(new Request());
+
+        $this->assertSame($webhook, null);
     }
 }

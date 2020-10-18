@@ -2,18 +2,20 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
-use Barryvdh\DomPDF\Facade as PDFFacade;
+use Barryvdh\DomPDF\Facade as PDF;
+use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\ReceiptShowRequest;
-use Statamic\Facades\Entry;
 
 class ReceiptController extends BaseActionController
 {
     public function show(ReceiptShowRequest $request, $orderId)
     {
-        $order = Entry::find($orderId);
-        $data = $order->toAugmentedArray();
+        $cart = Cart::find($orderId);
 
-        return PDFFacade::loadView('simple-commerce::receipt', $data)
-            ->download('receipt.pdf');
+        return PDF::loadView('simple-commerce::receipt', array_merge($cart->entry()->toAugmentedArray(), [
+            'orderId'  => $orderId,
+            'shipping_address' => $cart->shippingAddress() !== null ? $cart->shippingAddress()->toArray() : [],
+            'billing_address'  => $cart->billingAddress() !== null ? $cart->billingAddress()->toArray() : [],
+        ]))->download('receipt.pdf');
     }
 }

@@ -36,11 +36,14 @@ class SimpleCommerce
 
                 return [
                     'name'            => $instance->name(),
-                    'handle'          => Str::camel($instance->name()),
+                    'handle'          => $handle = Str::camel($instance->name()),
                     'class'           => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
+                    'webhook_url'     => Statamic::booted(function () use ($handle) {
+                        return route('statamic.simple-commerce.gateways.webhook', ['gateway' => $handle]);
+                    }),
                 ];
             })
             ->toArray();
@@ -48,12 +51,15 @@ class SimpleCommerce
 
     public static function registerGateway(string $gateway, array $config = [])
     {
-        static::$gateways[] = [$gateway, $config];
+        static::$gateways[] = [
+            $gateway,
+            $config
+        ];
     }
 
     public static function freshOrderNumber()
     {
-        $minimum = 2000;
+        $minimum = config('simple-commerce.minimum_order_number');
 
         $query = Collection::find(config('simple-commerce.collections.orders'))
             ->queryEntries()
