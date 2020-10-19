@@ -34,9 +34,14 @@ class SimpleCommerceTag extends Tags
                 ];
             })
             ->where('key', $tag[0])
-            ->first()['value'];
+            ->pluck('value')
+            ->first();
 
         $method = isset($tag[1]) ? $tag[1] : 'index';
+
+        if (! $class) {
+            throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
+        }
 
         try {
             return (new $class($this))->{$method}();
