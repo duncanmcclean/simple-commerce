@@ -53,9 +53,13 @@ class CheckoutTags extends SubTag
             throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $gatewayHandle]));
         }
 
-        $prepare = Gateway::use($gateway['class'])
-            ->withRedirectUrl($this->params['redirect'])
-            ->prepare(request(), $cart->entry());
+        $prepare = Gateway::use($gateway['class']);
+
+        if (isset($this->params['redirect'])) {
+            $prepare->withRedirectUrl($this->params['redirect']);
+        }
+
+        $prepare = $prepare->prepare(request(), $cart->entry());
 
         if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
