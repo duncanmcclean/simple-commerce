@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Fixed issue when using an off-site gateway without specifing a `redirect`
+
 ## v2.1.0 (2020-10-18)
 
 **v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://sc-docs.doublethree.digital/v2.1/update-guide) to ensure your site will work with the update.**
