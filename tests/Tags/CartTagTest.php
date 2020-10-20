@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Session;
+use Statamic\Facades\Antlers;
 use Statamic\Facades\Parse;
 use Statamic\Facades\Stache;
 
@@ -18,7 +19,9 @@ class CartTagTest extends TestCase
     {
         parent::setUp();
 
-        $this->tag = resolve(CartTags::class);
+        $this->tag = resolve(CartTags::class)
+            ->setParser(Antlers::parser())
+            ->setContext([]);
     }
 
     /** @test */
@@ -155,6 +158,93 @@ class CartTagTest extends TestCase
     public function can_get_cart_coupon_total()
     {
         //
+    }
+
+    /** @test */
+    public function can_output_add_item_form()
+    {
+        $product = Product::make()
+            ->title('Dog Food')
+            ->slug('dog-food')
+            ->data(['price' => 1000])
+            ->save();
+
+        $this->tag->setParameters([]);
+
+        $this->tag->setContent('
+            <h2>Add Item</h2>
+
+            <input type="hidden" name="product" value="{{ '.$product->id.' }}">
+            <input type="number" name="quantity">
+            <button type="submit">Add to cart</submit>
+        ');
+
+        $usage = $this->tag->addItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items"', $usage);
+    }
+
+    /** @test */
+    public function can_output_update_item_form()
+    {
+        $this->tag->setParameters([
+            'item' => 'absolute-load-of-jiberish'
+        ]);
+
+        $this->tag->setContent('
+            <h2>Update Item</h2>
+
+            <input type="number" name="quantity">
+            <button type="submit">Update item in cart</submit>
+        ');
+
+        $usage = $this->tag->updateItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/absolute-load-of-jiberish"', $usage);
+    }
+
+    /** @test */
+    public function can_output_remove_item_form()
+    {
+        $this->tag->setParameters([
+            'item' => 'smelly-cat'
+        ]);
+
+        $this->tag->setContent('
+            <h2>Remove item from cart?</h2>
+
+            <button type="submit">Update item in cart</submit>
+        ');
+
+        $usage = $this->tag->removeItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+    }
+
+    /** @test */
+    public function can_output_cart_update_form()
+    {
+        // TODO: work out the toAugmentedArray issue before writing this test
+    }
+
+    /** @test */
+    public function can_output_cart_empty_form()
+    {
+        $this->tag->setParameters([]);
+
+        $this->tag->setContent('
+            <h2>Empty cart?</h2>
+
+            <button type="submit">Empty</submit>
+        ');
+
+        $usage = $this->tag->empty();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
     }
 
     protected function tag($tag)
