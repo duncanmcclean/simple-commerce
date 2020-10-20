@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
-use Illuminate\Support\Facades\URL;
 
 class CheckoutTags extends SubTag
 {
