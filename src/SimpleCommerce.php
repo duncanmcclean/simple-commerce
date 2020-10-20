@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Statamic;
@@ -42,6 +43,10 @@ class SimpleCommerce
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
                     'webhook_url'     => Statamic::booted(function () use ($handle) {
+                        if (! Route::has('statamic.simple-commerce.gateways.webhook')) {
+                            return null;
+                        }
+
                         return route('statamic.simple-commerce.gateways.webhook', ['gateway' => $handle]);
                     }),
                 ];
