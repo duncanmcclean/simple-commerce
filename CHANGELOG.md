@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [fix] Fixed issue when using an off-site gateway without specifing a `redirect`
+* Added a bunch of tests behind the scenes
 
 ## v2.1.0 (2020-10-18)
 
