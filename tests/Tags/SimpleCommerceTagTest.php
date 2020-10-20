@@ -4,11 +4,20 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Data\Countries;
 use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
+use DoubleThreeDigital\SimpleCommerce\Tags\SubTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Parse;
 
 class SimpleCommerceTagTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        SimpleCommerceTag::register();
+    }
+
     /** @test */
     public function can_get_countries()
     {
@@ -24,36 +33,62 @@ class SimpleCommerceTagTest extends TestCase
     {
         $usage = $this->tag('{{ sc:currencies }}{{ name }},{{ /sc:currencies }}');
 
-        // dd(Currencies::all());
-
         foreach (Currencies::toArray() as $currency) {
             $this->assertStringContainsString($currency['name'], $usage);
         }
     }
 
     /** @test */
-    public function can_get_index_via_wildcard()
+    public function can_get_sub_tag_index()
     {
-        //
+        $usage = $this->tag('{{ sc:test }}');
+
+        $this->assertSame('This is the index method.', (string) $usage);
     }
 
     /** @test */
-    public function can_get_specific_method_via_wildcard()
+    public function can_get_sub_tag_method()
     {
-        $usage = $this->tag('{{ if sc:cart:has }}true{{ else }}false{{ /if }}');
+        $usage = $this->tag('{{ sc:test:cheese }}');
 
-        // This returns 'false' but we don't care the cart works here, we just care we can call the right code
-        $this->assertIsString((string) $usage);
+        $this->assertSame('This is the cheese method.', (string) $usage);
     }
 
     /** @test */
-    public function can_get_wildcard_via_wildcard()
+    public function can_get_sub_tag_wildcard()
     {
-        //
+        $usage = $this->tag('{{ sc:test:something }}');
+
+        $this->assertSame('This is the wildcard method.', (string) $usage);
     }
 
     protected function tag($tag)
     {
         return Parse::template($tag, []);
+    }
+}
+
+class SimpleCommerceTag extends Tag
+{
+    protected $tagClasses = [
+        'test'     => TestTag::class,
+    ];
+}
+
+class TestTag extends SubTag
+{
+    public function index()
+    {
+        return 'This is the index method.';
+    }
+
+    public function cheese()
+    {
+        return 'This is the cheese method.';
+    }
+
+    public function wildcard()
+    {
+        return 'This is the wildcard method.';
     }
 }
