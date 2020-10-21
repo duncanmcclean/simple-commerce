@@ -134,4 +134,9 @@ class ProductVariantsFieldtype extends Fieldtype
             })
             ->toArray();
     }
+
+    public static function docsUrl()
+    {
+        return 'https://sc-docs.doublethree.digital/product-variants';
+    }
 }
