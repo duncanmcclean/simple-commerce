@@ -139,4 +139,13 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return 'https://sc-docs.doublethree.digital/product-variants';
     }
+
+    public function preProcessIndex($value)
+    {
+        if (! $value) {
+            return 'No variants';
+        }
+
+        return collect($value['options'])->count() . ' items';
+    }
 }
