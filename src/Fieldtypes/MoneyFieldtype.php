@@ -62,4 +62,13 @@ class MoneyFieldtype extends Fieldtype
     {
         return Currency::parse($value, Site::current());
     }
+
+    public function preProcessIndex($value)
+    {
+        if (! $value) {
+            return;
+        }
+
+        return $this->augment($value);
+    }
 }
