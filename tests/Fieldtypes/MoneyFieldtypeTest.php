@@ -63,4 +63,14 @@ class MoneyFieldtypeTest extends TestCase
 
         $this->assertSame('£19.45', $augment);
     }
+
+    /** @test */
+    public function can_get_pre_process_index()
+    {
+        $value = 2572;
+
+        $augment = (new MoneyFieldtype())->preProcessIndex($value);
+
+        $this->assertSame('£25.72', $augment);
+    }
 }
