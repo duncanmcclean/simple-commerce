@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* [new] Simple Commerce fieldtypes will now display nicely in entry listings
 * [fix] Fixed issue when using an off-site gateway without specifing a `redirect`
 * Added a bunch of tests behind the scenes
 
