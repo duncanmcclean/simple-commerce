@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## v2.1.2 ()
+## v2.1.2 (2020-10-30)
 
 * [new] Licensing statistics - so we can check how many sites are using Simple Commerce, what versions are in use and if they have valid licenses.
 
