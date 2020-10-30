@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.2 ()
+
+* [new] Licensing statistics - so we can check how many sites are using Simple Commerce, what versions are in use and if they have valid licenses.
+
 ## v2.1.1 (2020-10-28)
 
 * [new] Simple Commerce fieldtypes will now display nicely in entry listings
