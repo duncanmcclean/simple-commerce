@@ -28,6 +28,10 @@
 * [new] Minimum Order Numbers
 * [fix] Various bug fixes.
 
+## v2.0.23 (2020-10-05)
+
+* [new] Licensing statistics - so we can check how many sites are using Simple Commerce, what versions are in use and if they have valid licenses. (also introduced in [v2.1.2](https://github.com/doublethreedigital/simple-commerce/releases/tag/v2.1.2))
+
 ## v2.0.22 (2020-10-04)
 
 * [new] You can now update the format of the customer titles.
