@@ -26,4 +26,3 @@ sections:
           localizable: false
           listable: hidden
           display: Price
-          factory: 'numberBetween(20, 50)'
