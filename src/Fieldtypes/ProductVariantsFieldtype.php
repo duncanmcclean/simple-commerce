@@ -149,7 +149,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public static function docsUrl()
     {
-        return 'https://sc-docs.doublethree.digital/product-variants';
+        return 'https://sc-docs.doublethree.digital/v2.1/product-variants';
     }
 
     public function preProcessIndex($value)
