@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.1.4 (2020-11-12)
+
+* [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Woodland.php) when installing Simple Commerce for the first time. #313
+* [fix] Fixed issue with product variants fieldtype on new product entries. #314
+* [fix] Fixed issue when adding a new variation in product variants fieldtype
+* [fix] Localize and use plural/signular stuff with index text for product variants fields.
+
 ## v2.1.3 (2020-10-30)
 
 * [fix] Fix issues with installing via Composer, from last release. Whoops.
