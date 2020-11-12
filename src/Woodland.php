@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Statamic\Facades\Addon;
 use Statamic\Statamic;
 
@@ -34,6 +35,10 @@ class Woodland
 
         $addon = Addon::get('doublethreedigital/simple-commerce');
 
+        if (! $addon) {
+            return static::logIssue('Information about the addon is not currently available.');
+        }
+
         $payload = [
             'statamic' => [
                 'version' => Statamic::version(),
@@ -53,7 +58,7 @@ class Woodland
 
             Cache::put(static::$cacheKey, $request->json(), now()->addHour());
         } catch (\Exception $e) {
-            return 'Unable to reach the Simple Commerce Woodland. Try again later.';
+            return static::logIssue('Unable to reach the Simple Commerce Woodland. Try again later.');
         }
     }
 
@@ -65,5 +70,12 @@ class Woodland
     public static function status()
     {
         return self::response()['status'];
+    }
+
+    protected static function logIssue(string $message)
+    {
+        Log::info($message, ['addon' => 'Simple Commerce']);
+
+        return $message;
     }
 }
