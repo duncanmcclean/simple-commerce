@@ -155,9 +155,17 @@ class ProductVariantsFieldtype extends Fieldtype
     public function preProcessIndex($value)
     {
         if (! $value) {
-            return 'No variants';
+            return __('simple-commerce::products.no-variants');
         }
 
-        return collect($value['options'])->count() . ' items';
+        $optionsCount = collect($value['options'])->count();
+
+        if ($optionsCount === 0) {
+            return __('simple-commerce::products.no-variants');
+        } elseif ($optionsCount === 1) {
+            return $optionsCount . ' ' . __('simple-commerce::products.variants_singular');
+        } else {
+            return $optionsCount . ' ' . __('simple-commerce::products.variants_plural');
+        }
     }
 }
