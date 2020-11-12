@@ -149,8 +149,10 @@ export default {
                         return option.key === key
                     })[0]
 
-                    if (! existingData) {
-                        existingData.price = 0
+                    if (existingData === undefined) {
+                        existingData = {
+                            price: 0,
+                        }
                     }
 
                     return {
