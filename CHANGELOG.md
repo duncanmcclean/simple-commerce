@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.24 (2020-10-06)
+
+* [fix] Fix issue where gateways were not being booted
+
 ## v2.0.23 (2020-10-05)
 
 * [new] Licensing statistics - so we can check how many sites are using Simple Commerce, what versions are in use and if they have valid licenses. (also introduced in [v2.1.2](https://github.com/doublethreedigital/simple-commerce/releases/tag/v2.1.2))
