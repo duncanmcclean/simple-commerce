@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-* [fix] A more descriptive message will now be shown if currency formatting fails due to the `php-intl` extension not being installed or enabled.
+* [fix] A more descriptive message will now be shown if currency formatting fails due to the `php-intl` extension not being installed or enabled.'
+* [fix] Fixed issue where gateways weren't being booted at all...
 
 ## v2.1.4 (2020-11-12)
 
