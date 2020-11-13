@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] A more descriptive message will now be shown if currency formatting fails due to the `php-intl` extension not being installed or enabled.
+
 ## v2.1.4 (2020-11-12)
 
 * [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Woodland.php) when installing Simple Commerce for the first time. #313

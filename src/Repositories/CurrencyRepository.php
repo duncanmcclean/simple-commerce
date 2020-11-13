@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CurrencyRepository as ContractsCurrencyRepository;
 use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
@@ -25,12 +26,16 @@ class CurrencyRepository implements ContractsCurrencyRepository
 
     public function parse($price, Site $site): string
     {
-        $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
+        try {
+            $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
 
-        $numberFormatter = new NumberFormatter('en_US', \NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+            $numberFormatter = new NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+            $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
-        return $moneyFormatter->format($money);
+            return $moneyFormatter->format($money);
+        } catch(\ErrorException $e) {
+            throw new CurrencyFormatterNotWorking(__('simple-commerce::messages.currency_formatter_not_working'));
+        }
     }
 
     public static function bindings(): array

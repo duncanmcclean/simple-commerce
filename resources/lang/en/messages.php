@@ -2,6 +2,7 @@
 
 return [
     'tag_not_found' => 'Could not find files to load the :tag tag.',
+    'currency_formatter_not_working' => 'Simple Commerce could not preform currency formatting. Ensure you have the php-intl extension installed and enabled, then try again.',
 
     'default_collections' => [
         'products'  => 'Products',
