@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.8 (2020-11-21)
+
+* Fix `vendor:publish` bug when running `php please sc:install` (I should really double check this stuff before I release it) 
+
 ## v2.1.7 (2020-11-21)
 
 * Re-tag of v2.1.6
