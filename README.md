@@ -21,19 +21,9 @@ Simple Commerce is a simple e-commerce addon for Statamic 3. It's been built fro
 composer require doublethreedigital/simple-commerce
 ```
 
-2. Publish Simple Commerce's vendor assets. This will give you our default blueprints, fieldtypes and configuration file.
+2. Run `php please sc:install` - it'll publish the Simple Commerce default blueprints, configuration file and will setup collections and taxonomies.
 
-```
-php artisan vendor:publish --provider="DoubleThreeDigital\SimpleCommerce\ServiceProvider"
-```
-
-3. Lastly, you'll need to setup the collections & taxonomies needed for Simple Commerce. You could do this manually or you can use the command that will do it for you.
-
-```
-php please sc:install
-```
-
-4. **Job Done!**
+3. **Installed!** That's it.. really simple.
 
 ## Licensing
 
