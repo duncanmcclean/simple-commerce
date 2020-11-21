@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.6 (2020-11-21)
+
+* [update] Improved the install process - combine `vendor:publish` step and `setup-content`.
+
 ## v2.1.5 (2020-11-13)
 
 * [fix] A more descriptive message will now be shown if currency formatting fails due to the `php-intl` extension not being installed or enabled.'
