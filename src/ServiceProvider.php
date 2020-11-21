@@ -14,7 +14,7 @@ class ServiceProvider extends AddonServiceProvider
         Console\Commands\InfoCommand::class,
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
-        Console\Commands\SetupContentCommand::class,
+        Console\Commands\InstallCommand::class,
     ];
 
     protected $fieldtypes = [
