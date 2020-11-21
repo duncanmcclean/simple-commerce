@@ -30,7 +30,7 @@ php artisan vendor:publish --provider="DoubleThreeDigital\SimpleCommerce\Service
 3. Lastly, you'll need to setup the collections & taxonomies needed for Simple Commerce. You could do this manually or you can use the command that will do it for you.
 
 ```
-php please simple-commerce:setup-content
+php please sc:install
 ```
 
 4. **Job Done!**
