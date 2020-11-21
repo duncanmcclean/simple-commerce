@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.7 (2020-11-21)
+
+* Re-tag of v2.1.6
+
 ## v2.1.6 (2020-11-21)
 
 * [update] Improved the install process - combine `vendor:publish` step and `setup-content`.
