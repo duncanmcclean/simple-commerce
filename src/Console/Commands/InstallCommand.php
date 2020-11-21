@@ -8,12 +8,12 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
 
-class SetupContentCommand extends Command
+class InstallCommand extends Command
 {
     use RunsInPlease;
 
-    protected $name = 'statamic:simple-commerce:setup-content';
-    protected $description = 'Sets up default collections & taxonomies for Simple Commerce.';
+    protected $name = 'sc:install';
+    protected $description = 'Install Simple Commerce';
 
     public function handle()
     {
