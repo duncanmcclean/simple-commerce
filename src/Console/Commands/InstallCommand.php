@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Taxonomy;
@@ -28,8 +27,8 @@ class InstallCommand extends Command
     {
         $this->info('Publishing Simple Commerce Assets');
 
-        Artisan::call('vendor:publish', [
-            'provider' => 'DoubleThreeDigital\SimpleCommerce\ServiceProvider',
+        $this->callSilent('vendor:publish', [
+            '--provider' => 'DoubleThreeDigital\SimpleCommerce\ServiceProvider',
         ]);
 
         return $this;
