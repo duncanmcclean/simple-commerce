@@ -16,7 +16,9 @@ class CouponTags extends SubTag
             return [];
         }
 
-        $coupon = isset($this->getSessionCart()->data['coupon']) ? $this->getSessionCart()->data['coupon'] : null;
+        $coupon = isset($this->getSessionCart()->data['coupon'])
+            ? $this->getSessionCart()->data['coupon']
+            : null;
 
         if ($coupon === null) {
             return [];

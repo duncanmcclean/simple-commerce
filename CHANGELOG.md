@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.1.9 (2020-11-22)
+
 * [new] Ensure fields are included in product & order blueprints.
 
 ## v2.1.8 (2020-11-21)
