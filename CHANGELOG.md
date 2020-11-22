@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.10 (2020-11-22)
+
+* [fix] Fixed bug with blueprint field checking
+
 ## v2.1.9 (2020-11-22)
 
 * [new] Ensure fields are included in product & order blueprints.
