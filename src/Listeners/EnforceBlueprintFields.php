@@ -8,8 +8,6 @@ class EnforceBlueprintFields
 {
     public function handle(EntryBlueprintFound $event)
     {
-        $event->blueprint->;
-
         switch ($event->blueprint->namespace()) {
             case 'collections.'.config('simple-commerce.collections.products'):
                 return $this->enforceProductFields($event);
