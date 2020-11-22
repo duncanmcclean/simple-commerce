@@ -8,6 +8,8 @@ class EnforceBlueprintFields
 {
     public function handle(EntryBlueprintFound $event)
     {
+        $event->blueprint->;
+
         switch ($event->blueprint->namespace()) {
             case 'collections.'.config('simple-commerce.collections.products'):
                 return $this->enforceProductFields($event);
@@ -19,9 +21,11 @@ class EnforceBlueprintFields
 
     protected function enforceProductFields($event)
     {
-        $event->blueprint->ensureField('price', [
-            'type' => 'money',
-            'display' => __('Price'),
-        ], 'sidebar');
+        if (! $event->blueprint->has('product_variants')) {
+            $event->blueprint->ensureField('price', [
+                'type' => 'money',
+                'display' => __('Price'),
+            ], 'sidebar');
+        }
     }
 }
