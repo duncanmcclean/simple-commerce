@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Statamic\Events\EntryBlueprintFound;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 
@@ -23,15 +24,12 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
-        Events\CartCompleted::class       => [
+        Events\CartCompleted::class => [
             Listeners\CartCompleted::class,
         ],
-        Events\CartSaved::class           => [],
-        Events\CartUpdated::class         => [],
-        Events\CouponRedeemed::class      => [],
-        Events\CustomerAddedToCart::class => [],
-        Events\PostCheckout::class        => [],
-        Events\PreCheckout::class         => [],
+        EntryBlueprintFound::class  => [
+            Listeners\EnforceBlueprintFields::class,
+        ],
     ];
 
     protected $routes = [
