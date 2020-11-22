@@ -2,9 +2,11 @@
 
 ## Unreleased
 
+* [new] Ensure fields are included in product & order blueprints.
+
 ## v2.1.8 (2020-11-21)
 
-* Fix `vendor:publish` bug when running `php please sc:install` (I should really double check this stuff before I release it) 
+* [fix] Fix `vendor:publish` bug when running `php please sc:install` (I should really double check this stuff before I release it)
 
 ## v2.1.7 (2020-11-21)
 
