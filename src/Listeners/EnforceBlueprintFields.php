@@ -23,12 +23,12 @@ class EnforceBlueprintFields
 
     protected function enforceProductFields($event): Blueprint
     {
-        if (! $event->blueprint->has('product_variants')) {
+        // if (! $event->blueprint->has('product_variants')) {
             $event->blueprint->ensureField('price', [
                 'type' => 'money',
                 'display' => __('Price'),
             ], 'sidebar');
-        }
+        // }
 
         return $event->blueprint;
     }
