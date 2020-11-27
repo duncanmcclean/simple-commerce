@@ -48,6 +48,7 @@ class CartController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
+                    ->site($this->guessSiteFromRequest())
                     ->data([
                         'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
                         'email' => $data['customer']['email'],
@@ -68,6 +69,7 @@ class CartController extends BaseActionController
 
         if (isset($data['email'])) {
             $customer = Customer::make()
+                ->site($this->guessSiteFromRequest())
                 ->data([
                     'name' => isset($data['name']) ? $data['name'] : '',
                     'email' => $data['email'],
