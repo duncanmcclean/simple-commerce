@@ -5,7 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Repositories;
 use Exception;
 use Statamic\Contracts\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Sites\Site as ASite;
 
 trait DataRepository
 {
@@ -13,10 +15,12 @@ trait DataRepository
     public string $title = '';
     public string $slug = '';
     public array $data = [];
+    public ASite $site;
 
     public function make(): self
     {
         $this->id = Stache::generateId();
+        $this->site = Site::current();
 
         return $this;
     }
@@ -26,6 +30,10 @@ trait DataRepository
         $this->id = $id;
 
         $entry = $this->entry();
+
+        if ($entry->existsIn(Site::current()->handle()) && $entry->locale() !== Site::current()->handle()) {
+            $entry = $entry->in(Site::current()->handle());
+        }
 
         $this->title = $entry->title;
         $this->slug = $entry->slug();
@@ -63,6 +71,21 @@ trait DataRepository
         }
 
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function site($site = null): self
+    {
+        if (is_null($site)) {
+            return $this->site;
+        }
+
+        if (! $site instanceof ASite) {
+            $site = Site::get($site);
+        }
+
+        $this->site = $site;
 
         return $this;
     }

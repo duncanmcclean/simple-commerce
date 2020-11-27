@@ -31,6 +31,8 @@ class CustomerRepository implements ContractsCustomerRepository
             $this->slug = $entry->slug;
         }
 
+        $this->site = Site::current();
+
         return $this;
     }
 
@@ -54,6 +56,7 @@ class CustomerRepository implements ContractsCustomerRepository
 
         Entry::make()
             ->collection(config('simple-commerce.collections.customers'))
+            ->locale($this->site)
             ->published(false)
             ->slug($this->slug)
             ->id($this->id)

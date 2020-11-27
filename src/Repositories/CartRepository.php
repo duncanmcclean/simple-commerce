@@ -42,6 +42,7 @@ class CartRepository implements ContractsCartRepository
             'coupon_total'   => 0,
             'order_status'   => 'cart',
         ];
+        $this->site = Site::current();
 
         return $this;
     }
@@ -50,6 +51,7 @@ class CartRepository implements ContractsCartRepository
     {
         Entry::make()
             ->collection(config('simple-commerce.collections.orders'))
+            ->locale($this->site)
             ->published(false)
             ->slug($this->id)
             ->id($this->id)

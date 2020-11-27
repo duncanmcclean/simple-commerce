@@ -35,6 +35,7 @@ class CouponRepository implements ContractsCouponRepository
     {
         Entry::make()
             ->collection(config('simple-commerce.collections.coupons'))
+            ->locale($this->site)
             ->published(false)
             ->slug($this->slug)
             ->id($this->id)
