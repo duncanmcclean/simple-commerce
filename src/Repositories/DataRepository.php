@@ -132,6 +132,11 @@ trait DataRepository
         return $this;
     }
 
+    public function has(string $key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
     public static function bindings(): array
     {
         return [];
