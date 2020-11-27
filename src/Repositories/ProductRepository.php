@@ -77,4 +77,9 @@ class ProductRepository implements ContractsProductRepository
             ->where('key', $optionKey)
             ->first();
     }
+
+    public function isExemptFromTax()
+    {
+        return $this->has('exempt_from_tax') && $this->get('exempt_from_tax') === true;
+    }
 }

@@ -227,27 +227,29 @@ class CartRepository implements ContractsCartRepository
                     $itemTotal = ($product->data['price'] * $item['quantity']);
                 }
 
-                if ($siteTax['included_in_prices']) {
-                    $itemTax = str_replace(
-                        '.',
-                        '',
-                        round(
-                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
-                            2
-                        )
-                    );
+                if (! $product->isExemptFromTax()) {
+                    if ($siteTax['included_in_prices']) {
+                        $itemTax = str_replace(
+                            '.',
+                            '',
+                            round(
+                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                                2
+                            )
+                        );
 
-                    $itemTotal -= $itemTax;
-                    $data['tax_total'] += $itemTax;
-                } else {
-                    $data['tax_total'] += (int) str_replace(
-                        '.',
-                        '',
-                        round(
-                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
-                            2
-                        )
-                    );
+                        $itemTotal -= $itemTax;
+                        $data['tax_total'] += $itemTax;
+                    } else {
+                        $data['tax_total'] += (int) str_replace(
+                            '.',
+                            '',
+                            round(
+                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                                2
+                            )
+                        );
+                    }
                 }
 
                 $data['items_total'] += $itemTotal;

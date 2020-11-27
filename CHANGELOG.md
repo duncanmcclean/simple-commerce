@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* [new] Add an `exempt_from_tax` field to products that you want to be exempt from tax.
 * [fix] Carts & Customers will be created in the correct site.
 * [fix] When created, customers will now be published instead of a draft.
 * [fix] Money Fieldtype will respect the site of the entry and display the correct currency.
