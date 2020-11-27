@@ -6,6 +6,9 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
+use Statamic\Sites\Site as ASite;
 
 trait SessionCart
 {
@@ -26,7 +29,9 @@ trait SessionCart
 
     protected function makeSessionCart(): CartRepository
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::make()
+            ->site($this->guessSiteFromReferrer())
+            ->save();
 
         Session::put(config('simple-commerce.cart_key'), $cart->id);
 
@@ -45,5 +50,22 @@ trait SessionCart
     protected function forgetSessionCart()
     {
         Session::forget(config('simple-commerce.cart_key'));
+    }
+
+    protected function guessSiteFromReferrer(): ASite
+    {
+        $referer = request()->header('referer');
+
+        if (! $referer) {
+            return Site::current();
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains($referer, $site->url())) {
+                return $site;
+            }
+        }
+
+        return Site::current();
     }
 }
