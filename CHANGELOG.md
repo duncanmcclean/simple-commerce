@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.1.11 (2020-11-27)
+
 * [new] Add an `exempt_from_tax` field to products that you want to be exempt from tax.
 * [fix] Carts & Customers will be created in the correct site.
 * [fix] When created, customers will now be published instead of a draft.
