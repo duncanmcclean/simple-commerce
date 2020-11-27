@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* [fix] Carts & Customers will be created in the correct site.
+* [fix] When created, customers will now be published instead of a draft.
+* [fix] Money Fieldtype will respect the site of the entry and display the correct currency.
+
 ## v2.1.10 (2020-11-22)
 
 * [fix] Fixed bug with blueprint field checking
