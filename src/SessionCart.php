@@ -30,7 +30,7 @@ trait SessionCart
     protected function makeSessionCart(): CartRepository
     {
         $cart = Cart::make()
-            ->site($this->guessSiteFromReferrer())
+            ->site($this->guessSiteFromRequest())
             ->save();
 
         Session::put(config('simple-commerce.cart_key'), $cart->id);
@@ -52,17 +52,23 @@ trait SessionCart
         Session::forget(config('simple-commerce.cart_key'));
     }
 
-    protected function guessSiteFromReferrer(): ASite
+    protected function guessSiteFromRequest(): ASite
     {
-        $referer = request()->header('referer');
-
         if ($site = request()->get('site')) {
             return Site::get($site);
         }
 
         foreach (Site::all() as $site) {
-            if (Str::contains($referer, $site->url())) {
+            if (Str::contains(request()->url(), $site->url())) {
                 return $site;
+            }
+        }
+
+        if ($referer = request()->header('referer')) {
+            foreach (Site::all() as $site) {
+                if (Str::contains($referer, $site->url())) {
+                    return $site;
+                }
             }
         }
 
