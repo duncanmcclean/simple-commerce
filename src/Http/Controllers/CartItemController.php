@@ -27,6 +27,7 @@ class CartItemController extends BaseActionController
         $alreadyExistsQuery = collect($items)
             ->where('product', $request->product);
 
+        if ($request->has('variant')) {
             $alreadyExistsQuery = $alreadyExistsQuery->where('variant', $request->get('variant'));
         }
 
