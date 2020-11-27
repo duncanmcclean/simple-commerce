@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Illuminate\Support\Str;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Site;
 
 class CustomerRepository implements ContractsCustomerRepository
 {
@@ -57,7 +58,7 @@ class CustomerRepository implements ContractsCustomerRepository
         Entry::make()
             ->collection(config('simple-commerce.collections.customers'))
             ->locale($this->site)
-            ->published(false)
+            ->published(true)
             ->slug($this->slug)
             ->id($this->id)
             ->data(array_merge($this->data, [
