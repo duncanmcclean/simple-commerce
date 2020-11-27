@@ -212,6 +212,172 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_store_a_product_that_is_already_in_the_cart()
+    {
+        $product = Product::make()
+            ->title('Horse Food')
+            ->slug('horse-food')
+            ->data(['price' => 1000])
+            ->save();
+
+        $cart = Cart::make()->save()->update([
+            'items' => [
+                [
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'product' => $product->id,
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertStatus(302)
+            ->assertSessionHasErrors();
+
+        $cart = $cart->find($cart->id);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertSame(1, count($cart->data['items']));
+    }
+
+    /** @test */
+    public function cant_store_a_variant_that_is_already_in_the_cart()
+    {
+        $product = Product::make()
+            ->title('Dog Food')
+            ->slug('dog-food')
+            ->data([
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name' => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name' => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
+                        ],
+                    ],
+                    'options' => [
+                        [
+                            'key' => 'Red_Small',
+                            'price' => 1000,
+                        ],
+                    ],
+                ],
+            ])
+            ->save();
+
+        $cart = Cart::make()->save()->update([
+            'items' => [
+                [
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
+                    'variant' => 'Red_Small',
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'product' => $product->id,
+            'variant' => 'Red_Small',
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertStatus(302)
+            ->assertSessionHasErrors();
+
+        $cart = $cart->find($cart->id);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertSame(1, count($cart->data['items']));
+    }
+
+    /** @test */
+    public function can_store_variant_of_a_product_that_has_another_variant_that_is_in_the_cart()
+    {
+        $product = Product::make()
+            ->title('Dog Food')
+            ->slug('dog-food')
+            ->data([
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name' => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name' => 'Sizes',
+                            'values' => [
+                                'Small',
+                                'Medium',
+                            ],
+                        ],
+                    ],
+                    'options' => [
+                        [
+                            'key' => 'Red_Small',
+                            'price' => 1000,
+                        ],
+                        [
+                            'key' => 'Red_Medium',
+                            'price' => 1000,
+                        ],
+                    ],
+                ],
+            ])
+            ->save();
+
+        $cart = Cart::make()->save()->update([
+            'items' => [
+                [
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
+                    'variant' => 'Red_Small',
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'product' => $product->id,
+            'variant' => 'Red_Medium',
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertStatus(302)
+            ->assertSessionHasNoErrors();
+
+        $cart = $cart->find($cart->id);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertSame(2, count($cart->data['items']));
+    }
+
+    /** @test */
     public function can_update_item()
     {
         $product = Product::make()

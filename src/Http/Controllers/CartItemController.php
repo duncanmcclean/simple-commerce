@@ -23,6 +23,17 @@ class CartItemController extends BaseActionController
 
         $items = isset($cart->data['items']) ? $cart->data['items'] : [];
 
+        // Ensure the product doesn't already exist in the cart
+        $alreadyExistsQuery = collect($items)
+            ->where('product', $request->product);
+
+            $alreadyExistsQuery = $alreadyExistsQuery->where('variant', $request->get('variant'));
+        }
+
+        if ($alreadyExistsQuery->count() >= 1) {
+            return $this->withErrors($request, 'You can only add a product/variant to the same cart once.');
+        }
+
         $item = [
             'id'       => Stache::generateId(),
             'product'  => $request->product,
