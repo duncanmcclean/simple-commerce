@@ -56,8 +56,8 @@ trait SessionCart
     {
         $referer = request()->header('referer');
 
-        if (! $referer) {
-            return Site::current();
+        if ($site = request()->get('site')) {
+            return Site::get($site);
         }
 
         foreach (Site::all() as $site) {
