@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [new] It's now easier to get fields from your cart. How's `{{ sc:cart:delivery_note }}`?
+* [fix] Default order blueprint no longer has a SKU field on it.
 
 ## v2.1.11 (2020-11-27)
 
