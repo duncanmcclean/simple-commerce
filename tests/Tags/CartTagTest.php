@@ -247,6 +247,22 @@ class CartTagTest extends TestCase
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
     }
 
+    /** @test */
+    public function can_get_data_from_cart()
+    {
+        // TODO, marked as incomplete until we figure out how to store stuff in the session
+        $this->markTestIncomplete();
+
+        $cart = Cart::make()->data(['title' => '#0001', 'note' => 'Deliver by front door.'])->save();
+
+        $this->session(['simple-commerce-cart' => $cart->id]);
+        $this->tag->setParameters([]);
+
+        $usage = $this->tag->wildcard('note');
+
+        $this->assertSame($usage, 'Deliver by front door.');
+    }
+
     protected function tag($tag)
     {
         return Parse::template($tag, []);

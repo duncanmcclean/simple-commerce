@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [new] It's now easier to get fields from your cart. How's `{{ sc:cart:delivery_note }}`?
+
 ## v2.1.11 (2020-11-27)
 
 * [new] Add an `exempt_from_tax` field to products that you want to be exempt from tax.

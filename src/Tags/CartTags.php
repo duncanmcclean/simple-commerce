@@ -144,4 +144,15 @@ class CartTags extends SubTag
             'DELETE'
         );
     }
+
+    public function wildcard($method)
+    {
+        $cart = $this->getSessionCart();
+
+        if (! $cart->has($method)) {
+            return $cart->get($method);
+        }
+
+        return null;
+    }
 }
