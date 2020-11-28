@@ -32,14 +32,6 @@ sections:
                 display: Product
                 validate: required
             -
-              handle: sku
-              field:
-                input_type: text
-                type: text
-                localizable: false
-                listable: hidden
-                display: SKU
-            -
               handle: quantity
               field:
                 input_type: number
