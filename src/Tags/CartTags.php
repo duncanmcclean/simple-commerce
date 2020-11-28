@@ -30,14 +30,11 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (! $this->hasSessionCart()) {
+        if (! $this->hasSessionCart() && !isset($this->getSessionCart()['items'])) {
             return 0;
         }
 
-        return collect(
-            $this->getSessionCart()
-            ->toArray()['items']
-        )->count();
+        return collect($this->getSessionCart()->data['items'])->count();
     }
 
     public function total()
