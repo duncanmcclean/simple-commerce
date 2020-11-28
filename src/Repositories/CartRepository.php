@@ -12,10 +12,8 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
@@ -200,89 +198,10 @@ class CartRepository implements ContractsCartRepository
 
     public function calculateTotals(): self
     {
-        if (isset($this->data['is_paid']) && $this->data['is_paid'] === true) {
-            return $this;
-        }
-
-        $data = [
-            'grand_total'       => 0000,
-            'items_total'       => 0000,
-            'shipping_total'    => 0000,
-            'tax_total'         => 0000,
-            'coupon_total'      => 0000,
-        ];
-
-        $data['items'] = collect($this->data['items'])
-            ->map(function ($item) use (&$data) {
-                $product = Product::find($item['product']);
-
-                $siteTax = collect(Config::get('simple-commerce.sites'))
-                    ->get(Site::current()->handle())['tax'];
-
-                if ($product->purchasableType() === 'variants') {
-                    $productPrice = $product->variantOption($item['variant'])['price'];
-
-                    $itemTotal = ($productPrice * $item['quantity']);
-                } else {
-                    $itemTotal = ($product->data['price'] * $item['quantity']);
-                }
-
-                if (! $product->isExemptFromTax()) {
-                    if ($siteTax['included_in_prices']) {
-                        $itemTax = str_replace(
-                            '.',
-                            '',
-                            round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
-                                2
-                            )
-                        );
-
-                        $itemTotal -= $itemTax;
-                        $data['tax_total'] += $itemTax;
-                    } else {
-                        $data['tax_total'] += (int) str_replace(
-                            '.',
-                            '',
-                            round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
-                                2
-                            )
-                        );
-                    }
-                }
-
-                $data['items_total'] += $itemTotal;
-
-                return array_merge($item, [
-                    'total' => $itemTotal,
-                ]);
-            })
-            ->toArray();
-
-        if (isset($this->data['shipping_method'])) {
-            $data['shipping_total'] = Shipping::use($this->data['shipping_method'])->calculateCost($this->entry());
-        }
-
-        $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
-
-        if (isset($this->data['coupon']) && $this->data['coupon'] !== null) {
-            $coupon = Coupon::find($this->data['coupon']);
-            $value = (int) $coupon->data['value'];
-
-            if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] = (int) (($value *  $data['grand_total']) / 100);
-            }
-
-            if ($coupon->data['type'] === 'fixed') {
-                $data['coupon_total'] = (int) ($data['grand_total'] - $value);
-            }
-
-            $data['grand_total'] = str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
-        }
+        $calculate = resolve(Calculator::class)->calculate($this);
 
         $this
-            ->update($data)
+            ->update($calculate)
             ->find($this->id);
 
         return $this;
