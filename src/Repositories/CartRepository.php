@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -150,6 +151,11 @@ class CartRepository implements ContractsCartRepository
             isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
             isset($this->data['shipping_note']) ? $this->data['shipping_note'] : '',
         );
+    }
+
+    public function customer(): CustomerRepository
+    {
+        return Customer::find($this->data['customer']);
     }
 
     public function coupon(): CouponRepository

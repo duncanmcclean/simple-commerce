@@ -25,6 +25,8 @@ interface CartRepository
 
     public function shippingAddress(): ?Address;
 
+    public function customer(): CustomerRepository;
+
     public function coupon(): CouponRepository;
 
     public function redeemCoupon(string $code): bool;

@@ -25,5 +25,7 @@ interface OrderRepository
 
     public function shippingAddress(): ?Address;
 
+    public function customer(): CustomerRepository;
+
     public function coupon(): CouponRepository;
 }

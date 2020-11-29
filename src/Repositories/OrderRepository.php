@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
@@ -146,6 +147,11 @@ class OrderRepository implements Contract
             isset($this->data['shipping_zip_code']) ? $this->data['shipping_zip_code'] : null,
             isset($this->data['shipping_note']) ? $this->data['shipping_note'] : '',
         );
+    }
+
+    public function customer(): CustomerRepository
+    {
+        return Customer::find($this->data['customer']);
     }
 
     public function coupon(): CouponRepository
