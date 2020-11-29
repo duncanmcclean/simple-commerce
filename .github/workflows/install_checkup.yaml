@@ -1,4 +1,9 @@
-name: 'Post Release'
+name: 'Install Checkup'
+
+# This workflow can automate the process of installing Simple Commerce in projects.
+# Currently it tests that the Simple Commerce starter kit installs itself properly &
+# it also tests that Simple Commerce can be installed in a fresh install of
+# statamic/statamic.
 
 on:
   workflow_dispatch:
