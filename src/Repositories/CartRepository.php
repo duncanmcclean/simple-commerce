@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CartNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\URL;
@@ -26,6 +27,7 @@ class CartRepository implements ContractsCartRepository
 
     public function make(): self
     {
+        // TODO: refactor to use code from OrderRepo
         $this->id = (string) Stache::generateId();
         $this->title = '#'.SimpleCommerce::freshOrderNumber();
         $this->slug = $this->id;
