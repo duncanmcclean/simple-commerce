@@ -11,6 +11,8 @@ use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Stache\Stores\UsersStore;
 use Statamic\Statamic;
 use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CacheDriver;
 
 abstract class TestCase extends OrchestraTestCase
 {

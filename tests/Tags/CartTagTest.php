@@ -2,8 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CacheDriver;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +24,9 @@ class CartTagTest extends TestCase
         $this->tag = resolve(CartTags::class)
             ->setParser(Antlers::parser())
             ->setContext([]);
+
+        // Use the cache cart driver for testing
+        // $this->app->bind(CartDriver::class, CacheDriver::class);
     }
 
     /** @test */
