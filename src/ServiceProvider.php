@@ -104,6 +104,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\CurrencyRepository::class => Repositories\CurrencyRepository::class,
             Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
             Contracts\GatewayRepository::class => Repositories\GatewayRepository::class,
+            Contracts\OrderRepository::class => Repositories\OrderRepository::class,
             Contracts\ProductRepository::class => Repositories\ProductRepository::class,
             Contracts\ShippingRepository::class => Repositories\ShippingRepository::class,
         ])->each(function ($concrete, $abstract) {
