@@ -6,11 +6,11 @@ on:
     types: [published]
 
 jobs:
-  release:
+  installViaStarterKit:
     name: Install via Starter Kit
     runs-on: ubuntu-latest
     steps:
-      - name: Clone sc-starter-kit from GitHub
+      - name: Clone doublethreedigital/sc-starter-kit from GitHub
         uses: actions/checkout@v2
         with:
           repository: doublethreedigital/sc-starter-kit
@@ -30,3 +30,28 @@ jobs:
 
       - name: Compile assets
         run: cd sc-starter-kit && npm run production
+
+  installInExistingStatamicSite:
+    name: Install in Existing Statamic Site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone statamic/statamic from GitHub
+        uses: actions/checkout@v2
+        with:
+          repository: statamic/statamic
+          path: 'statamic'
+
+      - name: Install Composer Dependencies
+        run: cd statamic && composer install
+
+      - name: Copy .env.example to .env
+        run: cd statamic && cp .env.example .env
+
+      - name: Generate APP_KEY
+        run: cd statamic && php artisan key:generate
+
+      - name: Require Simple Commerce
+        run: cd statamic && composer require doublethreedigital/simple-commerce
+
+      - name: Install Simple Commerce
+        run: cd statamic && php please sc:install
