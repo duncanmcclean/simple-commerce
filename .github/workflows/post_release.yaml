@@ -1,0 +1,31 @@
+name: 'Post Release'
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Install via Starter Kit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone sc-starter-kit from GitHub
+        uses: actions/checkout@v2
+        with:
+          repository: doublethreedigital/sc-starter-kit
+          path: 'sc-starter-kit'
+
+      - name: Install Composer Dependencies
+        run: cd sc-starter-kit && composer install
+
+      - name: Copy .env.example to .env
+        run: cd sc-starter-kit && cp .env.example .env
+
+      - name: Generate APP_KEY
+        run: cd sc-starter-kit && php artisan key:generate
+
+      - name: Install NPM Dependencies
+        run: cd sc-starter-kit && npm install
+
+      - name: Compile assets
+        run: cd sc-starter-kit && npm run production
