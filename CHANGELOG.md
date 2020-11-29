@@ -2,9 +2,16 @@
 
 ## Unreleased
 
+## v2.1.12 (2020-11-29)
+
+A whole lot of API related changes this release...
+
 * [new] It's now easier to get fields from your cart. How's `{{ sc:cart:delivery_note }}`?
 * [new] The Order Calculator has been moved out of the `CartRepository` and into it's own class. However, the `recalculateTotals` method on the `CartRepository` will continue to work for the time being.
+* [new] Introduced a new `OrderRepository` which will eventually replace the `CartRepository` (it's a breaking change so it won't happen until at least v2.2)
+* [new] Added `customer` method to `CartRepository`
 * [fix] Default order blueprint no longer has a SKU field on it.
+* [fix] `php please sc:install` command will now only publish blueprints and configuration file.
 
 ## v2.1.11 (2020-11-27)
 
