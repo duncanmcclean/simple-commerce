@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.1.13 (2020-12-05)
+
+* [new] Added some better error handling for form tags.
+* [fix] Issue where it couldn't find an 'index' gateway using the `{{ sc:gateways }}` tag? Now sorted!
+
 ## v2.1.12 (2020-11-29)
 
 A whole lot of API related changes this release...
