@@ -19,6 +19,8 @@ class BaseGateway
 
     public function config(): array
     {
+        // TODO: convert to a collect instance
+
         return $this->config;
     }
 
