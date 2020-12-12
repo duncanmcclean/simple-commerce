@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.15 (2020-12-12)
+
+* Remove Woodland
+
 ## v2.1.14 (2020-12-12)
 
 * [new] You can now enable automatic receipt emails from Stripe.
