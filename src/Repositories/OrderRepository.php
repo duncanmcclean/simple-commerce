@@ -116,6 +116,16 @@ class OrderRepository implements Contract
 
     public function billingAddress(): ?Address
     {
+        if (isset($this->data['addresss']) && is_string($this->data['address'])) {
+            return new Address(
+                isset($this->data['name']) ? $this->data['name'] : null,
+                isset($this->data['address']) ? $this->data['address'] : null,
+                isset($this->data['city']) ? $this->data['city'] : null,
+                isset($this->data['country']) ? $this->data['country'] : null,
+                isset($this->data['zip_code']) ? $this->data['zip_code'] : '',
+            );
+        }
+
         if (isset($this->data['use_shipping_address_for_billing'])) {
             return $this->shippingAddress();
         }
@@ -135,6 +145,16 @@ class OrderRepository implements Contract
 
     public function shippingAddress(): ?Address
     {
+        if (isset($this->data['addresss']) && is_string($this->data['address'])) {
+            return new Address(
+                isset($this->data['name']) ? $this->data['name'] : null,
+                isset($this->data['address']) ? $this->data['address'] : null,
+                isset($this->data['city']) ? $this->data['city'] : null,
+                isset($this->data['country']) ? $this->data['country'] : null,
+                isset($this->data['zip_code']) ? $this->data['zip_code'] : '',
+            );
+        }
+
         if (! isset($this->data['shipping_address'])) {
             return null;
         }
