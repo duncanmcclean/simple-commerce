@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [new] You can now enable automatic receipt emails from Stripe.
+
 ## v2.1.13 (2020-12-05)
 
 * [new] Added some better error handling for form tags.
