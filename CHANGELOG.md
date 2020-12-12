@@ -2,7 +2,13 @@
 
 ## Unreleased
 
+## v2.1.14 (2020-12-12)
+
 * [new] You can now enable automatic receipt emails from Stripe.
+* [new] You can now use a single address for an order, instead of different shipping and billing ones.
+* [new] You can now set display names for gateways. Useful for when you give the customer an option between them.
+* [fix] Fixed a bug causing type exceptions.
+* [fix] Ensure customer can't add more of a product than you actually have in stock.
 
 ## v2.1.13 (2020-12-05)
 
