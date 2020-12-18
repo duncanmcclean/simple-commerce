@@ -55,7 +55,7 @@ class ServiceProvider extends AddonServiceProvider
         Statamic::booted(function () {
             $this
                 ->bootVendorAssets()
-                ->bootRepositories();
+                ->bindContracts();
         });
 
         SimpleCommerce::bootGateways();
@@ -94,7 +94,7 @@ class ServiceProvider extends AddonServiceProvider
         return $this;
     }
 
-    protected function bootRepositories()
+    protected function bindContracts()
     {
         collect([
             Contracts\CartRepository::class => Repositories\CartRepository::class,
