@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.17 (2020-12-18)
+
+* Re-tag of v2.1.16 (the release workflow broke)
+
 ## v2.1.16 (2020-12-18)
 
 * Fix issue where `locale()` is called on undefined, in Money Fieldtype.
