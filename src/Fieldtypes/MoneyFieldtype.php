@@ -23,11 +23,8 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
-        // TODO: $this->field() actually always exists. However, this is_null
-        // check is for the tests. We should probably fix this up some day.
-
         return Currency::get(
-            ! is_null($this->field())
+            ! is_null($this->field()->field()->parent()->locale())
                 ? Site::get($this->field()->parent()->locale())
                 : Site::current()
         );
