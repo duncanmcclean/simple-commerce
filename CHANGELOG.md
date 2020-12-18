@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.18 (2020-12-18)
+
+* Fixed issue with locales in Money Fieldtype again.
+
 ## v2.1.17 (2020-12-18)
 
 * Re-tag of v2.1.16 (the release workflow broke)
