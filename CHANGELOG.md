@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.16 (2020-12-18)
+
+* Fix issue where `locale()` is called on undefined, in Money Fieldtype.
+
 ## v2.1.15 (2020-12-12)
 
 * Remove Woodland
