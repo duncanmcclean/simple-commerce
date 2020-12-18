@@ -97,13 +97,13 @@ class ServiceProvider extends AddonServiceProvider
     protected function bindContracts()
     {
         collect([
-            Contracts\CartRepository::class => Repositories\CartRepository::class,
-            Contracts\CouponRepository::class => Repositories\CouponRepository::class,
+            Contracts\Order::class              => Orders\Order::class,
+            Contracts\CouponRepository::class   => Repositories\CouponRepository::class,
             Contracts\CurrencyRepository::class => Repositories\CurrencyRepository::class,
             Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
-            Contracts\GatewayRepository::class => Repositories\GatewayRepository::class,
-            Contracts\ProductRepository::class => Repositories\ProductRepository::class,
-            Contracts\ShippingManager::class => Shipping\ShippingManager::class,
+            Contracts\GatewayRepository::class  => Repositories\GatewayRepository::class,
+            Contracts\ProductRepository::class  => Repositories\ProductRepository::class,
+            Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
