@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
 use Statamic\Entries\Entry;
 
-interface ShippingRepository
+interface ShippingManager
 {
     public function name(): string;
 

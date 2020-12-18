@@ -103,7 +103,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
             Contracts\GatewayRepository::class => Repositories\GatewayRepository::class,
             Contracts\ProductRepository::class => Repositories\ProductRepository::class,
-            Contracts\ShippingRepository::class => Repositories\ShippingRepository::class,
+            Contracts\ShippingManager::class => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
