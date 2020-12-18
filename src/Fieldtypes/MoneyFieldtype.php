@@ -24,7 +24,7 @@ class MoneyFieldtype extends Fieldtype
     public function preload()
     {
         return Currency::get(
-            ! is_null($this->field()->field()->parent()->locale())
+            ! is_null($this->field()->parent()->locale())
                 ? Site::get($this->field()->parent()->locale())
                 : Site::current()
         );
