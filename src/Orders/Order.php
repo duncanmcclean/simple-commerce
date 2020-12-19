@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
@@ -153,6 +152,13 @@ class Order implements Contract
         $this->save();
 
         return $this;
+    }
+
+    public function beforeSaved()
+    {
+        if (! $this->has('items')) {
+            $this->data['items'] = [];
+        }
     }
 
     public function afterSaved()

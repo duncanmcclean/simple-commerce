@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use Statamic\Entries\Entry;
 
