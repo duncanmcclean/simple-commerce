@@ -24,7 +24,9 @@ class Calculator
             'coupon_total'      => 0000,
         ];
 
-        $data['items'] = collect($order->data['items'])
+        // dd($order);
+
+        $data['items'] = collect($order->get('items'))
             ->map(function ($item) use (&$data) {
                 $product = Product::find($item['product']);
 

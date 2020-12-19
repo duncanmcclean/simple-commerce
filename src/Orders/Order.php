@@ -148,9 +148,9 @@ class Order implements Contract
     {
         $calculate = resolve(Calculator::class)->calculate($this);
 
-        $this
-            ->update($calculate)
-            ->find($this->id);
+        $this->data($calculate);
+
+        $this->save();
 
         return $this;
     }

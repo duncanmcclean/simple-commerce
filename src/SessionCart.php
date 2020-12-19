@@ -3,7 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -17,9 +19,9 @@ trait SessionCart
         return Session::get(Config::get('simple-commerce.cart_key'));
     }
 
-    protected function getSessionCart(): CartRepository
+    protected function getSessionCart(): Order
     {
-        return Cart::find($this->getSessionCartKey());
+        return OrderAPI::find($this->getSessionCartKey());
     }
 
     protected function hasSessionCart(): bool
@@ -27,9 +29,9 @@ trait SessionCart
         return Session::has(Config::get('simple-commerce.cart_key'));
     }
 
-    protected function makeSessionCart(): CartRepository
+    protected function makeSessionCart(): Order
     {
-        $cart = Cart::make()
+        $cart = OrderAPI::create()
             ->site($this->guessSiteFromRequest())
             ->save();
 
@@ -38,7 +40,7 @@ trait SessionCart
         return $cart;
     }
 
-    protected function getOrMakeSessionCart(): CartRepository
+    protected function getOrMakeSessionCart(): Order
     {
         if ($this->hasSessionCart()) {
             return $this->getSessionCart();

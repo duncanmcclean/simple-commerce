@@ -35,7 +35,7 @@ trait IsEntry
         return $this;
     }
 
-    public function create(array $data): self
+    public function create(array $data = []): self
     {
         $this->id   = ! is_null($this->id) ? $this->id : Stache::generateId();
         $this->site = SiteAPI::current()->handle();
@@ -60,8 +60,9 @@ trait IsEntry
         }
 
         $this->entry
+            ->collection($this->collection())
             ->id($this->id)
-            ->site($this->site)
+            ->locale($this->site)
             ->slug($this->slug)
             ->published($this->published)
             ->data($this->data);

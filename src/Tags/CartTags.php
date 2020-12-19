@@ -34,7 +34,7 @@ class CartTags extends SubTag
             return 0;
         }
 
-        return collect($this->getSessionCart()->data['items'])->count();
+        return collect($this->getSessionCart()->get('items'))->count();
     }
 
     public function total()
@@ -145,6 +145,10 @@ class CartTags extends SubTag
     public function wildcard($method)
     {
         $cart = $this->getSessionCart();
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        }
 
         if (! $cart->has($method)) {
             return $cart->get($method);
