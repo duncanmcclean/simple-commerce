@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -164,13 +164,12 @@ class CouponControllerTest extends TestCase
 
     protected function buildCartWithProducts()
     {
-        $this->product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $this->product = Product::create([
+            'title' => Food,
+            'price' => 1000,
+        ]);
 
-        $this->cart = Cart::make()->save()->update([
+        $this->cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),

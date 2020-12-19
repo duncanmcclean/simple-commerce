@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -93,7 +93,7 @@ class CheckoutTagTest extends TestCase
     protected function fakeSessionCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Cart::make()->save();
+            $cart = Order::create();
         }
 
         Session::shouldReceive('get')

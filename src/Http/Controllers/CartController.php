@@ -65,17 +65,14 @@ class CartController extends BaseActionController
         }
 
         if (isset($data['email'])) {
-            $customer = Customer::make()
-                ->site($this->guessSiteFromRequest())
-                ->data([
-                    'name' => isset($data['name']) ? $data['name'] : '',
-                    'email' => $data['email'],
-                ])
-                ->save();
+            $customer = Customer::create([
+                'name' => isset($data['name']) ? $data['name'] : '',
+                'email' => $data['email'],
+            ], $this->guessSiteFromRequest()->handle())->save();
 
             $cart->data([
                 'customer' => $customer->id,
-            ]);
+            ])->save();
 
             unset($data['name']);
             unset($data['email']);

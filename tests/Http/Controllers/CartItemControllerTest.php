@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -22,11 +22,10 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
         $data = [
             'product' => $product->id,
@@ -40,7 +39,7 @@ class CartItemControllerTest extends TestCase
         $response->assertRedirect('/products/'.$product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
-        $cart = Cart::find(session()->get('simple-commerce-cart'));
+        $cart = Order::find(session()->get('simple-commerce-cart'));
 
         $this->assertSame(1000, $cart->data['items_total']);
 
@@ -51,34 +50,31 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_with_variant()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data([
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name' => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name' => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'product_variants' => [
+                'variants' => [
+                    [
+                        'name' => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key' => 'Red_Small',
-                            'price' => 1000,
+                    [
+                        'name' => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
                     ],
                 ],
-            ])
-            ->save();
+                'options' => [
+                    [
+                        'key' => 'Red_Small',
+                        'price' => 1000,
+                    ],
+                ],
+            ],
+        ]);
 
         $data = [
             'product' => $product->id,
@@ -92,7 +88,7 @@ class CartItemControllerTest extends TestCase
         $response->assertRedirect('/products/'.$product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
-        $cart = Cart::find(session()->get('simple-commerce-cart'));
+        $cart = Order::find(session()->get('simple-commerce-cart'));
 
         $this->assertSame(1000, $cart->data['items_total']);
 
@@ -103,13 +99,12 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_with_existing_cart()
     {
-        $product = Product::make()
-            ->title('Cat Food')
-            ->slug('cat-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save();
+        $cart = Order::create();
 
         $data = [
             'product' => $product->id,
@@ -135,13 +130,13 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_and_ensure_the_quantity_is_not_more_than_stock()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1567, 'stock' => 2])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1567,
+            'stock' => 2,
+        ]);
 
-        $cart = Cart::make()->save();
+        $cart = Order::create();
 
         $data = [
             'product' => $product->id,
@@ -158,19 +153,17 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_and_ensure_existing_items_are_not_overwritten()
     {
-        $productOne = Product::make()
-            ->title('Rabbit Food')
-            ->slug('rabbit-food')
-            ->data(['price' => 1000])
-            ->save();
+        $productOne = Product::create([
+            'title' => 'Rabbit Food',
+            'price' => 1000,
+        ]);
 
-        $productTwo = Product::make()
-            ->title('Fish Food')
-            ->slug('fish-food')
-            ->data(['price' => 2300])
-            ->save();
+        $productTwo = Product::create([
+            'title' => 'Fish Food',
+            'price' => 2300,
+        ]);
 
-        $cart = Cart::make()->save()->data([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -207,11 +200,10 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_with_custom_redirect_url()
     {
-        $product = Product::make()
-            ->title('Horse Food')
-            ->slug('horse-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Horse Food',
+            'price' => 1000,
+        ]);
 
         $data = [
             'product' => $product->id,
@@ -226,7 +218,7 @@ class CartItemControllerTest extends TestCase
         $response->assertRedirect('/checkout');
         $response->assertSessionHas('simple-commerce-cart');
 
-        $cart = Cart::find(session()->get('simple-commerce-cart'));
+        $cart = Order::find(session()->get('simple-commerce-cart'));
 
         $this->assertSame(1000, $cart->data['items_total']);
 
@@ -237,13 +229,12 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function cant_store_a_product_that_is_already_in_the_cart()
     {
-        $product = Product::make()
-            ->title('Horse Food')
-            ->slug('horse-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Horse Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save()->data([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -274,36 +265,33 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function cant_store_a_variant_that_is_already_in_the_cart()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data([
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name' => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name' => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'product_variants' => [
+                'variants' => [
+                    [
+                        'name' => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key' => 'Red_Small',
-                            'price' => 1000,
+                    [
+                        'name' => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
                     ],
                 ],
-            ])
-            ->save();
+                'options' => [
+                    [
+                        'key' => 'Red_Small',
+                        'price' => 1000,
+                    ],
+                ],
+            ],
+        ]);
 
-        $cart = Cart::make()->save()->data([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -336,41 +324,38 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_variant_of_a_product_that_has_another_variant_that_is_in_the_cart()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data([
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name' => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name' => 'Sizes',
-                            'values' => [
-                                'Small',
-                                'Medium',
-                            ],
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'product_variants' => [
+                'variants' => [
+                    [
+                        'name' => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key' => 'Red_Small',
-                            'price' => 1000,
-                        ],
-                        [
-                            'key' => 'Red_Medium',
-                            'price' => 1000,
+                    [
+                        'name' => 'Sizes',
+                        'values' => [
+                            'Small',
+                            'Medium',
                         ],
                     ],
                 ],
-            ])
-            ->save();
+                'options' => [
+                    [
+                        'key' => 'Red_Small',
+                        'price' => 1000,
+                    ],
+                    [
+                        'key' => 'Red_Medium',
+                        'price' => 1000,
+                    ],
+                ],
+            ],
+        ]);
 
-        $cart = Cart::make()->save()->data([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -403,13 +388,12 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_update_item()
     {
-        $product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save()->data([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -441,13 +425,12 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_destroy_item()
     {
-        $product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save()->data([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),

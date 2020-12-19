@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -56,13 +56,12 @@ class CartTagTest extends TestCase
         // TODO: work out issues with toAugmentedArray() playing up in tests
         $this->markTestIncomplete();
 
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -81,19 +80,17 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_count()
     {
-        $productOne = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $productOne = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
-        $productTwo = Product::make()
-            ->title('Cat Food')
-            ->slug('cat-food')
-            ->data(['price' => 1200])
-            ->save();
+        $productTwo = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1200,
+        ]);
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -121,7 +118,7 @@ class CartTagTest extends TestCase
         // TODO: work out issues with toAugmentedArray() playing up in tests
         $this->markTestIncomplete();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'grand_total' => 2550,
         ]);
 
@@ -163,11 +160,10 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_add_item_form()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
         $this->tag->setParameters([]);
 
@@ -253,7 +249,7 @@ class CartTagTest extends TestCase
         // TODO, marked as incomplete until we figure out how to store stuff in the session
         $this->markTestIncomplete();
 
-        $cart = Cart::make()->data(['title' => '#0001', 'note' => 'Deliver by front door.'])->save();
+        $cart = Order::create(['title' => '#0001', 'note' => 'Deliver by front door.']);
 
         $this->session(['simple-commerce-cart' => $cart->id]);
         $this->tag->setParameters([]);
@@ -271,7 +267,7 @@ class CartTagTest extends TestCase
     protected function fakeSessionCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Cart::make()->save();
+            $cart = Order::create();
         }
 
         Session::shouldReceive('get')
