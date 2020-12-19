@@ -37,6 +37,16 @@ class Customer implements Contract
         return $this->find($entry->id());
     }
 
+    public function name(): string
+    {
+        return $this->get('name');
+    }
+
+    public function email(): string
+    {
+        return $this->get('email');
+    }
+
     public function generateTitleAndSlug(): self
     {
         $name = '';

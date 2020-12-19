@@ -22,13 +22,13 @@ class CheckoutTags extends SubTag
             try {
                 $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
 
-                $cart->update([
+                $cart->data([
                     $gateway['handle'] => $prepare->data(),
-                ]);
+                ])->save();
 
                 $data = array_merge($data, $prepare->data());
             } catch (\Exception $e) {
-                dd($e->getMessage());
+                dd("Exception from Gateway: " . $e->getMessage());
             }
         }
 

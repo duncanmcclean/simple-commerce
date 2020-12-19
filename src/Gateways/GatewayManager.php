@@ -38,7 +38,7 @@ class GatewayManager implements Contract
         $purchase = $this->resolve()->purchase(new GatewayPurchase($request, $order));
 
         if ($purchase->success()) {
-            Cart::find($order->id())->update([
+            Cart::find($order->id())->data([
                 'gateway' => $this->className,
                 'gateway_data' => $purchase->data(),
             ]);
@@ -64,13 +64,13 @@ class GatewayManager implements Contract
         $refund = $this->resolve()->refundCharge($order);
 
         $cart = Cart::find($order->id());
-        $cart->update([
+        $cart->data([
             'is_refunded' => true,
             'gateway_data' => array_merge($cart->data['gateway_data'], [
                 'refund' => $refund,
             ]),
             'order_status' => 'refunded',
-        ]);
+        ])->save();
 
         return $refund;
     }

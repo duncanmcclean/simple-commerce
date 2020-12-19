@@ -129,7 +129,7 @@ class Order implements Contract
 
         $this->save();
 
-        event(new CartCompleted($this->entry));
+        event(new CartCompleted($this));
 
         return $this;
     }

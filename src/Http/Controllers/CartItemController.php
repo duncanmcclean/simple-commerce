@@ -19,7 +19,7 @@ class CartItemController extends BaseActionController
         $cart = $this->hasSessionCart() ? $this->getSessionCart() : $this->makeSessionCart();
         $product = Product::find($request->product);
 
-        $items = isset($cart->data['items']) ? $cart->data['items'] : [];
+        $items = $cart->has('items') ? $cart->get('items') : [];
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if (isset($product->data['stock']) && $product->data['stock'] < $request->quantity) {
@@ -49,9 +49,11 @@ class CartItemController extends BaseActionController
             $item['variant'] = $request->variant;
         }
 
-        $cart->update([
+        $cart->data([
             'items' => array_merge($items, [$item]),
-        ])->calculateTotals();
+        ])->save();
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request);
     }
@@ -60,7 +62,7 @@ class CartItemController extends BaseActionController
     {
         $cart = $this->getSessionCart();
 
-        $cart->update([
+        $cart->data([
             'items' => collect($cart->data['items'] ?? [])
                 ->map(function ($item) use ($request, $requestItem) {
                     if ($item['id'] !== $requestItem) {
@@ -73,7 +75,9 @@ class CartItemController extends BaseActionController
                     );
                 })
                 ->toArray(),
-        ])->calculateTotals();
+        ])->save();
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request);
     }
@@ -82,11 +86,13 @@ class CartItemController extends BaseActionController
     {
         $cart = $this->getSessionCart();
 
-        $cart->update([
+        $cart->data([
             'items' => collect($cart->data['items'])
                 ->where('id', '!==', $item)
                 ->toArray(),
-        ])->calculateTotals();
+        ])->save();
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request);
     }

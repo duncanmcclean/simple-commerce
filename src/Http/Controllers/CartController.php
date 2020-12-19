@@ -47,20 +47,17 @@ class CartController extends BaseActionController
                     throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $data['customer']]));
                 }
             } catch (CustomerNotFound $e) {
-                $customer = Customer::make()
-                    ->site($this->guessSiteFromRequest())
-                    ->data([
-                        'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                        'email' => $data['customer']['email'],
-                    ])
-                    ->save();
+                $customer = Customer::create([
+                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email' => $data['customer']['email'],
+                ], $this->guessSiteFromRequest()->handle());
             }
 
             if (is_array($data['customer'])) {
-                $customer->update($data['customer']);
+                $customer->data($data['customer'])->save();
             }
 
-            $cart->update([
+            $cart->data([
                 'customer' => $customer->id,
             ]);
 
@@ -76,7 +73,7 @@ class CartController extends BaseActionController
                 ])
                 ->save();
 
-            $cart->update([
+            $cart->data([
                 'customer' => $customer->id,
             ]);
 
@@ -85,7 +82,8 @@ class CartController extends BaseActionController
         }
 
         $cart
-            ->update($data)
+            ->data($data)
+            ->save()
             ->calculateTotals();
 
         return $this->withSuccess($request);
@@ -95,9 +93,10 @@ class CartController extends BaseActionController
     {
         $this
             ->getSessionCart()
-            ->update([
+            ->data([
                 'items' => [],
             ])
+            ->save()
             ->calculateTotals();
 
         return $this->withSuccess($request);

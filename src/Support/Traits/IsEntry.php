@@ -27,18 +27,20 @@ trait IsEntry
             $this->entry = $this->entry->in(SiteAPI::current()->handle());
         }
 
-        $this->id    = $this->entry->id;
-        $this->title = $this->entry->get('title');
+        $this->id    = $this->entry->id();
+        $this->title = $this->entry->data()->get('title');
         $this->slug  = $this->entry->slug();
+        $this->site  = $this->entry()->locale();
         $this->data  = $this->entry->data()->toArray();
+        $this->published = $this->entry->published();
 
         return $this;
     }
 
-    public function create(array $data = []): self
+    public function create(array $data = [], string $site = ''): self
     {
         $this->id   = ! is_null($this->id) ? $this->id : Stache::generateId();
-        $this->site = SiteAPI::current()->handle();
+        $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
         $this->slug = ! is_null($this->slug) ? $this->slug : '';
         $this->published = ! is_null($this->published) ? $this->published : false;
 
@@ -56,13 +58,13 @@ trait IsEntry
     public function save(): self
     {
         if (! $this->entry) {
-            $this->entry = EntryAPI::make();
+            $this->entry = EntryAPI::make()
+                ->id($this->id)
+                ->localee($this->site);
         }
 
         $this->entry
             ->collection($this->collection())
-            ->id($this->id)
-            ->locale($this->site)
             ->slug($this->slug)
             ->published($this->published)
             ->data($this->data);
@@ -93,6 +95,11 @@ trait IsEntry
     public function entry()
     {
         return $this->entry;
+    }
+
+    public function id()
+    {
+        return $this->id;
     }
 
     public function title(string $title = '')
@@ -128,20 +135,6 @@ trait IsEntry
         }
 
         $this->site = $site;
-
-        return $this;
-    }
-
-    // TODO: remove
-    public function update(array $data, bool $mergeData = true): self
-    {
-        if ($mergeData) {
-            $data = array_merge($this->data, $data);
-        }
-
-        $this->entry()
-            ->data($data)
-            ->save();
 
         return $this;
     }

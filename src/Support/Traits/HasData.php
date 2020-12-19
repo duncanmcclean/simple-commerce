@@ -4,14 +4,15 @@ namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
 trait HasData
 {
-
     public function data(array $data = [])
     {
         if ($data === []) {
             return $this->data;
         }
 
-        $this->data = $data;
+        foreach ($data as $key => $value) {
+            $this->data[$key] = $value;
+        }
 
         return $this;
     }

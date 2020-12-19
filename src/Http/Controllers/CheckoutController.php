@@ -20,7 +20,7 @@ class CheckoutController extends BaseActionController
 {
     use SessionCart;
 
-    public CartRepository $cart;
+    public $cart;
     public StoreRequest $request;
     public $excludedKeys = ['_token', '_params', '_redirect'];
 
@@ -84,20 +84,17 @@ class CheckoutController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
-                $customer = Customer::make()
-                    ->site($this->guessSiteFromRequest())
-                    ->data([
-                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                        'email' => $customerData['email'],
-                    ])
-                    ->save();
+                $customer = Customer::create([
+                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
+                    'email' => $customerData['email'],
+                ], $this->guessSiteFromRequest()->handle());
             }
 
-            $customer->update($customerData);
+            $customer->data($customerData)->save();
 
-            $this->cart->update([
+            $this->cart->data([
                 'customer' => $customer->id,
-            ]);
+            ])->save();
         }
 
         $this->excludedKeys[] = 'customer';
@@ -107,7 +104,7 @@ class CheckoutController extends BaseActionController
 
     protected function handlePayment()
     {
-        if (! $this->request->has('gateway') && $this->cart->toArray()['is_paid'] === false && $this->cart->data['grand_total'] !== 0) {
+        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
@@ -133,7 +130,7 @@ class CheckoutController extends BaseActionController
 
     protected function handleStock()
     {
-        collect($this->cart->data['items'])
+        collect($this->cart->get('items'))
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
@@ -171,14 +168,14 @@ class CheckoutController extends BaseActionController
             $data[$key] = $value;
         }
 
-        $this->cart->update($data);
+        $this->cart->data($data)->save();
 
         return $this;
     }
 
     protected function postCheckout()
     {
-        $this->cart->markAsCompleted();
+        $this->cart->markAsCompleted()->save();
         $this->forgetSessionCart();
 
         event(new PostCheckout($this->cart->data));

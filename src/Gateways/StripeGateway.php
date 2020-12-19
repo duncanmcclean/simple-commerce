@@ -39,7 +39,6 @@ class StripeGateway extends BaseGateway implements Gateway
             'metadata' => [
                 'order_id' => $cart->id,
             ],
-            'receipt_email' => isset($this->config()['receipt_email']) ? $this->config()['receipt_email'] : false,
         ];
 
         if (isset($cart->data['email']) && $cart->data['email'] !== null) {
@@ -56,6 +55,10 @@ class StripeGateway extends BaseGateway implements Gateway
 
             $stripeCustomer = StripeCustomer::create($stripeCustomerData);
             $intentData['customer'] = $stripeCustomer->id;
+        }
+
+        if (isset($customer) && isset($this->config()['receipt_email']) && $this->config()['receipt_email'] === true) {
+            $intentData['receipt_email'] = $customer->email();
         }
 
         $intent = PaymentIntent::create($intentData);

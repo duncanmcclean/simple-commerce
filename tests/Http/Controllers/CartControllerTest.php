@@ -23,7 +23,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_get_cart_index()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
@@ -45,7 +45,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -66,12 +66,12 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_with_customer_already_in_cart()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::create()->data([
             'name' => 'Dan Smith',
             'email' => 'dan.smith@example.com',
         ])->save();
 
-        $cart = Cart::make()->save()->update(['customer' => $customer->id]);
+        $cart = Cart::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -93,7 +93,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'name' => 'John Doe',
@@ -118,12 +118,12 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_id()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::create()->data([
             'name' => 'Jor Smith',
             'email' => 'jordan.smith@example.com',
         ])->save();
 
-        $cart = Cart::make()->save()->update(['customer' => $customer->id]);
+        $cart = Cart::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
             'customer' => [
@@ -148,12 +148,12 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_email()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::create()->data([
             'name' => 'Jak Simpson',
             'email' => 'jack.simpson@example.com',
         ])->save();
 
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'customer' => [
@@ -179,7 +179,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer_via_customer_array()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'customer' => [
@@ -208,7 +208,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_with_custom_redirect_page()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             '_redirect' => '/checkout',
@@ -225,11 +225,11 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart()
     {
-        $product = Product::make()->save()->update(['price' => 1000]);
+        $product = Product::create()->save()->data(['price' => 1000])->save();
 
-        $cart = Cart::make()
+        $cart = Cart::create()
             ->save()
-            ->update([
+            ->data([
                 'items' => [
                     [
                         'id' => Stache::generateId(),
@@ -238,7 +238,8 @@ class CartControllerTest extends TestCase
                         'total' => 1000,
                     ],
                 ],
-            ]);
+            ])
+            ->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])

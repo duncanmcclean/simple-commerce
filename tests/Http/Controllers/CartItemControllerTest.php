@@ -170,7 +170,7 @@ class CartItemControllerTest extends TestCase
             ->data(['price' => 2300])
             ->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Cart::make()->save()->data([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -243,7 +243,7 @@ class CartItemControllerTest extends TestCase
             ->data(['price' => 1000])
             ->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Cart::make()->save()->data([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -303,7 +303,7 @@ class CartItemControllerTest extends TestCase
             ])
             ->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Cart::make()->save()->data([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -370,7 +370,7 @@ class CartItemControllerTest extends TestCase
             ])
             ->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Cart::make()->save()->data([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -409,7 +409,7 @@ class CartItemControllerTest extends TestCase
             ->data(['price' => 1000])
             ->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Cart::make()->save()->data([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -447,7 +447,7 @@ class CartItemControllerTest extends TestCase
             ->data(['price' => 1000])
             ->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Cart::make()->save()->data([
             'items' => [
                 [
                     'id' => Stache::generateId(),

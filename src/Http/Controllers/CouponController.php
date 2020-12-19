@@ -24,9 +24,10 @@ class CouponController extends BaseActionController
     public function destroy(DestroyRequest $request)
     {
         $this->getSessionCart()
-            ->update([
+            ->data([
                 'coupon' => null,
             ])
+            ->save()
             ->calculateTotals();
 
         return $this->withSuccess($request, ['message' => __('simple-commerce::coupons.coupon_removed_from_cart')]);
