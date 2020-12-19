@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -13,7 +13,7 @@ class StockRunOut
     public $product;
     public $stock;
 
-    public function __construct(ProductRepository $product, int $stock)
+    public function __construct(Product $product, int $stock)
     {
         $this->product = $product;
         $this->stock = $stock;

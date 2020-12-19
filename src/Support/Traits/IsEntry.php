@@ -60,7 +60,7 @@ trait IsEntry
         if (! $this->entry) {
             $this->entry = EntryAPI::make()
                 ->id($this->id)
-                ->localee($this->site);
+                ->locale($this->site);
         }
 
         $this->entry
