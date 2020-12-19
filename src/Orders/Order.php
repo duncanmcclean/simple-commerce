@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
@@ -16,9 +17,9 @@ use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Illuminate\Support\Facades\URL;
 use Statamic\Facades\Stache;
 
-class Order
+class Order implements Contract
 {
-    use HasData, IsEntry;
+    use IsEntry, HasData;
 
     public $id;
     public $site;

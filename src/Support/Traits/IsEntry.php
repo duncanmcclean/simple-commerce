@@ -9,9 +9,6 @@ use Statamic\Sites\Site;
 
 trait IsEntry
 {
-    protected $entry;
-    protected $collection;
-
     public function all()
     {
         return $this->query()->all();
@@ -68,6 +65,10 @@ trait IsEntry
             ->slug($this->slug)
             ->published($this->published)
             ->data($this->data);
+
+        if (method_exists($this, 'beforeSaved')) {
+            $this->beforeSaved();
+        }
 
         $this->entry->save();
 
@@ -145,6 +146,11 @@ trait IsEntry
     }
 
     // TODO: refactor to property hooks
+    public function beforeSaved()
+    {
+        return null;
+    }
+
     public function afterSaved()
     {
         return null;

@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DoubleThreeDigital\SimpleCommerce\Support\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Statamic\Facades\Entry;

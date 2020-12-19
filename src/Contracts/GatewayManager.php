@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-interface GatewayRepository
+interface GatewayManager
 {
     public function use($className): self;
 

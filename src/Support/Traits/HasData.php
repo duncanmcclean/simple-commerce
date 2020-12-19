@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
 trait HasData
 {
-    public array $data = [];
 
     public function data(array $data = [])
     {

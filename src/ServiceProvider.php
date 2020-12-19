@@ -98,11 +98,11 @@ class ServiceProvider extends AddonServiceProvider
     {
         collect([
             Contracts\Order::class              => Orders\Order::class,
-            Contracts\CouponRepository::class   => Repositories\CouponRepository::class,
-            Contracts\CurrencyRepository::class => Repositories\CurrencyRepository::class,
-            Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
-            Contracts\GatewayRepository::class  => Repositories\GatewayRepository::class,
-            Contracts\ProductRepository::class  => Repositories\ProductRepository::class,
+            Contracts\Coupon::class             => Coupons\Coupon::class,
+            Contracts\Currency::class           => Support\Currency::class,
+            Contracts\Customer::class           => Customers\Customer::class,
+            Contracts\GatewayManager::class     => Gateways\GatewayManager::class,
+            Contracts\Product::class            => Products\Product::class,
             Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {

@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Repositories;
+namespace DoubleThreeDigital\SimpleCommerce\Support;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CurrencyRepository as ContractsCurrencyRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Currency as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
 use Illuminate\Support\Facades\Config;
@@ -13,7 +13,7 @@ use Money\Money;
 use NumberFormatter;
 use Statamic\Sites\Site;
 
-class CurrencyRepository implements ContractsCurrencyRepository
+class Currency implements Contract
 {
     public function get(Site $site): array
     {

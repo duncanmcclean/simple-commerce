@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use Statamic\Sites\Site;
 
-interface CurrencyRepository
+interface Currency
 {
     public function get(Site $site): array;
 

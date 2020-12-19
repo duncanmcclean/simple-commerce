@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Repositories;
+namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayRepository as ContractsGatewayRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
@@ -11,7 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
-class GatewayRepository implements ContractsGatewayRepository
+class GatewayManager implements Contract
 {
     protected $className;
     protected $redirectUrl;
