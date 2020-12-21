@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## v2.120 (2020-12-21)
+## v2.12.0 (2020-12-21)
 
 * [fix] Fixed issue when passing `receipt_email` to Stripe
 
