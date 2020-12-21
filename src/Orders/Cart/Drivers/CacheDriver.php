@@ -18,7 +18,7 @@ class CacheDriver implements CartDriver
 
     public function getSessionCartKey(): string
     {
-        return Cache::get(Config::get('simple-commerce.cart_key'));
+        return Cache::get(Config::get('simple-commerce.cart.key'));
     }
 
     public function getSessionCart(): CartRepository
@@ -28,7 +28,7 @@ class CacheDriver implements CartDriver
 
     public function hasSessionCart(): bool
     {
-        return Cache::has(Config::get('simple-commerce.cart_key'));
+        return Cache::has(Config::get('simple-commerce.cart.key'));
     }
 
     public function makeSessionCart(): CartRepository
@@ -37,7 +37,7 @@ class CacheDriver implements CartDriver
             ->site($this->guessSiteFromRequest())
             ->save();
 
-        Cache::put(config('simple-commerce.cart_key'), $cart->id);
+        Cache::put(config('simple-commerce.cart.key'), $cart->id);
 
         return $cart;
     }
@@ -53,7 +53,7 @@ class CacheDriver implements CartDriver
 
     public function forgetSessionCart()
     {
-        Cache::forget(config('simple-commerce.cart_key'));
+        Cache::forget(config('simple-commerce.cart.key'));
     }
 
     protected function guessSiteFromRequest(): ASite

@@ -119,9 +119,8 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootCartDrivers()
     {
-        // TODO: make this configurable
         if (! $this->app->bound(Contracts\CartDriver::class)) {
-            $this->app->bind(Contracts\CartDriver::class, SessionDriver::class);
+            $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
         }
 
         return $this;
