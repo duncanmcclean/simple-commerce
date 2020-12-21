@@ -7,24 +7,27 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
+use Statamic\Sites\Site as SitesSite;
 
 class CartController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function index(IndexRequest $request)
     {
         return $this
-            ->getSessionCart()
+            ->getCart()
             ->entry()
             ->data();
     }
 
     public function update(UpdateRequest $request)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
         $data = Arr::except($request->all(), ['_token', '_params', '_redirect']);
 
         foreach ($data as $key => $value) {
@@ -89,7 +92,7 @@ class CartController extends BaseActionController
     public function destroy(DestroyRequest $request)
     {
         $this
-            ->getSessionCart()
+            ->getCart()
             ->data([
                 'items' => [],
             ])
@@ -97,5 +100,28 @@ class CartController extends BaseActionController
             ->calculateTotals();
 
         return $this->withSuccess($request);
+    }
+
+    protected function guessSiteFromRequest(): SitesSite
+    {
+        if ($site = request()->get('site')) {
+            return Site::get($site);
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
+            }
+        }
+
+        if ($referer = request()->header('referer')) {
+            foreach (Site::all() as $site) {
+                if (Str::contains($referer, $site->url())) {
+                    return $site;
+                }
+            }
+        }
+
+        return Site::current();
     }
 }

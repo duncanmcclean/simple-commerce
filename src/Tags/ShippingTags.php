@@ -5,15 +5,18 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag
 {
+    use CartDriver;
+
     public function methods()
     {
-        $cart = Cart::find(Session::get(Config::get('simple-commerce.cart_key')));
+        $cart = $this->getCart();
 
         $siteConfig = collect(Config::get('simple-commerce.sites'))
             ->get(Site::current()->handle());

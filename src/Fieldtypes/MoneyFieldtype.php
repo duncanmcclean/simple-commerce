@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use Exception;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
@@ -23,11 +24,11 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
-        return Currency::get(
-            !is_null($this->field()) && !is_null($this->field()->parent()) && !is_null($this->field()->parent()->locale())
-                ? Site::get($this->field()->parent()->locale())
-                : Site::current()
-        );
+        if (! $this->field()) {
+            return Currency::get(Site::current());
+        }
+
+        return Currency::get(Site::get($this->field()->parent()->locale()));
     }
 
     public function preProcess($data)

@@ -99,15 +99,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cart Key
+    | Cart
     |--------------------------------------------------------------------------
     |
-    | Under the hood, Simple Commerce sets an entry in the session to store the customers'
-    | current cart ID. If you want to, you can change the key of the session entry.
+    | Configure the Cart Driver in use on your site. It's what stores/gets the
+    | Cart ID from the user's browser on every request.
     |
     */
 
-    'cart_key' => 'simple-commerce-cart',
+    'cart' => [
+        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver::class,
+        'key' => 'simple-commerce-cart',
+    ],
 
     /*
     |--------------------------------------------------------------------------

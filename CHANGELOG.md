@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.19 (2020-12-21)
+
+* Simplified the site detecting logic in the Money Fieldtype #319
+
 ## v2.1.18 (2020-12-18)
 
 * Fixed issue with locales in Money Fieldtype again.
