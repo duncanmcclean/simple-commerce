@@ -39,7 +39,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'metadata' => [
                 'order_id' => $cart->id,
             ],
-            'receipt_email' => isset($this->config()['receipt_email']) ? $this->config()['receipt_email'] : false,
+            'receipt_email' => isset($this->config()['receipt_email']) ? $this->config()['receipt_email'] : null,
         ];
 
         if (isset($cart->data['email']) && $cart->data['email'] !== null) {
