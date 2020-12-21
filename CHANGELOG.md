@@ -2,9 +2,49 @@
 
 ## Unreleased
 
+## v2.1.19 (2020-12-21)
+
+* Simplified the site detecting logic in the Money Fieldtype #319
+
+## v2.1.18 (2020-12-18)
+
+* Fixed issue with locales in Money Fieldtype again.
+
+## v2.1.17 (2020-12-18)
+
+* Re-tag of v2.1.16 (the release workflow broke)
+
+## v2.1.16 (2020-12-18)
+
+* Fix issue where `locale()` is called on undefined, in Money Fieldtype.
+
+## v2.1.15 (2020-12-12)
+
+* Remove Woodland
+
+## v2.1.14 (2020-12-12)
+
+* [new] You can now enable automatic receipt emails from Stripe.
+* [new] You can now use a single address for an order, instead of different shipping and billing ones.
+* [new] You can now set display names for gateways. Useful for when you give the customer an option between them.
+* [fix] Fixed a bug causing type exceptions.
+* [fix] Ensure customer can't add more of a product than you actually have in stock.
+
+## v2.1.13 (2020-12-05)
+
+* [new] Added some better error handling for form tags.
+* [fix] Issue where it couldn't find an 'index' gateway using the `{{ sc:gateways }}` tag? Now sorted!
+
+## v2.1.12 (2020-11-29)
+
+A whole lot of API related changes this release...
+
 * [new] It's now easier to get fields from your cart. How's `{{ sc:cart:delivery_note }}`?
 * [new] The Order Calculator has been moved out of the `CartRepository` and into it's own class. However, the `recalculateTotals` method on the `CartRepository` will continue to work for the time being.
+* [new] Introduced a new `OrderRepository` which will eventually replace the `CartRepository` (it's a breaking change so it won't happen until at least v2.2)
+* [new] Added `customer` method to `CartRepository`
 * [fix] Default order blueprint no longer has a SKU field on it.
+* [fix] `php please sc:install` command will now only publish blueprints and configuration file.
 
 ## v2.1.11 (2020-11-27)
 

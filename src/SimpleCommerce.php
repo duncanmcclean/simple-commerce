@@ -40,6 +40,7 @@ class SimpleCommerce
                     'handle'          => $handle = Str::camel($instance->name()),
                     'class'           => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
+                    'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
                     'webhook_url'     => Statamic::booted(function () use ($handle) {

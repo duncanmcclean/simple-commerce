@@ -63,4 +63,24 @@ class SimpleCommerceTag extends Tags
     {
         return Currencies::toArray();
     }
+
+    public function errors()
+    {
+        if (! $this->hasErrors()) {
+            return null;
+        }
+
+        $errors = [];
+
+        foreach (session('errors')->getBag('default')->all() as $error) {
+            $errors[]['value'] = $error;
+        }
+
+        return $this->parseLoop($errors);
+    }
+
+    public function hasErrors()
+    {
+        return session()->has('errors');
+    }
 }

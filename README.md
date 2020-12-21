@@ -27,7 +27,7 @@ composer require doublethreedigital/simple-commerce
 
 ## Licensing
 
-This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that you'll need to purchase a license before using this addon in production. Licenses cost $199 and can be purchased from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce).
+This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that you'll need to purchase a license before using this addon in production. Licenses cost $99 and can be purchased from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce).
 
 ## Resources
 * [Documentation](https://sc-docs.doublethree.digital)

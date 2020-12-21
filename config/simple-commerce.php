@@ -37,10 +37,14 @@ return [
     | You can setup multiple payment gateways for your store with Simple Commerce.
     | Here's where you can configure the gateways in use.
     |
+    | https://sc-docs.doublethree.digital/v2.1/gateways
+    |
     */
 
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [
+            'display' => 'Card',
+        ],
     ],
 
     /*
@@ -52,6 +56,8 @@ return [
     | eg. a cart being completed.
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
+    |
+    | https://sc-docs.doublethree.digital/v2.1/email
     |
     */
 

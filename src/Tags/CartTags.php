@@ -30,7 +30,7 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (! $this->hasSessionCart() && !isset($this->getSessionCart()['items'])) {
+        if (! $this->hasSessionCart()) {
             return 0;
         }
 

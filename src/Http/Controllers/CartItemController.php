@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
@@ -15,13 +16,15 @@ class CartItemController extends BaseActionController
 
     public function store(StoreRequest $request)
     {
-        if ($this->hasSessionCart()) {
-            $cart = $this->getSessionCart();
-        } else {
-            $cart = $this->makeSessionCart();
-        }
+        $cart = $this->hasSessionCart() ? $this->getSessionCart() : $this->makeSessionCart();
+        $product = Product::find($request->product);
 
         $items = isset($cart->data['items']) ? $cart->data['items'] : [];
+
+        // Ensure there's enough stock to fulfill the customer's quantity
+        if (isset($product->data['stock']) && $product->data['stock'] < $request->quantity) {
+            return $this->withErrors($request, "There's not enough stock to fulfil the quantity you selected. Please try again later.");
+        }
 
         // Ensure the product doesn't already exist in the cart
         $alreadyExistsQuery = collect($items)

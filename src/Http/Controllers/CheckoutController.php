@@ -54,18 +54,19 @@ class CheckoutController extends BaseActionController
 
     protected function handleValidation()
     {
-        // $request->validate($cart->entry()->blueprint()->fields()->validator()->rules());
+        $checkoutValidationRules = [
+            'name' => ['sometimes', 'string'],
+            'email' => ['sometimes', 'email'],
+        ];
 
-        $this->request->validate([
-            'name'  => 'sometimes|string',
-            'email' => 'sometimes|email',
-        ]);
+        $gatewayValidationRules = $this->request->has('gateway') ?
+            Gateway::use($this->request->get('gateway'))->purchaseRules() :
+            [];
 
-        if ($this->request->has('gateway')) {
-            $this->request->validate(
-                Gateway::use($this->request->gateway)->purchaseRules()
-            );
-        }
+        $this->request->validate(array_merge(
+            $checkoutValidationRules,
+            $gatewayValidationRules
+        ));
 
         return $this;
     }

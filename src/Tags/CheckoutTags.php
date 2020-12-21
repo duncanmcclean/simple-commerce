@@ -42,6 +42,10 @@ class CheckoutTags extends SubTag
     // {{ sc:checkout:mollie }}
     public function wildcard(string $tag)
     {
+        if (! $tag || $tag === 'index') {
+            return $this->index();
+        }
+
         $cart = $this->getSessionCart();
         $gatewayHandle = last(explode(':', $tag));
 
