@@ -16,7 +16,7 @@ class CartItemController extends BaseActionController
 
     public function store(StoreRequest $request)
     {
-        $cart = $this->hasSessionCart() ? $this->getSessionCart() : $this->makeSessionCart();
+        $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
         $product = Product::find($request->product);
 
         $items = isset($cart->data['items']) ? $cart->data['items'] : [];
@@ -58,7 +58,7 @@ class CartItemController extends BaseActionController
 
     public function update(UpdateRequest $request, string $requestItem)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
         $cart->update([
             'items' => collect($cart->data['items'] ?? [])
@@ -80,7 +80,7 @@ class CartItemController extends BaseActionController
 
     public function destroy(DestroyRequest $request, string $item)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
         $cart->update([
             'items' => collect($cart->data['items'])

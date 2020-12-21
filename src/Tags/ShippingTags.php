@@ -16,7 +16,7 @@ class ShippingTags extends SubTag
 
     public function methods()
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
         $siteConfig = collect(Config::get('simple-commerce.sites'))
             ->get(Site::current()->handle());

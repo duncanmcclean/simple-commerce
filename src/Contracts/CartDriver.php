@@ -4,15 +4,15 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 interface CartDriver
 {
-    public function getSessionCartKey(): string;
+    public function getCartKey(): string;
 
-    public function getSessionCart(): CartRepository;
+    public function getCart(): CartRepository;
 
-    public function hasSessionCart(): bool;
+    public function hasCart(): bool;
 
-    public function makeSessionCart(): CartRepository;
+    public function makeCart(): CartRepository;
 
-    public function getOrMakeSessionCart(): CartRepository;
+    public function getOrMakeCart(): CartRepository;
 
-    public function forgetSessionCart();
+    public function forgetCart();
 }

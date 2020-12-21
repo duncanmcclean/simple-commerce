@@ -19,7 +19,7 @@ class GatewayCallbackController extends BaseActionController
 
         throw_if(! $gateway, new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $gateway])));
 
-        $this->forgetSessionCart();
+        $this->forgetCart();
 
         return $this->withSuccess($request, [
             'success' => 'Successful checkout.',

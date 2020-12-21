@@ -29,7 +29,7 @@ class CheckoutController extends BaseActionController
 
     public function store(StoreRequest $request)
     {
-        $this->cart = $this->getSessionCart();
+        $this->cart = $this->getCart();
         $this->request = $request;
 
         $this
@@ -182,7 +182,7 @@ class CheckoutController extends BaseActionController
     protected function postCheckout()
     {
         $this->cart->markAsCompleted();
-        $this->forgetSessionCart();
+        $this->forgetCart();
 
         event(new PostCheckout($this->cart->data));
 

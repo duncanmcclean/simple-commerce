@@ -13,44 +13,44 @@ use Statamic\Sites\Site as ASite;
 
 class CookieDriver implements CartDriver
 {
-    public function getSessionCartKey(): string
+    public function getCartKey(): string
     {
-        return Cookie::get(Config::get('simple-commerce.cart.key'));
+        return Cookie::get(Config::get('simple-commerce.Cart.key'));
     }
 
-    public function getSessionCart(): CartRepository
+    public function getCart(): CartRepository
     {
-        return Cart::find($this->getSessionCartKey());
+        return Cart::find($this->getCartKey());
     }
 
-    public function hasSessionCart(): bool
+    public function hasCart(): bool
     {
-        return Cookie::has(Config::get('simple-commerce.cart.key'));
+        return Cookie::has(Config::get('simple-commerce.Cart.key'));
     }
 
-    public function makeSessionCart(): CartRepository
+    public function makeCart(): CartRepository
     {
         $cart = Cart::make()
             ->site($this->guessSiteFromRequest())
             ->save();
 
-        Cookie::queue(config('simple-commerce.cart.key'), $cart->id);
+        Cookie::queue(config('simple-commerce.Cart.key'), $cart->id);
 
         return $cart;
     }
 
-    public function getOrMakeSessionCart(): CartRepository
+    public function getOrMakeCart(): CartRepository
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart();
+        if ($this->hasCart()) {
+            return $this->getCart();
         }
 
-        return $this->makeSessionCart();
+        return $this->makeCart();
     }
 
-    public function forgetSessionCart()
+    public function forgetCart()
     {
-        Cookie::forget(config('simple-commerce.cart.key'));
+        Cookie::forget(config('simple-commerce.Cart.key'));
     }
 
     protected function guessSiteFromRequest(): ASite

@@ -35,7 +35,7 @@ class CartTagTest extends TestCase
         // // TODO: The array stuff here doesn't seem to be working.
         $this->markTestIncomplete();
 
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->assertSame('cart', (string) $this->tag('{{ sc:cart }}{{ order_status }}{{ /sc:cart }}'));
         $this->assertSame('false', (string) $this->tag('{{ sc:cart }}{{ is_paid }}{{ /sc:cart }}'));
@@ -50,7 +50,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function user_has_a_cart_if_cart_exists()
     {
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->assertSame('Has cart', (string) $this->tag('{{ if {sc:cart:has} === true }}Has cart{{ else }}No cart{{ /if }}'));
     }
@@ -78,7 +78,7 @@ class CartTagTest extends TestCase
             ],
         ]);
 
-        $this->fakeSessionCart($cart);
+        $this->fakeCart($cart);
 
         $this->assertStringContainsString('5', $this->tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'));
     }
@@ -115,7 +115,7 @@ class CartTagTest extends TestCase
             ],
         ]);
 
-        $this->fakeSessionCart($cart);
+        $this->fakeCart($cart);
 
         $this->assertSame('2', (string) $this->tag('{{ sc:cart:count }}'));
     }
@@ -130,7 +130,7 @@ class CartTagTest extends TestCase
             'grand_total' => 2550,
         ]);
 
-        $this->fakeSessionCart($cart);
+        $this->fakeCart($cart);
 
         $this->assertSame('£25.50', $this->tag('{{ sc:cart:total }}'));
     }
@@ -273,7 +273,7 @@ class CartTagTest extends TestCase
         return Parse::template($tag, []);
     }
 
-    protected function fakeSessionCart($cart = null)
+    protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
             $cart = Cart::make()->save();

@@ -7,33 +7,33 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 
 trait CartDriver
 {
-    protected function getSessionCartKey(): string
+    protected function getCartKey(): string
     {
-        return resolve(CartDriverContract::class)->getSessionCartKey();
+        return resolve(CartDriverContract::class)->getCartKey();
     }
 
-    protected function getSessionCart(): CartRepository
+    protected function getCart(): CartRepository
     {
-        return resolve(CartDriverContract::class)->getSessionCart();
+        return resolve(CartDriverContract::class)->getCart();
     }
 
-    protected function hasSessionCart(): bool
+    protected function hasCart(): bool
     {
-        return resolve(CartDriverContract::class)->hasSessionCart();
+        return resolve(CartDriverContract::class)->hasCart();
     }
 
-    protected function makeSessionCart(): CartRepository
+    protected function makeCart(): CartRepository
     {
-        return resolve(CartDriverContract::class)->makeSessionCart();
+        return resolve(CartDriverContract::class)->makeCart();
     }
 
-    protected function getOrMakeSessionCart(): CartRepository
+    protected function getOrMakeCart(): CartRepository
     {
-        return resolve(CartDriverContract::class)->getOrMakeSessionCart();
+        return resolve(CartDriverContract::class)->getOrMakeCart();
     }
 
-    protected function forgetSessionCart()
+    protected function forgetCart()
     {
-        return resolve(CartDriverContract::class)->forgetSessionCart();
+        return resolve(CartDriverContract::class)->forgetCart();
     }
 }

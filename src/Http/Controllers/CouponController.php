@@ -12,7 +12,7 @@ class CouponController extends BaseActionController
 
     public function store(StoreRequest $request)
     {
-        $redeem = $this->getSessionCart()->redeemCoupon($request->code);
+        $redeem = $this->getCart()->redeemCoupon($request->code);
 
         if (! $redeem) {
             return $this->withErrors($request, __('simple-commerce::coupons.invalid_coupon'));
@@ -23,7 +23,7 @@ class CouponController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $this->getSessionCart()
+        $this->getCart()
             ->update([
                 'coupon' => null,
             ])

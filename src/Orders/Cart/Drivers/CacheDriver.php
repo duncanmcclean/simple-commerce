@@ -16,22 +16,22 @@ class CacheDriver implements CartDriver
 {
     // We would strongly recommend that you don't use this driver in production environments. It is meant for use in tests suites only.
 
-    public function getSessionCartKey(): string
+    public function getCartKey(): string
     {
         return Cache::get(Config::get('simple-commerce.cart.key'));
     }
 
-    public function getSessionCart(): CartRepository
+    public function getCart(): CartRepository
     {
-        return Cart::find($this->getSessionCartKey());
+        return Cart::find($this->getCartKey());
     }
 
-    public function hasSessionCart(): bool
+    public function hasCart(): bool
     {
         return Cache::has(Config::get('simple-commerce.cart.key'));
     }
 
-    public function makeSessionCart(): CartRepository
+    public function makeCart(): CartRepository
     {
         $cart = Cart::make()
             ->site($this->guessSiteFromRequest())
@@ -42,16 +42,16 @@ class CacheDriver implements CartDriver
         return $cart;
     }
 
-    public function getOrMakeSessionCart(): CartRepository
+    public function getOrMakeCart(): CartRepository
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart();
+        if ($this->hasCart()) {
+            return $this->getCart();
         }
 
-        return $this->makeSessionCart();
+        return $this->makeCart();
     }
 
-    public function forgetSessionCart()
+    public function forgetCart()
     {
         Cache::forget(config('simple-commerce.cart.key'));
     }

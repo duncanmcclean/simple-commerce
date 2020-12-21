@@ -20,14 +20,14 @@ class CartController extends BaseActionController
     public function index(IndexRequest $request)
     {
         return $this
-            ->getSessionCart()
+            ->getCart()
             ->entry()
             ->data();
     }
 
     public function update(UpdateRequest $request)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
         $data = Arr::except($request->all(), ['_token', '_params', '_redirect']);
 
         foreach ($data as $key => $value) {
@@ -97,7 +97,7 @@ class CartController extends BaseActionController
     public function destroy(DestroyRequest $request)
     {
         $this
-            ->getSessionCart()
+            ->getCart()
             ->update([
                 'items' => [],
             ])
