@@ -4,11 +4,11 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function store(StoreRequest $request)
     {

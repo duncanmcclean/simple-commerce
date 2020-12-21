@@ -1,7 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Support\Facades\Session;
@@ -10,24 +11,24 @@ use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Statamic\Sites\Site as ASite;
 
-trait SessionCart
+class SessionDriver implements CartDriver
 {
-    protected function getSessionCartKey(): string
+    public function getSessionCartKey(): string
     {
         return Session::get(Config::get('simple-commerce.cart_key'));
     }
 
-    protected function getSessionCart(): CartRepository
+    public function getSessionCart(): CartRepository
     {
         return Cart::find($this->getSessionCartKey());
     }
 
-    protected function hasSessionCart(): bool
+    public function hasSessionCart(): bool
     {
         return Session::has(Config::get('simple-commerce.cart_key'));
     }
 
-    protected function makeSessionCart(): CartRepository
+    public function makeSessionCart(): CartRepository
     {
         $cart = Cart::make()
             ->site($this->guessSiteFromRequest())
@@ -38,7 +39,7 @@ trait SessionCart
         return $cart;
     }
 
-    protected function getOrMakeSessionCart(): CartRepository
+    public function getOrMakeSessionCart(): CartRepository
     {
         if ($this->hasSessionCart()) {
             return $this->getSessionCart();
@@ -47,7 +48,7 @@ trait SessionCart
         return $this->makeSessionCart();
     }
 
-    protected function forgetSessionCart()
+    public function forgetSessionCart()
     {
         Session::forget(config('simple-commerce.cart_key'));
     }

@@ -13,12 +13,15 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
+use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public CartRepository $cart;
     public StoreRequest $request;
@@ -184,5 +187,28 @@ class CheckoutController extends BaseActionController
         event(new PostCheckout($this->cart->data));
 
         return $this;
+    }
+
+    protected function guessSiteFromRequest(): SitesSite
+    {
+        if ($site = request()->get('site')) {
+            return Site::get($site);
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
+            }
+        }
+
+        if ($referer = request()->header('referer')) {
+            foreach (Site::all() as $site) {
+                if (Str::contains($referer, $site->url())) {
+                    return $site;
+                }
+            }
+        }
+
+        return Site::current();
     }
 }

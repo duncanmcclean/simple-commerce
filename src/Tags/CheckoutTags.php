@@ -4,14 +4,14 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
 
 class CheckoutTags extends SubTag
 {
     use Concerns\FormBuilder,
-        SessionCart;
+        CartDriver;
 
     public function index()
     {

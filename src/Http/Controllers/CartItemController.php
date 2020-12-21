@@ -6,13 +6,13 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function store(StoreRequest $request)
     {

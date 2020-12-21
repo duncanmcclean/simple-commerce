@@ -3,12 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
 {
     use Concerns\FormBuilder,
-        SessionCart;
+        CartDriver;
 
     public function index(): array
     {
