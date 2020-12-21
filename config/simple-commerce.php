@@ -102,7 +102,8 @@ return [
     | Cart
     |--------------------------------------------------------------------------
     |
-    | TODO
+    | Configure the Cart Driver in use on your site. It's what stores/gets the
+    | Cart ID from the user's browser on every request.
     |
     */
 
