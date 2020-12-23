@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Fields\Field;
 
@@ -96,21 +97,10 @@ class MoneyFieldtypeWithMockedField extends MoneyFieldtype
     public function field(): ?Field
     {
         $this->setupProducts();
-
-        $product = Entry::make()
-            ->collection('products')
-            ->data([
-                'title' => 'Tartan Scarf',
-                'price' => 1599,
-            ])
-            ->slug('tartan-scarf')
-            ->locale('default')
-            ->save();
-
-        $product = Entry::findBySlug('tartan-scarf', 'products');
+        $products = Collection::findByHandle('products');
 
         return (new Field('price', [
             'read_only' => false,
-        ]))->setParent($product)->setValue(1599);
+        ]))->setParent($products)->setValue(1599);
     }
 }
