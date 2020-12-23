@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -18,7 +18,7 @@ class CookieDriver implements CartDriver
         return Cookie::get(Config::get('simple-commerce.Cart.key'));
     }
 
-    public function getCart(): CartRepository
+    public function getCart(): Order
     {
         return Cart::find($this->getCartKey());
     }
@@ -28,7 +28,7 @@ class CookieDriver implements CartDriver
         return Cookie::has(Config::get('simple-commerce.Cart.key'));
     }
 
-    public function makeCart(): CartRepository
+    public function makeCart(): Order
     {
         $cart = Cart::make()
             ->site($this->guessSiteFromRequest())
@@ -39,7 +39,7 @@ class CookieDriver implements CartDriver
         return $cart;
     }
 
-    public function getOrMakeCart(): CartRepository
+    public function getOrMakeCart(): Order
     {
         if ($this->hasCart()) {
             return $this->getCart();
