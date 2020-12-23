@@ -15,7 +15,7 @@ class CookieDriver implements CartDriver
 {
     public function getCartKey(): string
     {
-        return Cookie::get(Config::get('simple-commerce.Cart.key'));
+        return Cookie::get(Config::get('simple-commerce.cart.key'));
     }
 
     public function getCart(): Order
@@ -25,7 +25,7 @@ class CookieDriver implements CartDriver
 
     public function hasCart(): bool
     {
-        return Cookie::has(Config::get('simple-commerce.Cart.key'));
+        return Cookie::has(Config::get('simple-commerce.cart.key'));
     }
 
     public function makeCart(): Order
@@ -34,7 +34,7 @@ class CookieDriver implements CartDriver
             ->site($this->guessSiteFromRequest())
             ->save();
 
-        Cookie::queue(config('simple-commerce.Cart.key'), $cart->id);
+        Cookie::queue(config('simple-commerce.cart.key'), $cart->id);
 
         return $cart;
     }
@@ -50,7 +50,7 @@ class CookieDriver implements CartDriver
 
     public function forgetCart()
     {
-        Cookie::forget(config('simple-commerce.Cart.key'));
+        Cookie::forget(config('simple-commerce.cart.key'));
     }
 
     protected function guessSiteFromRequest(): ASite
