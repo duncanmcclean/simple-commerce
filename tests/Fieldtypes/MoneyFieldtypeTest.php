@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Entry;
 use Statamic\Fields\Field;
@@ -90,8 +91,12 @@ class MoneyFieldtypeTest extends TestCase
 
 class MoneyFieldtypeWithMockedField extends MoneyFieldtype
 {
+    use CollectionSetup;
+
     public function field(): ?Field
     {
+        $this->setupProducts();
+
         $product = Entry::make()
             ->collection('products')
             ->data([
