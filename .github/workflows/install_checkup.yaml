@@ -21,6 +21,13 @@ jobs:
           repository: doublethreedigital/sc-starter-kit
           path: 'sc-starter-kit'
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          tools: composer:v2
+
       - name: Install Composer Dependencies
         run: cd sc-starter-kit && composer install
 
@@ -45,6 +52,13 @@ jobs:
         with:
           repository: statamic/statamic
           path: 'statamic'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          tools: composer:v2
 
       - name: Install Composer Dependencies
         run: cd statamic && composer install
