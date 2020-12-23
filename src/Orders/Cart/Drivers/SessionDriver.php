@@ -39,7 +39,7 @@ class SessionDriver implements CartDriver
         return $cart;
     }
 
-    protected function makeSessionCart(): Order
+    public function getOrMakeCart(): Order
     {
         if ($this->hasCart()) {
             return $this->getCart();
