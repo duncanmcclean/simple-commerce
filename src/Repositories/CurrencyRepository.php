@@ -24,7 +24,7 @@ class CurrencyRepository implements ContractsCurrencyRepository
             ->first();
     }
 
-    public function parse($price, Site $site): string
+    public function parse($price = 0, Site $site): string
     {
         try {
             $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
