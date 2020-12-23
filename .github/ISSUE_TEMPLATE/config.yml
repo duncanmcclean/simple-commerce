@@ -1,6 +1,9 @@
 blank_issues_enabled: false
 
 contact_links:
+  - name: 'Feature Request'
+    url: https://github.com/doublethreedigital/simple-commerce/discussions/new
+    about: Submit a feature request and chat about it with the community.
   - name: 'Community Help'
     url: https://github.com/doublethreedigital/simple-commerce/discussions
     about: 'Ask a question about Simple Commerce usage or anything Simple Commerce related.'
