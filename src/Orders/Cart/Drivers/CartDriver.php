@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver as CartDriverContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 
 trait CartDriver
