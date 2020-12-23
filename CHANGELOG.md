@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.22 (2020-12-23)
+
+* [fix] Fix issues parsing `null` Money fields. Addresses issue from #323.
+
 ## v2.1.21 (2020-12-23)
 
 * [fix] Just get site with `Site::current()` inside Money Fieldtype, instead of getting the entries' locale.
