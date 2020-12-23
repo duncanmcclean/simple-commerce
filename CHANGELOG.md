@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.21 (2020-12-23)
+
+* [fix] Just get site with `Site::current()` inside Money Fieldtype, instead of getting the entries' locale.
+
 ## v2.1.20 (2020-12-21)
 
 * [fix] Fixed issue when passing `receipt_email` to Stripe
