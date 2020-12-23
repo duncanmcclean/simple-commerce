@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver as CartDriverContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 
 trait CartDriver
 {
@@ -12,7 +13,7 @@ trait CartDriver
         return resolve(CartDriverContract::class)->getCartKey();
     }
 
-    protected function getCart(): CartRepository
+    protected function getCart(): Order
     {
         return resolve(CartDriverContract::class)->getCart();
     }
@@ -22,12 +23,12 @@ trait CartDriver
         return resolve(CartDriverContract::class)->hasCart();
     }
 
-    protected function makeCart(): CartRepository
+    protected function makeCart(): Order
     {
         return resolve(CartDriverContract::class)->makeCart();
     }
 
-    protected function getOrMakeCart(): CartRepository
+    protected function getOrMakeCart(): Order
     {
         return resolve(CartDriverContract::class)->getOrMakeCart();
     }
