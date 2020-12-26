@@ -36,15 +36,29 @@ class UpgradeCommand extends Command
         $this->line('Beginning upgrade progress...');
 
         $this->upgradeConfigurationChanges();
+
+        $this->info('Upgrade complete! Follow the remaining steps of the upgrade guide for any manual changes.');
     }
 
     protected function upgradeConfigurationChanges()
     {
-        ConfigWriter::write('simple-commerce.cart', [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver::class,
-            'key' => Config::get('simple-commerce.cart_key'),
-        ]);
+        $helpComment = <<<BLOCK
+        /*
+        |--------------------------------------------------------------------------
+        | Cart
+        |--------------------------------------------------------------------------
+        |
+        | Configure the Cart Driver in use on your site. It's what stores/gets the
+        | Cart ID from the user's browser on every request.
+        |
+        */
+        BLOCK;
 
-        ConfigWriter::edit('simple-commerce')->remove('cart_key')->save();
+        ConfigWriter::edit('simple-commerce')
+            ->replaceStructure('cart_key', 'cart', [
+                'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver::class,
+                'key'    => Config::get('simple-commerce.cart_key'),
+            ], $helpComment, true)
+            ->save();
     }
 }
