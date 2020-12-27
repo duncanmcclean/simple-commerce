@@ -28,7 +28,7 @@
         }
     },
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "mollie/mollie-api-php": "dev-master",
         "moneyphp/money": "^3.0",
