@@ -56,8 +56,6 @@ class ServiceProvider extends AddonServiceProvider
             $this
                 ->bootVendorAssets()
                 ->bootRepositories();
-
-            Woodland::check();
         });
 
         SimpleCommerce::bootGateways();

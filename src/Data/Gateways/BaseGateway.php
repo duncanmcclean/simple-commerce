@@ -8,6 +8,7 @@ class BaseGateway
     protected string $handle = '';
     protected string $webhookUrl = '';
     protected string $redirectUrl = '';
+    protected string $displayName = '';
 
     public function __construct(array $config = [], string $handle = '', string $webhookUrl = '', string $redirectUrl = '')
     {
@@ -15,10 +16,13 @@ class BaseGateway
         $this->handle = $handle;
         $this->webhookUrl = $webhookUrl;
         $this->callbackUrl = $redirectUrl;
+        $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
     }
 
     public function config(): array
     {
+        // TODO: convert to a collect instance
+
         return $this->config;
     }
 
@@ -43,5 +47,10 @@ class BaseGateway
     public function webhookUrl()
     {
         return $this->webhookUrl;
+    }
+
+    public function displayName()
+    {
+        return $this->displayName;
     }
 }

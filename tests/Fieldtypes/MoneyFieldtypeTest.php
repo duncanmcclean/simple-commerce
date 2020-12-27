@@ -3,14 +3,29 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
+use Statamic\Fields\Field;
 
 class MoneyFieldtypeTest extends TestCase
 {
     /** @test */
-    public function can_preload_currency()
+    public function can_preload_currency_with_no_field()
     {
         $preload = (new MoneyFieldtype())->preload();
+
+        $this->assertIsArray($preload);
+        $this->assertArrayHasKey('code', $preload);
+        $this->assertArrayHasKey('name', $preload);
+        $this->assertArrayHasKey('symbol', $preload);
+    }
+
+    /** @test */
+    public function can_preload_currency_with_field()
+    {
+        $preload = (new MoneyFieldtypeWithMockedField())->preload();
 
         $this->assertIsArray($preload);
         $this->assertArrayHasKey('code', $preload);
@@ -72,5 +87,20 @@ class MoneyFieldtypeTest extends TestCase
         $augment = (new MoneyFieldtype())->preProcessIndex($value);
 
         $this->assertSame('£25.72', $augment);
+    }
+}
+
+class MoneyFieldtypeWithMockedField extends MoneyFieldtype
+{
+    use CollectionSetup;
+
+    public function field(): ?Field
+    {
+        $this->setupProducts();
+        $products = Collection::findByHandle('products');
+
+        return (new Field('price', [
+            'read_only' => false,
+        ]))->setParent($products)->setValue(1599);
     }
 }

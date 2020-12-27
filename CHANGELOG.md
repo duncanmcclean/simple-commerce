@@ -2,6 +2,51 @@
 
 ## Unreleased
 
+## v2.1.22 (2020-12-23)
+
+* [fix] Fix issues parsing `null` Money fields. Addresses issue from #323.
+
+## v2.1.21 (2020-12-23)
+
+* [fix] Just get site with `Site::current()` inside Money Fieldtype, instead of getting the entries' locale.
+
+## v2.1.20 (2020-12-21)
+
+* [fix] Fixed issue when passing `receipt_email` to Stripe
+
+## v2.1.19 (2020-12-21)
+
+* [fix] Simplified the site detecting logic in the Money Fieldtype #319
+
+## v2.1.18 (2020-12-18)
+
+* [fix] Fixed issue with locales in Money Fieldtype again.
+
+## v2.1.17 (2020-12-18)
+
+* Re-tag of v2.1.16 (the release workflow broke)
+
+## v2.1.16 (2020-12-18)
+
+* [fix] Fix issue where `locale()` is called on undefined, in Money Fieldtype.
+
+## v2.1.15 (2020-12-12)
+
+* Remove Woodland
+
+## v2.1.14 (2020-12-12)
+
+* [new] You can now enable automatic receipt emails from Stripe.
+* [new] You can now use a single address for an order, instead of different shipping and billing ones.
+* [new] You can now set display names for gateways. Useful for when you give the customer an option between them.
+* [fix] Fixed a bug causing type exceptions.
+* [fix] Ensure customer can't add more of a product than you actually have in stock.
+
+## v2.1.13 (2020-12-05)
+
+* [new] Added some better error handling for form tags.
+* [fix] Issue where it couldn't find an 'index' gateway using the `{{ sc:gateways }}` tag? Now sorted!
+
 ## v2.1.12 (2020-11-29)
 
 A whole lot of API related changes this release...
