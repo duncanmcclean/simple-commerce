@@ -41,7 +41,6 @@
         "orchestra/testbench": "^4.0|^5.0|^6.0",
         "spatie/test-time": "dev-master"
     },
-    "minimum-stability": "dev",
     "scripts": {
         "lint": [
             "php-cs-fixer fix ./src"
