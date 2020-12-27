@@ -1,4 +1,4 @@
-![Screenshot](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.png)
+![Screenshot](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.jpg)
 
 # Simple Commerce
 
