@@ -1,7 +1,12 @@
-<img src="./banner.jpg">
+![Screenshot](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.png
 
 # Simple Commerce
-Simple Commerce is a simple e-commerce addon for Statamic 3. It's been built from the ground up to feel as native to Statamic as possible, with entries for all products and orders, freedom of your site's front-end stack and full control over the blueprints that define your product data. It also includes a number of other features:
+
+Simple Commerce is an e-commerce addon for Statamic that allows developers to build custom e-commerce stores for their clients. Simple Commerce doesn't hold you down: you have complete control over your content structure and the front-end of your site.
+
+Although the code for this addon is open-source, you need to purchase a license from the Statamic Marketplace to use it on [a public domain](https://statamic.dev/licensing#public-domains).
+
+## Features
 
 * [Product Variants](https://sc-docs.doublethree.digital/v2.1/product-variants)
 * [Built-in support for popular gateways](https://sc-docs.doublethree.digital/v2.1/gateways), like Stripe and Mollie.
@@ -9,35 +14,15 @@ Simple Commerce is a simple e-commerce addon for Statamic 3. It's been built fro
 * Shipping methods, different shipping prices for different addresses
 * Ready for extension, with events, hooks and APIs.
 
-[**→ Read Documentation**](https://sc-docs.doublethree.digital)
+## Installation
 
-## Getting Started
+1. Install Simple Commerce with Composer `composer require doublethreedigital/simple-commerce`
+2. Run `php please sc:install` to publish the configuration file, setup collections and copy over base blueprints.
 
-> If you're starting a new project, we recommend using the [Simple Commerce Starter Kit](https://github.com/doublethreedigital/simple-commerce-starter).
+## Documentation
 
-1. Install Simple Commerce with Composer
+Full documentation is available at [sc-docs.doublethree.digital](https://sc-docs.doublethree.digital).
 
-```
-composer require doublethreedigital/simple-commerce
-```
+## Support
 
-2. Run `php please sc:install` - it'll publish the Simple Commerce default blueprints, configuration file and will setup collections and taxonomies.
-
-3. **Installed!** That's it.. really simple.
-
-## Licensing
-
-This repository contains the code for Simple Commerce. While the code is open-source, it's important to remember that you'll need to purchase a license before using this addon in production. Licenses cost $99 and can be purchased from the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce).
-
-## Resources
-* [Documentation](https://sc-docs.doublethree.digital)
-* [Github Issues](https://github.com/doublethreedigital/simple-commerce/issues)
-* [Github Discussions](https://github.com/doublethreedigital/simple-commerce/discussions)
-* [On the Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce)
-
----
-
-<p>
-<a href="https://statamic.com"><img src="https://img.shields.io/badge/Statamic-3.0+-FF269E?style=for-the-badge" alt="Compatible with Statamic v3"></a>
-<a href="https://packagist.org/packages/doublethreedigital/simple-commerce/stats"><img src="https://img.shields.io/packagist/v/doublethreedigital/simple-commerce?style=for-the-badge" alt="Simple Commerce on Packagist"></a>
-</p>
+For developer support or any other questions related to this addon, please [get in touch](mailto:hello@doublethree.digital).
