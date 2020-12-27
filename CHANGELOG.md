@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* [new] PHP 8 Support! #318
+* [fix] Product entries with variants should not have a standard `price` field.
+
 ## v2.1.22 (2020-12-23)
 
 * [fix] Fix issues parsing `null` Money fields. Addresses issue from #323.
