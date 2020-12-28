@@ -121,6 +121,10 @@ trait DataRepository
 
     public function get(string $key)
     {
+        if (! $this->has($key)) {
+            return null;
+        }
+
         return $this->data[$key];
     }
 
