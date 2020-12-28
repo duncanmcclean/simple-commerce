@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v2.1.23 (2020-12-28)
 
 * [new] PHP 8 Support! #318
 * [fix] Product entries with variants should not have a standard `price` field.
