@@ -4,6 +4,7 @@
 
 * [new] PHP 8 Support! #318
 * [fix] Product entries with variants should not have a standard `price` field.
+* [fix] The `has` method on Repositories will now return `null`, instead of throwing an exception about undefined indexes.
 
 ## v2.1.22 (2020-12-23)
 
