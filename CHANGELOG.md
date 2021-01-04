@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.24 (2021-01-04)
+
+* [fix] Fixed exception thrown by Off-site gateway callback. #327
+* [fix] If a redirect is not provided for off-site gateway, user should be redirected to the homepage.
+
 ## v2.1.23 (2020-12-28)
 
 * [new] PHP 8 Support! #318
