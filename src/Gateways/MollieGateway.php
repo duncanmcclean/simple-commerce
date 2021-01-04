@@ -124,7 +124,7 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $cart = Entry::whereCollection(config('simple-commerce.collections.order'))
+            $cart = Entry::whereCollection(config('simple-commerce.collections.orders'))
                 ->get()
                 ->filter(function ($entry) use ($mollieId) {
                     return isset($entry->data()->get('gateway_data')['id']) && $entry->data()->get('gateway_data')['id'] === $mollieId;
