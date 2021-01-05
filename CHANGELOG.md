@@ -1,5 +1,7 @@
 # Changelog
 
+* [fix] Fixed the way we handle fallback URLs for off-site gateways #329
+
 ## v2.1.24 (2021-01-04)
 
 * [fix] Fixed exception thrown by Off-site gateway callback. #327
