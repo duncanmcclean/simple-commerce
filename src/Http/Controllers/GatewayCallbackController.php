@@ -25,10 +25,6 @@ class GatewayCallbackController extends BaseActionController
 
         $this->forgetSessionCart();
 
-        if (! $request->has('_redirect')) {
-            $request->_redirect = '/';
-        }
-
         return $this->withSuccess($request, [
             'success' => 'Successful checkout.',
         ]);
