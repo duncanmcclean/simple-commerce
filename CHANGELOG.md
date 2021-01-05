@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+## v2.1.25 (2021-01-05)
+
 * [fix] Fixed the way we handle fallback URLs for off-site gateways #329
 
 ## v2.1.24 (2021-01-04)
