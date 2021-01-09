@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.1.26 (2021-01-09)
+
 * [fix] Sometimes tags were being called twice. Now it should just be once!
 * [fix] Fixed exception sometimes if attempting variant augmentation on a product with no variants.
 * [fix] Fixed issue where Gateway Webhook URL's were returned as `null`.
