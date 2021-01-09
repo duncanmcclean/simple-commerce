@@ -118,8 +118,8 @@ class ProductVariantsFieldtype extends Fieldtype
     public function augment($value)
     {
         return [
-            'variants' => $this->processInsideFields($value['variants'], $this->preload()['variant_fields'], 'augment'),
-            'options' => $this->processInsideFields($value['options'], $this->preload()['option_fields'], 'augment'),
+            'variants' => $this->processInsideFields(isset($value['variants']) ? $value['variants'] : [], $this->preload()['variant_fields'], 'augment'),
+            'options'  => $this->processInsideFields(isset($value['options']) ? $value['options'] : [], $this->preload()['option_fields'], 'augment'),
         ];
     }
 
