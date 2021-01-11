@@ -44,15 +44,6 @@ class MollieGateway extends BaseGateway implements Gateway
             ],
         ]);
 
-        if($payment){
-          Cart::find($cart->id)->update([
-              'gateway' => $this->name(),
-              'gateway_data' => [
-                  'id' => $payment->id
-              ],
-          ]);
-        }
-        
         return new GatewayResponse(true, [
             'id' => $payment->id,
         ], $payment->getCheckoutUrl());
