@@ -132,7 +132,7 @@ class MollieGateway extends BaseGateway implements Gateway
                         === $mollieId;
                 })
                 ->map(function ($entry) {
-                    return Cart::find($entry->id);
+                    return Cart::find($entry->id());
                 })
                 ->first();
 
