@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* [new] Currency formatting now depends on current site locale, instead of always being `en_US`.
+* [fix] Fixed issue with tax calculations #331
+
 ## v2.1.27 (2021-01-11)
 
 * [fix] Fixed `->get()` parameter issue when using Mollie webhook. #332
