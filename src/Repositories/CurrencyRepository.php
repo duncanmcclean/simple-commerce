@@ -33,7 +33,7 @@ class CurrencyRepository implements ContractsCurrencyRepository
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
             return $moneyFormatter->format($money);
-        } catch(\ErrorException $e) {
+        } catch (\ErrorException $e) {
             throw new CurrencyFormatterNotWorking(__('simple-commerce::messages.currency_formatter_not_working'));
         }
     }

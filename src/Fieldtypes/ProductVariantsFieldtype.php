@@ -82,11 +82,13 @@ class ProductVariantsFieldtype extends Fieldtype
         return [
             'variants' => $this->processInsideFields(
                 isset($data['variants']) ? $data['variants'] : [],
-                $this->preload()['variant_fields'], 'preProcess'
+                $this->preload()['variant_fields'],
+                'preProcess'
             ),
             'options' => $this->processInsideFields(
                 isset($data['options']) ? $data['options'] : [],
-                $this->preload()['option_fields'], 'preProcess'
+                $this->preload()['option_fields'],
+                'preProcess'
             ),
         ];
     }
@@ -96,11 +98,13 @@ class ProductVariantsFieldtype extends Fieldtype
         return [
             'variants' => $this->processInsideFields(
                 $data['variants'],
-                $this->preload()['variant_fields'], 'process'
+                $this->preload()['variant_fields'],
+                'process'
             ),
             'options' => $this->processInsideFields(
                 $data['options'],
-                $this->preload()['option_fields'], 'process'
+                $this->preload()['option_fields'],
+                'process'
             ),
         ];
     }
