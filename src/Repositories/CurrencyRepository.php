@@ -29,7 +29,7 @@ class CurrencyRepository implements ContractsCurrencyRepository
         try {
             $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
 
-            $numberFormatter = new NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+            $numberFormatter = new NumberFormatter($site->locale(), \NumberFormatter::CURRENCY);
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
             return $moneyFormatter->format($money);
