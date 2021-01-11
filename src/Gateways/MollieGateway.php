@@ -43,7 +43,17 @@ class MollieGateway extends BaseGateway implements Gateway
                 'order_id' => $cart->id,
             ],
         ]);
-
+        
+        //Stores payment_id needed in webhook. Might be a cleaner way to do this?
+        if($payment){
+          Cart::find($cart->id)->update([
+              'gateway' => $this->name(),
+              'gateway_data' => [
+                  'id' => $payment->id
+              ],
+          ]);
+        }
+        
         return new GatewayResponse(true, [
             'id' => $payment->id,
         ], $payment->getCheckoutUrl());
@@ -132,7 +142,7 @@ class MollieGateway extends BaseGateway implements Gateway
                         === $mollieId;
                 })
                 ->map(function ($entry) {
-                    return Cart::find($entry->id);
+                    return Cart::find($entry->id());
                 })
                 ->first();
 
