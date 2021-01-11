@@ -29,11 +29,11 @@ class CurrencyRepository implements ContractsCurrencyRepository
         try {
             $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
 
-            $numberFormatter = new NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+            $numberFormatter = new NumberFormatter($site->locale(), \NumberFormatter::CURRENCY);
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
             return $moneyFormatter->format($money);
-        } catch(\ErrorException $e) {
+        } catch (\ErrorException $e) {
             throw new CurrencyFormatterNotWorking(__('simple-commerce::messages.currency_formatter_not_working'));
         }
     }
