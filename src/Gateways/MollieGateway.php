@@ -15,6 +15,7 @@ use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
+use Statamic\Facades\Entry as EntryFacade;
 
 class MollieGateway extends BaseGateway implements Gateway
 {
@@ -124,10 +125,11 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $cart = Entry::whereCollection(config('simple-commerce.collections.orders'))
-                ->get()
+            $cart = EntryFacade::whereCollection(config('simple-commerce.collections.orders'))
                 ->filter(function ($entry) use ($mollieId) {
-                    return isset($entry->data()->get('gateway_data')['id']) && $entry->data()->get('gateway_data')['id'] === $mollieId;
+                    return isset($entry->data()->get('gateway_data')['id'])
+                        && $entry->data()->get('gateway_data')['id']
+                        === $mollieId;
                 })
                 ->map(function ($entry) {
                     return Cart::find($entry->id);

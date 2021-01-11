@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.27 (2021-01-11)
+
+* [fix] Fixed `->get()` parameter issue when using Mollie webhook. #332
+
 ## v2.1.26 (2021-01-09)
 
 * [fix] Sometimes tags were being called twice. Now it should just be once!
