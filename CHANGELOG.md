@@ -4,7 +4,7 @@
 
 * [new] Currency formatting now depends on current site locale, instead of always being `en_US`.
 * [fix] Fixed issue with tax calculations #331
-* [fix] Fixed other issues regarding Off-site gateways #334
+* [fix] Fixed Mollie Gateway issues and off-site gateway issues #334
 
 ## v2.1.27 (2021-01-11)
 
