@@ -43,8 +43,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'order_id' => $cart->id,
             ],
         ]);
-        
-        //Stores payment_id needed in webhook. Might be a cleaner way to do this?
+
         if($payment){
           Cart::find($cart->id)->update([
               'gateway' => $this->name(),
