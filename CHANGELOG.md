@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.1.29 (2021-01-14)
+
+* [fix] Fixed issue with customer entry being overwritten by new carts. #337
+* [fix] Fixed situation where exception would be thrown if the 'Maximum Uses' field isn't set #338
+
 ## v2.1.28 (2021-01-11)
 
 * [new] Currency formatting now depends on current site locale, instead of always being `en_US`.
