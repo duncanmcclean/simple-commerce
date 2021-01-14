@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -203,6 +204,40 @@ class CartControllerTest extends TestCase
         $this->assertSame($customer->data['name'], 'Rebecca Logan');
         $this->assertSame($customer->title, 'Rebecca Logan <rebecca.logan@example.com>');
         $this->assertSame($customer->slug, 'rebeccalogan-at-examplecom');
+    }
+
+    /**
+     * @test
+     * PR: https://github.com/doublethreedigital/simple-commerce/pull/337
+     */
+    public function can_update_cart_and_ensure_customer_is_not_overwritten()
+    {
+        $customer = Customer::make()->data([
+            'name' => 'Duncan',
+            'email' => 'duncan@test.com',
+        ])->save();
+
+        $order = Order::make()->data([
+            'customer' => $customer->id,
+        ]);
+
+        $this->assertSame($customer->get('name'), 'Duncan');
+        $this->assertSame($customer->id, $order->get('customer'));
+
+        $cart = Cart::make()->save();
+
+        $data = [
+            'email' => 'duncan@test.com',
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $cartCustomer = Customer::find($cart->entry()->get('customer'));
+
+        $this->assertSame($customer->id, $cartCustomer->id);
+        $this->assertSame($customer->get('name'), $cartCustomer->get('name'));
     }
 
     /** @test */
