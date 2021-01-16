@@ -28,7 +28,7 @@ class CartControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->get(route('statamic.simple-commerce.cart.index'));
+            ->getJson(route('statamic.simple-commerce.cart.index'));
 
         $response->assertOk()
             ->assertJsonStructure([
@@ -51,6 +51,31 @@ class CartControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart.update'), $data);
 
         $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
+    }
+
+    /** @test */
+    public function can_update_cart_and_request_json_response()
+    {
+        $cart = Cart::make()->save();
+
+        $data = [
+            'shipping_note' => 'Be careful pls.',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->postJson(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
 
         $cart->find($cart->id);
 
@@ -273,6 +298,39 @@ class CartControllerTest extends TestCase
             ->delete(route('statamic.simple-commerce.cart.empty'));
 
         $response->assertRedirect();
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->data['items'], []);
+    }
+
+    /** @test */
+    public function can_destroy_cart_and_request_json_response()
+    {
+        $product = Product::make()->save()->update(['price' => 1000]);
+
+        $cart = Cart::make()
+            ->save()
+            ->update([
+                'items' => [
+                    [
+                        'id' => Stache::generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 1000,
+                    ],
+                ],
+            ]);
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->deleteJson(route('statamic.simple-commerce.cart.empty'));
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
 
         $cart->find($cart->id);
 

@@ -66,6 +66,50 @@ class CouponControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_store_coupon_and_request_json_response()
+    {
+        Event::fake();
+
+        $this->buildCartWithProducts();
+
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title' => 'Half Price',
+                'redeemed' => 0,
+                'value' => 50,
+                'type' => 'percentage',
+                'minimum_cart_value' => null,
+            ])
+            ->save();
+        $coupon = Entry::findBySlug('half-price', 'coupons');
+
+        $data = [
+            'code' => 'half-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->postJson(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertSame($this->cart->data['coupon'], $coupon->id());
+        $this->assertNotSame($this->cart->data['coupon_total'], 0000);
+
+        Event::assertDispatched(CouponRedeemed::class);
+    }
+
+    /** @test */
     public function cant_store_invalid_coupon()
     {
         $this->buildCartWithProducts();
@@ -155,6 +199,46 @@ class CouponControllerTest extends TestCase
             ->delete(route('statamic.simple-commerce.coupon.destroy'));
 
         $response->assertRedirect('/cart');
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertNull($this->cart->data['coupon']);
+        $this->assertSame($this->cart->data['coupon_total'], 0000);
+    }
+
+    /** @test */
+    public function can_destroy_coupon_and_request_json()
+    {
+        $this->buildCartWithProducts();
+
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title' => 'Half Price',
+                'redeemed' => 0,
+                'value' => 50,
+                'type' => 'percentage',
+                'minimum_cart_value' => null,
+            ])
+            ->save();
+        $coupon = Entry::findBySlug('half-price', 'coupons');
+
+        $this->cart->update([
+            'coupon' => $coupon->id(),
+        ]);
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->deleteJson(route('statamic.simple-commerce.coupon.destroy'));
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
 
         $this->cart->find($this->cart->id);
 

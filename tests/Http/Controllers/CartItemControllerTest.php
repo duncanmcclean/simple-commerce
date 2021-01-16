@@ -49,6 +49,40 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_store_item_and_request_json()
+    {
+        $product = Product::make()
+            ->title('Dog Food')
+            ->slug('dog-food')
+            ->data(['price' => 1000])
+            ->save();
+
+        $data = [
+            'product' => $product->id,
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->postJson(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
+
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Cart::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
     public function can_store_item_with_variant()
     {
         $product = Product::make()
@@ -439,6 +473,48 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_item_and_request_json()
+    {
+        $product = Product::make()
+            ->title('Food')
+            ->slug('food')
+            ->data(['price' => 1000])
+            ->save();
+
+        $cart = Cart::make()->save()->update([
+            'items' => [
+                [
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'quantity' => 2,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->postJson(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id']
+            ]), $data);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
+
+        $cart->find($cart->id);
+
+        $this->assertSame(2, $cart->data['items'][0]['quantity']);
+    }
+
+    /** @test */
     public function can_destroy_item()
     {
         $product = Product::make()
@@ -461,11 +537,15 @@ class CartItemControllerTest extends TestCase
         $response = $this
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->delete(route('statamic.simple-commerce.cart-items.destroy', [
+            ->deleteJson(route('statamic.simple-commerce.cart-items.destroy', [
                 'item' => $cart->data['items'][0]['id']
             ]));
 
-        $response->assertRedirect('/cart');
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
 
         $this->assertEmpty($cart->data['items']);
     }
