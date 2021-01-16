@@ -41,6 +41,7 @@ class CheckoutController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.checkout_complete'),
+            'cart'    => $this->cart->toResource(),
         ]);
     }
 

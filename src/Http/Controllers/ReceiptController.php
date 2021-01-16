@@ -13,7 +13,7 @@ class ReceiptController extends BaseActionController
         $cart = Cart::find($orderId);
 
         return PDF::loadView('simple-commerce::receipt', array_merge($cart->entry()->toAugmentedArray(), [
-            'orderId'  => $orderId,
+            'orderId'          => $orderId,
             'shipping_address' => $cart->shippingAddress() !== null ? $cart->shippingAddress()->toArray() : [],
             'billing_address'  => $cart->billingAddress() !== null ? $cart->billingAddress()->toArray() : [],
         ]))->download('receipt.pdf');

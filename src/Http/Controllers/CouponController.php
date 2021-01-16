@@ -20,6 +20,7 @@ class CouponController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce::coupons.coupon_added_to_cart'),
+            'cart'    => $this->getSessionCart()->toResource(),
         ]);
     }
 
@@ -33,6 +34,7 @@ class CouponController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce::coupons.coupon_removed_from_cart'),
+            'cart'    => $this->getSessionCart()->toResource(),
         ]);
     }
 }

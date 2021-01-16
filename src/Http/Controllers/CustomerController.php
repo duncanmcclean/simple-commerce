@@ -24,7 +24,8 @@ class CustomerController extends BaseActionController
             ]));
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce.messages.customer_updated'),
+            'message'  => __('simple-commerce.messages.customer_updated'),
+            'customer' => Customer::find($customer)->toResource(),
         ]);
     }
 }

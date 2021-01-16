@@ -9,7 +9,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
-use Statamic\Http\Resources\API\EntryResource;
 
 class CartController extends BaseActionController
 {
@@ -96,6 +95,7 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_updated'),
+            'cart'    => $cart->toResource(),
         ]);
     }
 
@@ -110,6 +110,7 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_deleted'),
+            'cart'    => null,
         ]);
     }
 }
