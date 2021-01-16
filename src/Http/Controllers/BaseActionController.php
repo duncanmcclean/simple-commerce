@@ -13,6 +13,7 @@ class BaseActionController extends Controller
         if ($request->wantsJson()) {
             $data = array_merge($data, [
                 'status' => 'success',
+                'message' => null,
             ]);
 
             return response()->json($data);

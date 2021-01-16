@@ -26,7 +26,7 @@ class GatewayCallbackController extends BaseActionController
         $this->forgetSessionCart();
 
         return $this->withSuccess($request, [
-            'success' => 'Successful checkout.',
+            'success' => __('simple-commerce.messages.checkout_complete'),
         ]);
     }
 }

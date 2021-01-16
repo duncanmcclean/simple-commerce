@@ -53,7 +53,9 @@ class CartItemController extends BaseActionController
             'items' => array_merge($items, [$item]),
         ])->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_item_added'),
+        ]);
     }
 
     public function update(UpdateRequest $request, string $requestItem)
@@ -75,7 +77,9 @@ class CartItemController extends BaseActionController
                 ->toArray(),
         ])->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_item_updated'),
+        ]);
     }
 
     public function destroy(DestroyRequest $request, string $item)
@@ -88,6 +92,8 @@ class CartItemController extends BaseActionController
                 ->toArray(),
         ])->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_item_deleted'),
+        ]);
     }
 }

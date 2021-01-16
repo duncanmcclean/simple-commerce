@@ -17,7 +17,7 @@ class CartController extends BaseActionController
 
     public function index(IndexRequest $request)
     {
-        return new EntryResource($this->getSessionCart()->entry());
+        return $this->getSessionCart()->toResource();
     }
 
     public function update(UpdateRequest $request)
@@ -94,7 +94,9 @@ class CartController extends BaseActionController
             ->update($data)
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_updated'),
+        ]);
     }
 
     public function destroy(DestroyRequest $request)
@@ -106,6 +108,8 @@ class CartController extends BaseActionController
             ])
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_deleted'),
+        ]);
     }
 }
