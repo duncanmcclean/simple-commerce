@@ -36,9 +36,13 @@ class CustomerControllerTest extends TestCase
             'customer' => $customer->id(),
         ]));
 
-        $response->assertOk();
-        $response->assertSee('Duncan McClean');
-        $response->assertSee('duncan@doublethree.digital');
+        $response
+            ->assertOk()
+            ->assertJsonStructure([
+                'data',
+            ])
+            ->assertSee('Duncan McClean')
+            ->assertSee('duncan@doublethree.digital');
     }
 
     /** @test */
