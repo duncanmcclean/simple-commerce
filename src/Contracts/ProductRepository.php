@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use Statamic\Entries\Entry;
+use Statamic\Http\Resources\API\EntryResource;
 
 interface ProductRepository
 {
@@ -19,6 +20,8 @@ interface ProductRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function toResource(): EntryResource;
 
     public function stockCount();
 

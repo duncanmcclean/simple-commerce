@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use Statamic\Entries\Entry;
+use Statamic\Http\Resources\API\EntryResource;
 
 interface CouponRepository
 {
@@ -21,6 +22,8 @@ interface CouponRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function toResource(): EntryResource;
 
     public function isValid(Entry $order): bool;
 

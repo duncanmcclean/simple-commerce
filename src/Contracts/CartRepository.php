@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
 use Statamic\Entries\Entry;
+use Statamic\Http\Resources\API\EntryResource;
 
 interface CartRepository
 {
@@ -20,6 +21,8 @@ interface CartRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function toResource(): EntryResource;
 
     public function billingAddress(): ?Address;
 
