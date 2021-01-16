@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\SessionCart;
 use Illuminate\Support\Arr;
+use Statamic\Http\Resources\API\EntryResource;
 
 class CartController extends BaseActionController
 {
@@ -16,10 +17,7 @@ class CartController extends BaseActionController
 
     public function index(IndexRequest $request)
     {
-        return $this
-            ->getSessionCart()
-            ->entry()
-            ->data();
+        return new EntryResource($this->getSessionCart()->entry());
     }
 
     public function update(UpdateRequest $request)
