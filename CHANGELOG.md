@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.30 (2021-01-17)
+
+* [new] Improved action responses (including propper support for AJAX usage)
+
 ## v2.1.29 (2021-01-14)
 
 * [fix] Fixed issue with customer entry being overwritten by new carts. #337
