@@ -2,9 +2,13 @@
 
 ## Unreleased
 
+## v2.1.32 (2021-01-21)
+
+* [fix] Fix situations where the tax totals would be wrong with certain tax rates #340
+
 ## v2.1.31 (2021-01-21)
 
-* [fix] Fix tax calculations being wrong #340
+* [fix] ~~Fix situations where the tax totals would be wrong with certain tax rates #340~~
 
 ## v2.1.30 (2021-01-17)
 

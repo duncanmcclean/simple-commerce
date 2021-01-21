@@ -58,7 +58,7 @@ class Calculator
                             round(
                                 ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
                                 2
-                            )
+                            ) * 100
                         );
                     }
                 }
