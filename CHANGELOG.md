@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.31 (2021-01-21)
+
+* [fix] Fix tax calculations being wrong #340
+
 ## v2.1.30 (2021-01-17)
 
 * [new] Improved action responses (including propper support for AJAX usage)
