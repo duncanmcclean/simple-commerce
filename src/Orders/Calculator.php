@@ -45,10 +45,11 @@ class Calculator
                             '.',
                             '',
                             round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / ($siteTax['rate'] + 100)) * $siteTax['rate'],
+                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
                                 2
                             )
                         );
+
                         $itemTotal -= $itemTax;
                         $data['tax_total'] += $itemTax;
                     } else {
@@ -59,7 +60,7 @@ class Calculator
                                 ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
                                 2
                             )
-                        ) * 100;
+                        );
                     }
                 }
 
