@@ -150,6 +150,10 @@ class CartTags extends SubTag
             return $this->{$method}();
         }
 
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        }
+
         if (! $cart->has($method)) {
             return $cart->get($method);
         }

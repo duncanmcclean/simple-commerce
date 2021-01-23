@@ -11,7 +11,7 @@ class CustomerController extends BaseActionController
 {
     public function index(IndexRequest $request, $customer)
     {
-        return Customer::find($customer)->toArray();
+        return Customer::find($customer)->toResource();
     }
 
     public function update(UpdateRequest $request, $customer)
@@ -19,9 +19,15 @@ class CustomerController extends BaseActionController
         // TODO: only save validated data, not everything
 
         Customer::find($customer)
-            ->data(Arr::except($request->all(), ['_params', '_redirect', '_token']))
-            ->save();
+            ->update(Arr::except($request->all(), [
+                '_params',
+                '_redirect',
+                '_token',
+            ]));
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message'  => __('simple-commerce.messages.customer_updated'),
+            'customer' => Customer::find($customer)->toResource(),
+        ]);
     }
 }

@@ -60,7 +60,7 @@ class CartController extends BaseActionController
                 $customer->data($data['customer'])->save();
             }
 
-            $cart->data([
+            $cart->update([
                 'customer' => $customer->id,
             ]);
 
@@ -68,12 +68,20 @@ class CartController extends BaseActionController
         }
 
         if (isset($data['email'])) {
-            $customer = Customer::create([
-                'name' => isset($data['name']) ? $data['name'] : '',
-                'email' => $data['email'],
-            ], $this->guessSiteFromRequest()->handle())->save();
+            try {
+                if (isset($data['email']) && $data['email'] !== null) {
+                    $customer = Customer::findByEmail($data['email']);
+                } else {
+                    throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $data['customer']]));
+                }
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::create([
+                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email' => $data['customer']['email'],
+                ], $this->guessSiteFromRequest()->handle());
+            }
 
-            $cart->data([
+            $cart->update([
                 'customer' => $customer->id,
             ])->save();
 
@@ -86,7 +94,10 @@ class CartController extends BaseActionController
             ->save()
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_updated'),
+            'cart'    => $cart->toResource(),
+        ]);
     }
 
     public function destroy(DestroyRequest $request)
@@ -99,7 +110,10 @@ class CartController extends BaseActionController
             ->save()
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_deleted'),
+            'cart'    => null,
+        ]);
     }
 
     protected function guessSiteFromRequest(): SitesSite
