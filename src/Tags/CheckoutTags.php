@@ -65,9 +65,9 @@ class CheckoutTags extends SubTag
 
         $prepare = $prepare->prepare(request(), $cart->entry());
 
-        $cart->update([
+        $cart->data([
             $gateway['handle'] => $prepare->data(),
-        ]);
+        ])->save();
 
         if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');

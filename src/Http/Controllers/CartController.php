@@ -19,10 +19,7 @@ class CartController extends BaseActionController
 
     public function index(IndexRequest $request)
     {
-        return $this
-            ->getCart()
-            ->entry()
-            ->data();
+        return $this->getCart()->toResource();
     }
 
     public function update(UpdateRequest $request)
@@ -60,9 +57,9 @@ class CartController extends BaseActionController
                 $customer->data($data['customer'])->save();
             }
 
-            $cart->update([
+            $cart->data([
                 'customer' => $customer->id,
-            ]);
+            ])->save();
 
             unset($data['customer']);
         }
@@ -81,7 +78,7 @@ class CartController extends BaseActionController
                 ], $this->guessSiteFromRequest()->handle());
             }
 
-            $cart->update([
+            $cart->data([
                 'customer' => $customer->id,
             ])->save();
 
@@ -89,9 +86,11 @@ class CartController extends BaseActionController
             unset($data['email']);
         }
 
-        $cart
-            ->data($data)
-            ->save()
+        if ($data !== null) {
+            $cart->data($data);
+        }
+
+        $cart->save()
             ->calculateTotals();
 
         return $this->withSuccess($request, [

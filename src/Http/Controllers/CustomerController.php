@@ -19,11 +19,12 @@ class CustomerController extends BaseActionController
         // TODO: only save validated data, not everything
 
         Customer::find($customer)
-            ->update(Arr::except($request->all(), [
+            ->data(Arr::except($request->all(), [
                 '_params',
                 '_redirect',
                 '_token',
-            ]));
+            ]))
+            ->save();
 
         return $this->withSuccess($request, [
             'message'  => __('simple-commerce.messages.customer_updated'),

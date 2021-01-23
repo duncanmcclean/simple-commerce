@@ -60,7 +60,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_request_json_response()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -138,7 +138,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_existing_customer_by_id()
     {
         $customer = Customer::create()->data([
-            'name' => 'Jor Smith',
+            'name' => 'Jordan Smith',
             'email' => 'jordan.smith@example.com',
         ])->save();
 
@@ -158,7 +158,6 @@ class CartControllerTest extends TestCase
         $response->assertRedirect('/cart');
 
         $cart->find($cart->id);
-        $customer = Customer::findByEmail('jordan.smith@example.com');
 
         $this->assertSame($cart->data['customer'], $customer->id);
         $this->assertSame($customer->data['name'], 'Jordan Smith');
@@ -230,19 +229,19 @@ class CartControllerTest extends TestCase
      */
     public function can_update_cart_and_ensure_customer_is_not_overwritten()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::create([
             'name' => 'Duncan',
             'email' => 'duncan@test.com',
         ])->save();
 
-        $order = Order::make()->data([
+        $order = Order::create([
             'customer' => $customer->id,
-        ]);
+        ])->save();
 
         $this->assertSame($customer->get('name'), 'Duncan');
         $this->assertSame($customer->id, $order->get('customer'));
 
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'email' => 'duncan@test.com',
@@ -308,11 +307,9 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart_and_request_json_response()
     {
-        $product = Product::make()->save()->update(['price' => 1000]);
+        $product = Product::create(['price' => 1000])->save();
 
-        $cart = Cart::make()
-            ->save()
-            ->update([
+        $cart = Cart::create([
                 'items' => [
                     [
                         'id' => Stache::generateId(),
@@ -321,7 +318,7 @@ class CartControllerTest extends TestCase
                         'total' => 1000,
                     ],
                 ],
-            ]);
+            ])->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])

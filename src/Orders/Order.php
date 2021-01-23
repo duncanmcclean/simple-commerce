@@ -102,7 +102,7 @@ class Order implements Contract
             return $this;
         }
 
-        return Coupon::fnd($this->get('coupon'));
+        return Coupon::find($this->get('coupon'));
     }
 
     // TODO: refactor
@@ -111,7 +111,7 @@ class Order implements Contract
         $coupon = Coupon::findByCode($code);
 
         if ($coupon->isValid($this->entry())) {
-            $this->coupon($coupon->id);
+            $this->set('coupon', $coupon->id());
             event(new CouponRedeemed($coupon->entry()));
 
             return true;

@@ -98,7 +98,7 @@ trait IsEntry
 
     public function toResource(): EntryResource
     {
-        return $this->entry()->toResource();
+        return new EntryResource($this->entry);
     }
 
     public function id()

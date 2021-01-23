@@ -50,11 +50,11 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_and_request_json()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+            'price' => 1000,
+        ])->save();
 
         $data = [
             'product' => $product->id,
@@ -73,7 +73,7 @@ class CartItemControllerTest extends TestCase
 
         $response->assertSessionHas('simple-commerce-cart');
 
-        $cart = Cart::find(session()->get('simple-commerce-cart'));
+        $cart = Order::find(session()->get('simple-commerce-cart'));
 
         $this->assertSame(1000, $cart->data['items_total']);
 
@@ -459,13 +459,13 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_update_item_and_request_json()
     {
-        $product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Food',
+            'slug' => 'food',
+            'price' => 1000,
+        ])->save();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -474,7 +474,7 @@ class CartItemControllerTest extends TestCase
                     'total' => 1000,
                 ],
             ],
-        ]);
+        ])->save();
 
         $data = [
             'quantity' => 2,

@@ -3,9 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Statamic\Entries\Entry as EntryInstance;
+use Statamic\Facades\Entry;
 
 class Coupon implements Contract
 {
@@ -23,7 +25,11 @@ class Coupon implements Contract
 
     public function findByCode(string $code): self
     {
-        $entry = $this->query()->where('slug', $code)->first();
+        $entry = Entry::findBySlug($code, config('simple-commerce.collections.coupons'));
+
+        if (! $entry) {
+            throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found'));
+        }
 
         return $this->find($entry->id());
     }
