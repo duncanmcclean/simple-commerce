@@ -2,6 +2,58 @@
 
 ## Unreleased
 
+## v2.1.32 (2021-01-21)
+
+* [fix] Fix situations where the tax totals would be wrong with certain tax rates #340
+
+## v2.1.31 (2021-01-21)
+
+* [fix] ~~Fix situations where the tax totals would be wrong with certain tax rates #340~~
+
+## v2.1.30 (2021-01-17)
+
+* [new] Improved action responses (including propper support for AJAX usage)
+
+## v2.1.29 (2021-01-14)
+
+* [fix] Fixed issue with customer entry being overwritten by new carts. #337
+* [fix] Fixed situation where exception would be thrown if the 'Maximum Uses' field isn't set #338
+
+## v2.1.28 (2021-01-11)
+
+* [new] Currency formatting now depends on current site locale, instead of always being `en_US`.
+* [fix] Fixed issue with tax calculations #331
+* [fix] Fixed Mollie Gateway issues and off-site gateway issues #334
+
+## v2.1.27 (2021-01-11)
+
+* [fix] Fixed `->get()` parameter issue when using Mollie webhook. #332
+
+## v2.1.26 (2021-01-09)
+
+* [fix] Sometimes tags were being called twice. Now it should just be once!
+* [fix] Fixed exception sometimes if attempting variant augmentation on a product with no variants.
+* [fix] Fixed issue where Gateway Webhook URL's were returned as `null`.
+
+## v2.1.25 (2021-01-05)
+
+* [fix] Fixed the way we handle fallback URLs for off-site gateways #329
+
+## v2.1.24 (2021-01-04)
+
+* [fix] Fixed exception thrown by Off-site gateway callback. #327
+* [fix] If a redirect is not provided for off-site gateway, user should be redirected to the homepage.
+
+## v2.1.23 (2020-12-28)
+
+* [new] PHP 8 Support! #318
+* [fix] Product entries with variants should not have a standard `price` field.
+* [fix] The `has` method on Repositories will now return `null`, instead of throwing an exception about undefined indexes.
+
+## v2.1.22 (2020-12-23)
+
+* [fix] Fix issues parsing `null` Money fields. Addresses issue from #323.
+
 ## v2.1.21 (2020-12-23)
 
 * [fix] Just get site with `Site::current()` inside Money Fieldtype, instead of getting the entries' locale.

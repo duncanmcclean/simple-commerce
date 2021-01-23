@@ -24,9 +24,9 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
-       // TODO: Figure out a way of getting the current locale when being shown in CP
+        // TODO: Figure out a way of getting the current locale when being shown in CP
 
-       return Currency::get(Site::current());
+        return Currency::get(Site::current());
     }
 
     public function preProcess($data)
@@ -63,6 +63,10 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        if (! $value) {
+            $value = 0;
+        }
+
         return Currency::parse($value, Site::current());
     }
 

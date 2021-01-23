@@ -18,7 +18,10 @@ class CouponController extends BaseActionController
             return $this->withErrors($request, __('simple-commerce::coupons.invalid_coupon'));
         }
 
-        return $this->withSuccess($request, ['message' => __('simple-commerce::coupons.coupon_added_to_cart')]);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce::coupons.coupon_added_to_cart'),
+            'cart'    => $this->getSessionCart()->toResource(),
+        ]);
     }
 
     public function destroy(DestroyRequest $request)
@@ -30,6 +33,9 @@ class CouponController extends BaseActionController
             ->save()
             ->calculateTotals();
 
-        return $this->withSuccess($request, ['message' => __('simple-commerce::coupons.coupon_removed_from_cart')]);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce::coupons.coupon_removed_from_cart'),
+            'cart'    => $this->getSessionCart()->toResource(),
+        ]);
     }
 }

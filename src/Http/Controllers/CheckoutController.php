@@ -42,7 +42,10 @@ class CheckoutController extends BaseActionController
             ->handleRemainingData()
             ->postCheckout();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.checkout_complete'),
+            'cart'    => $this->cart->toResource(),
+        ]);
     }
 
     protected function preCheckout()

@@ -17,12 +17,16 @@ class GatewayCallbackController extends BaseActionController
             ->where('handle', $gateway)
             ->first();
 
-        throw_if(! $gateway, new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $gateway])));
+        if (! $gateway) {
+            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', [
+                'gateway' => $gateway['name'],
+            ]));
+        }
 
         $this->forgetCart();
 
         return $this->withSuccess($request, [
-            'success' => 'Successful checkout.',
+            'success' => __('simple-commerce.messages.checkout_complete'),
         ]);
     }
 }

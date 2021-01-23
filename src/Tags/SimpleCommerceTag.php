@@ -43,15 +43,15 @@ class SimpleCommerceTag extends Tags
             throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
         }
 
-        try {
+        if (method_exists($class, $method)) {
             return (new $class($this))->{$method}();
-        } catch (Exception $e) {
-            if (method_exists($class, 'wildcard')) {
-                return (new $class($this))->wildcard($method);
-            }
-
-            throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
         }
+
+        if (method_exists($class, 'wildcard')) {
+            return (new $class($this))->wildcard($method);
+        }
+
+        throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
     }
 
     public function countries()
