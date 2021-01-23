@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
+use Illuminate\Support\Arr;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\Facades\Site as SiteAPI;
@@ -46,11 +47,7 @@ trait IsEntry
         $this->slug = ! is_null($this->slug) ? $this->slug : '';
         $this->published = ! is_null($this->published) ? $this->published : false;
 
-        if (! is_null($this->data)) {
-            $data = array_merge($data, $this->data);
-        }
-
-        $this->data($data);
+        $this->data(Arr::except($data, ['id', 'site', 'slug', 'publish']));
 
         $this->save();
 
