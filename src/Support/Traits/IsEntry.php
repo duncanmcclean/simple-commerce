@@ -2,9 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
+use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\Facades\Site as SiteAPI;
 use Statamic\Facades\Stache;
+use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
 
 trait IsEntry
@@ -92,9 +94,14 @@ trait IsEntry
         return '';
     }
 
-    public function entry()
+    public function entry(): Entry
     {
         return $this->entry;
+    }
+
+    public function toResource(): EntryResource
+    {
+        return $this->entry()->toResource();
     }
 
     public function id()
