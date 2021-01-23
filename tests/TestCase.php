@@ -11,6 +11,7 @@ use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Stache\Stores\UsersStore;
 use Statamic\Statamic;
 use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
+use Statamic\Facades\Site;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -78,7 +79,17 @@ abstract class TestCase extends OrchestraTestCase
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
+        $app['config']->set('statamic.sites.sites',[
+            'default' => [
+                'name' => config('app.name'),
+                'locale' => 'en_GB',
+                'url' => '/',
+            ],
+        ]);
+
         Statamic::booted(function () {
+            Site::setCurrent('default');
+
             $this->setupCollections();
         });
     }
