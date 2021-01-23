@@ -14,6 +14,8 @@ use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
+    use CollectionSetup;
+
     protected function getPackageProviders($app)
     {
         return [
@@ -75,5 +77,9 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
+
+        Statamic::booted(function () {
+            $this->setupCollections();
+        });
     }
 }
