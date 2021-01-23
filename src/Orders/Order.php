@@ -54,7 +54,9 @@ class Order implements Contract
             return $this->shippingAddress();
         }
 
-        if (! $this->has('billing_address')) return null;
+        if (! $this->has('billing_address')) {
+            return null;
+        }
 
         return new Address(
             $this->has('billing_name') ? $this->get('billing_name') : null,
@@ -67,7 +69,9 @@ class Order implements Contract
 
     public function shippingAddress()
     {
-        if (! $this->has('shipping_address')) return null;
+        if (! $this->has('shipping_address')) {
+            return null;
+        }
 
         return new Address(
             $this->has('shipping_name') ? $this->get('shipping_name') : null,
