@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.1.33 (2021-01-27)
+
+* [fix] Fixed some naming inconsistencies with postal/zip codes #343
+
 ## v2.1.32 (2021-01-21)
 
 * [fix] Fix situations where the tax totals would be wrong with certain tax rates #340
