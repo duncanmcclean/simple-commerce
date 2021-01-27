@@ -27,7 +27,7 @@ class Address
             'address'  => $this->address,
             'city'     => $this->city,
             'country'  => $this->country,
-            'zip_code' => $this->postal,
+            'zip_code' => $this->zipCode,
         ];
     }
 

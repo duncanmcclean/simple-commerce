@@ -155,7 +155,7 @@ sections:
           listable: hidden
           display: 'Shipping Country'
       -
-        handle: shipping_postal_code
+        handle: shipping_zip_code
         field:
           input_type: text
           type: text
@@ -219,7 +219,7 @@ sections:
           unless:
             use_shipping_address_for_billing: 'equals true'
       -
-        handle: billing_postal_code
+        handle: billing_zip_code
         field:
           input_type: text
           type: text
