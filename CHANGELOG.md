@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## v2.1.32 (2021-01-21)
+
+* [fix] Fix situations where the tax totals would be wrong with certain tax rates #340
+
+## v2.1.31 (2021-01-21)
+
+* [fix] ~~Fix situations where the tax totals would be wrong with certain tax rates #340~~
+
+## v2.1.30 (2021-01-17)
+
+* [new] Improved action responses (including propper support for AJAX usage)
+
+## v2.1.29 (2021-01-14)
+
+* [fix] Fixed issue with customer entry being overwritten by new carts. #337
+* [fix] Fixed situation where exception would be thrown if the 'Maximum Uses' field isn't set #338
+
 ## v2.1.28 (2021-01-11)
 
 * [new] Currency formatting now depends on current site locale, instead of always being `en_US`.

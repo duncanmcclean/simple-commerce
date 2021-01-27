@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use Statamic\Entries\Entry;
+use Statamic\Http\Resources\API\EntryResource;
 
 interface CustomerRepository
 {
@@ -21,6 +22,8 @@ interface CustomerRepository
     public function entry(): Entry;
 
     public function toArray(): array;
+
+    public function toResource(): EntryResource;
 
     public function generateTitleAndSlug(): self;
 }

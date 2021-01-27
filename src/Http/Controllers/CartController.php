@@ -16,10 +16,7 @@ class CartController extends BaseActionController
 
     public function index(IndexRequest $request)
     {
-        return $this
-            ->getSessionCart()
-            ->entry()
-            ->data();
+        return $this->getSessionCart()->toResource();
     }
 
     public function update(UpdateRequest $request)
@@ -68,13 +65,21 @@ class CartController extends BaseActionController
         }
 
         if (isset($data['email'])) {
-            $customer = Customer::make()
-                ->site($this->guessSiteFromRequest())
-                ->data([
-                    'name' => isset($data['name']) ? $data['name'] : '',
-                    'email' => $data['email'],
-                ])
-                ->save();
+            try {
+                if (isset($data['email']) && $data['email'] !== null) {
+                    $customer = Customer::findByEmail($data['email']);
+                } else {
+                    throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $data['customer']]));
+                }
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::make()
+                    ->site($this->guessSiteFromRequest())
+                    ->data([
+                        'name' => isset($data['name']) ? $data['name'] : '',
+                        'email' => $data['email'],
+                    ])
+                    ->save();
+            }
 
             $cart->update([
                 'customer' => $customer->id,
@@ -88,7 +93,10 @@ class CartController extends BaseActionController
             ->update($data)
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_updated'),
+            'cart'    => $cart->toResource(),
+        ]);
     }
 
     public function destroy(DestroyRequest $request)
@@ -100,6 +108,9 @@ class CartController extends BaseActionController
             ])
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_deleted'),
+            'cart'    => null,
+        ]);
     }
 }

@@ -7,6 +7,7 @@ use Statamic\Contracts\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site as ASite;
 
 trait DataRepository
@@ -117,6 +118,11 @@ trait DataRepository
     public function toArray(): array
     {
         return [];
+    }
+
+    public function toResource(): EntryResource
+    {
+        return new EntryResource($this->entry());
     }
 
     public function get(string $key)

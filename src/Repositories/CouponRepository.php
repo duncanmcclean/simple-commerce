@@ -71,13 +71,13 @@ class CouponRepository implements ContractsCouponRepository
 
     public function isValid(EntryInstance $order): bool
     {
-        if ($this->data['minimum_cart_value'] != null && $order->data()->get('items_total') != null) {
+        if ($this->get('minimum_cart_value') && $order->data()->get('items_total') != null) {
             if ($order->data()->get('items_total') < $this->data['minimum_cart_value']) {
                 return false;
             }
         }
 
-        if ($this->data['redeemed'] != null && $this->data['maximum_uses']) {
+        if ($this->get('redeemed') && $this->get('maximum_uses')) {
             if ($this->data['redeemed'] >= $this->data['maximum_uses']) {
                 return false;
             }
