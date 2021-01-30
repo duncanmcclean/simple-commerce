@@ -32,7 +32,9 @@ class Calculator
                     ->get(Site::current()->handle())['tax'];
 
                 if ($product->purchasableType() === 'variants') {
-                    $productPrice = $product->variantOption($item['variant'])['price'];
+                    $productPrice = $product->variantOption(
+                        isset($item['variant']['variant']) ? $item['variant']['variant'] : $item['variant']
+                    )['price'];
 
                     $itemTotal = ($productPrice * $item['quantity']);
                 } else {
