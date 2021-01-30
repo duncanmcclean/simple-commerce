@@ -73,8 +73,8 @@ class CartController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                    'email' => $data['customer']['email'],
+                    'name'  => isset($data['name']) ? $data['name'] : '',
+                    'email' => $data['email'],
                 ], $this->guessSiteFromRequest()->handle());
             }
 

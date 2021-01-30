@@ -129,6 +129,8 @@ class CartControllerTest extends TestCase
         $cart->find($cart->id);
         $customer = Customer::findByEmail($data['email']);
 
+        dd($customer);
+
         $this->assertSame($cart->data['customer'], $customer->id);
         $this->assertSame($customer->title, 'John Doe <johndoe@gmail.com>');
         $this->assertSame($customer->slug, 'johndoe-at-gmailcom');

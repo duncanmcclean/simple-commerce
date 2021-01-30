@@ -52,18 +52,20 @@ class Customer implements Contract
         $name = '';
         $email = '';
 
-        if (isset($this->data['name'])) {
-            $name = $this->data['name'];
+        if ($this->has('name')) {
+            $name = $this->get('name');
         }
 
-        if (isset($this->data['email'])) {
-            $email = $this->data['email'];
+        if ($this->has('email')) {
+            $email = $this->get('email');
         }
 
         $this->title = __('simple-commerce::customers.customer_entry_title', [
             'name' => $name,
             'email' => $email,
         ]);
+
+        dump($this->title, $this->data);
 
         $this->slug = Str::slug($email);
 
@@ -74,6 +76,8 @@ class Customer implements Contract
     {
         if (is_null($this->title) || is_null($this->slug) || $this->slug === '') {
             $this->generateTitleAndSlug();
+
+            $this->set('title', $this->title);
         }
     }
 
