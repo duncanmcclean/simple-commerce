@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.1.34 (2020-01-30)
+
+* [new] Updated the default order blueprint
+* [new] Added a new 'Product Variant' fieldtype to select a single variant
+
 ## v2.1.33 (2021-01-27)
 
 * [fix] Fixed some naming inconsistencies with postal/zip codes #343
