@@ -330,7 +330,10 @@ class CartItemControllerTest extends TestCase
                 [
                     'id' => Stache::generateId(),
                     'product' => $product->id,
-                    'variant' => 'Red_Small',
+                    'variant' => [
+                        'variant' => 'Red_Small',
+                        'product' => $product->id,
+                    ],
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -394,7 +397,10 @@ class CartItemControllerTest extends TestCase
                 [
                     'id' => Stache::generateId(),
                     'product' => $product->id,
-                    'variant' => 'Red_Small',
+                    'variant' => [
+                        'variant' => 'Red_Small',
+                        'product' => $product->id,
+                    ],
                     'quantity' => 1,
                     'total' => 1000,
                 ],

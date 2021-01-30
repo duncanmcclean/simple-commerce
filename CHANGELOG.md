@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## v2.1.35 (2020-01-30)
+
+* [fix] Actually use the new format when adding items to the cart
+* [fix] Fixed issue when clearing the cart
+
+## v2.1.34 (2020-01-30)
+
+* [new] Updated the default order blueprint
+* [new] Added a new 'Product Variant' fieldtype to select a single variant
+
+## v2.1.33 (2021-01-27)
+
+* [fix] Fixed some naming inconsistencies with postal/zip codes #343
+
 ## v2.1.32 (2021-01-21)
 
 * [fix] Fix situations where the tax totals would be wrong with certain tax rates #340

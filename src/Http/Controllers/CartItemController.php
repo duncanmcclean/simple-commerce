@@ -27,11 +27,13 @@ class CartItemController extends BaseActionController
         }
 
         // Ensure the product doesn't already exist in the cart
-        $alreadyExistsQuery = collect($items)
-            ->where('product', $request->product);
+        $alreadyExistsQuery = collect($items);
 
         if ($request->has('variant')) {
-            $alreadyExistsQuery = $alreadyExistsQuery->where('variant', $request->get('variant'));
+            $alreadyExistsQuery = $alreadyExistsQuery->where('variant', [
+                'variant' => $request->get('variant'),
+                'product' => $request->get('product'),
+            ]);
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
@@ -46,7 +48,10 @@ class CartItemController extends BaseActionController
         ];
 
         if ($request->has('variant')) {
-            $item['variant'] = $request->variant;
+            $item['variant'] = [
+                'variant' => $request->variant,
+                'product' => $request->product,
+            ];
         }
 
         $cart->data([
