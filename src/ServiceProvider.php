@@ -20,6 +20,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $fieldtypes = [
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
     ];
 
@@ -34,6 +35,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',
+        'cp' => __DIR__.'/../routes/cp.php',
     ];
 
     protected $scripts = [
