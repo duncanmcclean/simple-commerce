@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@shopify/draggable": "^1.0.0-beta.8",
+    "axios": "^0.21.1",
     "cross-env": "^7.0.2",
     "laravel-mix": "^5.0.4",
     "uniqid": "^5.2.0",
