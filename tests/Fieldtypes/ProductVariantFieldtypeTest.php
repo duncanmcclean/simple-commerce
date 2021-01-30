@@ -4,10 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductVariantFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class ProductVariantFieldtypeTest extends TestCase
 {
+    use CollectionSetup;
+
     /** @test */
     public function can_preload_and_return_api_route()
     {
