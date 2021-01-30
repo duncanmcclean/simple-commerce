@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.1.35 (2020-01-30)
+
+* [fix] Actually use the new format when adding items to the cart
+* [fix] Fixed issue when clearing the cart
+
 ## v2.1.34 (2020-01-30)
 
 * [new] Updated the default order blueprint
