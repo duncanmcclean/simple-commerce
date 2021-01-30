@@ -78,14 +78,13 @@ sections:
                 validate: required
                 width: 50
             -
-              handle: Variant
+              handle: variant
               field:
-                input_type: text
-                type: text
-                listable: hidden
                 display: Variant
+                type: product_variant
+                icon: product_variant
                 width: 50
-                antlers: false
+                listable: hidden
             -
               handle: quantity
               field:
