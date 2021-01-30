@@ -56,6 +56,8 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_null_if_purcaseable_type_is_product()
     {
+        $this->markTestSkipped();
+
         $product = Product::make()->save();
 
         $augment = (new ProductVariantFieldtype)->augment([
