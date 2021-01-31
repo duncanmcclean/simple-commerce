@@ -8,8 +8,8 @@ Although the code for this addon is open-source, you need to purchase a license 
 
 ## Features
 
-* [Product Variants](https://sc-docs.doublethree.digital/v2.1/product-variants)
-* [Built-in support for popular gateways](https://sc-docs.doublethree.digital/v2.1/gateways), like Stripe and Mollie.
+* [Product Variants](https://sc-docs.doublethree.digital/v2/product-variants)
+* [Built-in support for popular gateways](https://sc-docs.doublethree.digital/v2.2/gateways), like Stripe and Mollie.
 * [Supports Digital Products](https://github.com/doublethreedigital/sc-digital-products)
 * Shipping methods, different shipping prices for different addresses
 * Ready for extension, with events, hooks and APIs.
