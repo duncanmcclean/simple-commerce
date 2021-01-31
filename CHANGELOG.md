@@ -2,7 +2,16 @@
 
 ## Unreleased
 
-## v2.2.0 (2020-01-31)
+## v2.2.1 (2021-01-31)
+
+It didn't take me very long to find a bunch of bugs...
+
+* Fixed exception within upgrade tool when `stillat/proteus` isn't installed
+* Upgrader will no longer continue if `stillat/proteus` isn't installed
+* Stripe Gateway should pull key & secret from gateway config, not hard coded `.env` values
+* When processing checkout, don't attempt to save data if we don't have any.
+
+## v2.2.0 (2021-01-31)
 
 Before upgrading, please review the [upgrade guide](https://sc-docs.doublethree.digital/v2.2/update-guide) in case there's any changes you need to make.
 
@@ -15,12 +24,12 @@ Before upgrading, please review the [upgrade guide](https://sc-docs.doublethree.
 
 * Various bugs
 
-## v2.1.35 (2020-01-30)
+## v2.1.35 (2021-01-30)
 
 * [fix] Actually use the new format when adding items to the cart
 * [fix] Fixed issue when clearing the cart
 
-## v2.1.34 (2020-01-30)
+## v2.1.34 (2021-01-30)
 
 * [new] Updated the default order blueprint
 * [new] Added a new 'Product Variant' fieldtype to select a single variant
