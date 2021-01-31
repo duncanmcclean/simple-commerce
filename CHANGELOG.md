@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## v2.2.0 (2020-01-31)
+
+Before upgrading, please review the [upgrade guide](https://sc-docs.doublethree.digital/v2.2/update-guide) in case there's any changes you need to make.
+
+### What's new
+
+* [Cart Drivers](https://sc-docs.doublethree.digital/v2.2/cart-drivers)
+* Under the hood codebase improvements
+
+### What's fixed
+
+* Various bugs
+
 ## v2.1.35 (2020-01-30)
 
 * [fix] Actually use the new format when adding items to the cart
