@@ -174,7 +174,9 @@ class CheckoutController extends BaseActionController
             $data[$key] = $value;
         }
 
-        $this->cart->data($data)->save();
+        if ($data !== []) {
+            $this->cart->data($data)->save();
+        }
 
         return $this;
     }
