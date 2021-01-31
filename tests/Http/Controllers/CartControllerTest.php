@@ -115,8 +115,8 @@ class CartControllerTest extends TestCase
         $cart = Cart::create()->save();
 
         $data = [
-            'name' => 'John Doe',
-            'email' => 'johndoe@gmail.com',
+            'name' => 'Joe Doe',
+            'email' => 'joedoe@gmail.com',
         ];
 
         $response = $this
@@ -130,8 +130,8 @@ class CartControllerTest extends TestCase
         $customer = Customer::findByEmail($data['email']);
 
         $this->assertSame($cart->data['customer'], $customer->id);
-        $this->assertSame($customer->title, 'John Doe <johndoe@gmail.com>');
-        $this->assertSame($customer->slug, 'johndoe-at-gmailcom');
+        $this->assertSame($customer->title, 'Joe Doe <joedoe@gmail.com>');
+        $this->assertSame($customer->slug, 'joedoe-at-gmailcom');
     }
 
     /** @test */
