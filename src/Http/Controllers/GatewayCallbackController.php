@@ -3,13 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
 class GatewayCallbackController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function index(Request $request, $gateway)
     {
@@ -23,7 +23,7 @@ class GatewayCallbackController extends BaseActionController
             ]));
         }
 
-        $this->forgetSessionCart();
+        $this->forgetCart();
 
         return $this->withSuccess($request, [
             'success' => __('simple-commerce.messages.checkout_complete'),

@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\ReceiptController;
+use Illuminate\Support\Facades\Route;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

@@ -2,26 +2,26 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CartTags extends SubTag
 {
     use Concerns\FormBuilder,
-        SessionCart;
+        CartDriver;
 
     public function index()
     {
-        return $this->getOrMakeSessionCart()->entry()->toAugmentedArray();
+        return $this->getOrMakeCart()->entry()->toAugmentedArray();
     }
 
     public function has()
     {
-        return $this->hasSessionCart();
+        return $this->hasCart();
     }
 
     public function items()
     {
-        $cart = $this->getOrMakeSessionCart();
+        $cart = $this->getOrMakeCart();
 
         return isset($cart->data['items']) && $cart->data['items'] != [] ?
             $cart->entry()->toAugmentedArray()['items']->value() :
@@ -30,21 +30,21 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (! $this->hasSessionCart()) {
+        if (! $this->hasCart()) {
             return 0;
         }
 
-        if (! isset($this->getSessionCart()->data['items'])) {
+        if (! $this->hasCart()) {
             return 0;
         }
 
-        return collect($this->getSessionCart()->data['items'])->count();
+        return collect($this->getCart()->get('items'))->count();
     }
 
     public function total()
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart()->entry()->toAugmentedArray()['grand_total']->value();
+        if ($this->hasCart()) {
+            return $this->getCart()->entry()->toAugmentedArray()['grand_total']->value();
         }
 
         return 0;
@@ -52,8 +52,8 @@ class CartTags extends SubTag
 
     public function grandTotal()
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart()->entry()->toAugmentedArray()['grand_total']->value();
+        if ($this->hasCart()) {
+            return $this->getCart()->entry()->toAugmentedArray()['grand_total']->value();
         }
 
         return 0;
@@ -61,8 +61,8 @@ class CartTags extends SubTag
 
     public function itemsTotal()
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart()->entry()->toAugmentedArray()['items_total']->value();
+        if ($this->hasCart()) {
+            return $this->getCart()->entry()->toAugmentedArray()['items_total']->value();
         }
 
         return 0;
@@ -70,8 +70,8 @@ class CartTags extends SubTag
 
     public function shippingTotal()
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart()->entry()->toAugmentedArray()['shipping_total']->value();
+        if ($this->hasCart()) {
+            return $this->getCart()->entry()->toAugmentedArray()['shipping_total']->value();
         }
 
         return 0;
@@ -79,8 +79,8 @@ class CartTags extends SubTag
 
     public function taxTotal()
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart()->entry()->toAugmentedArray()['tax_total']->value();
+        if ($this->hasCart()) {
+            return $this->getCart()->entry()->toAugmentedArray()['tax_total']->value();
         }
 
         return 0;
@@ -88,8 +88,8 @@ class CartTags extends SubTag
 
     public function couponTotal()
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart()->entry()->toAugmentedArray()['coupon_total']->value();
+        if ($this->hasCart()) {
+            return $this->getCart()->entry()->toAugmentedArray()['coupon_total']->value();
         }
 
         return 0;
@@ -128,7 +128,7 @@ class CartTags extends SubTag
 
     public function update()
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
         return $this->createForm(
             route('statamic.simple-commerce.cart.update'),
@@ -148,7 +148,11 @@ class CartTags extends SubTag
 
     public function wildcard($method)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        }
 
         if (method_exists($this, $method)) {
             return $this->{$method}();

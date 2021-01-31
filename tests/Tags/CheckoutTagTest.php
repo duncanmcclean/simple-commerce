@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -44,7 +44,7 @@ class CheckoutTagTest extends TestCase
         // TODO: causes timeout issues on Github Actions
         $this->markTestIncomplete();
 
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->tag->setParameters([]);
 
@@ -67,7 +67,7 @@ class CheckoutTagTest extends TestCase
     /** @test */
     public function can_redirect_user_to_offsite_gateway()
     {
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->tag->setParameters([]);
 
@@ -79,7 +79,7 @@ class CheckoutTagTest extends TestCase
     /** @test */
     public function can_redirect_user_to_offsite_gateway_with_redirect_url()
     {
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->tag->setParameters([
             'redirect' => 'http://localhost/thanks'
@@ -90,10 +90,10 @@ class CheckoutTagTest extends TestCase
         $usage = $this->tag->wildcard('testOffSiteGateway');
     }
 
-    protected function fakeSessionCart($cart = null)
+    protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Cart::make()->save();
+            $cart = Order::create();
         }
 
         Session::shouldReceive('get')

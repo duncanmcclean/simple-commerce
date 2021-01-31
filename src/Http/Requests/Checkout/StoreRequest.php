@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout;
 
-use DoubleThreeDigital\SimpleCommerce\Rules\IsAGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Rules\IsAGateway;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest

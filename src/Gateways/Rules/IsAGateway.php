@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DoubleThreeDigital\SimpleCommerce\Gateways\Rules;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use Illuminate\Contracts\Validation\Rule;

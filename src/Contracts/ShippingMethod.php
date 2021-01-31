@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use Statamic\Entries\Entry;
 
 interface ShippingMethod

@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -11,7 +11,7 @@ class RefundAction extends Action
 {
     public static function title()
     {
-        return 'Refund';
+        return __('Refund');
     }
 
     public function visibleTo($item)
@@ -31,9 +31,9 @@ class RefundAction extends Action
     {
         collect($items)
             ->each(function ($entry) {
-                $cart = Cart::find($entry->id());
+                $order = Order::find($entry->id());
 
-                return Gateway::use($cart->data['gateway'])->refundCharge($cart->entry());
+                return Gateway::use($cart->data['gateway'])->refundCharge($order->entry());
             });
     }
 }

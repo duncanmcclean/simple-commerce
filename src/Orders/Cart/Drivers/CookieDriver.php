@@ -1,55 +1,56 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Statamic\Sites\Site as ASite;
 
-trait SessionCart
+class CookieDriver implements CartDriver
 {
-    protected function getSessionCartKey(): string
+    public function getCartKey(): string
     {
-        return Session::get(Config::get('simple-commerce.cart_key'));
+        return Cookie::get(Config::get('simple-commerce.cart.key'));
     }
 
-    protected function getSessionCart(): CartRepository
+    public function getCart(): Order
     {
-        return Cart::find($this->getSessionCartKey());
+        return Cart::find($this->getCartKey());
     }
 
-    protected function hasSessionCart(): bool
+    public function hasCart(): bool
     {
-        return Session::has(Config::get('simple-commerce.cart_key'));
+        return Cookie::has(Config::get('simple-commerce.cart.key'));
     }
 
-    protected function makeSessionCart(): CartRepository
+    public function makeCart(): Order
     {
         $cart = Cart::make()
             ->site($this->guessSiteFromRequest())
             ->save();
 
-        Session::put(config('simple-commerce.cart_key'), $cart->id);
+        Cookie::queue(config('simple-commerce.cart.key'), $cart->id);
 
         return $cart;
     }
 
-    protected function getOrMakeSessionCart(): CartRepository
+    public function getOrMakeCart(): Order
     {
-        if ($this->hasSessionCart()) {
-            return $this->getSessionCart();
+        if ($this->hasCart()) {
+            return $this->getCart();
         }
 
-        return $this->makeSessionCart();
+        return $this->makeCart();
     }
 
-    protected function forgetSessionCart()
+    public function forgetCart()
     {
-        Session::forget(config('simple-commerce.cart_key'));
+        Cookie::forget(config('simple-commerce.cart.key'));
     }
 
     protected function guessSiteFromRequest(): ASite

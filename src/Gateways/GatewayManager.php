@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Repositories;
+namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayRepository as ContractsGatewayRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
@@ -11,7 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
-class GatewayRepository implements ContractsGatewayRepository
+class GatewayManager implements Contract
 {
     protected $className;
     protected $redirectUrl;
@@ -38,7 +38,7 @@ class GatewayRepository implements ContractsGatewayRepository
         $purchase = $this->resolve()->purchase(new GatewayPurchase($request, $order));
 
         if ($purchase->success()) {
-            Cart::find($order->id())->update([
+            Cart::find($order->id())->data([
                 'gateway' => $this->className,
                 'gateway_data' => $purchase->data(),
             ]);
@@ -64,13 +64,13 @@ class GatewayRepository implements ContractsGatewayRepository
         $refund = $this->resolve()->refundCharge($order);
 
         $cart = Cart::find($order->id());
-        $cart->update([
+        $cart->data([
             'is_refunded' => true,
             'gateway_data' => array_merge($cart->data['gateway_data'], [
                 'refund' => $refund,
             ]),
             'order_status' => 'refunded',
-        ]);
+        ])->save();
 
         return $refund;
     }

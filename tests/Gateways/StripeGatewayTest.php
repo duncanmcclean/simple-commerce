@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
@@ -38,7 +38,7 @@ class StripeGatewayTest extends TestCase
 
         $prepare = $this->gateway->prepare(new GatewayPrep(
             new Request(),
-            Cart::make()->save()->entry()
+            Order::create()->entry()
         ));
 
         $this->assertIsObject($prepare);
@@ -71,7 +71,7 @@ class StripeGatewayTest extends TestCase
         $this->markTestSkipped();
 
         $charge = (new StripeGateway())->getCharge(
-            Cart::make()->save()->entry()
+            Order::create()->entry()
         );
 
         $this->assertIsObject($charge);
@@ -84,7 +84,7 @@ class StripeGatewayTest extends TestCase
         $this->markTestIncomplete();
 
         $refund = (new StripeGateway())->refundCharge(
-            Cart::make()->save()->entry()
+            Order::create()->entry()
         );
 
         $this->assertIsObject($refund);

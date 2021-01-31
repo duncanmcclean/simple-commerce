@@ -13,20 +13,23 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
+use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
-    public CartRepository $cart;
+    public $cart;
     public StoreRequest $request;
     public $excludedKeys = ['_token', '_params', '_redirect'];
 
     public function store(StoreRequest $request)
     {
-        $this->cart = $this->getSessionCart();
+        $this->cart = $this->getCart();
         $this->request = $request;
 
         $this
@@ -87,20 +90,17 @@ class CheckoutController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
-                $customer = Customer::make()
-                    ->site($this->guessSiteFromRequest())
-                    ->data([
-                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                        'email' => $customerData['email'],
-                    ])
-                    ->save();
+                $customer = Customer::create([
+                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
+                    'email' => $customerData['email'],
+                ], $this->guessSiteFromRequest()->handle());
             }
 
-            $customer->update($customerData);
+            $customer->data($customerData)->save();
 
-            $this->cart->update([
+            $this->cart->data([
                 'customer' => $customer->id,
-            ]);
+            ])->save();
         }
 
         $this->excludedKeys[] = 'customer';
@@ -110,7 +110,7 @@ class CheckoutController extends BaseActionController
 
     protected function handlePayment()
     {
-        if (! $this->request->has('gateway') && $this->cart->toArray()['is_paid'] === false && $this->cart->data['grand_total'] !== 0) {
+        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
@@ -136,7 +136,7 @@ class CheckoutController extends BaseActionController
 
     protected function handleStock()
     {
-        collect($this->cart->data['items'])
+        collect($this->cart->get('items'))
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
@@ -174,18 +174,41 @@ class CheckoutController extends BaseActionController
             $data[$key] = $value;
         }
 
-        $this->cart->update($data);
+        $this->cart->data($data)->save();
 
         return $this;
     }
 
     protected function postCheckout()
     {
-        $this->cart->markAsCompleted();
-        $this->forgetSessionCart();
+        $this->cart->markAsCompleted()->save();
+        $this->forgetCart();
 
         event(new PostCheckout($this->cart->data));
 
         return $this;
+    }
+
+    protected function guessSiteFromRequest(): SitesSite
+    {
+        if ($site = request()->get('site')) {
+            return Site::get($site);
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
+            }
+        }
+
+        if ($referer = request()->header('referer')) {
+            foreach (Site::all() as $site) {
+                if (Str::contains($referer, $site->url())) {
+                    return $site;
+                }
+            }
+        }
+
+        return Site::current();
     }
 }

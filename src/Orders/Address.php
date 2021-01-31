@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Data;
+namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 class Address
 {

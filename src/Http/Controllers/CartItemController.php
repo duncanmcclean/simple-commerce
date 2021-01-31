@@ -6,20 +6,20 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function store(StoreRequest $request)
     {
-        $cart = $this->hasSessionCart() ? $this->getSessionCart() : $this->makeSessionCart();
+        $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
         $product = Product::find($request->product);
 
-        $items = isset($cart->data['items']) ? $cart->data['items'] : [];
+        $items = $cart->has('items') ? $cart->get('items') : [];
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if (isset($product->data['stock']) && $product->data['stock'] < $request->quantity) {
@@ -54,9 +54,11 @@ class CartItemController extends BaseActionController
             ];
         }
 
-        $cart->update([
+        $cart->data([
             'items' => array_merge($items, [$item]),
-        ])->calculateTotals();
+        ])->save();
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_added'),
@@ -66,9 +68,9 @@ class CartItemController extends BaseActionController
 
     public function update(UpdateRequest $request, string $requestItem)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
-        $cart->update([
+        $cart->data([
             'items' => collect($cart->data['items'] ?? [])
                 ->map(function ($item) use ($request, $requestItem) {
                     if ($item['id'] !== $requestItem) {
@@ -81,7 +83,9 @@ class CartItemController extends BaseActionController
                     );
                 })
                 ->toArray(),
-        ])->calculateTotals();
+        ])->save();
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_updated'),
@@ -91,13 +95,15 @@ class CartItemController extends BaseActionController
 
     public function destroy(DestroyRequest $request, string $item)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
-        $cart->update([
+        $cart->data([
             'items' => collect($cart->data['items'])
                 ->where('id', '!==', $item)
                 ->toArray(),
-        ])->calculateTotals();
+        ])->save();
+
+        $cart->calculateTotals();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_deleted'),

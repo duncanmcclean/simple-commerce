@@ -15,10 +15,10 @@ class CartCompleted
         if (config('simple-commerce.notifications.customer.order_confirmation')) {
             if ($event->cart->has('customer')) {
                 try {
-                    $customer = Customer::find($event->cart->get('customer'));
+                    $customer = $event->cart->customer();
 
                     Mail::to($customer->data['email'])
-                        ->send(new OrderConfirmation($event->cart->id()));
+                        ->send(new OrderConfirmation($event->cart->id));
                 } catch (\Exception $e) {
                     // Do nothing
                 }
@@ -26,7 +26,7 @@ class CartCompleted
         }
 
         if (config('simple-commerce.notifications.back_office.order_paid')) {
-            Mail::send(new OrderPaid($event->cart->id()));
+            Mail::send(new OrderPaid($event->cart->id));
         }
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Repositories;
+namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingRepository as ContractsShippingRepository;
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager as Contract;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use Statamic\Entries\Entry;
 
-class ShippingRepository implements ContractsShippingRepository
+class ShippingManager implements Contract
 {
     protected $className;
 

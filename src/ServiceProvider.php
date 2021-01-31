@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -16,6 +18,7 @@ class ServiceProvider extends AddonServiceProvider
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\InstallCommand::class,
+        Console\Commands\UpgradeCommand::class,
     ];
 
     protected $fieldtypes = [
@@ -57,7 +60,8 @@ class ServiceProvider extends AddonServiceProvider
         Statamic::booted(function () {
             $this
                 ->bootVendorAssets()
-                ->bootRepositories();
+                ->bindContracts()
+                ->bootCartDrivers();
         });
 
         SimpleCommerce::bootGateways();
@@ -96,22 +100,30 @@ class ServiceProvider extends AddonServiceProvider
         return $this;
     }
 
-    protected function bootRepositories()
+    protected function bindContracts()
     {
         collect([
-            Contracts\CartRepository::class => Repositories\CartRepository::class,
-            Contracts\CouponRepository::class => Repositories\CouponRepository::class,
-            Contracts\CurrencyRepository::class => Repositories\CurrencyRepository::class,
-            Contracts\CustomerRepository::class => Repositories\CustomerRepository::class,
-            Contracts\GatewayRepository::class => Repositories\GatewayRepository::class,
-            Contracts\OrderRepository::class => Repositories\OrderRepository::class,
-            Contracts\ProductRepository::class => Repositories\ProductRepository::class,
-            Contracts\ShippingRepository::class => Repositories\ShippingRepository::class,
+            Contracts\Order::class              => Orders\Order::class,
+            Contracts\Coupon::class             => Coupons\Coupon::class,
+            Contracts\Currency::class           => Support\Currency::class,
+            Contracts\Customer::class           => Customers\Customer::class,
+            Contracts\GatewayManager::class     => Gateways\GatewayManager::class,
+            Contracts\Product::class            => Products\Product::class,
+            Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
             }
         });
+
+        return $this;
+    }
+
+    protected function bootCartDrivers()
+    {
+        if (! $this->app->bound(Contracts\CartDriver::class)) {
+            $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
+        }
 
         return $this;
     }
