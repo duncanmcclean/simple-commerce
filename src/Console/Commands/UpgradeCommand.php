@@ -18,7 +18,11 @@ class UpgradeCommand extends Command
     public function handle()
     {
         // Check if Proteus is installed
-        $isProteusInstalled = Composer::create(base_path())->installedVersion('stillat/proteus');
+        try {
+            $isProteusInstalled = Composer::create(base_path())->installedVersion('stillat/proteus');
+        } catch (\ErrorException $e) {
+            $isProteusInstalled = false;
+        }
 
         if (! $isProteusInstalled) {
             $this->error('To use the upgrade command please install Proteus. `composer require stillat/proteus`');
