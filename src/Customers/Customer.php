@@ -60,25 +60,19 @@ class Customer implements Contract
             $email = $this->get('email');
         }
 
-        $this->title = __('simple-commerce::customers.customer_entry_title', [
+        $title = __('simple-commerce::customers.customer_entry_title', [
             'name' => $name,
             'email' => $email,
         ]);
 
-        dump($this->title, $this->data);
+        $slug = Str::slug($email);
 
-        $this->slug = Str::slug($email);
+        $this->title = $title;
+        $this->data['title'] = $title;
+
+        $this->slug = $slug;
 
         return $this;
-    }
-
-    public function beforeSaved()
-    {
-        if (is_null($this->title) || is_null($this->slug) || $this->slug === '') {
-            $this->generateTitleAndSlug();
-
-            $this->set('title', $this->title);
-        }
     }
 
     public function collection(): string

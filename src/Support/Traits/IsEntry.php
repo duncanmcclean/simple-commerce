@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use Illuminate\Support\Arr;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
@@ -47,7 +48,9 @@ trait IsEntry
         $this->slug = ! is_null($this->slug) ? $this->slug : '';
         $this->published = ! is_null($this->published) ? $this->published : false;
 
-        $this->data(Arr::except($data, ['id', 'site', 'slug', 'publish']));
+        $this->data(
+            Arr::except($data, ['id', 'site', 'slug', 'publish'])
+        );
 
         $this->save();
 
@@ -60,6 +63,14 @@ trait IsEntry
             $this->entry = EntryAPI::make()
                 ->id($this->id)
                 ->locale($this->site);
+        }
+
+        if ($this instanceof Customer) {
+            $this->generateTitleAndSlug();
+        }
+
+        if ($this->title) {
+            $data['title'] = $this->title;
         }
 
         $this->entry
@@ -143,7 +154,11 @@ trait IsEntry
         return $this;
     }
 
-    // TODO: refactor to property hooks
+    public function fresh(): self
+    {
+        return $this->find($this->id);
+    }
+
     public function beforeSaved()
     {
         return null;
