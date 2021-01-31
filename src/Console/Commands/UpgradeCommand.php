@@ -26,6 +26,7 @@ class UpgradeCommand extends Command
 
         if (! $isProteusInstalled) {
             $this->error('To use the upgrade command please install Proteus. `composer require stillat/proteus`');
+            return;
         }
 
         // Ask for confirmation before migrating
