@@ -123,13 +123,13 @@ class StripeGateway extends BaseGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (! env('STRIPE_SECRET')) {
+        if (! isset($this->config()['secret'])) {
             throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
         }
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey($this->config()['secret']);
 
-        if ($version = env('STRIPE_API_VERSION')) {
+        if (isset($this->config()['version']) && $version = $this->config()['version']) {
             Stripe::setApiVersion($version);
         }
     }
