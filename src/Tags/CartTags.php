@@ -34,7 +34,7 @@ class CartTags extends SubTag
             return 0;
         }
 
-        if (! $this->hasCart()) {
+        if (! $this->getCart()->has('items')) {
             return 0;
         }
 
