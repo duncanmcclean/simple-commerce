@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.2.2 (2021-02-02)
+
+* Fixed bug when removing an item from your cart #346
+
 ## v2.2.1 (2021-01-31)
 
 It didn't take me very long to find a bunch of bugs...
