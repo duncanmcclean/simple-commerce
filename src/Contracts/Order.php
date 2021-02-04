@@ -52,7 +52,7 @@ interface Order
 
     public function markAsCompleted(): self;
 
-    public function boolReceipt(): string;
+    public function buildReceipt(): string;
 
     public function calculateTotals(): self;
 
