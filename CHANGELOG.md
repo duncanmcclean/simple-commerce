@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Coupon total should be calculated from items total, not grand total
+
 ## v2.2.2 (2021-02-02)
 
 * Fixed bug when removing an item from your cart #346
