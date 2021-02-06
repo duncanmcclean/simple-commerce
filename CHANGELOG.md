@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.2.3 (2021-02-06)
+
 * [new] Added a command to automatically remove old cart entries. `php please sc:cart-cleanup`
 * [fix] Coupon total should be calculated from items total, not the grand total.
 * [fix] If grand total of cart is `0`, then don't do any gateway work
