@@ -6,7 +6,12 @@
 
         <div v-else>
             <p
-                v-if="productVariantsData == null"
+                v-if="value == null"
+                class="text-sm"
+            >Product doesn't support variants.</p>
+
+            <p
+                v-else-if="productVariantsData == null"
                 class="text-sm"
             >No product selected.</p>
 
@@ -82,6 +87,10 @@ export default {
     },
 
     mounted() {
+        if (this.value == null) {
+            this.initializing = false
+        }
+
         if (! this.variant.product) {
             this.variant.product = this.product
         }
