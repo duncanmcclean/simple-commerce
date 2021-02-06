@@ -3,7 +3,10 @@
 ## Unreleased
 
 * [new] Added a command to automatically remove old cart entries. `php please sc:cart-cleanup`
-* [fix] Coupon total should be calculated from items total, not grand total
+* [fix] Coupon total should be calculated from items total, not the grand total.
+* [fix] If grand total of cart is `0`, then don't do any gateway work
+* [fix] Strip out any decimals from product prices when added to cart
+* [fix] On the variant fieldtype: if there is no value, display an error message instead of spinner.
 
 ## v2.2.2 (2021-02-02)
 
