@@ -36,9 +36,17 @@ class Calculator
                         isset($item['variant']['variant']) ? $item['variant']['variant'] : $item['variant']
                     )['price'];
 
+                    // Ensure we strip any decimals from price
+                    $productPrice = (int) str_replace('.', '', (string) $productPrice);
+
                     $itemTotal = ($productPrice * $item['quantity']);
                 } else {
-                    $itemTotal = ($product->data['price'] * $item['quantity']);
+                    $productPrice = $product->get('price');
+
+                    // Ensure we strip any decimals from price
+                    $productPrice = (int) str_replace('.', '', (string) $productPrice);
+
+                    $itemTotal = ($productPrice * $item['quantity']);
                 }
 
                 if (! $product->isExemptFromTax()) {
