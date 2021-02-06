@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* [new] Added a command to automatically remove old cart entries. `php please sc:cart-cleanup`
 * [fix] Coupon total should be calculated from items total, not grand total
 
 ## v2.2.2 (2021-02-02)
