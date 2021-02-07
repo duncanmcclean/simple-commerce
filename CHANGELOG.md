@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [fix] Don't throw an exception on `cart` endpoint if no cart exists
+* [fix] Don't attempt to augment variant fieldtype if value is `null`
 
 ## v2.2.3 (2021-02-06)
 

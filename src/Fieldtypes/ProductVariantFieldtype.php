@@ -33,6 +33,10 @@ class ProductVariantFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        if (is_null($value)) {
+            return null;
+        }
+
         if (is_string($value)) {
             throw new \Exception("Variant field is using old format. Please re-save the order in the CP to save as new format.");
         }
