@@ -19,6 +19,10 @@ class CartController extends BaseActionController
 
     public function index(IndexRequest $request)
     {
+        if (! $this->hasCart()) {
+            return [];
+        }
+
         return $this->getCart()->toResource();
     }
 

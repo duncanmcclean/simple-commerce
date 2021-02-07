@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Don't throw an exception on `cart` endpoint if no cart exists
+
 ## v2.2.3 (2021-02-06)
 
 * [new] Added a command to automatically remove old cart entries. `php please sc:cart-cleanup`
