@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.2.4 (2021-02-09)
+
 * [fix] Don't throw an exception on `cart` endpoint if no cart exists
 * [fix] Don't attempt to augment variant fieldtype if value is `null`
 * [fix] When customer's active cart is deleted, a new one will be created, instead of throwing an exception. #348
