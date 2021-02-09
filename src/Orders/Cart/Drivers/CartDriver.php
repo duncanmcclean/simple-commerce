@@ -27,7 +27,7 @@ trait CartDriver
     protected function hasCart(): bool
     {
         try {
-            return resolve(CartDriverContract::class)->getCart();
+            return resolve(CartDriverContract::class)->hasCart();
         } catch (OrderNotFound $e) {
             return false;
         }

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.2.5 (2021-02-09)
+
+* [fix] Fixed accidental bug introduced with cart driver fix in v2.2.4.
+
 ## v2.2.4 (2021-02-09)
 
 * [fix] Don't throw an exception on `cart` endpoint if no cart exists
