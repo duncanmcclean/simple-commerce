@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Now throws `EntryNotFound` exception when no entry can be found, instead of `OrderNotFound`.
+
 ## v2.2.5 (2021-02-09)
 
 * [fix] Fixed accidental bug introduced with cart driver fix in v2.2.4.

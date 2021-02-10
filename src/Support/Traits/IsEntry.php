@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\EntryNotFound;
 use Illuminate\Support\Arr;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
@@ -29,7 +29,7 @@ trait IsEntry
         $this->entry = EntryAPI::find($id);
 
         if (! $this->entry) {
-            throw new OrderNotFound("Order could not be found: {$id}");
+            throw new EntryNotFound("Entry could not be found: {$id}");
         }
 
         if ($this->entry->existsIn(SiteAPI::current()->handle()) && $this->entry->locale() !== SiteAPI::current()->handle()) {

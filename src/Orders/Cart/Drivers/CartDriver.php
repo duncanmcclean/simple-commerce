@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver as CartDriverContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\EntryNotFound;
 
 trait CartDriver
 {
@@ -17,7 +17,7 @@ trait CartDriver
     {
         try {
             return resolve(CartDriverContract::class)->getCart();
-        } catch (OrderNotFound $e) {
+        } catch (EntryNotFound $e) {
             $this->makeCart();
 
             return $this->getCart();
@@ -28,7 +28,7 @@ trait CartDriver
     {
         try {
             return resolve(CartDriverContract::class)->hasCart();
-        } catch (OrderNotFound $e) {
+        } catch (EntryNotFound $e) {
             return false;
         }
     }
