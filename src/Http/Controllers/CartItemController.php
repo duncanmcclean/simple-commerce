@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
-use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
 {
@@ -37,28 +36,25 @@ class CartItemController extends BaseActionController
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
-            return $this->withErrors($request, 'You can only add a product/variant to the same cart once.');
-        }
-
-        $item = [
-            'id'       => Stache::generateId(),
-            'product'  => $request->product,
-            'quantity' => (int) $request->quantity,
-            'total'    => 0000,
-        ];
-
-        if ($request->has('variant')) {
-            $item['variant'] = [
-                'variant' => $request->variant,
-                'product' => $request->product,
+            $cart->updateOrderItem($alreadyExistsQuery->first()['id'], [
+                'quantity' => (int) $alreadyExistsQuery->first()['quantity'] + $request->quantity,
+            ]);
+        } else {
+            $item = [
+                'product'  => $request->product,
+                'quantity' => (int) $request->quantity,
+                'total'    => 0000,
             ];
+
+            if ($request->has('variant')) {
+                $item['variant'] = [
+                    'variant' => $request->variant,
+                    'product' => $request->product,
+                ];
+            }
+
+            $cart->addOrderItem($item);
         }
-
-        $cart->data([
-            'items' => array_merge($items, [$item]),
-        ])->save();
-
-        $cart->calculateTotals();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_added'),
