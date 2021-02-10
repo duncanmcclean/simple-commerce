@@ -85,13 +85,7 @@ class CartItemController extends BaseActionController
     {
         $cart = $this->getCart();
 
-        $cart->data([
-            'items' => collect($cart->data['items'])
-                ->where('id', '!==', $item)
-                ->toArray(),
-        ])->save();
-
-        $cart->calculateTotals();
+        $cart->removeOrderItem($item);
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_deleted'),
