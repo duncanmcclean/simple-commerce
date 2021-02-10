@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-* [fix] Now throws `EntryNotFound` exception when no entry can be found, instead of `OrderNotFound`.
+## v2.2.6 (2021-02-10)
+
+* [new] Allow adding product to cart multiple times and up the quantity. #351
+* [fix] Now throws `EntryNotFound` exception when no entry can be found, instead of `OrderNotFound`. #349
 
 ## v2.2.5 (2021-02-09)
 
