@@ -70,22 +70,10 @@ class CartItemController extends BaseActionController
     {
         $cart = $this->getCart();
 
-        $cart->data([
-            'items' => collect($cart->data['items'] ?? [])
-                ->map(function ($item) use ($request, $requestItem) {
-                    if ($item['id'] !== $requestItem) {
-                        return $item;
-                    }
-
-                    return array_merge(
-                        $item,
-                        Arr::except($request->all(), ['_token', '_params', '_redirect']),
-                    );
-                })
-                ->toArray(),
-        ])->save();
-
-        $cart->calculateTotals();
+        $cart->updateOrderItem(
+            $requestItem,
+            Arr::except($request->all(), ['_token', '_params', '_redirect'])
+        );
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_updated'),
