@@ -18,7 +18,7 @@ use Statamic\Facades\Stache;
 
 class Order implements Contract
 {
-    use IsEntry, HasData;
+    use IsEntry, HasData, OrderItems;
 
     public $id;
     public $site;
