@@ -261,7 +261,7 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
-    public function cant_store_a_product_that_is_already_in_the_cart()
+    public function can_store_a_product_that_is_already_in_the_cart()
     {
         $product = Product::create([
             'title' => 'Horse Food',
@@ -287,17 +287,17 @@ class CartItemControllerTest extends TestCase
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
-            ->assertStatus(302)
-            ->assertSessionHasErrors();
+            ->assertRedirect();
 
         $cart = $cart->find($cart->id);
 
         $this->assertArrayHasKey('items', $cart->data);
         $this->assertSame(1, count($cart->data['items']));
+        $this->assertSame(2, $cart->data['items'][0]['quantity']);
     }
 
     /** @test */
-    public function cant_store_a_variant_that_is_already_in_the_cart()
+    public function can_store_a_variant_that_is_already_in_the_cart()
     {
         $product = Product::create([
             'title' => 'Dog Food',
@@ -343,19 +343,19 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product' => $product->id,
             'variant' => 'Red_Small',
-            'quantity' => 1,
+            'quantity' => 4,
         ];
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
-            ->assertStatus(302)
-            ->assertSessionHasErrors();
+            ->assertRedirect();
 
         $cart = $cart->find($cart->id);
 
         $this->assertArrayHasKey('items', $cart->data);
         $this->assertSame(1, count($cart->data['items']));
+        $this->assertSame(5, $cart->data['items'][0]['quantity']);
     }
 
     /** @test */
