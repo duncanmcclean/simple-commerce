@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Validate against the possibility of having negative line item quantities.
+
 ## v2.2.7 (2021-02-12)
 
 * [fix] Fixed issue when adding more than a single item to your cart #353
