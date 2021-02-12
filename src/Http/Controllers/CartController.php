@@ -7,24 +7,28 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
+use Statamic\Sites\Site as SitesSite;
 
 class CartController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function index(IndexRequest $request)
     {
-        return $this
-            ->getSessionCart()
-            ->entry()
-            ->data();
+        if (! $this->hasCart()) {
+            return [];
+        }
+
+        return $this->getCart()->toResource();
     }
 
     public function update(UpdateRequest $request)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
         $data = Arr::except($request->all(), ['_token', '_params', '_redirect']);
 
         foreach ($data as $key => $value) {
@@ -44,60 +48,97 @@ class CartController extends BaseActionController
                 } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
                     $customer = Customer::findByEmail($data['customer']['email']);
                 } else {
-                    throw new CustomerNotFound('');
+                    throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $data['customer']]));
                 }
             } catch (CustomerNotFound $e) {
-                $customer = Customer::make()
-                    ->data([
-                        'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                        'email' => $data['customer']['email'],
-                    ])
-                    ->save();
+                $customer = Customer::create([
+                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email' => $data['customer']['email'],
+                ], $this->guessSiteFromRequest()->handle());
             }
 
             if (is_array($data['customer'])) {
-                $customer->update($data['customer']);
+                $customer->data($data['customer'])->save();
             }
 
-            $cart->update([
+            $cart->data([
                 'customer' => $customer->id,
-            ]);
+            ])->save();
 
             unset($data['customer']);
         }
 
         if (isset($data['email'])) {
-            $customer = Customer::make()
-                ->data([
-                    'name' => isset($data['name']) ? $data['name'] : '',
+            try {
+                if (isset($data['email']) && $data['email'] !== null) {
+                    $customer = Customer::findByEmail($data['email']);
+                } else {
+                    throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found', ['id' => $data['customer']]));
+                }
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::create([
+                    'name'  => isset($data['name']) ? $data['name'] : '',
                     'email' => $data['email'],
-                ])
-                ->save();
+                ], $this->guessSiteFromRequest()->handle());
+            }
 
-            $cart->update([
+            $cart->data([
                 'customer' => $customer->id,
-            ]);
+            ])->save();
 
             unset($data['name']);
             unset($data['email']);
         }
 
-        $cart
-            ->update($data)
+        if ($data !== null) {
+            $cart->data($data);
+        }
+
+        $cart->save()
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_updated'),
+            'cart'    => $cart->toResource(),
+        ]);
     }
 
     public function destroy(DestroyRequest $request)
     {
         $this
-            ->getSessionCart()
-            ->update([
+            ->getCart()
+            ->data([
                 'items' => [],
             ])
+            ->save()
             ->calculateTotals();
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_deleted'),
+            'cart'    => null,
+        ]);
+    }
+
+    protected function guessSiteFromRequest(): SitesSite
+    {
+        if ($site = request()->get('site')) {
+            return Site::get($site);
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
+            }
+        }
+
+        if ($referer = request()->header('referer')) {
+            foreach (Site::all() as $site) {
+                if (Str::contains($referer, $site->url())) {
+                    return $site;
+                }
+            }
+        }
+
+        return Site::current();
     }
 }

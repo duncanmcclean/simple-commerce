@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use Exception;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
@@ -23,6 +24,8 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
+        // TODO: Figure out a way of getting the current locale when being shown in CP
+
         return Currency::get(Site::current());
     }
 
@@ -60,6 +63,10 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        if (! $value) {
+            $value = 0;
+        }
+
         return Currency::parse($value, Site::current());
     }
 

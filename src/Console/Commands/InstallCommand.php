@@ -18,17 +18,29 @@ class InstallCommand extends Command
     public function handle()
     {
         $this
-            ->publishVendorAssets()
+            ->publishBlueprints()
+            ->publishConfigurationFile()
             ->setupTaxonomies()
             ->setupCollections();
     }
 
-    protected function publishVendorAssets()
+    protected function publishBlueprints(): self
     {
-        $this->info('Publishing Simple Commerce Assets');
+        $this->info('Publishing Blueprints');
 
         $this->callSilent('vendor:publish', [
-            '--provider' => 'DoubleThreeDigital\SimpleCommerce\ServiceProvider',
+            '--tag' => 'simple-commerce-blueprints',
+        ]);
+
+        return $this;
+    }
+
+    protected function publishConfigurationFile(): self
+    {
+        $this->info('Publishing Config file');
+
+        $this->callSilent('vendor:publish', [
+            '--tag' => 'simple-commerce-config',
         ]);
 
         return $this;

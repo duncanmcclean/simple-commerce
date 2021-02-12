@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -22,6 +22,9 @@ class CartTagTest extends TestCase
         $this->tag = resolve(CartTags::class)
             ->setParser(Antlers::parser())
             ->setContext([]);
+
+        // Use the cache cart driver for testing
+        // $this->app->bind(CartDriver::class, CacheDriver::class);
     }
 
     /** @test */
@@ -30,7 +33,7 @@ class CartTagTest extends TestCase
         // // TODO: The array stuff here doesn't seem to be working.
         $this->markTestIncomplete();
 
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->assertSame('cart', (string) $this->tag('{{ sc:cart }}{{ order_status }}{{ /sc:cart }}'));
         $this->assertSame('false', (string) $this->tag('{{ sc:cart }}{{ is_paid }}{{ /sc:cart }}'));
@@ -45,7 +48,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function user_has_a_cart_if_cart_exists()
     {
-        $this->fakeSessionCart();
+        $this->fakeCart();
 
         $this->assertSame('Has cart', (string) $this->tag('{{ if {sc:cart:has} === true }}Has cart{{ else }}No cart{{ /if }}'));
     }
@@ -56,13 +59,12 @@ class CartTagTest extends TestCase
         // TODO: work out issues with toAugmentedArray() playing up in tests
         $this->markTestIncomplete();
 
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -73,7 +75,7 @@ class CartTagTest extends TestCase
             ],
         ]);
 
-        $this->fakeSessionCart($cart);
+        $this->fakeCart($cart);
 
         $this->assertStringContainsString('5', $this->tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'));
     }
@@ -81,19 +83,17 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_count()
     {
-        $productOne = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $productOne = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
-        $productTwo = Product::make()
-            ->title('Cat Food')
-            ->slug('cat-food')
-            ->data(['price' => 1200])
-            ->save();
+        $productTwo = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1200,
+        ]);
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),
@@ -110,7 +110,7 @@ class CartTagTest extends TestCase
             ],
         ]);
 
-        $this->fakeSessionCart($cart);
+        $this->fakeCart($cart);
 
         $this->assertSame('2', (string) $this->tag('{{ sc:cart:count }}'));
     }
@@ -121,11 +121,11 @@ class CartTagTest extends TestCase
         // TODO: work out issues with toAugmentedArray() playing up in tests
         $this->markTestIncomplete();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'grand_total' => 2550,
         ]);
 
-        $this->fakeSessionCart($cart);
+        $this->fakeCart($cart);
 
         $this->assertSame('£25.50', $this->tag('{{ sc:cart:total }}'));
     }
@@ -163,11 +163,10 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_add_item_form()
     {
-        $product = Product::make()
-            ->title('Dog Food')
-            ->slug('dog-food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
 
         $this->tag->setParameters([]);
 
@@ -247,15 +246,31 @@ class CartTagTest extends TestCase
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
     }
 
+    /** @test */
+    public function can_get_data_from_cart()
+    {
+        // TODO, marked as incomplete until we figure out how to store stuff in the session
+        $this->markTestIncomplete();
+
+        $cart = Order::create(['title' => '#0001', 'note' => 'Deliver by front door.']);
+
+        $this->session(['simple-commerce-cart' => $cart->id]);
+        $this->tag->setParameters([]);
+
+        $usage = $this->tag->wildcard('note');
+
+        $this->assertSame($usage, 'Deliver by front door.');
+    }
+
     protected function tag($tag)
     {
         return Parse::template($tag, []);
     }
 
-    protected function fakeSessionCart($cart = null)
+    protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Cart::make()->save();
+            $cart = Order::create();
         }
 
         Session::shouldReceive('get')

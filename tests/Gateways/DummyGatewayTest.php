@@ -38,7 +38,7 @@ class DummyGatewayTest extends TestCase
     {
         $prepare = $this->gateway->prepare(new GatewayPrep(
             new Request(),
-            Cart::make()->save()->entry()
+            Cart::create()->entry()
         ));
 
         $this->assertIsObject($prepare);
@@ -53,7 +53,7 @@ class DummyGatewayTest extends TestCase
 
         $purchase = $this->gateway->purchase(new GatewayPurchase(
             new Request(),
-            Cart::make()->save()->entry()
+            Cart::create()->entry()
         ));
 
         $this->assertIsObject($purchase);
@@ -86,7 +86,7 @@ class DummyGatewayTest extends TestCase
         TestTime::freeze();
 
         $charge = $this->gateway->getCharge(
-            Cart::make()->save()->entry()
+            Cart::create()->entry()
         );
 
         $this->assertIsObject($charge);
@@ -101,7 +101,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_refund_charge()
     {
-        $refund = $this->gateway->refundCharge(Cart::make()->save()->entry());
+        $refund = $this->gateway->refundCharge(Cart::create()->entry());
 
         $this->assertIsObject($refund);
         $this->assertTrue($refund->success());

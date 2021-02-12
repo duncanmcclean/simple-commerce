@@ -7,18 +7,22 @@ class BaseGateway
     protected array $config = [];
     protected string $handle = '';
     protected string $webhookUrl = '';
-    protected string $redirectUrl = '';
+    protected string $redirectUrl = '/';
+    protected string $displayName = '';
 
-    public function __construct(array $config = [], string $handle = '', string $webhookUrl = '', string $redirectUrl = '')
+    public function __construct(array $config = [], string $handle = '', string $webhookUrl = '', string $redirectUrl = '/')
     {
         $this->config = $config;
         $this->handle = $handle;
         $this->webhookUrl = $webhookUrl;
-        $this->callbackUrl = $redirectUrl;
+        $this->redirectUrl = $redirectUrl;
+        $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
     }
 
     public function config(): array
     {
+        // TODO: convert to a collect instance
+
         return $this->config;
     }
 
@@ -31,11 +35,8 @@ class BaseGateway
     {
         $data = [
             'gateway' => $this->handle,
+            '_redirect' => $this->redirectUrl,
         ];
-
-        if ($this->redirectUrl) {
-            $data['_redirect'] = $this->redirectUrl;
-        }
 
         return route('statamic.simple-commerce.gateways.callback', $data);
     }
@@ -43,5 +44,10 @@ class BaseGateway
     public function webhookUrl()
     {
         return $this->webhookUrl;
+    }
+
+    public function displayName()
+    {
+        return $this->displayName;
     }
 }

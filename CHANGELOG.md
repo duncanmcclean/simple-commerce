@@ -2,6 +2,181 @@
 
 ## Unreleased
 
+## v2.2.6 (2021-02-10)
+
+* [new] Allow adding product to cart multiple times and up the quantity. #351
+* [fix] Now throws `EntryNotFound` exception when no entry can be found, instead of `OrderNotFound`. #349
+
+## v2.2.5 (2021-02-09)
+
+* [fix] Fixed accidental bug introduced with cart driver fix in v2.2.4.
+
+## v2.2.4 (2021-02-09)
+
+* [fix] Don't throw an exception on `cart` endpoint if no cart exists
+* [fix] Don't attempt to augment variant fieldtype if value is `null`
+* [fix] When customer's active cart is deleted, a new one will be created, instead of throwing an exception. #348
+
+## v2.2.3 (2021-02-06)
+
+* [new] Added a command to automatically remove old cart entries. `php please sc:cart-cleanup`
+* [fix] Coupon total should be calculated from items total, not the grand total.
+* [fix] If grand total of cart is `0`, then don't do any gateway work
+* [fix] Strip out any decimals from product prices when added to cart
+* [fix] On the variant fieldtype: if there is no value, display an error message instead of spinner.
+
+## v2.2.2 (2021-02-02)
+
+* Fixed bug when removing an item from your cart #346
+
+## v2.2.1 (2021-01-31)
+
+It didn't take me very long to find a bunch of bugs...
+
+* Fixed exception within upgrade tool when `stillat/proteus` isn't installed
+* Upgrader will no longer continue if `stillat/proteus` isn't installed
+* Stripe Gateway should pull key & secret from gateway config, not hard coded `.env` values
+* When processing checkout, don't attempt to save data if we don't have any.
+
+## v2.2.0 (2021-01-31)
+
+Before upgrading, please review the [upgrade guide](https://sc-docs.doublethree.digital/v2.2/update-guide) in case there's any changes you need to make.
+
+### What's new
+
+* [Cart Drivers](https://sc-docs.doublethree.digital/v2.2/cart-drivers)
+* Under the hood codebase improvements
+
+### What's fixed
+
+* Various bugs
+
+## v2.1.35 (2021-01-30)
+
+* [fix] Actually use the new format when adding items to the cart
+* [fix] Fixed issue when clearing the cart
+
+## v2.1.34 (2021-01-30)
+
+* [new] Updated the default order blueprint
+* [new] Added a new 'Product Variant' fieldtype to select a single variant
+
+## v2.1.33 (2021-01-27)
+
+* [fix] Fixed some naming inconsistencies with postal/zip codes #343
+
+## v2.1.32 (2021-01-21)
+
+* [fix] Fix situations where the tax totals would be wrong with certain tax rates #340
+
+## v2.1.31 (2021-01-21)
+
+* [fix] ~~Fix situations where the tax totals would be wrong with certain tax rates #340~~
+
+## v2.1.30 (2021-01-17)
+
+* [new] Improved action responses (including propper support for AJAX usage)
+
+## v2.1.29 (2021-01-14)
+
+* [fix] Fixed issue with customer entry being overwritten by new carts. #337
+* [fix] Fixed situation where exception would be thrown if the 'Maximum Uses' field isn't set #338
+
+## v2.1.28 (2021-01-11)
+
+* [new] Currency formatting now depends on current site locale, instead of always being `en_US`.
+* [fix] Fixed issue with tax calculations #331
+* [fix] Fixed Mollie Gateway issues and off-site gateway issues #334
+
+## v2.1.27 (2021-01-11)
+
+* [fix] Fixed `->get()` parameter issue when using Mollie webhook. #332
+
+## v2.1.26 (2021-01-09)
+
+* [fix] Sometimes tags were being called twice. Now it should just be once!
+* [fix] Fixed exception sometimes if attempting variant augmentation on a product with no variants.
+* [fix] Fixed issue where Gateway Webhook URL's were returned as `null`.
+
+## v2.1.25 (2021-01-05)
+
+* [fix] Fixed the way we handle fallback URLs for off-site gateways #329
+
+## v2.1.24 (2021-01-04)
+
+* [fix] Fixed exception thrown by Off-site gateway callback. #327
+* [fix] If a redirect is not provided for off-site gateway, user should be redirected to the homepage.
+
+## v2.1.23 (2020-12-28)
+
+* [new] PHP 8 Support! #318
+* [fix] Product entries with variants should not have a standard `price` field.
+* [fix] The `has` method on Repositories will now return `null`, instead of throwing an exception about undefined indexes.
+
+## v2.1.22 (2020-12-23)
+
+* [fix] Fix issues parsing `null` Money fields. Addresses issue from #323.
+
+## v2.1.21 (2020-12-23)
+
+* [fix] Just get site with `Site::current()` inside Money Fieldtype, instead of getting the entries' locale.
+
+## v2.1.20 (2020-12-21)
+
+* [fix] Fixed issue when passing `receipt_email` to Stripe
+
+## v2.1.19 (2020-12-21)
+
+* [fix] Simplified the site detecting logic in the Money Fieldtype #319
+
+## v2.1.18 (2020-12-18)
+
+* [fix] Fixed issue with locales in Money Fieldtype again.
+
+## v2.1.17 (2020-12-18)
+
+* Re-tag of v2.1.16 (the release workflow broke)
+
+## v2.1.16 (2020-12-18)
+
+* [fix] Fix issue where `locale()` is called on undefined, in Money Fieldtype.
+
+## v2.1.15 (2020-12-12)
+
+* Remove Woodland
+
+## v2.1.14 (2020-12-12)
+
+* [new] You can now enable automatic receipt emails from Stripe.
+* [new] You can now use a single address for an order, instead of different shipping and billing ones.
+* [new] You can now set display names for gateways. Useful for when you give the customer an option between them.
+* [fix] Fixed a bug causing type exceptions.
+* [fix] Ensure customer can't add more of a product than you actually have in stock.
+
+## v2.1.13 (2020-12-05)
+
+* [new] Added some better error handling for form tags.
+* [fix] Issue where it couldn't find an 'index' gateway using the `{{ sc:gateways }}` tag? Now sorted!
+
+## v2.1.12 (2020-11-29)
+
+A whole lot of API related changes this release...
+
+* [new] It's now easier to get fields from your cart. How's `{{ sc:cart:delivery_note }}`?
+* [new] The Order Calculator has been moved out of the `CartRepository` and into it's own class. However, the `recalculateTotals` method on the `CartRepository` will continue to work for the time being.
+* [new] Introduced a new `OrderRepository` which will eventually replace the `CartRepository` (it's a breaking change so it won't happen until at least v2.2)
+* [new] Added `customer` method to `CartRepository`
+* [fix] Default order blueprint no longer has a SKU field on it.
+* [fix] `php please sc:install` command will now only publish blueprints and configuration file.
+
+## v2.1.11 (2020-11-27)
+
+* [new] Add an `exempt_from_tax` field to products that you want to be exempt from tax.
+* [fix] Carts & Customers will be created in the correct site.
+* [fix] When created, customers will now be published instead of a draft.
+* [fix] Money Fieldtype will respect the site of the entry and display the correct currency.
+* [fix] Fixed issue where you could add the same product/variant to the cart twice.
+
 ## v2.1.10 (2020-11-22)
 
 * [fix] Fixed bug with blueprint field checking

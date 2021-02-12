@@ -4,31 +4,31 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
 
 class CheckoutTags extends SubTag
 {
     use Concerns\FormBuilder,
-        SessionCart;
+        CartDriver;
 
     public function index()
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
         $data = $cart->data;
 
         foreach (SimpleCommerce::gateways() as $gateway) {
             try {
                 $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
 
-                $cart->update([
+                $cart->data([
                     $gateway['handle'] => $prepare->data(),
-                ]);
+                ])->save();
 
                 $data = array_merge($data, $prepare->data());
             } catch (\Exception $e) {
-                dd($e->getMessage());
+                dd("Exception from Gateway: " . $e->getMessage());
             }
         }
 
@@ -42,7 +42,11 @@ class CheckoutTags extends SubTag
     // {{ sc:checkout:mollie }}
     public function wildcard(string $tag)
     {
-        $cart = $this->getSessionCart();
+        if (! $tag || $tag === 'index') {
+            return $this->index();
+        }
+
+        $cart = $this->getCart();
         $gatewayHandle = last(explode(':', $tag));
 
         $gateway = collect(SimpleCommerce::gateways())
@@ -60,6 +64,10 @@ class CheckoutTags extends SubTag
         }
 
         $prepare = $prepare->prepare(request(), $cart->entry());
+
+        $cart->data([
+            $gateway['handle'] => $prepare->data(),
+        ])->save();
 
         if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');

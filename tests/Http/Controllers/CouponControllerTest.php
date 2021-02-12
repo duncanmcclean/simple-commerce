@@ -3,7 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -27,6 +28,43 @@ class CouponControllerTest extends TestCase
 
     /** @test */
     public function can_store_coupon()
+    {
+        $this->markTestSkipped();
+
+        Event::fake();
+
+        $this->buildCartWithProducts();
+
+        $coupon = Coupon::create([
+            'slug'=> 'half-price',
+            'title' => 'Half Price',
+                'redeemed' => 0,
+                'value' => 50,
+                'type' => 'percentage',
+                'minimum_cart_value' => null,
+        ])->save();
+
+        $data = [
+            'code' => 'half-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertSame($this->cart->data['coupon'], $coupon->id());
+        $this->assertNotSame($this->cart->data['coupon_total'], 0);
+
+        Event::assertDispatched(CouponRedeemed::class);
+    }
+
+    /** @test */
+    public function can_store_coupon_and_request_json_response()
     {
         Event::fake();
 
@@ -53,9 +91,13 @@ class CouponControllerTest extends TestCase
         $response = $this
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $this->cart->id])
-            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+            ->postJson(route('statamic.simple-commerce.coupon.store'), $data);
 
-        $response->assertRedirect('/cart');
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
 
         $this->cart->find($this->cart->id);
 
@@ -145,9 +187,9 @@ class CouponControllerTest extends TestCase
             ->save();
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
-        $this->cart->update([
+        $this->cart->data([
             'coupon' => $coupon->id(),
-        ]);
+        ])->save();
 
         $response = $this
             ->from('/cart')
@@ -162,15 +204,54 @@ class CouponControllerTest extends TestCase
         $this->assertSame($this->cart->data['coupon_total'], 0000);
     }
 
+    /** @test */
+    public function can_destroy_coupon_and_request_json()
+    {
+        $this->buildCartWithProducts();
+
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title' => 'Half Price',
+                'redeemed' => 0,
+                'value' => 50,
+                'type' => 'percentage',
+                'minimum_cart_value' => null,
+            ])
+            ->save();
+        $coupon = Entry::findBySlug('half-price', 'coupons');
+
+        $this->cart->data([
+            'coupon' => $coupon->id(),
+        ])->save();
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->deleteJson(route('statamic.simple-commerce.coupon.destroy'));
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertNull($this->cart->data['coupon']);
+        $this->assertSame($this->cart->data['coupon_total'], 0000);
+    }
+
     protected function buildCartWithProducts()
     {
-        $this->product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $this->product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ])->save();
 
-        $this->cart = Cart::make()->save()->update([
+        $this->cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),

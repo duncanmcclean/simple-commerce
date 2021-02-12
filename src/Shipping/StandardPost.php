@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use Statamic\Entries\Entry;
 
 class StandardPost implements ShippingMethod

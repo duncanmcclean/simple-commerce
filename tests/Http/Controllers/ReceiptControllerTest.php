@@ -16,13 +16,12 @@ class ReceiptControllerTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),

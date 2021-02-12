@@ -49,15 +49,16 @@ class StripeGateway extends BaseGateway implements Gateway
 
         if (isset($customer->data['email'])) {
             $stripeCustomerData = [
-                'email' => $customer->data['email'],
+                'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
+                'email' => $customer->get('email'),
             ];
-
-            if (isset($customer->data['name'])) {
-                $stripeCustomerData['name'] = $customer->data['name'];
-            }
 
             $stripeCustomer = StripeCustomer::create($stripeCustomerData);
             $intentData['customer'] = $stripeCustomer->id;
+        }
+
+        if (isset($customer) && isset($this->config()['receipt_email']) && $this->config()['receipt_email'] === true) {
+            $intentData['receipt_email'] = $customer->email();
         }
 
         $intent = PaymentIntent::create($intentData);
@@ -122,13 +123,13 @@ class StripeGateway extends BaseGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (! env('STRIPE_SECRET')) {
+        if (! isset($this->config()['secret'])) {
             throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
         }
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey($this->config()['secret']);
 
-        if ($version = env('STRIPE_API_VERSION')) {
+        if (isset($this->config()['version']) && $version = $this->config()['version']) {
             Stripe::setApiVersion($version);
         }
     }

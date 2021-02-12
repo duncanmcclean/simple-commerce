@@ -10,7 +10,7 @@ class InfoCommand extends Command
 {
     use RunsInPlease;
 
-    protected $name = 'statamic:simple-commerce:info';
+    protected $name = 'sc:info';
     protected $description = 'Get information from Simple Commerce, like booted gateways, etc.';
 
     public function handle()

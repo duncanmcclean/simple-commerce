@@ -3,21 +3,21 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
 {
     use Concerns\FormBuilder,
-        SessionCart;
+        CartDriver;
 
     public function index(): array
     {
-        if (! $this->hasSessionCart()) {
+        if (! $this->hasCart()) {
             return [];
         }
 
-        $coupon = isset($this->getSessionCart()->data['coupon'])
-            ? $this->getSessionCart()->data['coupon']
+        $coupon = isset($this->getCart()->data['coupon'])
+            ? $this->getCart()->data['coupon']
             : null;
 
         if ($coupon === null) {
@@ -37,11 +37,11 @@ class CouponTags extends SubTag
 
     public function has()
     {
-        if (! $this->hasSessionCart()) {
+        if (! $this->hasCart()) {
             return false;
         }
 
-        return isset($this->getSessionCart()->data['coupon']);
+        return isset($this->getCart()->data['coupon']);
     }
 
     public function redeem()

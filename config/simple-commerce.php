@@ -37,10 +37,14 @@ return [
     | You can setup multiple payment gateways for your store with Simple Commerce.
     | Here's where you can configure the gateways in use.
     |
+    | https://sc-docs.doublethree.digital/v2.2/gateways
+    |
     */
 
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [],
+        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [
+            'display' => 'Card',
+        ],
     ],
 
     /*
@@ -52,6 +56,8 @@ return [
     | eg. a cart being completed.
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
+    |
+    | https://sc-docs.doublethree.digital/v2.2/email
     |
     */
 
@@ -93,15 +99,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cart Key
+    | Cart
     |--------------------------------------------------------------------------
     |
-    | Under the hood, Simple Commerce sets an entry in the session to store the customers'
-    | current cart ID. If you want to, you can change the key of the session entry.
+    | Configure the Cart Driver in use on your site. It's what stores/gets the
+    | Cart ID from the user's browser on every request.
     |
     */
 
-    'cart_key' => 'simple-commerce-cart',
+    'cart' => [
+        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver::class,
+        'key' => 'simple-commerce-cart',
+    ],
 
     /*
     |--------------------------------------------------------------------------

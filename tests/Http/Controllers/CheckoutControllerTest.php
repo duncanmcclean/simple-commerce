@@ -38,11 +38,10 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
         Mail::fake();
 
-        $product = Product::make()
-            ->title('Food')
-            ->slug('food')
-            ->data(['price' => 1000])
-            ->save();
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
 
         Entry::make()
             ->collection('coupons')
@@ -57,7 +56,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon = Entry::whereCollection('coupons')->first();
 
-        $cart = Cart::make()->save()->update([
+        $cart = Order::create([
             'items' => [
                 [
                     'id' => Stache::generateId(),

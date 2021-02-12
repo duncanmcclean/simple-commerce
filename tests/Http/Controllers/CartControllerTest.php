@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -23,29 +24,22 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_get_cart_index()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->get(route('statamic.simple-commerce.cart.index'));
+            ->getJson(route('statamic.simple-commerce.cart.index'));
 
         $response->assertOk()
             ->assertJsonStructure([
-                'title',
-                'items',
-                'is_paid',
-                'grand_total',
-                'items_total',
-                'tax_total',
-                'shipping_total',
-                'coupon_total',
+                'data',
             ]);
     }
 
     /** @test */
     public function can_update_cart()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -64,14 +58,39 @@ class CartControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_cart_and_request_json_response()
+    {
+        $cart = Cart::create()->save();
+
+        $data = [
+            'shipping_note' => 'Be careful pls.',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->postJson(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
+    }
+
+    /** @test */
     public function can_update_cart_with_customer_already_in_cart()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::create()->data([
             'name' => 'Dan Smith',
             'email' => 'dan.smith@example.com',
         ])->save();
 
-        $cart = Cart::make()->save()->update(['customer' => $customer->id]);
+        $cart = Cart::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -93,11 +112,11 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
-            'name' => 'John Doe',
-            'email' => 'johndoe@gmail.com',
+            'name' => 'Joe Doe',
+            'email' => 'joedoe@gmail.com',
         ];
 
         $response = $this
@@ -111,19 +130,19 @@ class CartControllerTest extends TestCase
         $customer = Customer::findByEmail($data['email']);
 
         $this->assertSame($cart->data['customer'], $customer->id);
-        $this->assertSame($customer->title, 'John Doe <johndoe@gmail.com>');
-        $this->assertSame($customer->slug, 'johndoe-at-gmailcom');
+        $this->assertSame($customer->title, 'Joe Doe <joedoe@gmail.com>');
+        $this->assertSame($customer->slug, 'joedoe-at-gmailcom');
     }
 
     /** @test */
     public function can_update_cart_and_existing_customer_by_id()
     {
-        $customer = Customer::make()->data([
-            'name' => 'Jor Smith',
+        $customer = Customer::create()->data([
+            'name' => 'Jordan Smith',
             'email' => 'jordan.smith@example.com',
         ])->save();
 
-        $cart = Cart::make()->save()->update(['customer' => $customer->id]);
+        $cart = Cart::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
             'customer' => [
@@ -139,7 +158,6 @@ class CartControllerTest extends TestCase
         $response->assertRedirect('/cart');
 
         $cart->find($cart->id);
-        $customer = Customer::findByEmail('jordan.smith@example.com');
 
         $this->assertSame($cart->data['customer'], $customer->id);
         $this->assertSame($customer->data['name'], 'Jordan Smith');
@@ -148,12 +166,12 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_email()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::create()->data([
             'name' => 'Jak Simpson',
             'email' => 'jack.simpson@example.com',
         ])->save();
 
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'customer' => [
@@ -179,7 +197,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer_via_customer_array()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             'customer' => [
@@ -205,10 +223,44 @@ class CartControllerTest extends TestCase
         $this->assertSame($customer->slug, 'rebeccalogan-at-examplecom');
     }
 
+    /**
+     * @test
+     * PR: https://github.com/doublethreedigital/simple-commerce/pull/337
+     */
+    public function can_update_cart_and_ensure_customer_is_not_overwritten()
+    {
+        $customer = Customer::create([
+            'name' => 'Duncan',
+            'email' => 'duncan@test.com',
+        ])->save();
+
+        $order = Order::create([
+            'customer' => $customer->id,
+        ])->save();
+
+        $this->assertSame($customer->get('name'), 'Duncan');
+        $this->assertSame($customer->id, $order->get('customer'));
+
+        $cart = Cart::create()->save();
+
+        $data = [
+            'email' => 'duncan@test.com',
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $cartCustomer = Customer::find($cart->entry()->get('customer'));
+
+        $this->assertSame($customer->id, $cartCustomer->id);
+        $this->assertSame($customer->get('name'), $cartCustomer->get('name'));
+    }
+
     /** @test */
     public function can_update_cart_with_custom_redirect_page()
     {
-        $cart = Cart::make()->save();
+        $cart = Cart::create()->save();
 
         $data = [
             '_redirect' => '/checkout',
@@ -225,11 +277,11 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart()
     {
-        $product = Product::make()->save()->update(['price' => 1000]);
+        $product = Product::create()->save()->data(['price' => 1000])->save();
 
-        $cart = Cart::make()
+        $cart = Cart::create()
             ->save()
-            ->update([
+            ->data([
                 'items' => [
                     [
                         'id' => Stache::generateId(),
@@ -238,13 +290,45 @@ class CartControllerTest extends TestCase
                         'total' => 1000,
                     ],
                 ],
-            ]);
+            ])
+            ->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->delete(route('statamic.simple-commerce.cart.empty'));
 
         $response->assertRedirect();
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->data['items'], []);
+    }
+
+    /** @test */
+    public function can_destroy_cart_and_request_json_response()
+    {
+        $product = Product::create(['price' => 1000])->save();
+
+        $cart = Cart::create([
+                'items' => [
+                    [
+                        'id' => Stache::generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 1000,
+                    ],
+                ],
+            ])->save();
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->deleteJson(route('statamic.simple-commerce.cart.empty'));
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'cart',
+        ]);
 
         $cart->find($cart->id);
 

@@ -2,13 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Facades;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
 use Illuminate\Support\Facades\Facade;
 
 class Product extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return ProductRepository::class;
+        return Contract::class;
     }
 }

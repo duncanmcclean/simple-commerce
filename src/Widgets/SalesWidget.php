@@ -56,7 +56,9 @@ class SalesWidget extends Widget
 
         $ordersCollection
             ->each(function ($order) use (&$total) {
-                if (! $order->has('grand_total')) return;
+                if (! $order->has('grand_total')) {
+                    return;
+                }
 
                 $total = $total + $order->get('grand_total');
             });

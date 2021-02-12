@@ -2,77 +2,90 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\SessionCart;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
-use Statamic\Facades\Stache;
 
 class CartItemController extends BaseActionController
 {
-    use SessionCart;
+    use CartDriver;
 
     public function store(StoreRequest $request)
     {
-        if ($this->hasSessionCart()) {
-            $cart = $this->getSessionCart();
-        } else {
-            $cart = $this->makeSessionCart();
+        $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
+        $product = Product::find($request->product);
+
+        $items = $cart->has('items') ? $cart->get('items') : [];
+
+        // Ensure there's enough stock to fulfill the customer's quantity
+        if (isset($product->data['stock']) && $product->data['stock'] < $request->quantity) {
+            return $this->withErrors($request, "There's not enough stock to fulfil the quantity you selected. Please try again later.");
         }
 
-        $items = isset($cart->data['items']) ? $cart->data['items'] : [];
-
-        $item = [
-            'id'       => Stache::generateId(),
-            'product'  => $request->product,
-            'quantity' => (int) $request->quantity,
-            'total'    => 0000,
-        ];
+        // Ensure the product doesn't already exist in the cart
+        $alreadyExistsQuery = collect($items);
 
         if ($request->has('variant')) {
-            $item['variant'] = $request->variant;
+            $alreadyExistsQuery = $alreadyExistsQuery->where('variant', [
+                'variant' => $request->get('variant'),
+                'product' => $request->get('product'),
+            ]);
         }
 
-        $cart->update([
-            'items' => array_merge($items, [$item]),
-        ])->calculateTotals();
+        if ($alreadyExistsQuery->count() >= 1) {
+            $cart->updateOrderItem($alreadyExistsQuery->first()['id'], [
+                'quantity' => (int) $alreadyExistsQuery->first()['quantity'] + $request->quantity,
+            ]);
+        } else {
+            $item = [
+                'product'  => $request->product,
+                'quantity' => (int) $request->quantity,
+                'total'    => 0000,
+            ];
 
-        return $this->withSuccess($request);
+            if ($request->has('variant')) {
+                $item['variant'] = [
+                    'variant' => $request->variant,
+                    'product' => $request->product,
+                ];
+            }
+
+            $cart->addOrderItem($item);
+        }
+
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_item_added'),
+            'cart'    => $cart->toResource(),
+        ]);
     }
 
     public function update(UpdateRequest $request, string $requestItem)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
-        $cart->update([
-            'items' => collect($cart->data['items'] ?? [])
-                ->map(function ($item) use ($request, $requestItem) {
-                    if ($item['id'] !== $requestItem) {
-                        return $item;
-                    }
+        $cart->updateOrderItem(
+            $requestItem,
+            Arr::except($request->all(), ['_token', '_params', '_redirect'])
+        );
 
-                    return array_merge(
-                        $item,
-                        Arr::except($request->all(), ['_token', '_params', '_redirect']),
-                    );
-                })
-                ->toArray(),
-        ])->calculateTotals();
-
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_item_updated'),
+            'cart'    => $cart->toResource(),
+        ]);
     }
 
     public function destroy(DestroyRequest $request, string $item)
     {
-        $cart = $this->getSessionCart();
+        $cart = $this->getCart();
 
-        $cart->update([
-            'items' => collect($cart->data['items'])
-                ->where('id', '!==', $item)
-                ->toArray(),
-        ])->calculateTotals();
+        $cart->removeOrderItem($item);
 
-        return $this->withSuccess($request);
+        return $this->withSuccess($request, [
+            'message' => __('simple-commerce.messages.cart_item_deleted'),
+            'cart'    => $cart->toResource(),
+        ]);
     }
 }

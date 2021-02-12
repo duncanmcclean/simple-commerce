@@ -43,15 +43,15 @@ class SimpleCommerceTag extends Tags
             throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
         }
 
-        try {
+        if (method_exists($class, $method)) {
             return (new $class($this))->{$method}();
-        } catch (Exception $e) {
-            if (method_exists($class, 'wildcard')) {
-                return (new $class($this))->wildcard($method);
-            }
-
-            throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
         }
+
+        if (method_exists($class, 'wildcard')) {
+            return (new $class($this))->wildcard($method);
+        }
+
+        throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
     }
 
     public function countries()
@@ -62,5 +62,25 @@ class SimpleCommerceTag extends Tags
     public function currencies()
     {
         return Currencies::toArray();
+    }
+
+    public function errors()
+    {
+        if (! $this->hasErrors()) {
+            return null;
+        }
+
+        $errors = [];
+
+        foreach (session('errors')->getBag('default')->all() as $error) {
+            $errors[]['value'] = $error;
+        }
+
+        return $this->parseLoop($errors);
+    }
+
+    public function hasErrors()
+    {
+        return session()->has('errors');
     }
 }
