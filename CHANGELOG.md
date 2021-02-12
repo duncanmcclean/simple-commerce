@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-* [fix] Validate against the possibility of having negative line item quantities.
+* [fix] Validate against the possibility of having negative line item quantities. #354
 
 ## v2.2.7 (2021-02-12)
 
