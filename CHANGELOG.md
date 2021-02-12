@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.2.7 (2021-02-12)
+
+* [fix] Fixed issue when adding more than a single item to your cart #353
+* [fix] When gateway's response isn't success, throw validation errors #352
+
 ## v2.2.6 (2021-02-10)
 
 * [new] Allow adding product to cart multiple times and up the quantity. #351
