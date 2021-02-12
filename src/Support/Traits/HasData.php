@@ -19,7 +19,8 @@ trait HasData
 
     public function has(string $key): bool
     {
-        return isset($this->data[$key]) && ! is_null($this->data[$key]);
+        return isset($this->data[$key])
+            && ! is_null($this->data[$key]);
     }
 
     public function get(string $key)
