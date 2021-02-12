@@ -426,6 +426,27 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_store_item_with_negative_quantity()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $data = [
+            'product' => $product->id,
+            'quantity' => -1,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHasErrors();
+    }
+
+    /** @test */
     public function can_update_item()
     {
         $product = Product::create([
