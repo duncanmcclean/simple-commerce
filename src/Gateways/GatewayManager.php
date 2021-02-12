@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class GatewayManager implements Contract
 {
@@ -39,11 +40,12 @@ class GatewayManager implements Contract
 
         if ($purchase->success()) {
             Cart::find($order->id())->data([
-                'gateway' => $this->className,
+                'gateway'      => $this->className,
                 'gateway_data' => $purchase->data(),
             ]);
         } else {
             // TODO: something
+            throw ValidationException::withMessages([$purchase->error()]);
         }
 
         return $purchase;
@@ -65,7 +67,7 @@ class GatewayManager implements Contract
 
         $cart = Cart::find($order->id());
         $cart->data([
-            'is_refunded' => true,
+            'is_refunded'  => true,
             'gateway_data' => array_merge($cart->data['gateway_data'], [
                 'refund' => $refund,
             ]),

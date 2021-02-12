@@ -20,14 +20,12 @@ class StoreRequest extends FormRequest
         // TODO: Need to validate we have stock left of all products before continuing
 
         $rules = [
-            'name' => 'sometimes|string',
+            'name'  => 'sometimes|string',
             'email' => 'sometimes|email',
         ];
 
         if ($this->getCart()->get('grand_total') > 0) {
-            dd($this->getCart());
-
-            $rules['gateway'] = ['required', 'string', new IsAGateway];
+            $rules['gateway'] = ['required', 'string', new IsAGateway()];
         }
 
         return $rules;
