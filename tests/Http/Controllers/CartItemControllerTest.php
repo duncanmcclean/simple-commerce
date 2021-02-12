@@ -261,6 +261,52 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_add_second_item_to_a_cart_with_an_existing_item()
+    {
+        $productOne = Product::create([
+            'title' => 'Product One',
+            'price' => 1000,
+        ]);
+
+        $productTwo = Product::create([
+            'title' => 'Product Two',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id' => Stache::generateId(),
+                    'product' => $productOne->id,
+                    'quantity' => 1,
+                ]
+            ],
+        ]);
+
+        $this->assertCount(1, $cart->get('items'));
+
+        $data = [
+            'product' => $productTwo->id,
+            'quantity' => 1,
+            '_redirect' => '/checkout',
+        ];
+
+        $response = $this
+            ->from('/products/'.$productTwo->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/checkout');
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(2000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($productTwo->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
     public function can_store_a_product_that_is_already_in_the_cart()
     {
         $product = Product::create([
