@@ -33,6 +33,8 @@ class CartItemController extends BaseActionController
                 'variant' => $request->get('variant'),
                 'product' => $request->get('product'),
             ]);
+        } else {
+            $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
