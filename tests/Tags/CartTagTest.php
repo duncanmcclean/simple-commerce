@@ -22,21 +22,15 @@ class CartTagTest extends TestCase
         $this->tag = resolve(CartTags::class)
             ->setParser(Antlers::parser())
             ->setContext([]);
-
-        // Use the cache cart driver for testing
-        // $this->app->bind(CartDriver::class, CacheDriver::class);
     }
 
     /** @test */
     public function can_get_index()
     {
-        // // TODO: The array stuff here doesn't seem to be working.
-        $this->markTestIncomplete();
-
         $this->fakeCart();
 
         $this->assertSame('cart', (string) $this->tag('{{ sc:cart }}{{ order_status }}{{ /sc:cart }}'));
-        $this->assertSame('false', (string) $this->tag('{{ sc:cart }}{{ is_paid }}{{ /sc:cart }}'));
+        $this->assertSame('false', (string) $this->tag('{{ sc:cart }}{{ if {is_paid} }}true{{ else }}false{{ /if }}{{ /sc:cart }}'));
     }
 
     /** @test */
@@ -118,46 +112,73 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_total()
     {
-        // TODO: work out issues with toAugmentedArray() playing up in tests
-        $this->markTestIncomplete();
-
         $cart = Order::create([
             'grand_total' => 2550,
         ]);
 
         $this->fakeCart($cart);
 
-        $this->assertSame('£25.50', $this->tag('{{ sc:cart:total }}'));
+        $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:total }}'));
     }
 
     /** @test */
     public function can_get_cart_grand_total()
     {
-        //
+        $cart = Order::create([
+            'grand_total' => 2550,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:grandTotal }}'));
     }
 
     /** @test */
     public function can_get_cart_items_total()
     {
-        //
+        $cart = Order::create([
+            'items_total' => 2550,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:itemsTotal }}'));
     }
 
     /** @test */
     public function can_get_cart_shipping_total()
     {
-        //
+        $cart = Order::create([
+            'shipping_total' => 2550,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:shippingTotal }}'));
     }
 
     /** @test */
     public function can_get_cart_tax_total()
     {
-        //
+        $cart = Order::create([
+            'tax_total' => 2550,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:taxTotal }}'));
     }
 
     /** @test */
     public function can_get_cart_coupon_total()
     {
-        //
+        $cart = Order::create([
+            'coupon_total' => 2550,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:couponTotal }}'));
     }
 
     /** @test */
@@ -226,7 +247,25 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_cart_update_form()
     {
-        // TODO: work out the toAugmentedArray issue before writing this test
+        $cart = Order::create([]);
+
+        $this->fakeCart($cart);
+
+        $this->tag->setParameters([]);
+
+        $this->tag->setContent('
+            <h2>Update cart</h2>
+
+            <input name="name">
+            <input name="email">
+
+            <button type="submit">Update cart</submit>
+        ');
+
+        $usage = $this->tag->update();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
     }
 
     /** @test */
@@ -249,10 +288,10 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_data_from_cart()
     {
-        // TODO, marked as incomplete until we figure out how to store stuff in the session
-        $this->markTestIncomplete();
-
-        $cart = Order::create(['title' => '#0001', 'note' => 'Deliver by front door.']);
+        $cart = Order::create([
+            'title' => '#0001',
+            'note' => 'Deliver by front door.',
+        ]);
 
         $this->session(['simple-commerce-cart' => $cart->id]);
         $this->tag->setParameters([]);
@@ -277,8 +316,15 @@ class CartTagTest extends TestCase
             ->with('simple-commerce-cart')
             ->andReturn($cart->id);
 
+        Session::shouldReceive('token')
+            ->andReturn('random-token');
+
         Session::shouldReceive('has')
             ->with('simple-commerce-cart')
             ->andReturn(true);
+
+        Session::shouldReceive('has')
+            ->with('errors')
+            ->andReturn([]);
     }
 }

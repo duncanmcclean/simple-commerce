@@ -158,7 +158,7 @@ class CartTags extends SubTag
             return $this->{$method}();
         }
 
-        if (! $cart->has($method)) {
+        if ($cart->has($method)) {
             return $cart->get($method);
         }
 
