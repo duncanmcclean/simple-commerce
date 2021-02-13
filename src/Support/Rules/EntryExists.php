@@ -9,7 +9,8 @@ class EntryExists implements Rule
 {
     public function passes($attribute, $value)
     {
-        return Entry::find($value) === null ? false : true;
+        return Entry::find($value) === null
+            ? false : true;
     }
 
     public function message()
