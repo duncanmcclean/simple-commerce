@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [fix] Validate against the possibility of having negative line item quantities. #354
+* [fix] Fixed bug with `{{ sc:cart:{key} }}` usage.
 
 ## v2.2.7 (2021-02-12)
 
