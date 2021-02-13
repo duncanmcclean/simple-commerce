@@ -13,7 +13,7 @@ class Calculator
     public function calculate($order)
     {
         if (isset($order->data['is_paid']) && $order->data['is_paid'] === true) {
-            return $order;
+            return $order->data();
         }
 
         $data = [
