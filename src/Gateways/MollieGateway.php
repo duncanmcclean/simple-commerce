@@ -51,11 +51,20 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function purchase(GatewayPurchase $data): GatewayResponse
     {
+        // We don't actually do anything here as Mollie is an
+        // off-site gateway, so it has it's own checkout page.
+
+        // TODO: maybe throw an exception, in the case a developer gets here?
+
         return new GatewayResponse(false, []);
     }
 
     public function purchaseRules(): array
     {
+        // Mollie is off-site, therefore doesn't use the traditional
+        // checkout process provided by Simple Commerce. Hence why no rules
+        // are defined here.
+
         return [];
     }
 
