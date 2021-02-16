@@ -10,7 +10,11 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
 use Statamic\Entries\Entry;
@@ -31,22 +35,137 @@ class MollieGateway extends BaseGateway implements Gateway
         $this->setupMollie();
         $cart = $data->cart();
 
-        $payment = $this->mollie->payments->create([
-            'amount' => [
-                'currency' => Currency::get(Site::current())['code'],
-                'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
-            ],
-            'description' => "Order {$cart->title}",
-            'redirectUrl' => $this->callbackUrl(),
-            'webhookUrl'  => $this->webhookUrl(),
-            'metadata' => [
-                'order_id' => $cart->id,
-            ],
-        ]);
+        if ($this->isUsingPaymentsApi()) {
+            $payment = $this->mollie->payments->create([
+                'amount' => [
+                    'currency' => Currency::get(Site::current())['code'],
+                    'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
+                ],
+                'description' => "Order {$cart->title}",
+                'redirectUrl' => $this->callbackUrl(),
+                'webhookUrl'  => $this->webhookUrl(),
+                'metadata' => [
+                    'order_id' => $cart->id,
+                ],
+            ]);
 
-        return new GatewayResponse(true, [
-            'id' => $payment->id,
-        ], $payment->getCheckoutUrl());
+            return new GatewayResponse(true, [
+                'id' => $payment->id,
+                'type' => 'payments',
+            ], $payment->getCheckoutUrl());
+        }
+
+        if ($this->isUsingOrdersApi()) {
+            $cart = Order::find($cart->id());
+            $billingAddress = $cart->billingAddress();
+
+            if (! $billingAddress) {
+                throw new \Exception("Please add a billing address to the order before attempting to create a Mollie order.");
+            }
+
+            // if (! $cart->customer()) {
+            //     throw new \Exception("Please add a customer to the order before attempting to create a Mollie order.");
+            // }
+
+            $order = $this->mollie->orders->create([
+                'amount' => [
+                    'currency' => Currency::get(Site::current())['code'],
+                    'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
+                ],
+                'orderNumber' => $cart->title,
+                'lines' => $cart->orderItems()
+                    ->map(function ($item) use ($cart) {
+                        $product = Product::find($item['product']);
+
+                        if ($product->purchasableType() === 'variants') {
+                            if (is_array($item['variant'])) {
+                                $variant = $product->variantOption($item['variant']['variant']);
+                            } else {
+                                $variant = $product->variantOption($item['variant']);
+                            }
+                        } else {
+                            $variant = null;
+                        }
+
+                        // dd($cart);
+
+                        $wip = [
+                            'type' => $product->get('is_digital_product', false) === true
+                                ? 'digital'
+                                : 'physical',
+                            'name' => is_null($variant)
+                                ? $product->title
+                                : "$product->title - {$variant['variant']}",
+                            'quantity' => $item['quantity'],
+                            'unitPrice' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' => is_null($variant)
+                                    ? (string) substr_replace($product->get('price'), '.', -2, 0)
+                                    : (string) substr_replace($variant['price'], '.', -2, 0)
+                            ],
+                            'totalAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' => $totalAmount = (string) substr_replace($item['total'], '.', -2, 0),
+                            ],
+                            'vatRate' => collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'],
+                            'vatAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                // 'value' => (string) substr_replace($cart->get('tax_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
+                                // 'value' => '2.00',
+                                'value' => '1.67',
+                            ],
+                        ];
+
+                        // dd($wip);
+
+                        return $wip;
+                    })
+                    ->merge([
+                        [
+                            'type' => 'shipping_fee',
+                            'name' => 'Shipping',
+                            'quantity' => 1,
+                            'unitPrice' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                // 'value' =>  '0'.(string) substr_replace($cart->get('shipping_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
+                                'value' => '3.20',
+                            ],
+                            'totalAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                // 'value' => '0'.(string) substr_replace($cart->get('shipping_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
+                                'value' => '3.20',
+                            ],
+                            'vatRate' => '0',
+                            'vatAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' => '0.00',
+                                // 'value' => (string) substr_replace($cart->get('tax_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
+                            ],
+                        ],
+                    ])
+                    ->toArray(),
+                'billingAddress' => [
+                    'givenName' => $billingAddress->name(),
+                    'familyName' => $billingAddress->name(),
+                    // 'email' => $cart->customer()->email(),
+                    'email' => 'pr@doublethree.digital',
+                    'streetAndNumber' => $billingAddress->address(),
+                    'postalCode' => $billingAddress->zipCode(),
+                    'city' => $billingAddress->city(),
+                    'country' => $billingAddress->country(),
+                ],
+                'redirectUrl' => $this->callbackUrl(),
+                // 'webhookUrl'  => $this->webhookUrl(),
+                'locale' => 'en_US',
+            ]);
+
+            return new GatewayResponse(true, [
+                'id' => $order->id,
+                'type' => 'orders',
+            ], $order->getCheckoutUrl());
+        }
+
+        // TODO: throw exception
     }
 
     public function purchase(GatewayPurchase $data): GatewayResponse
@@ -154,5 +273,15 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->mollie = new MollieApiClient();
         $this->mollie->setApiKey($this->config()['key']);
+    }
+
+    protected function isUsingPaymentsApi()
+    {
+        return $this->configAsCollection()->get('api', 'payments') === 'payments';
+    }
+
+    protected function isUsingOrdersApi()
+    {
+        return $this->configAsCollection()->get('api', 'payments') === 'orders';
     }
 }
