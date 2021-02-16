@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Data\Gateways;
 
+use Illuminate\Support\Collection;
+
 class BaseGateway
 {
     protected array $config = [];
@@ -24,6 +26,11 @@ class BaseGateway
         // TODO: convert to a collect instance
 
         return $this->config;
+    }
+
+    public function configAsCollection(): Collection
+    {
+        return collect($this->config);
     }
 
     public function handle(): string
