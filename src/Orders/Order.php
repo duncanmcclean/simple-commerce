@@ -91,6 +91,10 @@ class Order implements Contract
             return $this;
         }
 
+        if (! $this->has('customer')) {
+            return null;
+        }
+
         return Customer::find($this->get('customer'));
     }
 
