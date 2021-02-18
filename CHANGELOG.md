@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.2.9 (2021-02-18)
+
+* Cookie Driver is now the default for new installs.
+* [fix] Fixed `Call to undefined method make()` when using cookie cart driver. #365
+
 ## v2.2.8 (2021-02-16)
 
 * [fix] Validate against the possibility of having negative line item quantities. #354
