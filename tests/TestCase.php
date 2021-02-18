@@ -11,6 +11,7 @@ use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Stache\Stores\UsersStore;
 use Statamic\Statamic;
 use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use Statamic\Facades\Site;
 
 abstract class TestCase extends OrchestraTestCase
@@ -76,6 +77,7 @@ abstract class TestCase extends OrchestraTestCase
             'directory' => __DIR__.'/__fixtures/users',
         ]);
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
+        $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
