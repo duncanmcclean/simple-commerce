@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 
 use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Support\Collection;
 use Statamic\Entries\Entry as AnEntry;
 use Statamic\Facades\Entry;
@@ -14,7 +15,7 @@ class SalesWidget extends Widget
 {
     public function html()
     {
-        $baseQuery = Entry::whereCollection(config('simple-commerce.collections.orders'))
+        $baseQuery = Order::query()
             ->filter(function (AnEntry $entry) {
                 return $entry->has('paid_date');
             });
