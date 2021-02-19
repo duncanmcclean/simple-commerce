@@ -38,7 +38,32 @@ class Address
             ->join(', ');
     }
 
-    public function shippingNote()
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function address(): string
+    {
+        return $this->address();
+    }
+
+    public function city(): string
+    {
+        return $this->city;
+    }
+
+    public function country(): string
+    {
+        return $this->country;
+    }
+
+    public function zipCode(): string
+    {
+        return $this->zipCode;
+    }
+
+    public function shippingNote(): ?string
     {
         return $this->shippingNote;
     }
