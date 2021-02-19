@@ -36,6 +36,8 @@ class CartItemControllerTest extends TestCase
             ->from('/products/'.$product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
+            dd($response);
+
         $response->assertRedirect('/products/'.$product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 

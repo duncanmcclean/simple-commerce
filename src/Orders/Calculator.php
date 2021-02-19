@@ -25,11 +25,11 @@ class Calculator
         ];
 
         $data['items'] = collect($order->get('items'))
-            ->map(function ($item) use (&$data, $order) {
+            ->map(function ($item) use (&$data) {
                 $product = Product::find($item['product']);
 
                 $siteTax = collect(Config::get('simple-commerce.sites'))
-                    ->get($order->site)['tax'];
+                    ->get(Site::current()->handle())['tax'];
 
                 if ($product->purchasableType() === 'variants') {
                     $productPrice = $product->variantOption(
