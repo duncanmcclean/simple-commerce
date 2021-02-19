@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.0.25 (2021-02-19)
+
+* [fix] Tax amounts should no longer be off. Was previously using the wrong formula.
+
 ## v2.0.24 (2020-10-06)
 
 * [fix] Fix issue where gateways were not being booted
