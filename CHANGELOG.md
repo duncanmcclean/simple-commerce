@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.2.11 (2021-02-19)
+
 * [new] Added some helper methods to the `Address` object.
 * Added tests to the Order Calculator (not sure how we got this far without them)
 * And some general cleanup 🧹
