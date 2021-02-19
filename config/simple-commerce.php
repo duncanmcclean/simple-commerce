@@ -108,7 +108,7 @@ return [
     */
 
     'cart' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver::class,
+        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
         'key' => 'simple-commerce-cart',
     ],
 
