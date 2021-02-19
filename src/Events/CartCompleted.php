@@ -11,9 +11,13 @@ class CartCompleted
     use Dispatchable, InteractsWithSockets;
 
     public Order $cart;
+    public Order $order;
 
     public function __construct(Order $order)
     {
+        // TODO: get rid of $cart
         $this->cart = $order;
+
+        $this->order = $order;
     }
 }
