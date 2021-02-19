@@ -10,7 +10,7 @@ use Statamic\Facades\Site;
 
 class Calculator
 {
-    public function calculate($order)
+    public function calculate($order): array
     {
         if (isset($order->data['is_paid']) && $order->data['is_paid'] === true) {
             return $order->data();
@@ -50,12 +50,14 @@ class Calculator
                 }
 
                 if (! $product->isExemptFromTax()) {
+                    $taxAmount = ($itemTotal / 100) * ($siteTax['rate'] / (100 + $siteTax['rate']));
+
                     if ($siteTax['included_in_prices']) {
                         $itemTax = str_replace(
                             '.',
                             '',
                             round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / ($siteTax['rate'] + 100)) * $siteTax['rate'],
+                                $taxAmount,
                                 2
                             )
                         );
@@ -66,9 +68,9 @@ class Calculator
                             '.',
                             '',
                             round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                                $taxAmount,
                                 2
-                            ) * 100
+                            )
                         );
                     }
                 }

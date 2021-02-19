@@ -10,6 +10,8 @@ class CartSaved
 {
     use Dispatchable, InteractsWithSockets;
 
+    // TODO: this event should be renamed `OrderSaved`
+
     public $cart;
 
     public function __construct(Entry $cart)

@@ -66,7 +66,7 @@ class Address
         return $this->zipCode;
     }
 
-    public function shippingNote(): string
+    public function shippingNote(): ?string
     {
         return $this->shippingNote;
     }

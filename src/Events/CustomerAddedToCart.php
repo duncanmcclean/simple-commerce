@@ -10,6 +10,8 @@ class CustomerAddedToCart
 {
     use Dispatchable, InteractsWithSockets;
 
+     // TODO: this event should be renamed `CustomerAddedToOrder`
+
     public $cart;
 
     public function __construct(Entry $cart)

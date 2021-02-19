@@ -14,6 +14,7 @@ class CouponRedeemed
 
     public function __construct(Entry $coupon)
     {
+        // $coupon should be a Coupon instance instead
         $this->coupon = $coupon;
     }
 }
