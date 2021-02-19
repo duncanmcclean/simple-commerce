@@ -50,12 +50,14 @@ class Calculator
                 }
 
                 if (! $product->isExemptFromTax()) {
+                    $taxAmount = ($itemTotal / 100) * ($siteTax['rate'] / (100 + $siteTax['rate']));
+
                     if ($siteTax['included_in_prices']) {
                         $itemTax = str_replace(
                             '.',
                             '',
                             round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / ($siteTax['rate'] + 100)) * $siteTax['rate'],
+                                $taxAmount,
                                 2
                             )
                         );
@@ -66,9 +68,9 @@ class Calculator
                             '.',
                             '',
                             round(
-                                ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                                $taxAmount,
                                 2
-                            ) * 100
+                            )
                         );
                     }
                 }
