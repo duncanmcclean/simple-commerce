@@ -2,12 +2,16 @@
 
 ## Unreleased
 
-## v2.1.35 (2020-01-30)
+## v2.1.36 (2021-02-19)
+
+* [fix] Tax amounts should no longer be off. Was previously using the wrong formula.
+
+## v2.1.35 (2021-01-30)
 
 * [fix] Actually use the new format when adding items to the cart
 * [fix] Fixed issue when clearing the cart
 
-## v2.1.34 (2020-01-30)
+## v2.1.34 (2021-01-30)
 
 * [new] Updated the default order blueprint
 * [new] Added a new 'Product Variant' fieldtype to select a single variant
