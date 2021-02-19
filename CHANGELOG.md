@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.2.10 (2021-02-19)
+
+* [fix] Tax amounts should no longer be off. Was previously using the wrong formula.
+
 ## v2.2.9 (2021-02-18)
 
 * Cookie Driver is now the default for new installs.
