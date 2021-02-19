@@ -240,13 +240,15 @@ class CartRepository implements ContractsCartRepository
                     ->get(Site::current()->handle())['tax'];
 
                 $itemTotal = ($product->data['price'] * $item['quantity']);
+                
+                $taxAmount = ($itemTotal / 100) * ($siteTax['rate'] / (100 + $siteTax['rate']));
 
                 if ($siteTax['included_in_prices']) {
                     $itemTax = str_replace(
                         '.',
                         '',
                         round(
-                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                            $taxAmount,
                             2
                         )
                     );
@@ -258,7 +260,7 @@ class CartRepository implements ContractsCartRepository
                         '.',
                         '',
                         round(
-                            ((float) substr_replace($itemTotal, '.', -2, 0) / 100) * $siteTax['rate'],
+                            $taxAmount,
                             2
                         )
                     );
