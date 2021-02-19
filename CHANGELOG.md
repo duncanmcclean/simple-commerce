@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* [new] Added some helper methods to the `Address` object.
+* Added tests to the Order Calculator (not sure how we got this far without them)
+* And some general cleanup 🧹
+
 ## v2.2.10 (2021-02-19)
 
 * [fix] Tax amounts should no longer be off. Was previously using the wrong formula.
