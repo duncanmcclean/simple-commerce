@@ -10,7 +10,7 @@ use Statamic\Facades\Site;
 
 class Calculator
 {
-    public function calculate($order)
+    public function calculate($order): array
     {
         if (isset($order->data['is_paid']) && $order->data['is_paid'] === true) {
             return $order->data();
