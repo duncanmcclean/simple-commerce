@@ -70,7 +70,7 @@ class MollieGateway extends BaseGateway implements Gateway
             $order = $this->mollie->orders->create([
                 'amount' => [
                     'currency' => Currency::get(Site::current())['code'],
-                    'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
+                    'value' => (string) substr_replace($cart->get('grand_total'), '.', -2, 0),
                 ],
                 'orderNumber' => $cart->title,
                 'lines' => $cart->orderItems()
@@ -87,7 +87,17 @@ class MollieGateway extends BaseGateway implements Gateway
                             $variant = null;
                         }
 
-                        // dd($cart);
+                        $taxAmount = $cart->get('tax_total') / $cart->orderItems()->count();
+
+                        $unitPrice = 0;
+
+                        if (is_null($variant)) {
+                            $unitPrice = (int) round($product->get('price') - ($taxAmount / $item['quantity']), 2) / 100;
+                        } else {
+                            $unitPrice = (int) round($variant['price'] - ($taxAmount / $item['quantity']), 2) / 100;
+                        }
+
+                        // dd($unitPrice);
 
                         $wip = [
                             'type' => $product->get('is_digital_product', false) === true
@@ -99,24 +109,28 @@ class MollieGateway extends BaseGateway implements Gateway
                             'quantity' => $item['quantity'],
                             'unitPrice' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' => is_null($variant)
-                                    ? (string) substr_replace($product->get('price'), '.', -2, 0)
-                                    : (string) substr_replace($variant['price'], '.', -2, 0)
+                                // 'value' => is_null($variant)
+                                //     ? (string) substr_replace($product->get('price'), '.', -2, 0)
+                                //     : (string) substr_replace($variant['price'], '.', -2, 0)
+                                'value' => $unitPrice,
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
                                 'value' => $totalAmount = (string) substr_replace($item['total'], '.', -2, 0),
                             ],
-                            'vatRate' => collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'],
+                            'vatRate' => (string) substr_replace(
+                                collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'] * 100,
+                                '.',
+                                -2,
+                                0
+                            ),
                             'vatAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                // 'value' => (string) substr_replace($cart->get('tax_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
-                                // 'value' => '2.00',
-                                'value' => '1.67',
+                                'value' => (string) substr_replace($taxAmount, '.', -2, 0),
                             ],
                         ];
 
-                        // dd($wip);
+                        dd($wip);
 
                         return $wip;
                     })
@@ -127,22 +141,20 @@ class MollieGateway extends BaseGateway implements Gateway
                             'quantity' => 1,
                             'unitPrice' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                // 'value' =>  '0'.(string) substr_replace($cart->get('shipping_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
-                                'value' => '3.20',
+                                'value' =>  (string) substr_replace($cart->get('shipping_total'), '.', -2, 0),
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                // 'value' => '0'.(string) substr_replace($cart->get('shipping_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
-                                'value' => '3.20',
+                                'value' =>  (string) substr_replace($cart->get('shipping_total'), '.', -2, 0),
                             ],
                             'vatRate' => '0',
                             'vatAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
                                 'value' => '0.00',
-                                // 'value' => (string) substr_replace($cart->get('tax_total') / ($cart->orderItems()->count() + 1), '.', -2, 0),
                             ],
                         ],
                     ])
+                    // ->dd()
                     ->toArray(),
                 'billingAddress' => [
                     'givenName' => $billingAddress->name(),
