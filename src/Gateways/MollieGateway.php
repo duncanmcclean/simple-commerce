@@ -38,6 +38,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function prepare(GatewayPrep $data): GatewayResponse
     {
+        $this->setup();
         $cart = $data->cart();
 
         if ($this->isUsingPaymentsApi()) {
@@ -166,7 +167,9 @@ class MollieGateway extends BaseGateway implements Gateway
                 'billingAddress' => [
                     'givenName' => $billingAddress->name(),
                     'familyName' => $billingAddress->name(),
-                    // 'email' => $cart->customer()->email(),
+                    'email' => is_null($cart->customer())
+                        ? null
+                        : $cart->customer()->email(),
                     'email' => 'pr@doublethree.digital',
                     'streetAndNumber' => $billingAddress->address(),
                     'postalCode' => $billingAddress->zipCode(),
@@ -208,6 +211,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function getCharge(Entry $order): GatewayResponse
     {
+        $this->setup();
         $order = Order::find($order->id());
 
         $molliePayment = $this->mollie->payments->get(
@@ -222,6 +226,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function refundCharge(Entry $order): GatewayResponse
     {
+        $this->setup();
         $order = Order::find($order->id());
 
         $payment = $this->mollie->payments->get(
