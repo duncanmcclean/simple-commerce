@@ -188,6 +188,11 @@ class CheckoutController extends BaseActionController
     protected function postCheckout()
     {
         $this->cart->markAsCompleted()->save();
+
+        if ($this->cart->customer()) {
+            $this->cart->customer()->addOrder($this->cart->id);
+        }
+
         $this->forgetCart();
 
         event(new PostCheckout($this->cart->data));

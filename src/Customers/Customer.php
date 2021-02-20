@@ -75,6 +75,17 @@ class Customer implements Contract
         return $this;
     }
 
+    // TODO: add to interface in next version
+    public function addOrder($orderId): self
+    {
+        $orders = $this->has('orders') ? $this->get('orders') : [];
+        $orders[] = $orderId;
+
+        $this->set('orders', $orders);
+
+        return $this;
+    }
+
     public function collection(): string
     {
         return config('simple-commerce.collections.customers');
