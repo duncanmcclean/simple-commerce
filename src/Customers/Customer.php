@@ -4,8 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
 
@@ -73,6 +75,15 @@ class Customer implements Contract
         $this->slug = $slug;
 
         return $this;
+    }
+
+    // TODO: add to interface in next version
+    public function orders(): Collection
+    {
+        return collect($this->has('orders') ? $this->get('orders') : [])
+            ->map(function ($orderId) {
+                return Order::find($orderId);
+            });
     }
 
     // TODO: add to interface in next version
