@@ -70,7 +70,7 @@ class MollieGateway extends BaseGateway implements Gateway
             $order = $this->mollie->orders->create([
                 'amount' => [
                     'currency' => Currency::get(Site::current())['code'],
-                    'value' => (string) substr_replace($cart->get('grand_total'), '.', -2, 0),
+                    'value' => (string) substr_replace(($cart->get('grand_total') - $cart->get('tax_total')), '.', -2, 0), // TODO: we shouldn't be subtracting the tax total here
                 ],
                 'orderNumber' => $cart->title,
                 'lines' => $cart->orderItems()
@@ -109,28 +109,30 @@ class MollieGateway extends BaseGateway implements Gateway
                             'quantity' => $item['quantity'],
                             'unitPrice' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                // 'value' => is_null($variant)
-                                //     ? (string) substr_replace($product->get('price'), '.', -2, 0)
-                                //     : (string) substr_replace($variant['price'], '.', -2, 0)
-                                'value' => $unitPrice,
+                                'value' => is_null($variant)
+                                    ? (string) substr_replace($product->get('price'), '.', -2, 0)
+                                    : (string) substr_replace($variant['price'], '.', -2, 0)
+                                // 'value' => (string) $unitPrice,
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
                                 'value' => $totalAmount = (string) substr_replace($item['total'], '.', -2, 0),
                             ],
-                            'vatRate' => (string) substr_replace(
-                                collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'] * 100,
-                                '.',
-                                -2,
-                                0
-                            ),
-                            'vatAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value' => (string) substr_replace($taxAmount, '.', -2, 0),
-                            ],
+                            'vatRate' => '0',
+                            'vatAmount' => ['currency' => 'GBP', 'value' => '0.00'],
+                            // 'vatRate' => (string) substr_replace(
+                            //     collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'] * 100,
+                            //     '.',
+                            //     -2,
+                            //     0
+                            // ),
+                            // 'vatAmount' => [
+                            //     'currency' => Currency::get(Site::current())['code'],
+                            //     'value' => (string) substr_replace($taxAmount, '.', -2, 0),
+                            // ],
                         ];
 
-                        dd($wip);
+                        // dd($wip);
 
                         return $wip;
                     })
