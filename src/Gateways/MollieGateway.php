@@ -69,10 +69,6 @@ class MollieGateway extends BaseGateway implements Gateway
                 throw new \Exception("Please add a billing address to the order before attempting to create a Mollie order.");
             }
 
-            // if (! $cart->customer()) {
-            //     throw new \Exception("Please add a customer to the order before attempting to create a Mollie order.");
-            // }
-
             $order = $this->mollie->orders->create([
                 'amount' => [
                     'currency' => Currency::get(Site::current())['code'],
@@ -82,6 +78,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'lines' => $cart->orderItems()
                     ->map(function ($item) use ($cart) {
                         $product = Product::find($item['product']);
+                        $taxAmount = $cart->get('tax_total') / $cart->orderItems()->count();
 
                         if ($product->purchasableType() === 'variants') {
                             if (is_array($item['variant'])) {
@@ -93,19 +90,7 @@ class MollieGateway extends BaseGateway implements Gateway
                             $variant = null;
                         }
 
-                        $taxAmount = $cart->get('tax_total') / $cart->orderItems()->count();
-
-                        $unitPrice = 0;
-
-                        if (is_null($variant)) {
-                            $unitPrice = (int) round($product->get('price') - ($taxAmount / $item['quantity']), 2) / 100;
-                        } else {
-                            $unitPrice = (int) round($variant['price'] - ($taxAmount / $item['quantity']), 2) / 100;
-                        }
-
-                        // dd($unitPrice);
-
-                        $wip = [
+                        return [
                             'type' => $product->get('is_digital_product', false) === true
                                 ? 'digital'
                                 : 'physical',
@@ -118,14 +103,16 @@ class MollieGateway extends BaseGateway implements Gateway
                                 'value' => is_null($variant)
                                     ? (string) substr_replace($product->get('price'), '.', -2, 0)
                                     : (string) substr_replace($variant['price'], '.', -2, 0)
-                                // 'value' => (string) $unitPrice,
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' => $totalAmount = (string) substr_replace($item['total'], '.', -2, 0),
+                                'value' => (string) substr_replace($item['total'], '.', -2, 0),
                             ],
                             'vatRate' => '0',
-                            'vatAmount' => ['currency' => 'GBP', 'value' => '0.00'],
+                            'vatAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' => '0.00'
+                            ],
                             // 'vatRate' => (string) substr_replace(
                             //     collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'] * 100,
                             //     '.',
@@ -137,10 +124,6 @@ class MollieGateway extends BaseGateway implements Gateway
                             //     'value' => (string) substr_replace($taxAmount, '.', -2, 0),
                             // ],
                         ];
-
-                        // dd($wip);
-
-                        return $wip;
                     })
                     ->merge([
                         [
@@ -165,12 +148,11 @@ class MollieGateway extends BaseGateway implements Gateway
                     // ->dd()
                     ->toArray(),
                 'billingAddress' => [
-                    'givenName' => $billingAddress->name(),
-                    'familyName' => $billingAddress->name(),
+                    'givenName' => $billingAddress->name(), // TODO: this should be first name
+                    'familyName' => $billingAddress->name(), // TODO: this should be last name
                     'email' => is_null($cart->customer())
                         ? null
                         : $cart->customer()->email(),
-                    'email' => 'pr@doublethree.digital',
                     'streetAndNumber' => $billingAddress->address(),
                     'postalCode' => $billingAddress->zipCode(),
                     'city' => $billingAddress->city(),
@@ -178,7 +160,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 ],
                 'redirectUrl' => $this->callbackUrl(),
                 // 'webhookUrl'  => $this->webhookUrl(),
-                'locale' => 'en_US',
+                'locale' => 'en_US', // TODO: allow this to be configurable
             ]);
 
             return new GatewayResponse(true, [
