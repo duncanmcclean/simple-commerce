@@ -19,6 +19,13 @@ class BaseGateway
         $this->webhookUrl = $webhookUrl;
         $this->redirectUrl = $redirectUrl;
         $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
+
+        $this->setup();
+    }
+
+    public function setup(): void
+    {
+        //
     }
 
     public function config(): array

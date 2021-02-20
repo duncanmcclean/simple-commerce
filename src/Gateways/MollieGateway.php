@@ -25,6 +25,12 @@ class MollieGateway extends BaseGateway implements Gateway
 {
     protected $mollie;
 
+    public function setup(): void
+    {
+        $this->mollie = new MollieApiClient();
+        $this->mollie->setApiKey($this->config()['key']);
+    }
+
     public function name(): string
     {
         return 'Mollie';
@@ -32,7 +38,6 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function prepare(GatewayPrep $data): GatewayResponse
     {
-        $this->setupMollie();
         $cart = $data->cart();
 
         if ($this->isUsingPaymentsApi()) {
@@ -203,10 +208,11 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function getCharge(Entry $order): GatewayResponse
     {
-        $this->setupMollie();
-        $cart = Cart::find($order->id());
+        $order = Order::find($order->id());
 
-        $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
+        $molliePayment = $this->mollie->payments->get(
+            $order->get('gateway_data')['id']
+        );
 
         return new GatewayResponse(
             true,
@@ -216,25 +222,28 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function refundCharge(Entry $order): GatewayResponse
     {
-        $this->setupMollie();
-        $cart = Cart::find($order->id());
+        $order = Order::find($order->id());
 
-        $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
+        $payment = $this->mollie->payments->get(
+            $cart->get('gateway_data')['id']
+        );
 
         $refund = $payment->refund([]);
 
-        return new GatewayResponse(true, []);
+        return new GatewayResponse(
+            true,
+            []
+        );
     }
 
     public function webhook(Request $request)
     {
-        $this->setupMollie();
         $mollieId = $request->id;
 
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $cart = EntryFacade::whereCollection(config('simple-commerce.collections.orders'))
+            $order = Order::query()
                 ->filter(function ($entry) use ($mollieId) {
                     return isset($entry->data()->get('mollie')['id'])
                         && $entry->data()->get('mollie')['id']
@@ -245,15 +254,9 @@ class MollieGateway extends BaseGateway implements Gateway
                 })
                 ->first();
 
-            $cart->markAsCompleted();
-            event(new PostCheckout($cart->data));
+            $order->markAsCompleted();
+            event(new PostCheckout($order->data));
         }
-    }
-
-    protected function setupMollie()
-    {
-        $this->mollie = new MollieApiClient();
-        $this->mollie->setApiKey($this->config()['key']);
     }
 
     protected function isUsingPaymentsApi()
