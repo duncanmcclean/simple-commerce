@@ -72,7 +72,7 @@ class MollieGateway extends BaseGateway implements Gateway
             $order = $this->mollie->orders->create([
                 'amount' => [
                     'currency' => Currency::get(Site::current())['code'],
-                    'value' => (string) substr_replace(($cart->get('grand_total') - $cart->get('tax_total')), '.', -2, 0), // TODO: we shouldn't be subtracting the tax total here
+                    'value' => (string) substr_replace($cart->get('grand_total'), '.', -2, 0),
                 ],
                 'orderNumber' => $cart->title,
                 'lines' => $cart->orderItems()
@@ -113,16 +113,6 @@ class MollieGateway extends BaseGateway implements Gateway
                                 'currency' => Currency::get(Site::current())['code'],
                                 'value' => '0.00'
                             ],
-                            // 'vatRate' => (string) substr_replace(
-                            //     collect(Config::get('simple-commerce.sites'))->get(Site::current()->handle())['tax']['rate'] * 100,
-                            //     '.',
-                            //     -2,
-                            //     0
-                            // ),
-                            // 'vatAmount' => [
-                            //     'currency' => Currency::get(Site::current())['code'],
-                            //     'value' => (string) substr_replace($taxAmount, '.', -2, 0),
-                            // ],
                         ];
                     })
                     ->merge([
@@ -144,14 +134,30 @@ class MollieGateway extends BaseGateway implements Gateway
                                 'value' => '0.00',
                             ],
                         ],
+                        [
+                            'name' => 'Tax',
+                            'quantity' => 1,
+                            'unitPrice' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' =>  (string) substr_replace($cart->get('tax_total'), '.', -2, 0),
+                            ],
+                            'totalAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' =>  (string) substr_replace($cart->get('tax_total'), '.', -2, 0),
+                            ],
+                            'vatRate' => '0',
+                            'vatAmount' => [
+                                'currency' => Currency::get(Site::current())['code'],
+                                'value' => '0.00',
+                            ],
+                        ],
                     ])
-                    // ->dd()
                     ->toArray(),
                 'billingAddress' => [
                     'givenName' => $billingAddress->name(), // TODO: this should be first name
                     'familyName' => $billingAddress->name(), // TODO: this should be last name
                     'email' => is_null($cart->customer())
-                        ? null
+                        ? 'no-email@example.com'
                         : $cart->customer()->email(),
                     'streetAndNumber' => $billingAddress->address(),
                     'postalCode' => $billingAddress->zipCode(),
