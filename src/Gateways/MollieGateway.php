@@ -169,7 +169,7 @@ class MollieGateway extends BaseGateway implements Gateway
             ], $order->getCheckoutUrl());
         }
 
-        // TODO: throw exception
+        throw new \Exception("Somehow you've got here... You've specified an invalid API type for the Mollie Gateway.");
     }
 
     public function purchase(GatewayPurchase $data): GatewayResponse
