@@ -208,43 +208,10 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
 
-        return new GatewayResponse(true, [
-            'id' => $payment->id,
-            'mode' => $payment->mode,
-            'amount' => $payment->amount,
-            'settlementAmount' => $payment->settlementAmount,
-            'amountRefunded' => $payment->amountRefunded,
-            'amountRemaining' => $payment->amountRemaining,
-            'description' => $payment->description,
-            'method' => $payment->method,
-            'status' => $payment->status,
-            'createdAt' => $payment->createdAt,
-            'paidAt' => $payment->paidAt,
-            'canceledAt' => $payment->canceledAt,
-            'expiresAt' => $payment->expiresAt,
-            'failedAt' => $payment->failedAt,
-            'profileId' => $payment->profileId,
-            'sequenceType' => $payment->sequenceType,
-            'redirectUrl' => $payment->redirectUrl,
-            'webhookUrl' => $payment->webhookUrl,
-            'mandateId' => $payment->mandateId,
-            'subscriptionId' => $payment->subscriptionId,
-            'orderId' => $payment->orderId,
-            'settlementId' => $payment->settlementId,
-            'locale' => $payment->locale,
-            'metadata' => $payment->metadata,
-            'details' => $payment->details,
-            'restrictPaymentMethodsToCountry' => $payment->restrictPaymentMethodsToCountry,
-            '_links' => $payment->_links,
-            '_embedded' => $payment->_embedded,
-            'isCancelable' => $payment->isCancelable,
-            'amountCaptured' => $payment->amountCaptured,
-            'applicationFeeAmount' => $payment->applicationFeeAmount,
-            'authorizedAt' => $payment->authorizedAt,
-            'expiredAt' => $payment->expiredAt,
-            'customerId' => $payment->customerId,
-            'countryCode' => $payment->countryCode,
-        ]);
+        return new GatewayResponse(
+            true,
+            (array) $payment
+        );
     }
 
     public function refundCharge(Entry $order): GatewayResponse
