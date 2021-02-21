@@ -36,12 +36,12 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $coupon = Coupon::create([
-            'slug'=> 'half-price',
-            'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
-                'minimum_cart_value' => null,
+            'slug'               => 'half-price',
+            'title'              => 'Half Price',
+            'redeemed'           => 0,
+            'value'              => 50,
+            'type'               => 'percentage',
+            'minimum_cart_value' => null,
         ])->save();
 
         $data = [
@@ -75,10 +75,10 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ])
             ->save();
@@ -117,12 +117,12 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 5,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 5,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
-                'maximum_uses' => 5, // We shouldn't be able to use because of this
+                'maximum_uses'       => 5, // We shouldn't be able to use because of this
             ])
             ->save();
         $coupon = Entry::findBySlug('half-price', 'coupons');
@@ -178,10 +178,10 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ])
             ->save();
@@ -214,10 +214,10 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ])
             ->save();
@@ -254,10 +254,10 @@ class CouponControllerTest extends TestCase
         $this->cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $this->product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $this->product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'coupon' => null,

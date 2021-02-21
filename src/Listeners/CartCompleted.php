@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted as Event;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use Illuminate\Support\Facades\Mail;

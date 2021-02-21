@@ -20,12 +20,12 @@ trait HasData
     public function has(string $key): bool
     {
         return isset($this->data[$key])
-            && ! is_null($this->data[$key]);
+            && !is_null($this->data[$key]);
     }
 
     public function get(string $key)
     {
-        if (! $this->has($key)) {
+        if (!$this->has($key)) {
             return null;
         }
 

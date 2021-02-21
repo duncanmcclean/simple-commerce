@@ -14,8 +14,8 @@ use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
 use Statamic\Entries\Entry;
-use Statamic\Facades\Site;
 use Statamic\Facades\Entry as EntryFacade;
+use Statamic\Facades\Site;
 
 class MollieGateway extends BaseGateway implements Gateway
 {
@@ -34,12 +34,12 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->create([
             'amount' => [
                 'currency' => Currency::get(Site::current())['code'],
-                'value' => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
+                'value'    => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
             ],
             'description' => "Order {$cart->title}",
             'redirectUrl' => $this->callbackUrl(),
             'webhookUrl'  => $this->webhookUrl(),
-            'metadata' => [
+            'metadata'    => [
                 'order_id' => $cart->id,
             ],
         ]);
@@ -76,41 +76,41 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
 
         return new GatewayResponse(true, [
-            'id' => $payment->id,
-            'mode' => $payment->mode,
-            'amount' => $payment->amount,
-            'settlementAmount' => $payment->settlementAmount,
-            'amountRefunded' => $payment->amountRefunded,
-            'amountRemaining' => $payment->amountRemaining,
-            'description' => $payment->description,
-            'method' => $payment->method,
-            'status' => $payment->status,
-            'createdAt' => $payment->createdAt,
-            'paidAt' => $payment->paidAt,
-            'canceledAt' => $payment->canceledAt,
-            'expiresAt' => $payment->expiresAt,
-            'failedAt' => $payment->failedAt,
-            'profileId' => $payment->profileId,
-            'sequenceType' => $payment->sequenceType,
-            'redirectUrl' => $payment->redirectUrl,
-            'webhookUrl' => $payment->webhookUrl,
-            'mandateId' => $payment->mandateId,
-            'subscriptionId' => $payment->subscriptionId,
-            'orderId' => $payment->orderId,
-            'settlementId' => $payment->settlementId,
-            'locale' => $payment->locale,
-            'metadata' => $payment->metadata,
-            'details' => $payment->details,
+            'id'                              => $payment->id,
+            'mode'                            => $payment->mode,
+            'amount'                          => $payment->amount,
+            'settlementAmount'                => $payment->settlementAmount,
+            'amountRefunded'                  => $payment->amountRefunded,
+            'amountRemaining'                 => $payment->amountRemaining,
+            'description'                     => $payment->description,
+            'method'                          => $payment->method,
+            'status'                          => $payment->status,
+            'createdAt'                       => $payment->createdAt,
+            'paidAt'                          => $payment->paidAt,
+            'canceledAt'                      => $payment->canceledAt,
+            'expiresAt'                       => $payment->expiresAt,
+            'failedAt'                        => $payment->failedAt,
+            'profileId'                       => $payment->profileId,
+            'sequenceType'                    => $payment->sequenceType,
+            'redirectUrl'                     => $payment->redirectUrl,
+            'webhookUrl'                      => $payment->webhookUrl,
+            'mandateId'                       => $payment->mandateId,
+            'subscriptionId'                  => $payment->subscriptionId,
+            'orderId'                         => $payment->orderId,
+            'settlementId'                    => $payment->settlementId,
+            'locale'                          => $payment->locale,
+            'metadata'                        => $payment->metadata,
+            'details'                         => $payment->details,
             'restrictPaymentMethodsToCountry' => $payment->restrictPaymentMethodsToCountry,
-            '_links' => $payment->_links,
-            '_embedded' => $payment->_embedded,
-            'isCancelable' => $payment->isCancelable,
-            'amountCaptured' => $payment->amountCaptured,
-            'applicationFeeAmount' => $payment->applicationFeeAmount,
-            'authorizedAt' => $payment->authorizedAt,
-            'expiredAt' => $payment->expiredAt,
-            'customerId' => $payment->customerId,
-            'countryCode' => $payment->countryCode,
+            '_links'                          => $payment->_links,
+            '_embedded'                       => $payment->_embedded,
+            'isCancelable'                    => $payment->isCancelable,
+            'amountCaptured'                  => $payment->amountCaptured,
+            'applicationFeeAmount'            => $payment->applicationFeeAmount,
+            'authorizedAt'                    => $payment->authorizedAt,
+            'expiredAt'                       => $payment->expiredAt,
+            'customerId'                      => $payment->customerId,
+            'countryCode'                     => $payment->countryCode,
         ]);
     }
 

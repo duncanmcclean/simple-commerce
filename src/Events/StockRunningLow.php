@@ -8,7 +8,8 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class StockRunningLow
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public $product;
     public $stock;

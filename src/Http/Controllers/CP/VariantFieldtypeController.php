@@ -18,7 +18,7 @@ class VariantFieldtypeController
 
         return [
             'purchasable_type' => $product->purchasableType(),
-            'variants' => $product->has('product_variants') ? $product->get('product_variants')['options'] : [],
+            'variants'         => $product->has('product_variants') ? $product->get('product_variants')['options'] : [],
         ];
     }
 }

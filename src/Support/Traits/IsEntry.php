@@ -28,7 +28,7 @@ trait IsEntry
     {
         $this->entry = EntryAPI::find($id);
 
-        if (! $this->entry) {
+        if (!$this->entry) {
             throw new EntryNotFound("Entry could not be found: {$id}");
         }
 
@@ -36,11 +36,11 @@ trait IsEntry
             $this->entry = $this->entry->in(SiteAPI::current()->handle());
         }
 
-        $this->id    = $this->entry->id();
+        $this->id = $this->entry->id();
         $this->title = $this->entry->data()->get('title');
-        $this->slug  = $this->entry->slug();
-        $this->site  = $this->entry()->locale();
-        $this->data  = $this->entry->data()->toArray();
+        $this->slug = $this->entry->slug();
+        $this->site = $this->entry()->locale();
+        $this->data = $this->entry->data()->toArray();
         $this->published = $this->entry->published();
 
         return $this;
@@ -48,10 +48,10 @@ trait IsEntry
 
     public function create(array $data = [], string $site = ''): self
     {
-        $this->id   = ! is_null($this->id) ? $this->id : Stache::generateId();
+        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
-        $this->slug = ! is_null($this->slug) ? $this->slug : '';
-        $this->published = ! is_null($this->published) ? $this->published : false;
+        $this->slug = !is_null($this->slug) ? $this->slug : '';
+        $this->published = !is_null($this->published) ? $this->published : false;
 
         $this->data(
             Arr::except($data, ['id', 'site', 'slug', 'publish'])
@@ -64,7 +64,7 @@ trait IsEntry
 
     public function save(): self
     {
-        if (! $this->entry) {
+        if (!$this->entry) {
             $this->entry = EntryAPI::make()
                 ->id($this->id)
                 ->locale($this->site);
@@ -150,7 +150,7 @@ trait IsEntry
             return $this->site;
         }
 
-        if (! $site instanceof Site) {
+        if (!$site instanceof Site) {
             $site = SiteAPI::get($site);
         }
 

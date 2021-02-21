@@ -13,8 +13,8 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return [
             'option_fields' => [
-                'display' => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.display'),
-                'type' => 'fields',
+                'display'      => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.display'),
+                'type'         => 'fields',
                 'instructions' => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.instructions'),
             ],
         ];
@@ -25,43 +25,43 @@ class ProductVariantsFieldtype extends Fieldtype
         return [
             'variant_fields' => [
                 (new Field('name', [
-                    'type' => 'text',
-                    'listable' => 'hidden',
-                    'display' => 'Name',
-                    'width' => 50,
+                    'type'       => 'text',
+                    'listable'   => 'hidden',
+                    'display'    => 'Name',
+                    'width'      => 50,
                     'input_type' => 'text',
-                    'validate' => 'required',
+                    'validate'   => 'required',
                 ]))->toBlueprintArray(),
                 (new Field('values', [
-                    'type' => 'taggable',
+                    'type'     => 'taggable',
                     'listable' => 'hidden',
-                    'display' => 'Values',
-                    'width' => 50,
+                    'display'  => 'Values',
+                    'width'    => 50,
                     'validate' => 'required',
                 ]))->toPublishArray(),
             ],
             'option_fields' => array_merge(
                 [
                     (new Field('key', [
-                        'type' => 'hidden',
-                        'listable' => 'hidden',
-                        'display' => 'Key',
+                        'type'      => 'hidden',
+                        'listable'  => 'hidden',
+                        'display'   => 'Key',
                         'read_only' => true,
-                        'validate' => 'required',
+                        'validate'  => 'required',
                     ]))->toPublishArray(),
                     (new Field('variant', [
-                        'type' => 'textarea',
-                        'listable' => 'hidden',
-                        'display' => 'Variant',
+                        'type'      => 'textarea',
+                        'listable'  => 'hidden',
+                        'display'   => 'Variant',
                         'read_only' => true,
-                        'validate' => 'required',
+                        'validate'  => 'required',
                     ]))->toPublishArray(),
                     (new Field('price', [
-                        'type' => 'money',
+                        'type'      => 'money',
                         'read_only' => false,
-                        'listable' => 'hidden',
-                        'display' => 'price',
-                        'validate' => 'required',
+                        'listable'  => 'hidden',
+                        'display'   => 'price',
+                        'validate'  => 'required',
                     ]))->toPublishArray(),
                 ],
                 collect($this->config('option_fields'))
@@ -73,7 +73,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     ->toArray(),
             ),
             'variant' => resolve(Textarea::class)->preload(),
-            'price' => resolve(MoneyFieldtype::class)->preload(),
+            'price'   => resolve(MoneyFieldtype::class)->preload(),
         ];
     }
 
@@ -121,7 +121,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        if (! $value) {
+        if (!$value) {
             return null;
         }
 
@@ -162,7 +162,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function preProcessIndex($value)
     {
-        if (! $value) {
+        if (!$value) {
             return __('simple-commerce::products.no-variants');
         }
 
@@ -171,9 +171,9 @@ class ProductVariantsFieldtype extends Fieldtype
         if ($optionsCount === 0) {
             return __('simple-commerce::products.no-variants');
         } elseif ($optionsCount === 1) {
-            return $optionsCount . ' ' . __('simple-commerce::products.variants_singular');
+            return $optionsCount.' '.__('simple-commerce::products.variants_singular');
         } else {
-            return $optionsCount . ' ' . __('simple-commerce::products.variants_plural');
+            return $optionsCount.' '.__('simple-commerce::products.variants_plural');
         }
     }
 }

@@ -38,7 +38,7 @@ class ProductVariantFieldtype extends Fieldtype
         }
 
         if (is_string($value)) {
-            throw new \Exception("Variant field is using old format. Please re-save the order in the CP to save as new format.");
+            throw new \Exception('Variant field is using old format. Please re-save the order in the CP to save as new format.');
         }
 
         $product = Product::find($value['product']);

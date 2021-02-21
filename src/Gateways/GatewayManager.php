@@ -3,11 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -91,11 +91,11 @@ class GatewayManager implements Contract
 
     protected function resolve()
     {
-        if (! $this->className) {
+        if (!$this->className) {
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
-        if (! resolve($this->className)) {
+        if (!resolve($this->className)) {
             throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $this->className]));
         }
 

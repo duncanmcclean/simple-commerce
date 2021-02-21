@@ -24,7 +24,7 @@ class DummyGateway extends BaseGateway implements Gateway
 
     public function purchase(GatewayPurchase $data): GatewayResponse
     {
-        return $this->getCharge(new Entry);
+        return $this->getCharge(new Entry());
     }
 
     public function purchaseRules(): array

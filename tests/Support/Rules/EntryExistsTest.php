@@ -25,7 +25,7 @@ class EntryExistsTest extends TestCase
         $validate = Validator::make([
             'entry' => $entry->id,
         ], [
-            'entry' => [new EntryExists],
+            'entry' => [new EntryExists()],
         ]);
 
         $this->assertFalse($validate->fails());
@@ -37,7 +37,7 @@ class EntryExistsTest extends TestCase
         $validate = Validator::make([
             'entry' => 'wippers',
         ], [
-            'entry' => [new EntryExists],
+            'entry' => [new EntryExists()],
         ]);
 
         $this->assertTrue($validate->fails());

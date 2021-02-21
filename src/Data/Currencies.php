@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Data;
 
 class Currencies
 {
-     // TODO: move to `Support`
+    // TODO: move to `Support`
 
     protected static $currencies = [
         ['code' => 'AFN', 'name' => 'Afghani', 'symbol' => '؋'],

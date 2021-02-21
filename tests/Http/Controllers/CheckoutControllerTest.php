@@ -47,10 +47,10 @@ class CheckoutControllerTest extends TestCase
             ->collection('coupons')
             ->id(Stache::generateId())
             ->data([
-                'title' => 'Half Price',
+                'title'    => 'Half Price',
                 'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'value'    => 50,
+                'type'     => 'percentage',
             ])
             ->save();
 
@@ -59,27 +59,27 @@ class CheckoutControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'coupon' => $coupon->id(),
         ]);
 
         $data = [
-            'name' => 'Jimmy Bloggs',
-            'email' => 'jimmy.bloggs@doublethree.digital',
+            'name'    => 'Jimmy Bloggs',
+            'email'   => 'jimmy.bloggs@doublethree.digital',
             'gateway' => DummyGateway::class,
 
-            'card_number' => '4242424242424242',
+            'card_number'  => '4242424242424242',
             'expiry_month' => 01,
-            'expiry_year' => 2025,
-            'cvc' => 123,
+            'expiry_year'  => 2025,
+            'cvc'          => 123,
 
             'delivery_note' => 'Please be careful when delivering.',
-            '_redirect' => '/checkout/thanks',
+            '_redirect'     => '/checkout/thanks',
         ];
 
         $response = $this

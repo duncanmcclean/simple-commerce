@@ -15,7 +15,7 @@ class GatewayWebhookController extends BaseActionController
             ->where('handle', $gateway)
             ->first();
 
-        if (! $gateway) {
+        if (!$gateway) {
             throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', [
                 'gateway' => $gateway,
             ]));

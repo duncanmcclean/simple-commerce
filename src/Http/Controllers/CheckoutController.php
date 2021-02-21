@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartRepository;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
@@ -58,7 +57,7 @@ class CheckoutController extends BaseActionController
     protected function handleValidation()
     {
         $checkoutValidationRules = [
-            'name' => ['sometimes', 'string'],
+            'name'  => ['sometimes', 'string'],
             'email' => ['sometimes', 'email'],
         ];
 
@@ -114,7 +113,7 @@ class CheckoutController extends BaseActionController
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+        if (!$this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 

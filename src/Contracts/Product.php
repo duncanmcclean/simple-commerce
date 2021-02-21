@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use Statamic\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 
 interface Product

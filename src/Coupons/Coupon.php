@@ -11,7 +11,8 @@ use Statamic\Facades\Entry;
 
 class Coupon implements Contract
 {
-    use IsEntry, HasData;
+    use IsEntry;
+    use HasData;
 
     public $id;
     public $site;
@@ -27,7 +28,7 @@ class Coupon implements Contract
     {
         $entry = Entry::findBySlug($code, config('simple-commerce.collections.coupons'));
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found'));
         }
 

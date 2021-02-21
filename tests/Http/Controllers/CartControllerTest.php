@@ -86,7 +86,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_with_customer_already_in_cart()
     {
         $customer = Customer::create()->data([
-            'name' => 'Dan Smith',
+            'name'  => 'Dan Smith',
             'email' => 'dan.smith@example.com',
         ])->save();
 
@@ -115,7 +115,7 @@ class CartControllerTest extends TestCase
         $cart = Cart::create()->save();
 
         $data = [
-            'name' => 'Joe Doe',
+            'name'  => 'Joe Doe',
             'email' => 'joedoe@gmail.com',
         ];
 
@@ -138,7 +138,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_existing_customer_by_id()
     {
         $customer = Customer::create()->data([
-            'name' => 'Jordan Smith',
+            'name'  => 'Jordan Smith',
             'email' => 'jordan.smith@example.com',
         ])->save();
 
@@ -167,7 +167,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_existing_customer_by_email()
     {
         $customer = Customer::create()->data([
-            'name' => 'Jak Simpson',
+            'name'  => 'Jak Simpson',
             'email' => 'jack.simpson@example.com',
         ])->save();
 
@@ -175,7 +175,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name' => 'Jack Simpson',
+                'name'  => 'Jack Simpson',
                 'email' => 'jack.simpson@example.com',
             ],
         ];
@@ -201,7 +201,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name' => 'Rebecca Logan',
+                'name'  => 'Rebecca Logan',
                 'email' => 'rebecca.logan@example.com',
             ],
         ];
@@ -230,7 +230,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_ensure_customer_is_not_overwritten()
     {
         $customer = Customer::create([
-            'name' => 'Duncan',
+            'name'  => 'Duncan',
             'email' => 'duncan@test.com',
         ])->save();
 
@@ -284,10 +284,10 @@ class CartControllerTest extends TestCase
             ->data([
                 'items' => [
                     [
-                        'id' => Stache::generateId(),
-                        'product' => $product->id,
+                        'id'       => Stache::generateId(),
+                        'product'  => $product->id,
                         'quantity' => 1,
-                        'total' => 1000,
+                        'total'    => 1000,
                     ],
                 ],
             ])
@@ -310,15 +310,15 @@ class CartControllerTest extends TestCase
         $product = Product::create(['price' => 1000])->save();
 
         $cart = Cart::create([
-                'items' => [
-                    [
-                        'id' => Stache::generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 1000,
-                    ],
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
-            ])->save();
+            ],
+        ])->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])

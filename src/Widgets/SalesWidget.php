@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Support\Collection;
 use Statamic\Entries\Entry as AnEntry;
-use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Widgets\Widget;
 
@@ -57,7 +56,7 @@ class SalesWidget extends Widget
 
         $ordersCollection
             ->each(function ($order) use (&$total) {
-                if (! $order->has('grand_total')) {
+                if (!$order->has('grand_total')) {
                     return;
                 }
 
