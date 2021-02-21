@@ -13,7 +13,8 @@ use Statamic\Facades\Entry;
 
 class Customer implements Contract
 {
-    use IsEntry, HasData;
+    use IsEntry;
+    use HasData;
 
     public $id;
     public $site;
@@ -32,7 +33,7 @@ class Customer implements Contract
             ->where('slug', Str::slug($email))
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
         }
 
@@ -63,7 +64,7 @@ class Customer implements Contract
         }
 
         $title = __('simple-commerce::customers.customer_entry_title', [
-            'name' => $name,
+            'name'  => $name,
             'email' => $email,
         ]);
 

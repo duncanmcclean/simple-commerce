@@ -49,7 +49,7 @@ class Calculator
                     $itemTotal = ($productPrice * $item['quantity']);
                 }
 
-                if (! $product->isExemptFromTax()) {
+                if (!$product->isExemptFromTax()) {
                     $taxAmount = ($itemTotal / 100) * ($siteTax['rate'] / (100 + $siteTax['rate']));
 
                     if ($siteTax['included_in_prices']) {
@@ -94,7 +94,7 @@ class Calculator
             $value = (int) $coupon->data['value'];
 
             if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] = (int) (($value *  $data['items_total']) / 100);
+                $data['coupon_total'] = (int) (($value * $data['items_total']) / 100);
             }
 
             if ($coupon->data['type'] === 'fixed') {

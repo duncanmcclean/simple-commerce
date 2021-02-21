@@ -18,19 +18,19 @@ class CalculatorTest extends TestCase
         ]);
 
         $cart = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'grand_total' => 123,
             'items_total' => 123,
-            'items' => [
+            'items'       => [
                 [
-                    'product' => $product->id,
+                    'product'  => $product->id,
                     'quantity' => 2,
-                    'total' => 123,
+                    'total'    => 123,
                 ],
             ],
         ]);
 
-        $calculate = (new Calculator)->calculate($cart);
+        $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
 
@@ -53,19 +53,19 @@ class CalculatorTest extends TestCase
         ]);
 
         $cart = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'grand_total' => 500,
             'items_total' => 500,
-            'items' => [
+            'items'       => [
                 [
-                    'product' => $product->id,
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 500,
+                    'total'    => 500,
                 ],
             ],
         ]);
 
-        $calculate = (new Calculator)->calculate($cart);
+        $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
 
@@ -87,29 +87,29 @@ class CalculatorTest extends TestCase
             'product_variants' => [
                 'options' => [
                     [
-                        'key' => 'Red_Large',
+                        'key'     => 'Red_Large',
                         'variant' => 'Red, Large',
-                        'price' => 250,
-                    ]
+                        'price'   => 250,
+                    ],
                 ],
             ],
         ]);
 
         $cart = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'grand_total' => 250,
             'items_total' => 250,
-            'items' => [
+            'items'       => [
                 [
-                    'product' => $product->id,
-                    'variant' => 'Red_Large',
+                    'product'  => $product->id,
+                    'variant'  => 'Red_Large',
                     'quantity' => 1,
-                    'total' => 250,
+                    'total'    => 250,
                 ],
             ],
         ]);
 
-        $calculate = (new Calculator)->calculate($cart);
+        $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
 
@@ -132,19 +132,19 @@ class CalculatorTest extends TestCase
         ]);
 
         $cart = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'grand_total' => 1550,
             'items_total' => 1550,
-            'items' => [
+            'items'       => [
                 [
-                    'product' => $product->id,
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1550,
+                    'total'    => 1550,
                 ],
             ],
         ]);
 
-        $calculate = (new Calculator)->calculate($cart);
+        $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
 
@@ -166,29 +166,29 @@ class CalculatorTest extends TestCase
             'product_variants' => [
                 'options' => [
                     [
-                        'key' => 'Red_Large',
+                        'key'     => 'Red_Large',
                         'variant' => 'Red, Large',
-                        'price' => 15.50,
-                    ]
+                        'price'   => 15.50,
+                    ],
                 ],
             ],
         ]);
 
         $cart = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'grand_total' => 1550,
             'items_total' => 1550,
-            'items' => [
+            'items'       => [
                 [
-                    'product' => $product->id,
-                    'variant' => 'Red_Large',
+                    'product'  => $product->id,
+                    'variant'  => 'Red_Large',
                     'quantity' => 1,
-                    'total' => 1550,
+                    'total'    => 1550,
                 ],
             ],
         ]);
 
-        $calculate = (new Calculator)->calculate($cart);
+        $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
 
@@ -212,16 +212,16 @@ class CalculatorTest extends TestCase
 
         $cart = Order::create([
             'is_paid' => false,
-            'items' => [
+            'items'   => [
                 [
-                    'product' => $product->id,
+                    'product'  => $product->id,
                     'quantity' => 2,
-                    'total' => 2000,
+                    'total'    => 2000,
                 ],
             ],
         ]);
 
-        $calculate = (new Calculator)->calculate($cart);
+        $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
 

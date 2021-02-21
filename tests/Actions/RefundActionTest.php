@@ -52,7 +52,7 @@ class RefundActionTest extends TestCase
     public function is_not_visible_to_already_refunded_orders()
     {
         $order = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'is_refunded' => true,
         ]);
 
@@ -78,7 +78,7 @@ class RefundActionTest extends TestCase
     public function is_not_able_to_be_run_in_bulk()
     {
         $order = Order::create([
-            'is_paid' => true,
+            'is_paid'     => true,
             'is_refunded' => true,
         ]);
 
@@ -98,9 +98,9 @@ class RefundActionTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->data([
-                'is_paid' => true,
-                'is_refunded' => false,
-                'gateway' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                'is_paid'      => true,
+                'is_refunded'  => false,
+                'gateway'      => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
                 'gateway_data' => [
                     'id' => '123456789abcdefg',
                 ],

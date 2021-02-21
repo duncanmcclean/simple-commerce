@@ -34,7 +34,7 @@ class BaseGateway
     public function callbackUrl()
     {
         $data = [
-            'gateway' => $this->handle,
+            'gateway'   => $this->handle,
             '_redirect' => $this->redirectUrl,
         ];
 

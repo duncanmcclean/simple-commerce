@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
-use Statamic\Facades\Entry;
 use Statamic\Fields\Field;
 
 class MoneyFieldtypeTest extends TestCase

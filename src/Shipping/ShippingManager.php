@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager as Contract;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use Statamic\Entries\Entry;
 
 class ShippingManager implements Contract
@@ -40,7 +40,7 @@ class ShippingManager implements Contract
 
     protected function resolve()
     {
-        if (! resolve($this->className)) {
+        if (!resolve($this->className)) {
             throw new ShippingMethodDoesNotExist(__('simple-commerce::shipping.shipping_method_does_not_exist', ['shippingMethod' => $this->className]));
         }
 

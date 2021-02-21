@@ -2,12 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag
@@ -25,7 +23,7 @@ class ShippingTags extends SubTag
             ->map(function ($method) use ($cart) {
                 $instance = Shipping::use($method);
 
-                if (! $shipingAddress = $cart->shippingAddress()) {
+                if (!$shipingAddress = $cart->shippingAddress()) {
                     return null;
                 }
 

@@ -8,9 +8,10 @@ use Statamic\Entries\Entry;
 
 class CartUpdated
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
-     // TODO: this event should be renamed `OrderUpdated`
+    // TODO: this event should be renamed `OrderUpdated`
 
     public $cart;
 

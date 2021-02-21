@@ -8,7 +8,8 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class CartCompleted
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable;
+    use InteractsWithSockets;
 
     public Order $cart;
     public Order $order;

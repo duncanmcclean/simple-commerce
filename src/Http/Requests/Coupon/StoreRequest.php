@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => ['required', 'string', new CouponExists],
+            'code' => ['required', 'string', new CouponExists()],
         ];
     }
 }

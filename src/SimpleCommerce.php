@@ -52,7 +52,7 @@ class SimpleCommerce
     {
         static::$gateways[] = [
             $gateway,
-            $config
+            $config,
         ];
     }
 

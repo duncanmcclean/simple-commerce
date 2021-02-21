@@ -24,16 +24,18 @@ class UpgradeCommand extends Command
             $isProteusInstalled = false;
         }
 
-        if (! $isProteusInstalled) {
+        if (!$isProteusInstalled) {
             $this->error('To use the upgrade command please install Proteus. `composer require stillat/proteus`');
+
             return;
         }
 
         // Ask for confirmation before migrating
-        $confirm = $this->confirm("Are you sure you want to upgrade Simple Commerce to v2.2?");
+        $confirm = $this->confirm('Are you sure you want to upgrade Simple Commerce to v2.2?');
 
-        if (! $confirm) {
+        if (!$confirm) {
             $this->error('Stopping upgrade command.');
+
             return;
         }
 
@@ -47,7 +49,7 @@ class UpgradeCommand extends Command
 
     protected function upgradeConfigurationChanges()
     {
-        $helpComment = <<<BLOCK
+        $helpComment = <<<'BLOCK'
         /*
         |--------------------------------------------------------------------------
         | Cart
