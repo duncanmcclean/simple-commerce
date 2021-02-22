@@ -13,14 +13,17 @@ class CartCompleted
     public function handle(Event $event)
     {
         if (config('simple-commerce.notifications.customer.order_confirmation')) {
-            if ($event->cart->has('customer')) {
+            if ($event->order->has('customer') || $event->order->has('email')) {
                 try {
-                    $customer = $event->cart->customer();
+                    $email = $event->order->has('customer')
+                        ? $event->cart->customer()
+                        : ($event->order->has('email') ? $event->order->get('email') : null);
 
-                    Mail::to($customer->data['email'])
-                        ->send(new OrderConfirmation($event->cart->id));
+                    if ($email) {
+                        Mail::to($email)->send(new OrderConfirmation($event->order->id));
+                    }
                 } catch (\Exception $e) {
-                    // Do nothing
+                    info("Exception when sending Order Confirmation: {$e->getMessage()}");
                 }
             }
         }
