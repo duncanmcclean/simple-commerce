@@ -129,7 +129,7 @@ class CheckoutControllerTest extends TestCase
     }
 
     /** @test */
-    public function both_emails_are_sent_when_successful()
+    public function ensure_emails_are_sent_when_email_is_set_on_order()
     {
         Event::fake();
         Mail::fake();
@@ -171,6 +171,100 @@ class CheckoutControllerTest extends TestCase
             ->assertRedirect('/checkout/thanks');
 
         Mail::assertSent(OrderConfirmation::class);
+        Mail::assertSent(OrderPaid::class);
+    }
+
+    /** @test */
+    public function ensure_emails_are_sent_when_customer_is_set_on_order()
+    {
+        Event::fake();
+        Mail::fake();
+
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $customer = Customer::create([
+            'name' => 'Jimmy James',
+            'email' => 'jimmy.james@example.com',
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1234,
+                ],
+            ],
+            'grand_total' => 1234,
+            'customer' => $customer->id,
+        ]);
+
+        $data = [
+            'gateway' => DummyGateway::class,
+
+            'card_number'  => '4242424242424242',
+            'expiry_month' => '01',
+            'expiry_year'  => '2025',
+            'cvc'          => '123',
+
+            '_redirect'     => '/checkout/thanks',
+        ];
+
+        $response = $this
+            ->from('/checkout')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), $data)
+            ->assertRedirect('/checkout/thanks');
+
+        Mail::assertSent(OrderConfirmation::class);
+        Mail::assertSent(OrderPaid::class);
+    }
+
+    /** @test */
+    public function ensure_only_back_office_email_is_sent_if_no_customer_information_provided()
+    {
+        Event::fake();
+        Mail::fake();
+
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1234,
+                ],
+            ],
+            'grand_total' => 1234,
+        ]);
+
+        $data = [
+            'gateway' => DummyGateway::class,
+
+            'card_number'  => '4242424242424242',
+            'expiry_month' => '01',
+            'expiry_year'  => '2025',
+            'cvc'          => '123',
+
+            '_redirect'     => '/checkout/thanks',
+        ];
+
+        $response = $this
+            ->from('/checkout')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), $data)
+            ->assertRedirect('/checkout/thanks');
+
+        Mail::assertNotSent(OrderConfirmation::class);
         Mail::assertSent(OrderPaid::class);
     }
 }
