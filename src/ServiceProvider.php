@@ -2,8 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -39,7 +37,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',
-        'cp' => __DIR__.'/../routes/cp.php',
+        'cp'      => __DIR__.'/../routes/cp.php',
     ];
 
     protected $scripts = [
@@ -112,7 +110,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Product::class            => Products\Product::class,
             Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {
-            if (! $this->app->bound($abstract)) {
+            if (!$this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
             }
         });
@@ -122,7 +120,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootCartDrivers()
     {
-        if (! $this->app->bound(Contracts\CartDriver::class)) {
+        if (!$this->app->bound(Contracts\CartDriver::class)) {
             $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
         }
 

@@ -23,9 +23,9 @@ class EnforceBlueprintFields
 
     protected function enforceProductFields($event): Blueprint
     {
-        if (! $event->blueprint->hasField('product_variants')) {
+        if (!$event->blueprint->hasField('product_variants')) {
             $event->blueprint->ensureField('price', [
-                'type' => 'money',
+                'type'    => 'money',
                 'display' => __('Price'),
             ], 'sidebar');
         }
@@ -36,38 +36,38 @@ class EnforceBlueprintFields
     protected function enforceOrderFields($event): Blueprint
     {
         $event->blueprint->ensureField('grand_total', [
-            'type' => 'money',
-            'display' => __('Grand Total'),
+            'type'      => 'money',
+            'display'   => __('Grand Total'),
             'read_only' => true,
-            'validate' => 'required',
+            'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('items_total', [
-            'type' => 'money',
-            'display' => __('Items Total'),
+            'type'      => 'money',
+            'display'   => __('Items Total'),
             'read_only' => true,
-            'validate' => 'required',
+            'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('shipping_total', [
-            'type' => 'money',
-            'display' => __('Shipping Total'),
+            'type'      => 'money',
+            'display'   => __('Shipping Total'),
             'read_only' => true,
-            'validate' => 'required',
+            'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('tax_total', [
-            'type' => 'money',
-            'display' => __('Tax Total'),
+            'type'      => 'money',
+            'display'   => __('Tax Total'),
             'read_only' => true,
-            'validate' => 'required',
+            'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('coupon_total', [
-            'type' => 'money',
-            'display' => __('Coupon Total'),
+            'type'      => 'money',
+            'display'   => __('Coupon Total'),
             'read_only' => true,
-            'validate' => 'required',
+            'validate'  => 'required',
         ]);
 
         return $event->blueprint;

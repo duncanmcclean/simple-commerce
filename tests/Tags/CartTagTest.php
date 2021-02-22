@@ -61,10 +61,10 @@ class CartTagTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 5,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
@@ -90,16 +90,16 @@ class CartTagTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $productOne->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $productOne->id,
                     'quantity' => 5,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $productTwo->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $productTwo->id,
                     'quantity' => 5,
-                    'total' => 1200,
+                    'total'    => 1200,
                 ],
             ],
         ]);
@@ -209,7 +209,7 @@ class CartTagTest extends TestCase
     public function can_output_update_item_form()
     {
         $this->tag->setParameters([
-            'item' => 'absolute-load-of-jiberish'
+            'item' => 'absolute-load-of-jiberish',
         ]);
 
         $this->tag->setContent('
@@ -229,7 +229,7 @@ class CartTagTest extends TestCase
     public function can_output_remove_item_form()
     {
         $this->tag->setParameters([
-            'item' => 'smelly-cat'
+            'item' => 'smelly-cat',
         ]);
 
         $this->tag->setContent('
@@ -290,7 +290,7 @@ class CartTagTest extends TestCase
     {
         $cart = Order::create([
             'title' => '#0001',
-            'note' => 'Deliver by front door.',
+            'note'  => 'Deliver by front door.',
         ]);
 
         $this->session(['simple-commerce-cart' => $cart->id]);

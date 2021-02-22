@@ -15,8 +15,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'product' => ['required', 'string', new EntryExists],
-            'variant' => ['string'],
+            'product'  => ['required', 'string', new EntryExists()],
+            'variant'  => ['string'],
             'quantity' => ['required', 'numeric', 'gt:0'],
         ];
     }

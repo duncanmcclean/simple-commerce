@@ -32,11 +32,11 @@ class StripeGateway extends BaseGateway implements Gateway
         $cart = $data->cart();
 
         $intentData = [
-            'amount'   => $cart->data['grand_total'],
-            'currency' => Currency::get(Site::current())['code'],
-            'description' => "Order: {$cart->title}",
+            'amount'             => $cart->data['grand_total'],
+            'currency'           => Currency::get(Site::current())['code'],
+            'description'        => "Order: {$cart->title}",
             'setup_future_usage' => 'off_session',
-            'metadata' => [
+            'metadata'           => [
                 'order_id' => $cart->id,
             ],
         ];
@@ -104,7 +104,7 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        if (! isset($data['intent'])) {
+        if (!isset($data['intent'])) {
             // return new GatewayResponse(false)
             //     ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
         }
@@ -123,7 +123,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (! isset($this->config()['secret'])) {
+        if (!isset($this->config()['secret'])) {
             throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
         }
 

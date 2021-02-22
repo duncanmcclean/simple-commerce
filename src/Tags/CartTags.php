@@ -6,8 +6,8 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CartTags extends SubTag
 {
-    use Concerns\FormBuilder,
-        CartDriver;
+    use Concerns\FormBuilder;
+    use CartDriver;
 
     public function index()
     {
@@ -30,11 +30,11 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return 0;
         }
 
-        if (! $this->getCart()->has('items')) {
+        if (!$this->getCart()->has('items')) {
             return 0;
         }
 

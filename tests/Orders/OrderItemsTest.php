@@ -18,13 +18,13 @@ class OrderItemsTest extends TestCase
         $order = Order::create([
             'items' => [
                 [
-                    'id' => 'one-two-three',
-                    'product' => 'oon-doo-twa',
+                    'id'       => 'one-two-three',
+                    'product'  => 'oon-doo-twa',
                     'quantity' => 2,
                 ],
                 [
-                    'id' => 'nine-ten-eleven',
-                    'product' => 'noin-dois-tre',
+                    'id'       => 'nine-ten-eleven',
+                    'product'  => 'noin-dois-tre',
                     'quantity' => 2,
                 ],
             ],
@@ -53,13 +53,13 @@ class OrderItemsTest extends TestCase
         $order = Order::create([
             'items' => [
                 [
-                    'id' => 'one-two-three',
-                    'product' => 'oon-doo-twa',
+                    'id'       => 'one-two-three',
+                    'product'  => 'oon-doo-twa',
                     'quantity' => 2,
                 ],
                 [
-                    'id' => 'nine-ten-eleven',
-                    'product' => 'noin-dois-tre',
+                    'id'       => 'nine-ten-eleven',
+                    'product'  => 'noin-dois-tre',
                     'quantity' => 2,
                 ],
             ],
@@ -69,8 +69,8 @@ class OrderItemsTest extends TestCase
 
         $this->assertIsArray($orderItem);
         $this->assertSame($orderItem, [
-            'id' => 'one-two-three',
-            'product' => 'oon-doo-twa',
+            'id'       => 'one-two-three',
+            'product'  => 'oon-doo-twa',
             'quantity' => 2,
         ]);
     }
@@ -88,9 +88,9 @@ class OrderItemsTest extends TestCase
         ]);
 
         $orderItem = $order->addOrderItem([
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => 1,
-            'total' => 0,
+            'total'    => 0,
         ]);
 
         $this->assertIsArray($orderItem);
@@ -110,8 +110,8 @@ class OrderItemsTest extends TestCase
         $order = Order::create([
             'items' => [
                 [
-                    'id' => 'ideeeeee-of-item',
-                    'product' => $product->id,
+                    'id'       => 'ideeeeee-of-item',
+                    'product'  => $product->id,
                     'quantity' => 2,
                 ],
             ],
@@ -138,8 +138,8 @@ class OrderItemsTest extends TestCase
         $order = Order::create([
             'items' => [
                 [
-                    'id' => 'ideeeeee-of-item',
-                    'product' => $product->id,
+                    'id'       => 'ideeeeee-of-item',
+                    'product'  => $product->id,
                     'quantity' => 2,
                 ],
             ],
@@ -162,8 +162,8 @@ class OrderItemsTest extends TestCase
         $order = Order::create([
             'items' => [
                 [
-                    'id' => 'ideeeeee-of-item',
-                    'product' => $product->id,
+                    'id'       => 'ideeeeee-of-item',
+                    'product'  => $product->id,
                     'quantity' => 2,
                 ],
             ],

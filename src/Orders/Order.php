@@ -18,7 +18,9 @@ use Statamic\Facades\Stache;
 
 class Order implements Contract
 {
-    use IsEntry, HasData, OrderItems;
+    use IsEntry;
+    use HasData;
+    use OrderItems;
 
     public $id;
     public $site;
@@ -36,7 +38,7 @@ class Order implements Contract
         $this->slug = $this->id;
 
         $this->data = [
-            'title'          => '#' . SimpleCommerce::freshOrderNumber(),
+            'title'          => '#'.SimpleCommerce::freshOrderNumber(),
             'items'          => [],
             'is_paid'        => false,
             'grand_total'    => 0,
@@ -54,7 +56,7 @@ class Order implements Contract
             return $this->shippingAddress();
         }
 
-        if (! $this->has('billing_address')) {
+        if (!$this->has('billing_address')) {
             return null;
         }
 
@@ -69,7 +71,7 @@ class Order implements Contract
 
     public function shippingAddress()
     {
-        if (! $this->has('shipping_address')) {
+        if (!$this->has('shipping_address')) {
             return null;
         }
 
@@ -126,8 +128,8 @@ class Order implements Contract
         $this->published = true;
 
         $this->data([
-            'is_paid'   => true,
-            'paid_date' => now()->toDateTimeString(),
+            'is_paid'      => true,
+            'paid_date'    => now()->toDateTimeString(),
             'order_status' => 'completed',
         ]);
 
@@ -160,7 +162,7 @@ class Order implements Contract
 
     public function beforeSaved()
     {
-        if (! $this->has('items')) {
+        if (!$this->has('items')) {
             $this->data['items'] = [];
         }
     }

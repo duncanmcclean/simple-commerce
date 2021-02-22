@@ -2,15 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Statamic\Facades\Stache;
 
 trait OrderItems
 {
     public function orderItems(): Collection
     {
-        if (! $this->has('items')) {
+        if (!$this->has('items')) {
             return collect([]);
         }
 
@@ -28,7 +26,7 @@ trait OrderItems
         $orderItemData['id'] = app('stache')->generateId();
 
         $this->data([
-            'items' => array_merge($this->orderItems()->toArray(), [$orderItemData])
+            'items' => array_merge($this->orderItems()->toArray(), [$orderItemData]),
         ]);
 
         $this->save();

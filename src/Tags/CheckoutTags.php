@@ -10,8 +10,8 @@ use Exception;
 
 class CheckoutTags extends SubTag
 {
-    use Concerns\FormBuilder,
-        CartDriver;
+    use Concerns\FormBuilder;
+    use CartDriver;
 
     public function index()
     {
@@ -28,7 +28,7 @@ class CheckoutTags extends SubTag
 
                 $data = array_merge($data, $prepare->data());
             } catch (\Exception $e) {
-                dd("Exception from Gateway: " . $e->getMessage());
+                dd('Exception from Gateway: '.$e->getMessage());
             }
         }
 
@@ -42,7 +42,7 @@ class CheckoutTags extends SubTag
     // {{ sc:checkout:mollie }}
     public function wildcard(string $tag)
     {
-        if (! $tag || $tag === 'index') {
+        if (!$tag || $tag === 'index') {
             return $this->index();
         }
 
@@ -53,7 +53,7 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        if (! $gateway) {
+        if (!$gateway) {
             throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $gatewayHandle]));
         }
 
@@ -69,11 +69,10 @@ class CheckoutTags extends SubTag
             $gateway['handle'] => $prepare->data(),
         ])->save();
 
-        if (! $prepare->checkoutUrl()) {
+        if (!$prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
 
         abort(redirect($prepare->checkoutUrl(), 302));
-        return;
     }
 }

@@ -7,12 +7,12 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
 {
-    use Concerns\FormBuilder,
-        CartDriver;
+    use Concerns\FormBuilder;
+    use CartDriver;
 
     public function index(): array
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return [];
         }
 
@@ -37,7 +37,7 @@ class CouponTags extends SubTag
 
     public function has()
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return false;
         }
 

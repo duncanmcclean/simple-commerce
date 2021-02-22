@@ -14,7 +14,7 @@ return [
 
         'config_fields' => [
             'option_fields' => [
-                'display' => 'Option Fields',
+                'display'      => 'Option Fields',
                 'instructions' => 'Configure fields that will be shown when an option is created.',
             ],
         ],

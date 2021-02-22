@@ -82,7 +82,7 @@ class CheckoutTagTest extends TestCase
         $this->fakeCart();
 
         $this->tag->setParameters([
-            'redirect' => 'http://localhost/thanks'
+            'redirect' => 'http://localhost/thanks',
         ]);
 
         $this->expectException(HttpResponseException::class);
@@ -123,7 +123,7 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
     public function prepare(GatewayPrep $data): GatewayResponse
     {
         return new GatewayResponse(true, [
-            'haggis' => true,
+            'haggis'  => true,
             'tatties' => true,
         ]);
     }
