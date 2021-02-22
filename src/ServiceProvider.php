@@ -27,9 +27,6 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
-        Events\CartCompleted::class => [
-            Listeners\CartCompleted::class,
-        ],
         EntryBlueprintFound::class  => [
             Listeners\EnforceBlueprintFields::class,
         ],

@@ -12,8 +12,11 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Statamic\Sites\Site as SitesSite;
@@ -39,7 +42,8 @@ class CheckoutController extends BaseActionController
             ->handleCoupon()
             ->handleStock()
             ->handleRemainingData()
-            ->postCheckout();
+            ->postCheckout()
+            ->sendEmails();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.checkout_complete'),
@@ -195,6 +199,31 @@ class CheckoutController extends BaseActionController
         $this->forgetCart();
 
         event(new PostCheckout($this->cart->data));
+
+        return $this;
+    }
+
+    protected function sendEmails()
+    {
+        if (config('simple-commerce.notifications.customer.order_confirmation')) {
+            if ($this->cart->has('customer') || $this->cart->has('email')) {
+                try {
+                    $email = $this->cart->has('customer')
+                        ? $this->cart->customer()->email()
+                        : ($this->cart->has('email') ? $this->cart->get('email') : null);
+
+                    if ($email) {
+                        Mail::to($email)->send(new OrderConfirmation($this->cart->id));
+                    }
+                } catch (\Exception $e) {
+                    info("Exception when sending Order Confirmation: {$e->getMessage()}");
+                }
+            }
+        }
+
+        if (config('simple-commerce.notifications.back_office.order_paid')) {
+            Mail::send(new OrderPaid($this->cart->id));
+        }
 
         return $this;
     }
