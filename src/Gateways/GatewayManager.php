@@ -44,7 +44,6 @@ class GatewayManager implements Contract
                 'gateway_data' => $purchase->data(),
             ]);
         } else {
-            // TODO: something
             throw ValidationException::withMessages([$purchase->error()]);
         }
 
