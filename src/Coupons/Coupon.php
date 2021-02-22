@@ -55,7 +55,9 @@ class Coupon implements Contract
 
     public function redeem(): self
     {
-        $this->set('redeemed', $this->has('redeemed') ? $this->get('redeemed') + 1 : 1);
+        $redeemed = $this->has('redeemed') ? $this->get('redeemed') : 0;
+
+        $this->set('redeemed', $redeemed + 1);
 
         return $this;
     }
