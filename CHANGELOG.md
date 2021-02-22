@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.2.12 (2021-02-22)
+
+* [new] Orders will now be added to Customer entries, so there's now a two-way relationship #369
+* [new] You can also now use `{{ sc:customer:orders }}` with Orders on the Customer entries, using the `from` parameter.
+* [fix] Fixed issue where email's would not be sent if email was set but no customer on order.
+
 ## v2.2.11 (2021-02-19)
 
 * [new] Added some helper methods to the `Address` object.
