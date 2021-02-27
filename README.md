@@ -34,3 +34,10 @@ If you discover a security vulnerability within Simple Commerce, please report i
 * [**Issue Tracker**](https://github.com/doublethreedigital/simple-commerce/issues): Find & report bugs in Simple Commerce
 * [**Discussions**](https://github.com/doublethreedigital/simple-commerce/discussions): Get help and put forward feature requests
 * [**Email**](mailto:hello@doublethree.digital): Support from the developer behind the addon
+
+---
+
+<p>
+<a href="https://statamic.com"><img src="https://img.shields.io/badge/Statamic-3.0+-FF269E?style=for-the-badge" alt="Compatible with Statamic v3"></a>
+<a href="https://packagist.org/packages/doublethreedigital/simple-commerce/stats"><img src="https://img.shields.io/packagist/v/doublethreedigital/simple-commerce?style=for-the-badge" alt="Simple Commerce Digital Products on Packagist"></a>
+</p>
