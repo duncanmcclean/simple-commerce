@@ -1,10 +1,10 @@
-![Screenshot](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.jpg)
+![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.png)
 
-# Simple Commerce
+## Simple Commerce
 
-Simple Commerce is an e-commerce addon for Statamic that allows developers to build custom e-commerce stores for their clients. Simple Commerce doesn't hold you down: you have complete control over your content structure and the front-end of your site.
+Simple Commerce is a simple e-commerce addon for Statamic. Developers can build custom stores for their clients without fuss. Simple Commerce doesn't hold you down: you have complete control over the content structure and front-end of your site.
 
-Although the code for this addon is open-source, you need to purchase a license from the Statamic Marketplace to use it on [a public domain](https://statamic.dev/licensing#public-domains).
+This repository contains the source code of of Simple Commerce. To use Simple Commerce in a production environment, [please purchase a license](https://statamic.com/simple-commerce).
 
 ## Features
 
@@ -19,10 +19,22 @@ Although the code for this addon is open-source, you need to purchase a license 
 1. Install Simple Commerce with Composer `composer require doublethreedigital/simple-commerce`
 2. Run `php please sc:install` to publish the configuration file, setup collections and copy over base blueprints.
 
-## Documentation
+## Contributing
 
-Full documentation is available at [sc-docs.doublethree.digital](https://sc-docs.doublethree.digital).
+Before contributing, please review the [contributing guide](./CONTRIBUTING.md).
 
-## Support
+## Security
 
-For developer support or any other questions related to this addon, please [get in touch](mailto:hello@doublethree.digital).
+From a security perspective, all versions from v2.0 upwards will receive a security release if a vulnerability is found.
+
+If you discover a security vulnerability within Simple Commerce, please report it [via email](mailto:duncan@doublethree.digital) straight away. Please **don't** report security issues in the issue tracker.
+
+## Resources
+
+* [**Documentation**](https://sc-docs.doublethree.digital): First-party documentation
+* [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
+* [**Digital Products**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
+* [**Changelog**](https://sc-docs.doublethree.digital/v2.2/changelog): View releases of Simple Commerce
+* [**Issue Tracker**](https://github.com/doublethreedigital/simple-commerce/issues): Find & report bugs in Simple Commerce
+* [**Discussions**](https://github.com/doublethreedigital/simple-commerce/discussions): Get help and put forward feature requests
+* [**Email**](mailto:hello@doublethree.digital): Support from the developer behind the addon
