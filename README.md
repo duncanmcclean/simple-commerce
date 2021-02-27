@@ -19,10 +19,6 @@ This repository contains the source code of of Simple Commerce. To use Simple Co
 1. Install Simple Commerce with Composer `composer require doublethreedigital/simple-commerce`
 2. Run `php please sc:install` to publish the configuration file, setup collections and copy over base blueprints.
 
-## Contributing
-
-Before contributing, please review the [contributing guide](./CONTRIBUTING.md).
-
 ## Security
 
 From a security perspective, all versions from v2.0 upwards will receive a security release if a vulnerability is found.
