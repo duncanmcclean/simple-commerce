@@ -34,7 +34,7 @@ class Currency implements Contract
 
             return $moneyFormatter->format($money);
         } catch (\ErrorException $e) {
-            throw new CurrencyFormatterNotWorking(__('simple-commerce::messages.currency_formatter_not_working'));
+            throw new CurrencyFormatterNotWorking("Extension PHP-intl not installed.");
         }
     }
 
