@@ -90,7 +90,7 @@ class GatewayManager implements Contract
 
     protected function resolve()
     {
-        if (!$this->className) {
+        if (! $this->className) {
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
