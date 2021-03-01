@@ -10,4 +10,6 @@ return [
         'no_payment_intent_provided' => 'No payment intent has been provided, a refund is not possible without a payment intent.',
         'stripe_secret_missing'      => 'Your Stripe secret couldn\'t be found. Make sure to add it to your gateway configuration.',
     ],
+
+    'mollie' => [],
 ];
