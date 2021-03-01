@@ -117,7 +117,7 @@ class CheckoutController extends BaseActionController
             return $this;
         }
 
-        if (!$this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
