@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* [fix] Fixed the ability to update an existing cart item with a negative quantity #375
+* [new] Added [Ignition Solutions](https://flareapp.io/docs/solutions/introduction) to some exceptions to help with debugging.
+* Tidied up [the `README`](https://github.com/doublethreedigital/simple-commerce) (but it's not really code related)
+
 ## v2.2.12 (2021-02-22)
 
 * [new] Orders will now be added to Customer entries, so there's now a two-way relationship #369
