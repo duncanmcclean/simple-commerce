@@ -530,6 +530,43 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_update_item_with_zero_item_quantity()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'quantity' => 0,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertSessionHasErrors();
+
+        $cart->find($cart->id);
+
+        $this->assertSame(1, $cart->data['items'][0]['quantity']);
+    }
+
+    /** @test */
     public function can_update_item_and_request_json()
     {
         $product = Product::create([
