@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-* [fix] Fixed the ability to update an existing cart item with a negative quantity #375
 * [new] Added [Ignition Solutions](https://flareapp.io/docs/solutions/introduction) to some exceptions to help with debugging.
+* [fix] Fixed the ability to update an existing cart item with a negative quantity #375
+* [fix] Fixed an incorrect method signature in the shipping method stub #380
 * Tidied up [the `README`](https://github.com/doublethreedigital/simple-commerce) (but it's not really code related)
 
 ## v2.2.12 (2021-02-22)
