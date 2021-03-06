@@ -20,7 +20,7 @@ class Order implements Contract
 {
     use IsEntry;
     use HasData;
-    use OrderItems;
+    use LineItems;
 
     public $id;
     public $site;
@@ -126,7 +126,7 @@ class Order implements Contract
         return false;
     }
 
-    // TODO: refactor & rename to 'complete'
+    // TODO: refactor & rename to 'markPaid'
     public function markAsCompleted(): self
     {
         $this->published = true;
