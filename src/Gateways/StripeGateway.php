@@ -10,7 +10,10 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
 use Stripe\Customer as StripeCustomer;
@@ -118,7 +121,32 @@ class StripeGateway extends BaseGateway implements Gateway
 
     public function webhook(Request $request)
     {
-        return null;
+        $this->setUpWithStripe();
+
+        $payload = json_decode($request->getContent(), true);
+        $method = 'handle'.Str::studly(str_replace('.', '_', $payload['type']));
+
+        if ($method === 'handlePaymentIntentSucceeded') {
+            $order = Order::find($payload['metadata']['order_id']);
+
+            $order->markAsCompleted();
+
+            return new Response('Webhook handled', 200);
+        }
+
+        if ($method === 'handlePaymentIntentPaymentFailed') {
+            // Email the customer
+        }
+
+        if ($method === 'handlePaymentIntentProcessing') {
+            // Wait?
+        }
+
+        if ($method === 'handlePaymentIntentAmountCapturableUpdated') {
+            // Cool, thanks Stripe?
+        }
+
+        return new Response();
     }
 
     protected function setUpWithStripe()
