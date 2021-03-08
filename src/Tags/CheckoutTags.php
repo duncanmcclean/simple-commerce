@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -28,7 +29,7 @@ class CheckoutTags extends SubTag
 
                 $data = array_merge($data, $prepare->data());
             } catch (\Exception $e) {
-                dd('Exception from Gateway: '.$e->getMessage());
+                throw new GatewayException($e->getMessage());
             }
         }
 
