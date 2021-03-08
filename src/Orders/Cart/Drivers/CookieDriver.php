@@ -51,7 +51,9 @@ class CookieDriver implements CartDriver
 
     public function forgetCart()
     {
-        Cookie::forget(config('simple-commerce.cart.key'));
+        Cookie::queue(
+            Cookie::forget(Config::get('simple-commerce.cart.key'))
+        );
     }
 
     protected function guessSiteFromRequest(): ASite
