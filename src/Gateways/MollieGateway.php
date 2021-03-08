@@ -28,6 +28,8 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function prepare(GatewayPrep $data): GatewayResponse
     {
+        dd($this->webhookUrl());
+
         $this->setupMollie();
         $cart = $data->cart();
 
