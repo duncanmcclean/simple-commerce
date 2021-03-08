@@ -8,7 +8,7 @@ This repository contains the source code of of Simple Commerce. To use Simple Co
 
 ## Features
 
-* [Product Variants](https://sc-docs.doublethree.digital/v2/product-variants)
+* [Product Variants](https://sc-docs.doublethree.digital/v2.2/product-variants)
 * [Built-in support for popular gateways](https://sc-docs.doublethree.digital/v2.2/gateways), like Stripe and Mollie.
 * [Supports Digital Products](https://github.com/doublethreedigital/sc-digital-products)
 * Shipping methods, different shipping prices for different addresses
