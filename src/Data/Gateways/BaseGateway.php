@@ -8,14 +8,17 @@ class BaseGateway
     protected string $handle = '';
     protected string $webhookUrl = '';
     protected string $redirectUrl = '/';
+    protected string $errorRedirectUrl = '/';
     protected string $displayName = '';
 
-    public function __construct(array $config = [], string $handle = '', string $webhookUrl = '', string $redirectUrl = '/')
+    public function __construct(array $config = [], string $handle = '', string $webhookUrl = '', string $redirectUrl = '/', string $errorRedirectUrl = '/')
     {
         $this->config = $config;
         $this->handle = $handle;
         $this->webhookUrl = $webhookUrl;
         $this->redirectUrl = $redirectUrl;
+        $this->errorRedirectUrl = $errorRedirectUrl;
+
         $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
     }
 
@@ -34,9 +37,9 @@ class BaseGateway
     public function callbackUrl(array $extraParamters = [])
     {
         $data = array_merge($extraParamters, [
-            'gateway'   => $this->handle,
-            '_redirect' => $this->redirectUrl,
-            '_order_id' => null,
+            'gateway'         => $this->handle,
+            '_redirect'       => $this->redirectUrl,
+            '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
         return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
@@ -45,6 +48,11 @@ class BaseGateway
     public function webhookUrl()
     {
         return $this->webhookUrl;
+    }
+
+    public function errorRedirectUrl()
+    {
+        return $this->errorRedirectUrl;
     }
 
     public function displayName()

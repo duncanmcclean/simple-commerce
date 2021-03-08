@@ -60,8 +60,12 @@ class CheckoutTags extends SubTag
 
         $prepare = Gateway::use($gateway['class']);
 
-        if (isset($this->params['redirect'])) {
-            $prepare->withRedirectUrl($this->params['redirect']);
+        if ($this->params->has('redirect')) {
+            $prepare->withRedirectUrl($this->params->get('redirect'));
+        }
+
+        if ($this->params->has('error_redirect')) {
+            $prepare->withErrorRedirectUrl($this->params->get('error_redirect'));
         }
 
         $prepare = $prepare->prepare(request(), $cart->entry());

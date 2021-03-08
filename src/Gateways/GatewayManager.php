@@ -16,6 +16,7 @@ class GatewayManager implements Contract
 {
     protected $className;
     protected $redirectUrl;
+    protected $errorRedirectUrl;
 
     public function use($className): self
     {
@@ -88,6 +89,13 @@ class GatewayManager implements Contract
         return $this;
     }
 
+    public function withErrorRedirectUrl(string $errorRedirectUrl): self
+    {
+        $this->errorRedirectUrl = $errorRedirectUrl;
+
+        return $this;
+    }
+
     protected function resolve()
     {
         if (! $this->className) {
@@ -113,6 +121,10 @@ class GatewayManager implements Contract
 
         if ($this->redirectUrl) {
             $data['redirectUrl'] = $this->redirectUrl;
+        }
+
+        if ($this->errorRedirectUrl) {
+            $data['errorRedirectUrl'] = $this->errorRedirectUrl;
         }
 
         return resolve($this->className, $data);
