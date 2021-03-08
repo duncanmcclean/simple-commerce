@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.2.14 (2021-03-08)
+
+* [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
+* [new] You can now specify a different redirect URL for errors. - `error_redirect`.
+* [fix] Improved handling of Mollie webhooks, we now detect if an order has been paid and redirect correctly. #384
+* [fix] Fixed issue where cookie cart driver wasn't forgetting cart after checkout #383
+* [fix] An exception will be thrown when a gateway errors, instead of a die dump.
+* [fix] Fixed webhook and callback URLs sometimes not being formed correctly.
+* [fix] Fixed an occasionaly exception with the Cookie Driver.
+* Deprecated 'order item' methods, and replaced them with 'line item' methods.
+
 ## v2.2.13 (2021-03-04)
 
 * [new] Added [Ignition Solutions](https://flareapp.io/docs/solutions/introduction) to some exceptions to help with debugging.
