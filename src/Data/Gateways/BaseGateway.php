@@ -38,7 +38,7 @@ class BaseGateway
             '_redirect' => $this->redirectUrl,
         ];
 
-        return route('statamic.simple-commerce.gateways.callback', $data);
+        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
     }
 
     public function webhookUrl()
