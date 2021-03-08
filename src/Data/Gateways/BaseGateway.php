@@ -31,12 +31,13 @@ class BaseGateway
         return $this->handle;
     }
 
-    public function callbackUrl()
+    public function callbackUrl(array $extraParamters = [])
     {
-        $data = [
+        $data = array_merge($extraParamters, [
             'gateway'   => $this->handle,
             '_redirect' => $this->redirectUrl,
-        ];
+            '_order_id' => null,
+        ]);
 
         return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
     }
