@@ -8,12 +8,12 @@ use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 
-class OrderItemsTest extends TestCase
+class LineItemsTest extends TestCase
 {
     use CollectionSetup;
 
     /** @test */
-    public function can_get_order_items()
+    public function can_get_line_items()
     {
         $order = Order::create([
             'items' => [
@@ -30,21 +30,21 @@ class OrderItemsTest extends TestCase
             ],
         ]);
 
-        $orderItems = $order->orderItems();
+        $lineItems = $order->lineItems();
 
-        $this->assertTrue($orderItems instanceof Collection);
-        $this->assertSame($orderItems->count(), 2);
+        $this->assertTrue($lineItems instanceof Collection);
+        $this->assertSame($lineItems->count(), 2);
     }
 
     /** @test */
-    public function order_items_return_empty_if_order_has_no_items()
+    public function line_items_return_empty_if_order_has_no_items()
     {
         $order = Order::create();
 
-        $orderItems = $order->orderItems();
+        $lineItems = $order->lineItems();
 
-        $this->assertTrue($orderItems instanceof Collection);
-        $this->assertSame($orderItems->count(), 0);
+        $this->assertTrue($lineItems instanceof Collection);
+        $this->assertSame($lineItems->count(), 0);
     }
 
     /** @test */
@@ -65,7 +65,7 @@ class OrderItemsTest extends TestCase
             ],
         ]);
 
-        $orderItem = $order->orderItem('one-two-three');
+        $orderItem = $order->lineItem('one-two-three');
 
         $this->assertIsArray($orderItem);
         $this->assertSame($orderItem, [
@@ -87,7 +87,7 @@ class OrderItemsTest extends TestCase
             'items' => [],
         ]);
 
-        $orderItem = $order->addOrderItem([
+        $orderItem = $order->addlineItem([
             'product'  => $product->id,
             'quantity' => 1,
             'total'    => 0,
@@ -117,7 +117,7 @@ class OrderItemsTest extends TestCase
             ],
         ]);
 
-        $orderItem = $order->updateOrderItem('ideeeeee-of-item', [
+        $orderItem = $order->updatelineItem('ideeeeee-of-item', [
             'quantity' => 5,
         ]);
 
@@ -145,14 +145,14 @@ class OrderItemsTest extends TestCase
             ],
         ]);
 
-        $orderItems = $order->removeOrderItem('ideeeeee-of-item');
+        $lineItems = $order->removelineItem('ideeeeee-of-item');
 
-        $this->assertTrue($orderItems instanceof Collection);
-        $this->assertSame($orderItems->count(), 0);
+        $this->assertTrue($lineItems instanceof Collection);
+        $this->assertSame($lineItems->count(), 0);
     }
 
     /** @test */
-    public function can_clear_order_items()
+    public function can_clear_line_items()
     {
         $product = Product::create([
             'title' => 'Four Five Six',
@@ -169,9 +169,9 @@ class OrderItemsTest extends TestCase
             ],
         ]);
 
-        $orderItems = $order->clearOrderItems();
+        $lineItems = $order->clearlineItems();
 
-        $this->assertTrue($orderItems instanceof Collection);
-        $this->assertSame($orderItems->count(), 0);
+        $this->assertTrue($lineItems instanceof Collection);
+        $this->assertSame($lineItems->count(), 0);
     }
 }
