@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Fixed bug where `items_total` would be a string when using coupons.
+
 ## v2.2.14 (2021-03-08)
 
 * [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.

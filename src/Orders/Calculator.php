@@ -101,7 +101,7 @@ class Calculator
                 $data['coupon_total'] = (int) ($data['items_total'] - $value);
             }
 
-            $data['items_total'] = str_replace('.', '', (string) ($data['items_total'] - $data['coupon_total']));
+            $data['items_total'] = (int) str_replace('.', '', (string) ($data['items_total'] - $data['coupon_total']));
         }
 
         return $data;
