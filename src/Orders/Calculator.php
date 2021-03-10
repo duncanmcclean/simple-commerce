@@ -2,16 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
-use DoubleThreeDigital\SimpleCommerce\Products\Product;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
-class Calculator
+class Calculator implements Contract
 {
     protected $order;
 
@@ -63,7 +61,7 @@ class Calculator
         return $data;
     }
 
-    protected function calculateLineItem(array $data, array $lineItem): array
+    public function calculateLineItem(array $data, array $lineItem): array
     {
         $product = ProductAPI::find($lineItem['product']);
 
@@ -96,7 +94,7 @@ class Calculator
         ];
     }
 
-    protected function calculateLineItemTax(array $data, array $lineItem): array
+    public function calculateLineItemTax(array $data, array $lineItem): array
     {
         $product = ProductAPI::find($lineItem['product']);
 
@@ -142,7 +140,7 @@ class Calculator
         ];
     }
 
-    protected function calculateOrderShipping(array $data): array
+    public function calculateOrderShipping(array $data): array
     {
         if (! $this->order->has('shipping_method')) {
             return [
@@ -157,7 +155,7 @@ class Calculator
         ];
     }
 
-    protected function calculateOrderCoupons(array $data): array
+    public function calculateOrderCoupons(array $data): array
     {
         if (isset($this->order->data['coupon']) && $this->order->data['coupon'] !== null) {
             $coupon = Coupon::find($this->order->data['coupon']);
