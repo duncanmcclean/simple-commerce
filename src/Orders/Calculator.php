@@ -67,7 +67,7 @@ class Calculator implements Contract
 
         if ($product->purchasableType() === 'variants') {
             $productPrice = $product->variantOption(
-                isset($item['variant']['variant']) ? $item['variant']['variant'] : $lineItem['variant']
+                isset($lineItem['variant']['variant']) ? $lineItem['variant']['variant'] : $lineItem['variant']
             )['price'];
 
             // Ensure we strip any decimals from price
