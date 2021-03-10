@@ -16,5 +16,5 @@ interface Calculator
 
     public function calculateOrderCoupons(array $data): array;
 
-    public static function bindings(): array
+    public static function bindings(): array;
 }
