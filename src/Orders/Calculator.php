@@ -176,4 +176,9 @@ class Calculator implements Contract
             'data' => $data,
         ];
     }
+
+    public static function bindings(): array
+    {
+        return [];
+    }
 }

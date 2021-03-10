@@ -99,6 +99,7 @@ class ServiceProvider extends AddonServiceProvider
     protected function bindContracts()
     {
         collect([
+            Contracts\Calculator::class         => Orders\Calculator::class,
             Contracts\Order::class              => Orders\Order::class,
             Contracts\Coupon::class             => Coupons\Coupon::class,
             Contracts\Currency::class           => Support\Currency::class,
@@ -107,7 +108,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Product::class            => Products\Product::class,
             Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {
-            if (!$this->app->bound($abstract)) {
+            if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
             }
         });
@@ -117,7 +118,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootCartDrivers()
     {
-        if (!$this->app->bound(Contracts\CartDriver::class)) {
+        if (! $this->app->bound(Contracts\CartDriver::class)) {
             $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
         }
 
