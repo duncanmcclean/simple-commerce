@@ -3,107 +3,179 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DoubleThreeDigital\SimpleCommerce\Products\Product;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
 class Calculator
 {
-    public function calculate($order): array
+    protected $order;
+
+    public function calculate(Order $order): array
     {
-        if (isset($order->data['is_paid']) && $order->data['is_paid'] === true) {
+        if ($order->has('is_paid') && $order->get('is_paid') === true) {
             return $order->data();
         }
 
+        $this->order = $order;
+
         $data = [
-            'grand_total'       => 0000,
-            'items_total'       => 0000,
-            'shipping_total'    => 0000,
-            'tax_total'         => 0000,
-            'coupon_total'      => 0000,
+            'grand_total'    => 0,
+            'items_total'    => 0,
+            'shipping_total' => 0,
+            'tax_total'      => 0,
+            'coupon_total'   => 0,
         ];
 
-        $data['items'] = collect($order->get('items'))
-            ->map(function ($item) use (&$data) {
-                $product = Product::find($item['product']);
+        $data['items'] = $order
+            ->lineItems()
+            ->map(function ($lineItem) use (&$data) {
+                $calculate = $this->calculateLineItem($data, $lineItem);
 
-                $siteTax = collect(Config::get('simple-commerce.sites'))
-                    ->get(Site::current()->handle())['tax'];
+                $data      = $calculate['orderData'];
+                $lineItem  = $calculate['lineItem'];
 
-                if ($product->purchasableType() === 'variants') {
-                    $productPrice = $product->variantOption(
-                        isset($item['variant']['variant']) ? $item['variant']['variant'] : $item['variant']
-                    )['price'];
+                return $lineItem;
+            })
+            ->map(function ($lineItem) use (&$data) {
+                $calculate = $this->calculateLineItemTax($data, $lineItem);
 
-                    // Ensure we strip any decimals from price
-                    $productPrice = (int) str_replace('.', '', (string) $productPrice);
+                $data      = $calculate['orderData'];
+                $lineItem  = $calculate['lineItem'];
 
-                    $itemTotal = ($productPrice * $item['quantity']);
-                } else {
-                    $productPrice = $product->get('price');
-
-                    // Ensure we strip any decimals from price
-                    $productPrice = (int) str_replace('.', '', (string) $productPrice);
-
-                    $itemTotal = ($productPrice * $item['quantity']);
-                }
-
-                if (!$product->isExemptFromTax()) {
-                    $taxAmount = ($itemTotal / 100) * ($siteTax['rate'] / (100 + $siteTax['rate']));
-
-                    if ($siteTax['included_in_prices']) {
-                        $itemTax = str_replace(
-                            '.',
-                            '',
-                            round(
-                                $taxAmount,
-                                2
-                            )
-                        );
-                        $itemTotal -= $itemTax;
-                        $data['tax_total'] += $itemTax;
-                    } else {
-                        $data['tax_total'] += (int) str_replace(
-                            '.',
-                            '',
-                            round(
-                                $taxAmount,
-                                2
-                            )
-                        );
-                    }
-                }
-
-                $data['items_total'] += $itemTotal;
-
-                return array_merge($item, [
-                    'total' => $itemTotal,
-                ]);
+                return $lineItem;
+            })
+            ->each(function ($lineItem) use (&$data) {
+                $data['items_total'] += $lineItem['total'];
             })
             ->toArray();
 
-        if (isset($order->data['shipping_method'])) {
-            $data['shipping_total'] = Shipping::use($order->data['shipping_method'])->calculateCost($order->entry());
-        }
+        $data = $this->calculateOrderShipping($data)['orderData'];
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
 
-        if (isset($order->data['coupon']) && $order->data['coupon'] !== null) {
-            $coupon = Coupon::find($order->data['coupon']);
+        $data = $this->calculateOrderCoupons($data)['orderData'];
+
+        return $data;
+    }
+
+    protected function calculateLineItem(array $orderData, array $lineItem): array
+    {
+        $product = ProductAPI::find($lineItem['product']);
+
+        if ($product->purchasableType() === 'variants') {
+            $productPrice = $product->variantOption(
+                isset($item['variant']['variant']) ? $item['variant']['variant'] : $lineItem['variant']
+            )['price'];
+
+            // Ensure we strip any decimals from price
+            $productPrice = (int) str_replace('.', '', (string) $productPrice);
+
+            $lineItem['total'] = ($productPrice * $lineItem['quantity']);
+
+            return [
+                'orderData' => $orderData,
+                'lineItem'  => $lineItem,
+            ];
+        }
+
+        $productPrice = $product->get('price');
+
+        // Ensure we strip any decimals from price
+        $productPrice = (int) str_replace('.', '', (string) $productPrice);
+
+        $lineItem['total'] = ($productPrice * $lineItem['quantity']);
+
+        return [
+            'orderData' => $orderData,
+            'lineItem'  => $lineItem,
+        ];
+    }
+
+    protected function calculateLineItemTax(array $orderData, array $lineItem): array
+    {
+        $product = ProductAPI::find($lineItem['product']);
+
+        $taxConfiguration = collect(Config::get('simple-commerce.sites'))
+            ->get(Site::current()->handle())['tax'];
+
+        if ($product->isExemptFromTax()) {
+            return [
+                'orderData' => $orderData,
+                'lineItem'  => $lineItem,
+            ];
+        }
+
+        $itemTotal = $lineItem['total'];
+        $taxAmount = ($itemTotal / 100) * ($taxConfiguration['rate'] / (100 + $taxConfiguration['rate']));
+
+        if ($taxConfiguration['included_in_prices']) {
+            $itemTax = str_replace(
+                '.',
+                '',
+                round(
+                    $taxAmount,
+                    2
+                )
+            );
+
+            $lineItem['total'] -= $itemTax;
+            $orderData['tax_total'] += $itemTax;
+        } else {
+            $orderData['tax_total'] += (int) str_replace(
+                '.',
+                '',
+                round(
+                    $taxAmount,
+                    2
+                )
+            );
+        }
+
+        return [
+            'orderData' => $orderData,
+            'lineItem'  => $lineItem,
+        ];
+    }
+
+    protected function calculateOrderShipping(array $orderData): array
+    {
+        if (! $this->order->has('shipping_method')) {
+            return [
+                'orderData' => $orderData,
+            ];
+        }
+
+        $orderData['shipping_total'] = Shipping::use($this->order->data['shipping_method'])->calculateCost($this->order->entry());
+
+        return [
+            'orderData' => $orderData,
+        ];
+    }
+
+    protected function calculateOrderCoupons(array $orderData): array
+    {
+        if (isset($this->order->data['coupon']) && $this->order->data['coupon'] !== null) {
+            $coupon = Coupon::find($this->order->data['coupon']);
             $value = (int) $coupon->data['value'];
 
             if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] = (int) (($value * $data['items_total']) / 100);
+                $orderData['coupon_total'] = (int) (($value * $orderData['items_total']) / 100);
             }
 
             if ($coupon->data['type'] === 'fixed') {
-                $data['coupon_total'] = (int) ($data['items_total'] - $value);
+                $orderData['coupon_total'] = (int) ($orderData['items_total'] - $value);
             }
 
-            $data['items_total'] = (int) str_replace('.', '', (string) ($data['items_total'] - $data['coupon_total']));
+            $orderData['items_total'] = (int) str_replace('.', '', (string) ($orderData['items_total'] - $orderData['coupon_total']));
         }
 
-        return $data;
+        return [
+            'orderData' => $orderData,
+        ];
     }
 }
