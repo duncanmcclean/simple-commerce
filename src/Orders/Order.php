@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
 use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
 use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
@@ -155,7 +156,7 @@ class Order implements Contract
     // TODO: rename method
     public function calculateTotals(): self
     {
-        $calculate = resolve(Calculator::class)->calculate($this);
+        $calculate = resolve(CalculatorContract::class)->calculate($this);
 
         $this->data($calculate);
 
