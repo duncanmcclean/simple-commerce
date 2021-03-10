@@ -2,7 +2,9 @@
 
 ## Unreleased
 
+* [new] Ability to bind your own `Calculator` class
 * [fix] Fixed bug where `items_total` would be a string when using coupons.
+* Refactored the `Calculator`
 
 ## v2.2.14 (2021-03-08)
 
