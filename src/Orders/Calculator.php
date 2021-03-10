@@ -36,7 +36,7 @@ class Calculator
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItem($data, $lineItem);
 
-                $data      = $calculate['orderData'];
+                $data      = $calculate['data'];
                 $lineItem  = $calculate['lineItem'];
 
                 return $lineItem;
@@ -44,7 +44,7 @@ class Calculator
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItemTax($data, $lineItem);
 
-                $data      = $calculate['orderData'];
+                $data      = $calculate['data'];
                 $lineItem  = $calculate['lineItem'];
 
                 return $lineItem;
@@ -54,16 +54,16 @@ class Calculator
             })
             ->toArray();
 
-        $data = $this->calculateOrderShipping($data)['orderData'];
+        $data = $this->calculateOrderShipping($data)['data'];
 
         $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
 
-        $data = $this->calculateOrderCoupons($data)['orderData'];
+        $data = $this->calculateOrderCoupons($data)['data'];
 
         return $data;
     }
 
-    protected function calculateLineItem(array $orderData, array $lineItem): array
+    protected function calculateLineItem(array $data, array $lineItem): array
     {
         $product = ProductAPI::find($lineItem['product']);
 
@@ -78,7 +78,7 @@ class Calculator
             $lineItem['total'] = ($productPrice * $lineItem['quantity']);
 
             return [
-                'orderData' => $orderData,
+                'data' => $data,
                 'lineItem'  => $lineItem,
             ];
         }
@@ -91,12 +91,12 @@ class Calculator
         $lineItem['total'] = ($productPrice * $lineItem['quantity']);
 
         return [
-            'orderData' => $orderData,
+            'data' => $data,
             'lineItem'  => $lineItem,
         ];
     }
 
-    protected function calculateLineItemTax(array $orderData, array $lineItem): array
+    protected function calculateLineItemTax(array $data, array $lineItem): array
     {
         $product = ProductAPI::find($lineItem['product']);
 
@@ -105,7 +105,7 @@ class Calculator
 
         if ($product->isExemptFromTax()) {
             return [
-                'orderData' => $orderData,
+                'data' => $data,
                 'lineItem'  => $lineItem,
             ];
         }
@@ -124,9 +124,9 @@ class Calculator
             );
 
             $lineItem['total'] -= $itemTax;
-            $orderData['tax_total'] += $itemTax;
+            $data['tax_total'] += $itemTax;
         } else {
-            $orderData['tax_total'] += (int) str_replace(
+            $data['tax_total'] += (int) str_replace(
                 '.',
                 '',
                 round(
@@ -137,45 +137,45 @@ class Calculator
         }
 
         return [
-            'orderData' => $orderData,
+            'data' => $data,
             'lineItem'  => $lineItem,
         ];
     }
 
-    protected function calculateOrderShipping(array $orderData): array
+    protected function calculateOrderShipping(array $data): array
     {
         if (! $this->order->has('shipping_method')) {
             return [
-                'orderData' => $orderData,
+                'data' => $data,
             ];
         }
 
-        $orderData['shipping_total'] = Shipping::use($this->order->data['shipping_method'])->calculateCost($this->order->entry());
+        $data['shipping_total'] = Shipping::use($this->order->data['shipping_method'])->calculateCost($this->order->entry());
 
         return [
-            'orderData' => $orderData,
+            'data' => $data,
         ];
     }
 
-    protected function calculateOrderCoupons(array $orderData): array
+    protected function calculateOrderCoupons(array $data): array
     {
         if (isset($this->order->data['coupon']) && $this->order->data['coupon'] !== null) {
             $coupon = Coupon::find($this->order->data['coupon']);
             $value = (int) $coupon->data['value'];
 
             if ($coupon->data['type'] === 'percentage') {
-                $orderData['coupon_total'] = (int) (($value * $orderData['items_total']) / 100);
+                $data['coupon_total'] = (int) (($value * $data['items_total']) / 100);
             }
 
             if ($coupon->data['type'] === 'fixed') {
-                $orderData['coupon_total'] = (int) ($orderData['items_total'] - $value);
+                $data['coupon_total'] = (int) ($data['items_total'] - $value);
             }
 
-            $orderData['items_total'] = (int) str_replace('.', '', (string) ($orderData['items_total'] - $orderData['coupon_total']));
+            $data['items_total'] = (int) str_replace('.', '', (string) ($data['items_total'] - $data['coupon_total']));
         }
 
         return [
-            'orderData' => $orderData,
+            'data' => $data,
         ];
     }
 }
