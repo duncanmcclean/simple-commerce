@@ -55,7 +55,7 @@ class CheckoutTags extends SubTag
             ->first();
 
         if (!$gateway) {
-            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $gatewayHandle]));
+            throw new GatewayDoesNotExist($gatewayHandle);
         }
 
         $prepare = Gateway::use($gateway['class']);

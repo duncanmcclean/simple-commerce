@@ -13,9 +13,9 @@ class GatewayDoesNotExist extends Exception implements ProvidesSolution
 
     public function __construct(string $gateway)
     {
-        parent::__construct("Gateway [{$this->gateway}] does not exist");
-
         $this->gateway = $gateway;
+
+        parent::__construct("Gateway [{$this->gateway}] does not exist");
     }
 
     public function getSolution(): Solution
