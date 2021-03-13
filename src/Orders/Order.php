@@ -11,9 +11,12 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Statamic\Facades\Stache;
 
@@ -141,6 +144,27 @@ class Order implements Contract
         $this->save();
 
         event(new CartCompleted($this));
+
+        // TODO: move to listener
+        if (config('simple-commerce.notifications.customer.order_confirmation')) {
+            if ($this->has('customer') || $this->has('email')) {
+                try {
+                    $email = $this->has('customer')
+                        ? $this->customer()->email()
+                        : ($this->has('email') ? $this->get('email') : null);
+
+                    if ($email) {
+                        Mail::to($email)->send(new OrderConfirmation($this->id));
+                    }
+                } catch (\Exception $e) {
+                    info("Exception when sending Order Confirmation: {$e->getMessage()}");
+                }
+            }
+        }
+
+        if (config('simple-commerce.notifications.back_office.order_paid')) {
+            Mail::send(new OrderPaid($this->id));
+        }
 
         return $this;
     }
