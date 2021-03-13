@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.2.16 (2021-03-13)
+
+* [fix] Fixed issue with `GatewayDoesNotExist` exception
+* [fix] Ensure we don't have two slashes in Gateway Webhook URL #387
+* [fix] Order Confirmation emails will now be sent for off-site gateways #395
+
 ## v2.2.15 (2021-03-10)
 
 * [new] Ability to bind your own `Calculator` class
@@ -18,6 +24,7 @@
 * [fix] Fixed webhook and callback URLs sometimes not being formed correctly.
 * [fix] Fixed an occasionaly exception with the Cookie Driver.
 * Deprecated 'order item' methods, and replaced them with 'line item' methods.
+
 
 ## v2.2.13 (2021-03-04)
 
