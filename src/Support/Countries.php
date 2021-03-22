@@ -1,11 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Data;
+namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 class Countries
 {
-    // TODO: move to `Support`
-
     protected static $countries = [
         ['iso' => 'US', 'name' => 'United States'],
         ['iso' => 'CA', 'name' => 'Canada'],
