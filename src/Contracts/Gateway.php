@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ interface Gateway
 {
     public function name(): string;
 
-    public function prepare(GatewayPrep $data): Response;
+    public function prepare(Prepare $data): Response;
 
     public function purchase(Purchase $data): Response;
 

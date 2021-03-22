@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
@@ -29,7 +29,7 @@ class StripeGateway extends BaseGateway implements Gateway
         return 'Stripe';
     }
 
-    public function prepare(GatewayPrep $data): GatewayResponse
+    public function prepare(Prepare $data): GatewayResponse
     {
         $this->setUpWithStripe();
         $cart = $data->cart();

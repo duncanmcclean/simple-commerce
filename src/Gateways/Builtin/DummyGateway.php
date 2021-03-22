@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class DummyGateway extends BaseGateway implements Gateway
         return 'Dummy';
     }
 
-    public function prepare(GatewayPrep $data): Response
+    public function prepare(Prepare $data): Response
     {
         return new Response(true, []);
     }

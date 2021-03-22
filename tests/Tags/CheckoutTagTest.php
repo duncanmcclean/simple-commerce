@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -120,7 +120,7 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
         return 'Test On-site Gateway';
     }
 
-    public function prepare(GatewayPrep $data): Response
+    public function prepare(Prepare $data): Response
     {
         return new Response(true, [
             'haggis'  => true,
@@ -161,7 +161,7 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
         return 'Test Off-site Gateway';
     }
 
-    public function prepare(GatewayPrep $data): Response
+    public function prepare(Prepare $data): Response
     {
         return new Response(true, [
             'bagpipes' => 'music',

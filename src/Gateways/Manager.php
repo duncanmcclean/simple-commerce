@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
@@ -32,7 +32,7 @@ class Manager implements Contract
 
     public function prepare($request, $order)
     {
-        return $this->resolve()->prepare(new GatewayPrep($request, $order));
+        return $this->resolve()->prepare(new Prepare($request, $order));
     }
 
     public function purchase($request, $order)

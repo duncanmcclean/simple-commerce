@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
@@ -36,7 +36,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_prepare()
     {
-        $prepare = $this->gateway->prepare(new GatewayPrep(
+        $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
             Cart::create()->entry()
         ));

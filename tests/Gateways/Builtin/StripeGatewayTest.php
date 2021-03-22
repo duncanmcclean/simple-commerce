@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -36,7 +36,7 @@ class StripeGatewayTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $prepare = $this->gateway->prepare(new GatewayPrep(
+        $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
             Order::create()->entry()
         ));

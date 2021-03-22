@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
@@ -26,7 +26,7 @@ class MollieGateway extends BaseGateway implements Gateway
         return 'Mollie';
     }
 
-    public function prepare(GatewayPrep $data): Response
+    public function prepare(Prepare $data): Response
     {
         $this->setupMollie();
         $cart = $data->cart();
