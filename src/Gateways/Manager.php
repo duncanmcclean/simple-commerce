@@ -12,7 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class GatewayManager implements Contract
+class Manager implements Contract
 {
     protected $className;
     protected $redirectUrl;

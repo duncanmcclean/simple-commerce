@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
@@ -120,17 +120,17 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
         return 'Test On-site Gateway';
     }
 
-    public function prepare(GatewayPrep $data): GatewayResponse
+    public function prepare(GatewayPrep $data): Response
     {
-        return new GatewayResponse(true, [
+        return new Response(true, [
             'haggis'  => true,
             'tatties' => true,
         ]);
     }
 
-    public function purchase(GatewayPurchase $data): GatewayResponse
+    public function purchase(GatewayPurchase $data): Response
     {
-        return new GatewayResponse(true);
+        return new Response(true);
     }
 
     public function purchaseRules(): array
@@ -138,14 +138,14 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
         return [];
     }
 
-    public function getCharge(Entry $order): GatewayResponse
+    public function getCharge(Entry $order): Response
     {
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
-    public function refundCharge(Entry $order): GatewayResponse
+    public function refundCharge(Entry $order): Response
     {
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
     public function webhook(Request $request)
@@ -161,16 +161,16 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
         return 'Test Off-site Gateway';
     }
 
-    public function prepare(GatewayPrep $data): GatewayResponse
+    public function prepare(GatewayPrep $data): Response
     {
-        return new GatewayResponse(true, [
+        return new Response(true, [
             'bagpipes' => 'music',
         ], 'http://backpipes.com');
     }
 
-    public function purchase(GatewayPurchase $data): GatewayResponse
+    public function purchase(GatewayPurchase $data): Response
     {
-        return new GatewayResponse(true);
+        return new Response(true);
     }
 
     public function purchaseRules(): array
@@ -178,14 +178,14 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
         return [];
     }
 
-    public function getCharge(Entry $order): GatewayResponse
+    public function getCharge(Entry $order): Response
     {
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
-    public function refundCharge(Entry $order): GatewayResponse
+    public function refundCharge(Entry $order): Response
     {
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
     public function webhook(Request $request)

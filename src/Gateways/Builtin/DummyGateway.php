@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
 
@@ -17,12 +17,12 @@ class DummyGateway extends BaseGateway implements Gateway
         return 'Dummy';
     }
 
-    public function prepare(GatewayPrep $data): GatewayResponse
+    public function prepare(GatewayPrep $data): Response
     {
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
-    public function purchase(GatewayPurchase $data): GatewayResponse
+    public function purchase(GatewayPurchase $data): Response
     {
         return $this->getCharge(new Entry());
     }
@@ -37,9 +37,9 @@ class DummyGateway extends BaseGateway implements Gateway
         ];
     }
 
-    public function getCharge(Entry $entry): GatewayResponse
+    public function getCharge(Entry $entry): Response
     {
-        return new GatewayResponse(true, [
+        return new Response(true, [
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
             'date'      => (string) now()->subDays(14),
@@ -47,9 +47,9 @@ class DummyGateway extends BaseGateway implements Gateway
         ]);
     }
 
-    public function refundCharge(Entry $entry): GatewayResponse
+    public function refundCharge(Entry $entry): Response
     {
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
     public function webhook(Request $request)

@@ -104,7 +104,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Coupon::class             => Coupons\Coupon::class,
             Contracts\Currency::class           => Support\Currency::class,
             Contracts\Customer::class           => Customers\Customer::class,
-            Contracts\GatewayManager::class     => Gateways\GatewayManager::class,
+            Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\Product::class            => Products\Product::class,
             Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
         ])->each(function ($concrete, $abstract) {

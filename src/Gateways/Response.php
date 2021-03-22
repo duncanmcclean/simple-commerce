@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Data\Gateways;
+namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
-class GatewayResponse
+class Response
 {
     protected bool $success = false;
     protected array $data = [];

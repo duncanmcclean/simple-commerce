@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
@@ -26,7 +26,7 @@ class MollieGateway extends BaseGateway implements Gateway
         return 'Mollie';
     }
 
-    public function prepare(GatewayPrep $data): GatewayResponse
+    public function prepare(GatewayPrep $data): Response
     {
         $this->setupMollie();
         $cart = $data->cart();
@@ -46,19 +46,19 @@ class MollieGateway extends BaseGateway implements Gateway
             ],
         ]);
 
-        return new GatewayResponse(true, [
+        return new Response(true, [
             'id' => $payment->id,
         ], $payment->getCheckoutUrl());
     }
 
-    public function purchase(GatewayPurchase $data): GatewayResponse
+    public function purchase(GatewayPurchase $data): Response
     {
         // We don't actually do anything here as Mollie is an
         // off-site gateway, so it has it's own checkout page.
 
         // TODO: maybe throw an exception, in the case a developer gets here?
 
-        return new GatewayResponse(false, []);
+        return new Response(false, []);
     }
 
     public function purchaseRules(): array
@@ -70,14 +70,14 @@ class MollieGateway extends BaseGateway implements Gateway
         return [];
     }
 
-    public function getCharge(Entry $order): GatewayResponse
+    public function getCharge(Entry $order): Response
     {
         $this->setupMollie();
         $cart = Cart::find($order->id());
 
         $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
 
-        return new GatewayResponse(true, [
+        return new Response(true, [
             'id'                              => $payment->id,
             'mode'                            => $payment->mode,
             'amount'                          => $payment->amount,
@@ -116,7 +116,7 @@ class MollieGateway extends BaseGateway implements Gateway
         ]);
     }
 
-    public function refundCharge(Entry $order): GatewayResponse
+    public function refundCharge(Entry $order): Response
     {
         $this->setupMollie();
         $cart = Cart::find($order->id());
@@ -125,7 +125,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $refund = $payment->refund([]);
 
-        return new GatewayResponse(true, []);
+        return new Response(true, []);
     }
 
     public function webhook(Request $request)

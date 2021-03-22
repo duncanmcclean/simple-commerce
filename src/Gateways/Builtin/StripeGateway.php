@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -100,7 +100,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $charge = PaymentIntent::retrieve($order->data()['gateway_data']['intent']);
 
-        return new GatewayResponse(true, $charge->toArray());
+        return new Response(true, $charge->toArray());
     }
 
     public function refundCharge(Entry $order): GatewayResponse
@@ -108,7 +108,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $this->setUpWithStripe();
 
         if (!isset($data['intent'])) {
-            // return new GatewayResponse(false)
+            // return new Response(false)
             //     ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
         }
 
@@ -116,7 +116,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'payment_intent' => $order->data()['gateway_data']['intent'],
         ]);
 
-        return new GatewayResponse(true, $refund->toArray());
+        return new Response(true, $refund->toArray());
     }
 
     public function webhook(Request $request)
