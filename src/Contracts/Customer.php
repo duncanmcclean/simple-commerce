@@ -2,8 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use Statamic\Http\Resources\API\EntryResource;
-
 interface Customer
 {
     public function all();
@@ -18,7 +16,7 @@ interface Customer
 
     public function delete();
 
-    public function toResource(): EntryResource;
+    public function toResource();
 
     public function id();
 

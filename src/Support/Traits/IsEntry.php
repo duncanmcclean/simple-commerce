@@ -112,7 +112,7 @@ trait IsEntry
         return $this->entry;
     }
 
-    public function toResource(): EntryResource
+    public function toResource()
     {
         return new EntryResource($this->entry);
     }

@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use Statamic\Entries\Entry;
-use Statamic\Http\Resources\API\EntryResource;
 
 interface Coupon
 {
@@ -19,7 +18,7 @@ interface Coupon
 
     public function delete();
 
-    public function toResource(): EntryResource;
+    public function toResource();
 
     public function id();
 
