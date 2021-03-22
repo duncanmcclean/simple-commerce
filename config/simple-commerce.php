@@ -42,7 +42,7 @@ return [
     */
 
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [
+        \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
             'display' => 'Card',
         ],
     ],
