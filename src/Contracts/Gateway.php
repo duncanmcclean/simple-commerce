@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Statamic\Entries\Entry;
@@ -14,7 +14,7 @@ interface Gateway
 
     public function prepare(GatewayPrep $data): Response;
 
-    public function purchase(GatewayPurchase $data): Response;
+    public function purchase(Purchase $data): Response;
 
     public function purchaseRules(): array;
 

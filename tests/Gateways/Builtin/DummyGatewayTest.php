@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -51,7 +51,7 @@ class DummyGatewayTest extends TestCase
     {
         TestTime::freeze();
 
-        $purchase = $this->gateway->purchase(new GatewayPurchase(
+        $purchase = $this->gateway->purchase(new Purchase(
             new Request(),
             Cart::create()->entry()
         ));

@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
@@ -37,7 +37,7 @@ class Manager implements Contract
 
     public function purchase($request, $order)
     {
-        $purchase = $this->resolve()->purchase(new GatewayPurchase($request, $order));
+        $purchase = $this->resolve()->purchase(new Purchase($request, $order));
 
         if ($purchase->success()) {
             Cart::find($order->id())->data([

@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
@@ -51,7 +51,7 @@ class MollieGateway extends BaseGateway implements Gateway
         ], $payment->getCheckoutUrl());
     }
 
-    public function purchase(GatewayPurchase $data): Response
+    public function purchase(Purchase $data): Response
     {
         // We don't actually do anything here as Mollie is an
         // off-site gateway, so it has it's own checkout page.

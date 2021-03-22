@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -128,7 +128,7 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
         ]);
     }
 
-    public function purchase(GatewayPurchase $data): Response
+    public function purchase(Purchase $data): Response
     {
         return new Response(true);
     }
@@ -168,7 +168,7 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
         ], 'http://backpipes.com');
     }
 
-    public function purchase(GatewayPurchase $data): Response
+    public function purchase(Purchase $data): Response
     {
         return new Response(true);
     }
