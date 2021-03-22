@@ -100,7 +100,8 @@ class ServiceProvider extends AddonServiceProvider
     {
         collect([
             Contracts\Calculator::class         => Orders\Calculator::class,
-            Contracts\Order::class              => Orders\Order::class,
+            // Contracts\Order::class              => Orders\Order::class,
+            Contracts\Order::class              => Orders\EloquentOrder::class,
             Contracts\Coupon::class             => Coupons\Coupon::class,
             Contracts\Currency::class           => Support\Currency::class,
             Contracts\Customer::class           => Customers\Customer::class,

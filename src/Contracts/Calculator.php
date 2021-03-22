@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Order;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 
 interface Calculator
 {

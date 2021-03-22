@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
@@ -13,7 +14,7 @@ class Calculator implements Contract
 {
     protected $order;
 
-    public function calculate(Order $order): array
+    public function calculate(OrderContract $order): array
     {
         if ($order->has('is_paid') && $order->get('is_paid') === true) {
             return $order->data();
