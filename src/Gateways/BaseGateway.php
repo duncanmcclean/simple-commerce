@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Data\Gateways;
+namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 class BaseGateway
 {

@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
