@@ -16,6 +16,7 @@ class UpdateRequest extends FormRequest
         return [
             'name'  => 'sometimes|string',
             'email' => 'sometimes|email',
+            'billing_country' => ['sometimes', 'filled'],
         ];
     }
 }
