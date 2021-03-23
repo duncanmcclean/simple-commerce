@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -24,7 +23,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_get_cart_index()
     {
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
@@ -39,7 +38,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart()
     {
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -60,7 +59,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_request_json_response()
     {
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -90,7 +89,7 @@ class CartControllerTest extends TestCase
             'email' => 'dan.smith@example.com',
         ])->save();
 
-        $cart = Cart::create()->save()->data(['customer' => $customer->id])->save();
+        $cart = Order::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
             'shipping_note' => 'Be careful pls.',
@@ -112,7 +111,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer()
     {
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             'name'  => 'Joe Doe',
@@ -142,7 +141,7 @@ class CartControllerTest extends TestCase
             'email' => 'jordan.smith@example.com',
         ])->save();
 
-        $cart = Cart::create()->save()->data(['customer' => $customer->id])->save();
+        $cart = Order::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
             'customer' => [
@@ -171,7 +170,7 @@ class CartControllerTest extends TestCase
             'email' => 'jack.simpson@example.com',
         ])->save();
 
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             'customer' => [
@@ -197,7 +196,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer_via_customer_array()
     {
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             'customer' => [
@@ -241,7 +240,7 @@ class CartControllerTest extends TestCase
         $this->assertSame($customer->get('name'), 'Duncan');
         $this->assertSame($customer->id, $order->get('customer'));
 
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             'email' => 'duncan@test.com',
@@ -260,7 +259,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_with_custom_redirect_page()
     {
-        $cart = Cart::create()->save();
+        $cart = Order::create()->save();
 
         $data = [
             '_redirect' => '/checkout',
@@ -279,7 +278,7 @@ class CartControllerTest extends TestCase
     {
         $product = Product::create()->save()->data(['price' => 1000])->save();
 
-        $cart = Cart::create()
+        $cart = Order::create()
             ->save()
             ->data([
                 'items' => [
@@ -309,7 +308,7 @@ class CartControllerTest extends TestCase
     {
         $product = Product::create(['price' => 1000])->save();
 
-        $cart = Cart::create([
+        $cart = Order::create([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
