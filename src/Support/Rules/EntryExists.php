@@ -7,6 +7,8 @@ use Statamic\Facades\Entry;
 
 class EntryExists implements Rule
 {
+    // TODO: check we're not using this rule where it could cause problems
+
     public function passes($attribute, $value)
     {
         return Entry::find($value) === null

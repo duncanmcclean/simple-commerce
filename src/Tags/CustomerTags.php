@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
 use DoubleThreeDigital\SimpleCommerce\Orders\Order;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
@@ -50,6 +51,6 @@ class CustomerTags extends SubTag
 
     public function order()
     {
-        return Entry::find($this->params->get('id'));
+        return OrderAPI::find($this->params->get('id'));
     }
 }
