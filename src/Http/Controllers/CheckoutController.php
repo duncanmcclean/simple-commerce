@@ -117,7 +117,7 @@ class CheckoutController extends BaseActionController
             throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
         }
 
-        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart->entry());
+        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
 
         $this->excludedKeys[] = 'gateway';
 

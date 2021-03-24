@@ -52,7 +52,8 @@ class Product implements Contract
 
     public function isExemptFromTax(): bool
     {
-        return $this->has('exempt_from_tax') && $this->get('exempt_from_tax') === true;
+        return $this->has('exempt_from_tax')
+            && $this->get('exempt_from_tax') === true;
     }
 
     public function collection(): string

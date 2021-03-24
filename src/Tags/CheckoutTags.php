@@ -21,7 +21,7 @@ class CheckoutTags extends SubTag
 
         foreach (SimpleCommerce::gateways() as $gateway) {
             try {
-                $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
+                $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
 
                 $cart->data([
                     $gateway['handle'] => $prepare->data(),
@@ -68,7 +68,7 @@ class CheckoutTags extends SubTag
             $prepare->withErrorRedirectUrl($this->params->get('error_redirect'));
         }
 
-        $prepare = $prepare->prepare(request(), $cart->entry());
+        $prepare = $prepare->prepare(request(), $cart);
 
         $cart->data([
             $gateway['handle'] => $prepare->data(),

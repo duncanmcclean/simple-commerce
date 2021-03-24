@@ -84,7 +84,7 @@ class StripeGatewayTest extends TestCase
         $this->markTestIncomplete();
 
         $refund = (new StripeGateway())->refundCharge(
-            Order::create()->entry()
+            Order::create()
         );
 
         $this->assertIsObject($refund);
