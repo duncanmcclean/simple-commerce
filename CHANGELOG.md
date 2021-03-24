@@ -4,6 +4,7 @@
 
 * [new] Statamic 3.1 support
 * [new] Added docblocks to Facades #400
+* [new] Added country validation when submitting addresses #398 #402
 * [fix] Allow for calculator to be run with any `Order` class
 
 ## v2.2.16 (2021-03-13)
