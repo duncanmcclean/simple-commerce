@@ -44,7 +44,5 @@ interface Customer
 
     public function email(): string;
 
-    public function generateTitleAndSlug(): self;
-
     public static function bindings(): array;
 }
