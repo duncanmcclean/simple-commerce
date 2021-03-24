@@ -20,9 +20,9 @@ interface Product
 
     public function id();
 
-    public function title(string $title = '');
+    public function title(string $title = null);
 
-    public function slug(string $slug = '');
+    public function slug(string $slug = null);
 
     public function site($site = null): self;
 

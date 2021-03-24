@@ -122,26 +122,26 @@ trait IsEntry
         return $this->id;
     }
 
-    public function title(string $title = '')
+    public function title(string $title = null)
     {
-        if ($title !== '') {
-            $this->title = $title;
-
-            return $this;
+        if (is_null($title)) {
+            return $this->title;
         }
 
-        return $this->title;
+        $this->title = $title;
+
+        return $this;
     }
 
-    public function slug(string $slug = '')
+    public function slug(string $slug = null)
     {
-        if ($slug !== '') {
-            $this->slug = $slug;
-
-            return $this;
+        if (is_null($slug)) {
+            return $this->slug;
         }
 
-        return $this->slug;
+        $this->slug = $slug;
+
+        return $this;
     }
 
     public function site($site = null): self
