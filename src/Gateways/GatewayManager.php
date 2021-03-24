@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -40,10 +40,10 @@ class GatewayManager implements Contract
         $purchase = $this->resolve()->purchase(new GatewayPurchase($request, $order));
 
         if ($purchase->success()) {
-            Cart::find($order->id())->data([
+            Order::find($order->id())->data([
                 'gateway'      => $this->className,
                 'gateway_data' => $purchase->data(),
-            ]);
+            ])->save();
         } else {
             throw ValidationException::withMessages([$purchase->error()]);
         }
@@ -65,7 +65,7 @@ class GatewayManager implements Contract
     {
         $refund = $this->resolve()->refundCharge($order);
 
-        $cart = Cart::find($order->id());
+        $cart = Order::find($order->id());
         $cart->data([
             'is_refunded'  => true,
             'gateway_data' => array_merge($cart->data['gateway_data'], [

@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Mail\BackOffice;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -22,7 +22,7 @@ class OrderPaid extends Mailable
 
     public function build()
     {
-        $order = Cart::find($this->orderId);
+        $order = Order::find($this->orderId);
 
         return $this->markdown('simple-commerce::back-office.order-paid')
             ->subject(__('simple-commerce::mail.order_paid.subject'))

@@ -8,8 +8,8 @@ use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
 use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
@@ -73,7 +73,7 @@ class MollieGateway extends BaseGateway implements Gateway
     public function getCharge(Entry $order): GatewayResponse
     {
         $this->setupMollie();
-        $cart = Cart::find($order->id());
+        $cart = Order::find($order->id());
 
         $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
 
@@ -119,7 +119,7 @@ class MollieGateway extends BaseGateway implements Gateway
     public function refundCharge(Entry $order): GatewayResponse
     {
         $this->setupMollie();
-        $cart = Cart::find($order->id());
+        $cart = Order::find($order->id());
 
         $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
 
@@ -143,7 +143,7 @@ class MollieGateway extends BaseGateway implements Gateway
                         === $mollieId;
                 })
                 ->map(function ($entry) {
-                    return Cart::find($entry->id());
+                    return Order::find($entry->id());
                 })
                 ->first();
 

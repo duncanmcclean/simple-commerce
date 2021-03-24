@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Data\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Statamic\Entries\Entry;
 
 class GatewayPrep
@@ -28,6 +28,6 @@ class GatewayPrep
 
     public function cart()
     {
-        return Cart::find($this->order->id());
+        return Order::find($this->order->id());
     }
 }
