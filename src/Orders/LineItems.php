@@ -15,7 +15,7 @@ trait LineItems
         return collect($this->get('items'));
     }
 
-    public function lineItem(string $lineItemId): array
+    public function lineItem($lineItemId): array
     {
         return $this->lineItems()
             ->firstWhere('id', $lineItemId);
@@ -35,7 +35,7 @@ trait LineItems
         return $this->lineItem($lineItemData['id']);
     }
 
-    public function updateLineItem(string $lineItemId, array $lineItemData): array
+    public function updateLineItem($lineItemId, array $lineItemData): array
     {
         $this->data([
             'items' => $this->lineItems()
@@ -55,7 +55,7 @@ trait LineItems
         return $this->lineItem($lineItemId);
     }
 
-    public function removeLineItem(string $lineItemId): Collection
+    public function removeLineItem($lineItemId): Collection
     {
         $this->data([
             'items' => $this->lineItems()
