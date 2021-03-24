@@ -8,7 +8,7 @@ interface Order
 
     public function query();
 
-    public function find(string $id): self;
+    public function find($id): self;
 
     public function create(array $data = [], string $site = ''): self;
 
