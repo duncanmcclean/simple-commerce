@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
@@ -14,7 +15,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
-use Statamic\Entries\Entry;
 use Statamic\Facades\Site;
 use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
@@ -94,16 +94,16 @@ class StripeGateway extends BaseGateway implements Gateway
         ];
     }
 
-    public function getCharge(Entry $order): GatewayResponse
+    public function getCharge(OrderContract $order): GatewayResponse
     {
         $this->setUpWithStripe();
 
         $charge = PaymentIntent::retrieve($order->data()['gateway_data']['intent']);
 
-        return new Response(true, $charge->toArray());
+        return new GatewayResponse(true, $charge->toArray());
     }
 
-    public function refundCharge(Entry $order): GatewayResponse
+    public function refundCharge(OrderContract $order): GatewayResponse
     {
         $this->setUpWithStripe();
 
@@ -116,7 +116,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'payment_intent' => $order->data()['gateway_data']['intent'],
         ]);
 
-        return new Response(true, $refund->toArray());
+        return new GatewayResponse(true, $refund->toArray());
     }
 
     public function webhook(Request $request)

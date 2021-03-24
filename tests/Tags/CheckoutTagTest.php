@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
@@ -138,12 +139,12 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
         return [];
     }
 
-    public function getCharge(Entry $order): Response
+    public function getCharge(ContractsOrder $order): Response
     {
         return new Response(true, []);
     }
 
-    public function refundCharge(Entry $order): Response
+    public function refundCharge(ContractsOrder $order): Response
     {
         return new Response(true, []);
     }
@@ -178,12 +179,12 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
         return [];
     }
 
-    public function getCharge(Entry $order): Response
+    public function getCharge(ContractsOrder $order): Response
     {
         return new Response(true, []);
     }
 
-    public function refundCharge(Entry $order): Response
+    public function refundCharge(ContractsOrder $order): Response
     {
         return new Response(true, []);
     }

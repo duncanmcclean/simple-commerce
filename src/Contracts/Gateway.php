@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
-use Statamic\Entries\Entry;
 
 interface Gateway
 {
@@ -18,9 +17,9 @@ interface Gateway
 
     public function purchaseRules(): array;
 
-    public function getCharge(Entry $order): Response;
+    public function getCharge(Order $order): Response;
 
-    public function refundCharge(Entry $order): Response;
+    public function refundCharge(Order $order): Response;
 
     public function webhook(Request $request);
 }

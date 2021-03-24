@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
@@ -70,12 +71,11 @@ class MollieGateway extends BaseGateway implements Gateway
         return [];
     }
 
-    public function getCharge(Entry $order): Response
+    public function getCharge(Order $order): Response
     {
         $this->setupMollie();
-        $cart = Cart::find($order->id());
 
-        $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
+        $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
 
         return new Response(true, [
             'id'                              => $payment->id,
@@ -116,12 +116,11 @@ class MollieGateway extends BaseGateway implements Gateway
         ]);
     }
 
-    public function refundCharge(Entry $order): Response
+    public function refundCharge(Order $order): Response
     {
         $this->setupMollie();
-        $cart = Cart::find($order->id());
 
-        $payment = $this->mollie->payments->get($cart->data['gateway_data']['id']);
+        $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
 
         $refund = $payment->refund([]);
 

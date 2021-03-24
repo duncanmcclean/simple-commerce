@@ -3,12 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
-use Statamic\Entries\Entry;
 
 class DummyGateway extends BaseGateway implements Gateway
 {
@@ -24,7 +24,12 @@ class DummyGateway extends BaseGateway implements Gateway
 
     public function purchase(Purchase $data): Response
     {
-        return $this->getCharge(new Entry());
+        return new Response(true, [
+            'id'        => '123456789abcdefg',
+            'last_four' => '4242',
+            'date'      => (string) now()->subDays(14),
+            'refunded'  => false,
+        ]);
     }
 
     public function purchaseRules(): array
@@ -37,7 +42,7 @@ class DummyGateway extends BaseGateway implements Gateway
         ];
     }
 
-    public function getCharge(Entry $entry): Response
+    public function getCharge(Order $entry): Response
     {
         return new Response(true, [
             'id'        => '123456789abcdefg',
@@ -47,7 +52,7 @@ class DummyGateway extends BaseGateway implements Gateway
         ]);
     }
 
-    public function refundCharge(Entry $entry): Response
+    public function refundCharge(Order $entry): Response
     {
         return new Response(true, []);
     }

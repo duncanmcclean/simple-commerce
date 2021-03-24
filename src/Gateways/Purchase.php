@@ -2,15 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Statamic\Entries\Entry;
 
 class Purchase
 {
     protected $request;
     protected $order;
 
-    public function __construct($request, Entry $order)
+    public function __construct($request, Order $order)
     {
         $this->request = $request;
         $this->order = $order;
