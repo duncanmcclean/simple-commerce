@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart;
 
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\CountryExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -16,7 +17,8 @@ class UpdateRequest extends FormRequest
         return [
             'name'  => 'sometimes|string',
             'email' => 'sometimes|email',
-            'billing_country' => ['sometimes', 'filled'],
+            'shipping_country' => ['sometimes', 'filled', new CountryExists],
+            'billing_country' => ['sometimes', 'filled', new CountryExists],
         ];
     }
 }

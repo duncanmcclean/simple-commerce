@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Support\Rules;
 
 use DoubleThreeDigital\SimpleCommerce\Data\Countries;
 use Illuminate\Contracts\Validation\Rule;
-use Statamic\Facades\Entry;
 use Illuminate\Support\Str;
 
 class CountryExists implements Rule
@@ -19,8 +18,8 @@ class CountryExists implements Rule
             return Str::slug($country['name']) == $value;
         });
 
-        return $matchesIso
-            ?? $matchesCountryNameAsSlug;
+        return $matchesIso->count() >= 1
+            ?? $matchesCountryNameAsSlug->count() >= 1;
     }
 
     public function message()
