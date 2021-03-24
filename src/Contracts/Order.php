@@ -58,13 +58,13 @@ interface Order
 
     public function lineItems(): Collection;
 
-    public function lineItem(string $lineItemId): array;
+    public function lineItem($lineItemId): array;
 
     public function addLineItem(array $lineItemData): array;
 
-    public function updateLineItem(string $lineItemId, array $lineItemData): array;
+    public function updateLineItem($lineItemId, array $lineItemData): array;
 
-    public function removeLineItem(string $lineItemId): Collection;
+    public function removeLineItem($lineItemId): Collection;
 
     public function clearLineItems(): Collection;
 
