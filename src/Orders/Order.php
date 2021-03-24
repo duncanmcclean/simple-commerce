@@ -120,7 +120,7 @@ class Order implements Contract
     {
         $coupon = Coupon::findByCode($code);
 
-        if ($coupon->isValid($this->entry())) {
+        if ($coupon->isValid($this)) {
             $this->set('coupon', $coupon->id());
             event(new CouponRedeemed($coupon->entry()));
 

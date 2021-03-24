@@ -82,6 +82,7 @@ class CouponControllerTest extends TestCase
                 'minimum_cart_value' => null,
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $data = [
