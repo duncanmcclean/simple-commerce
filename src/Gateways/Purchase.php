@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 
 class Purchase
 {
@@ -28,6 +28,6 @@ class Purchase
 
     public function cart()
     {
-        return Cart::find($this->order->id());
+        return OrderFacade::find($this->order->id());
     }
 }

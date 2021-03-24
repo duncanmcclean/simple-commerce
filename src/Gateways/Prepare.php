@@ -3,8 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
-use Statamic\Entries\Entry;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 
 class Prepare
 {
@@ -29,6 +28,6 @@ class Prepare
 
     public function cart()
     {
-        return Cart::find($this->order->id());
+        return OrderFacade::find($this->order->id());
     }
 }

@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
@@ -38,7 +38,7 @@ class DummyGatewayTest extends TestCase
     {
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            Cart::create()
+            Order::create()
         ));
 
         $this->assertIsObject($prepare);
@@ -53,7 +53,7 @@ class DummyGatewayTest extends TestCase
 
         $purchase = $this->gateway->purchase(new Purchase(
             new Request(),
-            Cart::create()
+            Order::create()
         ));
 
         $this->assertIsObject($purchase);
@@ -86,7 +86,7 @@ class DummyGatewayTest extends TestCase
         TestTime::freeze();
 
         $charge = $this->gateway->getCharge(
-            Cart::create()
+            Order::create()
         );
 
         $this->assertIsObject($charge);
@@ -101,7 +101,7 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_refund_charge()
     {
-        $refund = $this->gateway->refundCharge(Cart::create());
+        $refund = $this->gateway->refundCharge(Order::create());
 
         $this->assertIsObject($refund);
         $this->assertTrue($refund->success());

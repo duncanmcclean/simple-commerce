@@ -9,12 +9,11 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
-use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryFacade;
 use Statamic\Facades\Site;
 
@@ -142,7 +141,7 @@ class MollieGateway extends BaseGateway implements Gateway
                         === $mollieId;
                 })
                 ->map(function ($entry) {
-                    return Cart::find($entry->id());
+                    return OrderFacade::find($entry->id());
                 })
                 ->first();
 
