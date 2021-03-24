@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* [new] Statamic 3.1 support
+* [new] Added docblocks to Facades #400
+* [fix] Allow for calculator to be run with any `Order` class
+
 ## v2.2.16 (2021-03-13)
 
 * [fix] Fixed issue with `GatewayDoesNotExist` exception
