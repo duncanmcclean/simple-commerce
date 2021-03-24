@@ -40,6 +40,8 @@ interface Coupon
 
     public function findByCode(string $code): self;
 
+    public function code(): string;
+
     public function isValid(Order $order): bool;
 
     public function redeem(): self;

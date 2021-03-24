@@ -35,6 +35,11 @@ class Coupon implements Contract
         return $this->find($entry->id());
     }
 
+    public function code(): string
+    {
+        return $this->slug();
+    }
+
     // TODO: refactor
     public function isValid(Order $order): bool
     {

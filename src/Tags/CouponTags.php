@@ -29,8 +29,9 @@ class CouponTags extends SubTag
         $coupon = Coupon::find($coupon);
 
         return array_merge($coupon->data, [
-            'title' => $coupon->entry()->title,
-            'slug'  => $coupon->entry()->slug(),
+            'title' => $coupon->code(),
+            'slug'  => $coupon->code(),
+            'code'  => $coupon->code(),
             'id'    => $coupon->id,
         ]);
     }
