@@ -24,9 +24,9 @@ trait IsEntry
         return EntryAPI::whereCollection($this->collection());
     }
 
-    public function find(string $id): self
+    public function find($id): self
     {
-        $this->entry = EntryAPI::find($id);
+        $this->entry = EntryAPI::find((string) $id);
 
         if (!$this->entry) {
             throw new EntryNotFound("Entry could not be found: {$id}");
