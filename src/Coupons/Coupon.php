@@ -3,10 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
-use Statamic\Entries\Entry as EntryInstance;
 use Statamic\Facades\Entry;
 
 class Coupon implements Contract
@@ -36,7 +36,7 @@ class Coupon implements Contract
     }
 
     // TODO: refactor
-    public function isValid(EntryInstance $order): bool
+    public function isValid(Order $order): bool
     {
         if ($this->has('minimum_cart_value') && $order->has('items_total')) {
             if ($order->data()->get('items_total') < $this->get('minimum_cart_value')) {
