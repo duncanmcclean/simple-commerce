@@ -29,20 +29,24 @@ class CouponControllerTest extends TestCase
     /** @test */
     public function can_store_coupon()
     {
-        $this->markTestIncomplete();
-
         Event::fake();
 
         $this->buildCartWithProducts();
 
-        $coupon = Coupon::create([
-            'slug'               => 'half-price',
-            'title'              => 'Half Price',
-            'redeemed'           => 0,
-            'value'              => 50,
-            'type'               => 'percentage',
-            'minimum_cart_value' => null,
-        ])->save();
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+            ])
+            ->save();
+
+        $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $data = [
             'code' => 'half-price',
