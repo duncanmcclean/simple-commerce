@@ -83,7 +83,7 @@ class Coupon implements Contract
     protected function isProductSpecific()
     {
         return $this->has('products')
-            && collect($this->get('products'))->count() >= 0;
+            && collect($this->get('products'))->count() >= 1;
     }
 
     public static function bindings(): array
