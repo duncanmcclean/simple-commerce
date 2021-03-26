@@ -29,8 +29,6 @@ class CouponControllerTest extends TestCase
     /** @test */
     public function can_store_coupon()
     {
-        $this->markTestSkipped();
-
         Event::fake();
 
         $this->buildCartWithProducts();
