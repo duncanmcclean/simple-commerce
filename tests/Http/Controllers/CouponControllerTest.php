@@ -270,6 +270,7 @@ class CouponControllerTest extends TestCase
                 'minimum_cart_value' => null,
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $this->cart->data([
@@ -306,6 +307,7 @@ class CouponControllerTest extends TestCase
                 'minimum_cart_value' => null,
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $this->cart->data([
