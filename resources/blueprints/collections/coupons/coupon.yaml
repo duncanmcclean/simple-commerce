@@ -67,6 +67,16 @@ sections:
           width: 50
           listable: hidden
           display: 'Minimum Cart Value'
+      -
+        handle: products
+        field:
+          mode: default
+          collections:
+            - products
+          display: Products
+          type: entries
+          icon: entries
+          listable: hidden
   sidebar:
     display: Sidebar
     fields:
