@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Statamic\Entries\Entry as EntryInstance;
@@ -38,14 +39,26 @@ class Coupon implements Contract
     // TODO: refactor
     public function isValid(EntryInstance $order): bool
     {
+        $order = Order::find($order->id());
+
         if ($this->has('minimum_cart_value') && $order->has('items_total')) {
-            if ($order->data()->get('items_total') < $this->get('minimum_cart_value')) {
+            if ($order->get('items_total') < $this->get('minimum_cart_value')) {
                 return false;
             }
         }
 
         if ($this->has('redeemed') && $this->has('maximum_uses')) {
             if ($this->has('redeemed') >= $this->get('maximum_uses')) {
+                return false;
+            }
+        }
+
+        if ($this->isProductSpecific()) {
+            $couponProductsInOrder = $order->lineItems()->filter(function ($lineItem) {
+                return in_array($lineItem['product'], $this->get('products'));
+            });
+
+            if ($couponProductsInOrder === 0) {
                 return false;
             }
         }
@@ -65,6 +78,12 @@ class Coupon implements Contract
     public function collection(): string
     {
         return config('simple-commerce.collections.coupons');
+    }
+
+    protected function isProductSpecific()
+    {
+        return $this->has('products')
+            && collect($this->get('products'))->count() >= 1;
     }
 
     public static function bindings(): array
