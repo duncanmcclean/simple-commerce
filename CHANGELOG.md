@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [new] Statamic 3.1 support
+* [new] Product Specific Coupons #390
 * [new] Added docblocks to Facades #400
 * [new] Added country validation when submitting addresses #398 #402
 * [fix] Allow for calculator to be run with any `Order` class
