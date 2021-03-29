@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.2.17 (2021-03-29)
+
 * [new] Statamic 3.1 support
 * [new] Product Specific Coupons #390
 * [new] Added docblocks to Facades #400
