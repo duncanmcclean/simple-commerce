@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.2.18 (2021-03-30)
+
+* [fix] Fixed issue where shipping & billing addresses would not be output on PDF Receipts #404
+
 ## v2.2.17 (2021-03-29)
 
 * [new] Statamic 3.1 support
