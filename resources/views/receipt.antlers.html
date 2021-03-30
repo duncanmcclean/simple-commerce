@@ -34,31 +34,33 @@
                 </table>
             </td>
         </tr>
-    </header>
+    </table>
 
-    <div class="flex flex-row space-x-16 mb-8">
-        {{ if billing_address }}
-            <div class="flex flex-col">
-                <span class="font-medium text-xs mb-1">Billing Address</span>
-                <span class="text-xs">{{ billing_address:name }}</span>
-                <span class="text-xs">{{ billing_address:address }</span>
-                <span class="text-xs">{{ billing_address:city }}</span>
-                <span class="text-xs">{{ billing_address:country }}</span>
-                <span class="text-xs">{{ billing_address:zip_code }}</span>
-            </div>
-        {{ /if }}
+    <table class="mb-8 w-full">
+        <tr>
+            {{ if billing_address }}
+                <td width="50%">
+                    <p class="font-medium text-xs mb-1">Billing Address</p>
+                    <p class="text-xs">{{ billing_name }}</p>
+                    <p class="text-xs">{{ billing_address }}</p>
+                    <p class="text-xs">{{ billing_city }}</p>
+                    <p class="text-xs">{{ billing_country }}</p>
+                    <p class="text-xs">{{ billing_zip_code }}</p>
+                </td>
+            {{ /if }}
 
-        {{ if shipping_address }}
-            <div class="flex flex-col">
-                <span class="font-medium text-xs mb-1">Shipping Address</span>
-                <span class="text-xs">{{ shipping_address:name }}</span>
-                <span class="text-xs">{{ shipping_address:address }}</span>
-                <span class="text-xs">{{ shipping_address:city }}</span>
-                <span class="text-xs">{{ shipping_address:country }}</span>
-                <span class="text-xs">{{ shipping_address:zip_code }}</span>
-            </div>
-        {{ /if }}
-    </div>
+            {{ if shipping_address }}
+                <td width="50%">
+                    <p class="font-medium text-xs mb-1">Shipping Address</p>
+                    <p class="text-xs">{{ shipping_name }}</p>
+                    <p class="text-xs">{{ shipping_address }}</p>
+                    <p class="text-xs">{{ shipping_city }}</p>
+                    <p class="text-xs">{{ shipping_country }}</p>
+                    <p class="text-xs">{{ shipping_zip_code }}</p>
+                </td>
+            {{ /if }}
+        </tr>
+    </table>
 
     <table class="table-auto w-full">
         <thead>
