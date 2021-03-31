@@ -43,7 +43,7 @@ class Manager implements Contract
             Order::find($order->id())->data([
                 'gateway'      => $this->className,
                 'gateway_data' => $purchase->data(),
-            ]);
+            ])->save();
         } else {
             throw ValidationException::withMessages([$purchase->error()]);
         }

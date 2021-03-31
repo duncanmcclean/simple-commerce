@@ -12,6 +12,7 @@ use Statamic\Facades\Site;
 
 class Calculator implements Contract
 {
+    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order $model */
     protected $order;
 
     public function calculate(OrderContract $order): array
@@ -162,6 +163,14 @@ class Calculator implements Contract
             $coupon = Coupon::find($this->order->data['coupon']);
             $value = (int) $coupon->data['value'];
 
+            // Double check coupon is still valid
+            if (! $coupon->isValid($this->order->entry())) {
+                return [
+                    'data' => $data,
+                ];
+            }
+
+            // Otherwise do all the other stuff...
             if ($coupon->data['type'] === 'percentage') {
                 $data['coupon_total'] = (int) (($value * $data['items_total']) / 100);
             }

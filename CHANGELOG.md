@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.2.18 (2021-03-30)
+
+* [fix] Fixed issue where shipping & billing addresses would not be output on PDF Receipts #404
+
+## v2.2.17 (2021-03-29)
+
+* [new] Statamic 3.1 support
+* [new] Product Specific Coupons #390
+* [new] Added docblocks to Facades #400
+* [new] Added country validation when submitting addresses #398 #402
+* [fix] Allow for calculator to be run with any `Order` class
+
 ## v2.2.16 (2021-03-13)
 
 * [fix] Fixed issue with `GatewayDoesNotExist` exception

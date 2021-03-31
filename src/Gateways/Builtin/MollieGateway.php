@@ -118,6 +118,7 @@ class MollieGateway extends BaseGateway implements Gateway
     public function refundCharge(Order $order): Response
     {
         $this->setupMollie();
+        $cart = Order::find($order->id());
 
         $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
 
