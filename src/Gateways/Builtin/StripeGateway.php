@@ -60,7 +60,7 @@ class StripeGateway extends BaseGateway implements Gateway
             $intentData['customer'] = $stripeCustomer->id;
         }
 
-        if (isset($customer) && isset($this->config()['receipt_email']) && $this->config()['receipt_email'] === true) {
+        if (isset($customer) && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
             $intentData['receipt_email'] = $customer->email();
         }
 
@@ -151,13 +151,13 @@ class StripeGateway extends BaseGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (!isset($this->config()['secret'])) {
+        if (! $this->config()->has('secret')) {
             throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
         }
 
-        Stripe::setApiKey($this->config()['secret']);
+        Stripe::setApiKey($this->config()->get('secret'));
 
-        if (isset($this->config()['version']) && $version = $this->config()['version']) {
+        if ($version = $this->config()->has('version')) {
             Stripe::setApiVersion($version);
         }
     }

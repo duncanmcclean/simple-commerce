@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use Illuminate\Support\Collection;
+
 class BaseGateway
 {
     protected array $config = [];
@@ -22,11 +24,9 @@ class BaseGateway
         $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
     }
 
-    public function config(): array
+    public function config(): Collection
     {
-        // TODO: convert to a collect instance
-
-        return $this->config;
+        return collect($this->config);
     }
 
     public function handle(): string
