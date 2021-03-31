@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Countries;
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use Illuminate\Contracts\Validation\Rule;
 
 class CountryExists implements Rule

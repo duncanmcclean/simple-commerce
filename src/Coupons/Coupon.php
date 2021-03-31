@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Statamic\Facades\Entry;
@@ -44,7 +44,7 @@ class Coupon implements Contract
     // TODO: refactor
     public function isValid(Order $order): bool
     {
-        $order = Order::find($order->id());
+        $order = OrderFacade::find($order->id());
 
         if ($this->has('minimum_cart_value') && $order->has('items_total')) {
             if ($order->get('items_total') < $this->get('minimum_cart_value')) {

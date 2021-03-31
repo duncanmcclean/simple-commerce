@@ -164,7 +164,7 @@ class Calculator implements Contract
             $value = (int) $coupon->data['value'];
 
             // Double check coupon is still valid
-            if (! $coupon->isValid($this->order->entry())) {
+            if (! $coupon->isValid($this->order)) {
                 return [
                     'data' => $data,
                 ];
