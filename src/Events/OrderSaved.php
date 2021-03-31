@@ -2,21 +2,19 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
-use Statamic\Entries\Entry;
 
-class CartSaved
+class OrderSaved
 {
     use Dispatchable;
     use InteractsWithSockets;
 
-    // TODO: this event should be renamed `OrderSaved`
+    public $order;
 
-    public $cart;
-
-    public function __construct(Entry $cart)
+    public function __construct(Order $order)
     {
-        $this->cart = $cart;
+        $this->order = $order;
     }
 }
