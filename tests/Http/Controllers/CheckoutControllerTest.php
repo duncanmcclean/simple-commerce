@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -111,7 +111,7 @@ class CheckoutControllerTest extends TestCase
         // Assert cart has been completed
         $this->assertTrue($cart->data['is_paid']);
         $this->assertSame($cart->data['order_status'], 'completed');
-        Event::assertDispatched(CartCompleted::class);
+        Event::assertDispatched(OrderPaidEvent::class);
 
         // Assert emails have been sent to customer and back office
         Mail::assertSent(OrderConfirmation::class);

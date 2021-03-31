@@ -4,11 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
-use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
-use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
@@ -143,7 +142,7 @@ class Order implements Contract
 
         $this->save();
 
-        event(new CartCompleted($this));
+        event(new OrderPaidEvent($this));
 
         // TODO: move to listener
         if (config('simple-commerce.notifications.customer.order_confirmation')) {
@@ -198,10 +197,7 @@ class Order implements Contract
 
     public function afterSaved()
     {
-        event(new CartSaved($this->entry));
-
-        // TODO: remove this event
-        event(new CartUpdated($this->entry));
+        event(new OrderSaved($this));
 
         // TODO: remove this event
         event(new CustomerAddedToCart($this->entry));
