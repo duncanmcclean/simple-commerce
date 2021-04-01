@@ -33,7 +33,7 @@
         "mollie/mollie-api-php": "dev-master",
         "moneyphp/money": "^3.0",
         "pixelfear/composer-dist-plugin": "^0.1.0",
-        "statamic/cms": "^3.0 || ^3.1",
+        "statamic/cms": "^3.1",
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
