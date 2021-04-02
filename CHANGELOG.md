@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.2.19 (2021-04-02)
+
+* [fix] Fix issues with coupon calculations #405
+
 ## v2.2.18 (2021-03-30)
 
 * [fix] Fixed issue where shipping & billing addresses would not be output on PDF Receipts #404
