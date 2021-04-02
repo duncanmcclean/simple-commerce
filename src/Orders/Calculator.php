@@ -179,7 +179,7 @@ class Calculator implements Contract
                 $data['coupon_total'] = (int) ($data['grand_total'] - $value);
             }
 
-            $data['grand_total'] = str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
+            $data['grand_total'] = (int) str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
         }
 
         return [
