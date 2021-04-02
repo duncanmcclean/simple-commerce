@@ -172,7 +172,7 @@ class Calculator implements Contract
 
             // Otherwise do all the other stuff...
             if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] = (int) (($value *  $data['grand_total']) / 100);
+                $data['coupon_total'] = (int) (($value * $data['grand_total']) / 100);
             }
 
             if ($coupon->data['type'] === 'fixed') {
