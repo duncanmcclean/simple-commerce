@@ -347,8 +347,6 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_grand_total_is_calculated_correctly()
     {
-        $this->markTestIncomplete();
-
         Config::set('simple-commerce.sites.default.tax.rate', 20);
 
         Config::set('simple-commerce.sites.default.shipping.methods', [
@@ -385,11 +383,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 2583);
-        $this->assertSame($calculate['items_total'], 1000);
+        $this->assertSame($calculate['grand_total'], 1292);
+        $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
         $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 1000);
+        $this->assertSame($calculate['coupon_total'], 1291);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }

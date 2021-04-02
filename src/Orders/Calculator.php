@@ -176,7 +176,7 @@ class Calculator implements Contract
             }
 
             if ($coupon->data['type'] === 'fixed') {
-                $data['coupon_total'] = (int) ($data['grand_total'] - $value);
+                $data['coupon_total'] = (int) $data['grand_total'] - ($data['grand_total'] - $value);
             }
 
             $data['grand_total'] = (int) str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
