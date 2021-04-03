@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Illuminate\Support\Str;
-use Statamic\Facades\Collection;
 use Statamic\Statamic;
 
 class SimpleCommerce
@@ -65,8 +64,7 @@ class SimpleCommerce
 
         $minimum = config('simple-commerce.minimum_order_number');
 
-        $query = Collection::find(config('simple-commerce.collections.orders'))
-            ->queryEntries()
+        $query = Facades\Order::query()
             ->orderBy('title', 'asc')
             ->where('title', '!=', null)
             ->get()
