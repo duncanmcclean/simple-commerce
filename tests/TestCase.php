@@ -18,6 +18,13 @@ abstract class TestCase extends OrchestraTestCase
 {
     use CollectionSetup;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loadMigrationsFrom(__DIR__.'/../src/Orders/Eloquent/migrations');
+    }
+
     protected function getPackageProviders($app)
     {
         return [
