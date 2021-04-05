@@ -61,11 +61,12 @@ class Order implements Contract
         }
 
         return new Address(
-            $this->has('billing_name') ? $this->get('billing_name') : null,
-            $this->has('billing_adddress') ? $this->get('billing_address') : null,
-            $this->has('billing_city') ? $this->get('billing_city') : null,
-            $this->has('billing_country') ? $this->get('billing_country') : null,
-            $this->has('billing_zip_code') ? $this->get('billing_zip_code') : null,
+            $this->get('billing_name'),
+            $this->get('billing_address') ?? $this->get('billing_address_line1'),
+            $this->get('billing_address_line2'),
+            $this->get('billing_city'),
+            $this->get('billing_country'),
+            $this->get('billing_zip_code') ?? $this->get('billing_postal_code')
         );
     }
 
@@ -76,12 +77,12 @@ class Order implements Contract
         }
 
         return new Address(
-            $this->has('shipping_name') ? $this->get('shipping_name') : null,
-            $this->has('shipping_address') ? $this->get('shipping_address') : null,
-            $this->has('shipping_city') ? $this->get('shipping_city') : null,
-            $this->has('shipping_country') ? $this->get('shipping_country') : null,
-            $this->has('shipping_zip_code') ? $this->get('shipping_zip_code') : null,
-            $this->has('shipping_note') ? $this->get('shipping_note') : null,
+            $this->get('shipping_name'),
+            $this->get('shipping_address') ?? $this->get('shipping_address_line1'),
+            $this->get('shipping_address_line2'),
+            $this->get('shipping_city'),
+            $this->get('shipping_country'),
+            $this->get('shipping_zip_code') ?? $this->get('shipping_postal_code')
         );
     }
 
