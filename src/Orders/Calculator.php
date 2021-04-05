@@ -103,6 +103,8 @@ class Calculator implements Contract
         $taxConfiguration = collect(Config::get('simple-commerce.sites'))
             ->get(Site::current()->handle())['tax'];
 
+        $lineItem['tax_total'] = 0;
+
         if ($product->isExemptFromTax()) {
             return [
                 'data' => $data,
@@ -114,7 +116,7 @@ class Calculator implements Contract
         $taxAmount = ($itemTotal / 100) * ($taxConfiguration['rate'] / (100 + $taxConfiguration['rate']));
 
         if ($taxConfiguration['included_in_prices']) {
-            $itemTax = str_replace(
+            $itemTax = (int) str_replace(
                 '.',
                 '',
                 round(
@@ -135,6 +137,16 @@ class Calculator implements Contract
                 )
             );
         }
+
+        // And save our tax amount to the line item as well
+        $lineItem['tax_total'] = (int) str_replace(
+            '.',
+            '',
+            round(
+                $taxAmount,
+                2
+            )
+        );
 
         return [
             'data' => $data,

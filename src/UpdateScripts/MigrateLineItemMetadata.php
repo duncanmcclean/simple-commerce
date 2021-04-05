@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 
 class MigrateLineItemMetadata extends UpdateScript
 {
-    protected $topLevelKeys = ['id', 'product', 'variant', 'total', 'quantity'];
+    protected $topLevelKeys = ['id', 'product', 'variant', 'total', 'tax_total', 'quantity'];
 
     public function shouldUpdate($newVersion, $oldVersion)
     {
