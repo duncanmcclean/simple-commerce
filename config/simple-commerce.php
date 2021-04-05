@@ -1,5 +1,8 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
+
 return [
 
     /*
@@ -62,14 +65,9 @@ return [
     */
 
     'notifications' => [
-        'customer' => [
-            'order_confirmation' => true,
-        ],
-
-        'back_office' => [
-            'to' => 'staff@example.com',
-
-            'order_paid' => true,
+        'order_paid' => [
+            CustomerOrderPaid::class   => ['to' => 'customer'],
+            BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
         ],
     ],
 
