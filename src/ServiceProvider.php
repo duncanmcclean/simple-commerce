@@ -30,6 +30,9 @@ class ServiceProvider extends AddonServiceProvider
         EntryBlueprintFound::class  => [
             Listeners\EnforceBlueprintFields::class,
         ],
+        Events\OrderPaid::class => [
+            Listeners\SendOrderPaidNotifications::class,
+        ],
     ];
 
     protected $routes = [
