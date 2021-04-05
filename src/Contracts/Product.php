@@ -48,5 +48,7 @@ interface Product
 
     public function isExemptFromTax(): bool;
 
+    public function isDigitalProduct(): bool;
+
     public static function bindings(): array;
 }

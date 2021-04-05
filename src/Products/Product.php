@@ -56,6 +56,12 @@ class Product implements Contract
             && $this->get('exempt_from_tax') === true;
     }
 
+    public function isDigitalProduct(): bool
+    {
+        return $this->has('is_digital_product')
+            && $this->get('is_digital_product') === true;
+    }
+
     public function collection(): string
     {
         return config('simple-commerce.collections.products');
