@@ -11,9 +11,12 @@ use Statamic\Facades\Site as SiteAPI;
 use Statamic\Facades\Stache;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait IsEntry
 {
+    use FluentlyGetsAndSets;
+
     public function all()
     {
         return $this->query()->all();
@@ -129,39 +132,33 @@ trait IsEntry
 
     public function title(string $title = null)
     {
-        if (is_null($title)) {
-            return $this->title;
-        }
-
-        $this->title = $title;
-
-        return $this;
+        return $this
+            ->fluentlyGetOrSet('title')
+            ->args(func_get_args());
     }
 
     public function slug(string $slug = null)
     {
-        if (is_null($slug)) {
-            return $this->slug;
-        }
-
-        $this->slug = $slug;
-
-        return $this;
+        return $this
+            ->fluentlyGetOrSet('slug')
+            ->args(func_get_args());
     }
 
-    public function site($site = null): self
+    public function site($site = null)
     {
-        if (is_null($site)) {
-            return $this->site;
-        }
+        return $this
+            ->fluentlyGetOrSet('title')
+            ->setter(function ($site) {
+                if ($site instanceof Site) {
+                    return SiteAPI::get($site)->handle();
+                }
 
-        if (!$site instanceof Site) {
-            $site = SiteAPI::get($site);
-        }
-
-        $this->site = $site;
-
-        return $this;
+                return $site;
+            })
+            ->getter(function ($site) {
+                return SiteAPI::get($site)->handle();
+            })
+            ->args(func_get_args());
     }
 
     public function fresh(): self
