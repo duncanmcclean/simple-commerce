@@ -33,7 +33,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id());
 
-                return Gateway::use($cart->data['gateway'])->refundCharge($order->entry());
+                return Gateway::use($order->data['gateway'])->refundCharge($order->entry());
             });
     }
 }
