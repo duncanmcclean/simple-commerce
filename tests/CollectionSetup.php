@@ -22,7 +22,6 @@ trait CollectionSetup
             ->futureDateBehavior('private')
             ->sites(['default'])
             ->routes('/products/{slug}')
-            ->taxonomies(['product_categories'])
             ->save();
     }
 

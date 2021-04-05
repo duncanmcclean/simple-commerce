@@ -54,7 +54,6 @@ class InstallCommand extends Command
                 ->futureDateBehavior('private')
                 ->sites(['default'])
                 ->routes('/products/{slug}')
-                ->taxonomies(['product_categories'])
                 ->save();
         } else {
             $this->warn('Skipping: Products');
