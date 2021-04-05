@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 
@@ -49,6 +50,8 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_purchase()
     {
+        Notification::fake();
+
         TestTime::freeze();
 
         $purchase = $this->gateway->purchase(new Purchase(
