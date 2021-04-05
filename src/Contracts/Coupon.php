@@ -26,7 +26,7 @@ interface Coupon
 
     public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
