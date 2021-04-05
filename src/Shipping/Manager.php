@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use Statamic\Entries\Entry;
 
-class ShippingManager implements Contract
+class Manager implements Contract
 {
     protected $className;
 
