@@ -77,7 +77,6 @@ class InstallCommand extends Command
             Collection::make(config('simple-commerce.collections.orders'))
                 ->title(__('simple-commerce::messages.default_collections.orders'))
                 ->sites(['default'])
-                // ->taxonomies(['order_statuses'])
                 ->save();
         } else {
             $this->warn('Skipping: Orders');

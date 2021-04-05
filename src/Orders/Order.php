@@ -46,7 +46,6 @@ class Order implements Contract
             'tax_total'      => 0,
             'shipping_total' => 0,
             'coupon_total'   => 0,
-            'order_status'   => 'cart',
         ];
     }
 
@@ -140,9 +139,8 @@ class Order implements Contract
         $this->published = true;
 
         $this->data([
-            'is_paid'      => true,
-            'paid_date'    => now()->toDateTimeString(),
-            'order_status' => 'completed',
+            'is_paid'   => true,
+            'paid_date' => now()->toDateTimeString(),
         ]);
 
         $this->save();

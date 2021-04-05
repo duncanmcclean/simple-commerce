@@ -71,7 +71,6 @@ class Manager implements Contract
             'gateway_data' => array_merge($cart->data['gateway_data'], [
                 'refund' => $refund,
             ]),
-            'order_status' => 'refunded',
         ])->save();
 
         return $refund;

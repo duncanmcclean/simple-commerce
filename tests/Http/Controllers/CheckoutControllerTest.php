@@ -110,7 +110,6 @@ class CheckoutControllerTest extends TestCase
 
         // Assert cart has been completed
         $this->assertTrue($cart->data['is_paid']);
-        $this->assertSame($cart->data['order_status'], 'completed');
         Event::assertDispatched(OrderPaidEvent::class);
 
         // Assert emails have been sent to customer and back office

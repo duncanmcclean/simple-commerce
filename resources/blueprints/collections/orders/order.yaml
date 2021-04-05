@@ -22,18 +22,6 @@ sections:
           display: 'Is Paid?'
           width: 50
       -
-        handle: order_status
-        field:
-          max_items: 1
-          mode: default
-          taxonomies:
-            - order_statuses
-          type: terms
-          listable: hidden
-          display: 'Order Status'
-          default: cart
-          width: 50
-      -
         handle: customer
         field:
           max_items: 1

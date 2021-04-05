@@ -113,6 +113,5 @@ class RefundActionTest extends TestCase
 
         $this->assertTrue($order->data()->get('is_refunded'));
         $this->assertArrayHasKey('refund', $order->data()->get('gateway_data'));
-        $this->assertSame('refunded', $order->data()->get('order_status'));
     }
 }
