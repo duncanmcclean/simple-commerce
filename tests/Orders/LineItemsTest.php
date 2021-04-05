@@ -48,6 +48,37 @@ class LineItemsTest extends TestCase
     }
 
     /** @test */
+    public function can_update_line_item()
+    {
+        $product = Product::create([
+            'title' => 'Four Five Six',
+            'price' => 1000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => 'ideeeeee-of-item',
+                    'product'  => $product->id,
+                    'quantity' => 2,
+                ],
+            ],
+        ]);
+
+        $update = $order->updateLineItem('ideeeeee-of-item', [
+            'quantity' => 3,
+            'metadata' => [
+                'product_key' => 'gday-mate',
+            ],
+        ]);
+
+        $this->assertSame($order->lineItems()->count(), 1);
+
+        $this->assertSame($order->lineItems()->first()['quantity'], 3);
+        $this->assertArrayHasKey('metadata', $order->lineItems()->first());
+    }
+
+    /** @test */
     public function can_clear_line_items()
     {
         $product = Product::create([
