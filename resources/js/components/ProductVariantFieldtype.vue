@@ -1,18 +1,18 @@
 <template>
-    <div class="h-full bg-white">
-        <div v-if="initializing" class="flex flex-col items-center justify-center text-center h-full">
+    <div class="bg-white">
+        <div v-if="initializing" class="flex flex-col items-center justify-center text-center p-1">
             <loading-graphic />
         </div>
 
         <div v-else>
             <p
                 v-if="value == null"
-                class="text-sm"
+                class="text-sm p-1"
             >Product doesn't support variants.</p>
 
             <p
                 v-else-if="productVariantsData == null"
-                class="text-sm"
+                class="text-sm p-1"
             >No product selected.</p>
 
             <select-field
@@ -23,7 +23,7 @@
 
             <p
                 v-else-if="productVariantsData && productVariantsData.purchasable_type === 'product'"
-                class="text-sm"
+                class="text-sm p-1"
             >Product doesn't support variants.</p>
         </div>
     </div>
