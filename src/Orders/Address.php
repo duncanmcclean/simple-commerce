@@ -45,6 +45,32 @@ class Address
         return $this->name;
     }
 
+    public function firstName(): ?string
+    {
+        return explode(' ', $this->name())[0];
+    }
+
+    public function lastName(): ?string
+    {
+        if (! str_contains($this->name(), ' ')) {
+            return '';
+        }
+
+        return explode(' ', $this->name())[1];
+    }
+
+    public function address(): ?string
+    {
+        if ($this->addressLine1() && $this->addressLine2()) {
+            return join(', ', [
+                $this->addressLine1(),
+                $this->addressLine2(),
+            ]);
+        }
+
+        return $this->addressLine1();
+    }
+
     public function addressLine1(): ?string
     {
         return $this->addressLine1;
