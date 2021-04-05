@@ -50,6 +50,8 @@ interface Order
 
     public function coupon(string $coupon = '');
 
+    public function gateway();
+
     public function redeemCoupon(string $code): bool;
 
     public function markAsCompleted(): self;

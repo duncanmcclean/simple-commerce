@@ -85,6 +85,7 @@ class Order implements Contract
         );
     }
 
+    // TODO: these should be null
     public function customer(string $customer = '')
     {
         if ($customer !== '') {
@@ -100,6 +101,7 @@ class Order implements Contract
         return Customer::find($this->get('customer'));
     }
 
+    // TODO: these should be null
     public function coupon(string $coupon = '')
     {
         if ($coupon !== '') {
@@ -109,6 +111,13 @@ class Order implements Contract
         }
 
         return Coupon::find($this->get('coupon'));
+    }
+
+    public function gateway()
+    {
+        return $this->has('gateway')
+            ? collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'))
+            : null;
     }
 
     // TODO: refactor
