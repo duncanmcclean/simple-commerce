@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
+use Mollie\Api\Types\OrderStatus;
 use Mollie\Api\Types\PaymentStatus;
 use Statamic\Facades\Site;
 
@@ -210,25 +211,50 @@ class MollieGateway extends BaseGateway implements Gateway
     public function webhook(Request $request)
     {
         $this->setupMollie();
+
         $mollieId = $request->id;
 
-        $payment = $this->mollie->payments->get($mollieId);
+        if ($this->isUsingPaymentsApi()) {
+            $molliePayment = $this->mollie->payments->get($mollieId);
 
-        if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $order = OrderFacade::all()
-                ->filter(function ($entry) use ($mollieId) {
-                    return isset($entry->data()->get('mollie')['id'])
-                        && $entry->data()->get('mollie')['id']
-                        === $mollieId;
-                })
-                ->map(function ($entry) {
-                    return OrderFacade::find($entry->id());
-                })
-                ->first();
+            if ($payment->status === PaymentStatus::STATUS_PAID) {
+                $order = OrderFacade::query()
+                    ->filter(function ($entry) use ($mollieId) {
+                        return isset($entry->data()->get('mollie')['id'])
+                            && $entry->data()->get('mollie')['id']
+                            === $mollieId;
+                    })
+                    ->map(function ($entry) {
+                        return OrderFacade::find($entry->id());
+                    })
+                    ->first();
 
-            $order->markAsPaid();
+                $order->markAsPaid();
 
-            event(new PostCheckout($order->data));
+                event(new PostCheckout($order->data));
+            }
+        }
+
+        if ($this->isUsingOrdersApi()) {
+            $mollieOrder = $this->mollie->orders->get($mollieId);
+
+            if ($mollieOrder->status === OrderStatus::STATUS_PAID) {
+                $order = OrderFacade::query()
+                    ->filter(function ($entry) use ($mollieId) {
+                        return isset($entry->data()->get('mollie')['id'])
+                            && $entry->data()->get('mollie')['id']
+                            === $mollieId;
+                    })
+                    ->map(function ($entry) {
+                        return OrderFacade::find($entry->id());
+                    })
+                    ->first();
+
+                $order->markAsPaid();
+
+                // TODO: should we not pass in the entire order here?
+                event(new PostCheckout($order->data));
+            }
         }
     }
 
