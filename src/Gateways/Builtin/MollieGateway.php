@@ -130,26 +130,15 @@ class MollieGateway extends BaseGateway implements Gateway
                 'type' => 'orders',
             ], $mollieOrder->getCheckoutUrl());
         }
-
-        throw new \Exception("[{$this->config()->get('api')}] is not a valid API option. `orders` and `payments` are allowed.");
     }
 
     public function purchase(Purchase $data): Response
     {
-        // We don't actually do anything here as Mollie is an
-        // off-site gateway, so it has it's own checkout page.
-
-        // TODO: maybe throw an exception, in the case a developer gets here?
-
-        return new Response(false, []);
+        throw new \Exception("Mollie is an off-site gateway. The purchase() method can't be called on off-site gateways.");
     }
 
     public function purchaseRules(): array
     {
-        // Mollie is off-site, therefore doesn't use the traditional
-        // checkout process provided by Simple Commerce. Hence why no rules
-        // are defined here.
-
         return [];
     }
 
@@ -157,53 +146,46 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
+        $gatewayData = $order->get('gateway_data');
 
-        return new Response(true, [
-            'id'                              => $payment->id,
-            'mode'                            => $payment->mode,
-            'amount'                          => $payment->amount,
-            'settlementAmount'                => $payment->settlementAmount,
-            'amountRefunded'                  => $payment->amountRefunded,
-            'amountRemaining'                 => $payment->amountRemaining,
-            'description'                     => $payment->description,
-            'method'                          => $payment->method,
-            'status'                          => $payment->status,
-            'createdAt'                       => $payment->createdAt,
-            'paidAt'                          => $payment->paidAt,
-            'canceledAt'                      => $payment->canceledAt,
-            'expiresAt'                       => $payment->expiresAt,
-            'failedAt'                        => $payment->failedAt,
-            'profileId'                       => $payment->profileId,
-            'sequenceType'                    => $payment->sequenceType,
-            'redirectUrl'                     => $payment->redirectUrl,
-            'webhookUrl'                      => $payment->webhookUrl,
-            'mandateId'                       => $payment->mandateId,
-            'subscriptionId'                  => $payment->subscriptionId,
-            'orderId'                         => $payment->orderId,
-            'settlementId'                    => $payment->settlementId,
-            'locale'                          => $payment->locale,
-            'metadata'                        => $payment->metadata,
-            'details'                         => $payment->details,
-            'restrictPaymentMethodsToCountry' => $payment->restrictPaymentMethodsToCountry,
-            '_links'                          => $payment->_links,
-            '_embedded'                       => $payment->_embedded,
-            'isCancelable'                    => $payment->isCancelable,
-            'amountCaptured'                  => $payment->amountCaptured,
-            'applicationFeeAmount'            => $payment->applicationFeeAmount,
-            'authorizedAt'                    => $payment->authorizedAt,
-            'expiredAt'                       => $payment->expiredAt,
-            'customerId'                      => $payment->customerId,
-            'countryCode'                     => $payment->countryCode,
-        ]);
+        if ($this->isUsingPaymentsApi()) {
+            $molliePayment = $this->mollie->payments->get($gatewayData['id']);
+
+            return new Response(true, [
+                'id'     => $molliePayment->id,
+                'status' => $molliePayment->status,
+                'amount' => $molliePayment->amount,
+                '_links' => $molliePayment->_links,
+            ]);
+        }
+
+        if ($this->isUsingOrdersApi()) {
+            $mollieOrder = $this->mollie->orders->get($gatewayData['id']);
+
+            return new Response(true, [
+                'id'     => $mollieOrder->id,
+                'status' => $mollieOrder->status,
+                'amount' => $mollieOrder->amount,
+                '_links' => $mollieOrder->_links,
+            ]);
+        }
     }
 
     public function refundCharge(Order $order): Response
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
-        $payment->refund([]);
+        $gatewayData = $order->get('gateway_data');
+
+        if ($this->isUsingPaymentsApi()) {
+            $molliePayment = $this->mollie->payments->get($gatewayData['id']);
+            $molliePayment->refund([]);
+        }
+
+        if ($this->isUsingOrdersApi()) {
+            $mollieOrder = $this->mollie->payments->get($gatewayData['id']);
+            $mollieOrder->refund([]);
+        }
 
         return new Response(true, []);
     }
@@ -260,6 +242,10 @@ class MollieGateway extends BaseGateway implements Gateway
 
     protected function setupMollie()
     {
+        if (! $this->isUsingPaymentsApi() && ! $this->isUsingOrdersApi()) {
+            throw new \Exception("[{$this->config()->get('api')}] is not a valid API option. `orders` and `payments` are allowed.");
+        }
+
         $this->mollie = new MollieApiClient();
         $this->mollie->setApiKey($this->config()->get('key'));
     }
