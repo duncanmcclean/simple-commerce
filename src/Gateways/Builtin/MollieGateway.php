@@ -36,7 +36,7 @@ class MollieGateway extends BaseGateway implements Gateway
             $payment = $this->mollie->payments->create([
                 'amount' => [
                     'currency' => Currency::get(Site::current())['code'],
-                    'value'    => (string) substr_replace($order->data['grand_total'], '.', -2, 0),
+                    'value'    => $this->convertToCurrencyString($order->get('grand_total')),
                 ],
                 'description' => "Order {$order->title()}",
                 'redirectUrl' => $this->callbackUrl([
@@ -66,11 +66,23 @@ class MollieGateway extends BaseGateway implements Gateway
             }
 
             $mollieOrder = $this->mollie->orders->create([
-                'amount' => [
-                    'currency' => Currency::get(Site::current())['code'],
-                    'value' => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
-                ],
                 'orderNumber' => $order->title(),
+                'locale'      => Site::current()->locale(),
+                'redirectUrl' => $this->callbackUrl(),
+                'webhookUrl'  => $this->webhookUrl(),
+                'amount'      => [
+                    'currency' => Currency::get(Site::current())['code'],
+                    'value'    => $this->convertToCurrencyString($order->get('grand_total')),
+                ],
+                'billingAddress' => [
+                    'givenName'       => $billingAddress->firstName(),
+                    'familyName'      => $billingAddress->lastName(),
+                    'email'           => optional($order->customer())->email() ?? 'no-email@example.com',
+                    'streetAndNumber' => $billingAddress->address(),
+                    'postalCode'      => $billingAddress->zipCode(),
+                    'city'            => $billingAddress->city(),
+                    'country'         => $billingAddress->country(),
+                ],
                 'lines' => $order->lineItems()
                     ->map(function ($item) use ($order) {
                         $product = Product::find($item['product']);
@@ -87,7 +99,7 @@ class MollieGateway extends BaseGateway implements Gateway
                         }
 
                         return [
-                            'type' => $product->get('is_digital_product', false) === true
+                            'type' => $product->isDigitalProduct()
                                 ? 'digital'
                                 : 'physical',
                             'name' => is_null($variant)
@@ -97,17 +109,17 @@ class MollieGateway extends BaseGateway implements Gateway
                             'unitPrice' => [
                                 'currency' => Currency::get(Site::current())['code'],
                                 'value' => is_null($variant)
-                                    ? (string) substr_replace($product->get('price'), '.', -2, 0)
-                                    : (string) substr_replace($variant['price'], '.', -2, 0)
+                                    ? $this->convertToCurrencyString($product->get('price'))
+                                    : $this->convertToCurrencyString($variant['price']),
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' => (string) substr_replace($item['total'], '.', -2, 0),
+                                'value'    => $this->convertToCurrencyString($item['total']),
                             ],
                             'vatRate' => '0',
                             'vatAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' => '0.00'
+                                'value'    => $this->convertToCurrencyString(0),
                             ],
                         ];
                     })
@@ -118,16 +130,16 @@ class MollieGateway extends BaseGateway implements Gateway
                             'quantity' => 1,
                             'unitPrice' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' =>  (string) substr_replace($order->get('shipping_total'), '.', -2, 0),
+                                'value'    => $this->convertToCurrencyString($order->get('shipping_total')),
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' =>  (string) substr_replace($order->get('shipping_total'), '.', -2, 0),
+                                'value'    => $this->convertToCurrencyString($order->get('shipping_total')),
                             ],
                             'vatRate' => '0',
                             'vatAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' => '0.00',
+                                'value'    => $this->convertToCurrencyString(0),
                             ],
                         ],
                         [
@@ -135,34 +147,20 @@ class MollieGateway extends BaseGateway implements Gateway
                             'quantity' => 1,
                             'unitPrice' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' =>  (string) substr_replace($order->get('tax_total'), '.', -2, 0),
+                                'value'    => $this->convertToCurrencyString($order->get('tax_total')),
                             ],
                             'totalAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' =>  (string) substr_replace($order->get('tax_total'), '.', -2, 0),
+                                'value'    => $this->convertToCurrencyString($order->get('tax_total')),
                             ],
                             'vatRate' => '0',
                             'vatAmount' => [
                                 'currency' => Currency::get(Site::current())['code'],
-                                'value' => '0.00',
+                                'value'    => $this->convertToCurrencyString(0),
                             ],
                         ],
                     ])
                     ->toArray(),
-                'billingAddress' => [
-                    'givenName' => $billingAddress->name(), // TODO: this should be first name
-                    'familyName' => $billingAddress->name(), // TODO: this should be last name
-                    'email' => is_null($order->customer())
-                        ? 'no-email@example.com'
-                        : $order->customer()->email(),
-                    'streetAndNumber' => $billingAddress->addressLine1(),
-                    'postalCode' => $billingAddress->zipCode(),
-                    'city' => $billingAddress->city(),
-                    'country' => $billingAddress->country(),
-                ],
-                'redirectUrl' => $this->callbackUrl(),
-                // 'webhookUrl'  => $this->webhookUrl(),
-                'locale' => 'en_US', // TODO: allow this to be configurable
             ]);
 
             return new Response(true, [
@@ -287,5 +285,14 @@ class MollieGateway extends BaseGateway implements Gateway
     protected function isUsingOrdersApi()
     {
         return $this->config()->get('api', 'payments') === 'orders';
+    }
+
+    protected function convertToCurrencyString(int $amount): string
+    {
+        if ($amount === 0) {
+            return '0.00';
+        }
+
+        return (string) substr_replace($amount, '.', -2, 0);
     }
 }
