@@ -149,14 +149,14 @@ trait IsEntry
         return $this
             ->fluentlyGetOrSet('title')
             ->setter(function ($site) {
-                if ($site instanceof Site) {
-                    return SiteAPI::get($site)->handle();
+                if (! $site instanceof Site) {
+                    return SiteAPI::get($site);
                 }
 
                 return $site;
             })
             ->getter(function ($site) {
-                return SiteAPI::get($site)->handle();
+                return $site;
             })
             ->args(func_get_args());
     }
