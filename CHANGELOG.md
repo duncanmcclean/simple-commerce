@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* [fix] Fixed exception when running Refund action on Order entry.
+
 ## v2.2.19 (2021-04-02)
 
 * [fix] Fix issues with coupon calculations #405
