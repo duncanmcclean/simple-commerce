@@ -568,6 +568,45 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_item_with_extra_data()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'gift_note' => 'Have a good birthday!',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->lineItems()->count(), 1);
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
+    }
+
+    /** @test */
     public function can_update_item_and_request_json()
     {
         $product = Product::create([

@@ -102,6 +102,14 @@ sections:
                 display: Total
                 validate: required
                 width: 50
+            -
+              handle: metadata
+              field:
+                mode: dynamic
+                display: Metadata
+                type: array
+                icon: array
+                listable: hidden
           mode: stacked
           reorderable: false
           type: grid
