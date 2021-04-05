@@ -57,6 +57,10 @@ class ServiceProvider extends AddonServiceProvider
         Widgets\SalesWidget::class,
     ];
 
+    protected $updateScripts = [
+        UpdateScripts\MigrateLineItemMetadata::class,
+    ];
+
     public function boot()
     {
         parent::boot();
