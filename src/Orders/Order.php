@@ -134,7 +134,7 @@ class Order implements Contract
     }
 
     // TODO: refactor & rename to 'markPaid'
-    public function markAsCompleted(): self
+    public function markAsPaid(): self
     {
         $this->published = true;
 

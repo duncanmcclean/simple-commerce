@@ -54,7 +54,7 @@ interface Order
 
     public function redeemCoupon(string $code): bool;
 
-    public function markAsCompleted(): self;
+    public function markAsPaid(): self;
 
     public function buildReceipt(): string;
 

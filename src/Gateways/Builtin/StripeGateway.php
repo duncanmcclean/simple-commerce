@@ -129,7 +129,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($payload['metadata']['order_id']);
 
-            $order->markAsCompleted();
+            $order->markAsPaid();
 
             return new Response('Webhook handled', 200);
         }
