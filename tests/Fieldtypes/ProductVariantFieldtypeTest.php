@@ -14,7 +14,7 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function can_preload_and_return_api_route()
     {
-        $preload = (new ProductVariantFieldtype)->preload();
+        $preload = (new ProductVariantFieldtype())->preload();
 
         $this->assertIsArray($preload);
         $this->assertStringContainsString('simple-commerce/fieldtype-api/product-variant', $preload['api']);
@@ -23,7 +23,7 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function can_preprocess_value_with_new_format()
     {
-        $preProcess = (new ProductVariantFieldtype)->preProcess([
+        $preProcess = (new ProductVariantFieldtype())->preProcess([
             'product' => 'abcdefg',
             'variant' => 123456789,
         ]);
@@ -37,7 +37,7 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function can_preproccess_value_with_old_format()
     {
-        $preProcess = (new ProductVariantFieldtype)->preProcess('abcdefg');
+        $preProcess = (new ProductVariantFieldtype())->preProcess('abcdefg');
 
         $this->assertSame($preProcess, [
             'product' => null,
@@ -50,7 +50,7 @@ class ProductVariantFieldtypeTest extends TestCase
     {
         $this->expectException("\Exception");
 
-        $augment = (new ProductVariantFieldtype)->augment('abcdefg');
+        $augment = (new ProductVariantFieldtype())->augment('abcdefg');
     }
 
     /** @test */
@@ -60,7 +60,7 @@ class ProductVariantFieldtypeTest extends TestCase
 
         $product = Product::create();
 
-        $augment = (new ProductVariantFieldtype)->augment([
+        $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
             'variant' => 'One',
         ]);
@@ -81,7 +81,7 @@ class ProductVariantFieldtypeTest extends TestCase
             ],
         ]);
 
-        $augment = (new ProductVariantFieldtype)->augment([
+        $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
             'variant' => 'Yellow_Small',
         ]);
@@ -102,7 +102,7 @@ class ProductVariantFieldtypeTest extends TestCase
             ],
         ]);
 
-        $augment = (new ProductVariantFieldtype)->augment([
+        $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
             'variant' => 'Yellow_Large',
         ]);

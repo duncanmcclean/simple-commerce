@@ -1,5 +1,8 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
+
 return [
 
     /*
@@ -42,7 +45,7 @@ return [
     */
 
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway::class => [
+        \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
             'display' => 'Card',
         ],
     ],
@@ -62,14 +65,9 @@ return [
     */
 
     'notifications' => [
-        'customer' => [
-            'order_confirmation' => true,
-        ],
-
-        'back_office' => [
-            'to' => 'staff@example.com',
-
-            'order_paid' => true,
+        'order_paid' => [
+            CustomerOrderPaid::class   => ['to' => 'customer'],
+            BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
         ],
     ],
 
@@ -92,11 +90,6 @@ return [
         'customers' => 'customers',
     ],
 
-    'taxonomies' => [
-        'product_categories' => 'product_categories',
-        'order_statuses'     => 'order_statuses',
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Cart
@@ -109,7 +102,7 @@ return [
 
     'cart' => [
         'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
-        'key' => 'simple-commerce-cart',
+        'key'    => 'simple-commerce-cart',
     ],
 
     /*

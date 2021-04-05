@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use Exception;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
@@ -44,7 +43,7 @@ class MoneyFieldtype extends Fieldtype
             return (int) 0000;
         }
 
-        if (! str_contains($data, '.')) {
+        if (!str_contains($data, '.')) {
             $data = $data * 100;
         }
 
@@ -63,7 +62,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        if (! $value) {
+        if (!$value) {
             $value = 0;
         }
 
@@ -72,7 +71,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preProcessIndex($value)
     {
-        if (! $value) {
+        if (!$value) {
             return;
         }
 

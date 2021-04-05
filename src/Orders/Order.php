@@ -2,12 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
-use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
-use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -18,7 +18,9 @@ use Statamic\Facades\Stache;
 
 class Order implements Contract
 {
-    use IsEntry, HasData, OrderItems;
+    use IsEntry;
+    use HasData;
+    use LineItems;
 
     public $id;
     public $site;
@@ -36,7 +38,7 @@ class Order implements Contract
         $this->slug = $this->id;
 
         $this->data = [
-            'title'          => '#' . SimpleCommerce::freshOrderNumber(),
+            'title'          => '#'.SimpleCommerce::freshOrderNumber(),
             'items'          => [],
             'is_paid'        => false,
             'grand_total'    => 0,
@@ -54,38 +56,39 @@ class Order implements Contract
             return $this->shippingAddress();
         }
 
-        if (! $this->has('billing_address')) {
+        if (!$this->has('billing_address')) {
             return null;
         }
 
         return new Address(
-            $this->has('billing_name') ? $this->get('billing_name') : null,
-            $this->has('billing_adddress') ? $this->get('billing_address') : null,
-            $this->has('billing_city') ? $this->get('billing_city') : null,
-            $this->has('billing_country') ? $this->get('billing_country') : null,
-            $this->has('billing_zip_code') ? $this->get('billing_zip_code') : null,
+            $this->get('billing_name'),
+            $this->get('billing_address') ?? $this->get('billing_address_line1'),
+            $this->get('billing_address_line2'),
+            $this->get('billing_city'),
+            $this->get('billing_country'),
+            $this->get('billing_zip_code') ?? $this->get('billing_postal_code')
         );
     }
 
     public function shippingAddress()
     {
-        if (! $this->has('shipping_address')) {
+        if (!$this->has('shipping_address')) {
             return null;
         }
 
         return new Address(
-            $this->has('shipping_name') ? $this->get('shipping_name') : null,
-            $this->has('shipping_address') ? $this->get('shipping_address') : null,
-            $this->has('shipping_city') ? $this->get('shipping_city') : null,
-            $this->has('shipping_country') ? $this->get('shipping_country') : null,
-            $this->has('shipping_zip_code') ? $this->get('shipping_zip_code') : null,
-            $this->has('shipping_note') ? $this->get('shipping_note') : null,
+            $this->get('shipping_name'),
+            $this->get('shipping_address') ?? $this->get('shipping_address_line1'),
+            $this->get('shipping_address_line2'),
+            $this->get('shipping_city'),
+            $this->get('shipping_country'),
+            $this->get('shipping_zip_code') ?? $this->get('shipping_postal_code')
         );
     }
 
-    public function customer(string $customer = '')
+    public function customer($customer = null)
     {
-        if ($customer !== '') {
+        if ($customer !== null) {
             $this->set('customer', $customer);
 
             return $this;
@@ -98,9 +101,9 @@ class Order implements Contract
         return Customer::find($this->get('customer'));
     }
 
-    public function coupon(string $coupon = '')
+    public function coupon($coupon = null)
     {
-        if ($coupon !== '') {
+        if ($coupon !== null) {
             $this->set('coupon', $coupon);
 
             return $this;
@@ -109,12 +112,19 @@ class Order implements Contract
         return Coupon::find($this->get('coupon'));
     }
 
+    public function gateway()
+    {
+        return $this->has('gateway')
+            ? collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'))
+            : null;
+    }
+
     // TODO: refactor
     public function redeemCoupon(string $code): bool
     {
         $coupon = Coupon::findByCode($code);
 
-        if ($coupon->isValid($this->entry())) {
+        if ($coupon->isValid($this)) {
             $this->set('coupon', $coupon->id());
             event(new CouponRedeemed($coupon->entry()));
 
@@ -124,20 +134,20 @@ class Order implements Contract
         return false;
     }
 
-    // TODO: refactor & rename to 'complete'
-    public function markAsCompleted(): self
+    // TODO: refactor & rename to 'markPaid'
+    public function markAsPaid(): self
     {
         $this->published = true;
 
         $this->data([
-            'is_paid'   => true,
-            'paid_date' => now()->toDateTimeString(),
+            'is_paid'      => true,
+            'paid_date'    => now()->toDateTimeString(),
             'order_status' => 'completed',
         ]);
 
         $this->save();
 
-        event(new CartCompleted($this));
+        event(new OrderPaidEvent($this));
 
         return $this;
     }
@@ -153,7 +163,7 @@ class Order implements Contract
     // TODO: rename method
     public function calculateTotals(): self
     {
-        $calculate = resolve(Calculator::class)->calculate($this);
+        $calculate = resolve(CalculatorContract::class)->calculate($this);
 
         $this->data($calculate);
 
@@ -164,17 +174,14 @@ class Order implements Contract
 
     public function beforeSaved()
     {
-        if (! $this->has('items')) {
+        if (!$this->has('items')) {
             $this->data['items'] = [];
         }
     }
 
     public function afterSaved()
     {
-        event(new CartSaved($this->entry));
-
-        // TODO: remove this event
-        event(new CartUpdated($this->entry));
+        event(new OrderSaved($this));
 
         // TODO: remove this event
         event(new CustomerAddedToCart($this->entry));

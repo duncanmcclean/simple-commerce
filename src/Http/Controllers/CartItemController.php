@@ -38,7 +38,7 @@ class CartItemController extends BaseActionController
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
-            $cart->updateOrderItem($alreadyExistsQuery->first()['id'], [
+            $cart->updateLineItem($alreadyExistsQuery->first()['id'], [
                 'quantity' => (int) $alreadyExistsQuery->first()['quantity'] + $request->quantity,
             ]);
         } else {
@@ -55,7 +55,7 @@ class CartItemController extends BaseActionController
                 ];
             }
 
-            $cart->addOrderItem($item);
+            $cart->addLineItem($item);
         }
 
         return $this->withSuccess($request, [
@@ -68,9 +68,14 @@ class CartItemController extends BaseActionController
     {
         $cart = $this->getCart();
 
-        $cart->updateOrderItem(
+        $cart->updateLineItem(
             $requestItem,
-            Arr::except($request->all(), ['_token', '_params', '_redirect'])
+            array_merge(
+                Arr::only($request->all(), 'quantity', 'variant'),
+                [
+                    'metadata' => Arr::except($request->all(), ['quantity', 'variant', '_token', '_params', '_redirect']),
+                ]
+            ),
         );
 
         return $this->withSuccess($request, [
@@ -83,7 +88,7 @@ class CartItemController extends BaseActionController
     {
         $cart = $this->getCart();
 
-        $cart->removeOrderItem($item);
+        $cart->removeLineItem($item);
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_item_deleted'),

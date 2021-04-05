@@ -5,8 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
-use Statamic\Facades\Taxonomy;
-use Statamic\Facades\Term;
 
 class InstallCommand extends Command
 {
@@ -20,7 +18,6 @@ class InstallCommand extends Command
         $this
             ->publishBlueprints()
             ->publishConfigurationFile()
-            ->setupTaxonomies()
             ->setupCollections();
     }
 
@@ -42,55 +39,6 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', [
             '--tag' => 'simple-commerce-config',
         ]);
-
-        return $this;
-    }
-
-    protected function setupTaxonomies()
-    {
-        if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.product_categories'))) {
-            $this->info('Creating: Product Categories');
-
-            Taxonomy::make(config('simple-commerce.taxonomies.product_categories'))
-                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
-                ->save();
-        } else {
-            $this->warn('Skipping: Product Categories');
-        }
-
-        if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))) {
-            $this->info('Creating: Order Statuses');
-
-            Taxonomy::make(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->title(__('simple-commerce::messages.default_taxonomies.order_statuses'))
-                ->save();
-
-            Term::make()
-                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->slug('cart')
-                ->data([
-                    'title' => __('simple-commerce::messages.default_terms.cart'),
-                ])
-                ->save();
-
-            Term::make()
-                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->slug('completed')
-                ->data([
-                    'title' => __('simple-commerce::messages.default_terms.completed'),
-                ])
-                ->save();
-
-            Term::make()
-                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->slug('refunded')
-                ->data([
-                    'title' => __('simple-commerce::messages.default_terms.refunded'),
-                ])
-                ->save();
-        } else {
-            $this->warn('Skipping: Order Statuses');
-        }
 
         return $this;
     }

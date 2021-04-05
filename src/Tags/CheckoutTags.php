@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -10,8 +11,8 @@ use Exception;
 
 class CheckoutTags extends SubTag
 {
-    use Concerns\FormBuilder,
-        CartDriver;
+    use Concerns\FormBuilder;
+    use CartDriver;
 
     public function index()
     {
@@ -20,7 +21,7 @@ class CheckoutTags extends SubTag
 
         foreach (SimpleCommerce::gateways() as $gateway) {
             try {
-                $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart->entry());
+                $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
 
                 $cart->data([
                     $gateway['handle'] => $prepare->data(),
@@ -28,7 +29,7 @@ class CheckoutTags extends SubTag
 
                 $data = array_merge($data, $prepare->data());
             } catch (\Exception $e) {
-                dd("Exception from Gateway: " . $e->getMessage());
+                throw new GatewayException($e->getMessage());
             }
         }
 
@@ -42,7 +43,7 @@ class CheckoutTags extends SubTag
     // {{ sc:checkout:mollie }}
     public function wildcard(string $tag)
     {
-        if (! $tag || $tag === 'index') {
+        if (!$tag || $tag === 'index') {
             return $this->index();
         }
 
@@ -53,27 +54,30 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        if (! $gateway) {
-            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $gatewayHandle]));
+        if (!$gateway) {
+            throw new GatewayDoesNotExist($gatewayHandle);
         }
 
         $prepare = Gateway::use($gateway['class']);
 
-        if (isset($this->params['redirect'])) {
-            $prepare->withRedirectUrl($this->params['redirect']);
+        if ($this->params->has('redirect')) {
+            $prepare->withRedirectUrl($this->params->get('redirect'));
         }
 
-        $prepare = $prepare->prepare(request(), $cart->entry());
+        if ($this->params->has('error_redirect')) {
+            $prepare->withErrorRedirectUrl($this->params->get('error_redirect'));
+        }
+
+        $prepare = $prepare->prepare(request(), $cart);
 
         $cart->data([
             $gateway['handle'] => $prepare->data(),
         ])->save();
 
-        if (! $prepare->checkoutUrl()) {
+        if (!$prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
 
         abort(redirect($prepare->checkoutUrl(), 302));
-        return;
     }
 }

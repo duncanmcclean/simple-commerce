@@ -3,15 +3,17 @@
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
-use Statamic\Entries\Entry as EntryInstance;
 use Statamic\Facades\Entry;
 
 class Coupon implements Contract
 {
-    use IsEntry, HasData;
+    use IsEntry;
+    use HasData;
 
     public $id;
     public $site;
@@ -27,18 +29,25 @@ class Coupon implements Contract
     {
         $entry = Entry::findBySlug($code, config('simple-commerce.collections.coupons'));
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found'));
         }
 
         return $this->find($entry->id());
     }
 
-    // TODO: refactor
-    public function isValid(EntryInstance $order): bool
+    public function code(): string
     {
+        return $this->slug();
+    }
+
+    // TODO: refactor
+    public function isValid(Order $order): bool
+    {
+        $order = OrderFacade::find($order->id());
+
         if ($this->has('minimum_cart_value') && $order->has('items_total')) {
-            if ($order->data()->get('items_total') < $this->get('minimum_cart_value')) {
+            if ($order->get('items_total') < $this->get('minimum_cart_value')) {
                 return false;
             }
         }
@@ -49,12 +58,24 @@ class Coupon implements Contract
             }
         }
 
+        if ($this->isProductSpecific()) {
+            $couponProductsInOrder = $order->lineItems()->filter(function ($lineItem) {
+                return in_array($lineItem['product'], $this->get('products'));
+            });
+
+            if ($couponProductsInOrder === 0) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     public function redeem(): self
     {
-        $this->set('redeemed', $this->has('redeemed') ? $this->get('redeemed') + 1 : 1);
+        $redeemed = $this->has('redeemed') ? $this->get('redeemed') : 0;
+
+        $this->set('redeemed', $redeemed + 1);
 
         return $this;
     }
@@ -62,6 +83,12 @@ class Coupon implements Contract
     public function collection(): string
     {
         return config('simple-commerce.collections.coupons');
+    }
+
+    protected function isProductSpecific()
+    {
+        return $this->has('products')
+            && collect($this->get('products'))->count() >= 1;
     }
 
     public static function bindings(): array

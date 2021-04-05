@@ -2,11 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Cart;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\URL;
-use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
 class ReceiptControllerTest extends TestCase
@@ -24,13 +22,13 @@ class ReceiptControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
-        ])->calculateTotals()->markAsCompleted();
+        ])->calculateTotals()->markAsPaid();
 
         $url = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
             'orderId' => $cart->id,

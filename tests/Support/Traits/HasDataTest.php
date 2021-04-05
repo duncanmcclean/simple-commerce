@@ -11,7 +11,7 @@ class HasDataTest extends TestCase
 
     public function setUp(): void
     {
-        $this->trait = new TraitAccess;
+        $this->trait = new TraitAccess();
     }
 
     /** @test */
@@ -171,7 +171,7 @@ class TraitAccess
 
     protected function entry()
     {
-        return new Entry;
+        return new Entry();
     }
 }
 

@@ -2,17 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
+use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
+use Statamic\Facades\Site;
 use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Stache\Stores\UsersStore;
 use Statamic\Statamic;
-use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
-use Statamic\Facades\Site;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -73,7 +73,7 @@ abstract class TestCase extends OrchestraTestCase
         ));
         $app['config']->set('statamic.users.repository', 'file');
         $app['config']->set('statamic.stache.stores.users', [
-            'class' => UsersStore::class,
+            'class'     => UsersStore::class,
             'directory' => __DIR__.'/__fixtures/users',
         ]);
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
@@ -81,11 +81,11 @@ abstract class TestCase extends OrchestraTestCase
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
-        $app['config']->set('statamic.sites.sites',[
+        $app['config']->set('statamic.sites.sites', [
             'default' => [
-                'name' => config('app.name'),
+                'name'   => config('app.name'),
                 'locale' => 'en_GB',
-                'url' => '/',
+                'url'    => '/',
             ],
         ]);
 

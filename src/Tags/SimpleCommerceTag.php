@@ -2,9 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Countries;
-use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
-use Exception;
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Support\Currencies;
 use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;
 
@@ -39,7 +38,7 @@ class SimpleCommerceTag extends Tags
 
         $method = isset($tag[1]) ? $tag[1] : 'index';
 
-        if (! $class) {
+        if (!$class) {
             throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
         }
 
@@ -66,7 +65,7 @@ class SimpleCommerceTag extends Tags
 
     public function errors()
     {
-        if (! $this->hasErrors()) {
+        if (!$this->hasErrors()) {
             return null;
         }
 

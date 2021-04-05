@@ -8,7 +8,8 @@ use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 
 class Product implements Contract
 {
-    use IsEntry, HasData;
+    use IsEntry;
+    use HasData;
 
     public $id;
     public $site;
@@ -22,7 +23,7 @@ class Product implements Contract
 
     public function stockCount()
     {
-        if (! isset($this->stock)) {
+        if (!isset($this->stock)) {
             return null;
         }
 
@@ -40,7 +41,7 @@ class Product implements Contract
 
     public function variantOption(string $optionKey): ?array
     {
-        if (! isset($this->data['product_variants']['options'])) {
+        if (!isset($this->data['product_variants']['options'])) {
             return null;
         }
 
@@ -51,7 +52,8 @@ class Product implements Contract
 
     public function isExemptFromTax(): bool
     {
-        return $this->has('exempt_from_tax') && $this->get('exempt_from_tax') === true;
+        return $this->has('exempt_from_tax')
+            && $this->get('exempt_from_tax') === true;
     }
 
     public function collection(): string

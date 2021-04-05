@@ -42,7 +42,7 @@ class SimpleCommerce
                     'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
-                    'webhook_url'     => url('/'.config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook'),
+                    'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
                 ];
             })
             ->toArray();
@@ -52,7 +52,7 @@ class SimpleCommerce
     {
         static::$gateways[] = [
             $gateway,
-            $config
+            $config,
         ];
     }
 

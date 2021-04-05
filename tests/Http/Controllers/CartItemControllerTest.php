@@ -28,7 +28,7 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $data = [
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => 1,
         ];
 
@@ -52,12 +52,12 @@ class CartItemControllerTest extends TestCase
     {
         $product = Product::create([
             'title' => 'Dog Food',
-            'slug' => 'dog-food',
+            'slug'  => 'dog-food',
             'price' => 1000,
         ])->save();
 
         $data = [
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => 1,
         ];
 
@@ -85,17 +85,17 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_variant()
     {
         $product = Product::create([
-            'title' => 'Dog Food',
+            'title'            => 'Dog Food',
             'product_variants' => [
                 'variants' => [
                     [
-                        'name' => 'Colours',
+                        'name'   => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name' => 'Sizes',
+                        'name'   => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -103,7 +103,7 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key' => 'Red_Small',
+                        'key'   => 'Red_Small',
                         'price' => 1000,
                     ],
                 ],
@@ -111,14 +111,15 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $data = [
-            'product' => $product->id,
-            'variant' => 'Red_Small',
+            'product'  => $product->id,
+            'variant'  => 'Red_Small',
             'quantity' => 1,
         ];
 
         $response = $this
             ->from('/products/'.$product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
         $response->assertRedirect('/products/'.$product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
@@ -141,7 +142,7 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create();
 
         $data = [
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => 1,
         ];
 
@@ -173,7 +174,7 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create();
 
         $data = [
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => 5,
         ];
 
@@ -200,16 +201,16 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $productOne->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $productOne->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
 
         $data = [
-            'product' => $productTwo->id,
+            'product'  => $productTwo->id,
             'quantity' => 1,
         ];
 
@@ -240,8 +241,8 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $data = [
-            'product' => $product->id,
-            'quantity' => 1,
+            'product'   => $product->id,
+            'quantity'  => 1,
             '_redirect' => '/checkout',
         ];
 
@@ -276,18 +277,18 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $productOne->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $productOne->id,
                     'quantity' => 1,
-                ]
+                ],
             ],
         ]);
 
         $this->assertCount(1, $cart->get('items'));
 
         $data = [
-            'product' => $productTwo->id,
-            'quantity' => 1,
+            'product'   => $productTwo->id,
+            'quantity'  => 1,
             '_redirect' => '/checkout',
         ];
 
@@ -317,16 +318,16 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
 
         $data = [
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => 1,
         ];
 
@@ -346,17 +347,17 @@ class CartItemControllerTest extends TestCase
     public function can_store_a_variant_that_is_already_in_the_cart()
     {
         $product = Product::create([
-            'title' => 'Dog Food',
+            'title'            => 'Dog Food',
             'product_variants' => [
                 'variants' => [
                     [
-                        'name' => 'Colours',
+                        'name'   => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name' => 'Sizes',
+                        'name'   => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -364,7 +365,7 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key' => 'Red_Small',
+                        'key'   => 'Red_Small',
                         'price' => 1000,
                     ],
                 ],
@@ -374,21 +375,21 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
+                    'id'      => Stache::generateId(),
                     'product' => $product->id,
                     'variant' => [
                         'variant' => 'Red_Small',
                         'product' => $product->id,
                     ],
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
 
         $data = [
-            'product' => $product->id,
-            'variant' => 'Red_Small',
+            'product'  => $product->id,
+            'variant'  => 'Red_Small',
             'quantity' => 4,
         ];
 
@@ -408,17 +409,17 @@ class CartItemControllerTest extends TestCase
     public function can_store_variant_of_a_product_that_has_another_variant_that_is_in_the_cart()
     {
         $product = Product::create([
-            'title' => 'Dog Food',
+            'title'            => 'Dog Food',
             'product_variants' => [
                 'variants' => [
                     [
-                        'name' => 'Colours',
+                        'name'   => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name' => 'Sizes',
+                        'name'   => 'Sizes',
                         'values' => [
                             'Small',
                             'Medium',
@@ -427,11 +428,11 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key' => 'Red_Small',
+                        'key'   => 'Red_Small',
                         'price' => 1000,
                     ],
                     [
-                        'key' => 'Red_Medium',
+                        'key'   => 'Red_Medium',
                         'price' => 1000,
                     ],
                 ],
@@ -441,21 +442,21 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
+                    'id'      => Stache::generateId(),
                     'product' => $product->id,
                     'variant' => [
                         'variant' => 'Red_Small',
                         'product' => $product->id,
                     ],
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
 
         $data = [
-            'product' => $product->id,
-            'variant' => 'Red_Medium',
+            'product'  => $product->id,
+            'variant'  => 'Red_Medium',
             'quantity' => 1,
         ];
 
@@ -480,7 +481,7 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $data = [
-            'product' => $product->id,
+            'product'  => $product->id,
             'quantity' => -1,
         ];
 
@@ -503,10 +504,10 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
@@ -519,7 +520,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id']
+                'item' => $cart->data['items'][0]['id'],
             ]), $data);
 
         $response->assertRedirect('/cart');
@@ -530,21 +531,97 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_update_item_with_zero_item_quantity()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'quantity' => 0,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertSessionHasErrors();
+
+        $cart->find($cart->id);
+
+        $this->assertSame(1, $cart->data['items'][0]['quantity']);
+    }
+
+    /** @test */
+    public function can_update_item_with_extra_data()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'gift_note' => 'Have a good birthday!',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->lineItems()->count(), 1);
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
+    }
+
+    /** @test */
     public function can_update_item_and_request_json()
     {
         $product = Product::create([
             'title' => 'Food',
-            'slug' => 'food',
+            'slug'  => 'food',
             'price' => 1000,
         ])->save();
 
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ])->save();
@@ -557,7 +634,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->postJson(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id']
+                'item' => $cart->data['items'][0]['id'],
             ]), $data);
 
         $response->assertJsonStructure([
@@ -582,10 +659,10 @@ class CartItemControllerTest extends TestCase
         $cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
@@ -594,7 +671,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->deleteJson(route('statamic.simple-commerce.cart-items.destroy', [
-                'item' => $cart->data['items'][0]['id']
+                'item' => $cart->data['items'][0]['id'],
             ]));
 
         $response->assertJsonStructure([

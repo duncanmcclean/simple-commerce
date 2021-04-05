@@ -3,6 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
+use DoubleThreeDigital\SimpleCommerce\Orders\Order;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 
@@ -30,6 +32,15 @@ class CustomerTags extends SubTag
 
     public function orders()
     {
+        if ($this->params->get('from') === 'customer') {
+            return Customer::find($this->params->get('customer'))
+                ->orders()
+                ->map(function (Order $order) {
+                    return $order->entry()->toAugmentedArray();
+                })
+                ->toArray();
+        }
+
         return Entry::whereCollection(config('simple-commerce.collections.orders'))
             ->where('customer', $this->params->get('customer'))
             ->map(function (EntriesEntry $entry) {
@@ -40,6 +51,6 @@ class CustomerTags extends SubTag
 
     public function order()
     {
-        return Entry::find($this->params->get('id'));
+        return OrderAPI::find($this->params->get('id'));
     }
 }

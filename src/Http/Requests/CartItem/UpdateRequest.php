@@ -13,6 +13,8 @@ class UpdateRequest extends FormRequest
 
     public function rules()
     {
-        return [];
+        return [
+            'quantity' => ['sometimes', 'numeric', 'gt:0'],
+        ];
     }
 }

@@ -29,20 +29,24 @@ class CouponControllerTest extends TestCase
     /** @test */
     public function can_store_coupon()
     {
-        $this->markTestSkipped();
-
         Event::fake();
 
         $this->buildCartWithProducts();
 
-        $coupon = Coupon::create([
-            'slug'=> 'half-price',
-            'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
-        ])->save();
+            ])
+            ->save();
+
+        $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $data = [
             'code' => 'half-price',
@@ -75,13 +79,14 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $data = [
@@ -117,14 +122,15 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 5,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 5,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
-                'maximum_uses' => 5, // We shouldn't be able to use because of this
+                'maximum_uses'       => 5, // We shouldn't be able to use because of this
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $data = [
@@ -169,6 +175,89 @@ class CouponControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_store_coupon_limited_to_certain_products_when_product_is_in_cart()
+    {
+        Event::fake();
+
+        $this->buildCartWithProducts();
+
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+                'products'           => [$this->product->id],
+            ])
+            ->save();
+
+        $coupon = Entry::findBySlug('half-price', 'coupons');
+
+        $data = [
+            'code' => 'half-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertRedirect('/cart');
+        $response->assertSessionHasNoErrors();
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertSame($this->cart->data['coupon'], $coupon->id());
+        $this->assertNotSame($this->cart->data['coupon_total'], 0000);
+
+        Event::assertDispatched(CouponRedeemed::class);
+    }
+
+    /** @test */
+    public function cant_store_coupon_limited_to_certain_products_when_products_are_not_in_the_cart()
+    {
+        $this->buildCartWithProducts();
+
+        Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('half-price')
+            ->data([
+                'title'              => 'Half Price',
+                'redeemed'           => 5,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+                'maximum_uses'       => 0,
+                'products'           => ['another-product-id'],
+            ])
+            ->save();
+
+        $coupon = Entry::findBySlug('half-price', 'coupons');
+
+        $data = [
+            'code' => 'half-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertRedirect('/cart');
+        $response->assertSessionHasErrors();
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertNotSame($this->cart->data['coupon'], $coupon->id());
+        $this->assertSame($this->cart->data['coupon_total'], 0000);
+    }
+
+    /** @test */
     public function can_destroy_coupon()
     {
         $this->buildCartWithProducts();
@@ -178,13 +267,14 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $this->cart->data([
@@ -214,13 +304,14 @@ class CouponControllerTest extends TestCase
             ->id(Stache::generateId())
             ->slug('half-price')
             ->data([
-                'title' => 'Half Price',
-                'redeemed' => 0,
-                'value' => 50,
-                'type' => 'percentage',
+                'title'              => 'Half Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ])
             ->save();
+
         $coupon = Entry::findBySlug('half-price', 'coupons');
 
         $this->cart->data([
@@ -254,10 +345,10 @@ class CouponControllerTest extends TestCase
         $this->cart = Order::create([
             'items' => [
                 [
-                    'id' => Stache::generateId(),
-                    'product' => $this->product->id,
+                    'id'       => Stache::generateId(),
+                    'product'  => $this->product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'coupon' => null,

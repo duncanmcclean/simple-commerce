@@ -11,9 +11,12 @@ use Statamic\Facades\Site as SiteAPI;
 use Statamic\Facades\Stache;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait IsEntry
 {
+    use FluentlyGetsAndSets;
+
     public function all()
     {
         return $this->query()->all();
@@ -24,11 +27,11 @@ trait IsEntry
         return EntryAPI::whereCollection($this->collection());
     }
 
-    public function find(string $id): self
+    public function find($id): self
     {
-        $this->entry = EntryAPI::find($id);
+        $this->entry = EntryAPI::find((string) $id);
 
-        if (! $this->entry) {
+        if (!$this->entry) {
             throw new EntryNotFound("Entry could not be found: {$id}");
         }
 
@@ -36,11 +39,11 @@ trait IsEntry
             $this->entry = $this->entry->in(SiteAPI::current()->handle());
         }
 
-        $this->id    = $this->entry->id();
+        $this->id = $this->entry->id();
         $this->title = $this->entry->data()->get('title');
-        $this->slug  = $this->entry->slug();
-        $this->site  = $this->entry()->locale();
-        $this->data  = $this->entry->data()->toArray();
+        $this->slug = $this->entry->slug();
+        $this->site = $this->entry()->locale();
+        $this->data = $this->entry->data()->toArray();
         $this->published = $this->entry->published();
 
         return $this;
@@ -48,10 +51,10 @@ trait IsEntry
 
     public function create(array $data = [], string $site = ''): self
     {
-        $this->id   = ! is_null($this->id) ? $this->id : Stache::generateId();
+        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
-        $this->slug = ! is_null($this->slug) ? $this->slug : '';
-        $this->published = ! is_null($this->published) ? $this->published : false;
+        $this->slug = !is_null($this->slug) ? $this->slug : '';
+        $this->published = !is_null($this->published) ? $this->published : false;
 
         $this->data(
             Arr::except($data, ['id', 'site', 'slug', 'publish'])
@@ -64,7 +67,7 @@ trait IsEntry
 
     public function save(): self
     {
-        if (! $this->entry) {
+        if (!$this->entry) {
             $this->entry = EntryAPI::make()
                 ->id($this->id)
                 ->locale($this->site);
@@ -112,9 +115,14 @@ trait IsEntry
         return $this->entry;
     }
 
-    public function toResource(): EntryResource
+    public function toResource()
     {
         return new EntryResource($this->entry);
+    }
+
+    public function toAugmentedArray($keys = null)
+    {
+        return $this->entry()->toAugmentedArray($keys);
     }
 
     public function id()
@@ -122,41 +130,35 @@ trait IsEntry
         return $this->id;
     }
 
-    public function title(string $title = '')
+    public function title(string $title = null)
     {
-        if ($title !== '') {
-            $this->title = $title;
-
-            return $this;
-        }
-
-        return $this->title;
+        return $this
+            ->fluentlyGetOrSet('title')
+            ->args(func_get_args());
     }
 
-    public function slug(string $slug = '')
+    public function slug(string $slug = null)
     {
-        if ($slug !== '') {
-            $this->slug = $slug;
-
-            return $this;
-        }
-
-        return $this->slug;
+        return $this
+            ->fluentlyGetOrSet('slug')
+            ->args(func_get_args());
     }
 
-    public function site($site = null): self
+    public function site($site = null)
     {
-        if (is_null($site)) {
-            return $this->site;
-        }
+        return $this
+            ->fluentlyGetOrSet('title')
+            ->setter(function ($site) {
+                if (! $site instanceof Site) {
+                    return SiteAPI::get($site);
+                }
 
-        if (! $site instanceof Site) {
-            $site = SiteAPI::get($site);
-        }
-
-        $this->site = $site;
-
-        return $this;
+                return $site;
+            })
+            ->getter(function ($site) {
+                return $site;
+            })
+            ->args(func_get_args());
     }
 
     public function fresh(): self

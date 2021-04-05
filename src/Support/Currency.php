@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Currency as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Support\Currencies;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
@@ -34,7 +34,7 @@ class Currency implements Contract
 
             return $moneyFormatter->format($money);
         } catch (\ErrorException $e) {
-            throw new CurrencyFormatterNotWorking(__('simple-commerce::messages.currency_formatter_not_working'));
+            throw new CurrencyFormatterNotWorking("Extension PHP-intl not installed.");
         }
     }
 

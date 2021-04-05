@@ -2,6 +2,59 @@
 
 ## Unreleased
 
+## v2.2.19 (2021-04-02)
+
+* [fix] Fix issues with coupon calculations #405
+
+## v2.2.18 (2021-03-30)
+
+* [fix] Fixed issue where shipping & billing addresses would not be output on PDF Receipts #404
+
+## v2.2.17 (2021-03-29)
+
+* [new] Statamic 3.1 support
+* [new] Product Specific Coupons #390
+* [new] Added docblocks to Facades #400
+* [new] Added country validation when submitting addresses #398 #402
+* [fix] Allow for calculator to be run with any `Order` class
+
+## v2.2.16 (2021-03-13)
+
+* [fix] Fixed issue with `GatewayDoesNotExist` exception
+* [fix] Ensure we don't have two slashes in Gateway Webhook URL #387
+* [fix] Order Confirmation emails will now be sent for off-site gateways #395
+
+## v2.2.15 (2021-03-10)
+
+* [new] Ability to bind your own `Calculator` class
+* [fix] Fixed bug where `items_total` would be a string when using coupons.
+* Refactored the `Calculator`
+
+## v2.2.14 (2021-03-08)
+
+* [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
+* [new] You can now specify a different redirect URL for errors. - `error_redirect`.
+* [fix] Improved handling of Mollie webhooks, we now detect if an order has been paid and redirect correctly. #384
+* [fix] Fixed issue where cookie cart driver wasn't forgetting cart after checkout #383
+* [fix] An exception will be thrown when a gateway errors, instead of a die dump.
+* [fix] Fixed webhook and callback URLs sometimes not being formed correctly.
+* [fix] Fixed an occasionaly exception with the Cookie Driver.
+* Deprecated 'order item' methods, and replaced them with 'line item' methods.
+
+
+## v2.2.13 (2021-03-04)
+
+* [new] Added [Ignition Solutions](https://flareapp.io/docs/solutions/introduction) to some exceptions to help with debugging.
+* [fix] Fixed the ability to update an existing cart item with a negative quantity #375
+* [fix] Fixed an incorrect method signature in the shipping method stub #380
+* Tidied up [the `README`](https://github.com/doublethreedigital/simple-commerce) (but it's not really code related)
+
+## v2.2.12 (2021-02-22)
+
+* [new] Orders will now be added to Customer entries, so there's now a two-way relationship #369
+* [new] You can also now use `{{ sc:customer:orders }}` with Orders on the Customer entries, using the `from` parameter.
+* [fix] Fixed issue where email's would not be sent if email was set but no customer on order. #372
+
 ## v2.2.11 (2021-02-19)
 
 * [new] Added some helper methods to the `Address` object.

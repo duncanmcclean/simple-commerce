@@ -19,8 +19,8 @@ class BaseActionController extends Controller
         }
 
         return $request->_redirect ?
-            redirect($request->_redirect)->with($data) :
-            back()->with($data);
+            redirect($request->_redirect)->with($data)
+            : back()->with($data);
     }
 
     protected function withErrors(Request $request, string $errorMessage)
@@ -32,7 +32,8 @@ class BaseActionController extends Controller
             ]);
         }
 
-        return back()
-            ->withErrors($errorMessage, 'simple-commerce');
+        return $request->_error_redirect
+            ? redirect($request->_error_redirect)->withErrors($errorMessage, 'simple-commerce')
+            : back()->withErrors($errorMessage, 'simple-commerce');
     }
 }

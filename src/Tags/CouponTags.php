@@ -7,12 +7,12 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
 {
-    use Concerns\FormBuilder,
-        CartDriver;
+    use Concerns\FormBuilder;
+    use CartDriver;
 
     public function index(): array
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return [];
         }
 
@@ -29,15 +29,16 @@ class CouponTags extends SubTag
         $coupon = Coupon::find($coupon);
 
         return array_merge($coupon->data, [
-            'title' => $coupon->entry()->title,
-            'slug'  => $coupon->entry()->slug(),
+            'title' => $coupon->code(),
+            'slug'  => $coupon->code(),
+            'code'  => $coupon->code(),
             'id'    => $coupon->id,
         ]);
     }
 
     public function has()
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return false;
         }
 

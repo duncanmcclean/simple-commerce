@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use Statamic\Http\Resources\API\EntryResource;
+use Illuminate\Support\Collection;
 
 interface Order
 {
@@ -10,7 +10,7 @@ interface Order
 
     public function query();
 
-    public function find(string $id): self;
+    public function find($id): self;
 
     public function create(array $data = [], string $site = ''): self;
 
@@ -18,15 +18,17 @@ interface Order
 
     public function delete();
 
-    public function toResource(): EntryResource;
+    public function toResource();
+
+    public function toAugmentedArray($keys = null);
 
     public function id();
 
-    public function title(string $title = '');
+    public function title(string $title = null);
 
-    public function slug(string $slug = '');
+    public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
@@ -44,17 +46,31 @@ interface Order
 
     public function shippingAddress();
 
-    public function customer(string $customer = '');
+    public function customer($customer = null);
 
-    public function coupon(string $coupon = '');
+    public function coupon($coupon = null);
+
+    public function gateway();
 
     public function redeemCoupon(string $code): bool;
 
-    public function markAsCompleted(): self;
+    public function markAsPaid(): self;
 
     public function buildReceipt(): string;
 
     public function calculateTotals(): self;
+
+    public function lineItems(): Collection;
+
+    public function lineItem($lineItemId): array;
+
+    public function addLineItem(array $lineItemData): array;
+
+    public function updateLineItem($lineItemId, array $lineItemData): array;
+
+    public function removeLineItem($lineItemId): Collection;
+
+    public function clearLineItems(): Collection;
 
     public static function bindings(): array;
 }

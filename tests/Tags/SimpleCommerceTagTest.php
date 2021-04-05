@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Countries;
-use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Support\Currencies;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
 use DoubleThreeDigital\SimpleCommerce\Tags\SubTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;

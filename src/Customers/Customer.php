@@ -4,14 +4,19 @@ namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
 
 class Customer implements Contract
 {
-    use IsEntry, HasData;
+    use IsEntry;
+    use HasData;
+    use Notifiable;
 
     public $id;
     public $site;
@@ -30,7 +35,7 @@ class Customer implements Contract
             ->where('slug', Str::slug($email))
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
         }
 
@@ -61,7 +66,7 @@ class Customer implements Contract
         }
 
         $title = __('simple-commerce::customers.customer_entry_title', [
-            'name' => $name,
+            'name'  => $name,
             'email' => $email,
         ]);
 
@@ -73,6 +78,31 @@ class Customer implements Contract
         $this->slug = $slug;
 
         return $this;
+    }
+
+    // TODO: add to interface in next version
+    public function orders(): Collection
+    {
+        return collect($this->has('orders') ? $this->get('orders') : [])
+            ->map(function ($orderId) {
+                return Order::find($orderId);
+            });
+    }
+
+    // TODO: add to interface in next version
+    public function addOrder($orderId): self
+    {
+        $orders = $this->has('orders') ? $this->get('orders') : [];
+        $orders[] = $orderId;
+
+        $this->set('orders', $orders);
+
+        return $this;
+    }
+
+    public function routeNotificationForMail($notification = null)
+    {
+        return $this->email();
     }
 
     public function collection(): string

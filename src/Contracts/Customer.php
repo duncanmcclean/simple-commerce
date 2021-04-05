@@ -2,15 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use Statamic\Http\Resources\API\EntryResource;
-
 interface Customer
 {
     public function all();
 
     public function query();
 
-    public function find(string $id): self;
+    public function find($id): self;
 
     public function create(array $data = [], string $site = ''): self;
 
@@ -18,15 +16,17 @@ interface Customer
 
     public function delete();
 
-    public function toResource(): EntryResource;
+    public function toResource();
+
+    public function toAugmentedArray($keys = null);
 
     public function id();
 
-    public function title(string $title = '');
+    public function title(string $title = null);
 
-    public function slug(string $slug = '');
+    public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
@@ -45,8 +45,6 @@ interface Customer
     public function name(): string;
 
     public function email(): string;
-
-    public function generateTitleAndSlug(): self;
 
     public static function bindings(): array;
 }

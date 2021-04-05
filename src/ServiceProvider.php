@@ -2,8 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
@@ -12,6 +10,11 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $config = false;
     protected $translations = false;
+
+    protected $actions = [
+        Actions\MarkAsPaid::class,
+        Actions\RefundAction::class,
+    ];
 
     protected $commands = [
         Console\Commands\CartCleanupCommand::class,
@@ -29,17 +32,17 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
-        Events\CartCompleted::class => [
-            Listeners\CartCompleted::class,
-        ],
         EntryBlueprintFound::class  => [
             Listeners\EnforceBlueprintFields::class,
+        ],
+        Events\OrderPaid::class => [
+            Listeners\SendOrderPaidNotifications::class,
         ],
     ];
 
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',
-        'cp' => __DIR__.'/../routes/cp.php',
+        'cp'      => __DIR__.'/../routes/cp.php',
     ];
 
     protected $scripts = [
@@ -54,6 +57,10 @@ class ServiceProvider extends AddonServiceProvider
         Widgets\SalesWidget::class,
     ];
 
+    protected $updateScripts = [
+        UpdateScripts\MigrateLineItemMetadata::class,
+    ];
+
     public function boot()
     {
         parent::boot();
@@ -66,7 +73,6 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
-        Actions\RefundAction::register();
     }
 
     protected function bootVendorAssets()
@@ -108,9 +114,10 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Coupon::class             => Coupons\Coupon::class,
             Contracts\Currency::class           => Support\Currency::class,
             Contracts\Customer::class           => Customers\Customer::class,
-            Contracts\GatewayManager::class     => Gateways\GatewayManager::class,
             Contracts\Product::class            => Products\Product::class,
-            Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
+            Contracts\GatewayManager::class     => Gateways\Manager::class,
+            Contracts\ShippingManager::class    => Shipping\Manager::class,
+            Contracts\Calculator::class         => Orders\Calculator::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
