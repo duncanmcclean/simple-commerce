@@ -33,25 +33,22 @@ class MollieGateway extends BaseGateway implements Gateway
         $order = $data->order();
 
         if ($this->isUsingPaymentsApi()) {
-            $payment = $this->mollie->payments->create([
-                'amount' => [
-                    'currency' => Currency::get(Site::current())['code'],
-                    'value'    => $this->convertToCurrencyString($order->get('grand_total')),
-                ],
+            $molliePayment = $this->mollie->payments->create([
+                'amount'      => $this->toAmount($order->get('grand_total')),
                 'description' => "Order {$order->title()}",
-                'redirectUrl' => $this->callbackUrl([
-                    '_order_id' => $data->order()->id(),
-                ]),
                 'webhookUrl'  => $this->webhookUrl(),
                 'metadata'    => [
                     'order_id' => $order->id,
                 ],
+                'redirectUrl' => $this->callbackUrl([
+                    '_order_id' => $data->order()->id(),
+                ]),
             ]);
 
             return new Response(true, [
-                'id' => $payment->id,
+                'id' => $molliePayment->id,
                 'type' => 'payments',
-            ], $payment->getCheckoutUrl());
+            ], $molliePayment->getCheckoutUrl());
         }
 
         if ($this->isUsingOrdersApi()) {
@@ -70,10 +67,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'locale'      => Site::current()->locale(),
                 'redirectUrl' => $this->callbackUrl(),
                 'webhookUrl'  => $this->webhookUrl(),
-                'amount'      => [
-                    'currency' => Currency::get(Site::current())['code'],
-                    'value'    => $this->convertToCurrencyString($order->get('grand_total')),
-                ],
+                'amount'      => $this->toAmount($order->get('grand_total')),
                 'billingAddress' => [
                     'givenName'       => $billingAddress->firstName(),
                     'familyName'      => $billingAddress->lastName(),
@@ -86,7 +80,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'lines' => $order->lineItems()
                     ->map(function ($item) use ($order) {
                         $product = Product::find($item['product']);
-                        $taxAmount = $order->get('tax_total') / $order->lineItems()->count();
+                        // $taxAmount = $order->get('tax_total') / $order->lineItems()->count();
 
                         if ($product->purchasableType() === 'variants') {
                             if (is_array($item['variant'])) {
@@ -99,65 +93,32 @@ class MollieGateway extends BaseGateway implements Gateway
                         }
 
                         return [
-                            'type' => $product->isDigitalProduct()
-                                ? 'digital'
-                                : 'physical',
-                            'name' => is_null($variant)
-                                ? $product->title
-                                : "$product->title - {$variant['variant']}",
-                            'quantity' => $item['quantity'],
-                            'unitPrice' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value' => is_null($variant)
-                                    ? $this->convertToCurrencyString($product->get('price'))
-                                    : $this->convertToCurrencyString($variant['price']),
-                            ],
-                            'totalAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString($item['total']),
-                            ],
-                            'vatRate' => '0',
-                            'vatAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString(0),
-                            ],
+                            'type'        => $product->isDigitalProduct() ? 'digital' : 'physical',
+                            'name'        => is_null($variant) ? $product->title() : "{$product->title()} - {$variant['variant']}",
+                            'quantity'    => $item['quantity'],
+                            'unitPrice'   => $this->toAmount(is_null($variant) ? $product->get('price') : $variant['price']),
+                            'totalAmount' => $this->toAmount($item['total']),
+                            'vatRate'     => '0',
+                            'vatAmount'   => $this->toAmount(0),
                         ];
                     })
                     ->merge([
                         [
-                            'type' => 'shipping_fee',
-                            'name' => 'Shipping',
-                            'quantity' => 1,
-                            'unitPrice' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString($order->get('shipping_total')),
-                            ],
-                            'totalAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString($order->get('shipping_total')),
-                            ],
-                            'vatRate' => '0',
-                            'vatAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString(0),
-                            ],
+                            'type'        => 'shipping_fee',
+                            'name'        => 'Shipping',
+                            'quantity'    => 1,
+                            'unitPrice'   => $this->toAmount($order->get('shipping_total')),
+                            'totalAmount' => $this->toAmount($order->get('shipping_total')),
+                            'vatRate'     => '0',
+                            'vatAmount'   => $this->toAmount(0),
                         ],
                         [
-                            'name' => 'Tax',
-                            'quantity' => 1,
-                            'unitPrice' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString($order->get('tax_total')),
-                            ],
-                            'totalAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString($order->get('tax_total')),
-                            ],
-                            'vatRate' => '0',
-                            'vatAmount' => [
-                                'currency' => Currency::get(Site::current())['code'],
-                                'value'    => $this->convertToCurrencyString(0),
-                            ],
+                            'name'        => 'Tax',
+                            'quantity'    => 1,
+                            'unitPrice'   => $this->toAmount($order->get('tax_total')),
+                            'totalAmount' => $this->toAmount($order->get('tax_total')),
+                            'vatRate'     => '0',
+                            'vatAmount'   => $this->toAmount(0),
                         ],
                     ])
                     ->toArray(),
@@ -287,12 +248,15 @@ class MollieGateway extends BaseGateway implements Gateway
         return $this->config()->get('api', 'payments') === 'orders';
     }
 
-    protected function convertToCurrencyString(int $amount): string
+    protected function toAmount(int $amount): array
     {
-        if ($amount === 0) {
-            return '0.00';
-        }
+        $amount = $amount === 0
+            ? '0.00'
+            : (string) substr_replace($amount, '.', -2, 0);
 
-        return (string) substr_replace($amount, '.', -2, 0);
+        return [
+            'currency' => Currency::get(Site::current())['code'],
+            'value'    => $amount,
+        ];
     }
 }
