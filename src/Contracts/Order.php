@@ -46,9 +46,9 @@ interface Order
 
     public function shippingAddress();
 
-    public function customer(string $customer = '');
+    public function customer($customer = null);
 
-    public function coupon(string $coupon = '');
+    public function coupon($coupon = null);
 
     public function gateway();
 

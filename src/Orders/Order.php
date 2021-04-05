@@ -85,10 +85,9 @@ class Order implements Contract
         );
     }
 
-    // TODO: these should be null
-    public function customer(string $customer = '')
+    public function customer($customer = null)
     {
-        if ($customer !== '') {
+        if ($customer !== null) {
             $this->set('customer', $customer);
 
             return $this;
@@ -101,10 +100,9 @@ class Order implements Contract
         return Customer::find($this->get('customer'));
     }
 
-    // TODO: these should be null
-    public function coupon(string $coupon = '')
+    public function coupon($coupon = null)
     {
-        if ($coupon !== '') {
+        if ($coupon !== null) {
             $this->set('coupon', $coupon);
 
             return $this;
