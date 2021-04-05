@@ -117,6 +117,11 @@ trait IsEntry
         return new EntryResource($this->entry);
     }
 
+    public function toAugmentedArray($keys = null)
+    {
+        return $this->entry()->toAugmentedArray($keys);
+    }
+
     public function id()
     {
         return $this->id;

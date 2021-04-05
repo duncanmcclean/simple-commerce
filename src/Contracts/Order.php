@@ -20,6 +20,8 @@ interface Order
 
     public function toResource();
 
+    public function toAugmentedArray($keys = null);
+
     public function id();
 
     public function title(string $title = null);
