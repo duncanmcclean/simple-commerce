@@ -4,9 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
 use DoubleThreeDigital\SimpleCommerce\Customers\Customer;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 
-class SendOrderPaidNotifications
+class SendOrderPaidNotifications implements ShouldQueue
 {
     public function handle(OrderPaid $event)
     {
