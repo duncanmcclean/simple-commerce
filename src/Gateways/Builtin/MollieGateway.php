@@ -81,7 +81,6 @@ class MollieGateway extends BaseGateway implements Gateway
                 'lines' => $order->lineItems()
                     ->map(function ($item) use ($order) {
                         $product = Product::find($item['product']);
-                        // $taxAmount = $order->get('tax_total') / $order->lineItems()->count();
 
                         if ($product->purchasableType() === 'variants') {
                             if (is_array($item['variant'])) {
@@ -99,8 +98,8 @@ class MollieGateway extends BaseGateway implements Gateway
                             'quantity'    => $item['quantity'],
                             'unitPrice'   => $this->toAmount(is_null($variant) ? $product->get('price') : $variant['price']),
                             'totalAmount' => $this->toAmount($item['total']),
-                            'vatRate'     => '0',
-                            'vatAmount'   => $this->toAmount(0),
+                            'vatRate'     => config('simple-commerce.sites')[Site::current()->handle()]['tax']['rate'],
+                            'vatAmount'   => $this->toAmount($item['tax_total']),
                         ];
                     })
                     ->merge([
@@ -113,15 +112,16 @@ class MollieGateway extends BaseGateway implements Gateway
                             'vatRate'     => '0',
                             'vatAmount'   => $this->toAmount(0),
                         ],
-                        [
-                            'name'        => 'Tax',
-                            'quantity'    => 1,
-                            'unitPrice'   => $this->toAmount($order->get('tax_total')),
-                            'totalAmount' => $this->toAmount($order->get('tax_total')),
-                            'vatRate'     => '0',
-                            'vatAmount'   => $this->toAmount(0),
-                        ],
+                        // [
+                        //     'name'        => 'Tax',
+                        //     'quantity'    => 1,
+                        //     'unitPrice'   => $this->toAmount($order->get('tax_total')),
+                        //     'totalAmount' => $this->toAmount($order->get('tax_total')),
+                        //     'vatRate'     => '0',
+                        //     'vatAmount'   => $this->toAmount(0),
+                        // ],
                     ])
+                    // ->dd() // 28.83
                     ->toArray(),
             ]);
 
