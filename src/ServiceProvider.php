@@ -11,6 +11,11 @@ class ServiceProvider extends AddonServiceProvider
     protected $config = false;
     protected $translations = false;
 
+    protected $actions = [
+        Actions\MarkAsPaid::class,
+        Actions\RefundAction::class,
+    ];
+
     protected $commands = [
         Console\Commands\CartCleanupCommand::class,
         Console\Commands\InfoCommand::class,
@@ -64,7 +69,6 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
-        Actions\RefundAction::register();
     }
 
     protected function bootVendorAssets()
