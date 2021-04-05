@@ -103,6 +103,8 @@ class Calculator implements Contract
         $taxConfiguration = collect(Config::get('simple-commerce.sites'))
             ->get(Site::current()->handle())['tax'];
 
+        $data['tax_rate'] = $taxConfiguration['rate'];
+
         if ($product->isExemptFromTax()) {
             return [
                 'data' => $data,
