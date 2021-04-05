@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
@@ -15,6 +16,7 @@ class Customer implements Contract
 {
     use IsEntry;
     use HasData;
+    use Notifiable;
 
     public $id;
     public $site;
@@ -96,6 +98,11 @@ class Customer implements Contract
         $this->set('orders', $orders);
 
         return $this;
+    }
+
+    public function routeNotificationForMail($notification = null)
+    {
+        return $this->email();
     }
 
     public function collection(): string
