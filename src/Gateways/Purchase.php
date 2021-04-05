@@ -26,12 +26,6 @@ class Purchase
         return $this->order;
     }
 
-    // TODO: can we remove this method?
-    public function cart()
-    {
-        return OrderFacade::find($this->order->id());
-    }
-
     public function __call($name, $arguments)
     {
         if ($attribute = $this->order->get($name)) {

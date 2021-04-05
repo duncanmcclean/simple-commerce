@@ -32,25 +32,22 @@ class StripeGateway extends BaseGateway implements Gateway
     public function prepare(Prepare $data): GatewayResponse
     {
         $this->setUpWithStripe();
-        $cart = $data->cart();
+
+        $order = $data->order();
 
         $intentData = [
-            'amount'             => $cart->data['grand_total'],
+            'amount'             => $order->data['grand_total'],
             'currency'           => Currency::get(Site::current())['code'],
-            'description'        => "Order: {$cart->title}",
+            'description'        => "Order: {$order->title()}",
             'setup_future_usage' => 'off_session',
             'metadata'           => [
-                'order_id' => $cart->id,
+                'order_id' => $order->id,
             ],
         ];
 
-        if (isset($cart->data['email']) && $cart->data['email'] !== null) {
-            $customer = Customer::findByEmail($cart->data['email']);
-        } elseif (isset($cart->data['customer']) && $cart->data['customer'] !== null && is_string($cart->data['customer'])) {
-            $customer = Customer::find($cart->data['customer']);
-        }
+        $customer = $order->customer();
 
-        if (isset($customer->data['email'])) {
+        if ($customer->has('email')) {
             $stripeCustomerData = [
                 'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
                 'email' => $customer->get('email'),
