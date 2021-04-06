@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static array all()
  * @method static \Statamic\Entries\EntryCollection query()
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Order find(string $id)
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Order create(array $data = [], string $site = '')
+ * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Product find(string $id)
+ * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Product create(array $data = [], string $site = '')
  */
 class Product extends Facade
 {

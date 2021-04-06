@@ -4,9 +4,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
 trait HasData
 {
-    public function data(array $data = [])
+    public function data($data = null)
     {
-        if ($data === []) {
+        if ($data === null) {
             return $this->data;
         }
 

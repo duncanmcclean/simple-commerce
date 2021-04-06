@@ -2,6 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
+use DoubleThreeDigital\SimpleCommerce\Products\ProductVariant;
+use Illuminate\Support\Collection;
+
 interface Product
 {
     public function all();
@@ -30,7 +33,7 @@ interface Product
 
     public function fresh(): self;
 
-    public function data(array $data = []);
+    public function data($data = null);
 
     public function has(string $key): bool;
 
@@ -44,7 +47,9 @@ interface Product
 
     public function purchasableType(): string;
 
-    public function variantOption(string $optionKey): ?array;
+    public function variants(): Collection;
+
+    public function variant(string $optionKey): ?ProductVariant;
 
     public function isExemptFromTax(): bool;
 

@@ -103,8 +103,9 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'   => 'Red_Small',
-                        'price' => 1000,
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                 ],
             ],
@@ -365,8 +366,9 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'   => 'Red_Small',
-                        'price' => 1000,
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                 ],
             ],
@@ -428,12 +430,14 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'   => 'Red_Small',
-                        'price' => 1000,
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                     [
-                        'key'   => 'Red_Medium',
-                        'price' => 1000,
+                        'key'     => 'Red_Medium',
+                        'variant' => 'Red Medium',
+                        'price'   => 1000,
                     ],
                 ],
             ],
