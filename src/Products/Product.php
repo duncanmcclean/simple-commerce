@@ -5,6 +5,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Products;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class Product implements Contract
 {
@@ -39,15 +41,27 @@ class Product implements Contract
         return 'product';
     }
 
-    public function variantOption(string $optionKey): ?array
+    public function variants(): Collection
     {
-        if (!isset($this->data['product_variants']['options'])) {
-            return null;
+        if (! isset($this->data['product_variants']['options'])) {
+            return collect();
         }
 
-        return collect($this->data['product_variants']['options'])
-            ->where('key', $optionKey)
-            ->first();
+        return collect($this->get('product_variants')['options'])
+            ->map(function ($variantOption) {
+                return (new ProductVariant)
+                    ->key($variantOption['key'])
+                    ->name($variantOption['variant'])
+                    ->price($variantOption['price'])
+                    ->data(Arr::except($variantOption, ['key', 'variant', 'price']));
+            });
+    }
+
+    public function variant(string $optionKey): ?ProductVariant
+    {
+        return $this->variants()->filter(function ($variant) use ($optionKey) {
+            return $variant->key() === $optionKey;
+        })->first();
     }
 
     public function isExemptFromTax(): bool

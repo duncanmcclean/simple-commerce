@@ -68,9 +68,9 @@ class Calculator implements Contract
         $product = ProductAPI::find($lineItem['product']);
 
         if ($product->purchasableType() === 'variants') {
-            $productPrice = $product->variantOption(
+            $productPrice = $product->variant(
                 isset($lineItem['variant']['variant']) ? $lineItem['variant']['variant'] : $lineItem['variant']
-            )['price'];
+            )->price();
 
             // Ensure we strip any decimals from price
             $productPrice = (int) str_replace('.', '', (string) $productPrice);
