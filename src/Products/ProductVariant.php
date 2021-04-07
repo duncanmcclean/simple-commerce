@@ -14,21 +14,21 @@ class ProductVariant
     protected $price;
     protected $data;
 
-    public function key()
+    public function key($key = null)
     {
         return $this
             ->fluentlyGetOrSet('key')
             ->args(func_get_args());
     }
 
-    public function name()
+    public function name($name = null)
     {
         return $this
             ->fluentlyGetOrSet('name')
             ->args(func_get_args());
     }
 
-    public function price()
+    public function price($price = null)
     {
         return $this
             ->fluentlyGetOrSet('price')
