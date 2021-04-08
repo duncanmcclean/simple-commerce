@@ -18,20 +18,8 @@ sections:
         handle: is_paid
         field:
           type: toggle
-          listable: hidden
+          listable: false
           display: 'Is Paid?'
-          width: 50
-      -
-        handle: order_status
-        field:
-          max_items: 1
-          mode: default
-          taxonomies:
-            - order_statuses
-          type: terms
-          listable: hidden
-          display: 'Order Status'
-          default: cart
           width: 50
       -
         handle: customer
@@ -52,7 +40,7 @@ sections:
           collections:
             - coupons
           type: entries
-          listable: hidden
+          listable: false
           display: Coupon
           width: 50
       -
@@ -102,10 +90,18 @@ sections:
                 display: Total
                 validate: required
                 width: 50
+            -
+              handle: metadata
+              field:
+                mode: dynamic
+                display: Metadata
+                type: array
+                icon: array
+                listable: hidden
           mode: stacked
           reorderable: false
           type: grid
-          listable: hidden
+          listable: false
           display: 'Line Items'
           min_rows: 1
           add_row: 'Add Line Item'
@@ -116,28 +112,28 @@ sections:
         handle: shipping_section
         field:
           type: section
-          listable: hidden
+          listable: false
           display: Shipping
       -
         handle: shipping_name
         field:
           input_type: text
           type: text
-          listable: hidden
+          listable: false
           display: 'Shipping Name'
       -
         handle: shipping_address
         field:
           input_type: text
           type: text
-          listable: hidden
+          listable: false
           display: 'Shipping Address'
       -
         handle: shipping_city
         field:
           input_type: text
           type: text
-          listable: hidden
+          listable: false
           display: 'Shipping City'
       -
         handle: shipping_country
@@ -145,7 +141,7 @@ sections:
           input_type: text
           type: text
           width: 50
-          listable: hidden
+          listable: false
           display: 'Shipping Country'
       -
         handle: shipping_postal_code
@@ -153,26 +149,26 @@ sections:
           input_type: text
           type: text
           width: 50
-          listable: hidden
+          listable: false
           display: 'Shipping Postal Code'
       -
         handle: billing_section
         field:
           type: section
-          listable: hidden
+          listable: false
           display: Billing
       -
         handle: use_shipping_address_for_billing
         field:
           type: toggle
-          listable: hidden
+          listable: false
           display: 'Same Shipping Address?'
       -
         handle: billing_name
         field:
           input_type: text
           type: text
-          listable: hidden
+          listable: false
           display: 'Billing Name'
           unless:
             use_shipping_address_for_billing: 'equals true'
@@ -181,7 +177,7 @@ sections:
         field:
           input_type: text
           type: text
-          listable: hidden
+          listable: false
           display: 'Billing Address'
           unless:
             use_shipping_address_for_billing: 'equals true'
@@ -190,7 +186,7 @@ sections:
         field:
           input_type: text
           type: text
-          listable: hidden
+          listable: false
           display: 'Billing City'
           unless:
             use_shipping_address_for_billing: 'equals true'
@@ -200,7 +196,7 @@ sections:
           input_type: text
           type: text
           width: 50
-          listable: hidden
+          listable: false
           display: 'Billing Country'
           unless:
             use_shipping_address_for_billing: 'equals true'
@@ -210,7 +206,7 @@ sections:
           input_type: text
           type: text
           width: 50
-          listable: hidden
+          listable: false
           display: 'Billing Postal Code'
           unless:
             use_shipping_address_for_billing: 'equals true'
@@ -225,11 +221,11 @@ sections:
           localizable: true
           display: Slug
           icon: hidden
-          listable: hidden
+          listable: false
           validate:
             - required
       -
-        handle: order_date
+        handle: paid_date
         field:
           mode: single
           time_enabled: true
@@ -241,7 +237,7 @@ sections:
           rows: 1
           type: date
           listable: hidden
-          display: 'Order Date'
+          display: 'Paid Date'
           validate: required
       -
         handle: items_total
@@ -260,7 +256,7 @@ sections:
           read_only: true
           validate: required
           width: 33
-          listable: hidden
+          listable: false
       -
         handle: tax_total
         field:
@@ -269,7 +265,7 @@ sections:
           read_only: true
           validate: required
           width: 33
-          listable: hidden
+          listable: false
       -
         handle: shipping_total
         field:
@@ -278,7 +274,7 @@ sections:
           read_only: true
           validate: required
           width: 33
-          listable: hidden
+          listable: false
       -
         handle: grand_total
         field:
