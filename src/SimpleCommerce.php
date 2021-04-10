@@ -65,7 +65,7 @@ class SimpleCommerce
 
         $minimum = config('simple-commerce.minimum_order_number');
 
-        $query = Collection::find(SimpleCommerce::orderDriver()['collections'])
+        $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
             ->queryEntries()
             ->orderBy('title', 'asc')
             ->where('title', '!=', null)
