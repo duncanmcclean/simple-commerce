@@ -1,8 +1,5 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
-use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
-
 return [
 
     /*
@@ -66,8 +63,8 @@ return [
 
     'notifications' => [
         'order_paid' => [
-            CustomerOrderPaid::class   => ['to' => 'customer'],
-            BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
+            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
+            \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
         ],
     ],
 
