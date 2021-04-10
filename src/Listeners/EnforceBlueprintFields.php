@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Fields\Blueprint;
 
@@ -9,11 +10,14 @@ class EnforceBlueprintFields
 {
     public function handle(EntryBlueprintFound $event)
     {
+        $productDriver = SimpleCommerce::productDriver();
+        $orderDriver   = SimpleCommerce::orderDriver();
+
         switch ($event->blueprint->namespace()) {
-            case 'collections.'.config('simple-commerce.collections.products'):
+            case "collections.{$productDriver['collection']}":
                 return $this->enforceProductFields($event);
 
-            case 'collections.'.config('simple-commerce.collections.orders'):
+            case "collections.{$orderDriver['collection']}":
                 return $this->enforceOrderFields($event);
 
             default:

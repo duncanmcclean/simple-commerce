@@ -187,7 +187,7 @@ class Order implements Contract
 
     public function collection(): string
     {
-        return config('simple-commerce.collections.orders');
+        return SimpleCommerce::orderDriver()['collection'];
     }
 
     public static function bindings(): array

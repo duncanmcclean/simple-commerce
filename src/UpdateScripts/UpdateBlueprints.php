@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
 
+use DoubleThreeDigital\SimpleCommerce\Orders\Order;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 use Statamic\UpdateScripts\UpdateScript;
 
@@ -19,7 +21,11 @@ class UpdateBlueprints extends UpdateScript
 
     protected function updateOrderBlueprint()
     {
-        $orderCollection = config('simple-commerce.collections.orders');
+        if (SimpleCommerce::orderDriver()['driver'] !== Order::class) {
+            $this->console()->error("Could not migrate order blueprint. You're not using the entry content driver.");
+        }
+
+        $orderCollection = SimpleCommerce::orderDriver()['collection'];
         $orderCollectionSingular = str_singular($orderCollection);
 
         $blueprint = Blueprint::find("collections.{$orderCollection}.{$orderCollectionSingular}");

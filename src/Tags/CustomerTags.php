@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
 use DoubleThreeDigital\SimpleCommerce\Orders\Order;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Entries\Entry as EntriesEntry;
 use Statamic\Facades\Entry;
 
@@ -41,7 +42,7 @@ class CustomerTags extends SubTag
                 ->toArray();
         }
 
-        return Entry::whereCollection(config('simple-commerce.collections.orders'))
+        return Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
             ->where('customer', $this->params->get('customer'))
             ->map(function (EntriesEntry $entry) {
                 return $entry->toAugmentedArray();

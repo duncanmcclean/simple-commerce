@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Statamic\Facades\Entry;
@@ -27,7 +28,7 @@ class Coupon implements Contract
 
     public function findByCode(string $code): self
     {
-        $entry = Entry::findBySlug($code, config('simple-commerce.collections.coupons'));
+        $entry = Entry::findBySlug($code, $this->collection());
 
         if (!$entry) {
             throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found'));
@@ -80,15 +81,15 @@ class Coupon implements Contract
         return $this;
     }
 
-    public function collection(): string
-    {
-        return config('simple-commerce.collections.coupons');
-    }
-
     protected function isProductSpecific()
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
+    }
+
+    public function collection(): string
+    {
+        return SimpleCommerce::couponDriver()['collection'];
     }
 
     public static function bindings(): array

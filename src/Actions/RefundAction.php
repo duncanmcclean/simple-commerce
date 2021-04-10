@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -17,7 +18,7 @@ class RefundAction extends Action
     public function visibleTo($item)
     {
         return $item instanceof Entry &&
-            $item->collectionHandle() === config('simple-commerce.collections.orders') &&
+            $item->collectionHandle() === SimpleCommerce::orderDriver()['collection'] &&
             ($item->data()->has('is_paid') && $item->data()->get('is_paid')) &&
             ($item->data()->get('is_refunded') === false || $item->data()->get('is_refunded') === null);
     }

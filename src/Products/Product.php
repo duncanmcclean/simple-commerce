@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Illuminate\Support\Arr;
@@ -72,7 +73,7 @@ class Product implements Contract
 
     public function collection(): string
     {
-        return config('simple-commerce.collections.products');
+        return SimpleCommerce::productDriver()['collection'];
     }
 
     public static function bindings(): array

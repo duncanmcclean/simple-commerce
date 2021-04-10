@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
 
+use DoubleThreeDigital\SimpleCommerce\Orders\Order;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\UpdateScripts\UpdateScript;
@@ -18,8 +20,11 @@ class MigrateLineItemMetadata extends UpdateScript
 
     public function update()
     {
-        // TODO: check if using entries driver
-        EntryAPI::whereCollection(config('simple-commerce.collections.orders'))
+        if (SimpleCommerce::orderDriver()['driver'] !== Order::class) {
+            $this->console()->error("Could not migrate line item metadata. You're not using the entry content driver.");
+        }
+
+        EntryAPI::whereCollection(SimpleCommerce::orderDriver()['collection'])
             ->each(function (Entry $entry) {
                 $lineItems = collect($entry->get('items'))
                     ->map(function ($lineItem) {
