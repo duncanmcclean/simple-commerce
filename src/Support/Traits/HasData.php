@@ -2,34 +2,30 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
+use Statamic\Support\Traits\FluentlyGetsAndSets;
+
 trait HasData
 {
+    use FluentlyGetsAndSets;
+
     public function data($data = null)
     {
-        if ($data === null) {
-            return $this->data;
-        }
-
-        foreach ($data as $key => $value) {
-            $this->data[$key] = $value;
-        }
-
-        return $this;
+        return $this
+            ->fluentlyGetOrSet('data')
+            ->getter(function ($data) {
+                return collect($data);
+            })
+            ->args(func_get_args());
     }
 
     public function has(string $key): bool
     {
-        return isset($this->data[$key])
-            && !is_null($this->data[$key]);
+        return $this->data()->has($key);
     }
 
     public function get(string $key)
     {
-        if (!$this->has($key)) {
-            return null;
-        }
-
-        return $this->data[$key];
+        return $this->data()->get($key);
     }
 
     public function set(string $key, $value): self
@@ -42,6 +38,6 @@ trait HasData
 
     public function toArray(): array
     {
-        return $this->data;
+        return $this->data()->toArray();
     }
 }
