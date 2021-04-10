@@ -102,13 +102,6 @@ return [
         ],
     ],
 
-    'collections' => [
-        'products'  => 'products',
-        'orders'    => 'orders',
-        'coupons'   => 'coupons',
-        'customers' => 'customers',
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Cart
