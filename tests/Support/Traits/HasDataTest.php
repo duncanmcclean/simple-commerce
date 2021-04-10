@@ -24,10 +24,10 @@ class HasDataTest extends TestCase
 
         $data = $this->trait->data();
 
-        $this->assertIsArray($data);
+        $this->assertIsObject($data);
 
-        $this->assertArrayHasKey('foo', $data);
-        $this->assertArrayHasKey('fiz', $data);
+        $this->assertTrue($data->has('foo'));
+        $this->assertTrue($data->has('fiz'));
     }
 
     /** @test */

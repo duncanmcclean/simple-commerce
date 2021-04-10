@@ -18,7 +18,7 @@ class Calculator implements Contract
     public function calculate(OrderContract $order): array
     {
         if ($order->has('is_paid') && $order->get('is_paid') === true) {
-            return $order->data();
+            return $order->data()->toArray();
         }
 
         $this->order = $order;
