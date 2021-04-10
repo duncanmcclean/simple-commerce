@@ -154,7 +154,7 @@ class StripeGateway extends BaseGateway implements Gateway
     protected function setUpWithStripe()
     {
         if (! $this->config()->has('secret')) {
-            throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
+            throw new StripeSecretMissing(__('simple-commerce::messages.gateways.stripe.stripe_secret_missing'));
         }
 
         Stripe::setApiKey($this->config()->get('secret'));

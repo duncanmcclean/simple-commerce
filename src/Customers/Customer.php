@@ -34,7 +34,9 @@ class Customer implements Contract
         $entry = Entry::findBySlug(Str::slug($email), $this->collection());
 
         if (!$entry) {
-            throw new CustomerNotFound(__('simple-commerce::customers.customer_not_found_by_email', ['email' => $email]));
+            throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [
+                'email' => $email,
+            ]));
         }
 
         return $this->find($entry->id());
@@ -63,7 +65,7 @@ class Customer implements Contract
             $email = $this->get('email');
         }
 
-        $title = __('simple-commerce::customers.customer_entry_title', [
+        $title = __('simple-commerce::messages.customer_title', [
             'name'  => $name,
             'email' => $email,
         ]);

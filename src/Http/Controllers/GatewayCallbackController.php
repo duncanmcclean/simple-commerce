@@ -19,7 +19,7 @@ class GatewayCallbackController extends BaseActionController
             ->first();
 
         if (!$gateway) {
-            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', [
+            throw new GatewayDoesNotExist(__('simple-commerce::messages.gateway_does_not_exist', [
                 'gateway' => $gateway['name'],
             ]));
         }

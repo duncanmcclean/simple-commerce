@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
@@ -11,7 +10,7 @@ class MarkAsPaid extends Action
 {
     public static function title()
     {
-        return __('Mark As Paid');
+        return __('simple-commerce::messages.actions.mark_as_paid');
     }
 
     public function visibleTo($item)

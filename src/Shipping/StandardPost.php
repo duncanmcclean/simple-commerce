@@ -10,12 +10,12 @@ class StandardPost implements ShippingMethod
 {
     public function name(): string
     {
-        return __('simple-commerce::shipping.standard_post.name');
+        return __('simple-commerce::messages.shipping_methods.standard_post.name');
     }
 
     public function description(): string
     {
-        return __('simple-commerce::shipping.standard_post.description');
+        return __('simple-commerce::messages.shipping_methods.standard_post.description');
     }
 
     public function calculateCost(Entry $order): int

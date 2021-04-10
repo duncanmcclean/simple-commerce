@@ -98,11 +98,13 @@ class Manager implements Contract
     protected function resolve()
     {
         if (! $this->className) {
-            throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
+            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
         }
 
         if (!resolve($this->className)) {
-            throw new GatewayDoesNotExist(__('simple-commerce::gateways.gateway_does_not_exist', ['gateway' => $this->className]));
+            throw new GatewayDoesNotExist(__('simple-commerce::messages.gateway_does_not_exist', [
+                'gateway' => $this->className,
+            ]));
         }
 
         $gateway = collect(SimpleCommerce::gateways())

@@ -30,7 +30,7 @@ class EnforceBlueprintFields
         if (!$event->blueprint->hasField('product_variants')) {
             $event->blueprint->ensureField('price', [
                 'type'    => 'money',
-                'display' => __('Price'),
+                'display' => 'Price',
             ], 'sidebar');
         }
 
@@ -41,35 +41,35 @@ class EnforceBlueprintFields
     {
         $event->blueprint->ensureField('grand_total', [
             'type'      => 'money',
-            'display'   => __('Grand Total'),
+            'display'   => 'Grand Total',
             'read_only' => true,
             'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('items_total', [
             'type'      => 'money',
-            'display'   => __('Items Total'),
+            'display'   => 'Items Total',
             'read_only' => true,
             'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('shipping_total', [
             'type'      => 'money',
-            'display'   => __('Shipping Total'),
+            'display'   => 'Shipping Total',
             'read_only' => true,
             'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('tax_total', [
             'type'      => 'money',
-            'display'   => __('Tax Total'),
+            'display'   => 'Tax Total',
             'read_only' => true,
             'validate'  => 'required',
         ]);
 
         $event->blueprint->ensureField('coupon_total', [
             'type'      => 'money',
-            'display'   => __('Coupon Total'),
+            'display'   => 'Coupon Total',
             'read_only' => true,
             'validate'  => 'required',
         ]);

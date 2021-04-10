@@ -39,7 +39,9 @@ class SimpleCommerceTag extends Tags
         $method = isset($tag[1]) ? $tag[1] : 'index';
 
         if (!$class) {
-            throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
+            throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', [
+                'tag' => $tag[0],
+            ]));
         }
 
         if (method_exists($class, $method)) {
@@ -50,7 +52,9 @@ class SimpleCommerceTag extends Tags
             return (new $class($this))->wildcard($method);
         }
 
-        throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', ['tag' => $tag[0]]));
+        throw new TagNotFoundException(__('simple-commerce::messages.tag_not_found', [
+            'tag' => $tag[0],
+        ]));
     }
 
     public function countries()

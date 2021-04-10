@@ -19,6 +19,6 @@ class CouponExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::validation.entry_exists');
+        return __('simple-commerce::messages.entry_exists');
     }
 }

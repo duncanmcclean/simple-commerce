@@ -31,7 +31,7 @@ class Coupon implements Contract
         $entry = Entry::findBySlug($code, $this->collection());
 
         if (!$entry) {
-            throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found'));
+            throw new CouponNotFound(__('simple-commerce::messages.coupon_not_found'));
         }
 
         return $this->find($entry->id());
