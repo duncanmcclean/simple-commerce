@@ -27,24 +27,24 @@ trait CollectionSetup
 
     public function setupCustomers()
     {
-        return Collection::make('Customers')
-            ->title('customers')
+        return Collection::make('customers')
+            ->title('Customers')
             ->sites(['default'])
             ->save();
     }
 
     public function setupOrders()
     {
-        return Collection::make('Orders')
-            ->title('orders')
+        return Collection::make('orders')
+            ->title('Orders')
             ->sites(['default'])
             ->save();
     }
 
     public function setupCoupons()
     {
-        return Collection::make('Coupons')
-            ->title('coupons')
+        return Collection::make('coupons')
+            ->title('Coupons')
             ->sites(['default'])
             ->save();
     }
