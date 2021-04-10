@@ -13,6 +13,10 @@ trait HasData
         return $this
             ->fluentlyGetOrSet('data')
             ->setter(function ($data) {
+                if (! $this->data) {
+                    return $data;
+                }
+
                 return array_merge($this->data, $data);
             })
             ->getter(function ($data) {

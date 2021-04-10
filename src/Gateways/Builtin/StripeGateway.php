@@ -100,7 +100,7 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $charge = PaymentIntent::retrieve($order->data()['gateway_data']['intent']);
+        $charge = PaymentIntent::retrieve($order->data()->get('gateway_data')['intent']);
 
         return new GatewayResponse(true, $charge->toArray());
     }
@@ -115,7 +115,7 @@ class StripeGateway extends BaseGateway implements Gateway
         }
 
         $refund = Refund::create([
-            'payment_intent' => $order->data()['gateway_data']['intent'],
+            'payment_intent' => $order->data()->get('gateway_data')['intent'],
         ]);
 
         return new GatewayResponse(true, $refund->toArray());
