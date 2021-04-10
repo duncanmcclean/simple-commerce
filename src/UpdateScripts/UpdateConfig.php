@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Console\Processes\Composer;
 use Statamic\UpdateScripts\UpdateScript;
+use Stillat\Proteus\Support\Facades\ConfigWriter;
 
 class UpdateConfig extends UpdateScript
 {
@@ -16,18 +17,13 @@ class UpdateConfig extends UpdateScript
 
     public function update()
     {
-        // 1. Gateways\StripeGateway -> Gateways\Builtin\StripeGateway
-        // 2. New `notifications` format
-        // 3. Add `content` array & remove `collections`/`taxonomies` array
-
         $this
-            ->handleGatewayNamespaceChange()
-            ->handleNewNotificationsFormat()
-            ->handleNewContentArray()
-            ->handleRemovingCollectionAndTaxonomyArrays();
+            ->handleGatewayConfig()
+            ->handleNotificationConfig()
+            ->handleContentConfig();
     }
 
-    protected function handleGatewayNamespaceChange(): self
+    protected function handleGatewayConfig(): self
     {
         $contents = Str::of(File::get(config_path('simple-commerce.php')))
             ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\DummyGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\DummyGateway")
@@ -42,23 +38,66 @@ class UpdateConfig extends UpdateScript
         return $this;
     }
 
-    protected function handleNewNotificationsFormat(): self
+    protected function handleNotificationConfig(): self
     {
-        //
+        ConfigWriter::edit('simple-commerce')
+            ->replace('notifications', [
+                'order_paid' => [
+                    \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
+                    \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
+                ],
+            ])
+            ->save();
+
+        $this->console()->info("Updated notifications config");
 
         return $this;
     }
 
-    protected function handleNewContentArray(): self
+    protected function handleContentConfig(): self
     {
-        //
+        $helpComment = <<<'BLOCK'
+        /*
+        |--------------------------------------------------------------------------
+        | Content Drivers
+        |--------------------------------------------------------------------------
+        |
+        | Simple Commerce stores all products, orders, coupons etc as flat-file entries.
+        | This works great for store stores where you want to keep everything simple. But
+        | sometimes, for more complex stores, you may want use a database instead. To do so,
+        | just swap out the 'content driver' in place below.
+        |
+        */
+        BLOCK;
 
-        return $this;
-    }
+        ConfigWriter::edit('simple-commerce')
+            ->replaceStructure('collections', 'content', [
+                'orders' => [
+                    'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
+                    'collection' => config('simple-commerce.collections.orders'),
+                ],
 
-    protected function handleRemovingCollectionAndTaxonomyArrays(): self
-    {
-        //
+                'products' => [
+                    'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+                    'collection' => config('simple-commerce.collections.products'),
+                ],
+
+                'coupons' => [
+                    'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+                    'collection' => config('simple-commerce.collections.coupons'),
+                ],
+
+                'customers' => [
+                    'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+                    'collection' => config('simple-commerce.collections.customers'),
+                ],
+            ], $helpComment, true)
+            ->save();
+
+        // TODO: https://github.com/Stillat/proteus/issues/9
+        // ConfigWriter::edit('simple-commerce')
+        //     ->remove('taxonomies')
+        //     ->save();
 
         return $this;
     }
