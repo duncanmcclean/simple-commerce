@@ -70,15 +70,37 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Collections & Taxonomies
+    | Content Drivers
     |--------------------------------------------------------------------------
     |
-    | Simple Commerce uses Statamic's native collections and taxonomies functionality.
-    | It will automatically create collections/taxonomies upon addon installation if
-    | they don't already exist. However, if you'd like to use a different collection
-    | or taxonomy, like one you've already setup, here's the place to change that.
+    | Simple Commerce stores all products, orders, coupons etc as flat-file entries.
+    | This works great for store stores where you want to keep everything simple. But
+    | sometimes, for more complex stores, you may want use a database instead. To do so,
+    | just swap out the 'content driver' in place below.
     |
     */
+
+    'content' => [
+        'orders' => [
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
+            'collection' => 'orders',
+        ],
+
+        'products' => [
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+            'collection' => 'products',
+        ],
+
+        'coupons' => [
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+            'collection' => 'coupons',
+        ],
+
+        'customers' => [
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+            'collection' => 'customers',
+        ],
+    ],
 
     'collections' => [
         'products'  => 'products',
