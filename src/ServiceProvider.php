@@ -59,6 +59,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $updateScripts = [
         UpdateScripts\MigrateLineItemMetadata::class,
         UpdateScripts\UpdateBlueprints::class,
+        UpdateScripts\UpdateConfig::class,
     ];
 
     public function boot()
