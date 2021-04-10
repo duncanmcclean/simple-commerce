@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+## v2.3.0 (2021-xx-xx)
+
+While there's been quite a few breaking changes between v2.2 and v2.3, most of them have been addressed by [Update Scripts](https://statamic.dev/knowledge-base/configuring-update-scripts#what-are-update-scripts), which will be run automatically when updating Simple Commerce.
+
+Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
+
+**What's new**
+
+* It's now easier to swap out the driver being used for products, orders, coupons or customers.
+* You can now mark any unpaid orders as paid from inside the Control Panel.
+* Events have been renamed and parameters have been switched about.
+* Notifications have been refactored! (Again...)
+* The `Address` DTO now contains some more helpful methods.
+* Product Variants now have their very own DTO
+
+**Breaking changes**
+
+* Translations have been simplified. All translations live in the `messages.php` file. If you override the translations, please review.
+* Built-in gateways have been moved from `Gateways\GatewayName` to `Gateways\Builtin\GatewayName`
+* Gateway DTOs are now called `Response`, `Purchase` and `Prepare` (Gateway is no longer in the name)
+* Updates have been made to Data Contracts, please review if you are overriding any of them.
+* If you're overriding any of the Data Classes, please register it inside the updated config file, rather than manually via the Service Container.
+* `Cart` facade has been removed (it was deprecated in v2.2). Please replace with the `Order` facade.
+* Event parameters & event names have been changed. Please review if you are listening for any Simple Commerce events.
+* Notifications have been refactored - they now use Laravel Notifications, rather than Mailables. If you were overriding the notifications previously, you will need to refactor into Notifications and update inside the Simple Commerce config.
+
 ## v2.2.19 (2021-04-02)
 
 * [fix] Fix issues with coupon calculations #405
