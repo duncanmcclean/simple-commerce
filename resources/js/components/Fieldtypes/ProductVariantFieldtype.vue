@@ -31,7 +31,7 @@
 
 <script>
 import axios from 'axios'
-import SelectField from '../../../vendor/statamic/cms/resources/js/components/inputs/Select'
+import SelectField from '../../../../vendor/statamic/cms/resources/js/components/inputs/Select'
 
 export default {
     name: 'product-variant-fieldtype',
