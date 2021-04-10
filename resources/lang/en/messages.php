@@ -10,11 +10,4 @@ return [
     'cart_item_deleted' => 'Item Removed from Cart',
     'checkout_complete' => 'Checkout Complete!',
     'customer_updated'  => 'Customer Updated',
-
-    'default_collections' => [
-        'products'  => 'Products',
-        'orders'    => 'Orders',
-        'coupons'   => 'Coupons',
-        'customers' => 'Customers',
-    ],
 ];
