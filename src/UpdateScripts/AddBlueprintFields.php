@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 use Statamic\UpdateScripts\UpdateScript;
 
-class UpdateBlueprints extends UpdateScript
+class AddBlueprintFields extends UpdateScript
 {
     public function shouldUpdate($newVersion, $oldVersion)
     {

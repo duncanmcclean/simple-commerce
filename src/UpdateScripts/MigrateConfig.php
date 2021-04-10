@@ -4,11 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Statamic\Console\Processes\Composer;
 use Statamic\UpdateScripts\UpdateScript;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
 
-class UpdateConfig extends UpdateScript
+class MigrateConfig extends UpdateScript
 {
     public function shouldUpdate($newVersion, $oldVersion)
     {
