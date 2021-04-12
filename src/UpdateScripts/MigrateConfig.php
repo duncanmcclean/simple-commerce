@@ -93,10 +93,9 @@ class MigrateConfig extends UpdateScript
             ], $helpComment, true)
             ->save();
 
-        // TODO: https://github.com/Stillat/proteus/issues/9
-        // ConfigWriter::edit('simple-commerce')
-        //     ->remove('taxonomies')
-        //     ->save();
+        ConfigWriter::edit('simple-commerce')
+            ->remove('taxonomies')
+            ->save();
 
         return $this;
     }
