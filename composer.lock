@@ -3802,16 +3802,16 @@
         },
         {
             "name": "stillat/proteus",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Stillat/proteus.git",
-                "reference": "299938a87c0fd312514817f1711afe283dac30e7"
+                "reference": "9cab2ba8a9c6e2c49300207b36ea05cf2356cc58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Stillat/proteus/zipball/299938a87c0fd312514817f1711afe283dac30e7",
-                "reference": "299938a87c0fd312514817f1711afe283dac30e7",
+                "url": "https://api.github.com/repos/Stillat/proteus/zipball/9cab2ba8a9c6e2c49300207b36ea05cf2356cc58",
+                "reference": "9cab2ba8a9c6e2c49300207b36ea05cf2356cc58",
                 "shasum": ""
             },
             "require": {
@@ -3848,9 +3848,9 @@
             "description": "Provides utilities for parsing and updating Laravel-style PHP configuration files.",
             "support": {
                 "issues": "https://github.com/Stillat/proteus/issues",
-                "source": "https://github.com/Stillat/proteus/tree/v1.0.7"
+                "source": "https://github.com/Stillat/proteus/tree/v1.0.8"
             },
-            "time": "2021-04-10T22:27:00+00:00"
+            "time": "2021-04-12T21:50:10+00:00"
         },
         {
             "name": "stripe/stripe-php",
