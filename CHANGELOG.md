@@ -3,6 +3,7 @@
 ## Unreleased
 
 * [fix] Fixed exception when running Refund action on Order entry.
+* [fix] Tidied up the orders CP listing for new sites.
 
 ## v2.2.19 (2021-04-02)
 
