@@ -11,7 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -20,7 +20,7 @@ use Statamic\Facades\Stache;
 
 class CheckoutControllerTest extends TestCase
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     public function setUp(): void
     {

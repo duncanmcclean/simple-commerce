@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use Statamic\Facades\Collection;
 
-trait CollectionSetup
+trait SetupCollections
 {
     public function setupCollections()
     {

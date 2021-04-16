@@ -4,13 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 
 class LineItemsTest extends TestCase
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     /** @test */
     public function can_get_line_items()

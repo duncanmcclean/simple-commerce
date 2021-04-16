@@ -5,13 +5,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     public function setUp(): void
     {

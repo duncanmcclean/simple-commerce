@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\UpdateScripts;
 
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\RunsUpdateScripts;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\MigrateLineItemMetadata;
@@ -10,7 +10,7 @@ use Statamic\Facades\Entry;
 
 class MigrateLineItemMetadataTest extends TestCase
 {
-    use RunsUpdateScripts, CollectionSetup;
+    use RunsUpdateScripts, SetupCollections;
 
     /** @test */
     public function it_migrates_metadata_of_order_line_items()

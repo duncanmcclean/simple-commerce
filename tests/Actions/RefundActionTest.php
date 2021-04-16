@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Actions;
 use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\PreventSavingStacheItemsToDisk;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -13,8 +12,6 @@ use Statamic\Facades\Stache;
 
 class RefundActionTest extends TestCase
 {
-    use PreventSavingStacheItemsToDisk;
-
     public $action;
 
     public function setUp(): void

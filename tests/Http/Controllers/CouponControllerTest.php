@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use Statamic\Facades\Entry;
@@ -14,7 +14,7 @@ use Statamic\Facades\Stache;
 
 class CouponControllerTest extends TestCase
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     public $product;
     public $cart;
