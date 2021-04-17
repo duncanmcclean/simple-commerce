@@ -99,7 +99,7 @@ class CartController extends BaseActionController
         }
 
         $cart->save()
-            ->calculateTotals();
+            ->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_updated'),
@@ -115,7 +115,7 @@ class CartController extends BaseActionController
                 'items' => [],
             ])
             ->save()
-            ->calculateTotals();
+            ->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_deleted'),

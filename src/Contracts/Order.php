@@ -56,9 +56,9 @@ interface Order
 
     public function markAsPaid(): self;
 
-    public function buildReceipt(): string;
+    public function receiptUrl(): string;
 
-    public function calculateTotals(): self;
+    public function recalculate(): self;
 
     public function lineItems(): Collection;
 

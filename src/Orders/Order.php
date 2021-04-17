@@ -133,7 +133,6 @@ class Order implements Contract
         return false;
     }
 
-    // TODO: refactor & rename to 'markPaid'
     public function markAsPaid(): self
     {
         $this->published = true;
@@ -150,16 +149,14 @@ class Order implements Contract
         return $this;
     }
 
-    // TODO: rename method
-    public function buildReceipt(): string
+    public function receiptUrl(): string
     {
         return URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
             'orderId' => $this->id,
         ]);
     }
 
-    // TODO: rename method
-    public function calculateTotals(): self
+    public function recalculate(): self
     {
         $calculate = resolve(CalculatorContract::class)->calculate($this);
 

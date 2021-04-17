@@ -42,7 +42,6 @@ class Coupon implements Contract
         return $this->slug();
     }
 
-    // TODO: refactor
     public function isValid(Order $order): bool
     {
         $order = OrderFacade::find($order->id());

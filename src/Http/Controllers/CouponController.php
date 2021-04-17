@@ -14,7 +14,7 @@ class CouponController extends BaseActionController
     {
         $redeem = $this->getCart()->redeemCoupon($request->code);
 
-        $this->getCart()->calculateTotals();
+        $this->getCart()->recalculate();
 
         if (!$redeem) {
             return $this->withErrors($request, __('simple-commerce::messages.invalid_coupon'));
@@ -33,7 +33,7 @@ class CouponController extends BaseActionController
                 'coupon' => null,
             ])
             ->save()
-            ->calculateTotals();
+            ->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce::messages.coupon_removed_from_cart'),

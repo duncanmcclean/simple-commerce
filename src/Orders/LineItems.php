@@ -30,7 +30,7 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItem($lineItemData['id']);
     }
@@ -50,7 +50,7 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItem($lineItemId);
     }
@@ -66,7 +66,7 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItems();
     }
@@ -78,7 +78,7 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItems();
     }

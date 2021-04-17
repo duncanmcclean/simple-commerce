@@ -28,7 +28,7 @@ class ReceiptControllerTest extends TestCase
                     'total'    => 1000,
                 ],
             ],
-        ])->calculateTotals()->markAsPaid();
+        ])->recalculate()->markAsPaid();
 
         $url = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
             'orderId' => $cart->id,
