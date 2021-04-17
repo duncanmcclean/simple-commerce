@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
+use Illuminate\Support\Collection;
+
 interface Customer
 {
     public function all();
@@ -45,6 +47,12 @@ interface Customer
     public function name(): string;
 
     public function email(): string;
+
+    public function orders(): Collection;
+
+    public function addOrder($orderId): self;
+
+    public function routeNotificationForMail($notification = null);
 
     public static function bindings(): array;
 }

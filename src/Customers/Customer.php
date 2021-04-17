@@ -80,7 +80,6 @@ class Customer implements Contract
         return $this;
     }
 
-    // TODO: add to interface in next version
     public function orders(): Collection
     {
         return collect($this->has('orders') ? $this->get('orders') : [])
@@ -89,7 +88,6 @@ class Customer implements Contract
             });
     }
 
-    // TODO: add to interface in next version
     public function addOrder($orderId): self
     {
         $orders = $this->has('orders') ? $this->get('orders') : [];
