@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Http\Request;
@@ -56,9 +57,7 @@ class MollieGateway extends BaseGateway implements Gateway
         // We don't actually do anything here as Mollie is an
         // off-site gateway, so it has it's own checkout page.
 
-        // TODO: maybe throw an exception, in the case a developer gets here?
-
-        return new Response(false, []);
+        throw new GatewayDoesNotSupportPurchase("Gateway [mollie] does not support the `purchase` method.");
     }
 
     public function purchaseRules(): array
