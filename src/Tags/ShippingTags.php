@@ -14,16 +14,16 @@ class ShippingTags extends SubTag
 
     public function methods()
     {
-        $cart = $this->getCart();
+        $order = $this->getCart();
 
         $siteConfig = collect(Config::get('simple-commerce.sites'))
             ->get(Site::current()->handle());
 
         return collect($siteConfig['shipping']['methods'])
-            ->map(function ($method) use ($cart) {
+            ->map(function ($method) use ($order) {
                 $instance = Shipping::use($method);
 
-                if (!$shipingAddress = $cart->shippingAddress()) {
+                if (!$shipingAddress = $order->shippingAddress()) {
                     return null;
                 }
 
@@ -31,7 +31,7 @@ class ShippingTags extends SubTag
                     return null;
                 }
 
-                $cost = $instance->calculateCost($cart->entry());
+                $cost = $instance->calculateCost($order);
 
                 return [
                     'handle'      => $method,

@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -10,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
-use Statamic\Entries\Entry;
 
 class CalculatorTest extends TestCase
 {
@@ -493,7 +493,7 @@ class Postage implements ShippingMethod
         return __('simple-commerce::shipping.standard_post.description');
     }
 
-    public function calculateCost(Entry $order): int
+    public function calculateCost(OrderContract $order): int
     {
         return 250;
     }

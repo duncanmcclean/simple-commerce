@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use Statamic\Entries\Entry;
 
 class StandardPost implements ShippingMethod
 {
@@ -18,7 +18,7 @@ class StandardPost implements ShippingMethod
         return __('simple-commerce::messages.shipping_methods.standard_post.description');
     }
 
-    public function calculateCost(Entry $order): int
+    public function calculateCost(Order $order): int
     {
         return 120;
     }

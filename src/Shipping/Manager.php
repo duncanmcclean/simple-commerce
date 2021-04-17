@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Shipping;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
@@ -28,7 +29,7 @@ class Manager implements Contract
         return $this->resolve()->description();
     }
 
-    public function calculateCost(Entry $order): int
+    public function calculateCost(Order $order): int
     {
         return $this->resolve()->calculateCost($order);
     }
