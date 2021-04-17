@@ -59,9 +59,9 @@ class SimpleCommerce
     public static function freshOrderNumber()
     {
         // TODO: fixes issues on Github Actions
-        if (config('app.env') === 'testing') {
-            return 1234;
-        }
+        // if (config('app.env') === 'testing') {
+        //     return 1234;
+        // }
 
         $minimum = config('simple-commerce.minimum_order_number');
 
