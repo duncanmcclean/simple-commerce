@@ -50,7 +50,7 @@ class CustomerOrderPaid extends Notification
             ->line("Thanks for your order! Your order receipt has been attached to this email.")
             ->line("Please get in touch if you have any questions.")
             ->attachData(
-                PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray())->output(),
+                PDF::loadView('simple-commerce::receipt', $this->order->data()->toArray())->output(), // TODO: we should be passing an augmented array here but Carbon complained about trailing data?
                 'receipt.pdf',
                 ['mime' => 'application/pdf']
             );
