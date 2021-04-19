@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
-use Statamic\UpdateScripts\UpdateScript;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -75,6 +74,8 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
+
+        Filters\OrderStatusFilter::register();
     }
 
     protected function bootVendorAssets()
