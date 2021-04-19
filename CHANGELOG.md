@@ -16,6 +16,7 @@ Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configure
 * Notifications have been refactored! (Again...)
 * The `Address` DTO now contains some more helpful methods.
 * Product Variants now have their very own DTO
+* You can now filter by Order Status in the CP
 
 **Breaking changes**
 
