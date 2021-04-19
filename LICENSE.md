@@ -1,8 +1,8 @@
-Copyright ©️ Duncan McClean, sometimes trading under 'Double Three Digital'
+Copyright ©️ 2021 Duncan McClean
 
 Permission is hereby granted to any person obtaining a copy of this software (the “Software”) to use, copy, modify, merge, publish and/or distribute copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-- **Don't plagiari**s**e.** The above copyright notice and this license shall be included in all copies or substantial portions of the Software.
+- **Don't plagiarise.** The above copyright notice and this license shall be included in all copies or substantial portions of the Software.
 - **Don't use the same license on more than one project.** Each licensed copy of the software shall be actively installed on no more than one production environment at any one time.
 - **Don't alter the licensing features.** Software features related to licensing shall not be altered or circumvented in any way, including (but not limited to) license validation, payment prompts, feature restrictions, and update eligibility.
 - **Pay up**. Payment shall be made immediately upon receipt of any notice, prompt, reminder, or other message indicating that a payment is owed.
