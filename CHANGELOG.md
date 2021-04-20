@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v2.2.21 (2021-04-20)
+
+* [fix] Don't fail if user's cart has been deleted. Create a new one instead. #416
+
 ## v2.2.20 (2021-04-16)
 
 * [fix] Fixed exception when running Refund action on Order entry.
