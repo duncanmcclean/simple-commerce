@@ -8,7 +8,7 @@ While there's been quite a few breaking changes between v2.2 and v2.3, most of t
 
 Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
 
-**What's new**
+### What's new
 
 * It's now easier to swap out the driver being used for products, orders, coupons or customers.
 * You can now mark any unpaid orders as paid from inside the Control Panel.
@@ -18,7 +18,7 @@ Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configure
 * Product Variants now have their very own DTO
 * You can now filter by Order Status in the CP
 
-**Breaking changes**
+### Breaking changes
 
 * Translations have been simplified. All translations live in the `messages.php` file. If you override the translations, please review.
 * Built-in gateways have been moved from `Gateways\GatewayName` to `Gateways\Builtin\GatewayName`
