@@ -166,6 +166,11 @@ class Order implements Contract
         return $this;
     }
 
+    public function rules(): array
+    {
+        return $this->blueprint()->fields()->validator()->rules();
+    }
+
     public function beforeSaved()
     {
         if (!$this->has('items')) {

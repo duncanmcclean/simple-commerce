@@ -9,6 +9,7 @@ use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\Facades\Site as SiteAPI;
 use Statamic\Facades\Stache;
+use Statamic\Fields\Blueprint;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
@@ -164,6 +165,11 @@ trait IsEntry
     public function fresh(): self
     {
         return $this->find($this->id);
+    }
+
+    public function blueprint(): Blueprint
+    {
+        return $this->entry()->blueprint();
     }
 
     public function beforeSaved()

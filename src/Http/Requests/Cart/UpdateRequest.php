@@ -2,11 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart;
 
+use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Support\Rules\CountryExists;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 
 class UpdateRequest extends FormRequest
 {
+    use CartDriver;
+
     public function authorize()
     {
         return true;
@@ -14,11 +18,16 @@ class UpdateRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'name'  => 'sometimes|string',
-            'email' => 'sometimes|email',
-            'shipping_country' => ['sometimes', 'filled', new CountryExists],
-            'billing_country' => ['sometimes', 'filled', new CountryExists],
-        ];
+        return Arr::except($this->getCart()->rules(), [
+            'title',
+            'items',
+            'slug',
+            'paid_date',
+            'items_total',
+            'coupon_total',
+            'tax_total',
+            'shipping_total',
+            'grand_total',
+        ]);
     }
 }

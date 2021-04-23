@@ -60,6 +60,8 @@ interface Order
 
     public function recalculate(): self;
 
+    public function rules(): array;
+
     public function lineItems(): Collection;
 
     public function lineItem($lineItemId): array;
