@@ -15,7 +15,7 @@ class MigrateLineItemMetadata extends UpdateScript
 
     public function shouldUpdate($newVersion, $oldVersion)
     {
-        return $this->isUpdatingTo('2.3.0');
+        return $this->isUpdatingTo('2.3.0-beta.2');
     }
 
     public function update()

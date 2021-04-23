@@ -35,6 +35,10 @@ Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configure
 
 * The cart update request will respect any validation rules you have in your order blueprint #417
 
+## What's fixed
+
+* Fixed an issue where update scripts wouldn't be run when upgrading to a beta release.
+
 ## v2.3.0-beta.1 (2021-04-22)
 
 I've not got a solid date for v2.3 release yet but here's the first of a couple beta releases. Feel free to test it if you've got any spare time.
