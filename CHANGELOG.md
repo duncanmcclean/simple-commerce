@@ -29,6 +29,12 @@ Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configure
 * Event parameters & event names have been changed. Please review if you are listening for any Simple Commerce events.
 * Notifications have been refactored - they now use Laravel Notifications, rather than Mailables. If you were overriding the notifications previously, you will need to refactor into Notifications and update inside the Simple Commerce config.
 
+## v2.3.0-beta.2 (2021-xx-xx)
+
+### What's new
+
+* The cart update request will respect any validation rules you have in your order blueprint #417
+
 ## v2.3.0-beta.1 (2021-04-22)
 
 I've not got a solid date for v2.3 release yet but here's the first of a couple beta releases. Feel free to test it if you've got any spare time.

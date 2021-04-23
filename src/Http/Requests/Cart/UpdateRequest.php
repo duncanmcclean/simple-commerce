@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\CountryExists;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 
