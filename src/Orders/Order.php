@@ -124,7 +124,7 @@ class Order implements Contract
 
         if ($coupon->isValid($this)) {
             $this->set('coupon', $coupon->id());
-            event(new CouponRedeemed($coupon->entry()));
+            event(new CouponRedeemed($coupon));
 
             return true;
         }
