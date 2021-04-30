@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\UpdateScripts\UpdateScript;
@@ -16,10 +17,18 @@ class MigrateConfig extends UpdateScript
 
     public function update()
     {
+        if ($configurationIsCached = app()->configurationIsCached()) {
+            Artisan::call('config:clear');
+        }
+
         $this
             ->handleGatewayConfig()
             ->handleNotificationConfig()
             ->handleContentConfig();
+
+        if ($configurationIsCached) {
+            Artisan::call('config:cache');
+        }
     }
 
     protected function handleGatewayConfig(): self
