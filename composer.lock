@@ -206,20 +206,21 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.0.12",
+            "version": "2.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "6c12ce263da71641903e399c3ce8ecb08fd375fb"
+                "reference": "986e8b86b7b570632ad0a905c3726c33dd4c0efb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/6c12ce263da71641903e399c3ce8ecb08fd375fb",
-                "reference": "6c12ce263da71641903e399c3ce8ecb08fd375fb",
+                "url": "https://api.github.com/repos/composer/composer/zipball/986e8b86b7b570632ad0a905c3726c33dd4c0efb",
+                "reference": "986e8b86b7b570632ad0a905c3726c33dd4c0efb",
                 "shasum": ""
             },
             "require": {
                 "composer/ca-bundle": "^1.0",
+                "composer/metadata-minifier": "^1.0",
                 "composer/semver": "^3.0",
                 "composer/spdx-licenses": "^1.2",
                 "composer/xdebug-handler": "^1.1",
@@ -283,7 +284,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.0.12"
+                "source": "https://github.com/composer/composer/tree/2.0.13"
             },
             "funding": [
                 {
@@ -299,7 +300,76 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-01T08:14:59+00:00"
+            "time": "2021-04-27T11:11:08+00:00"
+        },
+        {
+            "name": "composer/metadata-minifier",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/metadata-minifier.git",
+                "reference": "c549d23829536f0d0e984aaabbf02af91f443207"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/metadata-minifier/zipball/c549d23829536f0d0e984aaabbf02af91f443207",
+                "reference": "c549d23829536f0d0e984aaabbf02af91f443207",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "composer/composer": "^2",
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\MetadataMinifier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Small utility library that handles metadata minification and expansion.",
+            "keywords": [
+                "composer",
+                "compression"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/metadata-minifier/issues",
+                "source": "https://github.com/composer/metadata-minifier/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-04-07T13:37:33+00:00"
         },
         {
             "name": "composer/semver",
@@ -1180,16 +1250,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -1249,9 +1319,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "intervention/image",
@@ -1399,16 +1469,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.38.0",
+            "version": "v8.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "26a73532c54d2c090692bf2e3e64e449669053ba"
+                "reference": "a654897ad7f97aea9d7ef292803939798c4a02a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/26a73532c54d2c090692bf2e3e64e449669053ba",
-                "reference": "26a73532c54d2c090692bf2e3e64e449669053ba",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a654897ad7f97aea9d7ef292803939798c4a02a4",
+                "reference": "a654897ad7f97aea9d7ef292803939798c4a02a4",
                 "shasum": ""
             },
             "require": {
@@ -1563,7 +1633,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-04-20T13:50:21+00:00"
+            "time": "2021-04-28T14:38:56+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -2078,16 +2148,16 @@
         },
         {
             "name": "mollie/mollie-api-php",
-            "version": "v2.30.2",
+            "version": "v2.31.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mollie/mollie-api-php.git",
-                "reference": "c3eb21214583f21655d4182b4c5b2f73e5a1dd0e"
+                "reference": "c1a500d251255e29919c6250d5c741ae4fe4e178"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mollie/mollie-api-php/zipball/c3eb21214583f21655d4182b4c5b2f73e5a1dd0e",
-                "reference": "c3eb21214583f21655d4182b4c5b2f73e5a1dd0e",
+                "url": "https://api.github.com/repos/mollie/mollie-api-php/zipball/c1a500d251255e29919c6250d5c741ae4fe4e178",
+                "reference": "c1a500d251255e29919c6250d5c741ae4fe4e178",
                 "shasum": ""
             },
             "require": {
@@ -2163,9 +2233,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mollie/mollie-api-php/issues",
-                "source": "https://github.com/mollie/mollie-api-php/tree/v2.30.2"
+                "source": "https://github.com/mollie/mollie-api-php/tree/v2.31.1"
             },
-            "time": "2021-03-31T14:44:26+00:00"
+            "time": "2021-04-26T11:38:41+00:00"
         },
         {
             "name": "moneyphp/money",
@@ -3644,16 +3714,16 @@
         },
         {
             "name": "statamic/cms",
-            "version": "v3.1.9",
+            "version": "v3.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/statamic/cms.git",
-                "reference": "141466a0a8fb94db8206d387aac5641949193ae6"
+                "reference": "a72372f5f71242b3de0d3827f0b87d50f6f5ae93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/statamic/cms/zipball/141466a0a8fb94db8206d387aac5641949193ae6",
-                "reference": "141466a0a8fb94db8206d387aac5641949193ae6",
+                "url": "https://api.github.com/repos/statamic/cms/zipball/a72372f5f71242b3de0d3827f0b87d50f6f5ae93",
+                "reference": "a72372f5f71242b3de0d3827f0b87d50f6f5ae93",
                 "shasum": ""
             },
             "require": {
@@ -3676,7 +3746,7 @@
                 "symfony/var-exporter": "^4.3 || ^5.1",
                 "symfony/yaml": "^4.1 || ^5.1",
                 "ueberdosis/html-to-prosemirror": "^1.3",
-                "ueberdosis/prosemirror-to-html": "^2.2",
+                "ueberdosis/prosemirror-to-html": "^2.6",
                 "wilderborn/partyline": "^1.0"
             },
             "require-dev": {
@@ -3721,7 +3791,7 @@
             ],
             "support": {
                 "issues": "https://github.com/statamic/cms/issues",
-                "source": "https://github.com/statamic/cms/tree/v3.1.9"
+                "source": "https://github.com/statamic/cms/tree/v3.1.11"
             },
             "funding": [
                 {
@@ -3729,7 +3799,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-19T12:55:48+00:00"
+            "time": "2021-04-28T20:36:54+00:00"
         },
         {
             "name": "statamic/stringy",
@@ -6556,16 +6626,16 @@
         },
         {
             "name": "ueberdosis/prosemirror-to-html",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ueberdosis/prosemirror-to-html.git",
-                "reference": "659eeea45245f349d6c27b0652352765371015ca"
+                "reference": "52136fbe65466e2b2788d2593fee9a1f7688f7dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ueberdosis/prosemirror-to-html/zipball/659eeea45245f349d6c27b0652352765371015ca",
-                "reference": "659eeea45245f349d6c27b0652352765371015ca",
+                "url": "https://api.github.com/repos/ueberdosis/prosemirror-to-html/zipball/52136fbe65466e2b2788d2593fee9a1f7688f7dc",
+                "reference": "52136fbe65466e2b2788d2593fee9a1f7688f7dc",
                 "shasum": ""
             },
             "require": {
@@ -6597,7 +6667,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ueberdosis/prosemirror-to-html/issues",
-                "source": "https://github.com/ueberdosis/prosemirror-to-html/tree/2.5.0"
+                "source": "https://github.com/ueberdosis/prosemirror-to-html/tree/2.6.0"
             },
             "funding": [
                 {
@@ -6605,7 +6675,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-15T20:01:18+00:00"
+            "time": "2021-04-23T19:40:04+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -6821,16 +6891,16 @@
         },
         {
             "name": "webonyx/graphql-php",
-            "version": "v14.6.1",
+            "version": "v14.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "cb54f64b972f8071835721848ddd74415aba31d9"
+                "reference": "bcbb6926bbf2d0cf466c63d0b9edc90e44d5dd3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/cb54f64b972f8071835721848ddd74415aba31d9",
-                "reference": "cb54f64b972f8071835721848ddd74415aba31d9",
+                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/bcbb6926bbf2d0cf466c63d0b9edc90e44d5dd3f",
+                "reference": "bcbb6926bbf2d0cf466c63d0b9edc90e44d5dd3f",
                 "shasum": ""
             },
             "require": {
@@ -6875,7 +6945,7 @@
             ],
             "support": {
                 "issues": "https://github.com/webonyx/graphql-php/issues",
-                "source": "https://github.com/webonyx/graphql-php/tree/v14.6.1"
+                "source": "https://github.com/webonyx/graphql-php/tree/v14.6.2"
             },
             "funding": [
                 {
@@ -6883,7 +6953,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-03-29T15:04:45+00:00"
+            "time": "2021-04-23T09:26:03+00:00"
         },
         {
             "name": "wilderborn/partyline",
@@ -7070,16 +7140,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.12.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "d501fd2658d55491a2295ff600ae5978eaad7403"
+                "reference": "c13c0be93cff50f88bbd70827d993026821914dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/d501fd2658d55491a2295ff600ae5978eaad7403",
-                "reference": "d501fd2658d55491a2295ff600ae5978eaad7403",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/c13c0be93cff50f88bbd70827d993026821914dd",
+                "reference": "c13c0be93cff50f88bbd70827d993026821914dd",
                 "shasum": ""
             },
             "require": {
@@ -7129,7 +7199,7 @@
             ],
             "support": {
                 "issues": "https://github.com/filp/whoops/issues",
-                "source": "https://github.com/filp/whoops/tree/2.12.0"
+                "source": "https://github.com/filp/whoops/tree/2.12.1"
             },
             "funding": [
                 {
@@ -7137,7 +7207,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-30T12:00:00+00:00"
+            "time": "2021-04-25T12:00:00+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -9345,16 +9415,16 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.17.2",
+            "version": "1.17.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "d2c839df7742c07a2515ea7eaf18deb90b2924df"
+                "reference": "e48be16da1952ffca868c77f509a767d3fc632bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/d2c839df7742c07a2515ea7eaf18deb90b2924df",
-                "reference": "d2c839df7742c07a2515ea7eaf18deb90b2924df",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/e48be16da1952ffca868c77f509a767d3fc632bc",
+                "reference": "e48be16da1952ffca868c77f509a767d3fc632bc",
                 "shasum": ""
             },
             "require": {
@@ -9409,7 +9479,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.17.2"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.17.4"
             },
             "funding": [
                 {
@@ -9421,7 +9491,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-04-06T16:09:00+00:00"
+            "time": "2021-04-30T08:20:24+00:00"
         },
         {
             "name": "spatie/macroable",
@@ -9475,16 +9545,16 @@
         },
         {
             "name": "spatie/ray",
-            "version": "1.21.4",
+            "version": "1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ray.git",
-                "reference": "f2707791a2ee18239385bad8ca0e42a215c50d4b"
+                "reference": "e82408b78b1391eaee6c962b13c37e80080dc15a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ray/zipball/f2707791a2ee18239385bad8ca0e42a215c50d4b",
-                "reference": "f2707791a2ee18239385bad8ca0e42a215c50d4b",
+                "url": "https://api.github.com/repos/spatie/ray/zipball/e82408b78b1391eaee6c962b13c37e80080dc15a",
+                "reference": "e82408b78b1391eaee6c962b13c37e80080dc15a",
                 "shasum": ""
             },
             "require": {
@@ -9534,7 +9604,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/ray/issues",
-                "source": "https://github.com/spatie/ray/tree/1.21.4"
+                "source": "https://github.com/spatie/ray/tree/1.22.1"
             },
             "funding": [
                 {
@@ -9546,7 +9616,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-04-17T13:51:00+00:00"
+            "time": "2021-04-28T09:47:47+00:00"
         },
         {
             "name": "spatie/test-time",
