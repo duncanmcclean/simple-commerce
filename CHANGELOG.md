@@ -29,12 +29,17 @@ Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configure
 * Event parameters & event names have been changed. Please review if you are listening for any Simple Commerce events.
 * Notifications have been refactored - they now use Laravel Notifications, rather than Mailables. If you were overriding the notifications previously, you will need to refactor into Notifications and update inside the Simple Commerce config.
 
+## v2.3.0-beta.4 (2021-05-03)
+
+### What's fixed
+
+* `Trailing data` error would sometimes appear when viewing paid orders in the CP
+
 ## v2.3.0-beta.3 (2021-04-30)
 
 ### What's fixed
 
 * Updated parameters of `CouponRedeemed` event.
-* `Trailing data` error would sometimes appear when viewing paid orders in the CP
 * Fixed issue where upgrade scripts would error if you're configuration is cached. #421
 
 ## v2.3.0-beta.2 (2021-04-23)
