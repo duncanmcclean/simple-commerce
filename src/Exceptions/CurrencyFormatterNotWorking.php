@@ -14,7 +14,7 @@ class CurrencyFormatterNotWorking extends Exception implements ProvidesSolution
         return BaseSolution::create("Simple Commerce requires this extension to preform currency formatting.")
             ->setSolutionDescription("Please install `php-intl` to use Simple Commerce.")
             ->setDocumentationLinks([
-                'Simple Commerce Requirements' => 'https://sc-docs.doublethree.digital/v2.2/installation#requirements',
+                'Simple Commerce Requirements' => 'https://sc-docs.doublethree.digital/v2.3/installation#requirements',
                 'PHP-intl Documentation'       => 'https://www.php.net/manual/en/book.intl.php',
             ]);
     }

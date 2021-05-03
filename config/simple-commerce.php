@@ -37,7 +37,7 @@ return [
     | You can setup multiple payment gateways for your store with Simple Commerce.
     | Here's where you can configure the gateways in use.
     |
-    | https://sc-docs.doublethree.digital/v2.2/gateways
+    | https://sc-docs.doublethree.digital/v2.3/gateways
     |
     */
 
@@ -57,7 +57,7 @@ return [
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
     |
-    | https://sc-docs.doublethree.digital/v2.2/email
+    | https://sc-docs.doublethree.digital/v2.3/email
     |
     */
 

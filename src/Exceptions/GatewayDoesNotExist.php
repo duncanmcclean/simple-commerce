@@ -23,7 +23,7 @@ class GatewayDoesNotExist extends Exception implements ProvidesSolution
         return BaseSolution::create("The gateway [{$this->gateway}] does not exist")
             ->setSolutionDescription("Ensure you've configured the gateway correctly in `config/simple-commerce.php`.")
             ->setDocumentationLinks([
-                'Configuring Gateways' => 'https://sc-docs.doublethree.digital/v2.2/gateways#configuration',
+                'Configuring Gateways' => 'https://sc-docs.doublethree.digital/v2.3/gateways#configuration',
             ]);
     }
 }
