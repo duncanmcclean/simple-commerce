@@ -132,7 +132,8 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $order = OrderFacade::all()
+            // TODO: refactor this query
+            $order = collect(OrderFacade::all())
                 ->filter(function ($entry) use ($mollieId) {
                     return isset($entry->data()->get('mollie')['id'])
                         && $entry->data()->get('mollie')['id']
