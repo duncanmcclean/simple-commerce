@@ -4,79 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sites
-    |--------------------------------------------------------------------------
-    |
-    | For each of your Statamic sites, you can setup a new store which allows you
-    | to use different currencies, tax rates and shipping methods.
-    |
-    */
-
-    'sites' => [
-        'default' => [
-            'currency' => 'GBP',
-
-            'tax' => [
-                'rate'               => 20,
-                'included_in_prices' => false,
-            ],
-
-            'shipping' => [
-                'methods' => [
-                    \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
-                ],
-            ],
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Gateways
-    |--------------------------------------------------------------------------
-    |
-    | You can setup multiple payment gateways for your store with Simple Commerce.
-    | Here's where you can configure the gateways in use.
-    |
-    | https://sc-docs.doublethree.digital/v2.3/gateways
-    |
-    */
-
-    'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
-            'display' => 'Card',
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Notifications
-    |--------------------------------------------------------------------------
-    |
-    | Simple Commerce can automatically send notifications after events occur in your store.
-    | eg. a cart being completed.
-    |
-    | Here's where you can toggle if certain notifications are enabled/disabled.
-    |
-    | https://sc-docs.doublethree.digital/v2.3/email
-    |
-    */
-
-    'notifications' => [
-        'order_paid' => [
-            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
-            \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Content Drivers
     |--------------------------------------------------------------------------
     |
-    | Simple Commerce stores all products, orders, coupons etc as flat-file entries.
-    | This works great for store stores where you want to keep everything simple. But
-    | sometimes, for more complex stores, you may want use a database instead. To do so,
-    | just swap out the 'content driver' in place below.
+    | Normally, all of your products, orders, coupons & customers are stored as flat
+    | file entries. This works great for small stores where you want to keep everything
+    | simple. However, for more complex stores, you may want store your data somewhere else
+    | (like a database). Here's where you'd swap that out.
+    |
+    | https://sc-docs.doublethree.digital/v2.3/extending/content-drivers
     |
     */
 
@@ -99,6 +35,75 @@ return [
         'customers' => [
             'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
             'collection' => 'customers',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gateways
+    |--------------------------------------------------------------------------
+    |
+    | You may configure as many payment gateways as you like. You can use one that's
+    | built-in or a custom gateway you've built yourself.
+    |
+    | https://sc-docs.doublethree.digital/v2.3/gateways
+    |
+    */
+
+    'gateways' => [
+        \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
+            'display' => 'Card',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sites
+    |--------------------------------------------------------------------------
+    |
+    | For each of your sites, you may configure a currency, tax rates and shipping
+    | methods. This is useful for stores that sell the same products but in
+    | different currencies/countries.
+    |
+    | https://sc-docs.doublethree.digital/v2.3/multi-site
+    |
+    */
+
+    'sites' => [
+        'default' => [
+            'currency' => 'GBP',
+
+            'tax' => [
+                'rate'               => 20,
+                'included_in_prices' => false,
+            ],
+
+            'shipping' => [
+                'methods' => [
+                    \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+                ],
+            ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Notifications
+    |--------------------------------------------------------------------------
+    |
+    | Simple Commerce can automatically send notifications after events occur in your store.
+    | eg. a cart being completed.
+    |
+    | Here's where you can toggle if certain notifications are enabled/disabled.
+    |
+    | https://sc-docs.doublethree.digital/v2.3/email
+    |
+    */
+
+    'notifications' => [
+        'order_paid' => [
+            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
+            \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
         ],
     ],
 
