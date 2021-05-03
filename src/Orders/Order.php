@@ -138,7 +138,7 @@ class Order implements Contract
 
         $this->data([
             'is_paid'   => true,
-            'paid_date' => now()->toDateTimeString(),
+            'paid_date' => now()->format('Y-m-d H:i'),
         ]);
 
         $this->save();

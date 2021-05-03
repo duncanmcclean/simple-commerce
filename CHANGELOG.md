@@ -34,6 +34,7 @@ Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configure
 ### What's fixed
 
 * Updated parameters of `CouponRedeemed` event.
+* `Trailing data` error would sometimes appear when viewing paid orders in the CP
 
 ## v2.3.0-beta.2 (2021-04-23)
 
