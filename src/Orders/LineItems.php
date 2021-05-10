@@ -15,7 +15,7 @@ trait LineItems
         return collect($this->get('items'));
     }
 
-    public function lineItem(string $lineItemId): array
+    public function lineItem($lineItemId): array
     {
         return $this->lineItems()
             ->firstWhere('id', $lineItemId);
@@ -30,12 +30,12 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItem($lineItemData['id']);
     }
 
-    public function updateLineItem(string $lineItemId, array $lineItemData): array
+    public function updateLineItem($lineItemId, array $lineItemData): array
     {
         $this->data([
             'items' => $this->lineItems()
@@ -50,12 +50,12 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItem($lineItemId);
     }
 
-    public function removeLineItem(string $lineItemId): Collection
+    public function removeLineItem($lineItemId): Collection
     {
         $this->data([
             'items' => $this->lineItems()
@@ -66,7 +66,7 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItems();
     }
@@ -78,56 +78,8 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->calculateTotals();
+        $this->recalculate();
 
         return $this->lineItems();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function orderItems(): Collection
-    {
-        return $this->lineItems();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function orderItem(string $orderItemId): array
-    {
-        return $this->lineItem($orderItemId);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function addOrderItem(array $orderItemData): array
-    {
-        return $this->addLineItem($orderItemData);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function updateOrderItem(string $orderItemId, array $orderItemData): array
-    {
-        return $this->updateLineItem($orderItemId, $orderItemData);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function removeOrderItem(string $orderItemId): Collection
-    {
-        return $this->removeLineItem($orderItemId);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function clearOrderItems(): Collection
-    {
-        return $this->clearLineItems();
     }
 }

@@ -15,7 +15,7 @@ class MoneyFieldtype extends Fieldtype
         return [
             'read_only' => [
                 'type'         => 'toggle',
-                'instructions' => __('simple-commerce::fieldtypes.money.config_fields.read_only'),
+                'instructions' => __('simple-commerce::messages.fieldtypes.money.config_fields.read_only'),
                 'width'        => 50,
             ],
         ];
@@ -52,7 +52,7 @@ class MoneyFieldtype extends Fieldtype
 
     public static function title()
     {
-        return __('simple-commerce::fieldtypes.money.title');
+        return __('simple-commerce::messages.fieldtypes.money.title');
     }
 
     public function component(): string

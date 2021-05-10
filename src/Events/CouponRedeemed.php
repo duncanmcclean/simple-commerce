@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
-use Statamic\Entries\Entry;
 
 class CouponRedeemed
 {
@@ -13,9 +13,8 @@ class CouponRedeemed
 
     public $coupon;
 
-    public function __construct(Entry $coupon)
+    public function __construct(Coupon $coupon)
     {
-        // $coupon should be a Coupon instance instead
         $this->coupon = $coupon;
     }
 }

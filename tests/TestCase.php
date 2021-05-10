@@ -16,8 +16,6 @@ use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
-    use CollectionSetup;
-
     protected function getPackageProviders($app)
     {
         return [
@@ -91,8 +89,6 @@ abstract class TestCase extends OrchestraTestCase
 
         Statamic::booted(function () {
             Site::setCurrent('default');
-
-            $this->setupCollections();
         });
     }
 }

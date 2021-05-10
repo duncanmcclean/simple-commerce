@@ -4,13 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Stache;
 
 class CartItemControllerTest extends TestCase
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     public function setUp(): void
     {
@@ -103,8 +103,9 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'   => 'Red_Small',
-                        'price' => 1000,
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                 ],
             ],
@@ -365,8 +366,9 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'   => 'Red_Small',
-                        'price' => 1000,
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                 ],
             ],
@@ -428,12 +430,14 @@ class CartItemControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'   => 'Red_Small',
-                        'price' => 1000,
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                     [
-                        'key'   => 'Red_Medium',
-                        'price' => 1000,
+                        'key'     => 'Red_Medium',
+                        'variant' => 'Red Medium',
+                        'price'   => 1000,
                     ],
                 ],
             ],
@@ -565,6 +569,45 @@ class CartItemControllerTest extends TestCase
         $cart->find($cart->id);
 
         $this->assertSame(1, $cart->data['items'][0]['quantity']);
+    }
+
+    /** @test */
+    public function can_update_item_with_extra_data()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'gift_note' => 'Have a good birthday!',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->lineItems()->count(), 1);
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
     }
 
     /** @test */

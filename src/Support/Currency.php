@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Currency as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Support\Currencies;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;

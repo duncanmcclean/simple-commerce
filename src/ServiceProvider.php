@@ -11,13 +11,17 @@ class ServiceProvider extends AddonServiceProvider
     protected $config = false;
     protected $translations = false;
 
+    protected $actions = [
+        Actions\MarkAsPaid::class,
+        Actions\RefundAction::class,
+    ];
+
     protected $commands = [
         Console\Commands\CartCleanupCommand::class,
         Console\Commands\InfoCommand::class,
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\InstallCommand::class,
-        Console\Commands\UpgradeCommand::class,
     ];
 
     protected $fieldtypes = [
@@ -29,6 +33,9 @@ class ServiceProvider extends AddonServiceProvider
     protected $listen = [
         EntryBlueprintFound::class  => [
             Listeners\EnforceBlueprintFields::class,
+        ],
+        Events\OrderPaid::class => [
+            Listeners\SendOrderPaidNotifications::class,
         ],
     ];
 
@@ -49,6 +56,12 @@ class ServiceProvider extends AddonServiceProvider
         Widgets\SalesWidget::class,
     ];
 
+    protected $updateScripts = [
+        UpdateScripts\AddBlueprintFields::class,
+        UpdateScripts\MigrateConfig::class,
+        UpdateScripts\MigrateLineItemMetadata::class,
+    ];
+
     public function boot()
     {
         parent::boot();
@@ -61,7 +74,8 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
-        Actions\RefundAction::register();
+
+        Filters\OrderStatusFilter::register();
     }
 
     protected function bootVendorAssets()
@@ -99,14 +113,14 @@ class ServiceProvider extends AddonServiceProvider
     protected function bindContracts()
     {
         collect([
-            Contracts\Calculator::class         => Orders\Calculator::class,
-            Contracts\Order::class              => Orders\Order::class,
-            Contracts\Coupon::class             => Coupons\Coupon::class,
+            Contracts\Order::class              => SimpleCommerce::orderDriver()['driver'],
+            Contracts\Coupon::class             => SimpleCommerce::couponDriver()['driver'],
+            Contracts\Customer::class           => SimpleCommerce::customerDriver()['driver'],
+            Contracts\Product::class            => SimpleCommerce::productDriver()['driver'],
+            Contracts\GatewayManager::class     => Gateways\Manager::class,
+            Contracts\ShippingManager::class    => Shipping\Manager::class,
             Contracts\Currency::class           => Support\Currency::class,
-            Contracts\Customer::class           => Customers\Customer::class,
-            Contracts\GatewayManager::class     => Gateways\GatewayManager::class,
-            Contracts\Product::class            => Products\Product::class,
-            Contracts\ShippingManager::class    => Shipping\ShippingManager::class,
+            Contracts\Calculator::class         => Orders\Calculator::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);

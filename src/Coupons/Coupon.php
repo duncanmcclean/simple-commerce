@@ -3,11 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
-use Statamic\Entries\Entry as EntryInstance;
 use Statamic\Facades\Entry;
 
 class Coupon implements Contract
@@ -27,19 +28,23 @@ class Coupon implements Contract
 
     public function findByCode(string $code): self
     {
-        $entry = Entry::findBySlug($code, config('simple-commerce.collections.coupons'));
+        $entry = Entry::findBySlug($code, $this->collection());
 
         if (!$entry) {
-            throw new CouponNotFound(__('simple-commerce.coupons.coupon_not_found'));
+            throw new CouponNotFound(__('simple-commerce::messages.coupon_not_found'));
         }
 
         return $this->find($entry->id());
     }
 
-    // TODO: refactor
-    public function isValid(EntryInstance $order): bool
+    public function code(): string
     {
-        $order = Order::find($order->id());
+        return $this->slug();
+    }
+
+    public function isValid(Order $order): bool
+    {
+        $order = OrderFacade::find($order->id());
 
         if ($this->has('minimum_cart_value') && $order->has('items_total')) {
             if ($order->get('items_total') < $this->get('minimum_cart_value')) {
@@ -75,15 +80,15 @@ class Coupon implements Contract
         return $this;
     }
 
-    public function collection(): string
-    {
-        return config('simple-commerce.collections.coupons');
-    }
-
     protected function isProductSpecific()
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
+    }
+
+    public function collection(): string
+    {
+        return SimpleCommerce::couponDriver()['collection'];
     }
 
     public static function bindings(): array

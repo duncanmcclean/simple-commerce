@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use Statamic\Entries\Entry;
 
 interface ShippingMethod
 {
@@ -11,8 +10,7 @@ interface ShippingMethod
 
     public function description(): string;
 
-    // TODO: pass in Order, instead of Entry
-    public function calculateCost(Entry $order): int;
+    public function calculateCost(Order $order): int;
 
     public function checkAvailability(Address $address): bool;
 }

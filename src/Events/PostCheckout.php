@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Events;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -10,12 +11,10 @@ class PostCheckout
     use Dispatchable;
     use InteractsWithSockets;
 
-    // TODO: maybe we should also provide this event with the actual order too, not just the data?
+    public Order $order;
 
-    public array $data;
-
-    public function __construct(array $data)
+    public function __construct(Order $order)
     {
-        $this->data = $data;
+        $this->order = $order;
     }
 }

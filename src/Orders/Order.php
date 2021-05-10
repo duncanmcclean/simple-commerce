@@ -4,19 +4,14 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Events\CartCompleted;
-use DoubleThreeDigital\SimpleCommerce\Events\CartSaved;
-use DoubleThreeDigital\SimpleCommerce\Events\CartUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Events\CustomerAddedToCart;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Mail\BackOffice\OrderPaid;
-use DoubleThreeDigital\SimpleCommerce\Mail\OrderConfirmation;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Statamic\Facades\Stache;
 
@@ -50,7 +45,6 @@ class Order implements Contract
             'tax_total'      => 0,
             'shipping_total' => 0,
             'coupon_total'   => 0,
-            'order_status'   => 'cart',
         ];
     }
 
@@ -65,11 +59,12 @@ class Order implements Contract
         }
 
         return new Address(
-            $this->has('billing_name') ? $this->get('billing_name') : null,
-            $this->has('billing_adddress') ? $this->get('billing_address') : null,
-            $this->has('billing_city') ? $this->get('billing_city') : null,
-            $this->has('billing_country') ? $this->get('billing_country') : null,
-            $this->has('billing_zip_code') ? $this->get('billing_zip_code') : null,
+            $this->get('billing_name'),
+            $this->get('billing_address') ?? $this->get('billing_address_line1'),
+            $this->get('billing_address_line2'),
+            $this->get('billing_city'),
+            $this->get('billing_country'),
+            $this->get('billing_zip_code') ?? $this->get('billing_postal_code')
         );
     }
 
@@ -80,18 +75,18 @@ class Order implements Contract
         }
 
         return new Address(
-            $this->has('shipping_name') ? $this->get('shipping_name') : null,
-            $this->has('shipping_address') ? $this->get('shipping_address') : null,
-            $this->has('shipping_city') ? $this->get('shipping_city') : null,
-            $this->has('shipping_country') ? $this->get('shipping_country') : null,
-            $this->has('shipping_zip_code') ? $this->get('shipping_zip_code') : null,
-            $this->has('shipping_note') ? $this->get('shipping_note') : null,
+            $this->get('shipping_name'),
+            $this->get('shipping_address') ?? $this->get('shipping_address_line1'),
+            $this->get('shipping_address_line2'),
+            $this->get('shipping_city'),
+            $this->get('shipping_country'),
+            $this->get('shipping_zip_code') ?? $this->get('shipping_postal_code')
         );
     }
 
-    public function customer(string $customer = '')
+    public function customer($customer = null)
     {
-        if ($customer !== '') {
+        if ($customer !== null) {
             $this->set('customer', $customer);
 
             return $this;
@@ -104,9 +99,9 @@ class Order implements Contract
         return Customer::find($this->get('customer'));
     }
 
-    public function coupon(string $coupon = '')
+    public function coupon($coupon = null)
     {
-        if ($coupon !== '') {
+        if ($coupon !== null) {
             $this->set('coupon', $coupon);
 
             return $this;
@@ -115,14 +110,21 @@ class Order implements Contract
         return Coupon::find($this->get('coupon'));
     }
 
+    public function gateway()
+    {
+        return $this->has('gateway')
+            ? collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'))
+            : null;
+    }
+
     // TODO: refactor
     public function redeemCoupon(string $code): bool
     {
         $coupon = Coupon::findByCode($code);
 
-        if ($coupon->isValid($this->entry())) {
+        if ($coupon->isValid($this)) {
             $this->set('coupon', $coupon->id());
-            event(new CouponRedeemed($coupon->entry()));
+            event(new CouponRedeemed($coupon));
 
             return true;
         }
@@ -130,55 +132,30 @@ class Order implements Contract
         return false;
     }
 
-    // TODO: refactor & rename to 'markPaid'
-    public function markAsCompleted(): self
+    public function markAsPaid(): self
     {
         $this->published = true;
 
         $this->data([
-            'is_paid'      => true,
-            'paid_date'    => now()->toDateTimeString(),
-            'order_status' => 'completed',
+            'is_paid'   => true,
+            'paid_date' => now()->format('Y-m-d H:i'),
         ]);
 
         $this->save();
 
-        event(new CartCompleted($this));
-
-        // TODO: move to listener
-        if (config('simple-commerce.notifications.customer.order_confirmation')) {
-            if ($this->has('customer') || $this->has('email')) {
-                try {
-                    $email = $this->has('customer')
-                        ? $this->customer()->email()
-                        : ($this->has('email') ? $this->get('email') : null);
-
-                    if ($email) {
-                        Mail::to($email)->send(new OrderConfirmation($this->id));
-                    }
-                } catch (\Exception $e) {
-                    info("Exception when sending Order Confirmation: {$e->getMessage()}");
-                }
-            }
-        }
-
-        if (config('simple-commerce.notifications.back_office.order_paid')) {
-            Mail::send(new OrderPaid($this->id));
-        }
+        event(new OrderPaidEvent($this));
 
         return $this;
     }
 
-    // TODO: rename method
-    public function buildReceipt(): string
+    public function receiptUrl(): string
     {
         return URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
             'orderId' => $this->id,
         ]);
     }
 
-    // TODO: rename method
-    public function calculateTotals(): self
+    public function recalculate(): self
     {
         $calculate = resolve(CalculatorContract::class)->calculate($this);
 
@@ -187,6 +164,11 @@ class Order implements Contract
         $this->save();
 
         return $this;
+    }
+
+    public function rules(): array
+    {
+        return $this->blueprint()->fields()->validator()->rules();
     }
 
     public function beforeSaved()
@@ -198,18 +180,12 @@ class Order implements Contract
 
     public function afterSaved()
     {
-        event(new CartSaved($this->entry));
-
-        // TODO: remove this event
-        event(new CartUpdated($this->entry));
-
-        // TODO: remove this event
-        event(new CustomerAddedToCart($this->entry));
+        event(new OrderSaved($this));
     }
 
     public function collection(): string
     {
-        return config('simple-commerce.collections.orders');
+        return SimpleCommerce::orderDriver()['collection'];
     }
 
     public static function bindings(): array

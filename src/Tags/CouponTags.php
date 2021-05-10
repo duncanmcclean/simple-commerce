@@ -24,15 +24,9 @@ class CouponTags extends SubTag
             return [];
         }
 
-        // TODO: ideally, here we'd use an augmented array from Statamic but it wasn't working when trying to implement it
-
         $coupon = Coupon::find($coupon);
 
-        return array_merge($coupon->data, [
-            'title' => $coupon->entry()->title,
-            'slug'  => $coupon->entry()->slug(),
-            'id'    => $coupon->id,
-        ]);
+        return $coupon->toAugmentedArray();
     }
 
     public function has()

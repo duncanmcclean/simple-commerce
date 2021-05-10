@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Countries;
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use Illuminate\Contracts\Validation\Rule;
 
 class CountryExists implements Rule
@@ -18,6 +18,6 @@ class CountryExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::validation.country_exists');
+        return __('simple-commerce::messages.validation.country_exists');
     }
 }

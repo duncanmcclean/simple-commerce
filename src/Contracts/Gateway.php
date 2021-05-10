@@ -2,25 +2,24 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
-use Statamic\Entries\Entry;
 
 interface Gateway
 {
     public function name(): string;
 
-    public function prepare(GatewayPrep $data): GatewayResponse;
+    public function prepare(Prepare $data): Response;
 
-    public function purchase(GatewayPurchase $data): GatewayResponse;
+    public function purchase(Purchase $data): Response;
 
     public function purchaseRules(): array;
 
-    public function getCharge(Entry $order): GatewayResponse;
+    public function getCharge(Order $order): Response;
 
-    public function refundCharge(Entry $order): GatewayResponse;
+    public function refundCharge(Order $order): Response;
 
     public function webhook(Request $request);
 }

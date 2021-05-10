@@ -2,7 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use Statamic\Http\Resources\API\EntryResource;
+use DoubleThreeDigital\SimpleCommerce\Products\ProductVariant;
+use Illuminate\Support\Collection;
 
 interface Product
 {
@@ -10,7 +11,7 @@ interface Product
 
     public function query();
 
-    public function find(string $id): self;
+    public function find($id): self;
 
     public function create(array $data = [], string $site = ''): self;
 
@@ -18,19 +19,21 @@ interface Product
 
     public function delete();
 
-    public function toResource(): EntryResource;
+    public function toResource();
+
+    public function toAugmentedArray($keys = null);
 
     public function id();
 
-    public function title(string $title = '');
+    public function title(string $title = null);
 
-    public function slug(string $slug = '');
+    public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
-    public function data(array $data = []);
+    public function data($data = null);
 
     public function has(string $key): bool;
 
@@ -44,7 +47,9 @@ interface Product
 
     public function purchasableType(): string;
 
-    public function variantOption(string $optionKey): ?array;
+    public function variants(): Collection;
+
+    public function variant(string $optionKey): ?ProductVariant;
 
     public function isExemptFromTax(): bool;
 

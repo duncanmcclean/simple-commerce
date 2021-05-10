@@ -17,6 +17,6 @@ class EntryExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::validation.entry_exists');
+        return __('simple-commerce::messages.validation.entry_exists');
     }
 }

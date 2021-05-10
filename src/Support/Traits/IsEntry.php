@@ -9,11 +9,15 @@ use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\Facades\Site as SiteAPI;
 use Statamic\Facades\Stache;
+use Statamic\Fields\Blueprint;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait IsEntry
 {
+    use FluentlyGetsAndSets;
+
     public function all()
     {
         return $this->query()->all();
@@ -24,9 +28,9 @@ trait IsEntry
         return EntryAPI::whereCollection($this->collection());
     }
 
-    public function find(string $id): self
+    public function find($id): self
     {
-        $this->entry = EntryAPI::find($id);
+        $this->entry = EntryAPI::find((string) $id);
 
         if (!$this->entry) {
             throw new EntryNotFound("Entry could not be found: {$id}");
@@ -112,9 +116,14 @@ trait IsEntry
         return $this->entry;
     }
 
-    public function toResource(): EntryResource
+    public function toResource()
     {
         return new EntryResource($this->entry);
+    }
+
+    public function toAugmentedArray($keys = null)
+    {
+        return $this->entry()->toAugmentedArray($keys);
     }
 
     public function id()
@@ -122,46 +131,45 @@ trait IsEntry
         return $this->id;
     }
 
-    public function title(string $title = '')
+    public function title(string $title = null)
     {
-        if ($title !== '') {
-            $this->title = $title;
-
-            return $this;
-        }
-
-        return $this->title;
+        return $this
+            ->fluentlyGetOrSet('title')
+            ->args(func_get_args());
     }
 
-    public function slug(string $slug = '')
+    public function slug(string $slug = null)
     {
-        if ($slug !== '') {
-            $this->slug = $slug;
-
-            return $this;
-        }
-
-        return $this->slug;
+        return $this
+            ->fluentlyGetOrSet('slug')
+            ->args(func_get_args());
     }
 
-    public function site($site = null): self
+    public function site($site = null)
     {
-        if (is_null($site)) {
-            return $this->site;
-        }
+        return $this
+            ->fluentlyGetOrSet('title')
+            ->setter(function ($site) {
+                if (! $site instanceof Site) {
+                    return SiteAPI::get($site);
+                }
 
-        if (!$site instanceof Site) {
-            $site = SiteAPI::get($site);
-        }
-
-        $this->site = $site;
-
-        return $this;
+                return $site;
+            })
+            ->getter(function ($site) {
+                return $site;
+            })
+            ->args(func_get_args());
     }
 
     public function fresh(): self
     {
         return $this->find($this->id);
+    }
+
+    public function blueprint(): Blueprint
+    {
+        return $this->entry()->blueprint();
     }
 
     public function beforeSaved()
