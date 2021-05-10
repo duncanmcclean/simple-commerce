@@ -96,7 +96,7 @@ return [
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
     |
-    | https://sc-docs.doublethree.digital/v2.3/email
+    | https://sc-docs.doublethree.digital/v2.3/notifications
     |
     */
 
