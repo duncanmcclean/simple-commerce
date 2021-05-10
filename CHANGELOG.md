@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## v2.3.0 (2021-xx-xx)
+## v2.3.0 (2021-05-10)
 
 While there's been quite a few breaking changes between v2.2 and v2.3, most of them have been addressed by [Update Scripts](https://statamic.dev/knowledge-base/configuring-update-scripts#what-are-update-scripts), which will be run automatically when updating Simple Commerce.
 
