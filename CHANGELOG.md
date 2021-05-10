@@ -85,7 +85,11 @@ FYI: You'll need to be running Statamic 3.1 to install the beta.
 
 For more information on what's new and any breaking changes, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/2.3/CHANGELOG.md).
 
-## 2.2.20 (2021-04-16)
+## v2.2.21 (2021-04-20)
+
+* [fix] Don't fail if user's cart has been deleted. Create a new one instead. #416
+
+## v2.2.20 (2021-04-16)
 
 * [fix] Fixed exception when running Refund action on Order entry.
 * [fix] Tidied up the orders CP listing for new sites.
