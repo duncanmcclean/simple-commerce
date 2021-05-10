@@ -8,6 +8,8 @@ While there's been quite a few breaking changes between v2.2 and v2.3, most of t
 
 Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
 
+Please review the [Upgrade Guide](https://sc-docs.doublethree.digital/v2.3/update-guide) before updating.
+
 ### What's new
 
 * It's now easier to swap out the driver being used for products, orders, coupons or customers.
