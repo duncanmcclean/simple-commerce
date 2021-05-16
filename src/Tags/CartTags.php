@@ -11,7 +11,7 @@ class CartTags extends SubTag
 
     public function index()
     {
-        return $this->getOrMakeCart()->entry()->toAugmentedArray();
+        return $this->getOrMakeCart()->toAugmentedArray();
     }
 
     public function has()
@@ -24,7 +24,7 @@ class CartTags extends SubTag
         $cart = $this->getOrMakeCart();
 
         return isset($cart->data['items']) && $cart->data['items'] != [] ?
-            $cart->entry()->toAugmentedArray()['items']->value() :
+            $cart->toAugmentedArray()['items']->value() :
             [];
     }
 
@@ -44,7 +44,7 @@ class CartTags extends SubTag
     public function total()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->entry()->toAugmentedArray()['grand_total']->value();
+            return $this->getCart()->toAugmentedArray()['grand_total']->value();
         }
 
         return 0;
@@ -53,7 +53,7 @@ class CartTags extends SubTag
     public function grandTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->entry()->toAugmentedArray()['grand_total']->value();
+            return $this->getCart()->toAugmentedArray()['grand_total']->value();
         }
 
         return 0;
@@ -62,7 +62,7 @@ class CartTags extends SubTag
     public function itemsTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->entry()->toAugmentedArray()['items_total']->value();
+            return $this->getCart()->toAugmentedArray()['items_total']->value();
         }
 
         return 0;
@@ -71,7 +71,7 @@ class CartTags extends SubTag
     public function shippingTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->entry()->toAugmentedArray()['shipping_total']->value();
+            return $this->getCart()->toAugmentedArray()['shipping_total']->value();
         }
 
         return 0;
@@ -80,7 +80,7 @@ class CartTags extends SubTag
     public function taxTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->entry()->toAugmentedArray()['tax_total']->value();
+            return $this->getCart()->toAugmentedArray()['tax_total']->value();
         }
 
         return 0;
@@ -89,7 +89,7 @@ class CartTags extends SubTag
     public function couponTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->entry()->toAugmentedArray()['coupon_total']->value();
+            return $this->getCart()->toAugmentedArray()['coupon_total']->value();
         }
 
         return 0;
@@ -132,7 +132,7 @@ class CartTags extends SubTag
 
         return $this->createForm(
             route('statamic.simple-commerce.cart.update'),
-            $cart->entry()->toAugmentedArray(),
+            $cart->toAugmentedArray(),
             'POST'
         );
     }
