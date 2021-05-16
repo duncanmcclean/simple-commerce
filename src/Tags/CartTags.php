@@ -43,6 +43,11 @@ class CartTags extends SubTag
 
     public function total()
     {
+        return $this->grandTotal();
+    }
+
+    public function grandTotal()
+    {
         if ($this->hasCart()) {
             return $this->getCart()->toAugmentedArray()['grand_total']->value();
         }
@@ -50,10 +55,10 @@ class CartTags extends SubTag
         return 0;
     }
 
-    public function grandTotal()
+    public function rawGrandTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->toAugmentedArray()['grand_total']->value();
+            return $this->getCart()->get('grand_total');
         }
 
         return 0;
@@ -68,10 +73,28 @@ class CartTags extends SubTag
         return 0;
     }
 
+    public function rawItemsTotal()
+    {
+        if ($this->hasCart()) {
+            return $this->getCart()->get('items_total');
+        }
+
+        return 0;
+    }
+
     public function shippingTotal()
     {
         if ($this->hasCart()) {
             return $this->getCart()->toAugmentedArray()['shipping_total']->value();
+        }
+
+        return 0;
+    }
+
+    public function rawShippingTotal()
+    {
+        if ($this->hasCart()) {
+            return $this->getCart()->get('shipping_total');
         }
 
         return 0;
@@ -86,10 +109,28 @@ class CartTags extends SubTag
         return 0;
     }
 
+    public function rawTaxTotal()
+    {
+        if ($this->hasCart()) {
+            return $this->getCart()->get('tax_total');
+        }
+
+        return 0;
+    }
+
     public function couponTotal()
     {
         if ($this->hasCart()) {
             return $this->getCart()->toAugmentedArray()['coupon_total']->value();
+        }
+
+        return 0;
+    }
+
+    public function rawCouponTotal()
+    {
+        if ($this->hasCart()) {
+            return $this->getCart()->get('coupon_total');
         }
 
         return 0;
