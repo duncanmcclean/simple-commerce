@@ -20,17 +20,17 @@ class CustomerControllerTest extends TestCase
     /** @test */
     public function can_get_customer()
     {
-        Entry::make()
+        $customer = Entry::make()
             ->collection('customers')
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
                 'name'  => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
-            ])
-            ->save();
+            ]);
 
-        $customer = Entry::findBySlug('duncan_double_three_digital', 'customers');
+        $customer->save();
+        $customer->fresh();
 
         $response = $this->getJson(route('statamic.simple-commerce.customer.index', [
             'customer' => $customer->id(),
@@ -48,17 +48,17 @@ class CustomerControllerTest extends TestCase
     /** @test */
     public function can_update_customer()
     {
-        Entry::make()
+        $customer = Entry::make()
             ->collection('customers')
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
                 'name'  => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
-            ])
-            ->save();
+            ]);
 
-        $customer = Entry::findBySlug('duncan_double_three_digital', 'customers');
+        $customer->save();
+        $customer->fresh();
 
         $data = [
             'vip' => true,
@@ -80,17 +80,17 @@ class CustomerControllerTest extends TestCase
     /** @test */
     public function can_update_customer_and_request_json()
     {
-        Entry::make()
+        $customer = Entry::make()
             ->collection('customers')
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
                 'name'  => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
-            ])
-            ->save();
+            ]);
 
-        $customer = Entry::findBySlug('duncan_double_three_digital', 'customers');
+        $customer->save();
+        $customer->fresh();
 
         $data = [
             'vip' => true,

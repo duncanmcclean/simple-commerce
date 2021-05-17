@@ -31,7 +31,10 @@ class Customer implements Contract
 
     public function findByEmail(string $email): self
     {
-        $entry = Entry::findBySlug(Str::slug($email), $this->collection());
+        $entry = Entry::query()
+            ->where('collection', $this->collection())
+            ->where('slug', Str::slug($email))
+            ->first();
 
         if (!$entry) {
             throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [

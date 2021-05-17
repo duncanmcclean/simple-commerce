@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's fixed?
+
+* Refactored usage of `findBySlug`, it's been deprecated #424
+
 ## v2.3.1 (2021-05-17)
 
 ### What's new?

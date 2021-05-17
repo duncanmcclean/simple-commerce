@@ -28,7 +28,10 @@ class Coupon implements Contract
 
     public function findByCode(string $code): self
     {
-        $entry = Entry::findBySlug($code, $this->collection());
+        $entry = Entry::query()
+            ->where('collection', $this->collection())
+            ->where('slug', $code)
+            ->first();
 
         if (!$entry) {
             throw new CouponNotFound(__('simple-commerce::messages.coupon_not_found'));
