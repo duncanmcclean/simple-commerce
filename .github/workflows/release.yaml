@@ -54,6 +54,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           body: ${{ steps.changelog.outputs.text }}
+          prerelease: ${{ contains(github.ref, '-beta') }}
 
       - name: Upload zip to release
         uses: actions/upload-release-asset@v1.0.1
