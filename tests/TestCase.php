@@ -16,8 +16,6 @@ use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
-    use SetupCollections;
-
     public function setUp(): void
     {
         parent::setUp();
