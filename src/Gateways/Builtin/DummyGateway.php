@@ -24,6 +24,8 @@ class DummyGateway extends BaseGateway implements Gateway
 
     public function purchase(Purchase $data): Response
     {
+        $data->order()->markAsPaid();
+
         return new Response(true, [
             'id'        => '123456789abcdefg',
             'last_four' => '4242',

@@ -13,9 +13,9 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return [
             'option_fields' => [
-                'display'      => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.display'),
+                'display'      => __('simple-commerce::messages.fieldtypes.product_variants.config_fields.option_fields.display'),
                 'type'         => 'fields',
-                'instructions' => __('simple-commerce::fieldtypes.product_variants.config_fields.option_fields.instructions'),
+                'instructions' => __('simple-commerce::messages.fieldtypes.product_variants.config_fields.option_fields.instructions'),
             ],
         ];
     }
@@ -111,7 +111,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public static function title()
     {
-        return __('simple-commerce::fieldtypes.product_variants.title');
+        return __('simple-commerce::messages.fieldtypes.product_variants.title');
     }
 
     public function component(): string
@@ -157,23 +157,23 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public static function docsUrl()
     {
-        return 'https://sc-docs.doublethree.digital/v2.2/product-variants';
+        return 'https://sc-docs.doublethree.digital/v2.3/product-variants';
     }
 
     public function preProcessIndex($value)
     {
         if (!$value) {
-            return __('simple-commerce::products.no-variants');
+            return __('simple-commerce::messages.product_has_no_variants');
         }
 
         $optionsCount = collect($value['options'])->count();
 
         if ($optionsCount === 0) {
-            return __('simple-commerce::products.no-variants');
+            return __('simple-commerce::messages.product_has_no_variants');
         } elseif ($optionsCount === 1) {
-            return $optionsCount.' '.__('simple-commerce::products.variants_singular');
+            return $optionsCount.' '.__('simple-commerce::messages.product_variants_singular');
         } else {
-            return $optionsCount.' '.__('simple-commerce::products.variants_plural');
+            return $optionsCount.' '.__('simple-commerce::messages.product_variants_plural');
         }
     }
 }

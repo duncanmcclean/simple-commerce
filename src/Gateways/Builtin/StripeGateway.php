@@ -32,25 +32,22 @@ class StripeGateway extends BaseGateway implements Gateway
     public function prepare(Prepare $data): GatewayResponse
     {
         $this->setUpWithStripe();
-        $cart = $data->cart();
+
+        $order = $data->order();
 
         $intentData = [
-            'amount'             => $cart->data['grand_total'],
+            'amount'             => $order->data['grand_total'],
             'currency'           => Currency::get(Site::current())['code'],
-            'description'        => "Order: {$cart->title}",
+            'description'        => "Order: {$order->title()}",
             'setup_future_usage' => 'off_session',
             'metadata'           => [
-                'order_id' => $cart->id,
+                'order_id' => $order->id,
             ],
         ];
 
-        if (isset($cart->data['email']) && $cart->data['email'] !== null) {
-            $customer = Customer::findByEmail($cart->data['email']);
-        } elseif (isset($cart->data['customer']) && $cart->data['customer'] !== null && is_string($cart->data['customer'])) {
-            $customer = Customer::find($cart->data['customer']);
-        }
+        $customer = $order->customer();
 
-        if (isset($customer->data['email'])) {
+        if ($customer->has('email')) {
             $stripeCustomerData = [
                 'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
                 'email' => $customer->get('email'),
@@ -76,7 +73,12 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
+        $paymentIntent = PaymentIntent::retrieve($data->stripe()['intent']);
         $paymentMethod = PaymentMethod::retrieve($data->request()->payment_method);
+
+        if ($paymentIntent->status === 'succeeded') {
+            $data->order()->markAsPaid();
+        }
 
         return new GatewayResponse(true, [
             'id'       => $paymentMethod->id,
@@ -98,7 +100,7 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $charge = PaymentIntent::retrieve($order->data()['gateway_data']['intent']);
+        $charge = PaymentIntent::retrieve($order->data()->get('gateway_data')['intent']);
 
         return new GatewayResponse(true, $charge->toArray());
     }
@@ -113,7 +115,7 @@ class StripeGateway extends BaseGateway implements Gateway
         }
 
         $refund = Refund::create([
-            'payment_intent' => $order->data()['gateway_data']['intent'],
+            'payment_intent' => $order->data()->get('gateway_data')['intent'],
         ]);
 
         return new GatewayResponse(true, $refund->toArray());
@@ -129,7 +131,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($payload['metadata']['order_id']);
 
-            $order->markAsCompleted();
+            $order->markAsPaid();
 
             return new Response('Webhook handled', 200);
         }
@@ -152,7 +154,7 @@ class StripeGateway extends BaseGateway implements Gateway
     protected function setUpWithStripe()
     {
         if (! $this->config()->has('secret')) {
-            throw new StripeSecretMissing(__('simple-commerce::gateways.stripe.stripe_secret_missing'));
+            throw new StripeSecretMissing(__('simple-commerce::messages.gateways.stripe.stripe_secret_missing'));
         }
 
         Stripe::setApiKey($this->config()->get('secret'));

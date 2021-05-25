@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
+use Illuminate\Support\Collection;
+
 interface Customer
 {
     public function all();
@@ -18,17 +20,19 @@ interface Customer
 
     public function toResource();
 
+    public function toAugmentedArray($keys = null);
+
     public function id();
 
     public function title(string $title = null);
 
     public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
-    public function data(array $data = []);
+    public function data($data = null);
 
     public function has(string $key): bool;
 
@@ -43,6 +47,12 @@ interface Customer
     public function name(): string;
 
     public function email(): string;
+
+    public function orders(): Collection;
+
+    public function addOrder($orderId): self;
+
+    public function routeNotificationForMail($notification = null);
 
     public static function bindings(): array;
 }

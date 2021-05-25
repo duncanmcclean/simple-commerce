@@ -2,11 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
+use DoubleThreeDigital\SimpleCommerce\Coupons\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Customers\Customer;
+use DoubleThreeDigital\SimpleCommerce\Orders\Order;
+use DoubleThreeDigital\SimpleCommerce\Products\Product;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
-use Statamic\Facades\Taxonomy;
-use Statamic\Facades\Term;
 
 class InstallCommand extends Command
 {
@@ -20,7 +24,6 @@ class InstallCommand extends Command
         $this
             ->publishBlueprints()
             ->publishConfigurationFile()
-            ->setupTaxonomies()
             ->setupCollections();
     }
 
@@ -46,100 +49,54 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function setupTaxonomies()
-    {
-        if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.product_categories'))) {
-            $this->info('Creating: Product Categories');
-
-            Taxonomy::make(config('simple-commerce.taxonomies.product_categories'))
-                ->title(__('simple-commerce::messages.default_taxonomies.product_categories'))
-                ->save();
-        } else {
-            $this->warn('Skipping: Product Categories');
-        }
-
-        if (!Taxonomy::handleExists(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))) {
-            $this->info('Creating: Order Statuses');
-
-            Taxonomy::make(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->title(__('simple-commerce::messages.default_taxonomies.order_statuses'))
-                ->save();
-
-            Term::make()
-                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->slug('cart')
-                ->data([
-                    'title' => __('simple-commerce::messages.default_terms.cart'),
-                ])
-                ->save();
-
-            Term::make()
-                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->slug('completed')
-                ->data([
-                    'title' => __('simple-commerce::messages.default_terms.completed'),
-                ])
-                ->save();
-
-            Term::make()
-                ->taxonomy(config('simple-commerce.taxonomies.order_statuses', 'order_statuses'))
-                ->slug('refunded')
-                ->data([
-                    'title' => __('simple-commerce::messages.default_terms.refunded'),
-                ])
-                ->save();
-        } else {
-            $this->warn('Skipping: Order Statuses');
-        }
-
-        return $this;
-    }
-
     protected function setupCollections()
     {
-        if (!Collection::handleExists(config('simple-commerce.collections.products'))) {
+        $productDriver  = SimpleCommerce::productDriver();
+        $customerDriver = SimpleCommerce::customerDriver();
+        $orderDriver    = SimpleCommerce::orderDriver();
+        $couponDriver   = SimpleCommerce::couponDriver();
+
+        if ($productDriver['driver'] === Product::class && ! Collection::handleExists($productDriver['collection'])) {
             $this->info('Creating: Products');
 
-            Collection::make(config('simple-commerce.collections.products'))
-                ->title(__('simple-commerce::messages.default_collections.products'))
+            Collection::make($productDriver['collection'])
+                ->title(Str::title($productDriver['collection']))
                 ->pastDateBehavior('public')
                 ->futureDateBehavior('private')
                 ->sites(['default'])
                 ->routes('/products/{slug}')
-                ->taxonomies(['product_categories'])
                 ->save();
         } else {
             $this->warn('Skipping: Products');
         }
 
-        if (!Collection::handleExists(config('simple-commerce.collections.customers'))) {
+        if ($customerDriver['driver'] === Customer::class && ! Collection::handleExists($customerDriver['collection'])) {
             $this->info('Creating: Customers');
 
-            Collection::make(config('simple-commerce.collections.customers'))
-                ->title(__('simple-commerce::messages.default_collections.customers'))
+            Collection::make($customerDriver['collection'])
+                ->title(Str::title($customerDriver['collection']))
                 ->sites(['default'])
                 ->save();
         } else {
             $this->warn('Skipping: Customers');
         }
 
-        if (!Collection::handleExists(config('simple-commerce.collections.orders'))) {
+        if ($orderDriver['driver'] === Order::class && ! Collection::handleExists($orderDriver['collection'])) {
             $this->info('Creating: Orders');
 
-            Collection::make(config('simple-commerce.collections.orders'))
-                ->title(__('simple-commerce::messages.default_collections.orders'))
+            Collection::make($orderDriver['collection'])
+                ->title(Str::title($orderDriver['collection']))
                 ->sites(['default'])
-                // ->taxonomies(['order_statuses'])
                 ->save();
         } else {
             $this->warn('Skipping: Orders');
         }
 
-        if (!Collection::handleExists(config('simple-commerce.collections.coupons'))) {
+        if ($couponDriver['driver'] === Coupon::class && ! Collection::handleExists($couponDriver['collection'])) {
             $this->info('Creating: Coupons');
 
-            Collection::make(config('simple-commerce.collections.coupons'))
-                ->title(__('simple-commerce::messages.default_collections.coupons'))
+            Collection::make($couponDriver['collection'])
+                ->title(Str::title($couponDriver['collection']))
                 ->sites(['default'])
                 ->save();
         } else {

@@ -43,13 +43,15 @@ class CheckoutController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.checkout_complete'),
-            'cart'    => $this->cart->toResource(),
+            'cart'    => $request->wantsJson()
+                ? $this->cart->toResource()
+                : $this->cart->toAugmentedArray(),
         ]);
     }
 
     protected function preCheckout()
     {
-        event(new PreCheckout($this->cart->data));
+        event(new PreCheckout($this->cart));
 
         return $this;
     }
@@ -114,7 +116,7 @@ class CheckoutController extends BaseActionController
         }
 
         if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
-            throw new NoGatewayProvided(__('simple-commerce::gateways.no_gateway_provided'));
+            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
         }
 
         $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
@@ -186,15 +188,13 @@ class CheckoutController extends BaseActionController
 
     protected function postCheckout()
     {
-        $this->cart->markAsCompleted()->save();
-
         if ($this->cart->customer()) {
             $this->cart->customer()->addOrder($this->cart->id);
         }
 
         $this->forgetCart();
 
-        event(new PostCheckout($this->cart->data));
+        event(new PostCheckout($this->cart));
 
         return $this;
     }

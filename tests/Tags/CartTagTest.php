@@ -29,7 +29,7 @@ class CartTagTest extends TestCase
     {
         $this->fakeCart();
 
-        $this->assertSame('cart', (string) $this->tag('{{ sc:cart }}{{ order_status }}{{ /sc:cart }}'));
+        $this->assertSame('Special note.', (string) $this->tag('{{ sc:cart }}{{ note }}{{ /sc:cart }}'));
         $this->assertSame('false', (string) $this->tag('{{ sc:cart }}{{ if {is_paid} }}true{{ else }}false{{ /if }}{{ /sc:cart }}'));
     }
 
@@ -309,7 +309,9 @@ class CartTagTest extends TestCase
     protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Order::create();
+            $cart = Order::create([
+                'note' => 'Special note.',
+            ]);
         }
 
         Session::shouldReceive('get')

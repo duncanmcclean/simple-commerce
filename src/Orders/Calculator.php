@@ -18,7 +18,7 @@ class Calculator implements Contract
     public function calculate(OrderContract $order): array
     {
         if ($order->has('is_paid') && $order->get('is_paid') === true) {
-            return $order->data();
+            return $order->data()->toArray();
         }
 
         $this->order = $order;
@@ -68,9 +68,9 @@ class Calculator implements Contract
         $product = ProductAPI::find($lineItem['product']);
 
         if ($product->purchasableType() === 'variants') {
-            $productPrice = $product->variantOption(
+            $productPrice = $product->variant(
                 isset($lineItem['variant']['variant']) ? $lineItem['variant']['variant'] : $lineItem['variant']
-            )['price'];
+            )->price();
 
             // Ensure we strip any decimals from price
             $productPrice = (int) str_replace('.', '', (string) $productPrice);
@@ -102,6 +102,8 @@ class Calculator implements Contract
 
         $taxConfiguration = collect(Config::get('simple-commerce.sites'))
             ->get(Site::current()->handle())['tax'];
+
+        $data['tax_rate'] = $taxConfiguration['rate'];
 
         if ($product->isExemptFromTax()) {
             return [
@@ -150,7 +152,7 @@ class Calculator implements Contract
             ];
         }
 
-        $data['shipping_total'] = Shipping::use($this->order->data['shipping_method'])->calculateCost($this->order->entry());
+        $data['shipping_total'] = Shipping::use($this->order->data['shipping_method'])->calculateCost($this->order);
 
         return [
             'data' => $data,
@@ -172,14 +174,14 @@ class Calculator implements Contract
 
             // Otherwise do all the other stuff...
             if ($coupon->data['type'] === 'percentage') {
-                $data['coupon_total'] = (int) (($value * $data['items_total']) / 100);
+                $data['coupon_total'] = (int) (($value * $data['grand_total']) / 100);
             }
 
             if ($coupon->data['type'] === 'fixed') {
-                $data['coupon_total'] = (int) ($data['items_total'] - $value);
+                $data['coupon_total'] = (int) $data['grand_total'] - ($data['grand_total'] - $value);
             }
 
-            $data['items_total'] = (int) str_replace('.', '', (string) ($data['items_total'] - $data['coupon_total']));
+            $data['grand_total'] = (int) str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
         }
 
         return [

@@ -14,14 +14,14 @@ class CouponController extends BaseActionController
     {
         $redeem = $this->getCart()->redeemCoupon($request->code);
 
-        $this->getCart()->calculateTotals();
+        $this->getCart()->recalculate();
 
         if (!$redeem) {
-            return $this->withErrors($request, __('simple-commerce::coupons.invalid_coupon'));
+            return $this->withErrors($request, __('simple-commerce::messages.invalid_coupon'));
         }
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce::coupons.coupon_added_to_cart'),
+            'message' => __('simple-commerce::messages.coupon_added_to_cart'),
             'cart'    => $this->getCart()->toResource(),
         ]);
     }
@@ -33,10 +33,10 @@ class CouponController extends BaseActionController
                 'coupon' => null,
             ])
             ->save()
-            ->calculateTotals();
+            ->recalculate();
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce::coupons.coupon_removed_from_cart'),
+            'message' => __('simple-commerce::messages.coupon_removed_from_cart'),
             'cart'    => $this->getCart()->toResource(),
         ]);
     }

@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Field;
@@ -91,7 +91,7 @@ class MoneyFieldtypeTest extends TestCase
 
 class MoneyFieldtypeWithMockedField extends MoneyFieldtype
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     public function field(): ?Field
     {

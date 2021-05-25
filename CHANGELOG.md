@@ -2,6 +2,114 @@
 
 ## Unreleased
 
+### What's fixed?
+
+* Refactored usage of `findBySlug`, it's been deprecated #424
+
+## v2.3.1 (2021-05-17)
+
+### What's new?
+
+* You can now grab 'raw' data through the Cart Tag, rather than augmented data. (`{{ sc:cart:rawGrandTotal }}`)
+
+## v2.3.0 (2021-05-10)
+
+While there's been quite a few breaking changes between v2.2 and v2.3, most of them have been addressed by [Update Scripts](https://statamic.dev/knowledge-base/configuring-update-scripts#what-are-update-scripts), which will be run automatically when updating Simple Commerce.
+
+Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
+
+Please review the [Upgrade Guide](https://sc-docs.doublethree.digital/v2.3/update-guide) before updating.
+
+### What's new
+
+* It's now easier to swap out the driver being used for products, orders, coupons or customers.
+* You can now mark any unpaid orders as paid from inside the Control Panel.
+* Events have been renamed and parameters have been switched about.
+* Notifications have been refactored! (Again...)
+* The `Address` DTO now contains some more helpful methods.
+* Product Variants now have their very own DTO
+* You can now filter by Order Status in the CP
+
+### Breaking changes
+
+* Translations have been simplified. All translations live in the `messages.php` file. If you override the translations, please review.
+* Built-in gateways have been moved from `Gateways\GatewayName` to `Gateways\Builtin\GatewayName`
+* Gateway DTOs are now called `Response`, `Purchase` and `Prepare` (Gateway is no longer in the name)
+* Updates have been made to Data Contracts, please review if you are overriding any of them.
+* If you're overriding any of the Data Classes, please register it inside the updated config file, rather than manually via the Service Container.
+* `Cart` facade has been removed (it was deprecated in v2.2). Please replace with the `Order` facade.
+* Event parameters & event names have been changed. Please review if you are listening for any Simple Commerce events.
+* Notifications have been refactored - they now use Laravel Notifications, rather than Mailables. If you were overriding the notifications previously, you will need to refactor into Notifications and update inside the Simple Commerce config.
+
+## v2.3.0-beta.5 (2021-05-03)
+
+### What's fixed
+
+* 500 error on Mollie Webhook with successful payment #422
+
+## v2.3.0-beta.4 (2021-05-03)
+
+### What's fixed
+
+* `Trailing data` error would sometimes appear when viewing paid orders in the CP
+
+## v2.3.0-beta.3 (2021-04-30)
+
+### What's fixed
+
+* Updated parameters of `CouponRedeemed` event.
+* Fixed issue where upgrade scripts would error if you're configuration is cached. #421
+
+## v2.3.0-beta.2 (2021-04-23)
+
+### What's new
+
+* The cart update request will respect any validation rules you have in your order blueprint #417
+
+### What's fixed
+
+* Fixed an issue where update scripts wouldn't be run when upgrading to a beta release.
+
+## v2.3.0-beta.1 (2021-04-22)
+
+I've not got a solid date for v2.3 release yet but here's the first of a couple beta releases. Feel free to test it if you've got any spare time.
+
+### Updating to the beta
+
+* Set `minimum-stability` to `"dev"` or `"alpha"`
+* Change `"doublethreedigital/simple-commerce"` to `"2.3.*"`
+
+```json
+// composer.json
+
+"minimum-stability": "alpha",
+"require": {
+    "doublethreedigital/simple-commerce": "2.3.*",
+    // all the other stuff...
+},
+```
+
+* Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
+
+FYI: You'll need to be running Statamic 3.1 to install the beta.
+
+### More info
+
+For more information on what's new and any breaking changes, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/2.3/CHANGELOG.md).
+
+## v2.2.21 (2021-04-20)
+
+* [fix] Don't fail if user's cart has been deleted. Create a new one instead. #416
+
+## v2.2.20 (2021-04-16)
+
+* [fix] Fixed exception when running Refund action on Order entry.
+* [fix] Tidied up the orders CP listing for new sites.
+
+## v2.2.19 (2021-04-02)
+
+* [fix] Fix issues with coupon calculations #405
+
 ## v2.2.18 (2021-03-30)
 
 * [fix] Fixed issue where shipping & billing addresses would not be output on PDF Receipts #404

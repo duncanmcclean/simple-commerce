@@ -84,14 +84,10 @@
 </template>
 
 <script>
-import uniqid from 'uniqid'
-
-// import GridRow from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Row'
-import GridRow from '../statamic/Row'
-import SortableList from '../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
-import GridHeaderCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
-// import View from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/View'
-import View from '../statamic/View'
+import GridRow from '../../statamic/Row'
+import SortableList from '../../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
+import GridHeaderCell from '../../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
+import View from '../../statamic/View'
 
 export default {
     name: 'product-variants-fieldtype',

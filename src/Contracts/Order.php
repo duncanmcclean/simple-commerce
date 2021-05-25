@@ -20,17 +20,19 @@ interface Order
 
     public function toResource();
 
+    public function toAugmentedArray($keys = null);
+
     public function id();
 
     public function title(string $title = null);
 
     public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
-    public function data(array $data = []);
+    public function data($data = null);
 
     public function has(string $key): bool;
 
@@ -44,17 +46,21 @@ interface Order
 
     public function shippingAddress();
 
-    public function customer(string $customer = '');
+    public function customer($customer = null);
 
-    public function coupon(string $coupon = '');
+    public function coupon($coupon = null);
+
+    public function gateway();
 
     public function redeemCoupon(string $code): bool;
 
-    public function markAsCompleted(): self;
+    public function markAsPaid(): self;
 
-    public function buildReceipt(): string;
+    public function receiptUrl(): string;
 
-    public function calculateTotals(): self;
+    public function recalculate(): self;
+
+    public function rules(): array;
 
     public function lineItems(): Collection;
 

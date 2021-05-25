@@ -26,8 +26,10 @@ class Purchase
         return $this->order;
     }
 
-    public function cart()
+    public function __call($name, $arguments)
     {
-        return OrderFacade::find($this->order->id());
+        if ($attribute = $this->order->get($name)) {
+            return $attribute;
+        }
     }
 }

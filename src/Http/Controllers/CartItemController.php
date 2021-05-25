@@ -70,7 +70,12 @@ class CartItemController extends BaseActionController
 
         $cart->updateLineItem(
             $requestItem,
-            Arr::except($request->all(), ['_token', '_params', '_redirect'])
+            array_merge(
+                Arr::only($request->all(), 'quantity', 'variant'),
+                [
+                    'metadata' => Arr::except($request->all(), ['quantity', 'variant', '_token', '_params', '_redirect']),
+                ]
+            ),
         );
 
         return $this->withSuccess($request, [

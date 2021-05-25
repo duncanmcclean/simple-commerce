@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -10,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
-use Statamic\Entries\Entry;
 
 class CalculatorTest extends TestCase
 {
@@ -383,11 +383,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 2583);
-        $this->assertSame($calculate['items_total'], 1000);
+        $this->assertSame($calculate['grand_total'], 1292);
+        $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
         $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 1000);
+        $this->assertSame($calculate['coupon_total'], 1291);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
@@ -395,17 +395,18 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_percentage_coupon_is_calculated_correctly_on_items_total()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         $product = Product::create([
-            'price' => 1000,
+            'price' => 5000,
         ]);
 
         $coupon = Coupon::create([
-            'slug'               => 'half-price',
-            'title'              => 'Half Price',
+            'slug'               => 'fifty-friday',
+            'title'              => 'Fifty Friday',
             'redeemed'           => 0,
-            'value'              => 25,
+            'value'              => 50,
             'type'               => 'percentage',
             'minimum_cart_value' => null,
         ])->save();
@@ -416,7 +417,7 @@ class CalculatorTest extends TestCase
                 [
                     'product'  => $product->id,
                     'quantity' => 2,
-                    'total'    => 2000,
+                    'total'    => 10000,
                 ],
             ],
             'coupon' => $coupon->id,
@@ -426,29 +427,30 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 2333);
-        $this->assertSame($calculate['items_total'], 1500);
+        $this->assertSame($calculate['grand_total'], 5000);
+        $this->assertSame($calculate['items_total'], 10000);
         $this->assertSame($calculate['shipping_total'], 0);
-        $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 500);
+        $this->assertSame($calculate['tax_total'], 0);
+        $this->assertSame($calculate['coupon_total'], 5000);
 
-        $this->assertSame($calculate['items'][0]['total'], 2000);
+        $this->assertSame($calculate['items'][0]['total'], 10000);
     }
 
     /** @test */
     public function ensure_fixed_coupon_is_calculated_correctly_on_items_total()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         $product = Product::create([
-            'price' => 1000,
+            'price' => 5000,
         ]);
 
         $coupon = Coupon::create([
-            'slug'               => 'half-price',
-            'title'              => 'Half Price',
+            'slug'               => 'one-hundred-pence-off',
+            'title'              => 'One Hundred Pence Off (£1)',
             'redeemed'           => 0,
-            'value'              => 1500,
+            'value'              => 100,
             'type'               => 'fixed',
             'minimum_cart_value' => null,
         ])->save();
@@ -459,7 +461,7 @@ class CalculatorTest extends TestCase
                 [
                     'product'  => $product->id,
                     'quantity' => 2,
-                    'total'    => 2000,
+                    'total'    => 10000,
                 ],
             ],
             'coupon' => $coupon->id,
@@ -469,13 +471,13 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 2333);
-        $this->assertSame($calculate['items_total'], 1500);
+        $this->assertSame($calculate['grand_total'], 9900);
+        $this->assertSame($calculate['items_total'], 10000);
         $this->assertSame($calculate['shipping_total'], 0);
-        $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 500);
+        $this->assertSame($calculate['tax_total'], 0);
+        $this->assertSame($calculate['coupon_total'], 100);
 
-        $this->assertSame($calculate['items'][0]['total'], 2000);
+        $this->assertSame($calculate['items'][0]['total'], 10000);
     }
 }
 
@@ -491,7 +493,7 @@ class Postage implements ShippingMethod
         return __('simple-commerce::shipping.standard_post.description');
     }
 
-    public function calculateCost(Entry $order): int
+    public function calculateCost(OrderContract $order): int
     {
         return 250;
     }

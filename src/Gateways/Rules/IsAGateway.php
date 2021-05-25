@@ -14,6 +14,6 @@ class IsAGateway implements Rule
 
     public function message()
     {
-        return __('simple-commerce::validation.is_a_gateway');
+        return __('simple-commerce::messages.validation.is_a_gateway');
     }
 }

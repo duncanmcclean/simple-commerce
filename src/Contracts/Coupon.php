@@ -18,17 +18,19 @@ interface Coupon
 
     public function toResource();
 
+    public function toAugmentedArray($keys = null);
+
     public function id();
 
     public function title(string $title = null);
 
     public function slug(string $slug = null);
 
-    public function site($site = null): self;
+    public function site($site = null);
 
     public function fresh(): self;
 
-    public function data(array $data = []);
+    public function data($data = null);
 
     public function has(string $key): bool;
 

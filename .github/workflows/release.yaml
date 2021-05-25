@@ -5,7 +5,7 @@ name: Release
 # 1. Create a git tag - `git tag <version number>`
 # 2. Push tags to the origin - `git push origin --tags`
 # 3. This Github Action will do its stuff...
-# 4. Wait for a Slack notification, then it should be good to add a release changelog.
+# 4. Then it will pull the latest notes from CHANGELOG.md and add them to the release.
 
 on:
   push:
@@ -39,6 +39,12 @@ jobs:
       - name: Create zip
         run: cd resources && tar -czvf dist.tar.gz dist
 
+      - name: Get Changelog
+        id: changelog
+        uses: statamic/changelog-action@v1
+        with:
+          version: ${{ github.ref }}
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -47,6 +53,8 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.text }}
+          prerelease: ${{ contains(github.ref, '-beta') }}
 
       - name: Upload zip to release
         uses: actions/upload-release-asset@v1.0.1

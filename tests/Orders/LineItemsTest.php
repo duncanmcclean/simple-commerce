@@ -4,13 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\CollectionSetup;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 
 class LineItemsTest extends TestCase
 {
-    use CollectionSetup;
+    use SetupCollections;
 
     /** @test */
     public function can_get_line_items()
@@ -45,6 +45,37 @@ class LineItemsTest extends TestCase
 
         $this->assertTrue($lineItems instanceof Collection);
         $this->assertSame($lineItems->count(), 0);
+    }
+
+    /** @test */
+    public function can_update_line_item()
+    {
+        $product = Product::create([
+            'title' => 'Four Five Six',
+            'price' => 1000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => 'ideeeeee-of-item',
+                    'product'  => $product->id,
+                    'quantity' => 2,
+                ],
+            ],
+        ]);
+
+        $update = $order->updateLineItem('ideeeeee-of-item', [
+            'quantity' => 3,
+            'metadata' => [
+                'product_key' => 'gday-mate',
+            ],
+        ]);
+
+        $this->assertSame($order->lineItems()->count(), 1);
+
+        $this->assertSame($order->lineItems()->first()['quantity'], 3);
+        $this->assertArrayHasKey('metadata', $order->lineItems()->first());
     }
 
     /** @test */

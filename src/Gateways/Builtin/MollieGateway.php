@@ -9,12 +9,12 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
-use Statamic\Facades\Entry as EntryFacade;
 use Statamic\Facades\Site;
 
 class MollieGateway extends BaseGateway implements Gateway
@@ -29,20 +29,21 @@ class MollieGateway extends BaseGateway implements Gateway
     public function prepare(Prepare $data): Response
     {
         $this->setupMollie();
-        $cart = $data->cart();
+
+        $order = $data->order();
 
         $payment = $this->mollie->payments->create([
             'amount' => [
                 'currency' => Currency::get(Site::current())['code'],
-                'value'    => (string) substr_replace($cart->data['grand_total'], '.', -2, 0),
+                'value'    => (string) substr_replace($order->data['grand_total'], '.', -2, 0),
             ],
-            'description' => "Order {$cart->title}",
+            'description' => "Order {$order->title()}",
             'redirectUrl' => $this->callbackUrl([
                 '_order_id' => $data->order()->id(),
             ]),
             'webhookUrl'  => $this->webhookUrl(),
             'metadata'    => [
-                'order_id' => $cart->id,
+                'order_id' => $order->id,
             ],
         ]);
 
@@ -56,9 +57,7 @@ class MollieGateway extends BaseGateway implements Gateway
         // We don't actually do anything here as Mollie is an
         // off-site gateway, so it has it's own checkout page.
 
-        // TODO: maybe throw an exception, in the case a developer gets here?
-
-        return new Response(false, []);
+        throw new GatewayDoesNotSupportPurchase("Gateway [mollie] does not support the `purchase` method.");
     }
 
     public function purchaseRules(): array
@@ -118,11 +117,9 @@ class MollieGateway extends BaseGateway implements Gateway
     public function refundCharge(Order $order): Response
     {
         $this->setupMollie();
-        $cart = Order::find($order->id());
 
         $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
-
-        $refund = $payment->refund([]);
+        $payment->refund([]);
 
         return new Response(true, []);
     }
@@ -135,7 +132,8 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $cart = EntryFacade::whereCollection(config('simple-commerce.collections.orders'))
+            // TODO: refactor this query
+            $order = collect(OrderFacade::all())
                 ->filter(function ($entry) use ($mollieId) {
                     return isset($entry->data()->get('mollie')['id'])
                         && $entry->data()->get('mollie')['id']
@@ -146,8 +144,9 @@ class MollieGateway extends BaseGateway implements Gateway
                 })
                 ->first();
 
-            $cart->markAsCompleted();
-            event(new PostCheckout($cart->data));
+            $order->markAsPaid();
+
+            event(new PostCheckout($order));
         }
     }
 
