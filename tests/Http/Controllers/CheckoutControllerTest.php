@@ -362,7 +362,57 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function can_post_checkout_and_ensure_remaining_request_data_is_saved_to_order()
     {
-        //
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+            'gift_note' => 'I like jam on toast!',
+            'delivery_note' => 'We live at the red house at the top of the hill.',
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ]);
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->published);
+
+        $this->assertTrue($order->get('is_paid'));
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert that the 'extra remaining data' has been saved to the order
+        $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
+        $this->assertSame($order->get('delivery_note'), 'We live at the red house at the top of the hill.');
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
