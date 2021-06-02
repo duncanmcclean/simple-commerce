@@ -26,7 +26,7 @@ class CheckoutController extends BaseActionController
     public StoreRequest $request;
     public $excludedKeys = ['_token', '_params', '_redirect'];
 
-    public function store(StoreRequest $request)
+    public function __invoke(StoreRequest $request)
     {
         $this->cart = $this->getCart();
         $this->request = $request;
