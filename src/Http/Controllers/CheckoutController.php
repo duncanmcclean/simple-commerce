@@ -35,10 +35,10 @@ class CheckoutController extends BaseActionController
             ->preCheckout()
             ->handleValidation()
             ->handleCustomerDetails()
-            ->handlePayment()
             ->handleCoupon()
             ->handleStock()
             ->handleRemainingData()
+            ->handlePayment()
             ->postCheckout();
 
         return $this->withSuccess($request, [
@@ -109,27 +109,6 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handlePayment()
-    {
-        if ($this->cart->get('grand_total') <= 0) {
-            return $this;
-        }
-
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
-            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
-        }
-
-        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
-
-        $this->excludedKeys[] = 'gateway';
-
-        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
-            $this->excludedKeys[] = $key;
-        }
-
-        return $this;
-    }
-
     protected function handleCoupon()
     {
         if (isset($this->cart->data['coupon'])) {
@@ -181,6 +160,29 @@ class CheckoutController extends BaseActionController
 
         if ($data !== []) {
             $this->cart->data($data)->save();
+        }
+
+        return $this;
+    }
+
+    protected function handlePayment()
+    {
+        $this->cart = $this->cart->recalculate();
+
+        if ($this->cart->get('grand_total') <= 0) {
+            return $this;
+        }
+
+        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
+        }
+
+        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
+
+        $this->excludedKeys[] = 'gateway';
+
+        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
+            $this->excludedKeys[] = $key;
         }
 
         return $this;
