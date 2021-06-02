@@ -67,6 +67,11 @@ class CheckoutController extends BaseActionController
             Gateway::use($this->request->get('gateway'))->purchaseRules() :
             [];
 
+            // dd(array_merge(
+            //     $checkoutValidationRules,
+            //     $gatewayValidationRules
+            // ));
+
         $this->request->validate(array_merge(
             $checkoutValidationRules,
             $gatewayValidationRules
@@ -78,6 +83,14 @@ class CheckoutController extends BaseActionController
     protected function handleCustomerDetails()
     {
         $customerData = $this->request->has('customer') ? $this->request->get('customer') : [];
+
+        if (is_string($customerData)) {
+            $this->cart->set('customer', $customerData);
+
+            $this->excludedKeys[] = 'customer';
+
+            return $this;
+        }
 
         if ($this->request->has('name') && $this->request->has('email')) {
             $customerData['name'] = $this->request->get('name');
@@ -170,6 +183,8 @@ class CheckoutController extends BaseActionController
         $this->cart = $this->cart->recalculate();
 
         if ($this->cart->get('grand_total') <= 0) {
+            $this->cart->markAsPaid();
+
             return $this;
         }
 
