@@ -147,16 +147,16 @@ class CheckoutController extends BaseActionController
                         'stock',
                         $stockCount = $product->get('stock') - $item['quantity']
                     )->save();
-                }
 
-                if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
-                    event(new StockRunningLow($product, $stockCount));
-                }
+                    if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                        event(new StockRunningLow($product, $stockCount));
+                    }
 
-                if ($stockCount <= 0) {
-                    event(new StockRunOut($product, $stockCount));
+                    if ($stockCount <= 0) {
+                        event(new StockRunOut($product, $stockCount));
 
-                    // TODO: do something when stock has ran out
+                        // TODO: do something when stock has ran out
+                    }
                 }
             });
 
