@@ -4,12 +4,14 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Statamic\Facades\Stache;
 
@@ -320,25 +322,285 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function can_post_checkout_with_coupon()
     {
-        //
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $coupon = Coupon::create([
+            'slug'               => 'fifty-friday',
+            'title'              => 'Fifty Friday',
+            'redeemed'           => 0,
+            'value'              => 50,
+            'type'               => 'percentage',
+            'minimum_cart_value' => null,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+                'coupon'       => $coupon->code(),
+            ]);
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->published);
+
+        $this->assertTrue($order->get('is_paid'));
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert the coupon has been redeemed propery & the total has been recalculated
+        $this->assertSame($order->get('coupon'), $coupon->id);
+
+        $this->assertSame($order->get('grand_total'), 2500);
+        $this->assertSame($order->get('coupon_total'), 2500);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
     public function cant_post_checkout_with_coupon_where_minimum_cart_value_has_not_been_reached()
     {
-        //
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $coupon = Coupon::create([
+            'slug'               => 'fifty-thursday',
+            'title'              => 'Fifty Thursday',
+            'redeemed'           => 0,
+            'value'              => 50,
+            'type'               => 'percentage',
+            'minimum_cart_value' => 9000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+            'items_total' => 5000,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+                'coupon'       => $coupon->code(),
+            ])
+            ->assertSessionHasErrors('coupon');
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertNotDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertFalse($order->published);
+
+        $this->assertFalse($order->get('is_paid'));
+        $this->assertNull($order->get('paid_date'));
+
+        // Assert the coupon has been redeemed propery & the total has been recalculated
+        $this->assertNull($order->get('coupon'));
+
+        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->get('coupon_total'), 0);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertTrue(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
     public function cant_post_checkout_with_coupon_when_coupon_has_been_redeemed_for_maxium_uses()
     {
-        //
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $coupon = Coupon::create([
+            'slug'               => 'fifty-thursday',
+            'title'              => 'Fifty Thursday',
+            'redeemed'           => 10,
+            'maximum_uses'       => 10,
+            'value'              => 50,
+            'type'               => 'percentage',
+            'minimum_cart_value' => null,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+            'items_total' => 5000,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+                'coupon'       => $coupon->code(),
+            ])
+            ->assertSessionHasErrors('coupon');
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertNotDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertFalse($order->published);
+
+        $this->assertFalse($order->get('is_paid'));
+        $this->assertNull($order->get('paid_date'));
+
+        // Assert the coupon has been redeemed propery & the total has been recalculated
+        $this->assertNull($order->get('coupon'));
+
+        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->get('coupon_total'), 0);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertTrue(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
     public function cant_post_checkout_with_coupon_where_coupon_is_only_valid_for_products_not_in_cart()
     {
-        //
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $coupon = Coupon::create([
+            'slug'               => 'fifty-wednesday',
+            'title'              => 'Fifty Wednesday',
+            'redeemed'           => 0,
+            'value'              => 50,
+            'type'               => 'percentage',
+            'minimum_cart_value' => null,
+            'products'           => ['a-random-product'],
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+            'items_total' => 5000,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+                'coupon'       => $coupon->code(),
+            ])
+            ->assertSessionHasErrors('coupon');
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertNotDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertFalse($order->published);
+
+        $this->assertFalse($order->get('is_paid'));
+        $this->assertNull($order->get('paid_date'));
+
+        // Assert the coupon has been redeemed propery & the total has been recalculated
+        $this->assertNull($order->get('coupon'));
+
+        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->get('coupon_total'), 0);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertTrue(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
