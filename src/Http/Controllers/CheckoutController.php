@@ -142,20 +142,19 @@ class CheckoutController extends BaseActionController
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
-                if (isset($product->data['stock'])) {
-                    $stock = $product->data['stock'] + $item['quantity'];
-                } else {
-                    $stock = 1;
+                if ($product->has('stock')) {
+                    $product->set(
+                        'stock',
+                        $stockCount = $product->get('stock') - $item['quantity']
+                    )->save();
                 }
 
-                $product->set('stock', $stock);
-
-                if ($stock <= config('simple-commerce.low_stock_threshold')) {
-                    event(new StockRunningLow($product, $stock));
+                if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                    event(new StockRunningLow($product, $stockCount));
                 }
 
-                if ($stock <= 0) {
-                    event(new StockRunOut($product, $stock));
+                if ($stockCount <= 0) {
+                    event(new StockRunOut($product, $stockCount));
                 }
             });
 
