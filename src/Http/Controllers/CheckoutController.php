@@ -155,6 +155,8 @@ class CheckoutController extends BaseActionController
 
                 if ($stockCount <= 0) {
                     event(new StockRunOut($product, $stockCount));
+
+                    // TODO: do something when stock has ran out
                 }
             });
 
