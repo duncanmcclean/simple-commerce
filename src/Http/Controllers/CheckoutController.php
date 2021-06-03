@@ -6,13 +6,16 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\ValidCoupon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -59,18 +62,14 @@ class CheckoutController extends BaseActionController
     protected function handleValidation()
     {
         $checkoutValidationRules = [
-            'name'  => ['sometimes', 'string'],
-            'email' => ['sometimes', 'email'],
+            'name'   => ['sometimes', 'string'],
+            'email'  => ['sometimes', 'email'],
+            'coupon' => ['nullable', new ValidCoupon($this->cart)],
         ];
 
         $gatewayValidationRules = $this->request->has('gateway') ?
             Gateway::use($this->request->get('gateway'))->purchaseRules() :
             [];
-
-            // dd(array_merge(
-            //     $checkoutValidationRules,
-            //     $gatewayValidationRules
-            // ));
 
         $this->request->validate(array_merge(
             $checkoutValidationRules,
@@ -124,6 +123,12 @@ class CheckoutController extends BaseActionController
 
     protected function handleCoupon()
     {
+        if ($coupon = $this->request->get('coupon')) {
+            $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
+
+            $this->excludedKeys[] = 'coupon';
+        }
+
         if (isset($this->cart->data['coupon'])) {
             $this->cart->coupon()->redeem();
         }
