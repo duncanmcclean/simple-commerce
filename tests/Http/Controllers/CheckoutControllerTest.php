@@ -837,7 +837,58 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function can_post_checkout_with_extra_line_item_and_ensure_order_is_recalculated()
     {
-        //
+        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $order = Order::create([
+            'grand_total' => 0,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+                'items'        => [
+                    [
+                        'id'       => Stache::generateId(),
+                        'product'  => $product->id,
+                        'quantity' => 1,
+                        'total'    => 5000,
+                    ],
+                ],
+            ]);
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->published);
+
+        $this->assertTrue($order->get('is_paid'));
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert totals are calculated
+        $this->assertSame($order->get('items_total'), 5000);
+        $this->assertSame($order->get('grand_total'), 5000);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
