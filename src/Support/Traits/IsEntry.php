@@ -57,6 +57,14 @@ trait IsEntry
         $this->slug = !is_null($this->slug) ? $this->slug : '';
         $this->published = !is_null($this->published) ? $this->published : false;
 
+        if (! $this->slug && isset($data['slug'])) {
+            $this->slug = $data['slug'];
+        }
+
+        if (! $this->published && isset($data['published'])) {
+            $this->published = $data['published'];
+        }
+
         $this->data(
             Arr::except($data, ['id', 'site', 'slug', 'publish'])
         );
