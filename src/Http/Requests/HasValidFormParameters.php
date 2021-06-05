@@ -2,11 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
-use DoubleThreeDigital\SimpleCommerce\Tags\Concerns\FormParameters;
 use Illuminate\Http\Request;
 
 trait HasValidFormParameters
 {
+    // Kept in sync with $knownParams on `FormBuilder`
+    private static $knownParams = [
+        'redirect', 'error_redirect', 'action_needed_redirect', 'request',
+    ];
+
     public function hasValidFormParameters(Request $request = null)
     {
         if (! $request) {
@@ -17,6 +21,11 @@ trait HasValidFormParameters
             throw new \Exception("Given form parameters are not valid.");
         }
 
-        return FormParameters::check($request->get('_params'), $request->all());
+        $parameters = collect($request->all())
+            ->filter(function ($value, $key) {
+                return in_array(ltrim($key, '_'), static::$knownParams);
+            });
+
+        return hash_equals(hash_hmac('sha256', $parameters->join('|'), app('encrypter')->getKey()), $request->get('_params'));
     }
 }

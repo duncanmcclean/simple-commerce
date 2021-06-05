@@ -45,7 +45,17 @@ trait FormBuilder
 
     private function paramsField()
     {
-        return '<input type="hidden" name="_params" value="'.FormParameters::generate($this->params->all()).'" />';
+        $parameters = collect($this->params->all())
+            ->filter(function ($value, $key) {
+                return in_array($key, static::$knownParams);
+            })
+            ->mapWithKeys(function ($value, $key) {
+                return ["_$key" => $value];
+            });
+
+        $hash = hash_hmac('sha256', $parameters->join('|'), app('encrypter')->getKey());
+
+        return '<input type="hidden" name="_params" value="'.$hash.'" />';
     }
 
     private function redirectField()
