@@ -2,17 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\HasValidFormParameters;
 use DoubleThreeDigital\SimpleCommerce\Support\Rules\EntryExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
-    use HasValidFormParameters;
-
     public function authorize()
     {
-        return $this->hasValidFormParameters();
+        return true;
     }
 
     public function rules()

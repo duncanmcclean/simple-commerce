@@ -3,18 +3,17 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\HasValidFormParameters;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 
 class UpdateRequest extends FormRequest
 {
-    use CartDriver, AcceptsFormRequests, HasValidFormParameters;
+    use CartDriver, AcceptsFormRequests;
 
     public function authorize()
     {
-        return $this->hasValidFormParameters();
+        return true;
     }
 
     public function rules()

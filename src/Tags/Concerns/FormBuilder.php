@@ -8,16 +8,11 @@ trait FormBuilder
 {
     use RendersForms;
 
-    // Kept in sync with $knownParams on `HasValidFormParameters`
-    private static $knownParams = [
-        'redirect', 'error_redirect', 'action_needed_redirect', 'request',
-    ];
+    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'name', 'request'];
 
     protected function createForm(string $action, array $data = [], string $method = 'POST'): string
     {
         $html = $this->formOpen($action, $method, static::$knownParams);
-
-        $html .= $this->paramsField();
 
         if ($this->params->get('redirect') != null) {
             $html .= $this->redirectField();
@@ -43,21 +38,6 @@ trait FormBuilder
         return $data;
     }
 
-    private function paramsField()
-    {
-        $parameters = collect($this->params->all())
-            ->filter(function ($value, $key) {
-                return in_array($key, static::$knownParams);
-            })
-            ->mapWithKeys(function ($value, $key) {
-                return ["_$key" => $value];
-            });
-
-        $hash = hash_hmac('sha256', $parameters->join('|'), app('encrypter')->getKey());
-
-        return '<input type="hidden" name="_params" value="'.$hash.'" />';
-    }
-
     private function redirectField()
     {
         return '<input type="hidden" name="_redirect" value="'.$this->params->get('redirect').'" />';
@@ -66,6 +46,17 @@ trait FormBuilder
     private function requestField()
     {
         return '<input type="hidden" name="_request" value="'.$this->params->get('request').'" />';
+    }
+
+    private function params(): array
+    {
+        return collect(static::$knownParams)->map(function ($param, $ignore) {
+            if ($redirect = $this->get($param)) {
+                return $params[$param] = $redirect;
+            }
+        })->filter()
+        ->values()
+        ->all();
     }
 
     /**
