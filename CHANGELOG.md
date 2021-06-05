@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.3 (2021-06-05)
+
+## What's new
+
+* You can now specify a Form Request on some form tags (for custom validation rules) #425
+
 ## v2.3.2 (2021-06-03)
 
 ### What's improved
