@@ -6,13 +6,13 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Support\Rules\ValidCoupon;
@@ -23,7 +23,7 @@ use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use CartDriver;
+    use CartDriver, AcceptsFormRequests;
 
     public $cart;
     public StoreRequest $request;
@@ -61,20 +61,27 @@ class CheckoutController extends BaseActionController
 
     protected function handleValidation()
     {
-        $checkoutValidationRules = [
-            'name'   => ['sometimes', 'string'],
-            'email'  => ['sometimes', 'email'],
-            'coupon' => ['nullable', new ValidCoupon($this->cart)],
-        ];
+        $rules = array_merge(
+            $this->request->has('_request')
+                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
+                : [],
+            $this->request->has('gateway')
+                ? Gateway::use($this->request->get('gateway'))->purchaseRules()
+                : [],
+            [
+                'coupon' => ['nullable', new ValidCoupon($this->cart)]
+            ],
+        );
 
-        $gatewayValidationRules = $this->request->has('gateway') ?
-            Gateway::use($this->request->get('gateway'))->purchaseRules() :
-            [];
+        $messages = array_merge(
+            $this->request->has('_request')
+                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
+                : [],
+            // TODO: gateway custom validation messages?
+            [],
+        );
 
-        $this->request->validate(array_merge(
-            $checkoutValidationRules,
-            $gatewayValidationRules
-        ));
+        $this->request->validate($rules, $messages);
 
         return $this;
     }
