@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Tags\Concerns\FormParameters;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -63,7 +62,6 @@ class CustomerControllerTest extends TestCase
         $customer->fresh();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'vip' => true,
         ];
 
@@ -96,7 +94,6 @@ class CustomerControllerTest extends TestCase
         $customer->fresh();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'vip' => true,
         ];
 
@@ -133,9 +130,6 @@ class CustomerControllerTest extends TestCase
         $customer->fresh();
 
         $data = [
-            '_params' => FormParameters::generate([
-                '_request' => CustomerUpdateFormRequest::class,
-            ]),
             '_request' => CustomerUpdateFormRequest::class,
             'vip' => true,
         ];

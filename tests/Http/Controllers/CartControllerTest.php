@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tags\Concerns\FormParameters;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -43,9 +42,9 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'shipping_note' => 'Be careful pls.',
         ];
+
         $response = $this
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
@@ -64,7 +63,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'shipping_note' => 'Be careful pls.',
         ];
 
@@ -90,9 +88,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([
-                '_request' => CartUpdateFormRequest::class,
-            ]),
             '_request' => CartUpdateFormRequest::class,
             'shipping_note' => 'Be careful pls.',
         ];
@@ -123,7 +118,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'shipping_note' => 'Be careful pls.',
         ];
 
@@ -146,7 +140,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'name'  => 'Joe Doe',
             'email' => 'joedoe@gmail.com',
         ];
@@ -177,7 +170,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save()->data(['customer' => $customer->id])->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'customer' => [
                 'name' => 'Jordan Smith',
             ],
@@ -207,7 +199,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'customer' => [
                 'name'  => 'Jack Simpson',
                 'email' => 'jack.simpson@example.com',
@@ -234,7 +225,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'customer' => [
                 'name'  => 'Rebecca Logan',
                 'email' => 'rebecca.logan@example.com',
@@ -279,7 +269,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([]),
             'email' => 'duncan@test.com',
         ];
 
@@ -299,9 +288,6 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_params' => FormParameters::generate([
-                '_redirect' => '/checkout',
-            ]),
             '_redirect' => '/checkout',
         ];
 
