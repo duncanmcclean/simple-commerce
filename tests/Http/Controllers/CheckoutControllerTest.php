@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Statamic\Facades\Stache;
@@ -75,6 +76,58 @@ class CheckoutControllerTest extends TestCase
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
+    public function cant_post_checkout_and_ensure_custom_form_request_is_used()
+    {
+        Event::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                '_request'     => CheckoutFormRequest::class,
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ])
+            ->assertSessionHasErrors('accept_terms');
+
+        $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertNotDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertFalse($order->published);
+
+        $this->assertFalse($order->get('is_paid'));
+        $this->assertNull($order->get('paid_date'));
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertTrue(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
@@ -1193,5 +1246,20 @@ class CheckoutControllerTest extends TestCase
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+}
+
+class CheckoutFormRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            'accept_terms' => ['required', 'boolean'],
+        ];
     }
 }
