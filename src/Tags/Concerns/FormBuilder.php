@@ -8,7 +8,7 @@ trait FormBuilder
 {
     use RendersForms;
 
-    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'name'];
+    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'name', 'request'];
 
     protected function createForm(string $action, array $data = [], string $method = 'POST'): string
     {
@@ -16,6 +16,10 @@ trait FormBuilder
 
         if ($this->params->get('redirect') != null) {
             $html .= $this->redirectField();
+        }
+
+        if ($this->params->get('request') != null) {
+            $html .= $this->requestField();
         }
 
         $html .= $this->parse($this->sessionData($data));
@@ -37,6 +41,11 @@ trait FormBuilder
     private function redirectField()
     {
         return '<input type="hidden" name="_redirect" value="'.$this->params->get('redirect').'" />';
+    }
+
+    private function requestField()
+    {
+        return '<input type="hidden" name="_request" value="'.$this->params->get('request').'" />';
     }
 
     private function params(): array
