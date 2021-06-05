@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
