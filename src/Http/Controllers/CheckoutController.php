@@ -61,15 +61,27 @@ class CheckoutController extends BaseActionController
 
     protected function handleValidation()
     {
-        $this->request->validate(array_merge(
+        $rules = array_merge(
             $this->request->has('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
                 : [],
             $this->request->has('gateway')
                 ? Gateway::use($this->request->get('gateway'))->purchaseRules()
                 : [],
-            ['coupon' => ['nullable', new ValidCoupon($this->cart)]],
-        ));
+            [
+                'coupon' => ['nullable', new ValidCoupon($this->cart)]
+            ],
+        );
+
+        $messages = array_merge(
+            $this->request->has('_request')
+                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
+                : [],
+            // TODO: gateway custom validation messages?
+            [],
+        );
+
+        $this->request->validate($rules, $messages);
 
         return $this;
     }

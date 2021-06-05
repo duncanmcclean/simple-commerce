@@ -35,4 +35,13 @@ class UpdateRequest extends FormRequest
             'grand_total',
         ]);
     }
+
+    public function messages()
+    {
+        if ($formRequest = $this->get('_request')) {
+            return $this->buildFormRequest($formRequest, $this)->messages();
+        }
+
+        return [];
+    }
 }

@@ -114,6 +114,8 @@ class CheckoutControllerTest extends TestCase
             ])
             ->assertSessionHasErrors('accept_terms');
 
+        $this->assertEquals(session('errors')->default->first('accept_terms'), 'Please accept the terms & conditions.');
+
         $order->fresh();
 
         // Assert events have been dispatched
@@ -1260,6 +1262,13 @@ class CheckoutFormRequest extends FormRequest
     {
         return [
             'accept_terms' => ['required', 'boolean'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'accept_terms.required' => "Please accept the terms & conditions.",
         ];
     }
 }

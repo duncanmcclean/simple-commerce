@@ -141,6 +141,8 @@ class CustomerControllerTest extends TestCase
             ]), $data)
             ->assertSessionHasErrors('business_name');
 
+        $this->assertEquals(session('errors')->default->first('business_name'), "You can't have a business without a name. Silly sausage!");
+
         $response->assertRedirect('/account');
 
         $customer->fresh();
@@ -160,6 +162,13 @@ class CustomerUpdateFormRequest extends FormRequest
     {
         return [
             'business_name' => ['required', 'string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'business_name.required' => "You can't have a business without a name. Silly sausage!",
         ];
     }
 }

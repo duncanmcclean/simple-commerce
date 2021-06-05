@@ -22,4 +22,13 @@ class UpdateRequest extends FormRequest
 
         return [];
     }
+
+    public function messages()
+    {
+        if ($formRequest = $this->get('_request')) {
+            return $this->buildFormRequest($formRequest, $this)->messages();
+        }
+
+        return [];
+    }
 }

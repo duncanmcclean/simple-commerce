@@ -98,6 +98,8 @@ class CartControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart.update'), $data)
             ->assertSessionHasErrors('shipping_special');
 
+        $this->assertEquals(session('errors')->default->first('shipping_special'), 'Coolzies. An error message.');
+
         $response->assertRedirect('/cart');
 
         $cart->find($cart->id);
@@ -370,6 +372,13 @@ class CartUpdateFormRequest extends FormRequest
     {
         return [
             'shipping_special' => ['required', 'boolean'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'shipping_special.required' => 'Coolzies. An error message.',
         ];
     }
 }
