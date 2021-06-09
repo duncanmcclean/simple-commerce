@@ -46,6 +46,7 @@ return [
         'entry_exists' => 'The entry :value does not exist.',
         'country_exists' => 'The selected country is not recognised.',
         'is_a_gateway' => ':value is not a gateway',
+        'valid_coupon' => 'Sorry, this coupon is not valid for your order.',
     ],
 
     'coupon_not_found'            => 'Coupon not found.',

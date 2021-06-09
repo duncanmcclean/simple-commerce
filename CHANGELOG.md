@@ -2,9 +2,29 @@
 
 ## Unreleased
 
-### What's fixed?
+## v2.3.3 (2021-06-05)
 
-* Refactored usage of `findBySlug`, it's been deprecated #424
+## What's new
+
+* You can now specify a Form Request on some form tags (for custom validation rules) #425
+
+## v2.3.2 (2021-06-03)
+
+### What's improved
+
+* Refactored usage of `findBySlug`, it's being deprecated soon and will likely be removed in Statamic 3.2 #424
+* When using `Something::create`, you can now provide `slug` or `published` to manually set the slug/published status.
+* Checkout: Payment is now done at the very end of the checkout request, rather than just before the coupon. Orders will also be recalculated before payment in case of any last-minute changes.
+* Checkout: You can now set the Customer's ID in the checkout request
+* Checkout: You can now redeem coupons as part of the checkout request
+* Checkout: Refactored some stuff around product stock
+* Checkout: Added a job lot of automated tests to cover the checkout flow
+
+### What's fixed
+
+* Fixed IDE completion on the `Coupon` facade (was suggesting Order methods, rather than Coupon methods)
+* Checkout: Free orders will now be marked as paid again after checkout
+* Fixed issue where coupons limited to certain products could be valid/non-valid accidentally.
 
 ## v2.3.1 (2021-05-17)
 

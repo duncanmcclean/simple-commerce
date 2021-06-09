@@ -19,7 +19,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     Route::post('/cart-items/{item}', [CartItemController::class, 'update'])->name('cart-items.update');
     Route::delete('/cart-items/{item}', [CartItemController::class, 'destroy'])->name('cart-items.destroy');
 
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::post('/checkout', [CheckoutController::class, '__invoke'])->name('checkout.store');
 
     Route::get('/customer/{customer}', [CustomerController::class, 'index'])->name('customer.index');
     Route::post('/customer/{customer}', [CustomerController::class, 'update'])->name('customer.update');

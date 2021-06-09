@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Foundation\Http\FormRequest;
 use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
@@ -79,6 +80,31 @@ class CartControllerTest extends TestCase
         $cart->find($cart->id);
 
         $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
+    }
+
+    /** @test */
+    public function can_update_cart_and_ensure_custom_form_request_is_used()
+    {
+        $cart = Order::create()->save();
+
+        $data = [
+            '_request' => CartUpdateFormRequest::class,
+            'shipping_note' => 'Be careful pls.',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data)
+            ->assertSessionHasErrors('shipping_special');
+
+        $this->assertEquals(session('errors')->default->first('shipping_special'), 'Coolzies. An error message.');
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertArrayNotHasKey('shipping_note', $cart->data());
     }
 
     /** @test */
@@ -332,5 +358,27 @@ class CartControllerTest extends TestCase
         $cart->find($cart->id);
 
         $this->assertSame($cart->data['items'], []);
+    }
+}
+
+class CartUpdateFormRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            'shipping_special' => ['required', 'boolean'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'shipping_special.required' => 'Coolzies. An error message.',
+        ];
     }
 }

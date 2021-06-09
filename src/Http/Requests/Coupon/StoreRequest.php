@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon;
 
-use DoubleThreeDigital\SimpleCommerce\Coupons\CouponExists;
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\CouponExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest

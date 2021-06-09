@@ -307,6 +307,40 @@ class CalculatorTest extends TestCase
     }
 
     /** @test */
+    public function ensure_round_value_tax_is_calculated_correctly()
+    {
+        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
+
+        $product = Product::create([
+            'price' => 2600,
+        ]);
+
+        $cart = Order::create([
+            'is_paid' => false,
+            'items'   => [
+                [
+                    'product'  => $product->id,
+                    'quantity' => 3,
+                    'total'    => 7800,
+                ],
+            ],
+        ]);
+
+        $calculate = (new Calculator())->calculate($cart);
+
+        $this->assertIsArray($calculate);
+
+        $this->assertSame($calculate['grand_total'], 7800);
+        $this->assertSame($calculate['items_total'], 6500);
+        $this->assertSame($calculate['shipping_total'], 0);
+        $this->assertSame($calculate['tax_total'], 1300);
+        $this->assertSame($calculate['coupon_total'], 0);
+
+        $this->assertSame($calculate['items'][0]['total'], 6500);
+    }
+
+    /** @test */
     public function ensure_shipping_price_is_applied_correctly()
     {
         Config::set('simple-commerce.sites.default.tax.rate', 20);

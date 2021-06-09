@@ -5,8 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Support;
 class Countries
 {
     protected static $countries = [
-        ['iso' => 'US', 'name' => 'United States'],
-        ['iso' => 'CA', 'name' => 'Canada'],
         ['iso' => 'AF', 'name' => 'Afghanistan'],
         ['iso' => 'AL', 'name' => 'Albania'],
         ['iso' => 'DZ', 'name' => 'Algeria'],
@@ -44,6 +42,7 @@ class Countries
         ['iso' => 'BI', 'name' => 'Burundi'],
         ['iso' => 'KH', 'name' => 'Cambodia'],
         ['iso' => 'CM', 'name' => 'Cameroon'],
+        ['iso' => 'CA', 'name' => 'Canada'],
         ['iso' => 'CV', 'name' => 'Cape Verde'],
         ['iso' => 'KY', 'name' => 'Cayman Islands'],
         ['iso' => 'CF', 'name' => 'Central African Republic'],
@@ -231,6 +230,7 @@ class Countries
         ['iso' => 'UA', 'name' => 'Ukraine'],
         ['iso' => 'AE', 'name' => 'United Arab Emirates'],
         ['iso' => 'GB', 'name' => 'United Kingdom'],
+        ['iso' => 'US', 'name' => 'United States'],
         ['iso' => 'UM', 'name' => 'United States minor outlying islands'],
         ['iso' => 'UY', 'name' => 'Uruguay'],
         ['iso' => 'UZ', 'name' => 'Uzbekistan'],

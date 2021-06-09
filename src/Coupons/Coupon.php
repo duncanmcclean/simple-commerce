@@ -66,7 +66,7 @@ class Coupon implements Contract
                 return in_array($lineItem['product'], $this->get('products'));
             });
 
-            if ($couponProductsInOrder === 0) {
+            if ($couponProductsInOrder->count() === 0) {
                 return false;
             }
         }
