@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.3.4 (2021-06-09)
+
+### What's fixed
+
+* Fixed tax calculations if result is a rounded number, with no decimals #429
+
+### What's improved
+
+* 'United States' and 'Canada' aren't at the top of the countries list anymore
+* Removed `sc:info` command - it's never been used
+
 ## v2.3.3 (2021-06-05)
 
 ## What's new
