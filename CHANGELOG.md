@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.5 (2021-06-10)
+
+## What's fixed
+
+* You can now set line item metadata when adding a new line item.
+
 ## v2.3.4 (2021-06-09)
 
 ### What's fixed
