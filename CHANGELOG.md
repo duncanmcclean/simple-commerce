@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v2.3.6 (2021-06-11)
+
+## What's fixed
+
+* When updating a line item, the metadata is no longer overwritten #431
+
+## What's improved
+
+* You can now use a custom request on the `{{ sc:cart:addItem }}` and `{{ sc:cart:updateItem }}` tags #432
+
 ## v2.3.5 (2021-06-10)
 
 ## What's fixed
