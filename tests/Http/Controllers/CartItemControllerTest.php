@@ -642,6 +642,53 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_item_with_extra_data_and_ensure_existing_metadata_isnt_overwritten()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                    'metadata' => [
+                        'foo' => 'bar',
+                    ],
+                ],
+            ],
+        ]);
+
+        $data = [
+            'bar' => 'baz',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame($cart->lineItems()->count(), 1);
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+
+        $this->assertArrayNotHasKey('foo', $cart->lineItems()->first());
+        $this->assertArrayNotHasKey('bar', $cart->lineItems()->first());
+
+        $this->assertSame($cart->data['items'][0]['metadata']['foo'], 'bar');
+        $this->assertSame($cart->data['items'][0]['metadata']['bar'], 'baz');
+    }
+
+    /** @test */
     public function can_update_item_and_request_json()
     {
         $product = Product::create([

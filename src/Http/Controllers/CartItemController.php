@@ -78,13 +78,17 @@ class CartItemController extends BaseActionController
     public function update(UpdateRequest $request, string $requestItem)
     {
         $cart = $this->getCart();
+        $lineItem = $cart->lineItem($requestItem);
 
         $cart->updateLineItem(
             $requestItem,
             array_merge(
                 Arr::only($request->all(), 'quantity', 'variant'),
                 [
-                    'metadata' => Arr::except($request->all(), $this->reservedKeys),
+                    'metadata' => array_merge(
+                        isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
+                        Arr::except($request->all(), $this->reservedKeys),
+                    )
                 ]
             ),
         );
