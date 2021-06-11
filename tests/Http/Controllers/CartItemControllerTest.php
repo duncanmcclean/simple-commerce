@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Foundation\Http\FormRequest;
 use Statamic\Facades\Stache;
 
 class CartItemControllerTest extends TestCase
@@ -110,6 +111,28 @@ class CartItemControllerTest extends TestCase
         $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
 
         $this->assertArrayHasKey('foo', $cart->lineItems()->first()['metadata']);
+    }
+
+    /** @test */
+    public function can_store_item_and_ensure_custom_form_request_is_used()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $data = [
+            '_request' => CartItemStoreFormRequest::class,
+            'product'  => $product->id,
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHasErrors('smth');
     }
 
     /** @test */
@@ -566,6 +589,41 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_item_and_ensure_custom_form_request_is_used()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            '_request' => CartItemUpdateFormRequest::class,
+            'quantity' => 2,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+        $response->assertSessionHasErrors('coolzies');
+    }
+
+    /** @test */
     public function cant_update_item_with_zero_item_quantity()
     {
         $product = Product::create([
@@ -763,5 +821,25 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $this->assertEmpty($cart->data['items']);
+    }
+}
+
+class CartItemStoreFormRequest extends FormRequest
+{
+    public function rules()
+    {
+        return [
+            'smth' => ['required', 'string'],
+        ];
+    }
+}
+
+class CartItemUpdateFormRequest extends FormRequest
+{
+    public function rules()
+    {
+        return [
+            'coolzies' => ['required', 'string'],
+        ];
     }
 }
