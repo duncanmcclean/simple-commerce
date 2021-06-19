@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Providers\AddonServiceProvider;
+use Statamic\Stache\Stache;
 use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
@@ -69,7 +70,8 @@ class ServiceProvider extends AddonServiceProvider
             $this
                 ->bootVendorAssets()
                 ->bindContracts()
-                ->bootCartDrivers();
+                ->bootCartDrivers()
+                ->bootStacheStores();
         });
 
         SimpleCommerce::bootGateways();
@@ -137,5 +139,17 @@ class ServiceProvider extends AddonServiceProvider
         }
 
         return $this;
+    }
+
+    protected function bootStacheStores()
+    {
+        $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
+        $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
+
+        $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
+        $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
+
+        app(Stache::class)->registerStore($taxCategoryStore);
+        app(Stache::class)->registerStore($taxRateStore);
     }
 }

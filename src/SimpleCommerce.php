@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
-use Statamic\Stache\Stache;
 use Statamic\Statamic;
 
 class SimpleCommerce
@@ -66,18 +65,6 @@ class SimpleCommerce
         return Statamic::booted(function () {
             static::$taxEngine = config('simple-commerce.tax_engine');
 
-            // TODO: this feels icky to do it here but hey ho
-            if (static::taxEngine() instanceof Tax\Standard\TaxEngine) {
-                $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
-                $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
-
-                $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
-                $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
-
-                app(Stache::class)->registerStore($taxCategoryStore);
-                app(Stache::class)->registerStore($taxRateStore);
-            }
-
             return new static();
         });
     }
@@ -85,6 +72,11 @@ class SimpleCommerce
     public static function taxEngine(): Contracts\TaxEngine
     {
         return new static::$taxEngine;
+    }
+
+    public static function isUsingStandardTaxEngine(): bool
+    {
+        return static::taxEngine() instanceof Tax\Standard\TaxEngine;
     }
 
     public static function freshOrderNumber()
