@@ -78,4 +78,25 @@ class TaxCategory
             'description' => $this->description,
         ];
     }
+
+    public function editUrl()
+    {
+        return cp_route('simple-commerce.tax-categories.edit', [
+            'taxCategory' => $this->id(),
+        ]);
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('simple-commerce.tax-categories.update', [
+            'taxCategory' => $this->id(),
+        ]);
+    }
+
+    public function deleteUrl()
+    {
+        return cp_route('simple-commerce.tax-categories.destroy', [
+            'taxCategory' => $this->id(),
+        ]);
+    }
 }
