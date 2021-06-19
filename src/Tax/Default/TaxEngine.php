@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax;
+namespace DoubleThreeDigital\SimpleCommerce\Tax\Default;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
