@@ -1,6 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxRateController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\VariantFieldtypeController;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,15 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
             Route::get('/{taxCategory}/edit', [TaxCategoryController::class, 'edit'])->name('edit');
             Route::post('/{taxCategory}/edit', [TaxCategoryController::class, 'update'])->name('update');
             Route::delete('/{taxCategory}/delete', [TaxCategoryController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('tax-rates')->name('tax-rates.')->group(function () {
+            Route::get('/', [TaxRateController::class, 'index'])->name('index');
+            Route::get('/create', [TaxRateController::class, 'create'])->name('create');
+            Route::post('/create', [TaxRateController::class, 'store'])->name('store');
+            Route::get('/{taxRate}/edit', [TaxRateController::class, 'edit'])->name('edit');
+            Route::post('/{taxRate}/edit', [TaxRateController::class, 'update'])->name('update');
+            Route::delete('/{taxRate}/delete', [TaxRateController::class, 'destroy'])->name('destroy');
         });
     }
 

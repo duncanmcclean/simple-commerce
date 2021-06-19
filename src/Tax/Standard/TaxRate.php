@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate as TaxRateFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use Statamic\Data\ContainsData;
@@ -61,7 +62,7 @@ class TaxRate
             ->fluentlyGetOrSet('category')
             ->getter(function ($category) {
                 if (! $category instanceof TaxCategory) {
-                    return TaxCategory::find($category);
+                    return TaxCategoryFacade::find($category);
                 }
 
                 return $category;
@@ -115,5 +116,26 @@ class TaxRate
             'country' => $this->country,
             'state' => $this->state,
         ];
+    }
+
+    public function editUrl()
+    {
+        return cp_route('simple-commerce.tax-rates.edit', [
+            'taxRate' => $this->id(),
+        ]);
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('simple-commerce.tax-rates.update', [
+            'taxRate' => $this->id(),
+        ]);
+    }
+
+    public function deleteUrl()
+    {
+        return cp_route('simple-commerce.tax-rates.destroy', [
+            'taxRate' => $this->id(),
+        ]);
     }
 }

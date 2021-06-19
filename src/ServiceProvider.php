@@ -167,7 +167,11 @@ class ServiceProvider extends AddonServiceProvider
     {
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             Nav::extend(function ($nav) {
-                $nav->create('Tax Categories')
+                $nav->create(__('Tax Rates'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-rates.index');
+
+                $nav->create(__('Tax Categories'))
                     ->section(__('Simple Commerce'))
                     ->route('simple-commerce.tax-categories.index');
             });
