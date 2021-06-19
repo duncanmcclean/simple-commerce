@@ -71,7 +71,11 @@ class SimpleCommerce
                 $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
                 $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
 
+                $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
+                $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
+
                 app(Stache::class)->registerStore($taxCategoryStore);
+                app(Stache::class)->registerStore($taxRateStore);
             }
 
             return new static();
