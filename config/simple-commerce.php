@@ -73,7 +73,7 @@ return [
         'default' => [
             'currency' => 'GBP',
 
-            'tax' => [
+            'tax' => [ // Tax TODO: remove this at some point
                 'rate'               => 20,
                 'included_in_prices' => false,
             ],
@@ -146,5 +146,9 @@ return [
     */
 
     'low_stock_threshold' => 25,
+
+    // TODO comment
+
+    'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class,
 
 ];

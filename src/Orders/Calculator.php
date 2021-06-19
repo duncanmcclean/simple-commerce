@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
@@ -98,30 +99,17 @@ class Calculator implements Contract
 
     public function calculateLineItemTax(array $data, array $lineItem): array
     {
-        $product = ProductAPI::find($lineItem['product']);
+        $taxEngine = SimpleCommerce::taxEngine();
+        $taxCalculation = $taxEngine->calculate($this->order, $lineItem);
 
-        $taxConfiguration = collect(Config::get('simple-commerce.sites'))
-            ->get(Site::current()->handle())['tax'];
+        // $data['tax_rate'] = $taxCalculation->rate(); // TODO: Removing as rate could be different per product...
+        $lineItem['tax'] = $taxCalculation->toArray();
 
-        $data['tax_rate'] = $taxConfiguration['rate'];
-
-        if ($product->isExemptFromTax()) {
-            return [
-                'data' => $data,
-                'lineItem'  => $lineItem,
-            ];
-        }
-
-        $itemTotal = $lineItem['total'];
-        $taxAmount = ($itemTotal / 100) * ($taxConfiguration['rate'] / (100 + $taxConfiguration['rate']));
-
-        if ($taxConfiguration['included_in_prices']) {
-            $itemTax = (int) round($taxAmount * 100);
-
-            $lineItem['total'] -= $itemTax;
-            $data['tax_total'] += $itemTax;
+        if ($taxCalculation->priceIncludesTax()) {
+            $lineItem['total'] -= $taxCalculation->amount();
+            $data['tax_total'] += $taxCalculation->amount();
         } else {
-            $data['tax_total'] += (int) round($taxAmount * 100);
+            $data['tax_total'] += $taxCalculation->amount();
         }
 
         return [

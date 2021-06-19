@@ -8,7 +8,11 @@ use Statamic\Statamic;
 
 class SimpleCommerce
 {
+    /** @var array */
     protected static $gateways = [];
+
+    /** @var Contracts\TaxEngine */
+    protected static $taxEngine;
 
     public static function bootGateways()
     {
@@ -28,7 +32,7 @@ class SimpleCommerce
         });
     }
 
-    public static function gateways()
+    public static function gateways(): array
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
@@ -54,6 +58,20 @@ class SimpleCommerce
             $gateway,
             $config,
         ];
+    }
+
+    public static function bootTaxEngine()
+    {
+        return Statamic::booted(function () {
+            static::$taxEngine = config('simple-commerce.tax_engine');
+
+            return new static();
+        });
+    }
+
+    public static function taxEngine(): Contracts\TaxEngine
+    {
+        return new static::$taxEngine;
     }
 
     public static function freshOrderNumber()
