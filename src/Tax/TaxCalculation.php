@@ -8,7 +8,7 @@ class TaxCalculation
     protected $rate;
     protected $priceIncludesTax;
 
-    public function __construct(int $amount = 0, float $rate = 0, bool $priceIncludesTax = false)
+    public function __construct(int $amount = 0, $rate = 0, bool $priceIncludesTax = false)
     {
         $this->amount = $amount;
         $this->rate = $rate;
@@ -20,7 +20,7 @@ class TaxCalculation
         return $this->amount;
     }
 
-    public function rate(): float
+    public function rate()
     {
         return $this->rate;
     }
