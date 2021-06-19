@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate as TaxRateFacade;
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;
@@ -47,10 +48,27 @@ class TaxRate
             ->args(func_get_args());
     }
 
+    public function category($category = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('category')
+            ->getter(function ($category) {
+                if (! $category instanceof TaxCategory) {
+                    return TaxCategory::find($category);
+                }
+
+                return $category;
+            })
+            ->args(func_get_args());
+    }
+
     public function country($country = null)
     {
         return $this
-            ->fluentlyGetOrSet('rate')
+            ->fluentlyGetOrSet('country')
+            ->getter(function ($country) {
+                return Countries::firstWhere('iso', $country);
+            })
             ->args(func_get_args());
     }
 
@@ -86,6 +104,7 @@ class TaxRate
             'id' => $this->id,
             'name' => $this->name,
             'rate' => $this->rate,
+            'category' => $this->category,
             'country' => $this->country,
             'state' => $this->state,
         ];

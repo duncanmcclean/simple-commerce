@@ -26,6 +26,7 @@ class TaxRateStore extends BasicStore
             ->id($id)
             ->name(array_pull($data, 'name'))
             ->rate(array_pull($data, 'rate'))
+            ->category(array_pull($data, 'category'))
             ->country(array_pull($data, 'country'))
             ->state(array_pull($data, 'state'));
 
