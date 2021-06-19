@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Statamic\Events\EntryBlueprintFound;
+use Statamic\Facades\CP\Nav;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Stache\Stache;
 use Statamic\Statamic;
@@ -70,12 +71,17 @@ class ServiceProvider extends AddonServiceProvider
             $this
                 ->bootVendorAssets()
                 ->bindContracts()
-                ->bootCartDrivers()
-                ->bootStacheStores();
+                ->bootCartDrivers();
         });
 
         SimpleCommerce::bootGateways();
         SimpleCommerce::bootTaxEngine();
+
+        Statamic::booted(function () {
+            $this
+                ->bootStacheStores()
+                ->createNavItems();
+        });
 
         Filters\OrderStatusFilter::register();
     }
@@ -143,13 +149,30 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootStacheStores()
     {
-        $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
-        $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
+            $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
 
-        $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
-        $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
+            $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
+            $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
 
-        app(Stache::class)->registerStore($taxCategoryStore);
-        app(Stache::class)->registerStore($taxRateStore);
+            app(Stache::class)->registerStore($taxCategoryStore);
+            app(Stache::class)->registerStore($taxRateStore);
+        }
+
+        return $this;
+    }
+
+    protected function createNavItems()
+    {
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            Nav::extend(function ($nav) {
+                $nav->create('Tax Categories')
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-categories.index');
+            });
+        }
+
+        return $this;
     }
 }
