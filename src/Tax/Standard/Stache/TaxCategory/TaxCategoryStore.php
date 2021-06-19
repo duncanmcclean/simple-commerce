@@ -24,8 +24,11 @@ class TaxCategoryStore extends BasicStore
 
         $taxCategory = TaxCategory::make()
             ->id($id)
-            ->name(array_pull($data, 'name'))
-            ->description(array_pull($data, 'description'));
+            ->name(array_pull($data, 'name'));
+
+        if (isset($data['description'])) {
+            $taxCategory->description(array_pull($data, 'description'));
+        }
 
         if (isset($idGenerated)) {
             $taxCategory->save();
