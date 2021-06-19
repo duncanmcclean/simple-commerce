@@ -1,15 +1,16 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Default;
+namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
+use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
 
-class TaxEngine extends Contract
+class TaxEngine implements Contract
 {
     public function name(): string
     {
-        return 'Default';
+        return 'Standard';
     }
 
     public function calculate(Order $order, array $lineItem): TaxCalculation
