@@ -5,7 +5,22 @@
 <div class="flex items-center justify-between mb-3">
     <h1 class="flex-1">Tax Rates</h1>
 
-    <a class="btn-primary" href="{{ cp_route('simple-commerce.tax-rates.create') }}">Create Tax Rate</a>
+    {{-- <a class="btn-primary" href="{{ cp_route('simple-commerce.tax-rates.create') }}">Create Tax Rate</a> --}}
+
+    <dropdown-list class="inline-block">
+        <template v-slot:trigger>
+            <button class="button btn-primary flex items-center pr-2">
+                {{ __('Create Tax Rate') }}
+                <svg-icon name="chevron-down-xs" class="w-2 ml-1" />
+            </button>
+        </template>
+
+        @foreach ($taxCategories as $taxCategory)
+            <dropdown-item
+                redirect="{{ cp_route('simple-commerce.tax-rates.create', ['taxCategory' => $taxCategory->id()]) }}"
+            >{{ $taxCategory->name() }}</dropdown-item>
+        @endforeach
+    </dropdown-list>
 </div>
 
 @if ($taxRates->count())

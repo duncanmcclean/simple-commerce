@@ -14,6 +14,7 @@ class TaxRateController
     {
         return view('simple-commerce::cp.tax-rates.index', [
             'taxRates' => TaxRate::all(),
+            'taxCategories' => TaxCategory::all(),
         ]);
     }
 

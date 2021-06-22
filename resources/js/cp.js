@@ -8,6 +8,12 @@ Statamic.$components.register('money-fieldtype', MoneyFieldtype)
 Statamic.$components.register('product-variant-fieldtype', ProductVariantFieldtype)
 Statamic.$components.register('product-variants-fieldtype', ProductVariantsFildtype)
 
+// Inputs
+
+import StateSelector from './components/Inputs/StateSelector.vue'
+
+Statamic.$components.register('state-selector', StateSelector)
+
 // Widgets
 
 import SalesWidget from './components/Widgets/SalesWidget.vue'
