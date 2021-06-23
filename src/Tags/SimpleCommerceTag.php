@@ -60,7 +60,11 @@ class SimpleCommerceTag extends Tags
 
     public function countries()
     {
-        return Countries::toArray();
+        return Countries::map(function ($country) {
+            return array_merge($country, [
+                'regions' => Regions::findByCountry($country)->toArray(),
+            ]);
+        })->toArray();
     }
 
     public function currencies()
@@ -70,7 +74,11 @@ class SimpleCommerceTag extends Tags
 
     public function regions()
     {
-        return Regions::toArray();
+        return Regions::map(function ($region) {
+            return array_merge($region, [
+                'country' => Countries::findByRegion($region)->first(),
+            ]);
+        })->toArray();
     }
 
     public function errors()
