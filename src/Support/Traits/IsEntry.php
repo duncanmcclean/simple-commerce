@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\EntryNotFound;
 use Illuminate\Support\Arr;
 use Statamic\Entries\Entry;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\Facades\Site as SiteAPI;
 use Statamic\Facades\Stache;
@@ -64,6 +65,8 @@ trait IsEntry
         if (! $this->published && isset($data['published'])) {
             $this->published = $data['published'];
         }
+
+        $data = array_merge($data, $this->defaultFieldsInBlueprint());
 
         $this->data(
             Arr::except($data, ['id', 'site', 'slug', 'publish'])
@@ -177,7 +180,21 @@ trait IsEntry
 
     public function blueprint(): Blueprint
     {
+        if (! $this->entry) {
+            return Collection::find($this->collection())->entryBlueprint();
+        }
+
         return $this->entry()->blueprint();
+    }
+
+    protected function defaultFieldsInBlueprint(): array
+    {
+        return $this->blueprint()->fields()->items()
+            ->where('field.default', '!==', null)
+            ->mapWithKeys(function ($field) {
+                return [$field['handle'] => $field['field']['default']];
+            })
+            ->toArray();
     }
 
     public function beforeSaved()
