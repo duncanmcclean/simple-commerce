@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
 use DoubleThreeDigital\SimpleCommerce\Customers\Customer;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 
@@ -14,7 +15,8 @@ class SendOrderPaidNotifications implements ShouldQueue
         foreach (config('simple-commerce.notifications.order_paid') as $notification => $notificationConfig) {
             if ($notificationConfig['to'] === 'customer') {
                 if ($customer = $event->order->customer()) {
-                    $customer->notify(new $notification($event->order));
+                    Notification::route('mail', $customer->email())
+                        ->notify(new CustomerOrderPaid($event->order));
                 } elseif ($event->order->has('email')) {
                     (new Customer)
                         ->set('email', $this->order->get('customer'))
