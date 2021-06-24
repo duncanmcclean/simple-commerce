@@ -102,7 +102,6 @@ class Calculator implements Contract
         $taxEngine = SimpleCommerce::taxEngine();
         $taxCalculation = $taxEngine->calculate($this->order, $lineItem);
 
-        // $data['tax_rate'] = $taxCalculation->rate(); // TODO: Removing as rate could be different per product...
         $lineItem['tax'] = $taxCalculation->toArray();
 
         if ($taxCalculation->priceIncludesTax()) {
