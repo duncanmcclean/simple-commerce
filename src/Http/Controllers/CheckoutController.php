@@ -8,11 +8,14 @@ use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\ValidCoupon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -20,13 +23,13 @@ use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use CartDriver;
+    use CartDriver, AcceptsFormRequests;
 
     public $cart;
     public StoreRequest $request;
     public $excludedKeys = ['_token', '_params', '_redirect'];
 
-    public function store(StoreRequest $request)
+    public function __invoke(StoreRequest $request)
     {
         $this->cart = $this->getCart();
         $this->request = $request;
@@ -35,10 +38,10 @@ class CheckoutController extends BaseActionController
             ->preCheckout()
             ->handleValidation()
             ->handleCustomerDetails()
-            ->handlePayment()
             ->handleCoupon()
             ->handleStock()
             ->handleRemainingData()
+            ->handlePayment()
             ->postCheckout();
 
         return $this->withSuccess($request, [
@@ -58,19 +61,27 @@ class CheckoutController extends BaseActionController
 
     protected function handleValidation()
     {
-        $checkoutValidationRules = [
-            'name'  => ['sometimes', 'string'],
-            'email' => ['sometimes', 'email'],
-        ];
+        $rules = array_merge(
+            $this->request->has('_request')
+                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
+                : [],
+            $this->request->has('gateway')
+                ? Gateway::use($this->request->get('gateway'))->purchaseRules()
+                : [],
+            [
+                'coupon' => ['nullable', new ValidCoupon($this->cart)]
+            ],
+        );
 
-        $gatewayValidationRules = $this->request->has('gateway') ?
-            Gateway::use($this->request->get('gateway'))->purchaseRules() :
-            [];
+        $messages = array_merge(
+            $this->request->has('_request')
+                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
+                : [],
+            // TODO: gateway custom validation messages?
+            [],
+        );
 
-        $this->request->validate(array_merge(
-            $checkoutValidationRules,
-            $gatewayValidationRules
-        ));
+        $this->request->validate($rules, $messages);
 
         return $this;
     }
@@ -78,6 +89,14 @@ class CheckoutController extends BaseActionController
     protected function handleCustomerDetails()
     {
         $customerData = $this->request->has('customer') ? $this->request->get('customer') : [];
+
+        if (is_string($customerData)) {
+            $this->cart->set('customer', $customerData);
+
+            $this->excludedKeys[] = 'customer';
+
+            return $this;
+        }
 
         if ($this->request->has('name') && $this->request->has('email')) {
             $customerData['name'] = $this->request->get('name');
@@ -109,29 +128,14 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handlePayment()
-    {
-        if ($this->cart->get('grand_total') <= 0) {
-            return $this;
-        }
-
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
-            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
-        }
-
-        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
-
-        $this->excludedKeys[] = 'gateway';
-
-        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
-            $this->excludedKeys[] = $key;
-        }
-
-        return $this;
-    }
-
     protected function handleCoupon()
     {
+        if ($coupon = $this->request->get('coupon')) {
+            $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
+
+            $this->excludedKeys[] = 'coupon';
+        }
+
         if (isset($this->cart->data['coupon'])) {
             $this->cart->coupon()->redeem();
         }
@@ -145,20 +149,21 @@ class CheckoutController extends BaseActionController
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
-                if (isset($product->data['stock'])) {
-                    $stock = $product->data['stock'] + $item['quantity'];
-                } else {
-                    $stock = 1;
-                }
+                if ($product->has('stock')) {
+                    $product->set(
+                        'stock',
+                        $stockCount = $product->get('stock') - $item['quantity']
+                    )->save();
 
-                $product->set('stock', $stock);
+                    if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                        event(new StockRunningLow($product, $stockCount));
+                    }
 
-                if ($stock <= config('simple-commerce.low_stock_threshold')) {
-                    event(new StockRunningLow($product, $stock));
-                }
+                    if ($stockCount <= 0) {
+                        event(new StockRunOut($product, $stockCount));
 
-                if ($stock <= 0) {
-                    event(new StockRunOut($product, $stock));
+                        // TODO: do something when stock has ran out
+                    }
                 }
             });
 
@@ -181,6 +186,31 @@ class CheckoutController extends BaseActionController
 
         if ($data !== []) {
             $this->cart->data($data)->save();
+        }
+
+        return $this;
+    }
+
+    protected function handlePayment()
+    {
+        $this->cart = $this->cart->recalculate();
+
+        if ($this->cart->get('grand_total') <= 0) {
+            $this->cart->markAsPaid();
+
+            return $this;
+        }
+
+        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
+        }
+
+        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
+
+        $this->excludedKeys[] = 'gateway';
+
+        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
+            $this->excludedKeys[] = $key;
         }
 
         return $this;

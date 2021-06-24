@@ -2,11 +2,74 @@
 
 ## Unreleased
 
-## v2.3.0 (2021-xx-xx)
+### What's new
+
+* When creating an entry, we'll now save any default fields from your blueprint. #433
+
+## v2.3.6 (2021-06-11)
+
+## What's fixed
+
+* When updating a line item, the metadata is no longer overwritten #431
+
+## What's improved
+
+* You can now use a custom request on the `{{ sc:cart:addItem }}` and `{{ sc:cart:updateItem }}` tags #432
+
+## v2.3.5 (2021-06-10)
+
+## What's fixed
+
+* You can now set line item metadata when adding a new line item.
+
+## v2.3.4 (2021-06-09)
+
+### What's fixed
+
+* Fixed tax calculations if result is a rounded number, with no decimals #429
+
+### What's improved
+
+* 'United States' and 'Canada' aren't at the top of the countries list anymore
+* Removed `sc:info` command - it's never been used
+
+## v2.3.3 (2021-06-05)
+
+## What's new
+
+* You can now specify a Form Request on some form tags (for custom validation rules) #425
+
+## v2.3.2 (2021-06-03)
+
+### What's improved
+
+* Refactored usage of `findBySlug`, it's being deprecated soon and will likely be removed in Statamic 3.2 #424
+* When using `Something::create`, you can now provide `slug` or `published` to manually set the slug/published status.
+* Checkout: Payment is now done at the very end of the checkout request, rather than just before the coupon. Orders will also be recalculated before payment in case of any last-minute changes.
+* Checkout: You can now set the Customer's ID in the checkout request
+* Checkout: You can now redeem coupons as part of the checkout request
+* Checkout: Refactored some stuff around product stock
+* Checkout: Added a job lot of automated tests to cover the checkout flow
+
+### What's fixed
+
+* Fixed IDE completion on the `Coupon` facade (was suggesting Order methods, rather than Coupon methods)
+* Checkout: Free orders will now be marked as paid again after checkout
+* Fixed issue where coupons limited to certain products could be valid/non-valid accidentally.
+
+## v2.3.1 (2021-05-17)
+
+### What's new?
+
+* You can now grab 'raw' data through the Cart Tag, rather than augmented data. (`{{ sc:cart:rawGrandTotal }}`)
+
+## v2.3.0 (2021-05-10)
 
 While there's been quite a few breaking changes between v2.2 and v2.3, most of them have been addressed by [Update Scripts](https://statamic.dev/knowledge-base/configuring-update-scripts#what-are-update-scripts), which will be run automatically when updating Simple Commerce.
 
 Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
+
+Please review the [Upgrade Guide](https://sc-docs.doublethree.digital/v2.3/update-guide) before updating.
 
 ### What's new
 

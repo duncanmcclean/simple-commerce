@@ -13,6 +13,10 @@ class CartItemController extends BaseActionController
 {
     use CartDriver;
 
+    protected $reservedKeys = [
+        'product', 'quantity', 'variant', '_token', '_params', '_redirect',
+    ];
+
     public function store(StoreRequest $request)
     {
         $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
@@ -55,6 +59,13 @@ class CartItemController extends BaseActionController
                 ];
             }
 
+            $item = array_merge(
+                $item,
+                [
+                    'metadata' => Arr::except($request->all(), $this->reservedKeys),
+                ]
+            );
+
             $cart->addLineItem($item);
         }
 
@@ -67,13 +78,17 @@ class CartItemController extends BaseActionController
     public function update(UpdateRequest $request, string $requestItem)
     {
         $cart = $this->getCart();
+        $lineItem = $cart->lineItem($requestItem);
 
         $cart->updateLineItem(
             $requestItem,
             array_merge(
                 Arr::only($request->all(), 'quantity', 'variant'),
                 [
-                    'metadata' => Arr::except($request->all(), ['quantity', 'variant', '_token', '_params', '_redirect']),
+                    'metadata' => array_merge(
+                        isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
+                        Arr::except($request->all(), $this->reservedKeys),
+                    )
                 ]
             ),
         );

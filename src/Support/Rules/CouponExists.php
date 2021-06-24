@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Coupons;
+namespace DoubleThreeDigital\SimpleCommerce\Support\Rules;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;

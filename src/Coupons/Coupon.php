@@ -28,7 +28,10 @@ class Coupon implements Contract
 
     public function findByCode(string $code): self
     {
-        $entry = Entry::findBySlug($code, $this->collection());
+        $entry = Entry::query()
+            ->where('collection', $this->collection())
+            ->where('slug', $code)
+            ->first();
 
         if (!$entry) {
             throw new CouponNotFound(__('simple-commerce::messages.coupon_not_found'));
@@ -63,7 +66,7 @@ class Coupon implements Contract
                 return in_array($lineItem['product'], $this->get('products'));
             });
 
-            if ($couponProductsInOrder === 0) {
+            if ($couponProductsInOrder->count() === 0) {
                 return false;
             }
         }

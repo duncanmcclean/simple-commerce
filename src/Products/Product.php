@@ -26,11 +26,11 @@ class Product implements Contract
 
     public function stockCount()
     {
-        if (!isset($this->stock)) {
+        if (! $this->has('stock')) {
             return null;
         }
 
-        return (int) $this->data['stock'];
+        return (int) $this->get('stock');
     }
 
     public function purchasableType(): string
