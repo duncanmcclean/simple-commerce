@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 class SendConfiguredNotifications implements ShouldQueue
 {
@@ -21,6 +22,9 @@ class SendConfiguredNotifications implements ShouldQueue
 
         foreach ($notifications as $notification => $config) {
             $freshNotification = null;
+
+            // $reflection = new ReflectionClass($notification);
+            // $constructor = $reflection->getConstructor();
 
             $notifiables = $this->getNotifiables($config, $notification, $event);
             $notification = new $notification($event->order);
