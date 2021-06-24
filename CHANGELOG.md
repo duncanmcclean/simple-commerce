@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's new
+
+* When creating an entry, we'll now save any default fields from your blueprint. #433
+
 ## v2.3.6 (2021-06-11)
 
 ## What's fixed
