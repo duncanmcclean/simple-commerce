@@ -34,7 +34,7 @@ class ServiceProvider extends AddonServiceProvider
             Listeners\EnforceBlueprintFields::class,
         ],
         Events\OrderPaid::class => [
-            Listeners\SendOrderPaidNotifications::class,
+            Listeners\SendConfiguredNotifications::class,
         ],
     ];
 

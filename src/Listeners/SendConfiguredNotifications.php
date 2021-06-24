@@ -8,7 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 
-class SendOrderPaidNotifications implements ShouldQueue
+class SendConfiguredNotifications implements ShouldQueue
 {
     public function handle(OrderPaid $event)
     {
