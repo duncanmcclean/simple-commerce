@@ -108,6 +108,26 @@ class CartControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_cart_and_ensure_custom_form_request_is_used_and_request_is_not_saved_to_order()
+    {
+        $cart = Order::create()->save();
+
+        $data = [
+            '_request' => CartUpdateWithNoRulesFormRequest::class,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data)
+            ->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertArrayNotHasKey('_request', $cart->data());
+    }
+
+    /** @test */
     public function can_update_cart_with_customer_already_in_cart()
     {
         $customer = Customer::create()->data([
@@ -380,5 +400,23 @@ class CartUpdateFormRequest extends FormRequest
         return [
             'shipping_special.required' => 'Coolzies. An error message.',
         ];
+    }
+}
+
+class CartUpdateWithNoRulesFormRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [];
+    }
+
+    public function messages()
+    {
+        return [];
     }
 }

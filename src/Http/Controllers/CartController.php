@@ -29,7 +29,7 @@ class CartController extends BaseActionController
     public function update(UpdateRequest $request)
     {
         $cart = $this->getCart();
-        $data = Arr::except($request->all(), ['_token', '_params', '_redirect']);
+        $data = Arr::except($request->all(), ['_token', '_params', '_redirect', '_request']);
 
         foreach ($data as $key => $value) {
             if ($value === 'on') {
