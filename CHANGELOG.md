@@ -2,9 +2,18 @@
 
 ## Unreleased
 
+## v2.3.7 (2021-06-26)
+
+### What's fixed
+
+* Updated the gateway stub so it's up-to-date
+* `_request` will no longer be saved to the order entry when saving.
+
 ### What's new
 
+* New Country fieldtype
 * When creating an entry, we'll now save any default fields from your blueprint. #433
+* Both `StockRunningLow` and `StockRunOut` events are now available triggers for notifications. #423
 
 ## v2.3.6 (2021-06-11)
 
