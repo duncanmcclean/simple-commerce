@@ -6,14 +6,16 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\CreateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\DeleteRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\EditRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\UpdateRequest;
-use Illuminate\Http\Request;
 use Statamic\Facades\Stache;
 
 class TaxRateController
 {
-    public function index()
+    public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.tax-rates.index', [
             'taxRates' => TaxRate::all(),
@@ -43,7 +45,7 @@ class TaxRateController
         return redirect($taxRate->editUrl());
     }
 
-    public function edit(Request $request, $taxRate)
+    public function edit(EditRequest $request, $taxRate)
     {
         $taxRate = TaxRate::find($taxRate);
 
@@ -67,7 +69,7 @@ class TaxRateController
         return redirect($taxRate->editUrl());
     }
 
-    public function destroy(Request $request, $taxRate)
+    public function destroy(DeleteRequest $request, $taxRate)
     {
         TaxRate::find($taxRate)->delete();
 
