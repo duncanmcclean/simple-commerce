@@ -100,21 +100,21 @@ class TaxZone
     public function editUrl()
     {
         return cp_route('simple-commerce.tax-zones.edit', [
-            'taxRate' => $this->id(),
+            'taxZone' => $this->id(),
         ]);
     }
 
     public function updateUrl()
     {
         return cp_route('simple-commerce.tax-zones.update', [
-            'taxRate' => $this->id(),
+            'taxZone' => $this->id(),
         ]);
     }
 
     public function deleteUrl()
     {
         return cp_route('simple-commerce.tax-zones.destroy', [
-            'taxRate' => $this->id(),
+            'taxZone' => $this->id(),
         ]);
     }
 }

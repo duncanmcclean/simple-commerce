@@ -28,7 +28,7 @@ class TaxZoneStore extends BasicStore
             ->country(array_pull($data, 'country'));
 
         if (isset($data['region'])) {
-            $taxZone->state(array_pull($data, 'region'));
+            $taxZone->region(array_pull($data, 'region'));
         }
 
         if (isset($idGenerated)) {

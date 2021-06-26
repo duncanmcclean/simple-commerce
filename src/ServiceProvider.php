@@ -184,7 +184,12 @@ class ServiceProvider extends AddonServiceProvider
 
                 $nav->create(__('Tax Categories'))
                     ->section(__('Simple Commerce'))
-                    ->route('simple-commerce.tax-categories.index');
+                    ->route('simple-commerce.tax-categories.index')
+                    ->icon('tags');
+
+                $nav->create(__('Tax Zones'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-zones.index');
             });
         }
 

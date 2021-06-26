@@ -35,7 +35,7 @@
 
             <div class="form-group w-full">
                 <label class="block mb-1">Tax Zone</label>
-                <select name="country" class="input-text" value="{{ $taxRate->zone()->id() }}">
+                <select name="zone" class="input-text" value="{{ $taxRate->zone()->id() }}">
                     @foreach($taxZones as $taxZone)
                         <option value="{{ $taxZone->id() }}">{{ $taxZone->name() }}</option>
                     @endforeach
