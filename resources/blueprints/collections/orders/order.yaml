@@ -138,11 +138,12 @@ sections:
       -
         handle: shipping_country
         field:
-          input_type: text
-          type: text
-          width: 50
-          listable: false
+          max_items: 1
+          mode: default
           display: 'Shipping Country'
+          type: country
+          icon: country
+          listable: hidden
       -
         handle: shipping_postal_code
         field:
@@ -193,11 +194,12 @@ sections:
       -
         handle: billing_country
         field:
-          input_type: text
-          type: text
-          width: 50
-          listable: false
+          max_items: 1
+          mode: default
           display: 'Billing Country'
+          type: country
+          icon: country
+          listable: hidden
           unless:
             use_shipping_address_for_billing: 'equals true'
       -
