@@ -34,15 +34,13 @@
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Country</label>
-                <select name="country" class="input-text" value="{{ $taxRate->country()['iso'] }}">
-                    @foreach($countries as $country)
-                        <option value="{{ $country['iso'] }}">{{ $country['name'] }}</option>
+                <label class="block mb-1">Tax Zone</label>
+                <select name="country" class="input-text" value="{{ $taxRate->zone()->id() }}">
+                    @foreach($taxZones as $taxZone)
+                        <option value="{{ $taxZone->id() }}">{{ $taxZone->name() }}</option>
                     @endforeach
                 </select>
             </div>
-
-            <!-- TODO: state -->
         </div>
     </form>
 @endsection

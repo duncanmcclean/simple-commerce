@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Http\Request;
 use Statamic\Facades\Stache;
 
@@ -22,7 +22,7 @@ class TaxRateController
     {
         return view('simple-commerce::cp.tax-rates.create', [
             'taxCategories' => TaxCategory::all(),
-            'countries' => Countries::all(),
+            'taxZones' => TaxZone::all(),
         ]);
     }
 
@@ -33,11 +33,7 @@ class TaxRateController
             ->name($request->name)
             ->rate($request->rate)
             ->category($request->category)
-            ->country($request->country);
-
-        if ($request->state) {
-            $taxRate->state($request->state);
-        }
+            ->zone($request->zone);
 
         $taxRate->save();
 
@@ -51,7 +47,7 @@ class TaxRateController
         return view('simple-commerce::cp.tax-rates.edit', [
             'taxRate' => $taxRate,
             'taxCategories' => TaxCategory::all(),
-            'countries' => Countries::all(),
+            'taxZones' => TaxZone::all(),
         ]);
     }
 
@@ -61,11 +57,7 @@ class TaxRateController
             ->name($request->name)
             ->rate($request->rate)
             ->category($request->category)
-            ->country($request->country);
-
-        if ($request->state) {
-            $taxRate->state($request->state);
-        }
+            ->zone($request->zone);
 
         $taxRate->save();
 
