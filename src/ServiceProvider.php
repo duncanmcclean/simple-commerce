@@ -26,6 +26,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $fieldtypes = [
+        Fieldtypes\CountryFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
@@ -36,7 +37,13 @@ class ServiceProvider extends AddonServiceProvider
             Listeners\EnforceBlueprintFields::class,
         ],
         Events\OrderPaid::class => [
-            Listeners\SendOrderPaidNotifications::class,
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\StockRunningLow::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\StockRunOut::class => [
+            Listeners\SendConfiguredNotifications::class,
         ],
     ];
 
