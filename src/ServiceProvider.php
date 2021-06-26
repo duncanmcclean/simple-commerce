@@ -36,6 +36,12 @@ class ServiceProvider extends AddonServiceProvider
         Events\OrderPaid::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
+        Events\StockRunningLow::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\StockRunOut::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
     ];
 
     protected $routes = [
