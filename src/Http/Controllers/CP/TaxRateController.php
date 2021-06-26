@@ -18,10 +18,10 @@ class TaxRateController
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return view('simple-commerce::cp.tax-rates.create', [
-            'taxCategories' => TaxCategory::all(),
+            'taxCategory' => TaxCategory::find($request->taxCategory),
             'taxZones' => TaxZone::all(),
         ]);
     }

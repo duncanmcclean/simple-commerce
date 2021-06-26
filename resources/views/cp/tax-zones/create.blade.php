@@ -8,6 +8,11 @@
     <form x-data="{ country: null }" action="{{ cp_route('simple-commerce.tax-zones.store') }}" method="POST">
         @csrf
 
+        @include('simple-commerce::cp.partials.breadcrumbs', [
+            'title' => __('Tax Zones'),
+            'url' => cp_route('simple-commerce.tax-zones.index'),
+        ])
+
         <header class="mb-3">
             <div class="flex items-center justify-between">
                 <h1>Create Tax Zone</h1>

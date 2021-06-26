@@ -1,14 +1,19 @@
 @extends('statamic::layout')
-@section('title', 'Edit Tax Category: ' . $taxCategory->name())
+@section('title', "Tax Category: {$taxCategory->updateUrl()}")
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
     <form action="{{ $taxCategory->updateUrl() }}" method="POST">
         @csrf
 
+        @include('simple-commerce::cp.partials.breadcrumbs', [
+            'title' => __('Tax Categories'),
+            'url' => cp_route('simple-commerce.tax-categories.index'),
+        ])
+
         <header class="mb-3">
             <div class="flex items-center justify-between">
-                <h1>Edit Tax Category: {{ $taxCategory->name() }}</h1>
+                <h1>{{ $taxCategory->name() }}</h1>
                 <button type="submit" class="btn-primary">Save</button>
             </div>
         </header>

@@ -5,11 +5,16 @@
 @section('content')
     <form action="{{ cp_route('simple-commerce.tax-rates.store') }}" method="POST">
         @csrf
-        <input type="hidden" name="category" value="{{ request()->input('taxCategory') }}">
+        <input type="hidden" name="category" value="{{ $taxCategory->id() }}">
+
+        @include('simple-commerce::cp.partials.breadcrumbs', [
+            'title' => __('Tax Rates'),
+            'url' => cp_route('simple-commerce.tax-rates.index'),
+        ])
 
         <header class="mb-3">
             <div class="flex items-center justify-between">
-                <h1>Create Tax Rate</h1>
+                <h1>Create Tax Rate: {{ $taxCategory->name() }}</h1>
                 <button type="submit" class="btn-primary">Save</button>
             </div>
         </header>

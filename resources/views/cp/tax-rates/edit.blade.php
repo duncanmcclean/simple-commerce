@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', 'Edit Tax Rate: ' . $taxRate->name())
+@section('title', "Tax Rate: {$taxRate->name()}")
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
@@ -7,9 +7,14 @@
         @csrf
         <input type="hidden" name="category" value="{{ $taxRate->category()->id() }}">
 
+        @include('simple-commerce::cp.partials.breadcrumbs', [
+            'title' => __('Tax Rates'),
+            'url' => cp_route('simple-commerce.tax-rates.index'),
+        ])
+
         <header class="mb-3">
             <div class="flex items-center justify-between">
-                <h1>Edit Tax Rate: {{ $taxRate->name() }}</h1>
+                <h1>{{ $taxRate->name() }}</h1>
                 <button type="submit" class="btn-primary">Save</button>
             </div>
         </header>
