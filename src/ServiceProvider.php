@@ -163,8 +163,12 @@ class ServiceProvider extends AddonServiceProvider
             $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
             $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
 
+            $taxZoneStore = new Tax\Standard\Stache\TaxZone\TaxZoneStore;
+            $taxZoneStore->directory(base_path('content/simple-commerce/tax-zones'));
+
             app(Stache::class)->registerStore($taxCategoryStore);
             app(Stache::class)->registerStore($taxRateStore);
+            app(Stache::class)->registerStore($taxZoneStore);
         }
 
         return $this;
