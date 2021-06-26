@@ -5,6 +5,7 @@
 @section('content')
     <form action="{{ cp_route('simple-commerce.tax-rates.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="category" value="{{ request()->input('taxCategory') }}">
 
         <header class="mb-3">
             <div class="flex items-center justify-between">
@@ -14,33 +15,27 @@
         </header>
 
         <div class="publish-form card p-0 flex flex-wrap">
-            <div class="form-group w-full">
-                <label class="block mb-1">Name</label>
-                <input type="text" name="name" autofocus="autofocus" class="input-text">
-            </div>
-
-            <div class="form-group w-full">
-                <label class="block mb-1">Rate %</label>
-                <input type="number" name="rate" class="input-text">
-            </div>
-
-            @if (! request()->input('taxCategory'))
-                <div class="form-group w-full">
-                    <label class="block mb-1">Tax Category</label>
-                    <select name="category" class="input-text">
-                        @foreach($taxCategories as $taxCategory)
-                            <option value="{{ $taxCategory->id() }}">{{ $taxCategory->name() }}</option>
-                        @endforeach
-                    </select>
+            <div class="flex flex-col md:flex-row items-center w-full">
+                <div class="form-group w-full md:w-1/2">
+                    <label class="block mb-1">Name</label>
+                    <input type="text" name="name" autofocus="autofocus" class="input-text" required>
                 </div>
-            @else
-                <input type="hidden" name="category" value="{{ request()->input('taxCategory') }}">
-            @endif
+
+                <div class="form-group w-full md:w-1/2">
+                    <label class="block mb-1">Rate</label>
+
+                    <div class="input-group">
+                        <input type="number" name="rate" class="input-text" required>
+                        <div class="input-group-append">%</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group w-full">
                 <label class="block mb-1">Tax Zone</label>
-                <select name="zone" class="input-text">
+                <select name="zone" class="input-text" required>
                     @foreach($taxZones as $taxZone)
+                        <option selected>Please select</option>
                         <option value="{{ $taxZone->id() }}">{{ $taxZone->name() }}</option>
                     @endforeach
                 </select>

@@ -5,8 +5,6 @@
 <div class="flex items-center justify-between mb-3">
     <h1 class="flex-1">Tax Rates</h1>
 
-    {{-- <a class="btn-primary" href="{{ cp_route('simple-commerce.tax-rates.create') }}">Create Tax Rate</a> --}}
-
     <dropdown-list class="inline-block">
         <template v-slot:trigger>
             <button class="button btn-primary flex items-center pr-2">
@@ -29,6 +27,8 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Rate</th>
+                    <th>Tax Zone</th>
                     <th class="actions-column"></th>
                 </tr>
             </thead>
@@ -40,6 +40,12 @@
                             <div class="flex items-center">
                                 <a href="{{ $taxRate->editUrl() }}">{{ $taxRate->name() }}</a>
                             </div>
+                        </td>
+                        <td>
+                            {{ $taxRate->rate() }}%
+                        </td>
+                        <td>
+                            {{ $taxRate->zone()->name() }}
                         </td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
