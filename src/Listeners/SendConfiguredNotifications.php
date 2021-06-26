@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use ReflectionClass;
+use ReflectionParameter;
 
 class SendConfiguredNotifications implements ShouldQueue
 {
@@ -23,11 +24,8 @@ class SendConfiguredNotifications implements ShouldQueue
         foreach ($notifications as $notification => $config) {
             $freshNotification = null;
 
-            // $reflection = new ReflectionClass($notification);
-            // $constructor = $reflection->getConstructor();
-
             $notifiables = $this->getNotifiables($config, $notification, $event);
-            $notification = new $notification($event->order);
+            $notification = new $notification(...$this->getNotificationParameters($config, $notification, $event));
 
             foreach ($notifiables as $channel => $route) {
                 if (! $freshNotification) {
@@ -70,5 +68,21 @@ class SendConfiguredNotifications implements ShouldQueue
         }
 
         throw new \Exception("No notifiable specified for [{$notification}]");
+    }
+
+    protected function getNotificationParameters(array $config, $notification, $event): array
+    {
+        $reflection = new ReflectionClass($notification);
+        $constructor = $reflection->getConstructor();
+
+        return collect($constructor->getParameters())
+            ->map(function (ReflectionParameter $parameter) use ($event) {
+                if (property_exists($event, $parameter->getName())) {
+                    return $event->{$parameter->getName()};
+                }
+
+                throw new \Exception("A parameter called [{$parameter->getName()}] does not exist on the event.");
+            })
+            ->toArray();
     }
 }
