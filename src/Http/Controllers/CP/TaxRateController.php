@@ -5,6 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\CreateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\UpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\Facades\Stache;
 
@@ -18,7 +21,7 @@ class TaxRateController
         ]);
     }
 
-    public function create(Request $request)
+    public function create(CreateRequest $request)
     {
         return view('simple-commerce::cp.tax-rates.create', [
             'taxCategory' => TaxCategory::find($request->taxCategory),
@@ -26,7 +29,7 @@ class TaxRateController
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $taxRate = TaxRate::make()
             ->id(Stache::generateId())
@@ -51,7 +54,7 @@ class TaxRateController
         ]);
     }
 
-    public function update(Request $request, $taxRate)
+    public function update(UpdateRequest $request, $taxRate)
     {
         $taxRate = TaxRate::find($taxRate)
             ->name($request->name)
