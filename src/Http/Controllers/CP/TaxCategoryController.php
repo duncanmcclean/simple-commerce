@@ -3,24 +3,29 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\CreateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\EditRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\IndexRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\UpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\Facades\Stache;
 
 class TaxCategoryController
 {
-    public function index()
+    public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.tax-categories.index', [
             'taxCategories' => TaxCategory::all(),
         ]);
     }
 
-    public function create()
+    public function create(CreateRequest $request)
     {
         return view('simple-commerce::cp.tax-categories.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $taxCategory = TaxCategory::make()
             ->id(Stache::generateId())
@@ -32,7 +37,7 @@ class TaxCategoryController
         return redirect($taxCategory->editUrl());
     }
 
-    public function edit(Request $request, $taxCategory)
+    public function edit(EditRequest $request, $taxCategory)
     {
         $taxCategory = TaxCategory::find($taxCategory);
 
@@ -41,7 +46,7 @@ class TaxCategoryController
         ]);
     }
 
-    public function update(Request $request, $taxCategory)
+    public function update(UpdateRequest $request, $taxCategory)
     {
         $taxCategory = TaxCategory::find($taxCategory)
             ->name($request->name)
