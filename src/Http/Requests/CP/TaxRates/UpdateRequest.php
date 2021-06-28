@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate;
 
 use Illuminate\Foundation\Http\FormRequest;
 

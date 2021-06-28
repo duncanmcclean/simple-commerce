@@ -5,12 +5,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\CreateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\DeleteRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\EditRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRates\UpdateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\CreateRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\DeleteRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\EditRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\IndexRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\UpdateRequest;
 use Statamic\Facades\Stache;
 
 class TaxRateController
