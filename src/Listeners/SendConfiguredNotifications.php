@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
@@ -12,7 +11,7 @@ use ReflectionParameter;
 
 class SendConfiguredNotifications implements ShouldQueue
 {
-    public function handle(OrderPaid $event)
+    public function handle($event)
     {
         $eventName = Str::of(get_class($event))
             ->afterLast('\\')
