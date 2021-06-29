@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.8 (2021-06-29)
+
+### What's fixed
+
+* Fixed small bug with notification improvements from the other day
+
 ## v2.3.7 (2021-06-26)
 
 ### What's fixed
