@@ -30,6 +30,7 @@ class Order implements Contract
 
     protected $entry;
     protected $collection;
+    protected $withoutRecalculating = false;
 
     public function __construct()
     {
@@ -186,6 +187,17 @@ class Order implements Contract
     public function collection(): string
     {
         return SimpleCommerce::orderDriver()['collection'];
+    }
+
+    public function withoutRecalculating(callable $callback)
+    {
+        $this->withoutRecalculating = true;
+
+        $return = $callback();
+
+        $this->withoutRecalculating = false;
+
+        return $return;
     }
 
     public static function bindings(): array

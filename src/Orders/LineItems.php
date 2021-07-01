@@ -30,7 +30,10 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->recalculate();
+
+        if (! $this->withoutRecalculating) {
+            $this->recalculate();
+        }
 
         return $this->lineItem($lineItemData['id']);
     }
@@ -50,7 +53,10 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->recalculate();
+
+        if (! $this->withoutRecalculating) {
+            $this->recalculate();
+        }
 
         return $this->lineItem($lineItemId);
     }
@@ -66,7 +72,10 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->recalculate();
+
+        if (! $this->withoutRecalculating) {
+            $this->recalculate();
+        }
 
         return $this->lineItems();
     }
@@ -78,7 +87,10 @@ trait LineItems
         ]);
 
         $this->save();
-        $this->recalculate();
+
+        if (! $this->withoutRecalculating) {
+            $this->recalculate();
+        }
 
         return $this->lineItems();
     }

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.0 (xx-xx-xx)
+
+### What's new
+
+* A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
+
 ### What's new
 
 * When creating an entry, we'll now save any default fields from your blueprint. #433

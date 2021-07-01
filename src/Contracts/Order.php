@@ -62,6 +62,8 @@ interface Order
 
     public function rules(): array;
 
+    public function withoutRecalculating(callable $callback);
+
     public function lineItems(): Collection;
 
     public function lineItem($lineItemId): array;
