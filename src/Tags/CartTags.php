@@ -23,9 +23,9 @@ class CartTags extends SubTag
     {
         $cart = $this->getOrMakeCart();
 
-        return isset($cart->data['items']) && $cart->data['items'] != [] ?
-            $cart->toAugmentedArray()['items']->value() :
-            [];
+        return $cart->lineItems()->count() >= 1
+            ? $cart->toAugmentedArray()['items']->value()
+            : [];
     }
 
     public function count()
