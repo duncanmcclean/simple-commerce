@@ -34,11 +34,7 @@ class CartTags extends SubTag
             return 0;
         }
 
-        if (!$this->getCart()->has('items')) {
-            return 0;
-        }
-
-        return collect($this->getCart()->get('items'))->count();
+        return $this->getCart()->lineItems()->count();
     }
 
     public function total()
