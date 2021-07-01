@@ -4,7 +4,7 @@
 
 ## What's fixed
 
-* When using custom order class, `sc:cart:count` would not return the correct total.
+* When using custom order class, `sc:cart:count` would not return the correct total. #442
 
 ## v2.3.8 (2021-06-29)
 
