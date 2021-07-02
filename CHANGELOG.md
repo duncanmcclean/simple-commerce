@@ -6,6 +6,7 @@
 
 * When using a custom order class, `sc:cart:count` would not return the correct total. #442
 * When using a custom order class, you wouldn't be able to add to the cart #441
+* If you don't have notifications for a trigger, it won't error now
 
 ## v2.3.8 (2021-06-29)
 

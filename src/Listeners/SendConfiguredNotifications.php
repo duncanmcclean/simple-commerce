@@ -20,6 +20,10 @@ class SendConfiguredNotifications implements ShouldQueue
 
         $notifications = collect(Config::get('simple-commerce.notifications'))->get($eventName);
 
+        if (! $notifications) {
+            return;
+        }
+
         foreach ($notifications as $notification => $config) {
             $freshNotification = null;
 
