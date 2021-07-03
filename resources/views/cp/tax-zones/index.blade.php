@@ -5,7 +5,9 @@
 <div class="flex items-center justify-between mb-3">
     <h1 class="flex-1">Tax Zones</h1>
 
-    <a class="btn-primary" href="{{ cp_route('simple-commerce.tax-zones.create') }}">Create Tax Zone</a>
+    @if(auth()->user()->can('create tax zones'))
+        <a class="btn-primary" href="{{ cp_route('simple-commerce.tax-zones.create') }}">Create Tax Zone</a>
+    @endif
 </div>
 
 @if ($taxZones->count())
@@ -30,16 +32,21 @@
                         <td>{{ $taxZone->country()['name'] }}</td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
-                                <dropdown-item :text="__('Edit')" redirect="{{ $taxZone->editUrl() }}"></dropdown-item>
-                                <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
-                                    <resource-deleter
-                                        ref="deleter"
-                                        resource-title="{{ $taxZone->name() }}"
-                                        route="{{ $taxZone->deleteUrl() }}"
-                                        :reload="true"
-                                        @deleted="document.getElementById('taxZone_{{ $taxZone->id() }}').remove()"
-                                    ></resource-deleter>
-                                </dropdown-item>
+                                @if(auth()->user()->can('edit tax zones'))
+                                    <dropdown-item :text="__('Edit')" redirect="{{ $taxZone->editUrl() }}"></dropdown-item>
+                                @endif
+
+                                @if(auth()->user()->can('delete tax zones'))
+                                    <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
+                                        <resource-deleter
+                                            ref="deleter"
+                                            resource-title="{{ $taxZone->name() }}"
+                                            route="{{ $taxZone->deleteUrl() }}"
+                                            :reload="true"
+                                            @deleted="document.getElementById('taxZone_{{ $taxZone->id() }}').remove()"
+                                        ></resource-deleter>
+                                    </dropdown-item>
+                                @endif
                             </dropdown-list>
                         </td>
                     </tr>
