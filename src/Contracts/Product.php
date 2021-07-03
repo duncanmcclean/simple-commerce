@@ -51,7 +51,5 @@ interface Product
 
     public function variant(string $optionKey): ?ProductVariant;
 
-    public function isExemptFromTax(): bool;
-
     public static function bindings(): array;
 }

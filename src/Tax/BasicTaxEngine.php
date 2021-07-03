@@ -31,7 +31,7 @@ class BasicTaxEngine implements TaxEngine
     {
         $product = Product::find($lineItem['product']);
 
-        if ($product->isExemptFromTax()) {
+        if ($product->get('exempt_from_tax') === true) {
             return new TaxCalculation;
         }
 
