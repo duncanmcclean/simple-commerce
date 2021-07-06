@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.3.10 (2021-07-06)
+
 ### What's new
 
 * Added a new `currency` modifier
@@ -9,6 +11,7 @@
 ### What's fixed
 
 * Receipts now work when using a custom order class #443
+* `_request` will no longer be saved when checking out.
 
 ## v2.3.9 (2021-07-06)
 
