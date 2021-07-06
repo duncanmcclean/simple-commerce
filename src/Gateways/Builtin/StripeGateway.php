@@ -47,7 +47,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $customer = $order->customer();
 
-        if ($customer->has('email')) {
+        if ($customer && $customer->has('email')) {
             $stripeCustomerData = [
                 'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
                 'email' => $customer->get('email'),
@@ -57,7 +57,7 @@ class StripeGateway extends BaseGateway implements Gateway
             $intentData['customer'] = $stripeCustomer->id;
         }
 
-        if (isset($customer) && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
+        if ($customer && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
             $intentData['receipt_email'] = $customer->email();
         }
 
