@@ -6,6 +6,10 @@
 
 * Added a new `currency` modifier
 
+### What's fixed
+
+* Receipts now work when using a custom order class #443
+
 ## v2.3.9 (2021-07-06)
 
 ### What's fixed
