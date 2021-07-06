@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
@@ -76,6 +77,8 @@ abstract class TestCase extends OrchestraTestCase
         ]);
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
         $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
+
+        $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 

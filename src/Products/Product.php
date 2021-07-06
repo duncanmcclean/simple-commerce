@@ -3,9 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
@@ -68,6 +70,18 @@ class Product implements Contract
     public function collection(): string
     {
         return SimpleCommerce::productDriver()['collection'];
+    }
+
+    public function taxCategory(): ?TaxCategory
+    {
+        // TODO: add field to blueprint
+        $taxCategory = $this->get('tax_catgeory');
+
+        if (! $taxCategory) {
+            throw new \Exception("Product [{$this->id()}] has no tax category assigned. Please assign a tax category.");
+        }
+
+        return TaxCategoryFacade::find($this->get('tax_category'));
     }
 
     public static function bindings(): array

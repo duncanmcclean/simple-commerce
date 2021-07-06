@@ -27,14 +27,14 @@ class TaxCategoryRepository
         return $this->query()->where('id', $id)->first();
     }
 
-    public function save($form)
+    public function save($taxCategory)
     {
-        $this->store->save($form);
+        $this->store->save($taxCategory);
     }
 
-    public function delete($entry)
+    public function delete($taxCategory)
     {
-        $this->store->delete($entry);
+        $this->store->delete($taxCategory);
     }
 
     public function query()
