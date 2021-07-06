@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.3.9 (2021-07-06)
+
 ## What's fixed
 
 * When using a custom order class, `sc:cart:count` would not return the correct total. #442
