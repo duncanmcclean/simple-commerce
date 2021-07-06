@@ -45,6 +45,10 @@ class ServiceProvider extends AddonServiceProvider
         ],
     ];
 
+    protected $modifiers = [
+        Modifiers\Currency::class,
+    ];
+
     protected $routes = [
         'actions' => __DIR__.'/../routes/actions.php',
         'cp'      => __DIR__.'/../routes/cp.php',

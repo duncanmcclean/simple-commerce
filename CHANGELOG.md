@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's new
+
+* Added a new `currency` modifier
+
 ## v2.3.9 (2021-07-06)
 
 ### What's fixed
