@@ -107,6 +107,10 @@ class Order implements Contract
             return $this;
         }
 
+        if (! $this->has('coupon')) {
+            return null;
+        }
+
         return Coupon::find($this->get('coupon'));
     }
 
