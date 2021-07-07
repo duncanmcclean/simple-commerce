@@ -25,7 +25,7 @@ class CartItemController extends BaseActionController
         $items = $cart->has('items') ? $cart->get('items') : [];
 
         // Ensure there's enough stock to fulfill the customer's quantity
-        if ($product->has('stock') && $product->get('stock') < $request->quantity) {
+        if ($product->has('stock') && $product->get('stock') !== null && $product->get('stock') < $request->quantity) {
             return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
         }
 
