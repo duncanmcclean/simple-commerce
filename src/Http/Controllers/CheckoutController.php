@@ -161,7 +161,7 @@ class CheckoutController extends BaseActionController
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
-                if ($product->has('stock')) {
+                if ($product->has('stock') && $product->get('stock') !== null) {
                     $stockCount = $product->get('stock') - $item['quantity'];
 
                     // Need to do this check before actually setting the stock
