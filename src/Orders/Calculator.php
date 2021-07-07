@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use Illuminate\Support\Facades\Config;
