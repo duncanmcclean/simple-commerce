@@ -16,15 +16,11 @@ class CouponTags extends SubTag
             return [];
         }
 
-        $coupon = isset($this->getCart()->data['coupon'])
-            ? $this->getCart()->data['coupon']
-            : null;
+        $coupon = $this->getCart()->coupon();
 
-        if ($coupon === null) {
+        if (! $coupon) {
             return [];
         }
-
-        $coupon = Coupon::find($coupon);
 
         return $coupon->toAugmentedArray();
     }

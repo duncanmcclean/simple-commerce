@@ -68,7 +68,7 @@ class Manager implements Contract
         $cart = Order::find($order->id());
         $cart->data([
             'is_refunded'  => true,
-            'gateway_data' => array_merge($cart->data['gateway_data'], [
+            'gateway_data' => array_merge($cart->get('gateway_data'), [
                 'refund' => $refund,
             ]),
         ])->save();

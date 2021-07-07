@@ -35,7 +35,7 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->create([
             'amount' => [
                 'currency' => Currency::get(Site::current())['code'],
-                'value'    => (string) substr_replace($order->data['grand_total'], '.', -2, 0),
+                'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
             ],
             'description' => "Order {$order->title()}",
             'redirectUrl' => $this->callbackUrl([
@@ -73,7 +73,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
+        $payment = $this->mollie->payments->get($order->data()['gateway_data']['id']);
 
         return new Response(true, [
             'id'                              => $payment->id,
@@ -118,7 +118,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->data['gateway_data']['id']);
+        $payment = $this->mollie->payments->get($order->data()['gateway_data']['id']);
         $payment->refund([]);
 
         return new Response(true, []);
