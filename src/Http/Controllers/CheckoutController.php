@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
@@ -34,15 +35,26 @@ class CheckoutController extends BaseActionController
         $this->cart = $this->getCart();
         $this->request = $request;
 
-        $this
-            ->preCheckout()
-            ->handleValidation()
-            ->handleCustomerDetails()
-            ->handleCoupon()
-            ->handleStock()
-            ->handleRemainingData()
-            ->handlePayment()
-            ->postCheckout();
+        try {
+            $this
+                ->preCheckout()
+                ->handleValidation()
+                ->handleCustomerDetails()
+                ->handleCoupon()
+                ->handleStock()
+                ->handleRemainingData()
+                ->handlePayment()
+                ->postCheckout();
+        } catch (CheckoutProductHasNoStockException $e) {
+            $lineItem = $this->cart->lineItems()->filter(function ($lineItem) use ($e) {
+                return $lineItem['product'] === $e->product->id();
+            })->first();
+
+            $this->cart->removeLineItem($lineItem['id']);
+            $this->cart->save();
+
+            return $this->withErrors($this->request, __("Checkout failed. A product in your cart has no stock left. The product has been removed from your cart."));
+        }
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.checkout_complete'),
@@ -145,11 +157,20 @@ class CheckoutController extends BaseActionController
 
     protected function handleStock()
     {
-        collect($this->cart->get('items'))
+        $this->cart->lineItems()
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
                 if ($product->has('stock')) {
+                    $stockCount = $product->get('stock') - $item['quantity'];
+
+                    // Need to do this check before actually setting the stock
+                    if ($stockCount <= 0) {
+                        event(new StockRunOut($product, $stockCount));
+
+                        throw new CheckoutProductHasNoStockException($product);
+                    }
+
                     $product->set(
                         'stock',
                         $stockCount = $product->get('stock') - $item['quantity']
@@ -157,12 +178,6 @@ class CheckoutController extends BaseActionController
 
                     if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
                         event(new StockRunningLow($product, $stockCount));
-                    }
-
-                    if ($stockCount <= 0) {
-                        event(new StockRunOut($product, $stockCount));
-
-                        // TODO: do something when stock has ran out
                     }
                 }
             });
