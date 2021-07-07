@@ -31,11 +31,11 @@ class CouponTags extends SubTag
 
     public function has()
     {
-        if (!$this->hasCart()) {
+        if (! $this->hasCart()) {
             return false;
         }
 
-        return isset($this->getCart()->data['coupon']);
+        return ! is_null($this->getCart()->coupon());
     }
 
     public function redeem()
