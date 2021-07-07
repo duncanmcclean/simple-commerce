@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
@@ -99,7 +100,15 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $charge = PaymentIntent::retrieve($order->data()->get('gateway_data')['intent']);
+        $paymentIntent = isset($order->get('stripe')['intent'])
+            ? $order->get('stripe')['intent']
+            : null;
+
+        if (! $paymentIntent) {
+            throw new StripePaymentIntentNotProvided(__('Stripe: No Payment Intent was provided to fetch.'));
+        }
+
+        $charge = PaymentIntent::retrieve($paymentIntent);
 
         return new GatewayResponse(true, $charge->toArray());
     }
@@ -108,13 +117,16 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        if (!isset($data['intent'])) {
-            // return new Response(false)
-            //     ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
+        $paymentIntent = isset($order->get('stripe')['intent'])
+            ? $order->get('stripe')['intent']
+            : null;
+
+        if (! $paymentIntent) {
+            throw new StripePaymentIntentNotProvided(__('Stripe: No Payment Intent was provided to action a refund.'));
         }
 
         $refund = Refund::create([
-            'payment_intent' => $order->data()->get('gateway_data')['intent'],
+            'payment_intent' => $paymentIntent,
         ]);
 
         return new GatewayResponse(true, $refund->toArray());
