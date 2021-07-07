@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## v2.3.11 (2021-07-07)
+
+I've been doing some 'dog-fooding' of Simple Commerce at work over the last couple of days and I've found quite a few bugs, so this release is a big pile of fixes.
+
+### What's improved
+
+* If a product is out of stock, we'll now give you a validation error and remove the item from the cart.
+* Getting data from the cart tag, like so: `{{ sc:cart:something }}` will now go through augmentation
+* Stripe will now show API requests as coming from Simple Commerce (instead of directly through the Stripe SDK)
+
+### What's fixed
+
+* Fixed coupon redeemed/maximum uses check
+* The Coupon total will now calculate properly when using a non-entry driver
+* Fixed `{{ sc:coupon:has }}` when using a non-entry driver
+* Tided up some code and added some null checks in places
+* Fixed Stripe refunds not working properly
+
 ## v2.3.10 (2021-07-06)
 
 ### What's new
