@@ -13,16 +13,15 @@ class EnforceBlueprintFields
         $productDriver = SimpleCommerce::productDriver();
         $orderDriver   = SimpleCommerce::orderDriver();
 
-        switch ($event->blueprint->namespace()) {
-            case "collections.{$productDriver['collection']}":
-                return $this->enforceProductFields($event);
-
-            case "collections.{$orderDriver['collection']}":
-                return $this->enforceOrderFields($event);
-
-            default:
-                return;
+        if (isset($productDriver['collection']) && $event->blueprint->namespace() === "collections.{$productDriver['collection']}") {
+            return $this->enforceProductFields($event);
         }
+
+        if (isset($orderDriver['collection']) && $event->blueprint->namespace() === "collections.{$orderDriver['collection']}") {
+            return $this->enforceOrderFields($event);
+        }
+
+        return;
     }
 
     protected function enforceProductFields($event): Blueprint
