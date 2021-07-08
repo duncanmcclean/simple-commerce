@@ -95,11 +95,30 @@ class PayPalGateway extends BaseGateway implements Gateway
         return new Response(true, []);
     }
 
+    // v2.4 TODO: Add this method to the contract
+    public function callback(Request $request): bool
+    {
+        $this->setupPayPal();
+
+        $order = OrderFacade::find($request->get('_order_id'));
+
+        if (! $order) {
+            return false;
+        }
+
+        $paypalOrder = json_decode($order->get('paypal')['result'], true);
+
+        $request = new \PayPalCheckoutSdk\Orders\OrdersGetRequest($paypalOrder['id']);
+
+        /** @var \PayPalHttp\HttpResponse $response */
+        $response = $this->paypalClient->execute($request);
+
+        return $response->result->status === 'APPROVED';
+    }
+
     public function webhook(Request $request)
     {
         $payload = json_decode($request->getContent(), true);
-
-        ray($payload);
 
         if ($payload['event_type'] === 'CHECKOUT.ORDER.APPROVED') {
             $order = OrderFacade::find($payload['resource']['purchase_units'][0]['custom_id']);
