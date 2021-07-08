@@ -14,6 +14,8 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use Statamic\Facades\Site;
 
 class PayPalGateway extends BaseGateway implements Gateway
@@ -100,7 +102,14 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function refundCharge(Order $order): Response
     {
-        return new Response(true, []);
+        $this->setupPayPal();
+
+        $request = new CapturesRefundRequest($order->get('gateway_data')['purchase_units'][0]['payments']['captures'][0]['id']);
+
+        /** @var \PayPalHttp\HttpResponse $response */
+        $response = $this->paypalClient->execute($request);
+
+        return new Response(true, json_decode(json_encode($response->result), true));
     }
 
     // v2.4 TODO: Add this method to the contract
@@ -126,12 +135,22 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function webhook(Request $request)
     {
+        $this->setupPayPal();
+
         $payload = json_decode($request->getContent(), true);
 
         if ($payload['event_type'] === 'CHECKOUT.ORDER.APPROVED') {
             $order = OrderFacade::find($payload['resource']['purchase_units'][0]['custom_id']);
 
-            $order->set('gateway_data', $payload)->save();
+            // Capture order
+            $request = new OrdersCaptureRequest($payload['resource']['id']);
+
+            /** @var \PayPalHttp\HttpResponse $response */
+            $response = $this->paypalClient->execute($request);
+            $responseBody = json_decode(json_encode($response->result), true);
+
+            // Set stuff in the database
+            $order->set('gateway_data', $responseBody)->save();
             $order->markAsPaid();
 
             event(new PostCheckout($order));
