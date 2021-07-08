@@ -146,14 +146,12 @@ class PayPalGateway extends BaseGateway implements Gateway
         if ($payload['event_type'] === 'CHECKOUT.ORDER.APPROVED') {
             $order = OrderFacade::find($payload['resource']['purchase_units'][0]['custom_id']);
 
-            // Capture order
             $request = new OrdersCaptureRequest($payload['resource']['id']);
 
             /** @var \PayPalHttp\HttpResponse $response */
             $response = $this->paypalClient->execute($request);
             $responseBody = json_decode(json_encode($response->result), true);
 
-            // Set stuff in the database
             $order->set('gateway_data', $responseBody)->save();
             $order->markAsPaid();
 
