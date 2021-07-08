@@ -28,7 +28,7 @@ class GatewayCallbackController extends BaseActionController
             $order = Order::find($request->get('_order_id'));
 
             if ($order->get('is_paid') === false) {
-                return $this->withErrors($request, "Order [{$order->id()}] has not been marked as paid yet.");
+                return $this->withErrors($request, "Order [{$order->title()}] has not been marked as paid yet.");
             }
         }
 
