@@ -4,15 +4,23 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+use Statamic\Facades\Site;
+use Illuminate\Support\Str;
 
 class PayPalGateway extends BaseGateway implements Gateway
 {
+    protected $paypalClient;
+
     public function name(): string
     {
         return 'PayPal';
@@ -20,7 +28,44 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function prepare(Prepare $data): Response
     {
-        return new Response(true, [], 'https://....');
+        $this->setupPayPal();
+
+        $order = $data->order();
+
+        $request = new \PayPalCheckoutSdk\Orders\OrdersCreateRequest();
+        $request->prefer('return=representation');
+        $request->body = [
+            'intent' => 'CAPTURE',
+            'purchase_units' => [
+                [
+                    'amount' => [
+                        'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
+                        'currency_code' => Currency::get(Site::current())['code'],
+                    ],
+                    'description' => "Order {$order->title()}",
+                    'custom_id'   => $order->id(),
+                ],
+            ],
+            'application_context' => [
+                'cancel_url' => $this->callbackUrl([
+                    '_order_id' => $order->id(),
+                ]),
+                'return_url' => $this->callbackUrl([
+                    '_order_id' => $order->id(),
+                ]),
+            ],
+        ];
+
+        /** @var \PayPalHttp\HttpResponse $response */
+        $response = $this->paypalClient->execute($request);
+
+        $checkoutUrl = collect($response->result->links)
+            ->where('rel', 'approve')
+            ->first();
+
+        return new Response(true, [
+            'result' => json_encode($response->result),
+        ], $checkoutUrl->href);
     }
 
     public function purchase(Purchase $data): Response
@@ -52,6 +97,27 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function webhook(Request $request)
     {
-        //
+        $payload = json_decode($request->getContent(), true);
+
+        ray($payload);
+
+        if ($payload['event_type'] === 'CHECKOUT.ORDER.APPROVED') {
+            $order = OrderFacade::find($payload['resource']['purchase_units'][0]['custom_id']);
+
+            $order->markAsPaid();
+            event(new PostCheckout($order));
+        }
+
+        return new HttpResponse();
+    }
+
+    protected function setupPayPal()
+    {
+        $environment = new \PayPalCheckoutSdk\Core\SandboxEnvironment(
+            $this->config()->get('client_id'),
+            $this->config()->get('client_secret')
+        );
+
+        $this->paypalClient = new \PayPalCheckoutSdk\Core\PayPalHttpClient($environment);
     }
 }
