@@ -15,7 +15,6 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Statamic\Facades\Site;
-use Illuminate\Support\Str;
 
 class PayPalGateway extends BaseGateway implements Gateway
 {
