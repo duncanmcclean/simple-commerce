@@ -36,7 +36,7 @@ class SimpleCommerce
 
                 return [
                     'name'            => $instance->name(),
-                    'handle'          => $handle = Str::camel($instance->name()),
+                    'handle'          => $handle = Str::of($instance->name())->camel()->lower()->__toString(),
                     'class'           => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
                     'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),

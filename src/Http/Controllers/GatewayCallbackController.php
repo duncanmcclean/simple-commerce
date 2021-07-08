@@ -2,7 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -14,28 +16,35 @@ class GatewayCallbackController extends BaseActionController
 
     public function index(Request $request, $gateway)
     {
+        $order = Order::find($request->get('_order_id'));
+
         $gateway = collect(SimpleCommerce::gateways())
             ->where('handle', $gateway)
             ->first();
 
-        if (!$gateway) {
+        if (! $gateway) {
             throw new GatewayDoesNotExist(__('simple-commerce::messages.gateway_does_not_exist', [
                 'gateway' => $gateway['name'],
             ]));
         }
 
-        if ($request->has('_order_id') && $request->has('_error_redirect')) {
-            $order = Order::find($request->get('_order_id'));
+        try {
+            $callbackSuccess = Gateway::use($gateway['class'])->callback($request);
+        } catch (GatewayCallbackMethodDoesNotExist $e) {
+            $callbackSuccess = $order->get('is_paid') === true;
+        }
 
-            if ($order->get('is_paid') === false) {
-                return $this->withErrors($request, "Order [{$order->id()}] has not been marked as paid yet.");
-            }
+        if (! $callbackSuccess) {
+            return $this->withErrors($request, "Order [{$order->title()}] has not been marked as paid yet.");
         }
 
         $this->forgetCart();
 
         return $this->withSuccess($request, [
             'success' => __('simple-commerce.messages.checkout_complete'),
+            'cart'    => $request->wantsJson()
+                ? $order->toResource()
+                : $order->toAugmentedArray(),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
@@ -75,6 +76,15 @@ class Manager implements Contract
         ])->save();
 
         return $refund;
+    }
+
+    public function callback(Request $request)
+    {
+        if (method_exists($this->resolve(), 'callback')) {
+            return $this->resolve()->callback($request);
+        }
+
+        return new GatewayCallbackMethodDoesNotExist("Gateway [{$this->className}] does not have a `callback` method.");
     }
 
     public function webhook(Request $request)
