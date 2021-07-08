@@ -102,7 +102,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         $order = OrderFacade::find($request->get('_order_id'));
 
-        if (! $order) {
+        if (!$order) {
             return false;
         }
 
