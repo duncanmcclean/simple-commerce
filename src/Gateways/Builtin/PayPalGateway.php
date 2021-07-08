@@ -64,7 +64,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             ->first();
 
         return new Response(true, [
-            'result' => json_encode($response->result),
+            'result' => $response->result,
         ], $checkoutUrl->href);
     }
 
@@ -87,7 +87,16 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function getCharge(Order $order): Response
     {
-        return new Response(true, []);
+        $this->setupPayPal();
+
+        $paypalOrder = $order->get('paypal')['result'];
+
+        $request = new \PayPalCheckoutSdk\Orders\OrdersGetRequest($paypalOrder['id']);
+
+        /** @var \PayPalHttp\HttpResponse $response */
+        $response = $this->paypalClient->execute($request);
+
+        return new Response(true, json_decode(json_encode($response->result), true));
     }
 
     public function refundCharge(Order $order): Response
@@ -106,7 +115,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             return false;
         }
 
-        $paypalOrder = json_decode($order->get('paypal')['result'], true);
+        $paypalOrder = $order->get('paypal')['result'];
 
         $request = new \PayPalCheckoutSdk\Orders\OrdersGetRequest($paypalOrder['id']);
 
@@ -123,7 +132,9 @@ class PayPalGateway extends BaseGateway implements Gateway
         if ($payload['event_type'] === 'CHECKOUT.ORDER.APPROVED') {
             $order = OrderFacade::find($payload['resource']['purchase_units'][0]['custom_id']);
 
+            $order->set('gateway_data', $payload)->save();
             $order->markAsPaid();
+
             event(new PostCheckout($order));
         }
 
