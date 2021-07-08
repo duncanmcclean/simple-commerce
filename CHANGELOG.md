@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.12 (2021-07-08)
+
+### What's new
+
+* Built-in PayPal Gateway (docs coming soon!) 
+
 ## v2.3.11 (2021-07-07)
 
 I've been doing some 'dog-fooding' of Simple Commerce at work over the last couple of days and I've found quite a few bugs, so this release is a big pile of fixes.
