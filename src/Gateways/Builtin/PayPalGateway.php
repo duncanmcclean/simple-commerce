@@ -14,7 +14,11 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use Statamic\Facades\Site;
 
@@ -33,7 +37,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         $order = $data->order();
 
-        $request = new \PayPalCheckoutSdk\Orders\OrdersCreateRequest();
+        $request = new OrdersCreateRequest();
         $request->prefer('return=representation');
         $request->body = [
             'intent' => 'CAPTURE',
@@ -92,7 +96,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         $paypalOrder = $order->get('paypal')['result'];
 
-        $request = new \PayPalCheckoutSdk\Orders\OrdersGetRequest($paypalOrder['id']);
+        $request = new OrdersGetRequest($paypalOrder['id']);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
@@ -125,7 +129,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         $paypalOrder = $order->get('paypal')['result'];
 
-        $request = new \PayPalCheckoutSdk\Orders\OrdersGetRequest($paypalOrder['id']);
+        $request = new OrdersGetRequest($paypalOrder['id']);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
@@ -161,11 +165,8 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     protected function setupPayPal()
     {
-        $environment = new \PayPalCheckoutSdk\Core\SandboxEnvironment(
-            $this->config()->get('client_id'),
-            $this->config()->get('client_secret')
+        $this->paypalClient = new PayPalHttpClient(
+            new SandboxEnvironment($this->config()->get('client_id'), $this->config()->get('client_secret'))
         );
-
-        $this->paypalClient = new \PayPalCheckoutSdk\Core\PayPalHttpClient($environment);
     }
 }
