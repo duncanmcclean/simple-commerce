@@ -15,6 +15,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
@@ -163,8 +164,18 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     protected function setupPayPal()
     {
-        $this->paypalClient = new PayPalHttpClient(
-            new SandboxEnvironment($this->config()->get('client_id'), $this->config()->get('client_secret'))
-        );
+        if ($this->config()->get('environment') === 'sandbox') {
+            $environment = new SandboxEnvironment(
+                $this->config()->get('client_id'),
+                $this->config()->get('client_secret')
+            );
+        } else {
+            $environment = new ProductionEnvironment(
+                $this->config()->get('client_id'),
+                $this->config()->get('client_secret')
+            );
+        }
+
+        $this->paypalClient = new PayPalHttpClient($environment);
     }
 }

@@ -2,11 +2,15 @@
 
 ## Unreleased
 
+### What's fixed
+
+* Added `environment` config for PayPal gateway (otherwise we'd always be in sandbox 🤦‍♂️)
+
 ## v2.3.12 (2021-07-08)
 
 ### What's new
 
-* Built-in PayPal Gateway (docs coming soon!) 
+* Built-in PayPal Gateway (docs coming soon!)
 
 ## v2.3.11 (2021-07-07)
 
