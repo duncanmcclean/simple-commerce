@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.3.13 (2021-07-12)
+
 ### What's fixed
 
 * Added `environment` config for PayPal gateway (otherwise we'd always be in sandbox 🤦‍♂️)
