@@ -5,6 +5,7 @@
 ### What's fixed
 
 * Added `environment` config for PayPal gateway (otherwise we'd always be in sandbox 🤦‍♂️)
+* Fixed issue where the Refund action would cause issues if the Order driver isn't the default
 
 ## v2.3.12 (2021-07-08)
 
