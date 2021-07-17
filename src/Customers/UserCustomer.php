@@ -20,6 +20,7 @@ class UserCustomer implements Contract
     public $id;
     public $name;
     public $email;
+    public $data;
 
     protected $user;
 
@@ -44,6 +45,7 @@ class UserCustomer implements Contract
         $this->id = $this->user->id();
         $this->name = $this->user->get('name');
         $this->email = $this->user->email();
+        $this->data = $this->user->data();
 
         return $this;
     }
@@ -203,12 +205,20 @@ class UserCustomer implements Contract
 
     protected function defaultFieldsInBlueprint(): array
     {
-        return $this->user->blueprint()->fields()->items()
+        return User::blueprint()->fields()->items()
             ->where('field.default', '!==', null)
             ->mapWithKeys(function ($field) {
                 return [$field['handle'] => $field['field']['default']];
             })
             ->toArray();
+    }
+
+    public function set(string $key, $value): self
+    {
+        $this->data[$key] = $value;
+        $this->user()->set($key, $value)->save();
+
+        return $this;
     }
 
     public function beforeSaved()
