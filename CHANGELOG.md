@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.14 (2021-07-17)
+
+### What's new
+
+* Added a new 'User Customer' driver so you can use your users as customers, not a seperate collection
+
 ## v2.3.13 (2021-07-12)
 
 ### What's fixed
