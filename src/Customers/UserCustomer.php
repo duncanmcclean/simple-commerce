@@ -48,6 +48,19 @@ class UserCustomer implements Contract
         return $this;
     }
 
+    public function findByEmail(string $email): self
+    {
+        $user = User::findByEmail($email);
+
+        if (! $user) {
+            throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [
+                'email' => $email,
+            ]));
+        }
+
+        return $this->find($user->id());
+    }
+
     public function create(array $data = [], string $site = ''): self
     {
         $this->id = Stache::generateId();
@@ -153,19 +166,6 @@ class UserCustomer implements Contract
     public function fresh(): self
     {
         return $this->find($this->id);
-    }
-
-    public function findByEmail(string $email): self
-    {
-        $user = User::findByEmail($email);
-
-        if (! $user) {
-            throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [
-                'email' => $email,
-            ]));
-        }
-
-        return $this->find($user->id);
     }
 
     public function name(): string
