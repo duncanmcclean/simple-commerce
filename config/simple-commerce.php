@@ -33,7 +33,7 @@ return [
         ],
 
         'customers' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
             'collection' => 'customers',
         ],
     ],
