@@ -72,7 +72,7 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.users.repository', 'file');
         $app['config']->set('statamic.stache.stores.users', [
             'class'     => UsersStore::class,
-            'directory' => __DIR__.'/__fixtures/users',
+            'directory' => __DIR__.'/__fixtures__/users',
         ]);
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
         $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
