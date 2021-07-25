@@ -21,5 +21,7 @@ interface Gateway
 
     public function refundCharge(Order $order): Response;
 
+    public function callback(Request $request): bool;
+
     public function webhook(Request $request);
 }

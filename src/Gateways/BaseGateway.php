@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class BaseGateway
@@ -65,5 +66,10 @@ class BaseGateway
     public function displayName()
     {
         return $this->displayName;
+    }
+
+    public function callback(Request $request): bool
+    {
+        return true;
     }
 }
