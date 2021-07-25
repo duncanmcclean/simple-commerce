@@ -147,7 +147,15 @@ return [
 
     'low_stock_threshold' => 25,
 
-    // TODO comment
+    /*
+    |--------------------------------------------------------------------------
+    | Tax Engine
+    |--------------------------------------------------------------------------
+    |
+    | Configure the 'tax engine' you would like to use in order to calculate
+    | your tax rate on products.
+    |
+    */
 
     'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class,
 
