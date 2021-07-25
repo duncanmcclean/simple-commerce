@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
@@ -40,14 +41,16 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_prepare()
     {
-        $this->markTestSkipped();
+        // $this->markTestSkipped();
 
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            Order::create()->entry()
+            Order::create()
         ));
 
         $this->assertIsObject($prepare);
+        $this->assertTrue($prepare instanceof GatewayResponse);
+
         $this->assertTrue($prepare->success());
         $this->assertArrayHasKey('intent', $prepare->data());
         $this->assertArrayHasKey('client_secret', $prepare->data());
