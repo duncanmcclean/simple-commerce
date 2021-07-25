@@ -29,7 +29,7 @@ class CartController extends BaseActionController
     public function update(UpdateRequest $request)
     {
         $cart = $this->getCart();
-        $data = Arr::except($request->all(), ['_token', '_params', '_redirect']);
+        $data = Arr::except($request->all(), ['_token', '_params', '_redirect', '_request']);
 
         foreach ($data as $key => $value) {
             if ($value === 'on') {
@@ -43,8 +43,8 @@ class CartController extends BaseActionController
 
         if (isset($data['customer'])) {
             try {
-                if (isset($cart->data['customer']) && $cart->data['customer'] !== null) {
-                    $customer = Customer::find($cart->data['customer']);
+                if ($cart->customer() && $cart->customer() !== null) {
+                    $customer = $cart->customer();
                 } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
                     $customer = Customer::findByEmail($data['customer']['email']);
                 } else {

@@ -35,7 +35,7 @@ class Product implements Contract
 
     public function purchasableType(): string
     {
-        if (isset($this->data['product_variants']['variants'])) {
+        if (isset($this->data()['product_variants']['variants'])) {
             return 'variants';
         }
 
@@ -44,7 +44,7 @@ class Product implements Contract
 
     public function variants(): Collection
     {
-        if (! isset($this->data['product_variants']['options'])) {
+        if (! isset($this->data()['product_variants']['options'])) {
             return collect();
         }
 

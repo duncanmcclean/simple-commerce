@@ -8,9 +8,80 @@
 
 * A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
 
+## v2.3.14 (2021-07-17)
+
 ### What's new
 
+* Added a new 'User Customer' driver so you can use your users as customers, not a seperate collection
+
+## v2.3.13 (2021-07-12)
+
+### What's fixed
+
+* Added `environment` config for PayPal gateway (otherwise we'd always be in sandbox 🤦‍♂️)
+* Fixed issue where the Refund action would cause issues if the Order driver isn't the default
+
+## v2.3.12 (2021-07-08)
+
+### What's new
+
+* Built-in PayPal Gateway (docs coming soon!)
+
+## v2.3.11 (2021-07-07)
+
+I've been doing some 'dog-fooding' of Simple Commerce at work over the last couple of days and I've found quite a few bugs, so this release is a big pile of fixes.
+
+### What's improved
+
+* If a product is out of stock, we'll now give you a validation error and remove the item from the cart.
+* Getting data from the cart tag, like so: `{{ sc:cart:something }}` will now go through augmentation
+* Stripe will now show API requests as coming from Simple Commerce (instead of directly through the Stripe SDK)
+
+### What's fixed
+
+* Fixed coupon redeemed/maximum uses check
+* The Coupon total will now calculate properly when using a non-entry driver
+* Fixed `{{ sc:coupon:has }}` when using a non-entry driver
+* Tided up some code and added some null checks in places
+* Fixed Stripe refunds not working properly
+
+## v2.3.10 (2021-07-06)
+
+### What's new
+
+* Added a new `currency` modifier
+
+### What's fixed
+
+* Receipts now work when using a custom order class #443
+* `_request` will no longer be saved when checking out.
+
+## v2.3.9 (2021-07-06)
+
+### What's fixed
+
+* When using a custom order class, `sc:cart:count` would not return the correct total. #442
+* When using a custom order class, you wouldn't be able to add to the cart #441
+* If you don't have notifications for a trigger, it won't error now
+
+## v2.3.8 (2021-06-29)
+
+### What's fixed
+
+* Fixed small bug with notification improvements from the other day
+
+## v2.3.7 (2021-06-26)
+
+### What's fixed
+
+* Updated the gateway stub so it's up-to-date
+* `_request` will no longer be saved to the order entry when saving.
+
+### What's new
+
+* New Country fieldtype
 * When creating an entry, we'll now save any default fields from your blueprint. #433
+* Both `StockRunningLow` and `StockRunOut` events are now available triggers for notifications. #423
 
 ## v2.3.6 (2021-06-11)
 

@@ -5,16 +5,21 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\Stache;
 
 class CheckoutControllerTest extends TestCase
@@ -776,9 +781,6 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function cant_post_checkout_when_product_has_no_stock()
     {
-        // TODO: we're yet to actually do something when the product is out of stock...
-        $this->markTestIncomplete();
-
         Event::fake();
 
         $product = Product::create([
@@ -809,28 +811,35 @@ class CheckoutControllerTest extends TestCase
                 'expiry_month' => '01',
                 'expiry_year'  => '2025',
                 'cvc'          => '123',
-            ]);
+            ])
+            ->assertRedirect()
+            ->assertSessionHasErrors();
 
         $order->fresh();
+
+        // Assert the line item has been wiped out
+        $this->assertSame($order->lineItems()->count(), 0);
+        $this->assertSame($order->get('grand_total'), 0);
 
         // Assert events have been dispatched
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
         // Assert order has been marked as paid
-        $this->assertTrue($order->published);
+        $this->assertFalse($order->published);
 
-        $this->assertTrue($order->get('is_paid'));
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertFalse($order->get('is_paid'));
+        $this->assertNull($order->get('paid_date'));
 
         // Assert stock has been reduced
         $product->fresh();
-        $this->assertSame($product->get('stock'), 8);
+        $this->assertSame($product->get('stock'), 0);
 
-        Event::assertDispatched(StockRunningLow::class);
+        Event::assertNotDispatched(StockRunningLow::class);
+        Event::assertDispatched(StockRunOut::class);
 
         // Finally, assert order is no longer attached to the users' session
-        $this->assertFalse(session()->has('simple-commerce-cart'));
+        $this->assertTrue(session()->has('simple-commerce-cart'));
     }
 
     /** @test */
@@ -1245,6 +1254,63 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->customer()->name(), 'Smelly Joe');
         $this->assertSame($order->customer()->email(), 'smelly.joe@example.com');
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
+    public function can_post_checkout_and_ensure_order_paid_notifications_are_sent()
+    {
+        Notification::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+        ]);
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Guvna B',
+                'email'        => 'guvna.b@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ]);
+
+        $order->fresh();
+
+        // Asset notifications have been sent
+        Notification::assertSentTo(
+            (new AnonymousNotifiable())->route('mail', 'guvna.b@example.com'),
+            CustomerOrderPaid::class
+        );
+
+        Notification::assertSentTo(
+            (new AnonymousNotifiable())->route('mail', 'duncan@example.com'),
+            BackOfficeOrderPaid::class
+        );
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->published);
+
+        $this->assertTrue($order->get('is_paid'));
+        $this->assertNotNull($order->get('paid_date'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
