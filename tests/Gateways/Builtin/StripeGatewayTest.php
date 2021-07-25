@@ -17,7 +17,13 @@ class StripeGatewayTest extends TestCase
     {
         parent::setUp();
 
-        $this->gateway = new StripeGateway();
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped("No STRIPE_SECRET has been defined, tests has been skipped.");
+        }
+
+        $this->gateway = new StripeGateway([
+            'secret' => env('STRIPE_SECRET'),
+        ]);
 
         Collection::make('orders')->title('Order')->save();
     }
