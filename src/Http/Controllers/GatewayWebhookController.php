@@ -12,14 +12,14 @@ class GatewayWebhookController extends BaseActionController
 {
     public function index(Request $request, $gateway)
     {
+        $gatewayName = $gateway;
+
         $gateway = collect(SimpleCommerce::gateways())
             ->where('handle', $gateway)
             ->first();
 
         if (! $gateway) {
-            throw new GatewayDoesNotExist(__('simple-commerce::messages.gateway_does_not_exist', [
-                'gateway' => $gateway,
-            ]));
+            throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
         }
 
         event(new ReceiveGatewayWebhook($request->all()));

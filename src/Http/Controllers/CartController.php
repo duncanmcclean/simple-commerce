@@ -48,9 +48,7 @@ class CartController extends BaseActionController
                 } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
                     $customer = Customer::findByEmail($data['customer']['email']);
                 } else {
-                    throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found', [
-                        'id' => $data['customer'],
-                    ]));
+                    throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
@@ -75,9 +73,7 @@ class CartController extends BaseActionController
                 if (isset($data['email']) && $data['email'] !== null) {
                     $customer = Customer::findByEmail($data['email']);
                 } else {
-                    throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found', [
-                        'id' => $data['customer'],
-                    ]));
+                    throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([

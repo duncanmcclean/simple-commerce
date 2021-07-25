@@ -109,7 +109,7 @@ class Manager implements Contract
     protected function resolve()
     {
         if (! $this->className) {
-            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
+            throw new NoGatewayProvided("No gateway provided.");
         }
 
         if (!resolve($this->className)) {
