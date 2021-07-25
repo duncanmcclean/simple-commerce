@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class BaseGateway
 {
@@ -66,6 +67,21 @@ class BaseGateway
     public function displayName()
     {
         return $this->displayName;
+    }
+
+    public function name(): string
+    {
+        return Str::title(class_basename($this));
+    }
+
+    public function purchase(Purchase $data): Response
+    {
+        return new Response();
+    }
+
+    public function purchaseRules(): array
+    {
+        return [];
     }
 
     public function callback(Request $request): bool
