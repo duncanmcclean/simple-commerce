@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Statamic\Facades\Collection;
 use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
@@ -19,7 +20,7 @@ use Stripe\Stripe;
 
 class StripeGatewayTest extends TestCase
 {
-    public $gateway;
+    public StripeGateway $gateway;
 
     public function setUp(): void
     {
@@ -255,6 +256,7 @@ class StripeGatewayTest extends TestCase
         $rules = (new StripeGateway())->purchaseRules();
 
         $this->assertIsArray($rules);
+
         $this->assertSame([
             'payment_method' => 'required|string',
         ], $rules);
@@ -263,37 +265,89 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_get_charge()
     {
-        // TODO: Write test for this that doesn't need to touch the Stripe API
-        $this->markTestSkipped();
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+        }
 
-        $charge = (new StripeGateway())->getCharge(
-            Order::create()->entry()
-        );
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $order = Order::create([
+            'stripe' => [
+                'intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
+            ],
+            'grand_total' => 1234,
+        ]);
+
+        $charge = $this->gateway->getCharge($order);
 
         $this->assertIsObject($charge);
-        $this->assertSame([], $charge);
+        $this->assertTrue($charge instanceof GatewayResponse);
+        $this->assertTrue($charge->success());
+
+        $this->assertSame($charge->data()['id'], $paymentIntent);
     }
 
     /** @test */
     public function can_refund_charge()
     {
-        $this->markTestIncomplete();
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+        }
 
-        $refund = (new StripeGateway())->refundCharge(
-            Order::create()
-        );
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $this->assertIsObject($refund);
-        $this->assertTrue($refund->success);
+        $order = Order::create([
+            'stripe' => [
+                'intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
+            ],
+            'grand_total' => 1234,
+        ]);
+
+        $paymentMethod = PaymentMethod::create([
+            'type' => 'card',
+            'card' => [
+                'number' => '4242424242424242',
+                'exp_month' => 7,
+                'exp_year' => 2022,
+                'cvc' => '314',
+            ],
+        ]);
+
+        PaymentIntent::retrieve($paymentIntent)->confirm([
+            'payment_method' => $paymentMethod->id,
+        ]);
+
+        $refundCharge = $this->gateway->refundCharge($order);
+
+        $this->assertIsObject($refundCharge);
+        $this->assertTrue($refundCharge instanceof GatewayResponse);
+        $this->assertTrue($refundCharge->success());
+
+        $this->assertStringContainsString('re_', $refundCharge->data()['id']);
+        $this->assertSame($refundCharge->data()['amount'], 1234);
+        $this->assertSame($refundCharge->data()['payment_intent'], $paymentIntent);
     }
 
     /** @test */
-    public function can_hit_webhook()
+    public function can_hit_webhook_with_payment_intent_succeeded_event()
     {
-        $this->markTestIncomplete();
+        $order = Order::create();
 
-        $webhook = $this->gateway->webhook(new Request());
+        $payload = [
+            'type' => 'payment_intent.succeeded',
+            'metadata' => [
+                'order_id' => $order->id(),
+            ],
+        ];
 
-        $this->assertSame($webhook, null);
+        $webhook = $this->gateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
+
+        $this->assertTrue($webhook instanceof Response);
     }
 }
