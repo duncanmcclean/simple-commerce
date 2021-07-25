@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -43,9 +44,22 @@ class StripeGatewayTest extends TestCase
     {
         // $this->markTestSkipped();
 
+        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            Order::create()
+            $order = Order::create([
+                'items' => [
+                    [
+                        'id' => app('stache')->generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 5500,
+                        'metadata' => [],
+                    ],
+                ],
+                'grand_total' => 5500,
+            ])
         ));
 
         $this->assertIsObject($prepare);
@@ -54,6 +68,18 @@ class StripeGatewayTest extends TestCase
         $this->assertTrue($prepare->success());
         $this->assertArrayHasKey('intent', $prepare->data());
         $this->assertArrayHasKey('client_secret', $prepare->data());
+    }
+
+    /** @test */
+    public function can_prepare_with_customer_email()
+    {
+        //
+    }
+
+    /** @test */
+    public function can_prepare_with_receipt_email()
+    {
+        //
     }
 
     /** @test */
