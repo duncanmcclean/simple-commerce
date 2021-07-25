@@ -10,12 +10,15 @@ class ReceiptController extends BaseActionController
 {
     public function show(ReceiptShowRequest $request, $orderId)
     {
-        $cart = Order::find($orderId);
+        $order = Order::find($orderId);
 
-        return PDF::loadView('simple-commerce::receipt', array_merge($cart->entry()->toAugmentedArray(), [
+        $data = array_merge($order->toAugmentedArray(), [
             'orderId'          => $orderId,
-            'shipping_address' => $cart->shippingAddress() !== null ? $cart->shippingAddress()->toArray() : [],
-            'billing_address'  => $cart->billingAddress() !== null ? $cart->billingAddress()->toArray() : [],
-        ]))->download('receipt.pdf');
+            'shipping_address' => $order->shippingAddress(),
+            'billing_address'  => $order->billingAddress(),
+        ]);
+
+        return PDF::loadView('simple-commerce::receipt', $data)
+            ->download('receipt.pdf');
     }
 }

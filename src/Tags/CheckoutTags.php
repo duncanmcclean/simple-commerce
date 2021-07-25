@@ -19,19 +19,27 @@ class CheckoutTags extends SubTag
         $cart = $this->getCart();
         $data = $cart->data;
 
-        foreach (SimpleCommerce::gateways() as $gateway) {
-            try {
-                $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
+        collect(SimpleCommerce::gateways())
+            ->filter(function ($gateway) {
+                if ($specifiedGateway = $this->params->get('gateway')) {
+                    return $gateway['handle'] === $specifiedGateway;
+                }
 
-                $cart->data([
-                    $gateway['handle'] => $prepare->data(),
-                ])->save();
+                return true;
+            })
+            ->each(function ($gateway) use (&$cart, &$data) {
+                try {
+                    $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
 
-                $data = array_merge($data, $prepare->data());
-            } catch (\Exception $e) {
-                throw new GatewayException($e->getMessage());
-            }
-        }
+                    $cart->data([
+                        $gateway['handle'] => $prepare->data(),
+                    ])->save();
+
+                    $data = array_merge($data, $prepare->data());
+                } catch (\Exception $e) {
+                    throw new GatewayException($e->getMessage());
+                }
+            });
 
         return $this->createForm(
             route('statamic.simple-commerce.checkout.store'),
@@ -71,6 +79,7 @@ class CheckoutTags extends SubTag
         $prepare = $prepare->prepare(request(), $cart);
 
         $cart->data([
+            'gateway'          => $gateway['class'],
             $gateway['handle'] => $prepare->data(),
         ])->save();
 

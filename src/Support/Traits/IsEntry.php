@@ -34,7 +34,7 @@ trait IsEntry
         $this->entry = EntryAPI::find((string) $id);
 
         if (!$this->entry) {
-            throw new EntryNotFound("Entry could not be found: {$id}");
+            throw new EntryNotFound("Entry [{$id}] could not be found.");
         }
 
         if ($this->entry->existsIn(SiteAPI::current()->handle()) && $this->entry->locale() !== SiteAPI::current()->handle()) {

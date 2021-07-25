@@ -301,6 +301,13 @@ class CartTagTest extends TestCase
         $this->assertSame($usage, 'Deliver by front door.');
     }
 
+    /** @test */
+    public function can_get_augmented_value_from_cart_data()
+    {
+        // TODO: Write a test to ensure we can grab the value of an augmented field with the `wildcard` magic.
+        $this->markTestIncomplete();
+    }
+
     protected function tag($tag)
     {
         return Parse::template($tag, []);

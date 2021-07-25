@@ -92,7 +92,7 @@ class Order implements Contract
             return $this;
         }
 
-        if (! $this->has('customer')) {
+        if (! $this->has('customer') || $this->get('customer') === null) {
             return null;
         }
 
@@ -105,6 +105,10 @@ class Order implements Contract
             $this->set('coupon', $coupon);
 
             return $this;
+        }
+
+        if (! $this->has('coupon') || $this->get('coupon') === null) {
+            return null;
         }
 
         return Coupon::find($this->get('coupon'));

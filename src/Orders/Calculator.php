@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -125,7 +124,7 @@ class Calculator implements Contract
             ];
         }
 
-        $data['shipping_total'] = Shipping::use($this->order->data['shipping_method'])->calculateCost($this->order);
+        $data['shipping_total'] = Shipping::use($this->order->get('shipping_method'))->calculateCost($this->order);
 
         return [
             'data' => $data,
@@ -134,9 +133,8 @@ class Calculator implements Contract
 
     public function calculateOrderCoupons(array $data): array
     {
-        if (isset($this->order->data['coupon']) && $this->order->data['coupon'] !== null) {
-            $coupon = Coupon::find($this->order->data['coupon']);
-            $value = (int) $coupon->data['value'];
+        if ($coupon = $this->order->coupon()) {
+            $value = (int) $coupon->get('value');
 
             // Double check coupon is still valid
             if (! $coupon->isValid($this->order)) {
@@ -146,11 +144,11 @@ class Calculator implements Contract
             }
 
             // Otherwise do all the other stuff...
-            if ($coupon->data['type'] === 'percentage') {
+            if ($coupon->get('type') === 'percentage') {
                 $data['coupon_total'] = (int) (($value * $data['grand_total']) / 100);
             }
 
-            if ($coupon->data['type'] === 'fixed') {
+            if ($coupon->get('type') === 'fixed') {
                 $data['coupon_total'] = (int) $data['grand_total'] - ($data['grand_total'] - $value);
             }
 

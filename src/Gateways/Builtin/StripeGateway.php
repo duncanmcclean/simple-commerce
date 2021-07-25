@@ -4,17 +4,19 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Statamic\Facades\Addon;
 use Statamic\Facades\Site;
 use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
@@ -36,7 +38,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $order = $data->order();
 
         $intentData = [
-            'amount'             => $order->data['grand_total'],
+            'amount'             => $order->get('grand_total'),
             'currency'           => Currency::get(Site::current())['code'],
             'description'        => "Order: {$order->title()}",
             'setup_future_usage' => 'off_session',
@@ -47,7 +49,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $customer = $order->customer();
 
-        if ($customer->has('email')) {
+        if ($customer && $customer->has('email')) {
             $stripeCustomerData = [
                 'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
                 'email' => $customer->get('email'),
@@ -57,7 +59,7 @@ class StripeGateway extends BaseGateway implements Gateway
             $intentData['customer'] = $stripeCustomer->id;
         }
 
-        if (isset($customer) && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
+        if ($customer && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
             $intentData['receipt_email'] = $customer->email();
         }
 
@@ -100,7 +102,15 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $charge = PaymentIntent::retrieve($order->data()->get('gateway_data')['intent']);
+        $paymentIntent = isset($order->get('stripe')['intent'])
+            ? $order->get('stripe')['intent']
+            : null;
+
+        if (! $paymentIntent) {
+            throw new StripePaymentIntentNotProvided(__('Stripe: No Payment Intent was provided to fetch.'));
+        }
+
+        $charge = PaymentIntent::retrieve($paymentIntent);
 
         return new GatewayResponse(true, $charge->toArray());
     }
@@ -109,13 +119,16 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        if (!isset($data['intent'])) {
-            // return new Response(false)
-            //     ->error(__('simple-commerce::gateway.stripe.no_payment_intent_provided'));
+        $paymentIntent = isset($order->get('stripe')['intent'])
+            ? $order->get('stripe')['intent']
+            : null;
+
+        if (! $paymentIntent) {
+            throw new StripePaymentIntentNotProvided(__('Stripe: No Payment Intent was provided to action a refund.'));
         }
 
         $refund = Refund::create([
-            'payment_intent' => $order->data()->get('gateway_data')['intent'],
+            'payment_intent' => $paymentIntent,
         ]);
 
         return new GatewayResponse(true, $refund->toArray());
@@ -158,6 +171,17 @@ class StripeGateway extends BaseGateway implements Gateway
         }
 
         Stripe::setApiKey($this->config()->get('secret'));
+
+        try {
+            Stripe::setAppInfo(
+                'Statamic Simple Commerce',
+                Addon::get('doublethreedigital/simple-commerce')->version(),
+                'https://github.com/doublethreedigital/simple-commerce',
+                'pp_partner_Jnvy4cdwcRmxfh'
+            );
+        } catch (\Exception $e) {
+            Log::info("[Simple Commerce] Stripe: Failed to `setAppInfo`");
+        }
 
         if ($version = $this->config()->has('version')) {
             Stripe::setApiVersion($version);

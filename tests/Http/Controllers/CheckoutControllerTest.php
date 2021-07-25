@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
+use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -780,9 +781,6 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function cant_post_checkout_when_product_has_no_stock()
     {
-        // TODO: we're yet to actually do something when the product is out of stock...
-        $this->markTestIncomplete();
-
         Event::fake();
 
         $product = Product::create([
@@ -813,28 +811,35 @@ class CheckoutControllerTest extends TestCase
                 'expiry_month' => '01',
                 'expiry_year'  => '2025',
                 'cvc'          => '123',
-            ]);
+            ])
+            ->assertRedirect()
+            ->assertSessionHasErrors();
 
         $order->fresh();
+
+        // Assert the line item has been wiped out
+        $this->assertSame($order->lineItems()->count(), 0);
+        $this->assertSame($order->get('grand_total'), 0);
 
         // Assert events have been dispatched
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
         // Assert order has been marked as paid
-        $this->assertTrue($order->published);
+        $this->assertFalse($order->published);
 
-        $this->assertTrue($order->get('is_paid'));
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertFalse($order->get('is_paid'));
+        $this->assertNull($order->get('paid_date'));
 
         // Assert stock has been reduced
         $product->fresh();
-        $this->assertSame($product->get('stock'), 8);
+        $this->assertSame($product->get('stock'), 0);
 
-        Event::assertDispatched(StockRunningLow::class);
+        Event::assertNotDispatched(StockRunningLow::class);
+        Event::assertDispatched(StockRunOut::class);
 
         // Finally, assert order is no longer attached to the users' session
-        $this->assertFalse(session()->has('simple-commerce-cart'));
+        $this->assertTrue(session()->has('simple-commerce-cart'));
     }
 
     /** @test */

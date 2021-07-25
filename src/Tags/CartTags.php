@@ -23,9 +23,9 @@ class CartTags extends SubTag
     {
         $cart = $this->getOrMakeCart();
 
-        return isset($cart->data['items']) && $cart->data['items'] != [] ?
-            $cart->toAugmentedArray()['items']->value() :
-            [];
+        return $cart->lineItems()->count() >= 1
+            ? $cart->toAugmentedArray()['items']->value()
+            : [];
     }
 
     public function count()
@@ -34,11 +34,7 @@ class CartTags extends SubTag
             return 0;
         }
 
-        if (!$this->getCart()->has('items')) {
-            return 0;
-        }
-
-        return collect($this->getCart()->get('items'))->count();
+        return $this->getCart()->lineItems()->count();
     }
 
     public function total()
@@ -197,6 +193,10 @@ class CartTags extends SubTag
 
         if (property_exists($cart, $method)) {
             return $cart->{$method};
+        }
+
+        if (array_key_exists($method, $cart->toAugmentedArray())) {
+            return $cart->toAugmentedArray()[$method];
         }
 
         if ($cart->has($method)) {
