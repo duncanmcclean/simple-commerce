@@ -29,6 +29,13 @@ class BaseGateway
         return collect($this->config);
     }
 
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
     public function handle(): string
     {
         return $this->handle;
