@@ -113,9 +113,7 @@ class Manager implements Contract
         }
 
         if (!resolve($this->className)) {
-            throw new GatewayDoesNotExist(__('simple-commerce::messages.gateway_does_not_exist', [
-                'gateway' => $this->className,
-            ]));
+            throw new GatewayDoesNotExist("Gateway [{$this->className}] does not exist.");
         }
 
         $gateway = collect(SimpleCommerce::gateways())
