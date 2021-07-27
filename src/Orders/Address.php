@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+
 class Address
 {
     protected $name;
@@ -24,12 +26,12 @@ class Address
     public function toArray(): array
     {
         return [
-            'name'           => $this->name,
-            'address_line_1' => $this->addressLine1,
-            'address_line_2' => $this->addressLine2,
-            'city'           => $this->city,
-            'country'        => $this->country,
-            'zip_code'       => $this->zipCode,
+            'name'           => $this->name(),
+            'address_line_1' => $this->addressLine1(),
+            'address_line_2' => $this->addressLine2(),
+            'city'           => $this->city(),
+            'country'        => $this->country(),
+            'zip_code'       => $this->zipCode(),
         ];
     }
 
@@ -62,7 +64,7 @@ class Address
 
     public function country(): ?string
     {
-        return $this->country;
+        return Countries::find($this->country);
     }
 
     public function zipCode(): ?string
