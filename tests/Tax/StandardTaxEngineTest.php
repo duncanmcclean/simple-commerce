@@ -59,29 +59,20 @@ class StandardTaxEngineTest extends TestCase
 
         $recalculate = $order->recalculate();
 
-        // Assuming we're including tax in prices
-        $this->assertSame()
+        // Ensure tax on line items are right
+        $this->assertSame($recalculate->lineItems()->first()['tax'], [
+            'amount' => 167,
+            'rate' => 20,
+            'price_includes_tax' => true,
+        ]);
 
-        dd($recalculate);
-
-        // category
-
-        // zone
-
-        // rate
-
-        // product
-
-        // order
-
-        // calculate tax
-
-        // assert rate is correct
+        // Ensure global order tax is right
+        $this->assertSame($recalculate->get('tax_total'), 167);
     }
 
     /** @test */
     public function can_correctly_calculate_tax_rate_based_on_region()
     {
-        //
+        $this->markTestIncomplete("Still need to make the region based zone stuff work.");
     }
 }

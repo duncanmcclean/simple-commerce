@@ -5,6 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate as StandardTaxRate;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
 
 class TaxEngine implements Contract
@@ -24,23 +27,29 @@ class TaxEngine implements Contract
         return new TaxCalculation($itemTax, $taxRate->rate(), true); // TODO: Included in prices?
     }
 
-    protected function decideOnRate(Order $order, array $lineItem): ?TaxRate
+    protected function decideOnRate(Order $order, array $lineItem): ?StandardTaxRate
     {
         $product = Product::find($lineItem['product']);
 
-        $taxCategory = $product->taxCategory();
+        $taxRateQuery = TaxRate::all()
+            ->filter(function ($taxRate) use ($product) {
+                return $taxRate->category()->id() === $product->taxCategory()->id();
+            });
 
+        $taxZoneQuery = TaxZone::all();
 
-        // Get product
-        // Get tax catgeory from product
+        if ($order->billingAddress() && $country = $order->billingAddress()->country()) {
+            $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($order) {
+                return $taxZone->country() === $order->billingAddress()->country();
+            });
+        }
 
-        // Get country & region information from address
+        // TODO: Make regions work (we need to make them part of the Address object first)
 
-        // Find all tax rates in tax category
-        // Find all tax zones that match address information
-
-        // Cross-query the category and zones
-
-        // Return first rate
+        return $taxRateQuery
+            ->filter(function ($taxRate) use ($taxZoneQuery) {
+                return $taxRate->zone()->id() === $taxZoneQuery->first()->id();
+            })
+            ->first();
     }
 }
