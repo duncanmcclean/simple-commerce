@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.0 (xx-xx-xx)
+
+### What's new
+
+* A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
+
 ## v2.3.14 (2021-07-17)
 
 ### What's new

@@ -117,7 +117,6 @@ class PayPalGateway extends BaseGateway implements Gateway
         return new Response(true, json_decode(json_encode($response->result), true));
     }
 
-    // v2.4 TODO: Add this method to the contract
     public function callback(Request $request): bool
     {
         $this->setupPayPal();
