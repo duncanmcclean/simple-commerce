@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotAssignedToTaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
@@ -74,14 +75,11 @@ class Product implements Contract
 
     public function taxCategory(): ?TaxCategory
     {
-        // TODO: add field to blueprint
-        $taxCategory = $this->get('tax_catgeory');
-
-        if (! $taxCategory) {
-            throw new \Exception("Product [{$this->id()}] has no tax category assigned. Please assign a tax category.");
+        if (! isset($this->data['tax_category'])) {
+            throw new ProductNotAssignedToTaxCategory("Product [{$this->id()}] has not been assigned a tax category. Please assign one and try again.");
         }
 
-        return TaxCategoryFacade::find($this->get('tax_category'));
+        return TaxCategoryFacade::find($this->data['tax_category']);
     }
 
     public static function bindings(): array
