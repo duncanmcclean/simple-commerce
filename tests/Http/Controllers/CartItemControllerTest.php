@@ -23,6 +23,9 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item()
     {
+        // Turns out these tests will only be fixed by either
+        // 1) changing to the basic tax engine or 2) adding a tax category to the product
+
         $product = Product::create([
             'title' => 'Dog Food',
             'price' => 1000,
