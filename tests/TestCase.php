@@ -17,6 +17,18 @@ use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
+    protected $shouldFakeVersion = true;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if ($this->shouldFakeVersion) {
+            \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.1.0-testing');
+            $this->addToAssertionCount(-1); // Dont want to assert this
+        }
+    }
+
     protected function getPackageProviders($app)
     {
         return [
@@ -89,6 +101,8 @@ abstract class TestCase extends OrchestraTestCase
                 'url'    => '/',
             ],
         ]);
+
+        $app['config']->set('statamic.editions.pro', true);
 
         Statamic::booted(function () {
             Site::setCurrent('default');
