@@ -29,7 +29,7 @@
                                 <a href="{{ $taxZone->editUrl() }}">{{ $taxZone->name() }}</a>
                             </div>
                         </td>
-                        <td>{{ $taxZone->country()['name'] }}</td>
+                        <td>@if($taxZone->region()){{ $taxZone->region()['name'] }}, @endif{{ $taxZone->country()['name'] }}</td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
                                 @if(auth()->user()->can('edit tax zones'))

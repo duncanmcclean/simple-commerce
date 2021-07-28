@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use DoubleThreeDigital\SimpleCommerce\Support\Regions;
-use Illuminate\Http\Request;
 use Statamic\Facades\Stache;
 
 class TaxZoneController
@@ -27,7 +26,6 @@ class TaxZoneController
     {
         return view('simple-commerce::cp.tax-zones.create', [
             'countries' => Countries::sortBy('name')->all(),
-            'regions' => Regions::sortBy('name')->all(),
         ]);
     }
 
@@ -54,14 +52,12 @@ class TaxZoneController
         return view('simple-commerce::cp.tax-zones.edit', [
             'taxZone' => $taxZone,
             'countries' => Countries::sortBy('name')->all(),
-            'regions' => Regions::sortBy('name')->all(),
         ]);
     }
 
     public function update(UpdateRequest $request, $taxZone)
     {
-        $taxZone = TaxZone::make()
-            ->id(Stache::generateId())
+        $taxZone = TaxZone::find($taxZone)
             ->name($request->name)
             ->country($request->country);
 

@@ -10,9 +10,9 @@ Statamic.$components.register('product-variants-fieldtype', ProductVariantsFildt
 
 // Inputs
 
-import StateSelector from './components/Inputs/StateSelector.vue'
+import RegionSelector from './components/Inputs/RegionSelector.vue'
 
-Statamic.$components.register('state-selector', StateSelector)
+Statamic.$components.register('region-selector', RegionSelector)
 
 // Widgets
 

@@ -15,9 +15,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'name'    => ['required', 'string'],
             'country' => ['required', new CountryExists],
-            'region' => ['nullable'], // TODO: RegionExists
+            'region'  => ['nullable'], // TODO: RegionExists
         ];
     }
 }

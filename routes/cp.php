@@ -1,5 +1,6 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxRateController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxZoneController;
@@ -38,6 +39,7 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
     }
 
     Route::prefix('fieldtype-api')->name('fieldtype-api.')->group(function () {
+        Route::get('regions', [RegionController::class, '__invoke'])->name('regions');
         Route::post('product-variant', [VariantFieldtypeController::class, '__invoke'])->name('product-variant');
     });
 });
