@@ -26,8 +26,8 @@ class TaxZoneController
     public function create(CreateRequest $request)
     {
         return view('simple-commerce::cp.tax-zones.create', [
-            'countries' => Countries::all(),
-            'regions' => Regions::all(),
+            'countries' => Countries::sortBy('name')->all(),
+            'regions' => Regions::sortBy('name')->all(),
         ]);
     }
 
@@ -53,8 +53,8 @@ class TaxZoneController
 
         return view('simple-commerce::cp.tax-zones.edit', [
             'taxZone' => $taxZone,
-            'countries' => Countries::all(),
-            'regions' => Regions::all(),
+            'countries' => Countries::sortBy('name')->all(),
+            'regions' => Regions::sortBy('name')->all(),
         ]);
     }
 
