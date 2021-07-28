@@ -3,7 +3,7 @@
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
-    <form action="{{ cp_route('simple-commerce.tax-rates.store') }}" method="POST">
+    <form action="{{ $taxRate->updateUrl() }}" method="POST">
         @csrf
         <input type="hidden" name="category" value="{{ $taxRate->category()->id() }}">
 
