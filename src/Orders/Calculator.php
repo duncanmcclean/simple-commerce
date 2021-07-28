@@ -114,8 +114,8 @@ class Calculator implements Contract
         $itemTotal = $lineItem['total'];
 
         if ($taxConfiguration['included_in_prices']) {
-            $taxAmount = ($itemTotal / 100) * ($taxConfiguration['rate'] / (100 + $taxConfiguration['rate']));
-            $itemTax = (int) round($taxAmount * 100);
+            $taxAmount = $itemTotal / (100 + $taxConfiguration['rate']) * $taxConfiguration['rate'];
+            $itemTax = (int) round($taxAmount);
 
             $lineItem['total'] -= $itemTax;
             $data['tax_total'] += $itemTax;
