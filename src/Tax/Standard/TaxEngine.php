@@ -31,10 +31,6 @@ class TaxEngine implements Contract
     {
         $product = Product::find($lineItem['product']);
 
-        if (! $product->taxCategory()) {
-            return null;
-        }
-
         $taxRateQuery = TaxRate::all()
             ->filter(function ($taxRate) use ($product) {
                 return $taxRate->category()->id() === $product->taxCategory()->id();
