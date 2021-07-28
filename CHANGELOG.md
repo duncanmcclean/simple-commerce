@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v2.3.15 (2021-07-28)
+
+### What's fixed
+
+* Fixed tax calculations when `price_includes_tax` is `false` #449
+
+### What's improved
+
+* Added some better testing around the Stripe Gateway
+
 ## v2.3.14 (2021-07-17)
 
 ### What's new
