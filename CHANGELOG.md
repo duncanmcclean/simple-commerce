@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.16 (2021-07-31)
+
+### What's fixed
+
+* Fixed an issue where the `prepare` method on gateways would still be loaded even if the value of an order was `0.00`
+
 ## v2.3.15 (2021-07-28)
 
 ### What's fixed
