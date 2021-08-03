@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.17 (2021-08-03)
+
+### What's fixed
+
+* Fixed an issue where if the order value was `0` the `OrderPaid` event would not be dispatched (causing issues with notifications, etc)
+
 ## v2.3.16 (2021-07-31)
 
 ### What's fixed
