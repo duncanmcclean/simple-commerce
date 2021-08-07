@@ -35,9 +35,16 @@ class BasicTaxEngine implements TaxEngine
             return new TaxCalculation;
         }
 
-        $taxAmount = ($lineItem['total'] / 100) * ($this->taxRate / (100 + $this->taxRate));
-        $itemTax = (int) round($taxAmount * 100);
+        if ($this->includedInPrices) {
+            $taxAmount = $lineItem['total'] / (100 + $this->taxRate) * $this->taxRate;
+        } else {
+            $taxAmount = $lineItem['total'] * ($this->taxRate / 100);
+        }
 
-        return new TaxCalculation($itemTax, $this->taxRate, $this->includedInPrices);
+        return new TaxCalculation(
+            (int) round($taxAmount),
+            $this->taxRate,
+            $this->includedInPrices
+        );
     }
 }

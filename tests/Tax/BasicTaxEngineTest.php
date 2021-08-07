@@ -11,13 +11,17 @@ use Illuminate\Support\Facades\Config;
 
 class BasicTaxEngineTest extends TestCase
 {
-    /** @test */
-    public function can_calculate_tax_with_simple_rate()
+    /**
+     * @test
+     * Inline with the fix suggested here: https://github.com/doublethreedigital/simple-commerce/pull/438#issuecomment-888498198
+     */
+    public function can_calculate_tax_when_not_included_in_price()
     {
         Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.tax.included_in_prices', false);
 
         $product = Product::create([
-            'price' => 1000,
+            'price' => 2000,
         ]);
 
         $order = Order::create([
@@ -25,7 +29,7 @@ class BasicTaxEngineTest extends TestCase
             'items'   => [
                 $lineItem = [
                     'product'  => $product->id,
-                    'quantity' => 2,
+                    'quantity' => 1,
                     'total'    => 2000,
                 ],
             ],
@@ -35,13 +39,13 @@ class BasicTaxEngineTest extends TestCase
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
-        $this->assertSame($taxCalculation->amount(), 333);
+        $this->assertSame($taxCalculation->amount(), 400);
         $this->assertSame($taxCalculation->priceIncludesTax(), false);
         $this->assertSame($taxCalculation->rate(), 20);
     }
 
     /** @test */
-    public function can_calculate_tax_when_tax_is_included_in_prices()
+    public function can_calculate_tax_when_included_in_price()
     {
         Config::set('simple-commerce.sites.default.tax.rate', 20);
         Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
