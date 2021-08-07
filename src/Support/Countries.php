@@ -12,6 +12,11 @@ class Countries
             ->{$method}(...$parameters);
     }
 
+    public static function find(string $id)
+    {
+        return static::firstWhere('iso', $id);
+    }
+
     public static function findByRegion(array $region)
     {
         return static::where('iso', $region['country_iso']);
