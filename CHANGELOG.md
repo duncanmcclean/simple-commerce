@@ -8,6 +8,29 @@
 
 * A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
 
+
+## v2.3.17 (2021-08-03)
+
+### What's fixed
+
+* Fixed an issue where if the order value was `0` the `OrderPaid` event would not be dispatched (causing issues with notifications, etc)
+
+## v2.3.16 (2021-07-31)
+
+### What's fixed
+
+* Fixed an issue where the `prepare` method on gateways would still be loaded even if the value of an order was `0.00`
+
+## v2.3.15 (2021-07-28)
+
+### What's fixed
+
+* Fixed tax calculations when `price_includes_tax` is `false` #449
+
+### What's improved
+
+* Added some better testing around the Stripe Gateway
+
 ## v2.3.14 (2021-07-17)
 
 ### What's new

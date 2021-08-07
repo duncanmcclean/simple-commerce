@@ -33,8 +33,8 @@ class Coupon implements Contract
             ->where('slug', $code)
             ->first();
 
-        if (!$entry) {
-            throw new CouponNotFound(__('simple-commerce::messages.coupon_not_found'));
+        if (! $entry) {
+            throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 
         return $this->find($entry->id());

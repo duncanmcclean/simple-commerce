@@ -39,7 +39,7 @@ class UserCustomer implements Contract
         $this->user = User::find((string) $id);
 
         if (! $this->user) {
-            // throw new UserNotFound(); // TODO
+            throw new CustomerNotFound("Customer with ID [{$id}] could not be found.");
         }
 
         $this->id = $this->user->id();
@@ -55,9 +55,7 @@ class UserCustomer implements Contract
         $user = User::findByEmail($email);
 
         if (! $user) {
-            throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [
-                'email' => $email,
-            ]));
+            throw new CustomerNotFound("Customer with email [{$email}] could not be found.");
         }
 
         return $this->find($user->id());

@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
@@ -987,6 +988,7 @@ class CheckoutControllerTest extends TestCase
         $order->fresh();
 
         // Assert events have been dispatched
+        Event::assertDispatched(OrderPaid::class);
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 

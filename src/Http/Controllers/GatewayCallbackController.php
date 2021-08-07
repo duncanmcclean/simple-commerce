@@ -18,14 +18,14 @@ class GatewayCallbackController extends BaseActionController
     {
         $order = Order::find($request->get('_order_id'));
 
+        $gatewayName = $gateway;
+
         $gateway = collect(SimpleCommerce::gateways())
             ->where('handle', $gateway)
             ->first();
 
         if (! $gateway) {
-            throw new GatewayDoesNotExist(__('simple-commerce::messages.gateway_does_not_exist', [
-                'gateway' => $gateway['name'],
-            ]));
+            throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
         }
 
         try {

@@ -107,7 +107,7 @@ class StripeGateway extends BaseGateway implements Gateway
             : null;
 
         if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided(__('Stripe: No Payment Intent was provided to fetch.'));
+            throw new StripePaymentIntentNotProvided("Stripe: No Payment Intent was provided to fetch.");
         }
 
         $charge = PaymentIntent::retrieve($paymentIntent);
@@ -124,7 +124,7 @@ class StripeGateway extends BaseGateway implements Gateway
             : null;
 
         if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided(__('Stripe: No Payment Intent was provided to action a refund.'));
+            throw new StripePaymentIntentNotProvided("Stripe: No Payment Intent was provided to action a refund.");
         }
 
         $refund = Refund::create([
@@ -167,7 +167,7 @@ class StripeGateway extends BaseGateway implements Gateway
     protected function setUpWithStripe()
     {
         if (! $this->config()->has('secret')) {
-            throw new StripeSecretMissing(__('simple-commerce::messages.gateways.stripe.stripe_secret_missing'));
+            throw new StripeSecretMissing("Could not find your Stripe Secret. Please ensure it's added to your gateway configuration.");
         }
 
         Stripe::setApiKey($this->config()->get('secret'));
