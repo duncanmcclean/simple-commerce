@@ -42,9 +42,7 @@ class Manager implements Contract
     protected function resolve()
     {
         if (!resolve($this->className)) {
-            throw new ShippingMethodDoesNotExist(__('simple-commerce::messages.shipping_method_does_not_exist', [
-                'shippingMethod' => $this->className,
-            ]));
+            throw new ShippingMethodDoesNotExist("Shipping method [{$this->className}] does not exist.");
         }
 
         return resolve($this->className);

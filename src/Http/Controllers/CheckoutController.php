@@ -217,7 +217,7 @@ class CheckoutController extends BaseActionController
         }
 
         if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
-            throw new NoGatewayProvided(__('simple-commerce::messages.no_gateway_provided'));
+            throw new NoGatewayProvided("No gateway provided.");
         }
 
         $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
@@ -235,6 +235,10 @@ class CheckoutController extends BaseActionController
     {
         if ($this->cart->customer()) {
             $this->cart->customer()->addOrder($this->cart->id);
+        }
+
+        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') === 0) {
+            $this->cart->markAsPaid();
         }
 
         $this->forgetCart();
