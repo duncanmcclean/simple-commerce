@@ -47,7 +47,9 @@
                             {{ $taxRate->rate() }}%
                         </td>
                         <td>
-                            {{ $taxRate->zone()->name() }}
+                            @if ($taxRate->zone())
+                                {{ $taxRate->zone()->name() }}
+                            @endif
                         </td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
