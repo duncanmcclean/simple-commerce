@@ -31,13 +31,6 @@ class TaxZone
     {
         return $this
             ->fluentlyGetOrSet('id')
-            ->getter(function ($id) {
-                if (! $id) {
-                    return app('stache')->generateId();
-                }
-
-                return $id;
-            })
             ->args(func_get_args());
     }
 
