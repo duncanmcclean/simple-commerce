@@ -188,7 +188,8 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Tax Rates'))
                     ->section(__('Simple Commerce'))
                     ->route('simple-commerce.tax-rates.index')
-                    ->can('view tax rates');
+                    ->can('view tax rates')
+                    ->icon(SimpleCommerce::svg('money-cash-file-dollar'));
 
                 $nav->create(__('Tax Categories'))
                     ->section(__('Simple Commerce'))
@@ -199,7 +200,8 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Tax Zones'))
                     ->section(__('Simple Commerce'))
                     ->route('simple-commerce.tax-zones.index')
-                    ->can('view tax zones');
+                    ->can('view tax zones')
+                    ->icon(SimpleCommerce::svg('travel-map'));
             });
         }
 

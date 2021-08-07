@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Statamic;
@@ -126,5 +127,18 @@ class SimpleCommerce
     public static function customerDriver(): array
     {
         return config('simple-commerce.content.customers');
+    }
+
+    /**
+     * This shouldn't be used as a Statamic::svg() replacement. It's only useful for grabbing
+     * icons from Simple Commerce's `resources/svgs` directory.
+     */
+    public static function svg($name)
+    {
+        if (File::exists(__DIR__.'/../resources/svg/'.$name.'.svg')) {
+            return File::get(__DIR__.'/../resources/svg/'.$name.'.svg');
+        }
+
+        return Statamic::svg($name);
     }
 }
