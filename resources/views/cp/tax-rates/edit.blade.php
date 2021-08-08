@@ -23,32 +23,38 @@
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
                     <label class="block mb-1">Name <i class="required">*</i></label>
-                    <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxRate->name() }}" required>
+                    <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxRate->name() }}">
+
+                    @include('simple-commerce::cp.partials.error', ['name' => 'name'])
                 </div>
 
                 <div class="form-group w-full md:w-1/2">
                     <label class="block mb-1">Rate <i class="required">*</i></label>
 
                     <div class="input-group">
-                        <input type="number" name="rate" class="input-text" value="{{ $taxRate->rate() }}" required>
+                        <input type="number" name="rate" class="input-text" value="{{ $taxRate->rate() }}">
                         <div class="input-group-append">%</div>
                     </div>
+
+                    @include('simple-commerce::cp.partials.error', ['name' => 'rate'])
                 </div>
             </div>
 
             <div class="form-group w-full">
                 <label class="block mb-1">Tax Zone <i class="required">*</i></label>
-                <select name="zone" class="input-text" value="{{ $taxRate->zone()->id() }}" required>
+                <select name="zone" class="input-text" value="{{ $taxRate->zone()->id() }}">
                     @foreach($taxZones as $taxZone)
                         {{-- <option selected>Please select</option> --}}
                         <option value="{{ $taxZone->id() }}">{{ $taxZone->name() }}</option>
                     @endforeach
                 </select>
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'zone'])
             </div>
 
             <div class="form-group w-full md:w-1/2">
                 <label class="block mb-1">Include in price?</label>
-                <input type="hidden" name="include_in_price" value="{{ $taxRate->includeInPrice() ? 'true' : 'false' }}" required>
+                <input type="hidden" name="include_in_price" value="{{ $taxRate->includeInPrice() ? 'true' : 'false' }}">
 
                 <button
                     id="includeInPriceToggle"
@@ -60,6 +66,8 @@
                         <div class="toggle-knob" tabindex="0" ref="knob" />
                     </div>
                 </button>
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'include_in_price'])
             </div>
         </div>
     </form>

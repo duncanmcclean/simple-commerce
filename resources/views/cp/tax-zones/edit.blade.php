@@ -22,6 +22,8 @@
             <div class="form-group w-full">
                 <label class="block mb-1">Name <i class="required">*</i></label>
                 <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxZone->name() }}">
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'name'])
             </div>
 
             <div class="form-group w-full">
@@ -40,6 +42,8 @@
                         @endforeach
                     @endif
                 </select>
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'country'])
             </div>
 
             @if($taxZone->id() !== 'everywhere')
@@ -53,6 +57,8 @@
                 <region-selector
                     @if($taxZone->region()) value="{{ $taxZone->region()['id'] }}" @endif
                 ></region-selector>
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'region'])
             @endif
         </div>
     </form>

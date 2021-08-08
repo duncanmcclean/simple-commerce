@@ -22,6 +22,8 @@
             <div class="form-group w-full">
                 <label class="block mb-1">Name <i class="required">*</i></label>
                 <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}">
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'name'])
             </div>
 
             <div class="form-group w-full">
@@ -31,6 +33,8 @@
                         <option value="{{ $country['iso'] }}" @if(old('country') === $country['iso']) selected @endif>{{ $country['name'] }}</option>
                     @endforeach
                 </select>
+
+                @include('simple-commerce::cp.partials.error', ['name' => 'country'])
             </div>
 
             <input
@@ -43,6 +47,8 @@
             <region-selector
                 @if(old('region')) value="{{ old('region') }}" @endif
             ></region-selector>
+
+            @include('simple-commerce::cp.partials.error', ['name' => 'region'])
         </div>
     </form>
 @endsection
