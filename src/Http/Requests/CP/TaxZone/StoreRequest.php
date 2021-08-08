@@ -2,6 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Support\Regions;
 use DoubleThreeDigital\SimpleCommerce\Support\Rules\CountryExists;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,8 +19,33 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'country' => ['required', new CountryExists],
-            'region' => ['nullable'], // TODO: RegionExists
+            'country' => ['required', new CountryExists, function ($attribute, $value, $fail) {
+                if ($this->region === null) {
+                    $taxZoneWithCountryAlreadyExists = TaxZone::all()
+                        ->where('country', $value)
+                        ->where('region', null)
+                        ->count() > 0;
+
+                    if ($taxZoneWithCountryAlreadyExists) {
+                        $country = Countries::find($value);
+
+                        $fail("There is already a tax zone for {$country['name']}");
+                    }
+                }
+            }],
+            'region' => ['nullable', function ($attribute, $value, $fail) {
+                $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
+                    ->where('country', $this->country)
+                    ->where('region', $value)
+                    ->count() > 0;
+
+                if ($taxZoneWithCountryAndRegionAlreadyExists) {
+                    $country = Countries::find($this->country);
+                    $region = Regions::find($value);
+
+                    $fail("There is already a tax zone for {$region['name']}, {$country['name']}");
+                }
+            }], // TODO: RegionExists
         ];
     }
 }

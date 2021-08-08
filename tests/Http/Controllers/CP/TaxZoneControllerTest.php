@@ -59,7 +59,48 @@ class TaxZoneControllerTest extends TestCase
                 'name' => 'Special Products',
                 'country' => 'DE',
             ])
-            ->assertRedirect();
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
+    }
+
+    /** @test */
+    public function cant_store_tax_zone_when_there_is_already_a_tax_zone_covering_the_same_country()
+    {
+        TaxZone::make()
+            ->id('the-us')
+            ->name('The US')
+            ->country('US')
+            ->save();
+
+        $this
+            ->actingAs($this->user())
+            ->post('/cp/simple-commerce/tax-zones/create', [
+                'name' => 'United States',
+                'country' => 'US',
+            ])
+            ->assertRedirect()
+            ->assertSessionHasErrors();
+    }
+
+    /** @test */
+    public function cant_store_tax_zone_when_there_is_already_a_tax_zone_covering_the_same_country_and_region()
+    {
+        TaxZone::make()
+            ->id('the-us')
+            ->name('The Alaska State')
+            ->country('US')
+            ->region('us-ak')
+            ->save();
+
+        $this
+            ->actingAs($this->user())
+            ->post('/cp/simple-commerce/tax-zones/create', [
+                'name' => 'Alaska',
+                'country' => 'US',
+                'region' => 'us-ak',
+            ])
+            ->assertRedirect()
+            ->assertSessionHasErrors();
     }
 
     /** @test */
@@ -95,6 +136,61 @@ class TaxZoneControllerTest extends TestCase
                 'country' => 'GB',
             ])
             ->assertRedirect('/cp/simple-commerce/tax-zones/united-kingdom/edit');
+    }
+
+    /** @test */
+    public function cant_update_tax_zone_when_there_is_already_a_tax_zone_covering_the_same_country()
+    {
+        // The one for editing
+        TaxZone::make()
+            ->id('united-states')
+            ->name('United States')
+            ->country('US')
+            ->save();
+
+        // The one we're checking doesn't already exist
+        TaxZone::make()
+            ->id('the-us')
+            ->name('The US')
+            ->country('US')
+            ->save();
+
+        $this
+            ->actingAs($this->user())
+            ->post('/cp/simple-commerce/tax-zones/united-states/edit', [
+                'name' => 'United States',
+                'country' => 'US',
+            ])
+            ->assertSessionHasErrors();
+    }
+
+    /** @test */
+    public function cant_update_tax_zone_when_there_is_already_a_tax_zone_covering_the_same_country_and_region()
+    {
+        // The one for editing
+        TaxZone::make()
+            ->id('alaska')
+            ->name('Alaska')
+            ->country('US')
+            ->region('us-ak')
+            ->save();
+
+        // The one we're checking doesn't already exist
+        TaxZone::make()
+            ->id('alaska-us')
+            ->name('Alaska US')
+            ->country('US')
+            ->region('us-ak')
+            ->save();
+
+        $this
+            ->actingAs($this->user())
+            ->post('/cp/simple-commerce/tax-zones/alaska/edit', [
+                'name' => 'Alaska',
+                'country' => 'US',
+                'region' => 'us-ak',
+            ])
+            ->assertSessionHasErrors();
     }
 
     /** @test */
