@@ -31,6 +31,15 @@ class TaxEngine implements Contract
     {
         $product = Product::find($lineItem['product']);
 
+        /** @var \DoubleThreeDigital\SimpleCommerce\Orders\Address */
+        $address = config('simple-commerce.tax_engine_config.address') === 'billing'
+            ? $order->billingAddress()
+            : $order->shippingAddress();
+
+        if (! $address) {
+            // Do something if we don't have a proper address, maybe use a default address?
+        }
+
         $taxRateQuery = TaxRate::all()
             ->filter(function ($taxRate) use ($product) {
                 return $taxRate->category()->id() === $product->taxCategory()->id();
@@ -38,14 +47,14 @@ class TaxEngine implements Contract
 
         $taxZoneQuery = TaxZone::all();
 
-        if ($order->billingAddress() && $order->billingAddress()->country()) {
-            $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($order) {
-                return $taxZone->country() === $order->billingAddress()->country();
+        if ($address->country()) {
+            $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
+                return $taxZone->country() === $address->country();
             });
 
-            if ($order->billingAddress()->region()) {
-                $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($order) {
-                    return $taxZone->region() === $order->billingAddress()->region();
+            if ($address->region()) {
+                $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
+                    return $taxZone->region() === $address->region();
                 });
             }
         }

@@ -88,6 +88,10 @@ class Address
 
     public function region(): ?array
     {
+        if (! $this->region) {
+            return null;
+        }
+
         return Regions::find($this->region);
     }
 }

@@ -158,6 +158,9 @@ return [
         // Old, legacy tax engine...
         'rate'               => 20,
         'included_in_prices' => false,
+
+        // Fancy new tax engine...
+        'address' => 'billing',
     ],
 
 ];

@@ -39,6 +39,10 @@ class StandardTaxEngineTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
+        Config::set('simple-commerce.tax_engine_config', [
+            'address' => 'billing',
+        ]);
+
         $taxCategory = TaxCategory::make()
             ->id('standard-vat')
             ->name('Standard VAT');
@@ -76,6 +80,7 @@ class StandardTaxEngineTest extends TestCase
                     'total' => 1000,
                 ],
             ],
+            'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
 
@@ -96,6 +101,10 @@ class StandardTaxEngineTest extends TestCase
     public function can_correctly_calculate_tax_rate_based_on_region()
     {
         Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+        Config::set('simple-commerce.tax_engine_config', [
+            'address' => 'billing',
+        ]);
 
         $taxCategory = TaxCategory::make()
             ->id('standard-vat')
@@ -136,6 +145,7 @@ class StandardTaxEngineTest extends TestCase
                     'total' => 1000,
                 ],
             ],
+            'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
             'billing_region' => 'gb-sct',
         ]);
@@ -157,6 +167,10 @@ class StandardTaxEngineTest extends TestCase
     public function can_calculate_tax_rate_when_included_in_price()
     {
         Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+        Config::set('simple-commerce.tax_engine_config', [
+            'address' => 'billing',
+        ]);
 
         $taxCategory = TaxCategory::make()
             ->id('standard-vat')
@@ -196,6 +210,7 @@ class StandardTaxEngineTest extends TestCase
                     'total' => 1000,
                 ],
             ],
+            'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
 
