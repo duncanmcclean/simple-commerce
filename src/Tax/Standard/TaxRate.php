@@ -20,6 +20,7 @@ class TaxRate
     public $rate;
     public $category;
     public $zone;
+    public $includeInPrice = false;
 
     public function __construct()
     {
@@ -72,6 +73,13 @@ class TaxRate
             ->args(func_get_args());
     }
 
+    public function includeInPrice($includeInPrice = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('includeInPrice')
+            ->args(func_get_args());
+    }
+
     public function save()
     {
         TaxRateFacade::save($this);
@@ -99,6 +107,7 @@ class TaxRate
             'rate' => $this->rate,
             'category' => $this->category,
             'zone' => $this->zone,
+            'include_in_price' => $this->includeInPrice,
         ];
     }
 

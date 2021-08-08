@@ -24,7 +24,7 @@ class TaxEngine implements Contract
         $taxAmount = ($lineItem['total'] / 100) * ($taxRate->rate() / (100 + $taxRate->rate()));
         $itemTax = (int) round($taxAmount * 100);
 
-        return new TaxCalculation($itemTax, $taxRate->rate(), true); // TODO: Included in prices?
+        return new TaxCalculation($itemTax, $taxRate->rate(), $taxRate->includeInPrice());
     }
 
     protected function decideOnRate(Order $order, array $lineItem): ?StandardTaxRate
@@ -38,7 +38,7 @@ class TaxEngine implements Contract
 
         $taxZoneQuery = TaxZone::all();
 
-        if ($order->billingAddress() && $country = $order->billingAddress()->country()) {
+        if ($order->billingAddress() && $order->billingAddress()->country()) {
             $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($order) {
                 return $taxZone->country() === $order->billingAddress()->country();
             });

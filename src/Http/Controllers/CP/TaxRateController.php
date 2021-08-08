@@ -38,7 +38,8 @@ class TaxRateController
             ->name($request->name)
             ->rate($request->rate)
             ->category($request->category)
-            ->zone($request->zone);
+            ->zone($request->zone)
+            ->includeInPrice($request->include_in_price);
 
         $taxRate->save();
 
@@ -62,7 +63,8 @@ class TaxRateController
             ->name($request->name)
             ->rate($request->rate)
             ->category($request->category)
-            ->zone($request->zone);
+            ->zone($request->zone)
+            ->includeInPrice($request->include_in_price);
 
         $taxRate->save();
 

@@ -55,7 +55,8 @@ class TaxRateControllerTest extends TestCase
             ->assertSee('Create Tax Rate')
             ->assertSee('Name')
             ->assertSee('Rate')
-            ->assertSee('Tax Zone');
+            ->assertSee('Tax Zone')
+            ->assertSee('Include in price?');
     }
 
     /** @test */
@@ -71,6 +72,7 @@ class TaxRateControllerTest extends TestCase
                 'rate' => 5,
                 'category' => 'special',
                 'zone' => 'the-uk',
+                'include_in_price' => 'true',
             ])
             ->assertRedirect();
     }
@@ -87,6 +89,7 @@ class TaxRateControllerTest extends TestCase
             ->rate(20)
             ->zone('the-uk')
             ->category('standard')
+            ->includeInPrice(true)
             ->save();
 
         $this
@@ -96,7 +99,8 @@ class TaxRateControllerTest extends TestCase
             ->assertSee('UK - Standard Products')
             ->assertSee('20')
             ->assertSee('the-uk')
-            ->assertSee('standard');
+            ->assertSee('standard')
+            ->assertSee('name="include_in_price" value="true"', false);
     }
 
     /** @test */
@@ -111,6 +115,7 @@ class TaxRateControllerTest extends TestCase
             ->rate(20)
             ->zone('the-uk')
             ->category('standard')
+            ->includeInPrice(false)
             ->save();
 
         $this
@@ -120,6 +125,7 @@ class TaxRateControllerTest extends TestCase
                 'rate' => 15,
                 'zone' => 'the-uk',
                 'category' => 'standard',
+                'include_in_price' => 'true',
             ])
             ->assertRedirect('/cp/simple-commerce/tax-rates/uk-standard-products/edit');
     }

@@ -45,6 +45,32 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="form-group w-full md:w-1/2">
+                <label class="block mb-1">Include in price?</label>
+                <input type="hidden" name="include_in_price" value="{{ $taxRate->includeInPrice() ? 'true' : 'false' }}" required>
+
+                <button
+                    id="includeInPriceToggle"
+                    type="button"
+                    class="toggle-container @if($taxRate->includeInPrice()) on @endif"
+                    onclick="toggle()"
+                >
+                    <div class="toggle-slider">
+                        <div class="toggle-knob" tabindex="0" ref="knob" />
+                    </div>
+                </button>
+            </div>
         </div>
     </form>
+
+    <script>
+        function toggle(e) {
+            let toggleButton = document.getElementById('includeInPriceToggle')
+            let includedInPriceInput = document.getElementsByName('include_in_price')[0]
+
+            includedInPriceInput.value = ! (includedInPriceInput.value == 'true')
+            toggleButton.classList.toggle('on')
+        }
+    </script>
 @endsection

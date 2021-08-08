@@ -18,6 +18,14 @@ class UpdateRequest extends FormRequest
             'rate' => ['required', 'numeric'],
             'category' => ['required', 'string'], // TODO
             'zone' => ['required', 'string'], // TODO
+            'include_in_price' => ['required', 'boolean'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'include_in_price' => $this->include_in_price === 'true',
+        ]);
     }
 }

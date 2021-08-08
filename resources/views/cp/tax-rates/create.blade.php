@@ -23,14 +23,14 @@
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
                     <label class="block mb-1">Name</label>
-                    <input type="text" name="name" autofocus="autofocus" class="input-text" required>
+                    <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}" required>
                 </div>
 
                 <div class="form-group w-full md:w-1/2">
                     <label class="block mb-1">Rate</label>
 
                     <div class="input-group">
-                        <input type="number" name="rate" class="input-text" required>
+                        <input type="number" name="rate" class="input-text" value="{{ old('rate') }}" required>
                         <div class="input-group-append">%</div>
                     </div>
                 </div>
@@ -39,12 +39,38 @@
             <div class="form-group w-full">
                 <label class="block mb-1">Tax Zone</label>
                 <select name="zone" class="input-text" required>
+                    <option selected>Please select</option>
                     @foreach($taxZones as $taxZone)
-                        <option selected>Please select</option>
-                        <option value="{{ $taxZone->id() }}">{{ $taxZone->name() }}</option>
+                        <option value="{{ $taxZone->id() }}" @if($taxZone->id() === old('zone')) selected @endif>{{ $taxZone->name() }}</option>
                     @endforeach
                 </select>
             </div>
+
+            <div class="form-group w-full md:w-1/2">
+                <label class="block mb-1">Include in price?</label>
+                <input type="hidden" name="include_in_price" value="{{ old('include_in_price') ?? 'false' }}" required>
+
+                <button
+                    id="includeInPriceToggle"
+                    type="button"
+                    class="toggle-container @if(old('include_in_price')) on @endif"
+                    onclick="toggle()"
+                >
+                    <div class="toggle-slider">
+                        <div class="toggle-knob" tabindex="0" ref="knob" />
+                    </div>
+                </button>
+            </div>
         </div>
     </form>
+
+    <script>
+        function toggle(e) {
+            let toggleButton = document.getElementById('includeInPriceToggle')
+            let includedInPriceInput = document.getElementsByName('include_in_price')[0]
+
+            includedInPriceInput.value = ! (includedInPriceInput.value == 'true')
+            toggleButton.classList.toggle('on')
+        }
+    </script>
 @endsection
