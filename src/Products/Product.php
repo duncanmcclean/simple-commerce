@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotAssignedToTaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
@@ -76,7 +75,7 @@ class Product implements Contract
     public function taxCategory(): ?TaxCategory
     {
         if (! isset($this->data['tax_category'])) {
-            throw new ProductNotAssignedToTaxCategory("Product [{$this->id()}] has not been assigned a tax category. Please assign one and try again.");
+            return TaxCategoryFacade::find('default');
         }
 
         return TaxCategoryFacade::find($this->data['tax_category']);

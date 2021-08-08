@@ -19,6 +19,10 @@ class TaxCategoryRepository
 
     public function all(): DataCollection
     {
+        if ($this->query()->count() === 0) {
+            $this->makeDefaultCategory();
+        }
+
         return $this->query()->get();
     }
 
@@ -45,5 +49,14 @@ class TaxCategoryRepository
     public function make(): TaxCategory
     {
         return new TaxCategory();
+    }
+
+    protected function makeDefaultCategory()
+    {
+        $this->make()
+            ->id('default')
+            ->name('Default')
+            ->description(__('Will be used for all products where a category has not been assigned.'))
+            ->save();
     }
 }
