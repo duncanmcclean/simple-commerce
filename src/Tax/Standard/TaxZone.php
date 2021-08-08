@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use DoubleThreeDigital\SimpleCommerce\Support\Regions;
@@ -70,6 +71,12 @@ class TaxZone
 
     public function delete()
     {
+        TaxRate::all()
+            ->where('zone', $this->id())
+            ->each(function ($taxRate) {
+                $taxRate->delete();
+            });
+
         TaxZoneFacade::delete($this);
 
         return true;

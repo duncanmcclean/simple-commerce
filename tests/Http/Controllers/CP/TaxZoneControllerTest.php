@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use Statamic\Facades\User;
@@ -108,6 +110,36 @@ class TaxZoneControllerTest extends TestCase
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax-zones/the-states/delete')
             ->assertRedirect('/cp/simple-commerce/tax-zones');
+    }
+
+    /**
+     * @test
+     *
+     * This test ensures that any rates belonging to this tax zone
+     * are cleaned up during the delete process.
+     */
+    public function can_destroy_tax_zone_and_delete_assosiated_rates()
+    {
+        TaxZone::make()
+            ->id('the-states')
+            ->name('United States')
+            ->country('US')
+            ->save();
+
+        $taxCategory = TaxCategory::make()->id('abc')->name('General products');
+        $taxCategory->save();
+
+        $taxRate = TaxRate::make()->id('123')->name('US General products')->category('abc')->zone('the-states');
+        $taxRate->save();
+
+        $this->assertFileExists($taxRate->path());
+
+        $this
+            ->actingAs($this->user())
+            ->delete('/cp/simple-commerce/tax-zones/the-states/delete')
+            ->assertRedirect('/cp/simple-commerce/tax-zones');
+
+        $this->assertFileDoesNotExist($taxRate->path());
     }
 
     protected function user()
