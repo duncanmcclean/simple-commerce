@@ -73,11 +73,6 @@ return [
         'default' => [
             'currency' => 'GBP',
 
-            'tax' => [ // Tax TODO: remove this at some point
-                'rate'               => 20,
-                'included_in_prices' => false,
-            ],
-
             'shipping' => [
                 'methods' => [
                     \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
@@ -158,5 +153,11 @@ return [
     */
 
     'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class,
+
+    'tax_engine_config' => [
+        // Old, legacy tax engine...
+        'rate'               => 20,
+        'included_in_prices' => false,
+    ],
 
 ];

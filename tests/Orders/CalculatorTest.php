@@ -50,7 +50,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function standard_product_price_is_calculated_correctly()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::create([
             'price' => 500,
@@ -85,7 +85,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function variant_product_price_is_calculated_correctly()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::create([
             'product_variants' => [
@@ -129,7 +129,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_decimals_in_standard_product_prices_are_stripped_out()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::create([
             'price' => 15.50,
@@ -164,7 +164,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_decimals_in_variant_product_prices_are_stripped_out()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::create([
             'product_variants' => [
@@ -210,7 +210,7 @@ class CalculatorTest extends TestCase
     {
         $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
 
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
 
         $product = Product::create([
             'price' => 1000,
@@ -245,8 +245,8 @@ class CalculatorTest extends TestCase
     {
         $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
 
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
         $product = Product::create([
             'price' => 1000,
@@ -281,8 +281,8 @@ class CalculatorTest extends TestCase
     {
         $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
 
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', false);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
         $product = Product::create([
             'price' => 1000,
@@ -317,8 +317,8 @@ class CalculatorTest extends TestCase
     {
         $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
 
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
         $product = Product::create([
             'price' => 2600,
@@ -351,7 +351,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_shipping_price_is_applied_correctly()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
 
         Config::set('simple-commerce.sites.default.shipping.methods', [
             Postage::class,
@@ -389,7 +389,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_grand_total_is_calculated_correctly()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
 
         Config::set('simple-commerce.sites.default.shipping.methods', [
             Postage::class,
@@ -437,7 +437,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_percentage_coupon_is_calculated_correctly_on_items_total()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         $product = Product::create([
@@ -481,7 +481,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_fixed_coupon_is_calculated_correctly_on_items_total()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         $product = Product::create([

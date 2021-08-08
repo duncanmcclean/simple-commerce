@@ -384,7 +384,7 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function can_post_checkout_with_coupon()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         Event::fake();
@@ -453,7 +453,7 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function cant_post_checkout_with_coupon_where_minimum_cart_value_has_not_been_reached()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         Event::fake();
@@ -524,7 +524,7 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function cant_post_checkout_with_coupon_when_coupon_has_been_redeemed_for_maxium_uses()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         Event::fake();
@@ -596,7 +596,7 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function cant_post_checkout_with_coupon_where_coupon_is_only_valid_for_products_not_in_cart()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         Event::fake();
@@ -902,7 +902,7 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function can_post_checkout_with_extra_line_item_and_ensure_order_is_recalculated()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
         Event::fake();

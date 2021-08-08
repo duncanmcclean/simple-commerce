@@ -17,8 +17,8 @@ class BasicTaxEngineTest extends TestCase
      */
     public function can_calculate_tax_when_not_included_in_price()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', false);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
         $product = Product::create([
             'price' => 2000,
@@ -47,8 +47,8 @@ class BasicTaxEngineTest extends TestCase
     /** @test */
     public function can_calculate_tax_when_included_in_price()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
         $product = Product::create([
             'price' => 1000,
@@ -79,7 +79,7 @@ class BasicTaxEngineTest extends TestCase
     {
         $this->markTestIncomplete("Need to figure out the calculation issue, oh well!");
 
-        Config::set('simple-commerce.sites.default.tax.rate', 10.5);
+        Config::set('simple-commerce.tax_engine_config.rate', 10.5);
 
         $product = Product::create([
             'price' => 1000,
@@ -109,7 +109,7 @@ class BasicTaxEngineTest extends TestCase
     /** @test */
     public function can_calculate_tax_when_it_is_nothing()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 0);
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::create([
             'price' => 1000,
@@ -141,8 +141,8 @@ class BasicTaxEngineTest extends TestCase
      */
     public function ensure_round_value_tax_is_calculated_correctly()
     {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
+        Config::set('simple-commerce.tax_engine_config.rate', 20);
+        Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
         $product = Product::create([
             'price' => 2600,
