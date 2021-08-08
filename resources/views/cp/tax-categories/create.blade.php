@@ -21,12 +21,12 @@
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="form-group w-full">
                 <label class="block mb-1">Name</label>
-                <input type="text" name="name" autofocus="autofocus" class="input-text">
+                <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}">
             </div>
 
             <div class="form-group w-full">
                 <label class="block mb-1">Description</label>
-                <textarea name="description" cols="30" rows="5" class="input-text"></textarea>
+                <textarea name="description" cols="30" rows="5" class="input-text">{{ old('description') }}</textarea>
             </div>
         </div>
     </form>
