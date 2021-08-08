@@ -31,6 +31,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
+        Fieldtypes\RegionFieldtype::class,
         Fieldtypes\TaxCategoryFieldtype::class,
     ];
 
