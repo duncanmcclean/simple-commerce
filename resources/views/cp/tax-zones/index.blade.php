@@ -29,14 +29,20 @@
                                 <a href="{{ $taxZone->editUrl() }}">{{ $taxZone->name() }}</a>
                             </div>
                         </td>
-                        <td>@if($taxZone->region()){{ $taxZone->region()['name'] }}, @endif{{ $taxZone->country()['name'] }}</td>
+                        <td>
+                            @if($taxZone->country())
+                                @if($taxZone->region()){{ $taxZone->region()['name'] }}, @endif{{ $taxZone->country()['name'] }}
+                            @else
+                                Everywhere
+                            @endif
+                        </td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
                                 @if(auth()->user()->can('edit tax zones'))
                                     <dropdown-item :text="__('Edit')" redirect="{{ $taxZone->editUrl() }}"></dropdown-item>
                                 @endif
 
-                                @if(auth()->user()->can('delete tax zones'))
+                                @if($taxZone->id() !== 'everywhere' && auth()->user()->can('delete tax zones'))
                                     <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
                                         <resource-deleter
                                             ref="deleter"

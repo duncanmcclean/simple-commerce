@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxCategory;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
@@ -57,6 +59,18 @@ class TaxCategoryRepository
             ->id('default')
             ->name('Default')
             ->description(__('Will be used for all products where a category has not been assigned.'))
+            ->save();
+
+        TaxZone::make()
+            ->id('everywhere')
+            ->name('Everywhere')
+            ->save();
+
+        TaxRate::make()
+            ->id('default-rate')
+            ->name('Default')
+            ->category('default')
+            ->zone('everywhere')
             ->save();
     }
 }

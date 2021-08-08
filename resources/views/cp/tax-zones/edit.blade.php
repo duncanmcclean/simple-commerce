@@ -26,28 +26,34 @@
 
             <div class="form-group w-full">
                 <label class="block mb-1">Country</label>
-                <select name="country" class="input-text" value="{{ $taxZone->country()['iso'] }}">
-                    @foreach($countries as $country)
-                        <option
-                            value="{{ $country['iso'] }}"
-                            @if($country['iso'] === $taxZone->country()['iso']) selected @endif
-                        >
-                            {{ $country['name'] }}
-                        </option>
-                    @endforeach
+                <select name="country" class="input-text" @if($taxZone->country()) value="{{ $taxZone->country()['iso'] }}" @endif>
+                    @if($taxZone->id() === 'everywhere')
+                        <option value="" selected disabled>Everywhere</option>
+                    @else
+                        @foreach($countries as $country)
+                            <option
+                                value="{{ $country['iso'] }}"
+                                @if($taxZone->country() && $country['iso'] === $taxZone->country()['iso']) selected @endif
+                            >
+                                {{ $country['name'] }}
+                            </option>
+                        @endforeach
+                    @endif
                 </select>
             </div>
 
-            <input
-                id="regionInput"
-                type="hidden"
-                name="region"
-                @if($taxZone->region()) value="{{ $taxZone->region()['id'] }}" @endif
-            >
+            @if($taxZone->id() !== 'everywhere')
+                <input
+                    id="regionInput"
+                    type="hidden"
+                    name="region"
+                    @if($taxZone->region()) value="{{ $taxZone->region()['id'] }}" @endif
+                >
 
-            <region-selector
-                @if($taxZone->region()) value="{{ $taxZone->region()['id'] }}" @endif
-            ></region-selector>
+                <region-selector
+                    @if($taxZone->region()) value="{{ $taxZone->region()['id'] }}" @endif
+                ></region-selector>
+            @endif
         </div>
     </form>
 @endsection

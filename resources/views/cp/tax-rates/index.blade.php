@@ -44,7 +44,7 @@
                             </div>
                         </td>
                         <td>
-                            {{ $taxRate->rate() }}%
+                            {{ $taxRate->rate() ?? '0' }}%
                         </td>
                         <td>
                             @if ($taxRate->zone())
@@ -57,7 +57,7 @@
                                     <dropdown-item :text="__('Edit')" redirect="{{ $taxRate->editUrl() }}"></dropdown-item>
                                 @endif
 
-                                @if(auth()->user()->can('delete tax rates'))
+                                @if($taxRate->id() !== 'default-rate' && auth()->user()->can('delete tax rates'))
                                     <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
                                         <resource-deleter
                                             ref="deleter"
