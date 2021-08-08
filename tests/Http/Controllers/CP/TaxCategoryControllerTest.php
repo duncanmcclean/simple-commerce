@@ -4,6 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use Statamic\Facades\User;
 use Illuminate\Support\Facades\File;
 
@@ -106,6 +108,36 @@ class TaxCategoryControllerTest extends TestCase
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax-categories/birthday/delete')
             ->assertRedirect('/cp/simple-commerce/tax-categories');
+    }
+
+    /**
+     * @test
+     *
+     * This test ensures that any rates belonging to this tax category
+     * are cleaned up during the delete process.
+     */
+    public function can_destroy_tax_category_and_delete_assosiated_rates()
+    {
+        TaxCategory::make()
+            ->id('birthday')
+            ->name('Birthday')
+            ->description('Would you guess? Its my birthday.')
+            ->save();
+
+        $taxZone = TaxZone::make()->id('abc')->name('UK')->country('GB');
+        $taxZone->save();
+
+        $taxRate = TaxRate::make()->id('123')->name('UK Birthday')->category('birthday')->zone('abc');
+        $taxRate->save();
+
+        $this->assertFileExists($taxRate->path());
+
+        $this
+            ->actingAs($this->user())
+            ->delete('/cp/simple-commerce/tax-categories/birthday/delete')
+            ->assertRedirect('/cp/simple-commerce/tax-categories');
+
+        $this->assertFileDoesNotExist($taxRate->path());
     }
 
     protected function user()

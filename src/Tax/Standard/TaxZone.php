@@ -16,10 +16,10 @@ class TaxZone
 {
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
-    protected $id;
-    protected $name;
-    protected $country;
-    protected $region;
+    public $id;
+    public $name;
+    public $country;
+    public $region;
 
     public function __construct()
     {

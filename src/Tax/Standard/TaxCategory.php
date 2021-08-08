@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;
@@ -13,9 +14,9 @@ class TaxCategory
 {
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
-    protected $id;
-    protected $name;
-    protected $description;
+    public $id;
+    public $name;
+    public $description;
 
     public function __construct()
     {
@@ -53,6 +54,12 @@ class TaxCategory
 
     public function delete()
     {
+        TaxRate::all()
+            ->where('category', $this->id())
+            ->each(function ($taxRate) {
+                $taxRate->delete();
+            });
+
         TaxCategoryFacade::delete($this);
 
         return true;

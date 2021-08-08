@@ -15,11 +15,11 @@ class TaxRate
 {
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
-    protected $id;
-    protected $name;
-    protected $rate;
-    protected $category;
-    protected $zone;
+    public $id;
+    public $name;
+    public $rate;
+    public $category;
+    public $zone;
 
     public function __construct()
     {
