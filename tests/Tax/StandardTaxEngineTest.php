@@ -76,6 +76,7 @@ class StandardTaxEngineTest extends TestCase
                     'total' => 1000,
                 ],
             ],
+            'billing_country' => 'GB',
         ]);
 
         $recalculate = $order->recalculate();
@@ -94,7 +95,62 @@ class StandardTaxEngineTest extends TestCase
     /** @test */
     public function can_correctly_calculate_tax_rate_based_on_region()
     {
-        $this->markTestIncomplete("Still need to make the region based zone stuff work.");
+        Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+        $taxCategory = TaxCategory::make()
+            ->id('standard-vat')
+            ->name('Standard VAT');
+
+        $taxCategory->save();
+
+        $taxZone = TaxZone::make()
+            ->id('uk')
+            ->name('United Kingdom')
+            ->country('GB')
+            ->region('gb-sct');
+
+        $taxZone->save();
+
+        // Just so we can tell this rate apart
+        $taxRate = TaxRate::make()
+            ->id('scottish-15-vat')
+            ->name('15% Scottish VAT')
+            ->rate(15)
+            ->category($taxCategory->id())
+            ->zone($taxZone->id());
+
+        $taxRate->save();
+
+        $product = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1000,
+            'tax_category' => $taxCategory->id(),
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+            'billing_country' => 'GB',
+            'billing_region' => 'gb-sct',
+        ]);
+
+        $recalculate = $order->recalculate();
+
+        // Ensure tax on line items are right
+        $this->assertSame($recalculate->lineItems()->first()['tax'], [
+            'amount' => 130,
+            'rate' => 15,
+            'price_includes_tax' => false,
+        ]);
+
+        // Ensure global order tax is right
+        $this->assertSame($recalculate->get('tax_total'), 130);
     }
 
     /** @test */
@@ -140,6 +196,7 @@ class StandardTaxEngineTest extends TestCase
                     'total' => 1000,
                 ],
             ],
+            'billing_country' => 'GB',
         ]);
 
         $recalculate = $order->recalculate();

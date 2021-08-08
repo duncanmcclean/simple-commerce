@@ -42,9 +42,13 @@ class TaxEngine implements Contract
             $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($order) {
                 return $taxZone->country() === $order->billingAddress()->country();
             });
-        }
 
-        // TODO: Make regions work (we need to make them part of the Address object first)
+            if ($order->billingAddress()->region()) {
+                $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($order) {
+                    return $taxZone->region() === $order->billingAddress()->region();
+                });
+            }
+        }
 
         return $taxRateQuery
             ->filter(function ($taxRate) use ($taxZoneQuery) {
