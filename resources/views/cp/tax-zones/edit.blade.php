@@ -20,12 +20,12 @@
 
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="form-group w-full">
-                <label class="block mb-1">Name</label>
+                <label class="block mb-1">Name <i class="required">*</i></label>
                 <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxZone->name() }}">
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Country</label>
+                <label class="block mb-1">Country <i class="required">*</i></label>
                 <select name="country" class="input-text" @if($taxZone->country()) value="{{ $taxZone->country()['iso'] }}" @endif>
                     @if($taxZone->id() === 'everywhere')
                         <option value="" selected disabled>Everywhere</option>

@@ -20,12 +20,12 @@
 
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="form-group w-full">
-                <label class="block mb-1">Name</label>
+                <label class="block mb-1">Name <i class="required">*</i></label>
                 <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}">
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Country</label>
+                <label class="block mb-1">Country <i class="required">*</i></label>
                 <select name="country" class="input-text">
                     @foreach($countries as $country)
                         <option value="{{ $country['iso'] }}" @if(old('country') === $country['iso']) selected @endif>{{ $country['name'] }}</option>

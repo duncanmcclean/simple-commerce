@@ -22,12 +22,12 @@
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Name</label>
+                    <label class="block mb-1">Name <i class="required">*</i></label>
                     <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}" required>
                 </div>
 
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Rate</label>
+                    <label class="block mb-1">Rate <i class="required">*</i></label>
 
                     <div class="input-group">
                         <input type="number" name="rate" class="input-text" value="{{ old('rate') }}" required>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Tax Zone</label>
+                <label class="block mb-1">Tax Zone <i class="required">*</i></label>
                 <select name="zone" class="input-text" required>
                     <option selected>Please select</option>
                     @foreach($taxZones as $taxZone)
