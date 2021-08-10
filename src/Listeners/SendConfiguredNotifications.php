@@ -30,11 +30,11 @@ class SendConfiguredNotifications implements ShouldQueue
             $notifiables = $this->getNotifiables($config, $notification, $event);
             $notification = new $notification(...$this->getNotificationParameters($config, $notification, $event));
 
-            foreach ($notifiables as $channel => $route) {
+            foreach ($notifiables as $notifiable) {
                 if (! $freshNotification) {
-                    $freshNotification = Notification::route($channel, $route);
+                    $freshNotification = Notification::route($notifiable['channel'], $notifiable['route']);
                 } else {
-                    $freshNotification->route($channel, $route);
+                    $freshNotification->route($notifiable['channel'], $notifiable['route']);
                 }
             }
 
