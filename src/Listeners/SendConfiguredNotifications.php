@@ -30,6 +30,10 @@ class SendConfiguredNotifications implements ShouldQueue
             $notifiables = $this->getNotifiables($config, $notification, $event);
             $notification = new $notification(...$this->getNotificationParameters($config, $notification, $event));
 
+            if (! $notifiables) {
+                break;
+            }
+
             foreach ($notifiables as $notifiable) {
                 if (! $freshNotification) {
                     $freshNotification = Notification::route($notifiable['channel'], $notifiable['route']);
@@ -42,7 +46,7 @@ class SendConfiguredNotifications implements ShouldQueue
         }
     }
 
-    protected function getNotifiables(array $config, $notification, $event): array
+    protected function getNotifiables(array $config, $notification, $event): ?array
     {
         if ($config['to'] === 'customer') {
             if ($customer = $event->order->customer()) {
@@ -62,6 +66,9 @@ class SendConfiguredNotifications implements ShouldQueue
                     ['channel' => 'mail', 'route' => $email],
                 ];
             }
+
+            // When there's no customer on the order
+            return null;
         }
 
         if (is_string($config['to'])) {
