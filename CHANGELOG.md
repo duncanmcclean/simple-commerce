@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.18 (2021-08-10)
+
+### What's fixed
+
+* Fixed an issue where notifications were not being sent properly #451
+
 ## v2.3.17 (2021-08-03)
 
 ### What's fixed
