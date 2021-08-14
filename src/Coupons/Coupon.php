@@ -55,7 +55,7 @@ class Coupon implements Contract
             }
         }
 
-        if ($this->has('redeemed') && $this->has('maximum_uses')) {
+        if ($this->has('redeemed') && $this->has('maximum_uses') && $this->get('maximum_uses') !== null) {
             if ($this->get('redeemed') >= $this->get('maximum_uses')) {
                 return false;
             }
