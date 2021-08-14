@@ -40,6 +40,16 @@ class CheckoutTags extends SubTag
                     } catch (\Exception $e) {
                         throw new GatewayException($e->getMessage());
                     }
+
+                    try {
+                        $config = Gateway::use($gateway['class'])->config();
+
+                        $data = array_merge($data, [
+                            'gateway-config' => $config,
+                        ]);
+                    } catch (\Exception $e) {
+                        throw new GatewayException($e->getMessage());
+                    }
                 });
         }
 
