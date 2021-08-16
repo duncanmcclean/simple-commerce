@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate;
 
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\TaxCategoryExists;
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\TaxZoneExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -16,8 +18,8 @@ class StoreRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'rate' => ['required', 'numeric'],
-            'category' => ['required', 'string'], // TODO
-            'zone' => ['required', 'string'], // TODO
+            'category' => ['required', 'string', new TaxCategoryExists],
+            'zone' => ['required', 'string', new TaxZoneExists],
             'include_in_price' => ['required', 'boolean'],
         ];
     }

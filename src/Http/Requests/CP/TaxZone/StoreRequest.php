@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use DoubleThreeDigital\SimpleCommerce\Support\Regions;
 use DoubleThreeDigital\SimpleCommerce\Support\Rules\CountryExists;
+use DoubleThreeDigital\SimpleCommerce\Support\Rules\RegionExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -33,7 +34,7 @@ class StoreRequest extends FormRequest
                     }
                 }
             }],
-            'region' => ['nullable', function ($attribute, $value, $fail) {
+            'region' => ['nullable', new RegionExists, function ($attribute, $value, $fail) {
                 $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
                     ->where('country', $this->country)
                     ->where('region', $value)
@@ -45,7 +46,7 @@ class StoreRequest extends FormRequest
 
                     $fail("There is already a tax zone for {$region['name']}, {$country['name']}");
                 }
-            }], // TODO: RegionExists
+            }],
         ];
     }
 }
