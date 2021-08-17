@@ -161,6 +161,16 @@ return [
 
         // Fancy new tax engine...
         'address' => 'billing',
+
+        // In the case an address is not provided, this is the address Simple Commerce will base the tax rate on.
+        'default_address' => [
+            'address_line_1' => '',
+            'address_line_2' => '',
+            'city' => '',
+            'region' => '',
+            'country' => '',
+            'zip_code' => '',
+        ],
     ],
 
 ];

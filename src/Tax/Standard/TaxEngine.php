@@ -7,8 +7,10 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate as StandardTaxRate;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
+use Illuminate\Support\Facades\Config;
 
 class TaxEngine implements Contract
 {
@@ -37,7 +39,7 @@ class TaxEngine implements Contract
             : $order->shippingAddress();
 
         if (! $address) {
-            // Do something if we don't have a proper address, maybe use a default address?
+            $address = $this->defaultAddress();
         }
 
         $taxRateQuery = TaxRate::all()
@@ -64,5 +66,15 @@ class TaxEngine implements Contract
                 return $taxRate->zone()->id() === $taxZoneQuery->first()->id();
             })
             ->first();
+    }
+
+    protected function defaultAddress(): Address
+    {
+        $defaultAddressConfig = Config::get('simple-commerce.tax_engine_config.default_address');
+
+        return new Address(
+            '',
+            $defaultAddressConfig['address_line_1'],
+        );
     }
 }
