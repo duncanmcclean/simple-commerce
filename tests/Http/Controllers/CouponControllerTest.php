@@ -3,12 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\File;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
@@ -23,6 +23,8 @@ class CouponControllerTest extends TestCase
     {
         parent::setUp();
 
+        File::deleteDirectory(base_path('content/collections/coupons'));
+
         $this->setupCollections();
     }
 
@@ -35,8 +37,7 @@ class CouponControllerTest extends TestCase
 
         $coupon = Entry::make()
             ->collection('coupons')
-            ->id(Stache::generateId())
-            ->slug('half-price')
+            ->slug('hof-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
@@ -49,7 +50,7 @@ class CouponControllerTest extends TestCase
         $coupon->fresh();
 
         $data = [
-            'code' => 'half-price',
+            'code' => 'hof-price',
         ];
 
         $response = $this
@@ -76,8 +77,7 @@ class CouponControllerTest extends TestCase
 
         $coupon = Entry::make()
             ->collection('coupons')
-            ->id(Stache::generateId())
-            ->slug('half-price')
+            ->slug('halav-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
@@ -90,7 +90,7 @@ class CouponControllerTest extends TestCase
         $coupon->fresh();
 
         $data = [
-            'code' => 'half-price',
+            'code' => 'halav-price',
         ];
 
         $response = $this
