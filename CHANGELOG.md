@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.3.19 (2021-08-19)
+
+### What's new
+
+* Support for [Statamic 3.2](https://statamic.com/blog/statamic-3.2-beta)
+* Smarten'd up the `{{ sc:coupon }}` tag, so you can do things like `{{ sc:coupon:minimum_cart_value }}`
+
+### What's fixed
+
+* If `maximum_uses` was `null` on a coupon, you would be unable to redeem it
+* `gateway_config` went missing somewhere and it's documented, so we added it back
+
 ## v2.3.18 (2021-08-10)
 
 ### What's fixed
