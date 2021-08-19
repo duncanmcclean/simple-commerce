@@ -15,6 +15,8 @@ class MigrateLineItemMetadataTest extends TestCase
     /** @test */
     public function it_migrates_metadata_of_order_line_items()
     {
+        $this->markTestSkipped();
+
         $this->setupOrders();
 
         $order = Entry::make()
