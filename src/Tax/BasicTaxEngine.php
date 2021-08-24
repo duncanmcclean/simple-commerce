@@ -15,8 +15,7 @@ class BasicTaxEngine implements TaxEngine
 
     public function __construct()
     {
-        $taxConfiguration = collect(Config::get('simple-commerce.sites'))
-            ->get(Site::current()->handle())['tax'];
+        $taxConfiguration = Config::get('simple-commerce.tax_engine_config');
 
         $this->taxRate = $taxConfiguration['rate'];
         $this->includedInPrices = $taxConfiguration['included_in_prices'];
