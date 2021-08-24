@@ -75,6 +75,11 @@ class TaxEngine implements Contract
         return new Address(
             '',
             $defaultAddressConfig['address_line_1'],
+            isset($defaultAddressConfig['address_line_2']) ? $defaultAddressConfig['address_line_2'] : '',
+            $defaultAddressConfig['city'],
+            $defaultAddressConfig['country'],
+            $defaultAddressConfig['zip_code'],
+            $defaultAddressConfig['region'],
         );
     }
 }
