@@ -19,6 +19,7 @@ class CartControllerTest extends TestCase
         parent::setUp();
 
         $this->setupCollections();
+        $this->useBasicTaxEngine();
     }
 
     /** @test */
@@ -229,6 +230,8 @@ class CartControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        dd($response);
 
         $response->assertRedirect('/cart');
 
