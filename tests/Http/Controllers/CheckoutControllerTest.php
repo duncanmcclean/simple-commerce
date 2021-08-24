@@ -32,6 +32,7 @@ class CheckoutControllerTest extends TestCase
         parent::setUp();
 
         $this->setupCollections();
+        $this->useBasicTaxEngine();
     }
 
     /** @test */

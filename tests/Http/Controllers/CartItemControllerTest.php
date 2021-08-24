@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,14 +19,12 @@ class CartItemControllerTest extends TestCase
         parent::setUp();
 
         $this->setupCollections();
+        $this->useBasicTaxEngine();
     }
 
     /** @test */
     public function can_store_item()
     {
-        // Turns out these tests will only be fixed by either
-        // 1) changing to the basic tax engine or 2) adding a tax category to the product
-
         $product = Product::create([
             'title' => 'Dog Food',
             'price' => 1000,
@@ -39,8 +38,6 @@ class CartItemControllerTest extends TestCase
         $response = $this
             ->from('/products/'.$product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
-
-        dd($response);
 
         $response->assertRedirect('/products/'.$product->slug);
         $response->assertSessionHas('simple-commerce-cart');
