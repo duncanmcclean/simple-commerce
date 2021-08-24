@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -107,5 +108,15 @@ abstract class TestCase extends OrchestraTestCase
         Statamic::booted(function () {
             Site::setCurrent('default');
         });
+    }
+
+    protected function useBasicTaxEngine()
+    {
+        SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class);
+    }
+
+    protected function useStandardTaxEngine()
+    {
+        SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class);
     }
 }

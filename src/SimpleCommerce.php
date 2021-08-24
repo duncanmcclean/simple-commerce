@@ -70,6 +70,11 @@ class SimpleCommerce
         });
     }
 
+    public static function setTaxEngine($taxEngine)
+    {
+        static::$taxEngine = $taxEngine;
+    }
+
     public static function taxEngine(): Contracts\TaxEngine
     {
         return new static::$taxEngine;
