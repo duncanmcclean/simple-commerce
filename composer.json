@@ -41,7 +41,6 @@
     "require-dev": {
         "nunomaduro/collision": "^4.2",
         "orchestra/testbench": "^4.0|^5.0|^6.0",
-        "spatie/ray": "^1.17",
         "spatie/test-time": "dev-master"
     },
     "scripts": {
