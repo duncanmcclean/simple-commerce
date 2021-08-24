@@ -15,10 +15,12 @@ class TaxCategoryControllerTest extends TestCase
     {
         parent::setUp();
 
-        collect(File::allFiles(base_path('content/simple-commerce/tax-categories')))
-            ->each(function ($file) {
-                File::delete($file);
-            });
+        if (File::exists(base_path('content/simple-commerce/tax-categories'))) {
+            collect(File::allFiles(base_path('content/simple-commerce/tax-categories')))
+                ->each(function ($file) {
+                    File::delete($file);
+                });
+        }
     }
 
     /** @test */
