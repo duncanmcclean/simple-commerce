@@ -7,8 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Facades\Config;
-use Statamic\Facades\Site;
 
 class Calculator implements Contract
 {
