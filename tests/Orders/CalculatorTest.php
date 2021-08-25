@@ -9,11 +9,22 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 
 class CalculatorTest extends TestCase
 {
+    use SetupCollections;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupCollections();
+        $this->useBasicTaxEngine();
+    }
+
     /** @test */
     public function does_not_calculate_totals_if_order_is_paid()
     {
@@ -377,10 +388,10 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 2583);
+        $this->assertSame($calculate['grand_total'], 2650);
         $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
-        $this->assertSame($calculate['tax_total'], 333);
+        $this->assertSame($calculate['tax_total'], 400);
         $this->assertSame($calculate['coupon_total'], 0);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
@@ -425,11 +436,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 1292);
+        $this->assertSame($calculate['grand_total'], 1325);
         $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
-        $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 1291);
+        $this->assertSame($calculate['tax_total'], 400);
+        $this->assertSame($calculate['coupon_total'], 1325);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
