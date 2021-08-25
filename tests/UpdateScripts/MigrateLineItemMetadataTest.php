@@ -6,18 +6,27 @@ use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\RunsUpdateScripts;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\MigrateLineItemMetadata;
+use Illuminate\Support\Facades\File;
 use Statamic\Facades\Entry;
 
 class MigrateLineItemMetadataTest extends TestCase
 {
     use RunsUpdateScripts, SetupCollections;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        collect(File::allFiles(base_path('content/collections')))
+            ->each(function ($file) {
+                File::delete($file);
+            });
+    }
+
     /** @test */
     public function it_migrates_metadata_of_order_line_items()
     {
-        $this->markAsRisky();
-
-        $this->setupCollections();
+        $this->setupOrders();
 
         $order = Entry::make()
             ->collection('orders')
