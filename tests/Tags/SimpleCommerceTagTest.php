@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use DoubleThreeDigital\SimpleCommerce\Support\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Support\Regions;
 use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
 use DoubleThreeDigital\SimpleCommerce\Tags\SubTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -35,6 +36,17 @@ class SimpleCommerceTagTest extends TestCase
 
         foreach (Currencies::toArray() as $currency) {
             $this->assertStringContainsString($currency['name'], $usage);
+        }
+    }
+
+    /** @test */
+    public function can_get_regions()
+    {
+        $usage = $this->tag('{{ sc:regions }}{{ name }} ({{ country:iso }}),{{ /sc:regions }}');
+
+        foreach (Regions::toArray() as $region) {
+            $this->assertStringContainsString($region['name'], $usage);
+            $this->assertStringContainsString($region['country_iso'], $usage);
         }
     }
 

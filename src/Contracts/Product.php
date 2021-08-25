@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use DoubleThreeDigital\SimpleCommerce\Products\ProductVariant;
+use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Collection;
 
 interface Product
@@ -51,7 +52,7 @@ interface Product
 
     public function variant(string $optionKey): ?ProductVariant;
 
-    public function isExemptFromTax(): bool;
+    public function taxCategory(): ?TaxCategory;
 
     public static function bindings(): array;
 }

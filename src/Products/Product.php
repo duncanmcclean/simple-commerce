@@ -3,9 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
+use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
@@ -65,15 +67,18 @@ class Product implements Contract
         })->first();
     }
 
-    public function isExemptFromTax(): bool
-    {
-        return $this->has('exempt_from_tax')
-            && $this->get('exempt_from_tax') === true;
-    }
-
     public function collection(): string
     {
         return SimpleCommerce::productDriver()['collection'];
+    }
+
+    public function taxCategory(): ?TaxCategory
+    {
+        if (! isset($this->data['tax_category'])) {
+            return TaxCategoryFacade::find('default');
+        }
+
+        return TaxCategoryFacade::find($this->data['tax_category']);
     }
 
     public static function bindings(): array

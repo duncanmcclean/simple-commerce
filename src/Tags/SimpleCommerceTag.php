@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use DoubleThreeDigital\SimpleCommerce\Support\Currencies;
+use DoubleThreeDigital\SimpleCommerce\Support\Regions;
 use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;
 
@@ -55,12 +56,25 @@ class SimpleCommerceTag extends Tags
 
     public function countries()
     {
-        return Countries::toArray();
+        return Countries::map(function ($country) {
+            return array_merge($country, [
+                'regions' => Regions::findByCountry($country)->toArray(),
+            ]);
+        })->toArray();
     }
 
     public function currencies()
     {
         return Currencies::toArray();
+    }
+
+    public function regions()
+    {
+        return Regions::map(function ($region) {
+            return array_merge($region, [
+                'country' => Countries::findByRegion($region)->first(),
+            ]);
+        })->toArray();
     }
 
     public function errors()

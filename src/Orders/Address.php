@@ -2,6 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Support\Regions;
+
 class Address
 {
     protected $name;
@@ -10,8 +13,9 @@ class Address
     protected $city;
     protected $country;
     protected $zipCode;
+    protected $region;
 
-    public function __construct($name, $addressLine1, $addressLine2, $city, $country, $zipCode)
+    public function __construct($name, $addressLine1, $addressLine2, $city, $country, $zipCode, $region = null)
     {
         $this->name         = $name;
         $this->addressLine1 = $addressLine1;
@@ -19,17 +23,19 @@ class Address
         $this->city         = $city;
         $this->country      = $country;
         $this->zipCode      = $zipCode;
+        $this->region       = $region;
     }
 
     public function toArray(): array
     {
         return [
-            'name'           => $this->name,
-            'address_line_1' => $this->addressLine1,
-            'address_line_2' => $this->addressLine2,
-            'city'           => $this->city,
-            'country'        => $this->country,
-            'zip_code'       => $this->zipCode,
+            'name'           => $this->name(),
+            'address_line_1' => $this->addressLine1(),
+            'address_line_2' => $this->addressLine2(),
+            'city'           => $this->city(),
+            'region'         => $this->region(),
+            'country'        => $this->country(),
+            'zip_code'       => $this->zipCode(),
         ];
     }
 
@@ -37,7 +43,17 @@ class Address
     {
         return collect($this->toArray())
             ->values()
-            ->join(', ');
+            ->reject(function ($value) {
+                return empty($value);
+            })
+            ->map(function ($value) {
+                if (is_array($value)) {
+                    $value = $value['name'];
+                }
+
+                return $value;
+            })
+            ->join(','.PHP_EOL);
     }
 
     public function name(): ?string
@@ -60,13 +76,22 @@ class Address
         return $this->city;
     }
 
-    public function country(): ?string
+    public function country(): ?array
     {
-        return $this->country;
+        return Countries::find($this->country);
     }
 
     public function zipCode(): ?string
     {
         return $this->zipCode;
+    }
+
+    public function region(): ?array
+    {
+        if (! $this->region) {
+            return null;
+        }
+
+        return Regions::find($this->region);
     }
 }

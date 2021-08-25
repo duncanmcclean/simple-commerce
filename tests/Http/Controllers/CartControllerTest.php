@@ -19,6 +19,7 @@ class CartControllerTest extends TestCase
         parent::setUp();
 
         $this->setupCollections();
+        $this->useBasicTaxEngine();
     }
 
     /** @test */
@@ -211,6 +212,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_email()
     {
+        // $this->markTestSkipped();
+
         $customer = Customer::create()->data([
             'name'  => 'Jak Simpson',
             'email' => 'jack.simpson@example.com',
@@ -229,6 +232,8 @@ class CartControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        // dd($response);
 
         $response->assertRedirect('/cart');
 

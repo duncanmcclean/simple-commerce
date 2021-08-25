@@ -113,7 +113,7 @@ sections:
         field:
           type: section
           listable: false
-          display: Shipping
+          display: Shipping Address
       -
         handle: shipping_name
         field:
@@ -127,7 +127,19 @@ sections:
           input_type: text
           type: text
           listable: false
-          display: 'Shipping Address'
+          display: 'Shipping Address Line 1'
+          width: 50
+          antlers: false
+      -
+        handle: shipping_address_line2
+        field:
+          input_type: text
+          antlers: false
+          display: 'Shipping Address Line 2'
+          type: text
+          icon: text
+          width: 50
+          listable: hidden
       -
         handle: shipping_city
         field:
@@ -135,14 +147,16 @@ sections:
           type: text
           listable: false
           display: 'Shipping City'
+          width: 50
       -
-        handle: shipping_country
+        handle: shipping_region
         field:
           max_items: 1
           mode: default
-          display: 'Shipping Country'
-          type: country
-          icon: country
+          display: 'Shipping Region'
+          type: region
+          icon: region
+          width: 50
           listable: hidden
       -
         handle: shipping_postal_code
@@ -153,17 +167,28 @@ sections:
           listable: false
           display: 'Shipping Postal Code'
       -
+        handle: shipping_country
+        field:
+          max_items: 1
+          mode: default
+          display: 'Shipping Country'
+          type: country
+          icon: country
+          listable: hidden
+          width: 50
+      -
         handle: billing_section
         field:
           type: section
           listable: false
-          display: Billing
+          display: Billing Address
       -
         handle: use_shipping_address_for_billing
         field:
           type: toggle
           listable: false
           display: 'Same Shipping Address?'
+          default: true
       -
         handle: billing_name
         field:
@@ -179,7 +204,21 @@ sections:
           input_type: text
           type: text
           listable: false
-          display: 'Billing Address'
+          display: 'Billing Address Line 1'
+          width: 50
+          antlers: false
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+      -
+        handle: billing_address_line2
+        field:
+          input_type: text
+          antlers: false
+          display: 'Billing Address Line 2'
+          type: text
+          icon: text
+          width: 50
+          listable: hidden
           unless:
             use_shipping_address_for_billing: 'equals true'
       -
@@ -191,14 +230,16 @@ sections:
           display: 'Billing City'
           unless:
             use_shipping_address_for_billing: 'equals true'
+          width: 50
       -
-        handle: billing_country
+        handle: billing_region
         field:
           max_items: 1
           mode: default
-          display: 'Billing Country'
-          type: country
-          icon: country
+          display: 'Billing Region'
+          type: region
+          icon: region
+          width: 50
           listable: hidden
           unless:
             use_shipping_address_for_billing: 'equals true'
@@ -212,6 +253,18 @@ sections:
           display: 'Billing Postal Code'
           unless:
             use_shipping_address_for_billing: 'equals true'
+      -
+        handle: billing_country
+        field:
+          max_items: 1
+          mode: default
+          display: 'Billing Country'
+          type: country
+          icon: country
+          listable: hidden
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+          width: 50
   sidebar:
     display: Sidebar
     fields:

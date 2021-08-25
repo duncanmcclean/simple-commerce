@@ -79,7 +79,7 @@ trait IsEntry
 
     public function save(): self
     {
-        if (!$this->entry) {
+        if (! $this->entry) {
             $this->entry = EntryAPI::make()
                 ->id($this->id)
                 ->locale($this->site);

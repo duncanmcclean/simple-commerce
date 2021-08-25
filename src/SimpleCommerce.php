@@ -2,13 +2,18 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Statamic;
 
 class SimpleCommerce
 {
+    /** @var array */
     protected static $gateways = [];
+
+    /** @var Contracts\TaxEngine */
+    protected static $taxEngine;
 
     public static function bootGateways()
     {
@@ -28,7 +33,7 @@ class SimpleCommerce
         });
     }
 
-    public static function gateways()
+    public static function gateways(): array
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
@@ -54,6 +59,35 @@ class SimpleCommerce
             $gateway,
             $config,
         ];
+    }
+
+    public static function bootTaxEngine()
+    {
+        return Statamic::booted(function () {
+            static::$taxEngine = config('simple-commerce.tax_engine');
+
+            return new static();
+        });
+    }
+
+    public static function setTaxEngine($taxEngine)
+    {
+        static::$taxEngine = $taxEngine;
+    }
+
+    public static function taxEngine(): Contracts\TaxEngine
+    {
+        return new static::$taxEngine;
+    }
+
+    public static function isUsingStandardTaxEngine(): bool
+    {
+        // TODO: figure out how we can actually set the engine for a specific test
+        if (app()->environment('testing')) {
+            return true;
+        }
+
+        return static::taxEngine() instanceof Tax\Standard\TaxEngine;
     }
 
     public static function freshOrderNumber()
@@ -98,5 +132,18 @@ class SimpleCommerce
     public static function customerDriver(): array
     {
         return config('simple-commerce.content.customers');
+    }
+
+    /**
+     * This shouldn't be used as a Statamic::svg() replacement. It's only useful for grabbing
+     * icons from Simple Commerce's `resources/svgs` directory.
+     */
+    public static function svg($name)
+    {
+        if (File::exists(__DIR__.'/../resources/svg/'.$name.'.svg')) {
+            return File::get(__DIR__.'/../resources/svg/'.$name.'.svg');
+        }
+
+        return Statamic::svg($name);
     }
 }

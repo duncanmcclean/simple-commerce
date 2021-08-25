@@ -3,7 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Statamic\Events\EntryBlueprintFound;
+use Statamic\Facades\CP\Nav;
+use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
+use Statamic\Stache\Stache;
 use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
@@ -28,6 +31,8 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
+        Fieldtypes\RegionFieldtype::class,
+        Fieldtypes\TaxCategoryFieldtype::class,
     ];
 
     protected $listen = [
@@ -84,6 +89,14 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
+        SimpleCommerce::bootTaxEngine();
+
+        Statamic::booted(function () {
+            $this
+                ->bootStacheStores()
+                ->createNavItems()
+                ->registerPermissions();
+        });
 
         Filters\OrderStatusFilter::register();
     }
@@ -144,6 +157,87 @@ class ServiceProvider extends AddonServiceProvider
     {
         if (! $this->app->bound(Contracts\CartDriver::class)) {
             $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
+        }
+
+        return $this;
+    }
+
+    protected function bootStacheStores()
+    {
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
+            $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
+
+            $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
+            $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
+
+            $taxZoneStore = new Tax\Standard\Stache\TaxZone\TaxZoneStore;
+            $taxZoneStore->directory(base_path('content/simple-commerce/tax-zones'));
+
+            app(Stache::class)->registerStore($taxCategoryStore);
+            app(Stache::class)->registerStore($taxRateStore);
+            app(Stache::class)->registerStore($taxZoneStore);
+        }
+
+        return $this;
+    }
+
+    protected function createNavItems()
+    {
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            Nav::extend(function ($nav) {
+                $nav->create(__('Tax Rates'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-rates.index')
+                    ->can('view tax rates')
+                    ->icon(SimpleCommerce::svg('money-cash-file-dollar'));
+
+                $nav->create(__('Tax Categories'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-categories.index')
+                    ->can('view tax categories')
+                    ->icon('tags');
+
+                $nav->create(__('Tax Zones'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-zones.index')
+                    ->can('view tax zones')
+                    ->icon(SimpleCommerce::svg('travel-map'));
+            });
+        }
+
+        return $this;
+    }
+
+    protected function registerPermissions()
+    {
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            Permission::register('view tax rates', function ($permission) {
+                $permission->children([
+                    Permission::make('edit tax rates')->children([
+                        Permission::make('create tax rates'),
+                        Permission::make('delete tax rates'),
+                    ]),
+                ]);
+            });
+
+            Permission::register('view tax categories', function ($permission) {
+                $permission->children([
+                    Permission::make('edit tax categories')->children([
+                        Permission::make('create tax categories'),
+                        Permission::make('delete tax categories'),
+                    ]),
+                ]);
+            });
+
+            Permission::register('view tax zones', function ($permission) {
+                $permission->children([
+                    Permission::make('edit tax zones')->children([
+                        Permission::make('create tax zones'),
+                        Permission::make('delete tax zones'),
+                    ]),
+                ]);
+            });
         }
 
         return $this;

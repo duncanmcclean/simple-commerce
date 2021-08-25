@@ -5,6 +5,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests;
 use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
@@ -16,6 +18,18 @@ use Statamic\Statamic;
 
 abstract class TestCase extends OrchestraTestCase
 {
+    protected $shouldFakeVersion = true;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if ($this->shouldFakeVersion) {
+            \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.1.0-testing');
+            $this->addToAssertionCount(-1); // Dont want to assert this
+        }
+    }
+
     protected function getPackageProviders($app)
     {
         return [
@@ -77,6 +91,8 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
         $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
 
+        $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
         Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
         $app['config']->set('statamic.sites.sites', [
@@ -87,8 +103,20 @@ abstract class TestCase extends OrchestraTestCase
             ],
         ]);
 
+        $app['config']->set('statamic.editions.pro', true);
+
         Statamic::booted(function () {
             Site::setCurrent('default');
         });
+    }
+
+    protected function useBasicTaxEngine()
+    {
+        SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class);
+    }
+
+    protected function useStandardTaxEngine()
+    {
+        SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class);
     }
 }

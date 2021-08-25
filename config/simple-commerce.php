@@ -73,11 +73,6 @@ return [
         'default' => [
             'currency' => 'GBP',
 
-            'tax' => [
-                'rate'               => 20,
-                'included_in_prices' => false,
-            ],
-
             'shipping' => [
                 'methods' => [
                     \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
@@ -146,5 +141,40 @@ return [
     */
 
     'low_stock_threshold' => 25,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tax
+    |--------------------------------------------------------------------------
+    |
+    | Configure the 'tax engine' you would like to use to calculate tax on
+    | products & configure various tax-related settings.
+    |
+    */
+
+    'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class,
+
+    'tax_engine_config' => [
+        // Basic Engine
+        'rate'               => 20,
+        'included_in_prices' => false,
+
+        // Standard Tax Engine
+        'address' => 'billing',
+
+        'behaviour' => [
+            'no_address_provided' => 'default_address',
+            'no_rate_available' => 'prevent_checkout',
+        ],
+
+        'default_address' => [
+            'address_line_1' => '',
+            'address_line_2' => '',
+            'city' => '',
+            'region' => '',
+            'country' => '',
+            'zip_code' => '',
+        ],
+    ],
 
 ];
