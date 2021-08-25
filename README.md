@@ -1,6 +1,10 @@
+<!-- statamic:hide -->
+
 ![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.png)
 
 ## Simple Commerce
+
+<!-- /statamic:hide -->
 
 Simple Commerce is a simple e-commerce addon for Statamic. Developers can build custom stores for their clients without fuss. Simple Commerce doesn't hold you down: you have complete control over the content structure and front-end of your site.
 
@@ -32,7 +36,9 @@ If you discover a security vulnerability within Simple Commerce, please report i
 * [**Digital Products**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
 * [**Changelog**](https://sc-docs.doublethree.digital/v2.3/changelog): View releases of Simple Commerce
 * [**Issue Tracker**](https://github.com/doublethreedigital/simple-commerce/issues): Find & report bugs in Simple Commerce
-* [**Email**](mailto:hello@doublethree.digital): Support from the developer behind the addon
+* [**Email**](mailto:help@doublethree.digital): Support from the developer behind the addon
+
+<!-- statamic:hide -->
 
 ---
 
@@ -40,3 +46,5 @@ If you discover a security vulnerability within Simple Commerce, please report i
 <a href="https://statamic.com"><img src="https://img.shields.io/badge/Statamic-3.0+-FF269E?style=for-the-badge" alt="Compatible with Statamic v3"></a>
 <a href="https://packagist.org/packages/doublethreedigital/simple-commerce/stats"><img src="https://img.shields.io/packagist/v/doublethreedigital/simple-commerce?style=for-the-badge" alt="Simple Commerce on Packagist"></a>
 </p>
+
+<!-- /statamic:hide -->

@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
@@ -12,11 +12,7 @@ class CouponTags extends SubTag
 
     public function index(): array
     {
-        if (!$this->hasCart()) {
-            return [];
-        }
-
-        $coupon = $this->getCart()->coupon();
+        $coupon = $this->getCartCoupon();
 
         if (! $coupon) {
             return [];
@@ -25,13 +21,9 @@ class CouponTags extends SubTag
         return $coupon->toAugmentedArray();
     }
 
-    public function has()
+    public function has(): bool
     {
-        if (! $this->hasCart()) {
-            return false;
-        }
-
-        return ! is_null($this->getCart()->coupon());
+        return ! is_null($this->getCartCoupon());
     }
 
     public function redeem()
@@ -50,5 +42,43 @@ class CouponTags extends SubTag
             [],
             'DELETE'
         );
+    }
+
+    public function wildcard($method)
+    {
+        $coupon = $this->getCartCoupon();
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        }
+
+        if (property_exists($coupon, $method)) {
+            return $coupon->{$method};
+        }
+
+        if (array_key_exists($method, $coupon->toAugmentedArray())) {
+            return $coupon->toAugmentedArray()[$method];
+        }
+
+        if ($coupon->has($method)) {
+            return $coupon->get($method);
+        }
+
+        return null;
+    }
+
+    protected function getCartCoupon(): ?Coupon
+    {
+        if (! $this->hasCart()) {
+            return null;
+        }
+
+        $coupon = $this->getCart()->coupon();
+
+        if (! $coupon) {
+            return null;
+        }
+
+        return $coupon;
     }
 }

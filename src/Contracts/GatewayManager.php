@@ -8,6 +8,8 @@ interface GatewayManager
 
     public function name();
 
+    public function config();
+
     public function prepare($request, $order);
 
     public function purchase($request, $order);

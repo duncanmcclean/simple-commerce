@@ -31,6 +31,11 @@ class Manager implements Contract
         return $this->resolve()->name();
     }
 
+    public function config()
+    {
+        return $this->resolve()->config();
+    }
+
     public function prepare($request, $order)
     {
         return $this->resolve()->prepare(new Prepare($request, $order));
