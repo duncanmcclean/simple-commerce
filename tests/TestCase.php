@@ -53,7 +53,7 @@ abstract class TestCase extends OrchestraTestCase
         $app->make(Manifest::class)->manifest = [
             'doublethreedigital/simple-commerce' => [
                 'id'        => 'doublethreedigital/simple-commerce',
-                'namespace' => 'DoubleThreeDigital\\SimpleCommerce\\',
+                'namespace' => 'DoubleThreeDigital\\SimpleCommerce',
             ],
         ];
     }
