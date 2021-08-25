@@ -12,6 +12,14 @@ class LineItemsTest extends TestCase
 {
     use SetupCollections;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupCollections();
+        $this->useBasicTaxEngine();
+    }
+
     /** @test */
     public function can_get_line_items()
     {
