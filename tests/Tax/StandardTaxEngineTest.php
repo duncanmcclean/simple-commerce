@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tax;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
@@ -225,5 +226,216 @@ class StandardTaxEngineTest extends TestCase
 
         // Ensure global order tax is right
         $this->assertSame($recalculate->get('tax_total'), 167);
+    }
+
+    /** @test */
+    public function can_use_default_tax_rate_if_no_rate_available()
+    {
+        Config::set('simple-commerce.tax_engine_config.behaviour.no_rate_available', 'default_rate');
+
+        TaxCategory::make()
+            ->id('standard-stuff')
+            ->name('Standard Stuff')
+            ->save();
+
+        TaxCategory::make()
+            ->id('default-category')
+            ->name('Default')
+            ->save();
+
+        TaxRate::make()
+            ->id('default')
+            ->name('Default')
+            ->rate(12)
+            ->includeInPrice(true)
+            ->category('default-category')
+            ->save();
+
+        $product = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1000,
+            'tax_category' => 'standard-stuff',
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+            'billing_address' => '1 Test Street',
+            'billing_country' => 'GB',
+        ]);
+
+        $recalculate = $order->recalculate();
+
+        // Ensure the tax rate is correct on the line item
+        $this->assertSame($recalculate->lineItems()->first()['tax']['rate'], 12);
+
+        // Ensure global order tax is right
+        $this->assertSame($recalculate->get('tax_total'), 107);
+    }
+
+    /** @test */
+    public function throws_prevent_checkout_exception_if_no_rate_available()
+    {
+        // Ensure an exception is thrown during this test
+        $this->expectException(PreventCheckout::class);
+
+        Config::set('simple-commerce.tax_engine_config.behaviour.no_rate_available', 'prevent_checkout');
+
+        TaxCategory::make()
+            ->id('standard-stuff')
+            ->name('Standard Stuff')
+            ->save();
+
+        TaxCategory::make()
+            ->id('default-category')
+            ->name('Default')
+            ->save();
+
+        TaxRate::make()
+            ->id('default')
+            ->name('Default')
+            ->rate(12)
+            ->includeInPrice(true)
+            ->category('default-category')
+            ->save();
+
+        $product = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1000,
+            'tax_category' => 'standard-stuff',
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+            'billing_address' => '1 Test Street',
+            'billing_country' => 'GB',
+        ]);
+
+        $order->recalculate();
+    }
+
+    /** @test */
+    public function uses_default_address_if_no_address_provided()
+    {
+        Config::set('simple-commerce.tax_engine_config.behaviour.no_address_provided', 'default_address');
+
+        Config::set('simple-commerce.tax_engine_config.behaviour.default_address', [
+            'address_line_1' => '',
+            'address_line_2' => '',
+            'city' => '',
+            'region' => '',
+            'country' => 'US',
+            'zip_code' => '',
+        ]);
+
+        TaxCategory::make()
+            ->id('standard-stuff')
+            ->name('Standard Stuff')
+            ->save();
+
+        TaxZone::make()
+            ->id('for-the-us')
+            ->country('US')
+            ->save();
+
+        TaxRate::make()
+            ->id('used-for-default-address')
+            ->name('used for default address')
+            ->rate(99)
+            ->includeInPrice(true)
+            ->category('standard-stuff')
+            ->zone('for-the-us')
+            ->save();
+
+        $product = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1000,
+            'tax_category' => 'standard-stuff',
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $recalculate = $order->recalculate();
+
+        // Ensure the tax rate is correct on the line item
+        $this->assertSame($recalculate->lineItems()->first()['tax']['rate'], 99);
+
+        // Ensure global order tax is right
+        $this->assertSame($recalculate->get('tax_total'), 497);
+    }
+
+    /** @test */
+    public function throws_prevent_checkout_exception_if_no_address_provided()
+    {
+        // Ensure an exception is thrown during this test
+        $this->expectException(PreventCheckout::class);
+
+        Config::set('simple-commerce.tax_engine_config.behaviour.no_address_provided', 'prevent_checkout');
+
+        TaxCategory::make()
+            ->id('standard-stuff')
+            ->name('Standard Stuff')
+            ->save();
+
+        TaxZone::make()
+            ->id('for-the-us')
+            ->country('US')
+            ->save();
+
+        TaxRate::make()
+            ->id('used-for-default-address')
+            ->name('used for default address')
+            ->rate(99)
+            ->includeInPrice(true)
+            ->category('standard-stuff')
+            ->zone('for-the-us')
+            ->save();
+
+        $product = Product::create([
+            'title' => 'Cat Food',
+            'price' => 1000,
+            'tax_category' => 'standard-stuff',
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $recalculate = $order->recalculate();
+
+        // Ensure the tax rate is correct on the line item
+        $this->assertSame($recalculate->lineItems()->first()['tax']['rate'], 99);
+
+        // Ensure global order tax is right
+        $this->assertSame($recalculate->get('tax_total'), 497);
     }
 }

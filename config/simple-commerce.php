@@ -144,25 +144,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Tax Engine
+    | Tax
     |--------------------------------------------------------------------------
     |
-    | Configure the 'tax engine' you would like to use in order to calculate
-    | your tax rate on products.
+    | Configure the 'tax engine' you would like to use to calculate tax on
+    | products & configure various tax-related settings.
     |
     */
 
-    'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class,
+    'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class,
 
     'tax_engine_config' => [
-        // Old, legacy tax engine...
+        // Basic Engine
         'rate'               => 20,
         'included_in_prices' => false,
 
-        // Fancy new tax engine...
+        // Standard Tax Engine
         'address' => 'billing',
 
-        // In the case an address is not provided, this is the address Simple Commerce will base the tax rate on.
+        'behaviour' => [
+            'no_address_provided' => 'default_address',
+            'no_rate_available' => 'prevent_checkout',
+        ],
+
         'default_address' => [
             'address_line_1' => '',
             'address_line_2' => '',

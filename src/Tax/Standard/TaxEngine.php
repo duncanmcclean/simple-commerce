@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
@@ -23,6 +24,18 @@ class TaxEngine implements Contract
     {
         $taxRate = $this->decideOnRate($order, $lineItem);
 
+        if (! $taxRate) {
+            $noRateAvailable = config('simple-commerce.tax_engine_config.behaviour.no_rate_available');
+
+            if ($noRateAvailable === 'default_rate') {
+                $taxRate = TaxRate::find('default');
+            }
+
+            if ($noRateAvailable === 'prevent_checkout') {
+                throw new PreventCheckout(__("This order cannot be completed as no tax rate is available."));
+            }
+        }
+
         $taxAmount = ($lineItem['total'] / 100) * ($taxRate->rate() / (100 + $taxRate->rate()));
         $itemTax = (int) round($taxAmount * 100);
 
@@ -39,7 +52,15 @@ class TaxEngine implements Contract
             : $order->shippingAddress();
 
         if (! $address) {
-            $address = $this->defaultAddress();
+            $noAddressProvided = config('simple-commerce.tax_engine_config.behaviour.no_address_provided');
+
+            if ($noAddressProvided === 'default_address') {
+                $address = $this->defaultAddress();
+            }
+
+            if ($noAddressProvided === 'prevent_checkout') {
+                throw new PreventCheckout(__("This order cannot be completed as no address has been added to this order."));
+            }
         }
 
         $taxRateQuery = TaxRate::all()

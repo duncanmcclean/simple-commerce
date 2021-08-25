@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
@@ -54,6 +55,8 @@ class CheckoutController extends BaseActionController
             $this->cart->save();
 
             return $this->withErrors($this->request, __("Checkout failed. A product in your cart has no stock left. The product has been removed from your cart."));
+        } catch (PreventCheckout $e) {
+            return $this->withErrors($this->request, $e->getMessage());
         }
 
         return $this->withSuccess($request, [
