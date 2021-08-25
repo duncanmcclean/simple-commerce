@@ -12,7 +12,7 @@ use Statamic\Facades\Site;
 
 class Calculator implements Contract
 {
-    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order $model */
+    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order $order */
     protected $order;
 
     public function calculate(OrderContract $order): array
