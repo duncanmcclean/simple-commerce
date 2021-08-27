@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
@@ -306,6 +307,59 @@ class CartItemControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/checkout');
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
+    public function can_store_item_where_product_requires_prerequisite_product()
+    {
+        $prerequisiteProduct = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+            'prerequisite_product' => $prerequisiteProduct->id,
+        ]);
+
+        $customer = Customer::create([
+            'name' => 'Test Test',
+            'email' => 'test@test.test',
+        ]);
+
+        Order::create([
+            'items' => [
+                [
+                    'product' => $prerequisiteProduct->id,
+                    'quantity' => 1,
+                    'total' => 1599,
+                ],
+            ],
+            'items_total' => 1599,
+            'grand_total' => 1599,
+            'customer' => $customer->id,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => $customer->id,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
