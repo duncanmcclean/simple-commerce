@@ -2,6 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
@@ -24,9 +27,58 @@ class CartItemController extends BaseActionController
 
         $items = $cart->has('items') ? $cart->get('items') : [];
 
+        // Handle customer stuff..
+        if (isset($data['customer'])) {
+            try {
+                if ($cart->customer() && $cart->customer() !== null) {
+                    $customer = $cart->customer();
+                } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
+                    $customer = Customer::findByEmail($data['customer']['email']);
+                } else {
+                    throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
+                }
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::create([
+                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email' => $data['customer']['email'],
+                ], $this->guessSiteFromRequest()->handle());
+            }
+
+            if (is_array($data['customer'])) {
+                $customer->data($data['customer'])->save();
+            }
+
+            $cart->data([
+                'customer' => $customer->id,
+            ])->save();
+
+            unset($data['customer']);
+        }
+
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->has('stock') && $product->get('stock') !== null && $product->get('stock') < $request->quantity) {
             return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
+        }
+
+        // If this product requires another one, ensure the customer has already purchased it...
+        if ($product->has('prerequisite_product')) {
+            /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Customer $customer */
+            $customer = $cart->customer();
+
+            if (! $customer) {
+                return $this->withErrors($request, __('Please login/register before purchasing this product.'));
+            }
+
+            $hasPurchasedPrerequisiteProduct = $customer->orders()
+                ->filter(function ($order) {
+                    return $order->get('is_paid') === true;
+                })
+                ->filter(function ($order) {
+                    // return $order
+
+                    dd($order);
+                })
+                ->count() > 0;
         }
 
         // Ensure the product doesn't already exist in the cart
