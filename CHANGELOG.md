@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's fixed
+
+* Coupon total is now calculated based on the `items_total` (was previously based on the `grand_total`)
+
 ## v2.3.20 (2021-08-27)
 
 ### What's fixed
