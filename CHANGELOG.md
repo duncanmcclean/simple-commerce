@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-Test
+## v2.3.20 (2021-08-27)
+
+### What's fixed
+
+* Fixed issue where field meta was not being passed into the 'Product Variants' fieldtype #454
 
 ## v2.3.19 (2021-08-19)
 
