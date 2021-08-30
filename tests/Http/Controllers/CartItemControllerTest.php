@@ -318,7 +318,7 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_store_item_where_product_requires_prerequisite_product()
+    public function can_store_item_where_product_requires_prerequisite_product_and_customer_has_purchased_prerequisite_product()
     {
         $prerequisiteProduct = Product::create([
             'title' => 'Dog Food',
@@ -339,6 +339,7 @@ class CartItemControllerTest extends TestCase
         Order::create([
             'items' => [
                 [
+                    'id' => 'smth',
                     'product' => $prerequisiteProduct->id,
                     'quantity' => 1,
                     'total' => 1599,
@@ -364,10 +365,52 @@ class CartItemControllerTest extends TestCase
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(2000, $cart->data['items_total']);
 
         $this->assertArrayHasKey('items', $cart->data);
         $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
+    public function cant_store_item_where_product_requires_prerequisite_product_and_customer_has_not_purchased_prerequisite_product()
+    {
+        $prerequisiteProduct = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+            'prerequisite_product' => $prerequisiteProduct->id,
+        ]);
+
+        $customer = Customer::create([
+            'name' => 'Test Test',
+            'email' => 'test@test.test',
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => $customer->id,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $response->assertSessionHasErrors();
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertNotSame(2000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringNotContainsString($product->id, json_encode($cart->data['items']));
     }
 
     /** @test */
