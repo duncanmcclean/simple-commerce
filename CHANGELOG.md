@@ -7,7 +7,7 @@
 ### What's new
 
 * You can now pass in customer information when adding items to the cart
-* You can now limit product purchases to only customers who have purchased a specific product
+* You can now limit product purchases to only customers who have purchased a specific product #452
 
 ### What's fixed
 
