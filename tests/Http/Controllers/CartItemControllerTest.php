@@ -384,7 +384,7 @@ class CartItemControllerTest extends TestCase
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->get('customer'));
 
-        $this->assertSame($cart->customer()->name(), '');
+        $this->assertSame($cart->customer()->name(), 'donald@duck.disney');
         $this->assertSame($cart->customer()->email(), 'donald@duck.disney');
     }
 

@@ -40,10 +40,14 @@ class CartItemController extends BaseActionController
                     throw new CustomerNotFound("Customer with ID [{$request->get('customer')}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : '',
-                    'email' => $request->get('customer')['email'],
-                ], $this->guessSiteFromRequest()->handle());
+                if (is_array($request->get('customer'))) {
+                    $customer = Customer::create([
+                        'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
+                        'email' => $request->get('customer')['email'],
+                    ], $this->guessSiteFromRequest()->handle());
+                } elseif (is_string($request->get('customer'))) {
+                    $customer = Customer::find($request->get('customer'));
+                }
             }
 
             $cart->data([
@@ -54,7 +58,7 @@ class CartItemController extends BaseActionController
                 $customer = Customer::findByEmail($request->get('email'));
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => $request->has('name') ? $request->get('name') : '',
+                    'name'  => $request->get('name') ?? $request->get('email'),
                     'email' => $request->get('email'),
                 ], $this->guessSiteFromRequest()->handle());
             }
