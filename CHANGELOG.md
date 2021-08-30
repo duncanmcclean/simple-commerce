@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.3.21 (2021-08-30)
+
+### What's new
+
+* You can now pass in customer information when adding items to the cart
+* You can now limit product purchases to only customers who have purchased a specific product
+
+### What's fixed
+
+* Coupons total is now based on the line items total, not like grand total #453
+
 ## v2.3.20 (2021-08-27)
 
 ### What's fixed
