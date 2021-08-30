@@ -464,11 +464,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 1325);
+        $this->assertSame($calculate['grand_total'], 1650);
         $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
         $this->assertSame($calculate['tax_total'], 400);
-        $this->assertSame($calculate['coupon_total'], 1325);
+        $this->assertSame($calculate['coupon_total'], 1000);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
