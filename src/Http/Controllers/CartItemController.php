@@ -4,13 +4,15 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
+use Statamic\Sites\Site as SitesSite;
 
 class CartItemController extends BaseActionController
 {
@@ -28,31 +30,38 @@ class CartItemController extends BaseActionController
         $items = $cart->has('items') ? $cart->get('items') : [];
 
         // Handle customer stuff..
-        if (isset($data['customer'])) {
+        if ($request->has('customer')) {
             try {
                 if ($cart->customer() && $cart->customer() !== null) {
                     $customer = $cart->customer();
-                } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
-                    $customer = Customer::findByEmail($data['customer']['email']);
+                } elseif ($request->has('email') && $request->get('email') !== null) {
+                    $customer = Customer::findByEmail($request->get('email'));
                 } else {
-                    throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
+                    throw new CustomerNotFound("Customer with ID [{$request->get('customer')}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                    'email' => $data['customer']['email'],
+                    'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : '',
+                    'email' => $request->get('customer')['email'],
                 ], $this->guessSiteFromRequest()->handle());
-            }
-
-            if (is_array($data['customer'])) {
-                $customer->data($data['customer'])->save();
             }
 
             $cart->data([
                 'customer' => $customer->id,
             ])->save();
+        } elseif ($request->has('email')) {
+            try {
+                $customer = Customer::findByEmail($request->get('email'));
+            } catch (CustomerNotFound $e) {
+                $customer = Customer::create([
+                    'name'  => $request->has('name') ? $request->get('name') : '',
+                    'email' => $request->get('email'),
+                ], $this->guessSiteFromRequest()->handle());
+            }
 
-            unset($data['customer']);
+            $cart->data([
+                'customer' => $customer->id,
+            ])->save();
         }
 
         // Ensure there's enough stock to fulfill the customer's quantity
@@ -161,5 +170,28 @@ class CartItemController extends BaseActionController
             'message' => __('simple-commerce.messages.cart_item_deleted'),
             'cart'    => $cart->toResource(),
         ]);
+    }
+
+    protected function guessSiteFromRequest(): SitesSite
+    {
+        if ($site = request()->get('site')) {
+            return Site::get($site);
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
+            }
+        }
+
+        if ($referer = request()->header('referer')) {
+            foreach (Site::all() as $site) {
+                if (Str::contains($referer, $site->url())) {
+                    return $site;
+                }
+            }
+        }
+
+        return Site::current();
     }
 }

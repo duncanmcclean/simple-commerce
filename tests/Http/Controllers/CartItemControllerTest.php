@@ -318,6 +318,161 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_store_item_with_name_and_email()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'name' => 'Michael Scott',
+            'email' => 'michael@scott.net',
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($cart->get('customer'));
+
+        $this->assertSame($cart->customer()->name(), 'Michael Scott');
+        $this->assertSame($cart->customer()->email(), 'michael@scott.net');
+    }
+
+    /** @test */
+    public function can_store_item_with_only_email()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'email' => 'donald@duck.disney',
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($cart->get('customer'));
+
+        $this->assertSame($cart->customer()->name(), '');
+        $this->assertSame($cart->customer()->email(), 'donald@duck.disney');
+    }
+
+    /** @test */
+    public function can_store_item_with_customer_already_in_present_in_order()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $customer = Customer::create([
+            'name' => 'Goofy',
+            'email' => 'goofy@clubhouse.disney',
+        ]);
+
+        $order = Order::create([
+            'customer' => $customer->id,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $order->id()])
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($cart->get('customer'));
+
+        $this->assertSame($cart->customer()->name(), 'Goofy');
+        $this->assertSame($cart->customer()->email(), 'goofy@clubhouse.disney');
+    }
+
+    /** @test */
+    public function can_store_item_with_customer_present_in_request()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $customer = Customer::create([
+            'name' => 'Pluto',
+            'email' => 'pluto@clubhouse.disney',
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => $customer->id,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($cart->get('customer'));
+
+        $this->assertSame($cart->customer()->name(), 'Pluto');
+        $this->assertSame($cart->customer()->email(), 'pluto@clubhouse.disney');
+    }
+
+    /** @test */
     public function can_store_item_where_product_requires_prerequisite_product_and_customer_has_purchased_prerequisite_product()
     {
         $prerequisiteProduct = Product::create([
