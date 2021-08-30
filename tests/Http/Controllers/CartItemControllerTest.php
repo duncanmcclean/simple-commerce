@@ -520,10 +520,46 @@ class CartItemControllerTest extends TestCase
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(2000, $cart->data['items_total']);
+        $this->assertSame(1599, $cart->data['items_total']);
 
         $this->assertArrayHasKey('items', $cart->data);
         $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
+    public function cant_store_item_where_product_requires_prerequisite_product_and_no_customer_available()
+    {
+        $prerequisiteProduct = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+            'prerequisite_product' => $prerequisiteProduct->id,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $response->assertSessionHasErrors();
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertNotSame(2000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringNotContainsString($product->id, json_encode($cart->data['items']));
     }
 
     /** @test */

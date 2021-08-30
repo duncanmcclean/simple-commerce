@@ -82,16 +82,22 @@ class CartItemController extends BaseActionController
                 return $this->withErrors($request, __('Please login/register before purchasing this product.'));
             }
 
+            $prerequisiteProduct = Product::find($product->get('prerequisite_product'));
+
             $hasPurchasedPrerequisiteProduct = $customer->orders()
                 ->filter(function ($order) {
                     return $order->get('is_paid') === true;
                 })
-                ->filter(function ($order) {
-                    // return $order
-
-                    dd($order);
+                ->filter(function ($order) use ($product) {
+                    return collect($order->get('items'))
+                        ->where('product', $product->get('prerequisite_product'))
+                        ->count() > 0;
                 })
                 ->count() > 0;
+
+            if (! $hasPurchasedPrerequisiteProduct) {
+                return $this->withErrors($request, __("Before purchasing this product, you must purchase {$prerequisiteProduct->title()} first."));
+            }
         }
 
         // Ensure the product doesn't already exist in the cart
