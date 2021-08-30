@@ -34,7 +34,6 @@ If you discover a security vulnerability within Simple Commerce, please report i
 * [**Documentation**](https://sc-docs.doublethree.digital): First-party documentation
 * [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
 * [**Digital Products**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
-* [**Changelog**](https://sc-docs.doublethree.digital/v2.3/changelog): View releases of Simple Commerce
 * [**Issue Tracker**](https://github.com/doublethreedigital/simple-commerce/issues): Find & report bugs in Simple Commerce
 * [**Email**](mailto:help@doublethree.digital): Support from the developer behind the addon
 
