@@ -51,4 +51,13 @@ class CountryFieldtype extends Relationship
             return $country['name'];
         })->join(', ');
     }
+
+    public function rules(): array
+    {
+        if ($this->config('max_items') === 1) {
+            return ['string'];
+        }
+
+        return parent::rules();
+    }
 }
