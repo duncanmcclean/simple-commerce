@@ -9,11 +9,21 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 
 class CalculatorTest extends TestCase
 {
+    use SetupCollections;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupCollections();
+    }
+
     /** @test */
     public function does_not_calculate_totals_if_order_is_paid()
     {
@@ -276,11 +286,6 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
 
-
-
-
-
-
     /** @test */
     public function ensure_tax_is_subracted_from_item_total_if_included_in_price()
     {
@@ -464,11 +469,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 1650);
+        $this->assertSame($calculate['grand_total'], 1450);
         $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
         $this->assertSame($calculate['tax_total'], 400);
-        $this->assertSame($calculate['coupon_total'], 1000);
+        $this->assertSame($calculate['coupon_total'], 1200);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
@@ -557,6 +562,50 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['shipping_total'], 0);
         $this->assertSame($calculate['tax_total'], 0);
         $this->assertSame($calculate['coupon_total'], 100);
+
+        $this->assertSame($calculate['items'][0]['total'], 10000);
+    }
+
+    /** @test */
+    public function ensure_tax_is_included_when_using_coupon()
+    {
+        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        $product = Product::create([
+            'price' => 5000,
+        ]);
+
+        $coupon = Coupon::create([
+            'slug'               => 'one-hundred-pence-off',
+            'title'              => 'One Hundred Pence Off (£1)',
+            'redeemed'           => 0,
+            'value'              => 100,
+            'type'               => 'percentage',
+            'minimum_cart_value' => null,
+        ])->save();
+
+        $cart = Order::create([
+            'is_paid' => false,
+            'items'   => [
+                [
+                    'product'  => $product->id,
+                    'quantity' => 2,
+                    'total'    => 10000,
+                ],
+            ],
+            'coupon' => $coupon->id,
+        ]);
+
+        $calculate = (new Calculator())->calculate($cart);
+
+        $this->assertIsArray($calculate);
+
+        $this->assertSame($calculate['grand_total'], 0);
+        $this->assertSame($calculate['items_total'], 10000);
+        $this->assertSame($calculate['shipping_total'], 0);
+        $this->assertSame($calculate['tax_total'], 2000);
+        $this->assertSame($calculate['coupon_total'], 12000);
 
         $this->assertSame($calculate['items'][0]['total'], 10000);
     }
