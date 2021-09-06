@@ -57,7 +57,7 @@ class Calculator implements Contract
 
         $data = $this->calculateOrderShipping($data)['data'];
 
-        $data['grand_total'] = (($data['items_total'] - $data['coupon_total']) + $data['shipping_total'] + $data['tax_total']);
+        $data['grand_total'] = ((($data['items_total'] + $data['tax_total']) - $data['coupon_total']) + $data['shipping_total']);
 
         return $data;
     }
