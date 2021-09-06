@@ -40,10 +40,12 @@ class MoneyFieldtype extends Fieldtype
     public function process($data)
     {
         if ($data === '' || $data === null) {
-            return (int) 0000;
+            // return (int) 0000;
+
+            return null;
         }
 
-        if (!str_contains($data, '.')) {
+        if (! str_contains($data, '.')) {
             $data = $data * 100;
         }
 
@@ -62,7 +64,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        if (!$value) {
+        if (! $value) {
             $value = 0;
         }
 
@@ -71,7 +73,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preProcessIndex($value)
     {
-        if (!$value) {
+        if (! $value) {
             return;
         }
 
