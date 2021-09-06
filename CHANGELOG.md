@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.23 (2021-09-06)
+
+### What's fixed
+
+* The Country fieldtype no longer gives array errors when `max_items` is set to `1`
+
 ## v2.3.22 (2021-09-06)
 
 ### What's fixed
