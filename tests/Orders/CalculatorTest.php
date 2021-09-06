@@ -286,11 +286,6 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
 
-
-
-
-
-
     /** @test */
     public function ensure_tax_is_subracted_from_item_total_if_included_in_price()
     {
@@ -474,11 +469,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 1650);
+        $this->assertSame($calculate['grand_total'], 1450);
         $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 250);
         $this->assertSame($calculate['tax_total'], 400);
-        $this->assertSame($calculate['coupon_total'], 1000);
+        $this->assertSame($calculate['coupon_total'], 1200);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
     }
@@ -586,7 +581,7 @@ class CalculatorTest extends TestCase
             'title'              => 'One Hundred Pence Off (£1)',
             'redeemed'           => 0,
             'value'              => 100,
-            'type'               => 'fixed',
+            'type'               => 'percentage',
             'minimum_cart_value' => null,
         ])->save();
 
@@ -606,13 +601,11 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        dd($calculate);
-
         $this->assertSame($calculate['grand_total'], 0);
         $this->assertSame($calculate['items_total'], 10000);
         $this->assertSame($calculate['shipping_total'], 0);
         $this->assertSame($calculate['tax_total'], 2000);
-        $this->assertSame($calculate['coupon_total'], 10000);
+        $this->assertSame($calculate['coupon_total'], 12000);
 
         $this->assertSame($calculate['items'][0]['total'], 10000);
     }
