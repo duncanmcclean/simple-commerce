@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.22 (2021-09-06)
+
+### What's fixed
+
+* Fixed calculator so coupon total includes tax total #458
+* When you clear the 'Money' fieldtype's value, we'll now save it as `null`, rather than 0 #459
+
 ## v2.3.21 (2021-08-30)
 
 ### What's new
