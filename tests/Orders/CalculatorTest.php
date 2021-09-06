@@ -9,11 +9,21 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 
 class CalculatorTest extends TestCase
 {
+    use SetupCollections;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupCollections();
+    }
+
     /** @test */
     public function does_not_calculate_totals_if_order_is_paid()
     {
@@ -595,6 +605,8 @@ class CalculatorTest extends TestCase
         $calculate = (new Calculator())->calculate($cart);
 
         $this->assertIsArray($calculate);
+
+        dd($calculate);
 
         $this->assertSame($calculate['grand_total'], 0);
         $this->assertSame($calculate['items_total'], 10000);
