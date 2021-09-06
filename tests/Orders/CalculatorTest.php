@@ -560,6 +560,50 @@ class CalculatorTest extends TestCase
 
         $this->assertSame($calculate['items'][0]['total'], 10000);
     }
+
+    /** @test */
+    public function ensure_tax_is_included_when_using_coupon()
+    {
+        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        $product = Product::create([
+            'price' => 5000,
+        ]);
+
+        $coupon = Coupon::create([
+            'slug'               => 'one-hundred-pence-off',
+            'title'              => 'One Hundred Pence Off (£1)',
+            'redeemed'           => 0,
+            'value'              => 100,
+            'type'               => 'fixed',
+            'minimum_cart_value' => null,
+        ])->save();
+
+        $cart = Order::create([
+            'is_paid' => false,
+            'items'   => [
+                [
+                    'product'  => $product->id,
+                    'quantity' => 2,
+                    'total'    => 10000,
+                ],
+            ],
+            'coupon' => $coupon->id,
+        ]);
+
+        $calculate = (new Calculator())->calculate($cart);
+
+        $this->assertIsArray($calculate);
+
+        $this->assertSame($calculate['grand_total'], 0);
+        $this->assertSame($calculate['items_total'], 10000);
+        $this->assertSame($calculate['shipping_total'], 0);
+        $this->assertSame($calculate['tax_total'], 2000);
+        $this->assertSame($calculate['coupon_total'], 10000);
+
+        $this->assertSame($calculate['items'][0]['total'], 10000);
+    }
 }
 
 class Postage implements ShippingMethod
