@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.24 (2021-09-07)
+
+### What's fixed
+
+* Receipt data is now being augmented, meaning prices and product name's should display properly now #460
+* The `prepare` method will no longer be called for off-site gateways when using the `{{ sc:checkout }}` tag #462
+
 ## v2.3.23 (2021-09-06)
 
 ### What's fixed
