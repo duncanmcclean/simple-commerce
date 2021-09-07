@@ -97,6 +97,11 @@ class Manager implements Contract
         return $this->resolve()->webhook($request);
     }
 
+    public function isOffsiteGateway()
+    {
+        return $this->resolve()->isOffsiteGateway();
+    }
+
     public function withRedirectUrl(string $redirectUrl): self
     {
         $this->redirectUrl = $redirectUrl;

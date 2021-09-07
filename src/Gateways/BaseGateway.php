@@ -66,4 +66,9 @@ class BaseGateway
     {
         return $this->displayName;
     }
+
+    public function isOffsiteGateway(): bool
+    {
+        return false;
+    }
 }

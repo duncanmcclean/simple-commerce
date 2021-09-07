@@ -22,4 +22,6 @@ interface Gateway
     public function refundCharge(Order $order): Response;
 
     public function webhook(Request $request);
+
+    public function isOffsiteGateway(): bool;
 }

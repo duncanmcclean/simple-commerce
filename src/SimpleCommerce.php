@@ -32,6 +32,7 @@ class SimpleCommerce
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
+                /** @var Contracts\Gateway $instance */
                 $instance = new $gateway[0]();
 
                 return [
@@ -43,6 +44,8 @@ class SimpleCommerce
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
                     'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
+                    'off_site'        => $instance->isOffsiteGateway(),
+                    'on_site'         => ! $instance->isOffsiteGateway(),
                 ];
             })
             ->toArray();
