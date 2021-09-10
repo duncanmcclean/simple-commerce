@@ -19,7 +19,8 @@ For example, to display the Sales Widget, this is what your config would look li
 ],
 ```
 
-![Sales Widget](/assets/Sales-Widget.png)
+![Sales Widget](/img/simple-commerce/Sales-Widget.png)
+
 ## Sales widget
 
 We've built-in a sales widget that allows staff to see the sales preformance of your store on a weekly, fortnightly or monthly basis.

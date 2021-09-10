@@ -4,7 +4,7 @@ title: Product Variants
 
 Product Variants are a pretty common feature amoung e-commerce stores today, especially for stores that sell physical products, like t-shirts.
 
-![Product Variants Fieldtype](/assets/Product-Variants-Fieldtype.png)
+![Product Variants Fieldtype](/img/simple-commerce/Product-Variants-Fieldtype.png)
 
 ## How it works
 

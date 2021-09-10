@@ -177,7 +177,7 @@ First, you'll need to add Mollie to your `simple-commerce.php` config file. You 
 
 You can obtain your API keys from the Mollie Dashboard.
 
-![Mollie API Keys](/assets/mollie-dev-api-keys.png)
+![Mollie API Keys](/img/simple-commerce/mollie-dev-api-keys.png)
 
 ```php
 'gateways' => [
