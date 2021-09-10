@@ -12,8 +12,8 @@ This repository contains the source code of of Simple Commerce. To use Simple Co
 
 ## Features
 
-* [Product Variants](https://sc-docs.doublethree.digital/v2.3/product-variants)
-* [Built-in support for popular gateways](https://sc-docs.doublethree.digital/v2.3/gateways), like Stripe and Mollie.
+* [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
+* [Built-in support for popular gateways](https://simple-commerce.duncanmcclean.com/gateways), like Stripe and Mollie.
 * [Supports Digital Products](https://github.com/doublethreedigital/sc-digital-products)
 * Shipping methods, different shipping prices for different addresses
 * Ready for extension, with events, hooks and APIs.
@@ -31,7 +31,7 @@ If you discover a security vulnerability within Simple Commerce, please report i
 
 ## Resources
 
-* [**Documentation**](https://sc-docs.doublethree.digital): First-party documentation
+* [**Documentation**](https://simple-commerce.duncanmcclean.com): First-party documentation
 * [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
 * [**Digital Products**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
 * [**Issue Tracker**](https://github.com/doublethreedigital/simple-commerce/issues): Find & report bugs in Simple Commerce

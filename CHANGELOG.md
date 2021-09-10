@@ -223,7 +223,7 @@ While there's been quite a few breaking changes between v2.2 and v2.3, most of t
 
 Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
 
-Please review the [Upgrade Guide](https://sc-docs.doublethree.digital/v2.3/update-guide) before updating.
+Please review the [Upgrade Guide](https://simple-commerce.duncanmcclean.com/update-guide) before updating.
 
 ### What's new
 
@@ -428,11 +428,11 @@ It didn't take me very long to find a bunch of bugs...
 
 ## v2.2.0 (2021-01-31)
 
-Before upgrading, please review the [upgrade guide](https://sc-docs.doublethree.digital/v2.2/update-guide) in case there's any changes you need to make.
+Before upgrading, please review the [upgrade guide](https://simple-commerce.duncanmcclean.com//update-guide) in case there's any changes you need to make.
 
 ### What's new
 
-* [Cart Drivers](https://sc-docs.doublethree.digital/v2.2/cart-drivers)
+* [Cart Drivers](https://simple-commerce.duncanmcclean.com//cart-drivers)
 * Under the hood codebase improvements
 
 ### What's fixed
@@ -613,10 +613,10 @@ A whole lot of API related changes this release...
 
 ## v2.1.0 (2020-10-18)
 
-**v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://sc-docs.doublethree.digital/v2.1/update-guide) to ensure your site will work with the update.**
+**v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://simple-commerce.duncanmcclean.com//update-guide) to ensure your site will work with the update.**
 
-* [new] [Product Variants](https://sc-docs.doublethree.digital/v2.1/product-variants)
-* [new] [Built-in Mollie Gateway](https://sc-docs.doublethree.digital/v2.1/gateways#builtin-gateways)
+* [new] [Product Variants](https://simple-commerce.duncanmcclean.com//product-variants)
+* [new] [Built-in Mollie Gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
 * [new] Product Stock
 * [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 * [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.

@@ -166,7 +166,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public static function docsUrl()
     {
-        return 'https://sc-docs.doublethree.digital/v2.3/product-variants';
+        return 'https://simple-commerce.duncanmcclean.com/product-variants';
     }
 
     public function preProcessIndex($value)
