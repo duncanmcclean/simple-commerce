@@ -52,11 +52,11 @@ class Calculator implements Contract
             })
             ->toArray();
 
+        $data = $this->calculateOrderCoupons($data)['data'];
+
         $data = $this->calculateOrderShipping($data)['data'];
 
-        $data['grand_total'] = ($data['items_total'] + $data['shipping_total'] + $data['tax_total']);
-
-        $data = $this->calculateOrderCoupons($data)['data'];
+        $data['grand_total'] = (($data['items_total'] + $data['tax_total']) - $data['coupon_total']) + $data['shipping_total'];
 
         return $data;
     }
@@ -141,16 +141,16 @@ class Calculator implements Contract
                 ];
             }
 
+            $baseAmount = $data['items_total'] + $data['tax_total'];
+
             // Otherwise do all the other stuff...
             if ($coupon->get('type') === 'percentage') {
-                $data['coupon_total'] = (int) (($value * $data['grand_total']) / 100);
+                $data['coupon_total'] = (int) ($value * $baseAmount) / 100;
             }
 
             if ($coupon->get('type') === 'fixed') {
-                $data['coupon_total'] = (int) $data['grand_total'] - ($data['grand_total'] - $value);
+                $data['coupon_total'] = (int) $baseAmount - ($baseAmount - $value);
             }
-
-            $data['grand_total'] = (int) str_replace('.', '', (string) ($data['grand_total'] - $data['coupon_total']));
         }
 
         return [

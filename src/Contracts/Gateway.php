@@ -24,4 +24,6 @@ interface Gateway
     public function callback(Request $request): bool;
 
     public function webhook(Request $request);
+
+    public function isOffsiteGateway(): bool;
 }

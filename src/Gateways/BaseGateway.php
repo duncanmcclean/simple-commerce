@@ -88,4 +88,9 @@ class BaseGateway
     {
         return true;
     }
+
+    public function isOffsiteGateway(): bool
+    {
+        return false;
+    }
 }

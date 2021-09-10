@@ -45,12 +45,14 @@ class CustomerOrderPaid extends Notification
      */
     public function toMail($notifiable)
     {
+        $pdf = PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray());
+
         return (new MailMessage)
             ->subject("Thanks for your order!")
             ->line("Thanks for your order! Your order receipt has been attached to this email.")
             ->line("Please get in touch if you have any questions.")
             ->attachData(
-                PDF::loadView('simple-commerce::receipt', $this->order->data()->toArray())->output(), // TODO: we should be passing an augmented array here but Carbon complained about trailing data?
+                $pdf->output(),
                 'receipt.pdf',
                 ['mime' => 'application/pdf']
             );

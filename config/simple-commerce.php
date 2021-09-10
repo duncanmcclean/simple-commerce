@@ -12,7 +12,7 @@ return [
     | simple. However, for more complex stores, you may want store your data somewhere else
     | (like a database). Here's where you'd swap that out.
     |
-    | https://sc-docs.doublethree.digital/v2.3/extending/content-drivers
+    | https://simple-commerce.duncanmcclean.com/extending/content-drivers
     |
     */
 
@@ -46,7 +46,7 @@ return [
     | You may configure as many payment gateways as you like. You can use one that's
     | built-in or a custom gateway you've built yourself.
     |
-    | https://sc-docs.doublethree.digital/v2.3/gateways
+    | https://simple-commerce.duncanmcclean.com/gateways
     |
     */
 
@@ -65,7 +65,7 @@ return [
     | methods. This is useful for stores that sell the same products but in
     | different currencies/countries.
     |
-    | https://sc-docs.doublethree.digital/v2.3/multi-site
+    | https://simple-commerce.duncanmcclean.com/multi-site
     |
     */
 
@@ -91,7 +91,7 @@ return [
     |
     | Here's where you can toggle if certain notifications are enabled/disabled.
     |
-    | https://sc-docs.doublethree.digital/v2.3/notifications
+    | https://simple-commerce.duncanmcclean.com/notifications
     |
     */
 

@@ -150,6 +150,11 @@ class MollieGateway extends BaseGateway implements Gateway
         }
     }
 
+    public function isOffsiteGateway(): bool
+    {
+        return true;
+    }
+
     protected function setupMollie()
     {
         $this->mollie = new MollieApiClient();

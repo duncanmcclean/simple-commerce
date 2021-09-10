@@ -161,6 +161,11 @@ class PayPalGateway extends BaseGateway implements Gateway
         return new HttpResponse();
     }
 
+    public function isOffsiteGateway(): bool
+    {
+        return true;
+    }
+
     protected function setupPayPal()
     {
         if ($this->config()->get('environment') === 'sandbox') {

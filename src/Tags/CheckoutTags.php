@@ -28,6 +28,9 @@ class CheckoutTags extends SubTag
 
                     return true;
                 })
+                ->filter(function ($gateway) {
+                    return $gateway['on_site'];
+                })
                 ->each(function ($gateway) use (&$cart, &$data) {
                     try {
                         $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);

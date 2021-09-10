@@ -112,7 +112,7 @@ export default {
             ],
             options: [],
 
-            canWatchVariants: true
+            canWatchVariants: true,
         }
     },
 
@@ -127,40 +127,6 @@ export default {
             }
 
             return data.reduce((acc, curr) => acc.flatMap(c => curr.map(n => [].concat(c, n))))
-        },
-    },
-
-    watch: {
-        variants: {
-            handler: function (value) {
-                if (this.canWatchVariants === false) {
-                    return
-                }
-
-                this.options = this.cartesian.map((item) => {
-                    let key = (typeof item === 'string') ? item : item.join('_')
-                    let variantName = (typeof item === 'string') ? item : item.join(', ')
-
-                    let existingData = this.value.options.filter((option) => {
-                        return option.key === key
-                    })[0]
-
-                    if (existingData === undefined) {
-                        existingData = {
-                            price: 0,
-                        }
-                    }
-
-                    return {
-                        key: key,
-                        variant: variantName,
-                        ...existingData,
-                    }
-                })
-
-                this.saveData()
-            },
-            deep: true
         },
     },
 
@@ -206,6 +172,40 @@ export default {
 
         metaUpdated(fieldHandle, event) {
             //
+        },
+    },
+
+    watch: {
+        variants: {
+            handler: function (value) {
+                if (this.canWatchVariants === false) {
+                    return
+                }
+
+                this.options = this.cartesian.map((item) => {
+                    let key = (typeof item === 'string') ? item : item.join('_')
+                    let variantName = (typeof item === 'string') ? item : item.join(', ')
+
+                    let existingData = this.value.options.filter((option) => {
+                        return option.key === key
+                    })[0]
+
+                    if (existingData === undefined) {
+                        existingData = {
+                            price: 0,
+                        }
+                    }
+
+                    return {
+                        key: key,
+                        variant: variantName,
+                        ...existingData,
+                    }
+                })
+
+                this.saveData()
+            },
+            deep: true
         },
     },
 }

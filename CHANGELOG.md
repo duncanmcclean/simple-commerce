@@ -8,6 +8,49 @@
 
 * A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
 
+## v2.3.25 (2021-09-10)
+
+### What's fixed
+
+* Customers are now marked as published by default, fixes #463
+
+## v2.3.24 (2021-09-07)
+
+### What's fixed
+
+* Receipt data is now being augmented, meaning prices and product name's should display properly now #460
+* The `prepare` method will no longer be called for off-site gateways when using the `{{ sc:checkout }}` tag #462
+
+## v2.3.23 (2021-09-06)
+
+### What's fixed
+
+* The Country fieldtype no longer gives array errors when `max_items` is set to `1`
+
+## v2.3.22 (2021-09-06)
+
+### What's fixed
+
+* Fixed calculator so coupon total includes tax total #458
+* When you clear the 'Money' fieldtype's value, we'll now save it as `null`, rather than 0 #459
+
+## v2.3.21 (2021-08-30)
+
+### What's new
+
+* You can now pass in customer information when adding items to the cart
+* You can now limit product purchases to only customers who have purchased a specific product #452
+
+### What's fixed
+
+* Coupons total is now based on the line items total, not like grand total #453
+
+## v2.3.20 (2021-08-27)
+
+### What's fixed
+
+* Fixed issue where field meta was not being passed into the 'Product Variants' fieldtype #454
+
 ## v2.3.19 (2021-08-19)
 
 ### What's new
@@ -186,7 +229,7 @@ While there's been quite a few breaking changes between v2.2 and v2.3, most of t
 
 Simple Commerce v2.3 requires your site to be running Statamic 3.1 and configured correctly for update scripts.
 
-Please review the [Upgrade Guide](https://sc-docs.doublethree.digital/v2.3/update-guide) before updating.
+Please review the [Upgrade Guide](https://simple-commerce.duncanmcclean.com/update-guide) before updating.
 
 ### What's new
 
@@ -391,11 +434,11 @@ It didn't take me very long to find a bunch of bugs...
 
 ## v2.2.0 (2021-01-31)
 
-Before upgrading, please review the [upgrade guide](https://sc-docs.doublethree.digital/v2.2/update-guide) in case there's any changes you need to make.
+Before upgrading, please review the [upgrade guide](https://simple-commerce.duncanmcclean.com//update-guide) in case there's any changes you need to make.
 
 ### What's new
 
-* [Cart Drivers](https://sc-docs.doublethree.digital/v2.2/cart-drivers)
+* [Cart Drivers](https://simple-commerce.duncanmcclean.com//cart-drivers)
 * Under the hood codebase improvements
 
 ### What's fixed
@@ -576,10 +619,10 @@ A whole lot of API related changes this release...
 
 ## v2.1.0 (2020-10-18)
 
-**v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://sc-docs.doublethree.digital/v2.1/update-guide) to ensure your site will work with the update.**
+**v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://simple-commerce.duncanmcclean.com//update-guide) to ensure your site will work with the update.**
 
-* [new] [Product Variants](https://sc-docs.doublethree.digital/v2.1/product-variants)
-* [new] [Built-in Mollie Gateway](https://sc-docs.doublethree.digital/v2.1/gateways#builtin-gateways)
+* [new] [Product Variants](https://simple-commerce.duncanmcclean.com//product-variants)
+* [new] [Built-in Mollie Gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
 * [new] Product Stock
 * [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 * [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.
