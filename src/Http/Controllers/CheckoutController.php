@@ -125,6 +125,7 @@ class CheckoutController extends BaseActionController
                 $customer = Customer::create([
                     'name'  => isset($customerData['name']) ? $customerData['name'] : '',
                     'email' => $customerData['email'],
+                    'published' => true,
                 ], $this->guessSiteFromRequest()->handle());
             }
 

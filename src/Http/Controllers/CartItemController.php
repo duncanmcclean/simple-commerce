@@ -44,6 +44,7 @@ class CartItemController extends BaseActionController
                     $customer = Customer::create([
                         'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
                         'email' => $request->get('customer')['email'],
+                        'published' => true,
                     ], $this->guessSiteFromRequest()->handle());
                 } elseif (is_string($request->get('customer'))) {
                     $customer = Customer::find($request->get('customer'));
@@ -60,6 +61,7 @@ class CartItemController extends BaseActionController
                 $customer = Customer::create([
                     'name'  => $request->get('name') ?? $request->get('email'),
                     'email' => $request->get('email'),
+                    'published' => true,
                 ], $this->guessSiteFromRequest()->handle());
             }
 
