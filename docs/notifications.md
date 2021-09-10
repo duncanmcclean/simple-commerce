@@ -25,8 +25,12 @@ With this, you can send notifications via email, via SMS or even in real time if
 
 'notifications' => [
     'order_paid' => [
-        \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
-        \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
+        \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+            'to' => 'customer',
+        ],
+        \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+            'to' => 'duncan@example.com',
+        ],
     ],
 ],
 ```
