@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.25 (2021-09-10)
+
+### What's fixed
+
+* Customers are now marked as published by default, fixes #463
+
 ## v2.3.24 (2021-09-07)
 
 ### What's fixed
