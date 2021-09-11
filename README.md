@@ -12,11 +12,13 @@ This repository contains the source code of of Simple Commerce. To use Simple Co
 
 ## Features
 
-* [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
-* [Built-in support for popular gateways](https://simple-commerce.duncanmcclean.com/gateways), like Stripe and Mollie.
+* [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants) - Whether it’s for different colours, t-shirt sizes or whatever, product variants are there to make it easy.
+* [Built-in support for Stripe, PayPal & Mollie](https://simple-commerce.duncanmcclean.com/gateways) - First-party support for three of the major players when it comes to the world of payments.
+* [Multisite](https://simple-commerce.duncanmcclean.com/multisite) - With multisite in Simple Commerce, you can use different currencies and shipping methods per site.
+* [Flexible Shipping](https://simple-commerce.duncanmcclean.com/shipping) - Need to make different shipping methods available based on the customers’ address? That’s totally possible.
+* [Coupons](https://simple-commerce.duncanmcclean.com/coupons) - Create coupons to give to customers, with fixed or percentage amounts off their cart.
 * [Supports Digital Products](https://github.com/doublethreedigital/sc-digital-products)
-* Shipping methods, different shipping prices for different addresses
-* Ready for extension, with events, hooks and APIs.
+* Built from the ground-up to make it easy to extend, with events and the ability to override the calculator.
 
 ## Installation
 

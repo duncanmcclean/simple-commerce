@@ -2,24 +2,47 @@
 title: Introduction
 ---
 
-Welcome to the documentation site for Simple Commerce!
+**Ecommerce is hard, don't do it alone.** Get back to doing what you love: building beautiful websites for your clients.
 
-The aim is to keep it up-to-date with new features as soon as they're released but ultimatley no one's perfect and there's going to be some stuff missing
+Simple Commerce is an ecommerce addon for Statamic, it's got everything you need to build a small-medium sized ecommerce store. And greatest of all it *feels* native to Statamic.
 
-## Contributing
+### Integrates perfectly with Statamic
 
-If you find any issues with the docs, like a typo, feel free to submit a pull request on the [documentation repo](https://github.com/doublethreedigital/sc-docs.doublethree.digital). There's a link to 'Improve this page on GitHub' on every page on the docs site!
+Everyone loves Antlers, right? I sure do. Simple Commerce provides its own tags to let you add products to the cart, take payment etc. It’s almost magic.
 
-Also, if there's any features or things you'd like to see documented, create an issue or attempt it yourself with a PR.
+```antlers
+<h1 class="text-2xl">Your cart</h1>
 
-## Versioning
+{{ sc:cart }}
+    <table>
+        <tbody>
+            {{ items }}
+                <tr class="border-b border-gray-200">
+                    <td class="text-sm px-2 py-4">{{ product:title }}</td>
+                    <td class="text-sm px-2 py-4">{{ product:price }}</td>
+                    <td class="text-sm px-2 py-4">{{ quantity }}</td>
+                    <td class="text-sm px-2 py-4">{{ total }}</td>
+                </tr>
+            {{ /items }}
+            <tr>
+                <td class="text-sm px-2 py-4"></td>
+                <td class="text-sm px-2 py-4"></td>
+                <td class="text-sm px-2 py-4 font-semibold">Items Total</td>
+                <td class="text-sm px-2 py-4">{{ items_total }}</td>
+            </tr>
+        </tbody>
+    </table>
+{{ /sc:cart }}
+```
 
-The documentation site is split between different 'Statamic sites', one for each version (and one just for the marketing pages).
+### Everything's just an entry
 
-This allows us to add documentation for features that come out in certain releases.
+You know how you love flat files and entries for your content? Well, with Simple Commerce, your products, orders and coupons are all entries.
 
-You can switch between the version you're viewing docs for in the top right, inside the search bar.
+![Orders Collection](/img/simple-commerce/orders-collection.png)
 
-## Support
+### Flexible blueprints
 
-If you're looking for help with something and can't find your answer here, create an issue on the Simple Commerce repo or [send me (Duncan) an email](mailto:help@doublethree.digital).
+There’s no limitations when it comes to blueprints. Just create the fields you wanna use and use them, it’s your site after all. No-one else should define your schema for you.
+
+![Product Blueprint](/img/simple-commerce/product-blueprint.png)
