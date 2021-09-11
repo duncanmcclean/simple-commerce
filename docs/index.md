@@ -4,7 +4,7 @@ title: Introduction
 
 **Ecommerce is hard, don't do it alone.** Get back to doing what you love: building beautiful websites for your clients.
 
-Simple Commerce is an ecommerce addon for Statamic, it's got everything you need to build a small-medium sized ecommerce store. And greatest of all it *feels* native to Statamic.
+Simple Commerce is an ecommerce addon for Statamic, it's got everything you need to build a small-medium sized ecommerce store. And greatest of all it feels native to Statamic.
 
 ### Integrates perfectly with Statamic
 
