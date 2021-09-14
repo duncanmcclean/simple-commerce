@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.26 (2021-09-14)
+
+### What's new
+
+* Added `{{ sc:cart:quantityTotal }}` tag to get total quantity of all items in cart #468
+
 ## v2.3.25 (2021-09-10)
 
 ### What's fixed
