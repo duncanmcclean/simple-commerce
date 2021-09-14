@@ -27,7 +27,7 @@ The variables available in this tag are also augmented. Allowing you to get data
 
 To get a count of the items in the customers' cart, use `{{ sc:cart:count }}`.
 
-To get the total quantity of products in the customers' cart, use `{{ sc:cart:quantity }}`.
+To get the total quantity of products in the customers' cart, use `{{ sc:cart:quantityTotal }}`.
 
 ## Check if customer has a cart
 

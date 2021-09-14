@@ -110,7 +110,7 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
-    public function can_get_cart_items_quantity()
+    public function can_get_cart_items_quantity_total()
     {
         $productOne = Product::create([
             'title' => 'Dog Food',
@@ -127,13 +127,13 @@ class CartTagTest extends TestCase
                 [
                     'id'       => Stache::generateId(),
                     'product'  => $productOne->id,
-                    'quantity' => 5,
+                    'quantity' => 7,
                     'total'    => 1000,
                 ],
                 [
                     'id'       => Stache::generateId(),
                     'product'  => $productTwo->id,
-                    'quantity' => 5,
+                    'quantity' => 4,
                     'total'    => 1200,
                 ],
             ],
@@ -141,7 +141,7 @@ class CartTagTest extends TestCase
 
         $this->fakeCart($cart);
 
-        $this->assertSame('10', (string) $this->tag('{{ sc:cart:quantity }}'));
+        $this->assertSame('11', (string) $this->tag('{{ sc:cart:quantityTotal }}'));
     }
 
     /** @test */
