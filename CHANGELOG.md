@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's fixed
+
+* Fixed issue when you're being redirected back from an off-site gateway, where it would be unable to find the related order.
+
 ## v2.3.26 (2021-09-14)
 
 ### What's new
