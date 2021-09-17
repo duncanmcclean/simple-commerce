@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
@@ -31,6 +32,11 @@ class PayPalGateway extends BaseGateway implements Gateway
     public function name(): string
     {
         return 'PayPal';
+    }
+
+    public function isOffsiteGateway(): bool
+    {
+        return true;
     }
 
     public function prepare(Prepare $data): Response
@@ -158,6 +164,33 @@ class PayPalGateway extends BaseGateway implements Gateway
             $response = $this->paypalClient->execute($request);
             $responseBody = json_decode(json_encode($response->result), true);
 
+            if (! $order->customer() && $responseBody['payer']['name'] || $responseBody['payer']['email_address']) {
+                $customer = Customer::findByEmail($responseBody['payer']['email_address']);
+
+                if (! $customer) {
+                    $customer = Customer::create([
+                        'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
+                        'email' => $responseBody['payer']['email_address'],
+                    ]);
+                }
+
+                $order
+                    ->customer($customer->id())
+                    ->save();
+            }
+
+            if (! $order->shippingAddress() && isset($responseBody['purchase_units'][0]['shipping']['address'])) {
+                $paypalShipping = $responseBody['purchase_units'][0]['shipping'];
+
+                $order
+                    ->set('shipping_name', $paypalShipping['name']['full_name'])
+                    ->set('shipping_address', $paypalShipping['address']['address_line_1'])
+                    ->set('shipping_city', $paypalShipping['address']['admin_area_1'])
+                    ->set('shipping_country', $paypalShipping['address']['country_code'])
+                    ->set('shipping_postal_code', $paypalShipping['address']['postal_code'])
+                    ->save();
+            }
+
             $order->set('gateway_data', $responseBody)->save();
             $order->markAsPaid();
 
@@ -165,11 +198,6 @@ class PayPalGateway extends BaseGateway implements Gateway
         }
 
         return new HttpResponse();
-    }
-
-    public function isOffsiteGateway(): bool
-    {
-        return true;
     }
 
     protected function setupPayPal()
