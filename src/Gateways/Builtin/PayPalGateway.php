@@ -77,7 +77,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             ->first();
 
         return new Response(true, [
-            'result' => (array) $response->result,
+            'result' => json_decode(json_encode($response->result), true),
         ], $checkoutUrl->href);
     }
 
