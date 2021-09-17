@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v2.3.28 (2021-09-17)
+
+### What's fixed
+
+* Fixed a bug where `paypal` data wasn't being saved properly on the order entry (causing the callback to not work) #469
+
+### What's new
+
+* Customer and address information will now be added to order when coming back from PayPal #469
+
 ## v2.3.27 (2021-09-15)
 
 ### What's fixed
