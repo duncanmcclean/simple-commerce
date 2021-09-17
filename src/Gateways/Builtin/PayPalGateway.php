@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
@@ -124,11 +125,15 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         $order = OrderFacade::find($request->get('_order_id'));
 
-        if (!$order) {
+        if (! $order) {
             return false;
         }
 
-        $paypalOrder = $order->get('paypal')['result'];
+        $paypalOrder = optional($order->get('paypal'))['result'];
+
+        if (! $paypalOrder) {
+            throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
+        }
 
         $request = new OrdersGetRequest($paypalOrder['id']);
 
