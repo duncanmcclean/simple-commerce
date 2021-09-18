@@ -8,6 +8,37 @@
 
 * A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
 
+
+
+## v2.3.29 (2021-09-18)
+
+### What's fixed
+
+* Fixed a dirty state issue with the Product variants fieldtype #461
+* Only the Transaction ID is now stored as `paypal` data on the order entry
+
+## v2.3.28 (2021-09-17)
+
+### What's fixed
+
+* Fixed a bug where `paypal` data wasn't being saved properly on the order entry (causing the callback to not work) #469
+
+### What's new
+
+* Customer and address information will now be added to order when coming back from PayPal #469
+
+## v2.3.27 (2021-09-15)
+
+### What's fixed
+
+* Fixed issue when you're being redirected back from an off-site gateway, where it would be unable to find the related order.
+
+## v2.3.26 (2021-09-14)
+
+### What's new
+
+* Added `{{ sc:cart:quantityTotal }}` tag to get total quantity of all items in cart #468
+
 ## v2.3.25 (2021-09-10)
 
 ### What's fixed

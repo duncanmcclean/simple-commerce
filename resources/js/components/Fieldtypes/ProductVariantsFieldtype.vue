@@ -92,7 +92,10 @@ import View from '../../statamic/View'
 export default {
     name: 'product-variants-fieldtype',
 
-    mixins: [Fieldtype, View],
+    mixins: [
+        Fieldtype,
+        View,
+    ],
 
     components: {
         GridHeaderCell,
@@ -128,6 +131,16 @@ export default {
 
             return data.reduce((acc, curr) => acc.flatMap(c => curr.map(n => [].concat(c, n))))
         },
+
+        baseContainer() {
+             let parent = this.$parent
+
+            while (parent && parent.$options._componentTag !== 'publish-container') {
+                parent = parent.$parent
+            }
+
+            return parent
+        },
     },
 
     mounted() {
@@ -155,7 +168,9 @@ export default {
             this.$emit('input', {
                 variants: this.variants,
                 options: this.options,
-            });
+            })
+
+            this.baseContainer.saved()
         },
 
         errors(fieldHandle) {
@@ -177,7 +192,7 @@ export default {
 
     watch: {
         variants: {
-            handler: function (value) {
+            handler(value) {
                 if (this.canWatchVariants === false) {
                     return
                 }
@@ -205,7 +220,7 @@ export default {
 
                 this.saveData()
             },
-            deep: true
+            deep: true,
         },
     },
 }
