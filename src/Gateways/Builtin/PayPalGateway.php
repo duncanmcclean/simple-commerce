@@ -77,7 +77,9 @@ class PayPalGateway extends BaseGateway implements Gateway
             ->first();
 
         return new Response(true, [
-            'result' => (array) $response->result,
+            'result' => [
+                'id' => $response->result->id,
+            ],
         ], $checkoutUrl->href);
     }
 
@@ -102,9 +104,15 @@ class PayPalGateway extends BaseGateway implements Gateway
     {
         $this->setupPayPal();
 
-        $paypalOrder = $order->get('paypal')['result'];
+        $paypalOrderId = isset($order->get('paypal')['result']['id'])
+            ? $order->get('paypal')['result']['id']
+            : null;
 
-        $request = new OrdersGetRequest($paypalOrder['id']);
+        if (! $paypalOrderId) {
+            throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
+        }
+
+        $request = new OrdersGetRequest($paypalOrderId);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
@@ -135,13 +143,15 @@ class PayPalGateway extends BaseGateway implements Gateway
             return false;
         }
 
-        $paypalOrder = optional($order->get('paypal'))['result'];
+        $paypalOrderId = isset($order->get('paypal')['result']['id'])
+            ? $order->get('paypal')['result']['id']
+            : null;
 
-        if (! $paypalOrder) {
+        if (! $paypalOrderId) {
             throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
         }
 
-        $request = new OrdersGetRequest($paypalOrder['id']);
+        $request = new OrdersGetRequest($paypalOrderId);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
