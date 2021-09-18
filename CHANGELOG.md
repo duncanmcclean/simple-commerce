@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.29 (2021-09-18)
+
+### What's fixed
+
+* Fixed a dirty state issue with the Product variants fieldtype #461
+* Only the Transaction ID is now stored as `paypal` data on the order entry
+
 ## v2.3.28 (2021-09-17)
 
 ### What's fixed
