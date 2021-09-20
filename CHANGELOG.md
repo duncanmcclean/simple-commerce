@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v2.3.40 (2021-09-20)
+
+### What's fixed
+
+* Fixed some PayPal webhook related bugs #471
+* Money fieldtypes will no longer return £0 when augmented if no price is saved #459
+* Improved docblocks for `Gateway` facade
+
 ## v2.3.29 (2021-09-18)
 
 ### What's fixed
