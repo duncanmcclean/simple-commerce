@@ -175,7 +175,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             $response = $this->paypalClient->execute($request);
             $responseBody = json_decode(json_encode($response->result), true);
 
-            if (! $order->customer() && $responseBody['payer']['name'] || $responseBody['payer']['email_address']) {
+            if (is_null($order->customer()) && $responseBody['payer']['name'] && $responseBody['payer']['email_address']) {
                 try {
                     $customer = Customer::findByEmail($responseBody['payer']['email_address']);
                 } catch (CustomerNotFound $e) {
