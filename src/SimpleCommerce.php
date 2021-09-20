@@ -44,8 +44,6 @@ class SimpleCommerce
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
                     'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
-                    'off_site'        => $instance->isOffsiteGateway(),
-                    'on_site'         => ! $instance->isOffsiteGateway(),
                 ];
             })
             ->toArray();

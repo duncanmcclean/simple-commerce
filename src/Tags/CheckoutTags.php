@@ -29,7 +29,7 @@ class CheckoutTags extends SubTag
                     return true;
                 })
                 ->filter(function ($gateway) {
-                    return $gateway['on_site'];
+                    return ! Gateway::use($gateway['class'])->isOffsiteGateway();
                 })
                 ->each(function ($gateway) use (&$cart, &$data) {
                     try {
