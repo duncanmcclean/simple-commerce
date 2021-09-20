@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
@@ -175,9 +176,9 @@ class PayPalGateway extends BaseGateway implements Gateway
             $responseBody = json_decode(json_encode($response->result), true);
 
             if (! $order->customer() && $responseBody['payer']['name'] || $responseBody['payer']['email_address']) {
-                $customer = Customer::findByEmail($responseBody['payer']['email_address']);
-
-                if (! $customer) {
+                try {
+                    $customer = Customer::findByEmail($responseBody['payer']['email_address']);
+                } catch (CustomerNotFound $e) {
                     $customer = Customer::create([
                         'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
                         'email' => $responseBody['payer']['email_address'],
