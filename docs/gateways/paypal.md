@@ -45,6 +45,14 @@ To redirect the customer off to PayPal's checkout page, you can use the `sc:chec
 
 However, bear in mind that where-ever you use that tag, the customer will be redirected away from your site. So it's probably best to have it sitting on it's own page.
 
+### Handling the redirect back to your site
+
+On the return back to your site from PayPal, you can have customers redirected to seperate URLs, depending on whether the payment was successful or failed/cancelled.
+
+The `redirect` parameter on the `sc:checkout:paypal` tag will handle the successful payment redirects.
+
+Where as `error_redirect` will handle any other payment states.
+
 ## On-site payment flow
 
 Set the gateway configuretion to use on-site mode:
@@ -79,7 +87,7 @@ A rough example of a PayPal implementation is provided below.
 </script>
 ```
 
-### Handling PayPal's webhook
+## Handling PayPal's webhook
 
 The PayPal gateway has a webhook which is hit by PayPal whenever a payment is made.
 
@@ -101,10 +109,4 @@ protected $except = [
 
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, PayPal wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
 
-### Handling the redirect back to your site
 
-On the return back to your site from PayPal, you can have customers redirected to seperate URLs, depending on whether the payment was successful or failed/cancelled.
-
-The `redirect` parameter on the `sc:checkout:paypal` tag will handle the successful payment redirects.
-
-Where as `error_redirect` will handle any other payment states.
