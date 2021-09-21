@@ -37,7 +37,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function isOffsiteGateway(): bool
     {
-        return true;
+        return $this->config()->get('mode', 'offsite') === 'offsite';
     }
 
     public function prepare(Prepare $data): Response
@@ -79,26 +79,29 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         return new Response(true, [
             'result' => [
-                'id' => $response->result->id,
+                'id'            => $response->result->id,
+                'currency_code' => $response->result->purchase_units[0]->amount->currency_code,
             ],
-        ], $checkoutUrl->href);
+        ], $this->isOffsiteGateway() ? $checkoutUrl->href : '');
     }
 
     public function purchase(Purchase $data): Response
     {
-        // We don't actually do anything here as PayPal is an
-        // off-site gateway, so it has it's own checkout page.
+        $this->setupPayPal();
 
-        throw new GatewayDoesNotSupportPurchase("Gateway [paypal] does not support the `purchase` method.");
+        $request = new OrdersGetRequest($data->request()->payment_id);
+
+        /** @var \PayPalHttp\HttpResponse $response */
+        $response = $this->paypalClient->execute($request);
+
+        return new Response($response->result->status === 'APPROVED');
     }
 
     public function purchaseRules(): array
     {
-        // PayPal is off-site, therefore doesn't use the traditional
-        // checkout process provided by Simple Commerce. Hence why no rules
-        // are defined here.
-
-        return [];
+        return $this->isOffsiteGateway() ? [] : [
+            'payment_id' => 'required|string',
+        ];
     }
 
     public function getCharge(Order $order): Response

@@ -26,9 +26,9 @@ Make sure that `PAYPAL_ENVIRONMENT` is set to `sandbox` while you're in developm
 
 > It's best practice to use `.env` file for any API keys you need, rather than referencing them directly in your config file. [Review Statamic Docs](https://statamic.dev/configuration#environment-variables).
 
-## Payment flow
+## Off-site payment flow
 
-PayPal is an off-site gateway, which means the customer is redirected onto PayPal's checkout page to complete payment. Here's a quick run down of how the whole process works:
+Here's a quick run down of how the whole process works:
 
 1. After filling out shipping info etc, the store redirects the customer to PayPal
 2. The customer enters their payment information on PayPal's checkout
@@ -45,7 +45,49 @@ To redirect the customer off to PayPal's checkout page, you can use the `sc:chec
 
 However, bear in mind that where-ever you use that tag, the customer will be redirected away from your site. So it's probably best to have it sitting on it's own page.
 
-### Handling PayPal's webhook
+### Handling the redirect back to your site
+
+On the return back to your site from PayPal, you can have customers redirected to seperate URLs, depending on whether the payment was successful or failed/cancelled.
+
+The `redirect` parameter on the `sc:checkout:paypal` tag will handle the successful payment redirects.
+
+Where as `error_redirect` will handle any other payment states.
+
+## On-site payment flow
+
+Set the gateway configuretion to use on-site mode:
+
+```php
+'gateways' => [
+	\DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\PayPalGateway::class => [
+        ///
+        'mode' => 'onsite',
+    ],
+],
+```
+
+The payment form should be included inside your `{{ sc:checkout }}` form, and any PayPal magic should also be wrapped in the `{{ sc:gateways }}` tag to ensure you can make full use of your gateway's configuration values.
+
+A rough example of a PayPal implementation is provided below.
+
+```antlers
+<div id="paypal-button"></div>
+<input id="paypal-payment-id" type="hidden" name="payment_id">
+<script src="https://www.paypal.com/sdk/js?client-id={{ gateway-config:client_id }}&currency={{ paypal.result.currency_code }}"></script>
+<script>
+    paypal.Buttons({
+        createOrder: () => {
+            return Promise.resolve('{{ paypal.result.id }}');
+        },
+        onApprove: (data, actions) => {
+            document.getElementById('paypal-payment-id').value = data.orderID;
+            document.getElementById('checkout-form').submit();
+        },
+    }).render('#paypal-button');
+</script>
+```
+
+## Handling PayPal's webhook
 
 The PayPal gateway has a webhook which is hit by PayPal whenever a payment is made.
 
@@ -67,10 +109,4 @@ protected $except = [
 
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, PayPal wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
 
-### Handling the redirect back to your site
 
-On the return back to your site from PayPal, you can have customers redirected to seperate URLs, depending on whether the payment was successful or failed/cancelled.
-
-The `redirect` parameter on the `sc:checkout:paypal` tag will handle the successful payment redirects.
-
-Where as `error_redirect` will handle any other payment states.
