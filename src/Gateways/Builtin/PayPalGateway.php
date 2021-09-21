@@ -87,6 +87,10 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function purchase(Purchase $data): Response
     {
+        if ($this->isOffsiteGateway()) {
+            throw new GatewayDoesNotSupportPurchase("Gateway [paypal] does not support the `purchase` method.");
+        }
+
         $this->setupPayPal();
 
         $request = new OrdersGetRequest($data->request()->payment_id);
@@ -99,7 +103,11 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function purchaseRules(): array
     {
-        return $this->isOffsiteGateway() ? [] : [
+        if ($this->isOffsiteGateway()) {
+            return [];
+        }
+
+        return [
             'payment_id' => 'required|string',
         ];
     }
