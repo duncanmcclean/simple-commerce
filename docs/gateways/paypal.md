@@ -43,6 +43,8 @@ To redirect the customer off to PayPal's checkout page, you can use the `sc:chec
 {{ sc:checkout:paypal redirect="/thanks" error_redirect="/payment-error" }}
 ```
 
+However, bear in mind that where-ever you use that tag, the customer will be redirected away from your site. So it's probably best to have it sitting on it's own page.
+
 ## On-site payment flow
 
 Set the gateway configuretion to use on-site mode:
@@ -76,8 +78,6 @@ A rough example of a PayPal implementation is provided below.
     }).render('#paypal-button');
 </script>
 ```
-
-However, bear in mind that where-ever you use that tag, the customer will be redirected away from your site. So it's probably best to have it sitting on it's own page.
 
 ### Handling PayPal's webhook
 
