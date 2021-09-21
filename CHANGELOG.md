@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.41 (2021-09-21)
+
+### What's new
+
+* An on-site mode for the PayPal gateway #472
+
 ## v2.3.40 (2021-09-20)
 
 ### What's fixed
