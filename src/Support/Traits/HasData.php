@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
 
+use Illuminate\Support\Collection;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait HasData
@@ -15,6 +16,10 @@ trait HasData
             ->setter(function ($data) {
                 if (! $this->data) {
                     return $data;
+                }
+
+                if ($this->data instanceof Collection) {
+                    $this->data = $this->data->toArray();
                 }
 
                 return array_merge($this->data, $data);
