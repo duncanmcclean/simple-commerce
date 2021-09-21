@@ -4,7 +4,7 @@ title: PayPal Payment Gateway
 
 > ✨ PayPal's still a fairly new gateway in Simple Commerce so if you spot any issues, please [open an issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose).
 
-Simple Commerce supports accepting payments through PayPal in two forms: on-site and off-site. On-site is where the customer stays on your website for the checkout process and they see a PayPal popup where they can enter their payment information. Off-site is where you redirect the user to PayPal to complete the payment process there.
+Simple Commerce supports accepting payments through PayPal in two forms: on-site and off-site. On-site is where the customer stays on your website for the checkout process and they see a PayPal embed where they can enter their payment information. Off-site is where you redirect the user to PayPal to complete the payment process there.
 
 ## Configuration
 
@@ -65,7 +65,7 @@ Where as `error_redirect` will handle any other payment states.
 ### Payment flow
 
 1. The customer goes to a Checkout page on your website. Somewhere on that page is a 'PayPal button'
-2. The 'PayPal button' opens a PayPal popup, prompting the customer for their payment details
+2. The 'PayPal button' then asks you to enter your card details, or login with PayPal
 3. Once the user has entered their details, the customer submits the checkout form
 4. When the checkout form is submitted, the payment will be marked as paid
 5. The user will then be redirect to a successful purchase screen
