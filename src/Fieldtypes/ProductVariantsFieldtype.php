@@ -32,7 +32,7 @@ class ProductVariantsFieldtype extends Fieldtype
                         'width'      => 50,
                         'input_type' => 'text',
                         'validate'   => 'required',
-                    ]))->toBlueprintArray(),
+                    ]))->toPublishArray(),
                     (new Field('values', [
                         'type'     => 'taggable',
                         'listable' => 'hidden',
