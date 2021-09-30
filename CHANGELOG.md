@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.3.42 (2021-09-30)
+
+### What's new
+
+* Added `only`, `exclude` and `common` parameters to the `{{ sc:countries }}` tag, [see docs](https://simple-commerce.duncanmcclean.com/tags/countries) #473
+
+### What's fixed
+
+* Fixed an issue where Simple Commerce tried to merge a collection and an array.
+* Moved away from a deprecated Statamic Core method statamic/cms#4298
+
 ## v2.3.41 (2021-09-21)
 
 ### What's new
