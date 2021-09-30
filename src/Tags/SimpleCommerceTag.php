@@ -55,47 +55,43 @@ class SimpleCommerceTag extends Tags
 
     public function countries()
     {
-        $countries = collect(Countries::all());
-            
+        $countries = Countries::values();
+
         if ($inclusions = $this->params->explode('only', [])) {
-
-            $countries = $countries->filter(function ($country) use ($inclusions) {
-                return in_array($country['iso'], $inclusions) OR in_array($country['name'], $inclusions);
-            })->sortBy(function ($country) use ($inclusions) {
-                return array_search($country['iso'], $inclusions);
-            });
-
-        } else {         
-            
+            $countries = $countries
+                ->filter(function ($country) use ($inclusions) {
+                    return in_array($country['iso'], $inclusions)
+                        || in_array($country['name'], $inclusions);
+                })->sortBy(function ($country) use ($inclusions) {
+                    return array_search($country['iso'], $inclusions);
+                });
+        } else {
             if ($exclusions = $this->params->explode('exclude', [])) {
-    
                 $countries = $countries->filter(function ($country) use ($exclusions) {
-                    return !(in_array($country['iso'], $exclusions) OR in_array($country['name'], $exclusions));
+                    return ! (in_array($country['iso'], $exclusions)
+                        || in_array($country['name'], $exclusions));
                 });
-    
             }
-            
             if ($common = $this->params->explode('common', [])) {
-                            
-                $common_countries = $countries->filter(function ($country) use ($common) {
-                    return in_array($country['iso'], $common) OR in_array($country['name'], $common);
-                })->sortBy(function ($country) use ($common) {
-                    return array_search($country['iso'], $common);
-                });
-               
-                $common_countries->push([
+                $commonCountries = $countries
+                    ->filter(function ($country) use ($common) {
+                        return in_array($country['iso'], $common)
+                            || in_array($country['name'], $common);
+                    })->sortBy(function ($country) use ($common) {
+                        return array_search($country['iso'], $common);
+                    });
+
+                $commonCountries->push([
                     'iso' => '',
                     'name' => '-',
                 ]);
-                
-                $countries = $common_countries->concat($countries->filter(function ($country) use ($common) {
-                    return !(in_array($country['iso'], $common) OR in_array($country['name'], $common));
+
+                $countries = $commonCountries->concat($countries->filter(function ($country) use ($common) {
+                    return ! (in_array($country['iso'], $common) || in_array($country['name'], $common));
                 }));
-    
             }
-        
         }
-            
+
         return $countries->toArray();
     }
 
