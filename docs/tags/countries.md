@@ -16,7 +16,9 @@ It also supports some optional parameters:
 
 For example:
 
-`{{ sc:countries only="GB|IE" }}`
+```
+{{ sc:countries only="GB|IE" }}
+```
 
 This will only return countries passed and in the order they are passed. It accepts a piped list of either iso values or country names.
 
@@ -25,7 +27,9 @@ This will only return countries passed and in the order they are passed. It acce
 
 For example:
 
-`{{ sc:countries exclude="GB|IE" }}`
+```
+{{ sc:countries exclude="GB|IE" }}
+```
 
 This will exclude any countries passed from the list. It Accepts a piped list of either iso values or country names. This param has no effect when the `only` param is used.
 
@@ -34,6 +38,8 @@ This will exclude any countries passed from the list. It Accepts a piped list of
 
 For example:
 
-`{{ sc:countries common="GB|IE" }}`
+```
+{{ sc:countries common="GB|IE" }}
+```
 
-This will creates a "common" countries list above the rest of the country list, allowing you to make it eaiser to get to the most common countries your visitors select. It accepts a piped list of either iso values or country names. This param has no effect when the `only` param is used.
+This will creates a 'common' countries list above the rest of the country list, allowing you to make it eaiser to get to the most common countries your visitors select. It accepts a piped list of either iso values or country names. This param has no effect when the `only` param is used.
