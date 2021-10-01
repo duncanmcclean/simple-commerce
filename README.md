@@ -1,6 +1,6 @@
 <!-- statamic:hide -->
 
-![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.png)
+![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/2.3/banner.png)
 
 ## Simple Commerce
 
