@@ -192,9 +192,9 @@ class CheckoutController extends BaseActionController
 
                         // Need to do this check before actually setting the stock
                         if ($stockCount <= 0) {
-                            event(new StockRunOut($product, $stockCount));
+                            event(new StockRunOut($product, $stockCount, $variant));
 
-                            throw new CheckoutProductHasNoStockException($product);
+                            throw new CheckoutProductHasNoStockException($product, $variant);
                         }
 
                         $variant->set(
