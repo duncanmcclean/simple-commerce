@@ -26,7 +26,7 @@ class Product implements Contract
 
     public function stockCount()
     {
-        if (! $this->has('stock')) {
+        if ($this->purchasableType() === 'variants' || ! $this->has('stock')) {
             return null;
         }
 
@@ -50,11 +50,18 @@ class Product implements Contract
 
         return collect($this->get('product_variants')['options'])
             ->map(function ($variantOption) {
-                return (new ProductVariant)
+                $productVariant = (new ProductVariant)
                     ->key($variantOption['key'])
+                    ->product($this)
                     ->name($variantOption['variant'])
                     ->price($variantOption['price'])
-                    ->data(Arr::except($variantOption, ['key', 'variant', 'price']));
+                    ->data(Arr::except($variantOption, ['key', 'variant', 'price', 'stock']));
+
+                if (isset($variantOption['stock'])) {
+                    $productVariant->stock($variantOption['stock']);
+                }
+
+                return $productVariant;
             });
     }
 

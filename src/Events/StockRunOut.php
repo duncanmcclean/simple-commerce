@@ -13,10 +13,13 @@ class StockRunOut
 
     public $product;
     public $stock;
+    public $variant;
 
-    public function __construct(Product $product, int $stock)
+    // v2.4: Switch the parameter order - product, variant, stock
+    public function __construct(Product $product, int $stock, $variant = null)
     {
         $this->product = $product;
         $this->stock = $stock;
+        $this->variant = $variant;
     }
 }

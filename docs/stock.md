@@ -2,9 +2,21 @@
 title: Stock
 ---
 
+## Enabling
+
+### Standard Product
+
 To start using the stock functionality built into Simple Commerce, you'll need to add an [`Integer` field](https://statamic.dev/fieldtypes/integer#content), with the handle of `stock` to your product blueprint.
 
-After that, you can populate your products with the correct amount of stock. Then, whenever a customer purhcases something on your store, the quantity of each product will be subtracted from the product's stock.
+After that, you can populate your products with the correct amount of stock. Then, whenever a customer purchases that product, the stock count will be decreased.
+
+### Variant Product
+
+To start using the stock functionality with variant products, you'll need to add an 'option field' to your Product Variants field, with the handle of `stock` and using the [Integer fieldtype]((https://statamic.dev/fieldtypes/integer#content)).
+
+![Stock Variant Options](/img/simple-commerce/variant-options-stock.jpg)
+
+After that, head into your products and populate your variants with the correct amount of stock. Then, whenever a customer purchases that variant, the stock count will decreased.
 
 ## Events
 
