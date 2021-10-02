@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.43 (2021-10-02)
+
+### What's new
+
+* Variants can now hold stock counts. [Review docs](https://simple-commerce.duncanmcclean.com/stock) #474
+
 ## v2.3.42 (2021-09-30)
 
 ### What's new
