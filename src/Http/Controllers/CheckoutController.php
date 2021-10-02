@@ -162,23 +162,49 @@ class CheckoutController extends BaseActionController
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
-                if ($product->has('stock') && $product->get('stock') !== null) {
-                    $stockCount = $product->get('stock') - $item['quantity'];
+                if ($product->purchasableType() === 'product') {
+                    if ($product->has('stock') && $product->get('stock') !== null) {
+                        $stockCount = $product->get('stock') - $item['quantity'];
 
-                    // Need to do this check before actually setting the stock
-                    if ($stockCount <= 0) {
-                        event(new StockRunOut($product, $stockCount));
+                        // Need to do this check before actually setting the stock
+                        if ($stockCount <= 0) {
+                            event(new StockRunOut($product, $stockCount));
 
-                        throw new CheckoutProductHasNoStockException($product);
+                            throw new CheckoutProductHasNoStockException($product);
+                        }
+
+                        $product->set(
+                            'stock',
+                            $stockCount = $product->get('stock') - $item['quantity']
+                        )->save();
+
+                        if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                            event(new StockRunningLow($product, $stockCount));
+                        }
                     }
+                }
 
-                    $product->set(
-                        'stock',
-                        $stockCount = $product->get('stock') - $item['quantity']
-                    )->save();
+                if ($product->purchasableType() === 'variants') {
+                    $variant = $product->variant($item['variant']);
 
-                    if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
-                        event(new StockRunningLow($product, $stockCount));
+                    if ($variant->stockCount() !== null) {
+                        $stockCount = $variant->stockCount();
+
+                        // Need to do this check before actually setting the stock
+                        if ($stockCount <= 0) {
+                            event(new StockRunOut($product, $stockCount));
+
+                            throw new CheckoutProductHasNoStockException($product);
+                        }
+
+                        $variant->set(
+                            'stock',
+                            $stockCount = $variant->stockCount() - $item['quantity']
+                        );
+
+                        if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                            event(new StockRunningLow($product, $stockCount));
+                        }
                     }
                 }
             });

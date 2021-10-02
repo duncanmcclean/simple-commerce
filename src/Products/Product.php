@@ -52,6 +52,7 @@ class Product implements Contract
             ->map(function ($variantOption) {
                 $productVariant = (new ProductVariant)
                     ->key($variantOption['key'])
+                    ->product($this)
                     ->name($variantOption['variant'])
                     ->price($variantOption['price'])
                     ->data(Arr::except($variantOption, ['key', 'variant', 'price', 'stock']));
