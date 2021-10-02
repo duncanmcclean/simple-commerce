@@ -12,6 +12,7 @@ class ProductVariant
     protected $key;
     protected $name;
     protected $price;
+    protected $stock;
     protected $data;
 
     public function key($key = null)
@@ -33,5 +34,26 @@ class ProductVariant
         return $this
             ->fluentlyGetOrSet('price')
             ->args(func_get_args());
+    }
+
+    public function stock($stock = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('stock')
+            ->args(func_get_args());
+    }
+
+    /**
+     * Use this to get the product's stock count.
+     *
+     * @return int
+     */
+    public function stockCount()
+    {
+        if (! $this->stock) {
+            return null;
+        }
+
+        return (int) $this->stock;
     }
 }
