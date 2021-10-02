@@ -26,7 +26,7 @@ class Product implements Contract
 
     public function stockCount()
     {
-        if (! $this->has('stock')) {
+        if ($this->purchasableType() === 'variants' || ! $this->has('stock')) {
             return null;
         }
 
