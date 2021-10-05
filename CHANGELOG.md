@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.44 (2021-10-05)
+
+### What's fixed
+
+* Fixed an issue checking out with variants with stock
+
 ## v2.3.43 (2021-10-02)
 
 ### What's new
