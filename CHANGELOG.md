@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.45 (2021-10-06)
+
+### What's fixed
+
+* Fixed an issue when checking out a product with 1 item left in stock #477 #478
+
 ## v2.3.44 (2021-10-05)
 
 ### What's fixed
