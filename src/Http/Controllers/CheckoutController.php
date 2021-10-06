@@ -167,7 +167,7 @@ class CheckoutController extends BaseActionController
                         $stockCount = $product->get('stock') - $item['quantity'];
 
                         // Need to do this check before actually setting the stock
-                        if ($stockCount <= 0) {
+                        if ($stockCount < 0) {
                             event(new StockRunOut($product, $stockCount));
 
                             throw new CheckoutProductHasNoStockException($product);
@@ -188,10 +188,10 @@ class CheckoutController extends BaseActionController
                     $variant = $product->variant($item['variant']['variant'] ?? $item['variant']);
 
                     if ($variant->stockCount() !== null) {
-                        $stockCount = $variant->stockCount();
+                        $stockCount = $variant->stockCount() - $item['quantity'];
 
                         // Need to do this check before actually setting the stock
-                        if ($stockCount <= 0) {
+                        if ($stockCount < 0) {
                             event(new StockRunOut($product, $stockCount, $variant));
 
                             throw new CheckoutProductHasNoStockException($product, $variant);
