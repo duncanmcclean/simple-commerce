@@ -55,7 +55,9 @@ trait IsEntry
     {
         $this->entry = null;
 
-        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
+        // $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
+        $this->id = isset($data['id']) ? $data['id'] : Stache::generateId();
+        
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
         $this->slug = !is_null($this->slug) ? $this->slug : '';
         $this->published = !is_null($this->published) ? $this->published : false;
