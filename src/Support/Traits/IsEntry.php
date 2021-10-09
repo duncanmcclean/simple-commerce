@@ -53,13 +53,15 @@ trait IsEntry
 
     public function create(array $data = [], string $site = ''): self
     {
-        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
-        $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
-        $this->slug = !is_null($this->slug) ? $this->slug : '';
-        $this->published = !is_null($this->published) ? $this->published : false;
+        $this->entry = null;
 
-        if (! $this->slug && isset($data['slug'])) {
-            $this->slug = $data['slug'];
+        $this->id = isset($data['id']) ? $data['id'] : Stache::generateId();
+        $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
+        $this->slug = isset($data['slug']) ? $data['slug'] : null;
+        $this->published = isset($data['published']) ? $data['published'] : false;
+
+        if (! $this->slug) {
+            $this->slug = $this->id;
         }
 
         if (! $this->published && isset($data['published'])) {
@@ -102,6 +104,8 @@ trait IsEntry
         if (method_exists($this, 'beforeSaved')) {
             $this->beforeSaved();
         }
+
+        ray($this);
 
         $this->entry->save();
 
