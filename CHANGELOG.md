@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.46 (2021-10-09)
+
+### What's new
+
+* Ability to dynamically change prices of products when they're added to the cart #479
+
 ## v2.3.45 (2021-10-06)
 
 ### What's fixed
