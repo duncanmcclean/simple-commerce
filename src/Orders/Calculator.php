@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
@@ -67,9 +68,15 @@ class Calculator implements Contract
         $product = ProductAPI::find($lineItem['product']);
 
         if ($product->purchasableType() === 'variants') {
-            $productPrice = $product->variant(
+            $variant = $product->variant(
                 isset($lineItem['variant']['variant']) ? $lineItem['variant']['variant'] : $lineItem['variant']
-            )->price();
+            );
+
+            if (SimpleCommerce::$productVariantPriceHook) {
+                $productPrice = (SimpleCommerce::$productVariantPriceHook)($this->order, $product, $variant);
+            } else {
+                $productPrice = $variant->price();
+            }
 
             // Ensure we strip any decimals from price
             $productPrice = (int) str_replace('.', '', (string) $productPrice);
@@ -82,7 +89,11 @@ class Calculator implements Contract
             ];
         }
 
-        $productPrice = $product->get('price');
+        if (SimpleCommerce::$productPriceHook) {
+            $productPrice = (SimpleCommerce::$productPriceHook)($this->order, $product);
+        } else {
+            $productPrice = $product->get('price');
+        }
 
         // Ensure we strip any decimals from price
         $productPrice = (int) str_replace('.', '', (string) $productPrice);

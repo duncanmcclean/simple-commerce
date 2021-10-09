@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Closure;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Statamic;
@@ -9,6 +10,9 @@ use Statamic\Statamic;
 class SimpleCommerce
 {
     protected static $gateways = [];
+
+    public static $productPriceHook;
+    public static $productVariantPriceHook;
 
     public static function bootGateways()
     {
@@ -99,5 +103,19 @@ class SimpleCommerce
     public static function customerDriver(): array
     {
         return config('simple-commerce.content.customers');
+    }
+
+    public static function productPriceHook(Closure $callback): self
+    {
+        static::$productPriceHook = $callback;
+
+        return (new static);
+    }
+
+    public static function productVariantPriceHook(Closure $callback): self
+    {
+        static::$productVariantPriceHook = $callback;
+
+        return (new static);
     }
 }
