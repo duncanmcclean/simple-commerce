@@ -55,13 +55,13 @@ trait IsEntry
     {
         $this->entry = null;
 
-        $this->id = isset($data['id']) ? $data['id'] : Stache::generateId();
+        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
-        $this->slug = isset($data['slug']) ? $data['slug'] : null;
-        $this->published = isset($data['published']) ? $data['published'] : false;
+        $this->slug = !is_null($this->slug) ? $this->slug : '';
+        $this->published = !is_null($this->published) ? $this->published : false;
 
-        if (! $this->slug) {
-            $this->slug = $this->id;
+        if (! $this->slug && isset($data['slug'])) {
+            $this->slug = $data['slug'];
         }
 
         if (! $this->published && isset($data['published'])) {
