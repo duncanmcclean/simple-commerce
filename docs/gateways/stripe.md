@@ -54,11 +54,17 @@ A rough example of a Stripe Elements implementation is provided below.
         }).then(function (result) {
           	if (result.paymentIntent.status === 'succeeded') {
             	document.getElementById('stripePaymentMethod').value = result.paymentIntent.payment_method
+            	document.getElementById('checkout-form').submit();
             } else if (result.error) {
              	// Deal with errors
             }
         })
     }
+    
+    document.getElementById('checkout-form').addEventListener('submit', (e) => {
+        e.preventDefault()
+	confirmPayment();
+    })
 </script>
 ```
 
