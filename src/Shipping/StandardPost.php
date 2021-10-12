@@ -23,7 +23,7 @@ class StandardPost implements ShippingMethod
         return 120;
     }
 
-    public function checkAvailability(Address $address): bool
+    public function checkAvailability(Order $order, Address $address): bool
     {
         return true;
     }

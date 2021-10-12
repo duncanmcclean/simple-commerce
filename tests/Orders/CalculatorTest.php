@@ -595,7 +595,7 @@ class Postage implements ShippingMethod
         return 250;
     }
 
-    public function checkAvailability(Address $address): bool
+    public function checkAvailability(OrderContract $order, Address $address): bool
     {
         return true;
     }

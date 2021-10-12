@@ -27,7 +27,7 @@ class ShippingTags extends SubTag
                     return null;
                 }
 
-                if ($instance->checkAvailability($shipingAddress) === false) {
+                if ($instance->checkAvailability($order, $shipingAddress) === false) {
                     return null;
                 }
 

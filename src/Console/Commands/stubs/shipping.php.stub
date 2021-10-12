@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 
 class DummyClass implements ShippingMethod
 {
@@ -23,7 +23,7 @@ class DummyClass implements ShippingMethod
         return 0;
     }
 
-    public function checkAvailability(Address $address): bool
+    public function checkAvailability(Order $order, Address $address): bool
     {
         return true;
     }

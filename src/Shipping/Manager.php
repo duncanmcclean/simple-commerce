@@ -34,9 +34,9 @@ class Manager implements Contract
         return $this->resolve()->calculateCost($order);
     }
 
-    public function checkAvailability(Address $address): bool
+    public function checkAvailability(Order $order, Address $address): bool
     {
-        return $this->resolve()->checkAvailability($address);
+        return $this->resolve()->checkAvailability($order, $address);
     }
 
     protected function resolve()
