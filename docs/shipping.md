@@ -100,7 +100,7 @@ The `methods` array should contain an array of Shipping Method classes, with the
 
 During the cart/checkout flow, you'll want to do 2 things: first, let the customer enter their shipping address for the order and secondly, let the customer select the shipping method you want to use for the order.
 
-Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/doublethreedigital/simple-commerce-starter/blob/master/resources/views/cart.antlers.html).
+Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/doublethreedigital/sc-starter-kit/blob/master/resources/views/cart.antlers.html).
 
 ```antlers
 {{ sc:cart:update }}
