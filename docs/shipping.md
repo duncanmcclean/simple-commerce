@@ -30,8 +30,8 @@ Similarly to the way you configure gateways, it's just an array of shipping meth
 
 Simple Commerce doesn't come with any shipping methods out of the box so you'll need to write your own. We do, however have a command you can use to generate the boilerplate for a shipping method.
 
-```s
-php please make:shipping-method {method name}
+```
+php please make:shipping-method YourNewShippingMethod
 ```
 
 That command will create a Shipping Method class in your `app\ShippingMethods` folder. It'll look something like this:
