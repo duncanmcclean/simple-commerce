@@ -70,4 +70,4 @@ To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\Customer::class`
 
 ## Tags
 
-The `{{ sc:customer }}` tag is documented seperatly, [see docs](https://simple-commerce.duncanmcclean.com/tags/customer-tag).
+The `{{ sc:customer }}` tag is documented seperatly, [see docs](https://simple-commerce.duncanmcclean.com/tags/customer).
