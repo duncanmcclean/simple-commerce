@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's fixed
+
+* Product variant fieldtype now respects being `read_only`.
+
 ## v2.3.46 (2021-10-09)
 
 ### What's new
