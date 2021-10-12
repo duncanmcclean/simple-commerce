@@ -97,7 +97,7 @@ class Manager implements Contract
         return $this->resolve()->webhook($request);
     }
 
-    public function isOffsiteGateway()
+    public function isOffsiteGateway(): bool
     {
         return $this->resolve()->isOffsiteGateway();
     }

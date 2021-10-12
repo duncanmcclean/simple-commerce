@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Illuminate\Support\Facades\File;
+use Closure;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Statamic;
@@ -14,6 +15,9 @@ class SimpleCommerce
 
     /** @var Contracts\TaxEngine */
     protected static $taxEngine;
+
+    public static $productPriceHook;
+    public static $productVariantPriceHook;
 
     public static function bootGateways()
     {
@@ -49,8 +53,6 @@ class SimpleCommerce
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
                     'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
-                    'off_site'        => $instance->isOffsiteGateway(),
-                    'on_site'         => ! $instance->isOffsiteGateway(),
                 ];
             })
             ->toArray();
@@ -148,5 +150,19 @@ class SimpleCommerce
         }
 
         return Statamic::svg($name);
+    }
+
+    public static function productPriceHook(Closure $callback): self
+    {
+        static::$productPriceHook = $callback;
+
+        return (new static);
+    }
+
+    public static function productVariantPriceHook(Closure $callback): self
+    {
+        static::$productVariantPriceHook = $callback;
+
+        return (new static);
     }
 }

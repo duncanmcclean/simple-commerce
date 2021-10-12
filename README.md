@@ -1,6 +1,6 @@
 <!-- statamic:hide -->
 
-![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/master/banner.png)
+![Banner](./banner.png)
 
 ## Simple Commerce
 
@@ -8,36 +8,83 @@
 
 Simple Commerce is a simple e-commerce addon for Statamic. Developers can build custom stores for their clients without fuss. Simple Commerce doesn't hold you down: you have complete control over the content structure and front-end of your site.
 
-This repository contains the source code of of Simple Commerce. To use Simple Commerce in a production environment, [please purchase a license](https://statamic.com/simple-commerce).
+### Everything's just an entry
 
-## Features
+Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
 
-* [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants) - Whether it’s for different colours, t-shirt sizes or whatever, product variants are there to make it easy.
-* [Built-in support for Stripe, PayPal & Mollie](https://simple-commerce.duncanmcclean.com/gateways) - First-party support for three of the major players when it comes to the world of payments.
-* [Multisite](https://simple-commerce.duncanmcclean.com/multisite) - With multisite in Simple Commerce, you can use different currencies and shipping methods per site.
-* [Flexible Shipping](https://simple-commerce.duncanmcclean.com/shipping) - Need to make different shipping methods available based on the customers’ address? That’s totally possible.
-* [Coupons](https://simple-commerce.duncanmcclean.com/coupons) - Create coupons to give to customers, with fixed or percentage amounts off their cart.
-* [Supports Digital Products](https://github.com/doublethreedigital/sc-digital-products)
-* Built from the ground-up to make it easy to extend, with events and the ability to override the calculator.
+### Payment gateways
+
+Out-of-the-box, Simple Commerce ships with support for three of the big payment gateways: Stripe, PayPal and Mollie. Use whichever one you need, or if you need something else: it's easy to build one.
+
+* [Documentation: Payment Gateways](https://simple-commerce.duncanmcclean.com/gateways)
+* [Documentation: Building custom gateways](https://simple-commerce.duncanmcclean.com/extending/custom-gateways)
+
+### Flexible shipping
+
+Provide your customers with different shipping options depending on their address.
+
+* [Documentation: Shipping](https://simple-commerce.duncanmcclean.com/shipping)
+
+### Discounting
+
+Simple Commerce has support for discount coupons. You can limit coupons to certain products or to be used a max number of times. All your customer has to do is redeem the discount during checkout.
+
+* [Documentation: Coupons](https://simple-commerce.duncanmcclean.com/coupons)
+
+### Product variants
+
+Sometimes you need to sell different versions of the same product. Like a t-shirt, you might want to sell it in Small, Medium & Large - each with different prices and stock levels. That's where Product Variants come in. Create a single product and configure the variants inside it.
+
+* [Documentation: Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
+
+### Multi-site friendly
+
+If you need to sell across different countries, you can take advantage of Statamic's multi-site feature in Simple Commerce to have a site per currency. Each site may also have its own set of shipping methods.
+
+* [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/multisite)
+
+### And lots more...
+
+Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
 
 ## Installation
 
-1. Install Simple Commerce with Composer `composer require doublethreedigital/simple-commerce`
-2. Run `php please sc:install` to publish the configuration file, setup collections and copy over base blueprints.
+First, require Cookie Notice as a Composer dependency:
+
+```
+composer require doublethreedigital/simple-commerce
+```
+
+Next, run the `sc:install` command to publish Simple Commerce's config file, setup its collections and copy over any other necessary files.
+
+```
+php please sc:install
+```
+
+And you're done!
+
+## Documentation
+
+There's full documentation of Simple Commerce over on it's [documentation site](https://simple-commerce.duncanmcclean.com).
+
+## Commercial addon
+
+Simple Commerce is a commercial addon - you **must purchase a license** via the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce) to use it in a production environment.
 
 ## Security
 
-From a security perspective, all versions from v2.0 upwards will receive a security release if a vulnerability is found.
+Only the latest version of Simple Commerce (v2.3) will receive security updates if a vulnerability is found. 
 
-If you discover a security vulnerability within Simple Commerce, please report it [via email](mailto:duncan@doublethree.digital) straight away. Please **don't** report security issues in the issue tracker.
+If you discover a security vulnerability, please report it to Duncan straight away, [via email](mailto:security@doublethree.digital). Please don't report security issues through GitHub Issues.
 
-## Resources
+## Official Support
 
-* [**Documentation**](https://simple-commerce.duncanmcclean.com): First-party documentation
+If you're in need of some help with Simple Commerce, [send me an email](mailto:help@doublethree.digital) and I'll do my best to help! (I'll usually respond within a day)
+
+## Other Repositories
+
 * [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
-* [**Digital Products**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
-* [**Issue Tracker**](https://github.com/doublethreedigital/simple-commerce/issues): Find & report bugs in Simple Commerce
-* [**Email**](mailto:help@doublethree.digital): Support from the developer behind the addon
+* [**Digital Products Addon**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
 
 <!-- statamic:hide -->
 

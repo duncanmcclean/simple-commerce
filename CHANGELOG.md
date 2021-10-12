@@ -36,6 +36,61 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 public function checkAvailability(Order $order, Address $address): bool;
 ```
 
+
+
+
+
+
+
+## v2.3.46 (2021-10-09)
+
+### What's new
+
+* Ability to dynamically change prices of products when they're added to the cart #479
+
+## v2.3.45 (2021-10-06)
+
+### What's fixed
+
+* Fixed an issue when checking out a product with 1 item left in stock #477 #478
+
+## v2.3.44 (2021-10-05)
+
+### What's fixed
+
+* Fixed an issue checking out with variants with stock
+
+## v2.3.43 (2021-10-02)
+
+### What's new
+
+* Variants can now hold stock counts. [Review docs](https://simple-commerce.duncanmcclean.com/stock) #474
+
+## v2.3.42 (2021-09-30)
+
+### What's new
+
+* Added `only`, `exclude` and `common` parameters to the `{{ sc:countries }}` tag, [see docs](https://simple-commerce.duncanmcclean.com/tags/countries) #473
+
+### What's fixed
+
+* Fixed an issue where Simple Commerce tried to merge a collection and an array.
+* Moved away from a deprecated Statamic Core method statamic/cms#4298
+
+## v2.3.41 (2021-09-21)
+
+### What's new
+
+* An on-site mode for the PayPal gateway #472
+
+## v2.3.40 (2021-09-20)
+
+### What's fixed
+
+* Fixed some PayPal webhook related bugs #471
+* Money fieldtypes will no longer return £0 when augmented if no price is saved #459
+* Improved docblocks for `Gateway` facade
+
 ## v2.3.29 (2021-09-18)
 
 ### What's fixed

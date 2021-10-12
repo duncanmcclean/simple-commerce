@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
@@ -575,6 +576,103 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['coupon_total'], 12000);
 
         $this->assertSame($calculate['items'][0]['total'], 10000);
+    }
+
+    /** @test */
+    public function ensure_product_price_hook_is_used_to_determine_price_of_product()
+    {
+        $product = Product::create([
+            'price' => 100,
+        ]);
+
+        SimpleCommerce::productPriceHook(function ($order, $product) {
+            return $product->get('price') * 2;
+        });
+
+        $cart = Order::create([
+            'is_paid'     => false,
+            'grand_total' => 0,
+            'items_total' => 0,
+            'items'       => [
+                [
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 0,
+                ],
+            ],
+        ]);
+
+        $calculate = (new Calculator())->calculate($cart);
+
+        $this->assertIsArray($calculate);
+
+        $this->assertSame($calculate['grand_total'], 240);
+        $this->assertSame($calculate['items_total'], 200);
+        $this->assertSame($calculate['shipping_total'], 0);
+        $this->assertSame($calculate['tax_total'], 40);
+        $this->assertSame($calculate['coupon_total'], 0);
+
+        $this->assertSame($calculate['items'][0]['total'], 200);
+    }
+
+    /** @test */
+    public function ensure_product_variant_price_hook_is_used_to_determine_price_of_product_variant()
+    {
+        $product = Product::create([
+            'product_variants' => [
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
+                        ],
+                    ],
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 100,
+                    ],
+                ],
+            ],
+        ]);
+
+        SimpleCommerce::productVariantPriceHook(function ($order, $product, $variant) {
+            return $variant->price() * 2;
+        });
+
+        $cart = Order::create([
+            'is_paid'     => false,
+            'grand_total' => 0,
+            'items_total' => 0,
+            'items'       => [
+                [
+                    'product'  => $product->id,
+                    'variant'  => 'Red_Small',
+                    'quantity' => 1,
+                    'total'    => 0,
+                ],
+            ],
+        ]);
+
+        $calculate = (new Calculator())->calculate($cart);
+
+        $this->assertIsArray($calculate);
+
+        $this->assertSame($calculate['grand_total'], 240);
+        $this->assertSame($calculate['items_total'], 200);
+        $this->assertSame($calculate['shipping_total'], 0);
+        $this->assertSame($calculate['tax_total'], 40);
+        $this->assertSame($calculate['coupon_total'], 0);
+
+        $this->assertSame($calculate['items'][0]['total'], 200);
     }
 }
 

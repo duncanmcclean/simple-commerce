@@ -243,6 +243,53 @@ class CartItemControllerTest extends TestCase
             ->assertSessionHasErrors();
     }
 
+
+    /** @test */
+    public function can_store_item_with_variant_and_ensure_the_quantity_is_not_more_than_stock()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'product_variants' => [
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
+                        ],
+                    ],
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
+                        'stock'   => 2,
+                    ],
+                ],
+            ],
+        ]);
+
+        $cart = Order::create();
+
+        $data = [
+            'product'  => $product->id,
+            'variant' => 'Red_Small',
+            'quantity' => 5,
+        ];
+
+        $response = $this
+            ->from('/products/'.$product->slug)
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertSessionHasErrors();
+    }
+
     /** @test */
     public function can_store_item_and_ensure_existing_items_are_not_overwritten()
     {

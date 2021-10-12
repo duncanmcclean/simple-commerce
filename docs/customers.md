@@ -36,7 +36,7 @@ They live in their own `customers` collection, which you can change if you need 
 ],
 ```
 
-Alternativly, you can store your customers as Statamic users.
+Alternatively, you can store your customers as Statamic users.
 
 This is often pretty handy if you're building some sort of membership site or if you want a way for your customers to log in, to view order history etc.
 

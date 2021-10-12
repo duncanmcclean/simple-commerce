@@ -127,6 +127,7 @@ public function handle(StockRunOut $event)
 {
 	$event->product;
     $event->stock;
+    $event->variant; // If variant holds the stock
 }
 ```
 
@@ -141,5 +142,6 @@ public function handle(StockRunningLow $event)
 {
 	$event->product;
     $event->stock;
+    $event->variant; // If variant holds the stock
 }
 ```

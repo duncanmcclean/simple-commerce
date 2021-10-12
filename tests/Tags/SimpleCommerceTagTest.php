@@ -30,6 +30,39 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
+    public function can_get_countries_with_only_parameter()
+    {
+        $usage = $this->tag('{{ sc:countries only="GB|Ireland" }}{{ name }},{{ /sc:countries }}');
+
+        $this->assertStringContainsString('United Kingdom', $usage);
+        $this->assertStringContainsString('Ireland', $usage);
+
+        $this->assertStringNotContainsString('United States', $usage);
+    }
+
+    /** @test */
+    public function can_get_countries_with_exclude_parameter()
+    {
+        $usage = $this->tag('{{ sc:countries exclude="United Kingdom|Ireland" }}{{ name }},{{ /sc:countries }}');
+
+        $this->assertStringNotContainsString('United Kingdom', $usage);
+        $this->assertStringNotContainsString('Ireland', $usage);
+
+        $this->assertStringContainsString('United States', $usage);
+    }
+
+     /** @test */
+     public function can_get_countries_with_common_parameter()
+     {
+         $usage = $this->tag('{{ sc:countries common="IE" }}{{ name }},{{ /sc:countries }}');
+
+         $this->assertStringContainsString('Ireland,-,', $usage);
+
+         $this->assertStringContainsString('United Kingdom', $usage);
+         $this->assertStringContainsString('United States', $usage);
+     }
+
+    /** @test */
     public function can_get_currencies()
     {
         $usage = $this->tag('{{ sc:currencies }}{{ name }},{{ /sc:currencies }}');
