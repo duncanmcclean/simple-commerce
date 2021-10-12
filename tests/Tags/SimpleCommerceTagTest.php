@@ -63,6 +63,14 @@ class SimpleCommerceTagTest extends TestCase
      }
 
     /** @test */
+    public function can_get_countries_with_regions_inside()
+    {
+        $usage = $this->tag('{{ sc:countries }}{{ name }}|{{ regions limit="1" }}{{ name }}{{ /regions }},{{ /sc:countries }}');
+
+        $this->assertStringContainsString('Austria|Burgenland', $usage);
+    }
+
+    /** @test */
     public function can_get_currencies()
     {
         $usage = $this->tag('{{ sc:currencies }}{{ name }},{{ /sc:currencies }}');
