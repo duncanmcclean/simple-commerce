@@ -4,11 +4,37 @@
 
 ## v2.4.0 (xx-xx-xx)
 
+### What's improved
+
+* Shipping Methods now have access to the full order
+
 ### What's new
 
+* A brand new tax system
 * A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
 
+### Breaking changes
 
+This release contains various breaking changes.
+
+### [Medium] Shipping Methods: Updated signature of `checkAvailability` method
+
+**Previously:**
+
+```php
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+
+public function checkAvailability(Address $address): bool;
+```
+
+**Now:**
+
+```php
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+
+public function checkAvailability(Order $order, Address $address): bool;
+```
 
 ## v2.3.29 (2021-09-18)
 
