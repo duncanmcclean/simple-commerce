@@ -122,7 +122,7 @@ When submitted, that form will fill in the appropriate address fields.
 
 > **Hot tip:** You can also do `billing_name`, `billing_address`, `billing_city` etc to allow the user to update their billing address.
 
-After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/doublethreedigital/simple-commerce-starter/blob/master/resources/views/cart-shipping.antlers.html).
+After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/doublethreedigital/sc-starter-kit/blob/master/resources/views/checkout/shipping.antlers.html).
 
 ```antlers
 {{ sc:cart:update }}
