@@ -8,17 +8,17 @@ class Address
     protected $addressLine1;
     protected $addressLine2;
     protected $city;
-    protected $state;
+    protected $region;
     protected $country;
     protected $zipCode;
 
-    public function __construct($name, $addressLine1, $addressLine2, $city, $state, $country, $zipCode)
+    public function __construct($name, $addressLine1, $addressLine2, $city, $country, $zipCode, $region = null)
     {
         $this->name         = $name;
         $this->addressLine1 = $addressLine1;
         $this->addressLine2 = $addressLine2;
         $this->city         = $city;
-        $this->state        = $state;
+        $this->region       = $region;
         $this->country      = $country;
         $this->zipCode      = $zipCode;
     }
@@ -30,7 +30,7 @@ class Address
             'address_line_1' => $this->addressLine1,
             'address_line_2' => $this->addressLine2,
             'city'           => $this->city,
-            'state'          => $this->state,
+            'region'         => $this->region,
             'country'        => $this->country,
             'zip_code'       => $this->zipCode,
         ];
@@ -63,9 +63,9 @@ class Address
         return $this->city;
     }
 
-    public function state(): ?string
+    public function region(): ?string
     {
-        return $this->state;
+        return $this->region;
     }
 
     public function country(): ?string

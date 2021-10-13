@@ -147,12 +147,12 @@ sections:
           display: 'Shipping City'
           read_only: true
       -
-        handle: shipping_county
+        handle: shipping_region
         field:
           input_type: text
           type: text
           listable: false
-          display: 'Shipping County'
+          display: 'Shipping Region'
           read_only: true
       -
         handle: shipping_country
@@ -217,12 +217,12 @@ sections:
             use_shipping_address_for_billing: 'equals true'
           read_only: true
       -
-        handle: billing_county
+        handle: billing_region
         field:
           input_type: text
           type: text
           listable: false
-          display: 'Billing County'
+          display: 'Billing Region'
           unless:
             use_shipping_address_for_billing: 'equals true'
           read_only: true
