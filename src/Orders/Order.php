@@ -63,6 +63,7 @@ class Order implements Contract
             $this->get('billing_address') ?? $this->get('billing_address_line1'),
             $this->get('billing_address_line2'),
             $this->get('billing_city'),
+            $this->get('billing_state') ?? $this->get('billing_county'),
             $this->get('billing_country'),
             $this->get('billing_zip_code') ?? $this->get('billing_postal_code')
         );
@@ -79,6 +80,7 @@ class Order implements Contract
             $this->get('shipping_address') ?? $this->get('shipping_address_line1'),
             $this->get('shipping_address_line2'),
             $this->get('shipping_city'),
+            $this->get('shipping_state') ?? $this->get('shipping_county'),
             $this->get('shipping_country'),
             $this->get('shipping_zip_code') ?? $this->get('shipping_postal_code')
         );
