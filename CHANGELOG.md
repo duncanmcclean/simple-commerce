@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.3.47 (2021-10-14)
+
 ### What's new
 
 * Added Region fields to addresses #483
