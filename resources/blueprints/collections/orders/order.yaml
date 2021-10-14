@@ -147,6 +147,14 @@ sections:
           display: 'Shipping City'
           read_only: true
       -
+        handle: shipping_region
+        field:
+          input_type: text
+          type: text
+          listable: false
+          display: 'Shipping Region'
+          read_only: true
+      -
         handle: shipping_country
         field:
           max_items: 1
@@ -205,6 +213,16 @@ sections:
           type: text
           listable: false
           display: 'Billing City'
+          unless:
+            use_shipping_address_for_billing: 'equals true'
+          read_only: true
+      -
+        handle: billing_region
+        field:
+          input_type: text
+          type: text
+          listable: false
+          display: 'Billing Region'
           unless:
             use_shipping_address_for_billing: 'equals true'
           read_only: true

@@ -107,6 +107,7 @@ Let's start with the letting the user enter their shipping address. In our start
     <input type="text" name="shipping_name" placeholder="Name" value="{{ old:shipping_name }}">
     <input type="text" name="shipping_address" placeholder="Address" value="{{ old:shipping_address }}">
     <input type="text" name="shipping_city" placeholder="City" value="{{ old:shipping_city }}">
+    <input type="text" name="shipping_region" placeholder="Region" value="{{ old:shipping_region }}">
     <select name="shipping_country" value="{{ old:shipping_country }}">
         {{ sc:countries }}
             <option value="{{ iso }}">{{ name }}</option>
