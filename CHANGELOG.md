@@ -4,6 +4,7 @@
 
 ### What's fixed
 
+* Fixed issue with variant stock checks if you have 'dynamic variants' (eg. ones that don't actually exist on the product but are made up on the fly)
 * Fixed an issue where shipping address would fail to exist if you were using `billing_address_line1` instead of `billing_address`
 
 ## v2.3.47 (2021-10-14)
