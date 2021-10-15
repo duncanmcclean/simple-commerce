@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's fixed
+
+* Fixed an issue where shipping address would fail to exist if you were using `billing_address_line1` instead of `billing_address`
+
 ## v2.3.47 (2021-10-14)
 
 ### What's new
