@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.3.48 (2021-10-15)
+
 ### What's fixed
 
 * Fixed issue with variant stock checks if you have 'dynamic variants' (eg. ones that don't actually exist on the product but are made up on the fly)
