@@ -18,6 +18,7 @@
             <select-field
                 v-if="productVariantsData && productVariantsData.purchasable_type === 'variants'"
                 :options="productVariantOptions"
+                :disabled="readOnly"
                 v-model="variant.variant"
             ></select-field>
 

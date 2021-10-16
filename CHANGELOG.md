@@ -41,6 +41,23 @@ public function checkAvailability(Order $order, Address $address): bool;
 
 
 
+## v2.3.48 (2021-10-15)
+
+### What's fixed
+
+* Fixed issue with variant stock checks if you have 'dynamic variants' (eg. ones that don't actually exist on the product but are made up on the fly)
+* Fixed an issue where shipping address would fail to exist if you were using `billing_address_line1` instead of `billing_address`
+
+## v2.3.47 (2021-10-14)
+
+### What's new
+
+* Added Region fields to addresses #483
+
+### What's fixed
+
+* Everything in the default Order blueprint is now read-only
+* Product variant fieldtype now respects being `read_only`
 
 ## v2.3.46 (2021-10-09)
 

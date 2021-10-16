@@ -11,9 +11,9 @@ class Address
     protected $addressLine1;
     protected $addressLine2;
     protected $city;
+    protected $region;
     protected $country;
     protected $zipCode;
-    protected $region;
 
     public function __construct($name, $addressLine1, $addressLine2, $city, $country, $zipCode, $region = null)
     {
@@ -76,16 +76,6 @@ class Address
         return $this->city;
     }
 
-    public function country(): ?array
-    {
-        return Countries::find($this->country);
-    }
-
-    public function zipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
     public function region(): ?array
     {
         if (! $this->region) {
@@ -93,5 +83,15 @@ class Address
         }
 
         return Regions::find($this->region);
+    }
+
+    public function country(): ?string
+    {
+        return Countries::find($this->country);
+    }
+
+    public function zipCode(): ?string
+    {
+        return $this->zipCode;
     }
 }

@@ -30,8 +30,8 @@ Similarly to the way you configure gateways, it's just an array of shipping meth
 
 Simple Commerce doesn't come with any shipping methods out of the box so you'll need to write your own. We do, however have a command you can use to generate the boilerplate for a shipping method.
 
-```s
-php please make:shipping-method {method name}
+```
+php please make:shipping-method YourNewShippingMethod
 ```
 
 That command will create a Shipping Method class in your `app\ShippingMethods` folder. It'll look something like this:
@@ -100,13 +100,14 @@ The `methods` array should contain an array of Shipping Method classes, with the
 
 During the cart/checkout flow, you'll want to do 2 things: first, let the customer enter their shipping address for the order and secondly, let the customer select the shipping method you want to use for the order.
 
-Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/doublethreedigital/simple-commerce-starter/blob/master/resources/views/cart.antlers.html).
+Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/doublethreedigital/sc-starter-kit/blob/master/resources/views/cart.antlers.html).
 
 ```antlers
 {{ sc:cart:update }}
     <input type="text" name="shipping_name" placeholder="Name" value="{{ old:shipping_name }}">
     <input type="text" name="shipping_address" placeholder="Address" value="{{ old:shipping_address }}">
     <input type="text" name="shipping_city" placeholder="City" value="{{ old:shipping_city }}">
+    <input type="text" name="shipping_region" placeholder="Region" value="{{ old:shipping_region }}">
     <select name="shipping_country" value="{{ old:shipping_country }}">
         {{ sc:countries }}
             <option value="{{ iso }}">{{ name }}</option>
@@ -122,7 +123,7 @@ When submitted, that form will fill in the appropriate address fields.
 
 > **Hot tip:** You can also do `billing_name`, `billing_address`, `billing_city` etc to allow the user to update their billing address.
 
-After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/doublethreedigital/simple-commerce-starter/blob/master/resources/views/cart-shipping.antlers.html).
+After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/doublethreedigital/sc-starter-kit/blob/master/resources/views/checkout/shipping.antlers.html).
 
 ```antlers
 {{ sc:cart:update }}

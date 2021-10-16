@@ -190,7 +190,7 @@ class CheckoutController extends BaseActionController
                 if ($product->purchasableType() === 'variants') {
                     $variant = $product->variant($item['variant']['variant'] ?? $item['variant']);
 
-                    if ($variant->stockCount() !== null) {
+                    if ($variant !== null && $variant->stockCount() !== null) {
                         $stockCount = $variant->stockCount() - $item['quantity'];
 
                         // Need to do this check before actually setting the stock

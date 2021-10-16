@@ -206,7 +206,8 @@ class PayPalGateway extends BaseGateway implements Gateway
                 $order
                     ->set('shipping_name', $paypalShipping['name']['full_name'])
                     ->set('shipping_address', $paypalShipping['address']['address_line_1'])
-                    ->set('shipping_city', $paypalShipping['address']['admin_area_1'])
+                    ->set('shipping_city', $paypalShipping['address']['admin_area_2'])
+                    ->set('shipping_region', $paypalShipping['address']['admin_area_1'])
                     ->set('shipping_country', $paypalShipping['address']['country_code'])
                     ->set('shipping_postal_code', $paypalShipping['address']['postal_code'])
                     ->save();
