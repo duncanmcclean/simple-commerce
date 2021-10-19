@@ -49,7 +49,7 @@ Simple Commerce might be simple but it's not basic - there's dozens of handy fea
 
 ## Installation
 
-First, require Cookie Notice as a Composer dependency:
+First, require Simple Commerce as a Composer dependency:
 
 ```
 composer require doublethreedigital/simple-commerce
