@@ -38,6 +38,16 @@ class Currency implements Contract
         }
     }
 
+    public function toPence(float $amount): int
+    {
+        return $amount * 100;
+    }
+
+    public function toDecimal(int $amount): float
+    {
+        return $amount / 100;
+    }
+
     public static function bindings(): array
     {
         return [];

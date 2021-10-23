@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### What's new
+
+* Added `toPence` and `toDecimal` methods to the `Currency` facade
+
 ## v2.3.48 (2021-10-15)
 
 ### What's fixed
