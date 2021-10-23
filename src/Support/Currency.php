@@ -24,10 +24,22 @@ class Currency implements Contract
             ->first();
     }
 
-    public function parse($price, Site $site): string
+    public function parse($amount, Site $site): string
     {
+        if (is_string($amount)) {
+            if (str_contains($amount, '.')) {
+                $amount = str_replace('.', '', $amount);
+            }
+
+            $amount = (int) $amount;
+        }
+
+        if (is_float($amount)) {
+            $amount = $amount * 100;
+        }
+
         try {
-            $money = new Money(str_replace('.', '', $price), new MoneyCurrency($this->get($site)['code']));
+            $money = new Money(str_replace('.', '', (int) $amount), new MoneyCurrency($this->get($site)['code']));
 
             $numberFormatter = new NumberFormatter($site->locale(), \NumberFormatter::CURRENCY);
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
