@@ -53,7 +53,10 @@ trait IsEntry
 
     public function create(array $data = [], string $site = ''): self
     {
-        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
+        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
+            $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
+        }
+
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
         $this->slug = !is_null($this->slug) ? $this->slug : '';
         $this->published = !is_null($this->published) ? $this->published : false;
@@ -81,8 +84,11 @@ trait IsEntry
     {
         if (!$this->entry) {
             $this->entry = EntryAPI::make()
-                ->id($this->id)
                 ->locale($this->site);
+
+            if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
+                $this->entry = $this->entry->id($this->id);
+            }
         }
 
         if ($this instanceof Customer) {
@@ -195,6 +201,11 @@ trait IsEntry
                 return [$field['handle'] => $field['field']['default']];
             })
             ->toArray();
+    }
+
+    protected function isUsingEloquentDriverWithIncrementingIds(): bool
+    {
+        return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
     }
 
     public function beforeSaved()
