@@ -58,21 +58,23 @@ trait IsEntry
         }
 
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
-        $this->slug = !is_null($this->slug) ? $this->slug : '';
-        $this->published = !is_null($this->published) ? $this->published : false;
+        $this->published = false;
 
-        if (! $this->slug && isset($data['slug'])) {
+        // $this->slug = !is_null($this->slug) ? $this->slug : '';
+        // $this->published = !is_null($this->published) ? $this->published : false;
+
+        if (isset($data['slug'])) {
             $this->slug = $data['slug'];
         }
 
-        if (! $this->published && isset($data['published'])) {
+        if (isset($data['published'])) {
             $this->published = $data['published'];
         }
 
         $data = array_merge($data, $this->defaultFieldsInBlueprint());
 
         $this->data(
-            Arr::except($data, ['id', 'site', 'slug', 'publish'])
+            Arr::except($data, ['id', 'site', 'slug', 'published'])
         );
 
         $this->save();
@@ -82,7 +84,7 @@ trait IsEntry
 
     public function save(): self
     {
-        if (!$this->entry) {
+        if (! $this->entry) {
             $this->entry = EntryAPI::make()
                 ->locale($this->site);
 
@@ -110,6 +112,8 @@ trait IsEntry
         }
 
         $this->entry->save();
+
+        $this->id = $this->entry->id();
 
         if (method_exists($this, 'afterSaved')) {
             $this->afterSaved();
