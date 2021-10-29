@@ -53,23 +53,25 @@ trait IsEntry
 
     public function create(array $data = [], string $site = ''): self
     {
-        $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
-        $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
-        $this->slug = !is_null($this->slug) ? $this->slug : '';
-        $this->published = !is_null($this->published) ? $this->published : false;
+        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
+            $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
+        }
 
-        if (! $this->slug && isset($data['slug'])) {
+        $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
+        $this->published = false;
+
+        if (isset($data['slug'])) {
             $this->slug = $data['slug'];
         }
 
-        if (! $this->published && isset($data['published'])) {
+        if (isset($data['published'])) {
             $this->published = $data['published'];
         }
 
         $data = array_merge($data, $this->defaultFieldsInBlueprint());
 
         $this->data(
-            Arr::except($data, ['id', 'site', 'slug', 'publish'])
+            Arr::except($data, ['id', 'site', 'slug', 'published'])
         );
 
         $this->save();
@@ -79,10 +81,13 @@ trait IsEntry
 
     public function save(): self
     {
-        if (!$this->entry) {
+        if (! $this->entry) {
             $this->entry = EntryAPI::make()
-                ->id($this->id)
                 ->locale($this->site);
+
+            if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
+                $this->entry = $this->entry->id($this->id);
+            }
         }
 
         if ($this instanceof Customer) {
@@ -104,6 +109,8 @@ trait IsEntry
         }
 
         $this->entry->save();
+
+        $this->id = $this->entry->id();
 
         if (method_exists($this, 'afterSaved')) {
             $this->afterSaved();
@@ -195,6 +202,11 @@ trait IsEntry
                 return [$field['handle'] => $field['field']['default']];
             })
             ->toArray();
+    }
+
+    protected function isUsingEloquentDriverWithIncrementingIds(): bool
+    {
+        return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
     }
 
     public function beforeSaved()
