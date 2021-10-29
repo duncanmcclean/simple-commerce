@@ -60,9 +60,6 @@ trait IsEntry
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();
         $this->published = false;
 
-        // $this->slug = !is_null($this->slug) ? $this->slug : '';
-        // $this->published = !is_null($this->published) ? $this->published : false;
-
         if (isset($data['slug'])) {
             $this->slug = $data['slug'];
         }
