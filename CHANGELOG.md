@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.50 (2021-10-29)
+
+### What's fixed
+
+* Made fixes for when using alongside the Eloquent driver #486
+
 ## v2.3.49 (2021-10-23)
 
 ### What's new
