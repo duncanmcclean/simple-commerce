@@ -85,7 +85,7 @@ class Address
         return Regions::find($this->region);
     }
 
-    public function country(): ?string
+    public function country(): ?array
     {
         return Countries::find($this->country);
     }
