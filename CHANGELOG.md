@@ -40,6 +40,17 @@ public function checkAvailability(Order $order, Address $address): bool;
 
 
 
+## v2.3.50 (2021-10-29)
+
+### What's fixed
+
+* Made fixes for when using alongside the Eloquent driver #486
+
+## v2.3.49 (2021-10-23)
+
+### What's new
+
+* Added `toPence` and `toDecimal` methods to the `Currency` facade
 
 ## v2.3.48 (2021-10-15)
 
