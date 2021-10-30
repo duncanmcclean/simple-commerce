@@ -2,6 +2,8 @@
 title: Tags
 ---
 
+## Available tags
+
 To help you integrate Simple Commerce into your Antlers templates, Simple Commerce provides various tags:
 
 * [Cart](/tags/cart)
@@ -14,6 +16,7 @@ To help you integrate Simple Commerce into your Antlers templates, Simple Commer
 * [Shipping](/tags/shipping)
 
 ## Form Tags
+
 Some Simple Commerce tags output `<form>` elements that submit to Simple Commerce endpoints. There's a couple of optional parameters you can add to form tags.
 
 * `redirect` - the URL where you'd like to redirect the user after a successful form submission.
