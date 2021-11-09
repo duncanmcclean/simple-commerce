@@ -84,6 +84,7 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         SimpleCommerce::bootGateways();
+        SimpleCommerce::bootShippingMethods();
 
         Filters\OrderStatusFilter::register();
     }
