@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag
