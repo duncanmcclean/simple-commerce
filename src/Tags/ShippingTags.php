@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
@@ -16,10 +17,7 @@ class ShippingTags extends SubTag
     {
         $order = $this->getCart();
 
-        $siteConfig = collect(Config::get('simple-commerce.sites'))
-            ->get(Site::current()->handle());
-
-        return collect($siteConfig['shipping']['methods'])
+        return SimpleCommerce::shippingMethods(Site::current()->handle())
             ->map(function ($method) use ($order) {
                 $instance = Shipping::use($method);
 
