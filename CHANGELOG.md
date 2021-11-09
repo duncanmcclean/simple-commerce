@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.51 (2021-11-09)
+
+### What's improved
+
+* The `make:gateway` command now allows you to choose between generating an on-site and an off-site gateway #490
+* You can now register shipping methods on-demand (outwith the config file) with `SimpleCommerce::registerShippingMethod()` #489
+
 ## v2.3.50 (2021-10-29)
 
 ### What's fixed
