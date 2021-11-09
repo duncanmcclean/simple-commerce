@@ -41,9 +41,9 @@ That command will create a Shipping Method class in your `app\ShippingMethods` f
 
 namespace App\ShippingMethods;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
-use Statamic\Entries\Entry;
 
 class FirstClass implements ShippingMethod
 {
@@ -57,7 +57,7 @@ class FirstClass implements ShippingMethod
         return 'Description of your shipping method';
     }
 
-    public function calculateCost(Entry $order): int
+    public function calculateCost(Order $order): int
     {
         return 0;
     }
