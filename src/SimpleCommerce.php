@@ -79,10 +79,10 @@ class SimpleCommerce
     public static function shippingMethods(string $site = null)
     {
         if ($site) {
-            return static::$shippingMethods[$site] ?? [];
+            return collect(static::$shippingMethods[$site] ?? []);
         }
 
-        return static::$shippingMethods[Site::default()->handle()] ?? [];
+        return collect(static::$shippingMethods[Site::default()->handle()] ?? []);
     }
 
     public static function registerShippingMethod(string $site, string $shippingMethod)
