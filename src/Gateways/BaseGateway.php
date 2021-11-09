@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use Illuminate\Support\Collection;
 
 class BaseGateway
@@ -70,5 +71,27 @@ class BaseGateway
     public function isOffsiteGateway(): bool
     {
         return false;
+    }
+
+    /**
+     * Method used to complete on-site purchases.
+     *
+     * @var Purchase $data
+     * @return Response
+     * @throws GatewayDoesNotSupportPurchase
+     */
+    public function purchase(Purchase $data): Response
+    {
+        throw new GatewayDoesNotSupportPurchase("Gateway [{$this->handle}] does not support the 'purchase' method.");
+    }
+
+    /**
+     * Should return any validation rules required for the gateway when submitting on-site purchases.
+     *
+     * @return array
+     */
+    public function purchaseRules(): array
+    {
+        return [];
     }
 }
