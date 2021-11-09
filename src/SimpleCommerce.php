@@ -73,6 +73,8 @@ class SimpleCommerce
 
                 static::$shippingMethods[$siteHandle] = $value['shipping']['methods'];
             }
+
+            return new static();
         });
     }
 
