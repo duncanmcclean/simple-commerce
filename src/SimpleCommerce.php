@@ -5,11 +5,13 @@ namespace DoubleThreeDigital\SimpleCommerce;
 use Closure;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
+use Statamic\Facades\Site;
 use Statamic\Statamic;
 
 class SimpleCommerce
 {
     protected static $gateways = [];
+    protected static $shippingMethods = [];
 
     public static $productPriceHook;
     public static $productVariantPriceHook;
@@ -59,6 +61,33 @@ class SimpleCommerce
             $gateway,
             $config,
         ];
+    }
+
+    public static function bootShippingMethods()
+    {
+        return Statamic::booted(function () {
+            foreach (config('simple-commerce.sites') as $siteHandle => $value) {
+                if (! isset($value['shipping']['methods'])) {
+                    continue;
+                }
+
+                static::$shippingMethods[$siteHandle] = $value['shipping']['methods'];
+            }
+        });
+    }
+
+    public static function shippingMethods(string $site = null)
+    {
+        if ($site) {
+            return static::$shippingMethods[$site] ?? [];
+        }
+
+        return static::$shippingMethods[Site::default()->handle()] ?? [];
+    }
+
+    public static function registerShippingMethod(string $site, string $shippingMethod)
+    {
+        static::$shippingMethods[$site][] = $shippingMethod;
     }
 
     public static function freshOrderNumber()
