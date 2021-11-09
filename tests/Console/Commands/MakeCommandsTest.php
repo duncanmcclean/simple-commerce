@@ -24,7 +24,7 @@ class MakeCommandsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_a_gateway()
+    public function it_can_make_an_onsite_gateway_using_argument_fallback()
     {
         $path = $this->preparePath('app/Gateways/StriPal.php');
 
@@ -34,6 +34,38 @@ class MakeCommandsTest extends TestCase
 
         $this->assertFileExists($path);
         $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
+        $this->assertStringContainsString('purchase(Purchase $data): Response', $this->files->get($path));
+        $this->assertStringNotContainsString('isOffsiteGateway(): bool', $this->files->get($path));
+    }
+
+    /** @test */
+    public function it_can_make_an_onsite_gateway_by_specifying_argument()
+    {
+        $path = $this->preparePath('app/Gateways/StriPal.php');
+
+        $this->assertFileDoesNotExist($path);
+
+        $this->artisan('statamic:make:gateway', ['name' => 'StriPal', 'type' => 'onsite']);
+
+        $this->assertFileExists($path);
+        $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
+        $this->assertStringContainsString('purchase(Purchase $data): Response', $this->files->get($path));
+        $this->assertStringNotContainsString('isOffsiteGateway(): bool', $this->files->get($path));
+    }
+
+    /** @test */
+    public function it_can_make_an_offsite_gateway_by_specifying_argument()
+    {
+        $path = $this->preparePath('app/Gateways/Molipe.php');
+
+        $this->assertFileDoesNotExist($path);
+
+        $this->artisan('statamic:make:gateway', ['name' => 'Molipe', 'type' => 'offsite']);
+
+        $this->assertFileExists($path);
+        $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
+        $this->assertStringNotContainsString('purchase(Purchase $data): Response', $this->files->get($path));
+        $this->assertStringContainsString('isOffsiteGateway(): bool', $this->files->get($path));
     }
 
     /** @test */
