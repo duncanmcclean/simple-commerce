@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.3.52 (2021-11-13)
+
+### What's new
+
+* Added a new `PreventCheckout` exception which will cancel a checkout attempt if thrown
+* `PreCheckout` & `PostCheckout` events now both contain the Checkout request
+
+### What's fixed
+
+* Fixed `{{ sc:errors }}` tag not returning what it should.
+
 ## v2.3.51 (2021-11-09)
 
 ### What's improved
