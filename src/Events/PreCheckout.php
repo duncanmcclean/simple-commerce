@@ -12,9 +12,11 @@ class PreCheckout
     use InteractsWithSockets;
 
     public Order $order;
+    public $request;
 
-    public function __construct(Order $order)
+    public function __construct(Order $order, $request)
     {
         $this->order = $order;
+        $this->request = $request;
     }
 }
