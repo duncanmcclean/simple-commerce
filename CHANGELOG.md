@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v2.3.53 (2021-11-20)
+
+### What's improved
+
+* Improved the display of the 'Product Variants' fieldtype #494
+
+### What's fixed
+
+* Fixed an issue where the Assets & Toggle fieldtypes (and probably others) were not behaving properly #493
+
 ## v2.3.52 (2021-11-13)
 
 ### What's new
