@@ -56,7 +56,7 @@
                             :key="'option-'+ optionField.handle"
                             :config="optionField"
                             :value="option[optionField.handle]"
-                            :meta="optionField"
+                            :meta="meta[optionField.handle]"
                             :errors="errors(optionField.handle)"
                             class="p-2"
                             @input="updatedOptions(index, optionField.handle, $event)"
