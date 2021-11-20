@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
+use Statamic\Fields\Validator;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
@@ -188,5 +189,33 @@ class ProductVariantsFieldtype extends Fieldtype
         } else {
             return $optionsCount.' '.__('simple-commerce::messages.product_variants_plural');
         }
+    }
+
+    public function extraRules(): array
+    {
+        $preload = $this->preload();
+
+        $variantFieldRules = collect($preload['variant_fields'])
+            ->pluck('validate', 'handle')
+            ->filter()
+            ->mapWithKeys(function ($validate, $handle) {
+                return ["variants.*.$handle" => Validator::explodeRules($validate)];
+            })
+            ->toArray();
+
+        $optionFieldRules = collect($preload['option_fields'])
+            ->pluck('validate', 'handle')
+            ->filter()
+            ->mapWithKeys(function ($validate, $handle) {
+                ray(Validator::explodeRules($validate));
+
+                return ["options.*.$handle" => Validator::explodeRules($validate)];
+            })
+            ->toArray();
+
+        return array_merge([
+            'variants' => ['array'],
+            'options' => ['array'],
+        ], $variantFieldRules, $optionFieldRules);
     }
 }
