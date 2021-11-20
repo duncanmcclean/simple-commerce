@@ -56,13 +56,15 @@ class ProductVariantsFieldtype extends Fieldtype
                             'display'   => 'Variant',
                             'read_only' => true,
                             'validate'  => 'required',
+                            'width'     => 50,
                         ]))->toPublishArray(),
                         (new Field('price', [
                             'type'      => 'money',
                             'read_only' => false,
                             'listable'  => 'hidden',
-                            'display'   => 'price',
+                            'display'   => 'Price',
                             'validate'  => 'required',
+                            'width'     => 50,
                         ]))->toPublishArray(),
                     ],
                     collect($this->config('option_fields'))
