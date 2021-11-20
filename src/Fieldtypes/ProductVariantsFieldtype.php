@@ -145,21 +145,23 @@ class ProductVariantsFieldtype extends Fieldtype
     protected function processInsideFields(array $fieldValues, array $fields, string $method)
     {
         return collect($fieldValues)
-            ->map(function ($optionAttributes) use ($fields, $method) {
-                return collect($optionAttributes)
-                    ->map(function ($value, $key) use ($fields, $method) {
-                        if ($key === 'key') {
-                            return $value;
-                        }
+            ->map(function ($optionAttributeValues) use ($fields, $method) {
+                $optionAttributes = collect($fields)->pluck('handle');
 
-                        return collect($fields)
-                            ->where('handle', $key)
+                return collect($optionAttributes)
+                    ->mapWithKeys(function ($fieldHandle) use ($fields, $method, $optionAttributeValues) {
+                        $value = $optionAttributeValues[$fieldHandle] ?? null;
+
+                        $fieldValue = collect($fields)
+                            ->where('handle', $fieldHandle)
                             ->map(function ($field) use ($value, $method) {
                                 return (new FieldtypeRepository())
                                     ->find($field['type'])
                                     ->{$method}($value);
                             })
                             ->first();
+
+                        return [$fieldHandle => $fieldValue];
                     })
                     ->toArray();
             })
@@ -173,7 +175,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function preProcessIndex($value)
     {
-        if (!$value) {
+        if (! $value) {
             return __('simple-commerce::messages.product_has_no_variants');
         }
 
