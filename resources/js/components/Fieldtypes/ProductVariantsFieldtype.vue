@@ -39,46 +39,34 @@
         </div>
 
         <!-- Variant Options -->
-        <div class="grid-fieldtype-container">
-            <table class="grid-table" v-if="options.length > 0">
-                <thead>
-                    <tr>
-                        <grid-header-cell
-                            v-for="field in meta.option_fields"
-                            :key="field.handle"
-                            :field="field"
-                        />
-                    </tr>
-                </thead>
-                <sortable-list
-                    :value="options"
-                    :vertical="true"
-                    :item-class="sortableItemClass"
-                    :handle-class="sortableHandleClass"
-                    @dragstart="$emit('focus')"
-                    @dragend="$emit('blur')"
-                    @input="(rows) => $emit('sorted', rows)"
+        <div class="grid-fieldtype-container mb-4">
+            <div class="grid-stacked">
+                <div
+                    v-for="(option, index) in options"
+                    :key="index"
+                    class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
                 >
-                    <tbody slot-scope="{}">
-                        <grid-row
-                            v-for="(row, index) in options"
-                            :key="`row-${index}`"
-                            :index="index"
-                            :fields="meta.option_fields"
-                            :values="row"
-                            :can-delete="false"
-                            :meta="meta"
-                            name="options"
-                            :error-key-prefix="options+index"
-                            @updated="optionUpdated(row, value)"
-                            @meta-updated="$emit('meta-updated', row._id, $event)"
-                            @removed="(row) => $emit('removed', row)"
+                    <div class="grid-item-header">
+                        {{ option.variant || 'Variants' }}
+                    </div>
+
+                    <publish-fields-container>
+                        <publish-field
+                            v-for="(optionField, optionIndex) in meta.option_fields"
+                            :key="'option-'+ optionField.handle"
+                            :config="optionField"
+                            :value="option[optionField.handle]"
+                            :meta="meta[optionField.handle]"
+                            :errors="errors(optionField.handle)"
+                            class="p-2"
+                            @input="updatedOptions(index, optionField.handle, $event)"
+                            @meta-updated="metaUpdated(option.handle, $event)"
                             @focus="$emit('focus')"
                             @blur="$emit('blur')"
                         />
-                    </tbody>
-                </sortable-list>
-            </table>
+                    </publish-fields-container>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -179,6 +167,10 @@ export default {
 
         updated(variantIndex, fieldHandle, value) {
             this.variants[variantIndex][fieldHandle] = value
+        },
+
+        updatedOptions(optionIndex, fieldHandle, value) {
+            this.options[optionIndex][fieldHandle] = value;
         },
 
         optionUpdated(row, value) {
