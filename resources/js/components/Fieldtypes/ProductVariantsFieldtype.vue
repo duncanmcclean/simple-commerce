@@ -38,37 +38,36 @@
             <button class="btn" @click="addVariant">Add Variant</button>
         </div>
 
-      <!-- Variant Options -->
-      <div class="grid-fieldtype-container mb-4">
-        <div class="grid-stacked">
-          <div
-              v-for="(option, index) in options"
-              :key="index"
-              class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
-          >
-            <div
-                class="grid-item-header"
-            >
-              {{ option.variant || 'Variants' }}
+        <!-- Variant Options -->
+        <div class="grid-fieldtype-container mb-4">
+            <div class="grid-stacked">
+                <div
+                    v-for="(option, index) in options"
+                    :key="index"
+                    class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
+                >
+                    <div class="grid-item-header">
+                        {{ option.variant || 'Variants' }}
+                    </div>
+
+                    <publish-fields-container>
+                        <publish-field
+                            v-for="(optionField, optionIndex) in meta.option_fields"
+                            :key="'option-'+ optionField.handle"
+                            :config="optionField"
+                            :value="option[optionField.handle]"
+                            :meta="optionField"
+                            :errors="errors(optionField.handle)"
+                            class="p-2"
+                            @input="updatedOptions(index, optionField.handle, $event)"
+                            @meta-updated="metaUpdated(option.handle, $event)"
+                            @focus="$emit('focus')"
+                            @blur="$emit('blur')"
+                        />
+                    </publish-fields-container>
+                </div>
             </div>
-            <publish-fields-container>
-              <publish-field
-                  v-for="(optionField, optionIndex) in meta.option_fields"
-                  :key="'option-'+ optionField.handle"
-                  :config="optionField"
-                  :value="option[optionField.handle]"
-                  :meta="optionField"
-                  :errors="errors(optionField.handle)"
-                  class="p-2"
-                  @input="updatedOptions(index, optionField.handle, $event)"
-                  @meta-updated="metaUpdated(option.handle, $event)"
-                  @focus="$emit('focus')"
-                  @blur="$emit('blur')"
-              />
-            </publish-fields-container>
-          </div>
         </div>
-      </div>
     </div>
 </template>
 
