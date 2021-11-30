@@ -207,8 +207,6 @@ class ProductVariantsFieldtype extends Fieldtype
             ->pluck('validate', 'handle')
             ->filter()
             ->mapWithKeys(function ($validate, $handle) {
-                ray(Validator::explodeRules($validate));
-
                 return ["options.*.$handle" => Validator::explodeRules($validate)];
             })
             ->toArray();
