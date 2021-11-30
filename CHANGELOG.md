@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.54 (2021-11-30)
+
+### What's fixed
+
+* Removed `ray` call from Variants fieldtype which would cause errors #496 by @ryanmitchell
+
 ## v2.3.53 (2021-11-20)
 
 ### What's improved
