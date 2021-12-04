@@ -8,11 +8,9 @@ Product Variants are a pretty common feature amoung e-commerce stores today, esp
 
 ## How it works
 
-Normally, you'd just have a `Price` field on your product but if you want to use variants, you can switch it out for a `Product Variants` field.
+For standard products, you would have a `Price` field in your Product entries. However, to use variants, you need to remove the `Price` field and switch it for a `Product Variants` field. Make sure the handle of the field is `product_variants` or Simple Commerce won't pick it up.
 
-Simple Commerce will detect if it's a variants enabled product or not and it will adapt.
-
-> **Note:** Make sure the handle of your product variants field is `product_variants`. Simple Commerce isn't clever enough to find it with any handle.
+> **Note:** Don't pick the 'Product Variant' (singular) fieldtype. It's used on Orders to relate back to a particular variant.
 
 ## Templating
 You can loop over variants just like you would with any grid of data in Antlers.
