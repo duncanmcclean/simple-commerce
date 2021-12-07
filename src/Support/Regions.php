@@ -17,6 +17,11 @@ class Regions
         return static::firstWhere('id', $id);
     }
 
+    public static function findByName(string $name)
+    {
+        return static::firstWhere('name', $name);
+    }
+
     public static function findByCountry(array $country)
     {
         return static::where('country_iso', $country['iso']);

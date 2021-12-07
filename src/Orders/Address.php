@@ -82,7 +82,19 @@ class Address
             return null;
         }
 
-        return Regions::find($this->region);
+        if ($region = Regions::find($this->region)) {
+            return $region;
+        }
+
+        if ($region = Regions::findByName($this->region)) {
+            return $region;
+        }
+
+        return [
+            'id' => str_slug($this->region),
+            'name' => $this->region,
+            'country_iso' => $this->country,
+        ];
     }
 
     public function country(): ?array
