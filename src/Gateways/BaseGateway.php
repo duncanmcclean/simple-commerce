@@ -75,16 +75,6 @@ class BaseGateway
         return Str::title(class_basename($this));
     }
 
-    public function purchase(Purchase $data): Response
-    {
-        return new Response();
-    }
-
-    public function purchaseRules(): array
-    {
-        return [];
-    }
-
     public function callback(Request $request): bool
     {
         return true;
