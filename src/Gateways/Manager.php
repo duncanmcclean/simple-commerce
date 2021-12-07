@@ -47,8 +47,10 @@ class Manager implements Contract
 
         if ($purchase->success()) {
             Order::find($order->id())->data([
-                'gateway'      => $this->className,
-                'gateway_data' => $purchase->data(),
+                'gateway' => [
+                    'use' => $this->className,
+                    'data' => $purchase->data(),
+                ],
             ])->save();
         } else {
             throw ValidationException::withMessages([$purchase->error()]);
@@ -75,7 +77,7 @@ class Manager implements Contract
 
         $cart->data([
             'is_refunded'  => true,
-            'gateway_data' => array_merge($cart->get('gateway_data'), [
+            'gateway' => array_merge($cart->get('gateway'), [
                 'refund' => $refund,
             ]),
         ])->save();

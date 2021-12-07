@@ -77,7 +77,7 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        if (!$gateway) {
+        if (! $gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);
         }
 
@@ -94,11 +94,14 @@ class CheckoutTags extends SubTag
         $prepare = $prepare->prepare(request(), $cart);
 
         $cart->data([
-            'gateway'          => $gateway['class'],
-            $gateway['handle'] => $prepare->data(),
+            'gateway' => array_merge($cart->get('gateway') ?? [], [
+                'use' => $gateway['class'],
+            ]),
+
+            $gateway['handle'] => $prepare->data(), // TODO
         ])->save();
 
-        if (!$prepare->checkoutUrl()) {
+        if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
 
