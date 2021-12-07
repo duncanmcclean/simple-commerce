@@ -75,6 +75,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\AddBlueprintFields::class,
         UpdateScripts\MigrateConfig::class,
         UpdateScripts\MigrateLineItemMetadata::class,
+        UpdateScripts\MigrateTaxConfiguration::class,
     ];
 
     public function boot()
