@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
+use Statamic\Fields\Validator;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
@@ -56,13 +57,15 @@ class ProductVariantsFieldtype extends Fieldtype
                             'display'   => 'Variant',
                             'read_only' => true,
                             'validate'  => 'required',
+                            'width'     => 50,
                         ]))->toPublishArray(),
                         (new Field('price', [
                             'type'      => 'money',
                             'read_only' => false,
                             'listable'  => 'hidden',
-                            'display'   => 'price',
+                            'display'   => 'Price',
                             'validate'  => 'required',
+                            'width'     => 50,
                         ]))->toPublishArray(),
                     ],
                     collect($this->config('option_fields'))
@@ -143,21 +146,23 @@ class ProductVariantsFieldtype extends Fieldtype
     protected function processInsideFields(array $fieldValues, array $fields, string $method)
     {
         return collect($fieldValues)
-            ->map(function ($optionAttributes) use ($fields, $method) {
-                return collect($optionAttributes)
-                    ->map(function ($value, $key) use ($fields, $method) {
-                        if ($key === 'key') {
-                            return $value;
-                        }
+            ->map(function ($optionAttributeValues) use ($fields, $method) {
+                $optionAttributes = collect($fields)->pluck('handle');
 
-                        return collect($fields)
-                            ->where('handle', $key)
+                return collect($optionAttributes)
+                    ->mapWithKeys(function ($fieldHandle) use ($fields, $method, $optionAttributeValues) {
+                        $value = $optionAttributeValues[$fieldHandle] ?? null;
+
+                        $fieldValue = collect($fields)
+                            ->where('handle', $fieldHandle)
                             ->map(function ($field) use ($value, $method) {
                                 return (new FieldtypeRepository())
                                     ->find($field['type'])
                                     ->{$method}($value);
                             })
                             ->first();
+
+                        return [$fieldHandle => $fieldValue];
                     })
                     ->toArray();
             })
@@ -171,7 +176,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function preProcessIndex($value)
     {
-        if (!$value) {
+        if (! $value) {
             return __('simple-commerce::messages.product_has_no_variants');
         }
 
@@ -184,5 +189,31 @@ class ProductVariantsFieldtype extends Fieldtype
         } else {
             return $optionsCount.' '.__('simple-commerce::messages.product_variants_plural');
         }
+    }
+
+    public function extraRules(): array
+    {
+        $preload = $this->preload();
+
+        $variantFieldRules = collect($preload['variant_fields'])
+            ->pluck('validate', 'handle')
+            ->filter()
+            ->mapWithKeys(function ($validate, $handle) {
+                return ["variants.*.$handle" => Validator::explodeRules($validate)];
+            })
+            ->toArray();
+
+        $optionFieldRules = collect($preload['option_fields'])
+            ->pluck('validate', 'handle')
+            ->filter()
+            ->mapWithKeys(function ($validate, $handle) {
+                return ["options.*.$handle" => Validator::explodeRules($validate)];
+            })
+            ->toArray();
+
+        return array_merge([
+            'variants' => ['array'],
+            'options' => ['array'],
+        ], $variantFieldRules, $optionFieldRules);
     }
 }

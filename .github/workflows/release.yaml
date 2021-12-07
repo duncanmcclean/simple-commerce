@@ -65,3 +65,11 @@ jobs:
           asset_path: ./resources/dist.tar.gz
           asset_name: dist.tar.gz
           asset_content_type: application/tar+gz
+
+      - name: Comment on related issues
+        uses: duncanmcclean/post-release-comments@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ github.ref }}
+          changelog: ${{ steps.changelog.outputs.text }}

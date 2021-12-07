@@ -69,7 +69,7 @@ class CheckoutController extends BaseActionController
 
     protected function preCheckout()
     {
-        event(new PreCheckout($this->cart));
+        event(new PreCheckout($this->cart, $this->request));
 
         return $this;
     }
@@ -273,7 +273,7 @@ class CheckoutController extends BaseActionController
 
         $this->forgetCart();
 
-        event(new PostCheckout($this->cart));
+        event(new PostCheckout($this->cart, $this->request));
 
         return $this;
     }

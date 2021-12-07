@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\File;
 use Closure;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
+use Statamic\Facades\Site;
 use Statamic\Statamic;
 
 class SimpleCommerce
 {
     /** @var array */
     protected static $gateways = [];
+    protected static $shippingMethods = [];
 
     /** @var Contracts\TaxEngine */
     protected static $taxEngine;
@@ -70,6 +72,20 @@ class SimpleCommerce
     {
         return Statamic::booted(function () {
             static::$taxEngine = config('simple-commerce.tax_engine');
+        });
+    }
+
+
+    public static function bootShippingMethods()
+    {
+        return Statamic::booted(function () {
+            foreach (config('simple-commerce.sites') as $siteHandle => $value) {
+                if (! isset($value['shipping']['methods'])) {
+                    continue;
+                }
+
+                static::$shippingMethods[$siteHandle] = $value['shipping']['methods'];
+            }
 
             return new static();
         });
@@ -93,6 +109,20 @@ class SimpleCommerce
         }
 
         return static::taxEngine() instanceof Tax\Standard\TaxEngine;
+    }
+
+    public static function shippingMethods(string $site = null)
+    {
+        if ($site) {
+            return collect(static::$shippingMethods[$site] ?? []);
+        }
+
+        return collect(static::$shippingMethods[Site::default()->handle()] ?? []);
+    }
+
+    public static function registerShippingMethod(string $site, string $shippingMethod)
+    {
+        static::$shippingMethods[$site][] = $shippingMethod;
     }
 
     public static function freshOrderNumber()

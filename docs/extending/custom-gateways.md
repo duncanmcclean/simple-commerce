@@ -4,14 +4,23 @@ title: Building a custom gateway
 
 There's a couple of cases where you might end up building a custom gateway. Either you need to extend an existing gateway and maybe send more/different information to the processor or you may need to connect with a payment processor that we don't include support for.
 
+## Gateway types
+
+Simple Commerce supports two types of gateways: on-site and off-site.
+
+**On-site gateways** are ones on which the customer will enter their credit card information on your site. As an example: think [Stripe Elements](https://stripe.com/en-gb/payments/elements).
+
+**Off-site gateways** are ones where the customer is redirected to the payment processor in order to enter their payment information and then once entered, they will usually be redirected back to your website. [Mollie](https://www.mollie.com/) is a good example of this.
 
 ## Creating your gateway
 
-To get you started, you can use the `make:gateway` command.
+To get started: use the `make:gateway` command to generate the boilerplate code for your Payment Gateway. The first parameter will be the class name of your gateway, while the second should determine the [type of gateway](#content-gateway-types) you'd like to generate: `onsite` or `offsite`.
 
 ```
-php please make:gateway PayMate
+php please make:gateway PayMate onsite
 ```
+
+Once created, you'll find the newly generated gateway in your `app/Gateways` folder.
 
 ## Explaining the methods
 
@@ -24,14 +33,6 @@ The boilerplate gateway has quite a few methods. Here's a quick overview of what
 * `getCharge()` - should get information about a specific order's charge/transaction.
 * `refundCharge()` - should refund an order
 * `webhook()` - should accept incoming webhook payloads, used for off-site payment gateways.
-
-## Gateway types
-
-Simple Commerce supports two types of gateways: on-site and off-site.
-
-**On-site gateways** are ones on which the customer will enter their credit card information on your site. As an example: think [Stripe Elements](https://stripe.com/en-gb/payments/elements).
-
-**Off-site gateways** are ones where the customer is redirected to the payment processor in order to enter their payment information and then once entered, they will usually be redirected back to your website. [Mollie](https://www.mollie.com/) is a good example of this.
 
 ## DTOs
 

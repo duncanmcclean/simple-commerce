@@ -39,6 +39,39 @@ public function checkAvailability(Order $order, Address $address): bool;
 
 
 
+## v2.3.54 (2021-11-30)
+
+### What's fixed
+
+* Removed `ray` call from Variants fieldtype which would cause errors #496 by @ryanmitchell
+
+## v2.3.53 (2021-11-20)
+
+### What's improved
+
+* Improved the display of the 'Product Variants' fieldtype #494
+
+### What's fixed
+
+* Fixed an issue where the Assets & Toggle fieldtypes (and probably others) were not behaving properly #493
+
+## v2.3.52 (2021-11-13)
+
+### What's new
+
+* Added a new `PreventCheckout` exception which will cancel a checkout attempt if thrown
+* `PreCheckout` & `PostCheckout` events now both contain the Checkout request
+
+### What's fixed
+
+* Fixed `{{ sc:errors }}` tag not returning what it should.
+
+## v2.3.51 (2021-11-09)
+
+### What's improved
+
+* The `make:gateway` command now allows you to choose between generating an on-site and an off-site gateway #490
+* You can now register shipping methods on-demand (outwith the config file) with `SimpleCommerce::registerShippingMethod()` #489
 
 ## v2.3.50 (2021-10-29)
 

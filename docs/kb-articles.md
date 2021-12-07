@@ -9,3 +9,4 @@ I've written up a couple of articles to point towards the best practices when do
 * [Version Control Strategies](/kb-articles/version-control-strategies)
 * [Storing Orders on a Customer](/kb-articles/storing-orders-on-customer)
 * [Using an existing collection for Simple Commerce Products](/kb-articles/existing-collection-for-products)
+* [Handling Donations](/kb-articles/donations)

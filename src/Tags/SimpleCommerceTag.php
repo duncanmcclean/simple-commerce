@@ -122,7 +122,7 @@ class SimpleCommerceTag extends Tags
 
         $errors = [];
 
-        foreach (session('errors')->getBag('default')->all() as $error) {
+        foreach (session('errors')->getBag('simple-commerce')->all() as $error) {
             $errors[]['value'] = $error;
         }
 

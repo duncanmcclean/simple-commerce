@@ -52,23 +52,6 @@ class MollieGateway extends BaseGateway implements Gateway
         ], $payment->getCheckoutUrl());
     }
 
-    public function purchase(Purchase $data): Response
-    {
-        // We don't actually do anything here as Mollie is an
-        // off-site gateway, so it has it's own checkout page.
-
-        throw new GatewayDoesNotSupportPurchase("Gateway [mollie] does not support the `purchase` method.");
-    }
-
-    public function purchaseRules(): array
-    {
-        // Mollie is off-site, therefore doesn't use the traditional
-        // checkout process provided by Simple Commerce. Hence why no rules
-        // are defined here.
-
-        return [];
-    }
-
     public function getCharge(Order $order): Response
     {
         $this->setupMollie();
