@@ -73,7 +73,7 @@ class RoyalMail implements ShippingMethod
         return 0;
     }
 
-    public function checkAvailability(Address $address): bool
+    public function checkAvailability(OrderContract $order, Address $address): bool
     {
         return true;
     }
@@ -97,7 +97,7 @@ class DPD implements ShippingMethod
         return 0;
     }
 
-    public function checkAvailability(Address $address): bool
+    public function checkAvailability(OrderContract $order, Address $address): bool
     {
         return false;
     }
