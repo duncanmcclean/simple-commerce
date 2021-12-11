@@ -8,7 +8,7 @@ trait FormBuilder
 {
     use RendersForms;
 
-    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'name', 'request'];
+    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'request'];
 
     protected function createForm(string $action, array $data = [], string $method = 'POST'): string
     {
