@@ -88,7 +88,7 @@ class PayPalGateway extends BaseGateway implements Gateway
     public function purchase(Purchase $data): Response
     {
         if ($this->isOffsiteGateway()) {
-            throw new GatewayDoesNotSupportPurchase("Gateway [paypal] does not support the `purchase` method.");
+            throw new GatewayDoesNotSupportPurchase('Gateway [paypal] does not support the `purchase` method.');
         }
 
         $this->setupPayPal();
@@ -191,7 +191,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                     $customer = Customer::findByEmail($responseBody['payer']['email_address']);
                 } catch (CustomerNotFound $e) {
                     $customer = Customer::create([
-                        'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
+                        'name' => $responseBody['payer']['name']['given_name'].' '.$responseBody['payer']['name']['surname'],
                         'email' => $responseBody['payer']['email_address'],
                     ]);
                 }

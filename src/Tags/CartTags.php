@@ -30,7 +30,7 @@ class CartTags extends SubTag
 
     public function count()
     {
-        if (!$this->hasCart()) {
+        if (! $this->hasCart()) {
             return 0;
         }
 
@@ -39,7 +39,7 @@ class CartTags extends SubTag
 
     public function quantityTotal()
     {
-        if (!$this->hasCart()) {
+        if (! $this->hasCart()) {
             return 0;
         }
 

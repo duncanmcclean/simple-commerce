@@ -12,7 +12,7 @@ use Statamic\Facades\Site;
 
 class Calculator implements Contract
 {
-    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order $model */
+    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order */
     protected $order;
 
     public function calculate(OrderContract $order): array
@@ -36,16 +36,16 @@ class Calculator implements Contract
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItem($data, $lineItem);
 
-                $data      = $calculate['data'];
-                $lineItem  = $calculate['lineItem'];
+                $data = $calculate['data'];
+                $lineItem = $calculate['lineItem'];
 
                 return $lineItem;
             })
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItemTax($data, $lineItem);
 
-                $data      = $calculate['data'];
-                $lineItem  = $calculate['lineItem'];
+                $data = $calculate['data'];
+                $lineItem = $calculate['lineItem'];
 
                 return $lineItem;
             })

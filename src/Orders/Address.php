@@ -14,13 +14,13 @@ class Address
 
     public function __construct($name, $addressLine1, $addressLine2, $city, $country, $zipCode, $region = null)
     {
-        $this->name         = $name;
+        $this->name = $name;
         $this->addressLine1 = $addressLine1;
         $this->addressLine2 = $addressLine2;
-        $this->city         = $city;
-        $this->region       = $region;
-        $this->country      = $country;
-        $this->zipCode      = $zipCode;
+        $this->city = $city;
+        $this->region = $region;
+        $this->country = $country;
+        $this->zipCode = $zipCode;
     }
 
     public function toArray(): array

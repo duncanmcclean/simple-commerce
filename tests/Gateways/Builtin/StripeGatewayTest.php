@@ -3,10 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -46,7 +46,7 @@ class StripeGatewayTest extends TestCase
     public function can_prepare()
     {
         if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
         $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
@@ -87,7 +87,7 @@ class StripeGatewayTest extends TestCase
     public function can_prepare_with_customer()
     {
         if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
         $product = Product::create(['title' => 'Theatre Ticket', 'price' => 1299]);
@@ -136,7 +136,7 @@ class StripeGatewayTest extends TestCase
     public function can_prepare_with_receipt_email()
     {
         if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
         $product = Product::create(['title' => 'Talent Show Ticket', 'price' => 1299]);
@@ -190,7 +190,7 @@ class StripeGatewayTest extends TestCase
     public function can_purchase()
     {
         if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -266,7 +266,7 @@ class StripeGatewayTest extends TestCase
     public function can_get_charge()
     {
         if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -294,7 +294,7 @@ class StripeGatewayTest extends TestCase
     public function can_refund_charge()
     {
         if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped("Skipping, no Stripe Secret has been defined for this environment.");
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
