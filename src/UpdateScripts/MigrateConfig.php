@@ -34,14 +34,14 @@ class MigrateConfig extends UpdateScript
     protected function handleGatewayConfig(): self
     {
         $contents = Str::of(File::get(config_path('simple-commerce.php')))
-            ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\DummyGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\DummyGateway")
-            ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\MollieGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\MollieGateway")
-            ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\StripeGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\StripeGateway")
+            ->replace('DoubleThreeDigital\\SimpleCommerce\\Gateways\\DummyGateway', 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\DummyGateway')
+            ->replace('DoubleThreeDigital\\SimpleCommerce\\Gateways\\MollieGateway', 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\MollieGateway')
+            ->replace('DoubleThreeDigital\\SimpleCommerce\\Gateways\\StripeGateway', 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\StripeGateway')
             ->__toString();
 
         File::put(config_path('simple-commerce.php'), $contents);
 
-        $this->console()->info("Updated gateways config");
+        $this->console()->info('Updated gateways config');
 
         return $this;
     }
@@ -57,7 +57,7 @@ class MigrateConfig extends UpdateScript
             ])
             ->save();
 
-        $this->console()->info("Updated notifications config");
+        $this->console()->info('Updated notifications config');
 
         return $this;
     }

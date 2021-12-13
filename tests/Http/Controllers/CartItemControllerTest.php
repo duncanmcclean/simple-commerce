@@ -241,7 +241,6 @@ class CartItemControllerTest extends TestCase
             ->assertSessionHasErrors();
     }
 
-
     /** @test */
     public function can_store_item_with_variant_and_ensure_the_quantity_is_not_more_than_stock()
     {

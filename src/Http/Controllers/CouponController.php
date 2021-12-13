@@ -16,7 +16,7 @@ class CouponController extends BaseActionController
 
         $this->getCart()->recalculate();
 
-        if (!$redeem) {
+        if (! $redeem) {
             return $this->withErrors($request, __('simple-commerce::messages.invalid_coupon'));
         }
 

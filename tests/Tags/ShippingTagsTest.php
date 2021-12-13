@@ -79,7 +79,6 @@ class RoyalMail implements ShippingMethod
     }
 }
 
-
 class DPD implements ShippingMethod
 {
     public function name(): string

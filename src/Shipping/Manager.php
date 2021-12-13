@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use Statamic\Entries\Entry;
 
 class Manager implements Contract
 {
@@ -41,7 +40,7 @@ class Manager implements Contract
 
     protected function resolve()
     {
-        if (!resolve($this->className)) {
+        if (! resolve($this->className)) {
             throw new ShippingMethodDoesNotExist("Shipping method [{$this->className}] does not exist.");
         }
 
