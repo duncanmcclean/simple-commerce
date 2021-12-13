@@ -83,7 +83,7 @@ class ProductVariantsFieldtype extends Fieldtype
                         );
 
                         return [
-                            $field->handle() => $field->fieldtype()->preProcess($field->defaultValue())
+                            $field->handle() => $field->fieldtype()->preProcess($field->defaultValue()),
                         ];
                     })
                     ->toArray(),
