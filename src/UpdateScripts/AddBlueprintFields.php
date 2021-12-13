@@ -31,7 +31,7 @@ class AddBlueprintFields extends UpdateScript
         $blueprint = Blueprint::find("collections.{$orderCollection}.{$orderCollectionSingular}");
 
         if (! $blueprint) {
-            $this->console()->error("Failed to update order blueprint.");
+            $this->console()->error('Failed to update order blueprint.');
         }
 
         $contents = $blueprint->fileData();
@@ -64,6 +64,6 @@ class AddBlueprintFields extends UpdateScript
             ->setContents($contents)
             ->save();
 
-        $this->console()->info("Successfully updated order blueprint.");
+        $this->console()->info('Successfully updated order blueprint.');
     }
 }

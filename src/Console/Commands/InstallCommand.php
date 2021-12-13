@@ -51,10 +51,10 @@ class InstallCommand extends Command
 
     protected function setupCollections()
     {
-        $productDriver  = SimpleCommerce::productDriver();
+        $productDriver = SimpleCommerce::productDriver();
         $customerDriver = SimpleCommerce::customerDriver();
-        $orderDriver    = SimpleCommerce::orderDriver();
-        $couponDriver   = SimpleCommerce::couponDriver();
+        $orderDriver = SimpleCommerce::orderDriver();
+        $couponDriver = SimpleCommerce::couponDriver();
 
         if ($productDriver['driver'] === Product::class && ! Collection::handleExists($productDriver['collection'])) {
             $this->info('Creating: Products');

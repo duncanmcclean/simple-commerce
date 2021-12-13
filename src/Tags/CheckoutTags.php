@@ -66,7 +66,7 @@ class CheckoutTags extends SubTag
     // {{ sc:checkout:mollie }}
     public function wildcard(string $tag)
     {
-        if (!$tag || $tag === 'index') {
+        if (! $tag || $tag === 'index') {
             return $this->index();
         }
 
@@ -77,7 +77,7 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        if (!$gateway) {
+        if (! $gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);
         }
 
@@ -98,7 +98,7 @@ class CheckoutTags extends SubTag
             $gateway['handle'] => $prepare->data(),
         ])->save();
 
-        if (!$prepare->checkoutUrl()) {
+        if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
 

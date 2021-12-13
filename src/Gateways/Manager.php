@@ -4,8 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -119,10 +117,10 @@ class Manager implements Contract
     protected function resolve()
     {
         if (! $this->className) {
-            throw new NoGatewayProvided("No gateway provided.");
+            throw new NoGatewayProvided('No gateway provided.');
         }
 
-        if (!resolve($this->className)) {
+        if (! resolve($this->className)) {
             throw new GatewayDoesNotExist("Gateway [{$this->className}] does not exist.");
         }
 

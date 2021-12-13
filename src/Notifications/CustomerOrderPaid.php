@@ -2,11 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
+use Barryvdh\DomPDF\Facade as PDF;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Barryvdh\DomPDF\Facade as PDF;
 
 class CustomerOrderPaid extends Notification
 {
@@ -48,9 +48,9 @@ class CustomerOrderPaid extends Notification
         $pdf = PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray());
 
         return (new MailMessage)
-            ->subject("Thanks for your order!")
-            ->line("Thanks for your order! Your order receipt has been attached to this email.")
-            ->line("Please get in touch if you have any questions.")
+            ->subject('Thanks for your order!')
+            ->line('Thanks for your order! Your order receipt has been attached to this email.')
+            ->line('Please get in touch if you have any questions.')
             ->attachData(
                 $pdf->output(),
                 'receipt.pdf',

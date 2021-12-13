@@ -4,10 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Arr;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\UpdateScripts\UpdateScript;
-use Illuminate\Support\Arr;
 
 class MigrateLineItemMetadata extends UpdateScript
 {

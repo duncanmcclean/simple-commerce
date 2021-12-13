@@ -102,7 +102,7 @@ class SimpleCommerceTag extends Tags
 
     public function errors()
     {
-        if (!$this->hasErrors()) {
+        if (! $this->hasErrors()) {
             return null;
         }
 

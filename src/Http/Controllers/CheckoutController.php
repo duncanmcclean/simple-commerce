@@ -54,7 +54,7 @@ class CheckoutController extends BaseActionController
             $this->cart->removeLineItem($lineItem['id']);
             $this->cart->save();
 
-            return $this->withErrors($this->request, __("Checkout failed. A product in your cart has no stock left. The product has been removed from your cart."));
+            return $this->withErrors($this->request, __('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
         } catch (PreventCheckout $e) {
             return $this->withErrors($this->request, $e->getMessage());
         }
@@ -84,7 +84,7 @@ class CheckoutController extends BaseActionController
                 ? Gateway::use($this->request->get('gateway'))->purchaseRules()
                 : [],
             [
-                'coupon' => ['nullable', new ValidCoupon($this->cart)]
+                'coupon' => ['nullable', new ValidCoupon($this->cart)],
             ],
         );
 
@@ -247,7 +247,7 @@ class CheckoutController extends BaseActionController
         }
 
         if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
-            throw new NoGatewayProvided("No gateway provided.");
+            throw new NoGatewayProvided('No gateway provided.');
         }
 
         $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);

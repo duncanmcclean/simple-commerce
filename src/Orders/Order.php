@@ -54,7 +54,7 @@ class Order implements Contract
             return $this->shippingAddress();
         }
 
-        if (!$this->has('billing_address') && !$this->has('billing_address_line1')) {
+        if (! $this->has('billing_address') && ! $this->has('billing_address_line1')) {
             return null;
         }
 
@@ -71,7 +71,7 @@ class Order implements Contract
 
     public function shippingAddress()
     {
-        if (!$this->has('shipping_address') && !$this->has('shipping_address_line1')) {
+        if (! $this->has('shipping_address') && ! $this->has('shipping_address_line1')) {
             return null;
         }
 
@@ -179,7 +179,7 @@ class Order implements Contract
 
     public function beforeSaved()
     {
-        if (!$this->has('items')) {
+        if (! $this->has('items')) {
             $this->data['items'] = [];
         }
     }

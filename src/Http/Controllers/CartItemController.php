@@ -169,7 +169,7 @@ class CartItemController extends BaseActionController
                     'metadata' => array_merge(
                         isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
                         Arr::except($request->all(), $this->reservedKeys),
-                    )
+                    ),
                 ]
             ),
         );

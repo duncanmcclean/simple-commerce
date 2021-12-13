@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Statamic\Fields\Validator;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
+use Statamic\Fields\Validator;
 use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
@@ -133,7 +133,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        if (!$value) {
+        if (! $value) {
             return null;
         }
 
