@@ -109,6 +109,6 @@ class BaseGateway
 
         $order->markAsPaid();
 
-        return false;
+        return true;
     }
 }
