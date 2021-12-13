@@ -2,11 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
+use DoubleThreeDigital\SimpleCommerce\Checkout\HandleStock;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use Illuminate\Support\Collection;
 
 class BaseGateway
 {
+    use HandleStock;
+
     protected array $config = [];
     protected string $handle = '';
     protected string $webhookUrl = '';
@@ -95,5 +99,16 @@ class BaseGateway
     public function purchaseRules(): array
     {
         return [];
+    }
+
+    public function markOrderAsPaid(Order $order): bool
+    {
+        if ($this->isOffsiteGateway()) {
+            $this->handleStock($order);
+        }
+
+        $order->markAsPaid();
+
+        return false;
     }
 }
