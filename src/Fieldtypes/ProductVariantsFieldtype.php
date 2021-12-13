@@ -92,9 +92,16 @@ class ProductVariantsFieldtype extends Fieldtype
             ],
             collect($this->config('option_fields'))
                 ->mapWithKeys(function ($field) {
-                    return [$field['handle'] => (
-                        new Field($field['handle'], $field['field'])
-                    )->meta()];
+                    $fieldMeta = (new Field($field['handle'], $field['field']))->meta();
+
+                    // Fix the assets fieldtype (for now!)
+                    if (isset($fieldMeta['data']) && collect($fieldMeta['data'])->count() === 0) {
+                        $fieldMeta['data'] = null;
+                    }
+
+                    return [
+                        $field['handle'] => $fieldMeta,
+                    ];
                 })
                 ->toArray(),
         );
