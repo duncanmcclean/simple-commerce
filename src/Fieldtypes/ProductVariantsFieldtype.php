@@ -76,6 +76,17 @@ class ProductVariantsFieldtype extends Fieldtype
                         })
                         ->toArray(),
                 ),
+                'option_field_defaults' => collect($this->config('option_fields'))
+                    ->mapWithKeys(function ($field) {
+                        $field = (
+                            new Field($field['handle'], $field['field'])
+                        );
+
+                        return [
+                            $field->handle() => $field->fieldtype()->preProcess($field->defaultValue()),
+                        ];
+                    })
+                    ->toArray(),
                 'variant' => resolve(Textarea::class)->preload(),
                 'price'   => resolve(MoneyFieldtype::class)->preload(),
             ],
