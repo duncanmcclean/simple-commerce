@@ -2,10 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Checkout\HandleStock;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
-use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
-use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
@@ -13,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
@@ -25,7 +23,7 @@ use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use CartDriver, AcceptsFormRequests;
+    use CartDriver, AcceptsFormRequests, HandleStock;
 
     public $cart;
     public StoreRequest $request;
@@ -42,7 +40,7 @@ class CheckoutController extends BaseActionController
                 ->handleValidation()
                 ->handleCustomerDetails()
                 ->handleCoupon()
-                ->handleStock()
+                ->handleStock($this->cart)
                 ->handleRemainingData()
                 ->handlePayment()
                 ->postCheckout();
@@ -155,62 +153,6 @@ class CheckoutController extends BaseActionController
         if (isset($this->cart->data['coupon'])) {
             $this->cart->coupon()->redeem();
         }
-
-        return $this;
-    }
-
-    protected function handleStock()
-    {
-        $this->cart->lineItems()
-            ->each(function ($item) {
-                $product = Product::find($item['product']);
-
-                if ($product->purchasableType() === 'product') {
-                    if ($product->has('stock') && $product->get('stock') !== null) {
-                        $stockCount = $product->get('stock') - $item['quantity'];
-
-                        // Need to do this check before actually setting the stock
-                        if ($stockCount < 0) {
-                            event(new StockRunOut($product, $stockCount));
-
-                            throw new CheckoutProductHasNoStockException($product);
-                        }
-
-                        $product->set(
-                            'stock',
-                            $stockCount = $product->get('stock') - $item['quantity']
-                        )->save();
-
-                        if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
-                            event(new StockRunningLow($product, $stockCount));
-                        }
-                    }
-                }
-
-                if ($product->purchasableType() === 'variants') {
-                    $variant = $product->variant($item['variant']['variant'] ?? $item['variant']);
-
-                    if ($variant !== null && $variant->stockCount() !== null) {
-                        $stockCount = $variant->stockCount() - $item['quantity'];
-
-                        // Need to do this check before actually setting the stock
-                        if ($stockCount < 0) {
-                            event(new StockRunOut($product, $stockCount, $variant));
-
-                            throw new CheckoutProductHasNoStockException($product, $variant);
-                        }
-
-                        $variant->set(
-                            'stock',
-                            $stockCount = $variant->stockCount() - $item['quantity']
-                        );
-
-                        if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
-                            event(new StockRunningLow($product, $stockCount));
-                        }
-                    }
-                }
-            });
 
         return $this;
     }
