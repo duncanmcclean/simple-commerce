@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.56 (2021-12-13)
+
+### What's fixed
+
+* Fixed issue where selected images would not be shown after save on Product Variants fieldtype #511
+
 ## v2.3.55 (2021-12-13)
 
 ### What's fixed
