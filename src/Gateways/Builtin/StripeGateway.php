@@ -79,7 +79,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $paymentMethod = PaymentMethod::retrieve($data->request()->payment_method);
 
         if ($paymentIntent->status === 'succeeded') {
-            $data->order()->markAsPaid();
+            $this->markOrderAsPaid($data->order());
         }
 
         return new GatewayResponse(true, [
