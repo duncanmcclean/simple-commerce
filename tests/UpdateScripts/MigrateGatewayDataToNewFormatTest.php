@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\RunsUpdateScripts;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\MigrateGatewayDataToNewFormat;
-use DoubleThreeDigital\SimpleCommerce\UpdateScripts\MigrateLineItemMetadata;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Entry;
 
