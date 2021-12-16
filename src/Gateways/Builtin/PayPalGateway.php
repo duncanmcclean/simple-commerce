@@ -49,11 +49,11 @@ class PayPalGateway extends BaseGateway implements Gateway
         $request = new OrdersCreateRequest();
         $request->prefer('return=representation');
         $request->body = [
-            'intent' => 'CAPTURE',
+            'intent'         => 'CAPTURE',
             'purchase_units' => [
                 [
                     'amount' => [
-                        'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
+                        'value'         => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
                         'currency_code' => Currency::get(Site::current())['code'],
                     ],
                     'description' => "Order {$order->title()}",
@@ -88,7 +88,7 @@ class PayPalGateway extends BaseGateway implements Gateway
     public function purchase(Purchase $data): Response
     {
         if ($this->isOffsiteGateway()) {
-            throw new GatewayDoesNotSupportPurchase("Gateway [paypal] does not support the `purchase` method.");
+            throw new GatewayDoesNotSupportPurchase('Gateway [paypal] does not support the `purchase` method.');
         }
 
         $this->setupPayPal();
@@ -120,7 +120,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             ? $order->get('paypal')['result']['id']
             : null;
 
-        if (! $paypalOrderId) {
+        if (!$paypalOrderId) {
             throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
         }
 
@@ -150,7 +150,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         $order = OrderFacade::find($request->get('_order_id'));
 
-        if (! $order) {
+        if (!$order) {
             return false;
         }
 
@@ -158,7 +158,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             ? $order->get('paypal')['result']['id']
             : null;
 
-        if (! $paypalOrderId) {
+        if (!$paypalOrderId) {
             throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
         }
 
@@ -190,7 +190,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                     $customer = Customer::findByEmail($responseBody['payer']['email_address']);
                 } catch (CustomerNotFound $e) {
                     $customer = Customer::create([
-                        'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
+                        'name'  => $responseBody['payer']['name']['given_name'].' '.$responseBody['payer']['name']['surname'],
                         'email' => $responseBody['payer']['email_address'],
                     ]);
                 }
@@ -200,7 +200,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                     ->save();
             }
 
-            if (! $order->shippingAddress() && isset($responseBody['purchase_units'][0]['shipping']['address'])) {
+            if (!$order->shippingAddress() && isset($responseBody['purchase_units'][0]['shipping']['address'])) {
                 $paypalShipping = $responseBody['purchase_units'][0]['shipping'];
 
                 $order

@@ -12,7 +12,10 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class TaxCategory
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use FluentlyGetsAndSets;
+    use ExistsAsFile;
+    use TracksQueriedColumns;
+    use ContainsData;
 
     public $id;
     public $name;
@@ -67,14 +70,14 @@ class TaxCategory
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-categories')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-categories')->directory().$this->id().'.yaml';
     }
 
     public function fileData()
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'          => $this->id,
+            'name'        => $this->name,
             'description' => $this->description,
         ];
     }

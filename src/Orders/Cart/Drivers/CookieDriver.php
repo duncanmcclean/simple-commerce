@@ -21,7 +21,7 @@ class CookieDriver implements CartDriver
 
     public function getCart(): Order
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return $this->makeCart();
         }
 

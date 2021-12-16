@@ -263,7 +263,7 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $customer = Customer::create([
-            'name' => 'Dwight Schrute',
+            'name'  => 'Dwight Schrute',
             'email' => 'dwight.schrute@example.com',
         ]);
 
@@ -328,7 +328,7 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $customer = Customer::create([
-            'name' => 'Stanley Hudson',
+            'name'  => 'Stanley Hudson',
             'email' => 'stanley.hudson@example.com',
         ]);
 
@@ -911,7 +911,7 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::create([
-            'title' => 'Bacon',
+            'title'            => 'Bacon',
             'product_variants' => [
                 'variants' => [
                     [
@@ -992,7 +992,7 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::create([
-            'title' => 'Bacon',
+            'title'            => 'Bacon',
             'product_variants' => [
                 'variants' => [
                     [
@@ -1072,7 +1072,7 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::create([
-            'title' => 'Bacon',
+            'title'            => 'Bacon',
             'product_variants' => [
                 'variants' => [
                     [
@@ -1161,7 +1161,7 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::create([
-            'title' => 'Bacon',
+            'title'            => 'Bacon',
             'product_variants' => [
                 'variants' => [
                     [
@@ -1255,8 +1255,8 @@ class CheckoutControllerTest extends TestCase
                     'total'    => 5000,
                 ],
             ],
-            'grand_total' => 5000,
-            'gift_note' => 'I like jam on toast!',
+            'grand_total'   => 5000,
+            'gift_note'     => 'I like jam on toast!',
             'delivery_note' => 'We live at the red house at the top of the hill.',
         ]);
 
@@ -1729,7 +1729,7 @@ class CheckoutFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'accept_terms.required' => "Please accept the terms & conditions.",
+            'accept_terms.required' => 'Please accept the terms & conditions.',
         ];
     }
 }

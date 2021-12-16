@@ -2,12 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use Statamic\Facades\User;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\File;
+use Statamic\Facades\User;
 
 class TaxCategoryControllerTest extends TestCase
 {
@@ -56,7 +56,7 @@ class TaxCategoryControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-categories/create', [
-                'name' => 'Special Products',
+                'name'        => 'Special Products',
                 'description' => 'Products that are very special.',
             ])
             ->assertRedirect();
@@ -91,7 +91,7 @@ class TaxCategoryControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-categories/whoop/edit', [
-                'name' => 'Whoopsie',
+                'name'        => 'Whoopsie',
                 'description' => 'Whoopsie whoopsie whoopsie!',
             ])
             ->assertRedirect('/cp/simple-commerce/tax-categories/whoop/edit');

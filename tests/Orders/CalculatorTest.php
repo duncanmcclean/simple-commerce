@@ -430,7 +430,7 @@ class CalculatorTest extends TestCase
                 ],
             ],
             'shipping_method' => Postage::class,
-            'coupon' => $coupon->id,
+            'coupon'          => $coupon->id,
         ]);
 
         $calculate = (new Calculator())->calculate($cart);

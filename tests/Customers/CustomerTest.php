@@ -12,7 +12,7 @@ class CustomerTest extends TestCase
     public function can_create()
     {
         $create = Customer::create([
-            'name' => 'Joe Smith',
+            'name'  => 'Joe Smith',
             'email' => 'joe.smith@example.com',
         ]);
 
@@ -27,8 +27,8 @@ class CustomerTest extends TestCase
     public function can_create_and_ensure_customer_entry_is_published()
     {
         $create = Customer::create([
-            'name' => 'Joe Smith',
-            'email' => 'joe.smith@example.com',
+            'name'      => 'Joe Smith',
+            'email'     => 'joe.smith@example.com',
             'published' => true,
         ]);
 

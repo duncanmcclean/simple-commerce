@@ -9,7 +9,8 @@ use Illuminate\Support\Arr;
 
 class UpdateRequest extends FormRequest
 {
-    use CartDriver, AcceptsFormRequests;
+    use CartDriver;
+    use AcceptsFormRequests;
 
     public function authorize()
     {

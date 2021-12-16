@@ -53,7 +53,7 @@ trait IsEntry
 
     public function create(array $data = [], string $site = ''): self
     {
-        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
+        if (!$this->isUsingEloquentDriverWithIncrementingIds()) {
             $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
         }
 
@@ -81,11 +81,11 @@ trait IsEntry
 
     public function save(): self
     {
-        if (! $this->entry) {
+        if (!$this->entry) {
             $this->entry = EntryAPI::make()
                 ->locale($this->site);
 
-            if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
+            if (!$this->isUsingEloquentDriverWithIncrementingIds()) {
                 $this->entry = $this->entry->id($this->id);
             }
         }
@@ -168,7 +168,7 @@ trait IsEntry
         return $this
             ->fluentlyGetOrSet('title')
             ->setter(function ($site) {
-                if (! $site instanceof Site) {
+                if (!$site instanceof Site) {
                     return SiteAPI::get($site);
                 }
 
@@ -187,7 +187,7 @@ trait IsEntry
 
     public function blueprint(): Blueprint
     {
-        if (! $this->entry) {
+        if (!$this->entry) {
             return Collection::find($this->collection())->entryBlueprint();
         }
 

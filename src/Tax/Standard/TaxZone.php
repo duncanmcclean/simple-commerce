@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
@@ -15,7 +14,10 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class TaxZone
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use FluentlyGetsAndSets;
+    use ExistsAsFile;
+    use TracksQueriedColumns;
+    use ContainsData;
 
     public $id;
     public $name;
@@ -84,16 +86,16 @@ class TaxZone
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-zones')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-zones')->directory().$this->id().'.yaml';
     }
 
     public function fileData()
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'      => $this->id,
+            'name'    => $this->name,
             'country' => $this->country,
-            'region' => $this->region,
+            'region'  => $this->region,
         ];
     }
 

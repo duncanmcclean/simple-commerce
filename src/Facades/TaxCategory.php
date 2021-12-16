@@ -10,7 +10,7 @@ class TaxCategory extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        if (! SimpleCommerce::isUsingStandardTaxEngine()) {
+        if (!SimpleCommerce::isUsingStandardTaxEngine()) {
             throw new \Exception("Sorry, the `TaxCategory` facade is only available when using the 'Standard' tax engine.");
         }
 

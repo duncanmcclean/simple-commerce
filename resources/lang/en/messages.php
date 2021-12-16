@@ -4,7 +4,7 @@ return [
 
     'actions' => [
         'mark_as_paid' => 'Mark As Paid',
-        'refund' => 'Refund',
+        'refund'       => 'Refund',
     ],
 
     'fieldtypes' => [
@@ -43,13 +43,13 @@ return [
     ],
 
     'validation' => [
-        'entry_exists' => 'The entry :value does not exist.',
-        'country_exists' => 'The selected country is not recognised.',
-        'is_a_gateway' => ':value is not a gateway',
-        'region_exists' => 'The selected region is not recognised.',
+        'entry_exists'        => 'The entry :value does not exist.',
+        'country_exists'      => 'The selected country is not recognised.',
+        'is_a_gateway'        => ':value is not a gateway',
+        'region_exists'       => 'The selected region is not recognised.',
         'tax_category_exists' => 'Sorry, the tax category provided could not be found.',
-        'tax_zone_exists' => 'Sorry, the tax zone provided could not be found.',
-        'valid_coupon' => 'Sorry, this coupon is not valid for your order.',
+        'tax_zone_exists'     => 'Sorry, the tax zone provided could not be found.',
+        'valid_coupon'        => 'Sorry, this coupon is not valid for your order.',
     ],
 
     'customer_title'            => ':name <:email>',

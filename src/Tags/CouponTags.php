@@ -14,7 +14,7 @@ class CouponTags extends SubTag
     {
         $coupon = $this->getCartCoupon();
 
-        if (! $coupon) {
+        if (!$coupon) {
             return [];
         }
 
@@ -23,7 +23,7 @@ class CouponTags extends SubTag
 
     public function has(): bool
     {
-        return ! is_null($this->getCartCoupon());
+        return !is_null($this->getCartCoupon());
     }
 
     public function redeem()
@@ -69,13 +69,13 @@ class CouponTags extends SubTag
 
     protected function getCartCoupon(): ?Coupon
     {
-        if (! $this->hasCart()) {
+        if (!$this->hasCart()) {
             return null;
         }
 
         $coupon = $this->getCart()->coupon();
 
-        if (! $coupon) {
+        if (!$coupon) {
             return null;
         }
 

@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Statamic\Fields\Validator;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
+use Statamic\Fields\Validator;
 use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
@@ -176,7 +176,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function preProcessIndex($value)
     {
-        if (! $value) {
+        if (!$value) {
             return __('simple-commerce::messages.product_has_no_variants');
         }
 
@@ -213,7 +213,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
         return array_merge([
             'variants' => ['array'],
-            'options' => ['array'],
+            'options'  => ['array'],
         ], $variantFieldRules, $optionFieldRules);
     }
 }

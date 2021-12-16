@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -96,7 +95,7 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'  => $product->id,
             'quantity' => 1,
-            'foo' => 'bar',
+            'foo'      => 'bar',
         ];
 
         $response = $this
@@ -243,12 +242,11 @@ class CartItemControllerTest extends TestCase
             ->assertSessionHasErrors();
     }
 
-
     /** @test */
     public function can_store_item_with_variant_and_ensure_the_quantity_is_not_more_than_stock()
     {
         $product = Product::create([
-            'title' => 'Dog Food',
+            'title'            => 'Dog Food',
             'product_variants' => [
                 'variants' => [
                     [
@@ -279,7 +277,7 @@ class CartItemControllerTest extends TestCase
 
         $data = [
             'product'  => $product->id,
-            'variant' => 'Red_Small',
+            'variant'  => 'Red_Small',
             'quantity' => 5,
         ];
 
@@ -377,8 +375,8 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'  => $product->id,
             'quantity' => 1,
-            'name' => 'Michael Scott',
-            'email' => 'michael@scott.net',
+            'name'     => 'Michael Scott',
+            'email'    => 'michael@scott.net',
         ];
 
         $response = $this
@@ -413,7 +411,7 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'  => $product->id,
             'quantity' => 1,
-            'email' => 'donald@duck.disney',
+            'email'    => 'donald@duck.disney',
         ];
 
         $response = $this
@@ -446,7 +444,7 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $customer = Customer::create([
-            'name' => 'Goofy',
+            'name'  => 'Goofy',
             'email' => 'goofy@clubhouse.disney',
         ]);
 
@@ -490,7 +488,7 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $customer = Customer::create([
-            'name' => 'Pluto',
+            'name'  => 'Pluto',
             'email' => 'pluto@clubhouse.disney',
         ]);
 
@@ -530,28 +528,28 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
+            'title'                => 'Dog Food',
+            'price'                => 1000,
             'prerequisite_product' => $prerequisiteProduct->id,
         ]);
 
         $customer = Customer::create([
-            'name' => 'Test Test',
+            'name'  => 'Test Test',
             'email' => 'test@test.test',
         ]);
 
         Order::create([
             'items' => [
                 [
-                    'id' => 'smth',
-                    'product' => $prerequisiteProduct->id,
+                    'id'       => 'smth',
+                    'product'  => $prerequisiteProduct->id,
                     'quantity' => 1,
-                    'total' => 1599,
+                    'total'    => 1599,
                 ],
             ],
             'items_total' => 1599,
             'grand_total' => 1599,
-            'customer' => $customer->id,
+            'customer'    => $customer->id,
         ]);
 
         $data = [
@@ -584,8 +582,8 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
+            'title'                => 'Dog Food',
+            'price'                => 1000,
             'prerequisite_product' => $prerequisiteProduct->id,
         ]);
 
@@ -620,13 +618,13 @@ class CartItemControllerTest extends TestCase
         ]);
 
         $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
+            'title'                => 'Dog Food',
+            'price'                => 1000,
             'prerequisite_product' => $prerequisiteProduct->id,
         ]);
 
         $customer = Customer::create([
-            'name' => 'Test Test',
+            'name'  => 'Test Test',
             'email' => 'test@test.test',
         ]);
 

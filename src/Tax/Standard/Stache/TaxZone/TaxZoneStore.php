@@ -17,7 +17,7 @@ class TaxZoneStore extends BasicStore
     {
         $data = YAML::file($path)->parse($contents);
 
-        if (! $id = array_pull($data, 'id')) {
+        if (!$id = array_pull($data, 'id')) {
             $idGenerated = true;
             $id = app('stache')->generateId();
         }

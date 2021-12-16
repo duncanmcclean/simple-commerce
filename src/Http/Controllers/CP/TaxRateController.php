@@ -18,7 +18,7 @@ class TaxRateController
     public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.tax-rates.index', [
-            'taxRates' => TaxRate::all(),
+            'taxRates'      => TaxRate::all(),
             'taxCategories' => TaxCategory::all(),
         ]);
     }
@@ -27,7 +27,7 @@ class TaxRateController
     {
         return view('simple-commerce::cp.tax-rates.create', [
             'taxCategory' => TaxCategory::find($request->taxCategory),
-            'taxZones' => TaxZone::all(),
+            'taxZones'    => TaxZone::all(),
         ]);
     }
 
@@ -51,9 +51,9 @@ class TaxRateController
         $taxRate = TaxRate::find($taxRate);
 
         return view('simple-commerce::cp.tax-rates.edit', [
-            'taxRate' => $taxRate,
+            'taxRate'       => $taxRate,
             'taxCategories' => TaxCategory::all(),
-            'taxZones' => TaxZone::all(),
+            'taxZones'      => TaxZone::all(),
         ]);
     }
 

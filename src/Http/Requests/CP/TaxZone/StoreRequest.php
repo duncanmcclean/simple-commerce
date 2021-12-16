@@ -19,8 +19,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
-            'country' => ['required', new CountryExists, function ($attribute, $value, $fail) {
+            'name'    => ['required', 'string'],
+            'country' => ['required', new CountryExists(), function ($attribute, $value, $fail) {
                 if ($this->region === null) {
                     $taxZoneWithCountryAlreadyExists = TaxZone::all()
                         ->where('country', $value)
@@ -34,7 +34,7 @@ class StoreRequest extends FormRequest
                     }
                 }
             }],
-            'region' => ['nullable', new RegionExists, function ($attribute, $value, $fail) {
+            'region' => ['nullable', new RegionExists(), function ($attribute, $value, $fail) {
                 $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
                     ->where('country', $this->country)
                     ->where('region', $value)

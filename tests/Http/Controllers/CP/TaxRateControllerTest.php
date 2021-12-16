@@ -3,11 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use Statamic\Facades\User;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\File;
+use Statamic\Facades\User;
 
 class TaxRateControllerTest extends TestCase
 {
@@ -68,10 +68,10 @@ class TaxRateControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-rates/create', [
-                'name' => 'UK - Special',
-                'rate' => 5,
-                'category' => 'special',
-                'zone' => 'the-uk',
+                'name'             => 'UK - Special',
+                'rate'             => 5,
+                'category'         => 'special',
+                'zone'             => 'the-uk',
                 'include_in_price' => 'true',
             ])
             ->assertRedirect();
@@ -121,10 +121,10 @@ class TaxRateControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-rates/uk-standard-products/edit', [
-                'name' => 'UK - Standard Products (15% for COVID)',
-                'rate' => 15,
-                'zone' => 'the-uk',
-                'category' => 'standard',
+                'name'             => 'UK - Standard Products (15% for COVID)',
+                'rate'             => 15,
+                'zone'             => 'the-uk',
+                'category'         => 'standard',
                 'include_in_price' => 'true',
             ])
             ->assertRedirect('/cp/simple-commerce/tax-rates/uk-standard-products/edit');

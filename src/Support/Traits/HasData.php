@@ -14,7 +14,7 @@ trait HasData
         return $this
             ->fluentlyGetOrSet('data')
             ->setter(function ($data) {
-                if (! $this->data) {
+                if (!$this->data) {
                     return $data;
                 }
 

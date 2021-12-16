@@ -13,7 +13,10 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class TaxRate
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use FluentlyGetsAndSets;
+    use ExistsAsFile;
+    use TracksQueriedColumns;
+    use ContainsData;
 
     public $id;
     public $name;
@@ -54,7 +57,7 @@ class TaxRate
         return $this
             ->fluentlyGetOrSet('category')
             ->getter(function ($category) {
-                if (! $category instanceof TaxCategory) {
+                if (!$category instanceof TaxCategory) {
                     return TaxCategoryFacade::find($category);
                 }
 
@@ -96,17 +99,17 @@ class TaxRate
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-rates')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-rates')->directory().$this->id().'.yaml';
     }
 
     public function fileData()
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'rate' => $this->rate,
-            'category' => $this->category,
-            'zone' => $this->zone,
+            'id'               => $this->id,
+            'name'             => $this->name,
+            'rate'             => $this->rate,
+            'category'         => $this->category,
+            'zone'             => $this->zone,
             'include_in_price' => $this->includeInPrice,
         ];
     }

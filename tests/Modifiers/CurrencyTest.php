@@ -13,7 +13,7 @@ class CurrencyTest extends TestCase
     {
         parent::setUp();
 
-        $this->modifier = new CurrencyModifier;
+        $this->modifier = new CurrencyModifier();
     }
 
     /** @test */

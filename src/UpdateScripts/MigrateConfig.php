@@ -34,14 +34,14 @@ class MigrateConfig extends UpdateScript
     protected function handleGatewayConfig(): self
     {
         $contents = Str::of(File::get(config_path('simple-commerce.php')))
-            ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\DummyGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\DummyGateway")
-            ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\MollieGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\MollieGateway")
-            ->replace("DoubleThreeDigital\\SimpleCommerce\\Gateways\\StripeGateway", "DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\StripeGateway")
+            ->replace('DoubleThreeDigital\\SimpleCommerce\\Gateways\\DummyGateway', 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\DummyGateway')
+            ->replace('DoubleThreeDigital\\SimpleCommerce\\Gateways\\MollieGateway', 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\MollieGateway')
+            ->replace('DoubleThreeDigital\\SimpleCommerce\\Gateways\\StripeGateway', 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\StripeGateway')
             ->__toString();
 
         File::put(config_path('simple-commerce.php'), $contents);
 
-        $this->console()->info("Updated gateways config");
+        $this->console()->info('Updated gateways config');
 
         return $this;
     }
@@ -57,7 +57,7 @@ class MigrateConfig extends UpdateScript
             ])
             ->save();
 
-        $this->console()->info("Updated notifications config");
+        $this->console()->info('Updated notifications config');
 
         return $this;
     }
@@ -81,22 +81,22 @@ class MigrateConfig extends UpdateScript
         ConfigWriter::edit('simple-commerce')
             ->replaceStructure('collections', 'content', [
                 'orders' => [
-                    'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
+                    'driver'     => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
                     'collection' => config('simple-commerce.collections.orders'),
                 ],
 
                 'products' => [
-                    'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+                    'driver'     => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
                     'collection' => config('simple-commerce.collections.products'),
                 ],
 
                 'coupons' => [
-                    'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+                    'driver'     => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
                     'collection' => config('simple-commerce.collections.coupons'),
                 ],
 
                 'customers' => [
-                    'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+                    'driver'     => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
                     'collection' => config('simple-commerce.collections.customers'),
                 ],
             ], $helpComment, true)

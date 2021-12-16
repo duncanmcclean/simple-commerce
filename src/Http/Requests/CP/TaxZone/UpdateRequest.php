@@ -20,7 +20,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name'    => ['required', 'string'],
-            'country' => ['required', new CountryExists, function ($attribute, $value, $fail) {
+            'country' => ['required', new CountryExists(), function ($attribute, $value, $fail) {
                 if ($this->region === null) {
                     $taxZoneWithCountryAlreadyExists = TaxZone::all()
                         ->where('country', $value)
@@ -37,7 +37,7 @@ class UpdateRequest extends FormRequest
                     }
                 }
             }],
-            'region'  => ['nullable', new RegionExists, function ($attribute, $value, $fail) {
+            'region'  => ['nullable', new RegionExists(), function ($attribute, $value, $fail) {
                 $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
                     ->where('country', $this->country)
                     ->where('region', $value)

@@ -18,22 +18,22 @@ return [
 
     'content' => [
         'orders' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
+            'driver'     => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
             'collection' => 'orders',
         ],
 
         'products' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+            'driver'     => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
             'collection' => 'products',
         ],
 
         'coupons' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+            'driver'     => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
             'collection' => 'coupons',
         ],
 
         'customers' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
+            'driver'     => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
             'collection' => 'customers',
         ],
     ],
@@ -164,16 +164,16 @@ return [
 
         'behaviour' => [
             'no_address_provided' => 'default_address',
-            'no_rate_available' => 'prevent_checkout',
+            'no_rate_available'   => 'prevent_checkout',
         ],
 
         'default_address' => [
             'address_line_1' => '',
             'address_line_2' => '',
-            'city' => '',
-            'region' => '',
-            'country' => '',
-            'zip_code' => '',
+            'city'           => '',
+            'region'         => '',
+            'country'        => '',
+            'zip_code'       => '',
         ],
     ],
 

@@ -16,10 +16,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
-            'rate' => ['required', 'numeric'],
-            'category' => ['required', 'string', new TaxCategoryExists],
-            'zone' => ['required', 'string', new TaxZoneExists],
+            'name'             => ['required', 'string'],
+            'rate'             => ['required', 'numeric'],
+            'category'         => ['required', 'string', new TaxCategoryExists()],
+            'zone'             => ['required', 'string', new TaxZoneExists()],
             'include_in_price' => ['required', 'boolean'],
         ];
     }

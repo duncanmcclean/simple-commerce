@@ -15,9 +15,9 @@ class OrderStatusFilter extends Filter
     {
         return [
             'type' => [
-                'type' => 'radio',
+                'type'    => 'radio',
                 'options' => [
-                    'cart' => 'Cart',
+                    'cart'  => 'Cart',
                     'order' => 'Order',
                 ],
             ],

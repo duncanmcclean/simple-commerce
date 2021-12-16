@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -16,7 +15,7 @@ class CountryFieldtypeTest extends TestCase
     {
         parent::setUp();
 
-        $this->fieldtype = new CountryFieldtype;
+        $this->fieldtype = new CountryFieldtype();
     }
 
     /** @test */
@@ -27,8 +26,8 @@ class CountryFieldtypeTest extends TestCase
         $this->assertTrue($getIndexItems instanceof Collection);
 
         $this->assertSame($getIndexItems->last(), [
-            'id' => 'ZW',
-            'iso' => 'ZW',
+            'id'   => 'ZW',
+            'iso'  => 'ZW',
             'name' => 'Zimbabwe',
         ]);
     }
@@ -47,7 +46,7 @@ class CountryFieldtypeTest extends TestCase
         $this->assertIsArray($toItemArray);
 
         $this->assertSame($toItemArray, [
-            'id' => 'GB',
+            'id'    => 'GB',
             'title' => 'United Kingdom',
         ]);
     }

@@ -52,8 +52,8 @@ class CartController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                    'email' => $data['customer']['email'],
+                    'name'      => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                    'email'     => $data['customer']['email'],
                     'published' => true,
                 ], $this->guessSiteFromRequest()->handle());
             }
@@ -78,8 +78,8 @@ class CartController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => isset($data['name']) ? $data['name'] : '',
-                    'email' => $data['email'],
+                    'name'      => isset($data['name']) ? $data['name'] : '',
+                    'email'     => $data['email'],
                     'published' => true,
                 ], $this->guessSiteFromRequest()->handle());
             }

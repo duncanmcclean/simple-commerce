@@ -42,8 +42,8 @@ class CartItemController extends BaseActionController
             } catch (CustomerNotFound $e) {
                 if (is_array($request->get('customer'))) {
                     $customer = Customer::create([
-                        'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
-                        'email' => $request->get('customer')['email'],
+                        'name'      => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
+                        'email'     => $request->get('customer')['email'],
                         'published' => true,
                     ], $this->guessSiteFromRequest()->handle());
                 } elseif (is_string($request->get('customer'))) {
@@ -59,8 +59,8 @@ class CartItemController extends BaseActionController
                 $customer = Customer::findByEmail($request->get('email'));
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => $request->get('name') ?? $request->get('email'),
-                    'email' => $request->get('email'),
+                    'name'      => $request->get('name') ?? $request->get('email'),
+                    'email'     => $request->get('email'),
                     'published' => true,
                 ], $this->guessSiteFromRequest()->handle());
             }
@@ -88,7 +88,7 @@ class CartItemController extends BaseActionController
             /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Customer $customer */
             $customer = $cart->customer();
 
-            if (! $customer) {
+            if (!$customer) {
                 return $this->withErrors($request, __('Please login/register before purchasing this product.'));
             }
 
@@ -105,7 +105,7 @@ class CartItemController extends BaseActionController
                 })
                 ->count() > 0;
 
-            if (! $hasPurchasedPrerequisiteProduct) {
+            if (!$hasPurchasedPrerequisiteProduct) {
                 return $this->withErrors($request, __("Before purchasing this product, you must purchase {$prerequisiteProduct->title()} first."));
             }
         }
@@ -169,7 +169,7 @@ class CartItemController extends BaseActionController
                     'metadata' => array_merge(
                         isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
                         Arr::except($request->all(), $this->reservedKeys),
-                    )
+                    ),
                 ]
             ),
         );

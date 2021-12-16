@@ -25,13 +25,13 @@ class AddressTest extends TestCase
         $this->assertIsArray($address->toArray());
 
         $this->assertSame($address->toArray(), [
-            'name' => 'John Smith',
+            'name'           => 'John Smith',
             'address_line_1' => '11 Test Street',
             'address_line_2' => '',
-            'city' => 'Glasgow',
-            'region' => Regions::find('gb-sct'),
-            'country' => Countries::find('GB'),
-            'zip_code' => 'G11 222',
+            'city'           => 'Glasgow',
+            'region'         => Regions::find('gb-sct'),
+            'country'        => Countries::find('GB'),
+            'zip_code'       => 'G11 222',
         ]);
     }
 
@@ -142,9 +142,9 @@ G11 222');
         $this->assertIsArray($address->region());
 
         $this->assertSame($address->region(), [
-            'id' => 'gb-sct',
+            'id'          => 'gb-sct',
             'country_iso' => 'GB',
-            'name' => 'Scotland',
+            'name'        => 'Scotland',
         ]);
     }
 
@@ -164,7 +164,7 @@ G11 222');
         $this->assertIsArray($address->country());
 
         $this->assertSame($address->country(), [
-            'iso' => 'GB',
+            'iso'  => 'GB',
             'name' => 'United Kingdom',
         ]);
     }

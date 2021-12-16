@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
         }
 
         if (SimpleCommerce::orderDriver() === EntryOrder::class) {
-            $rules['product'][] = new EntryExists;
+            $rules['product'][] = new EntryExists();
         }
 
         return $rules;

@@ -36,12 +36,12 @@ class ShippingTagsTest extends TestCase
         SimpleCommerce::registerShippingMethod('default', DPD::class);
 
         $order = Order::create([
-            'shipping_name' => 'Santa',
-            'shipping_address' => 'Christmas Lane',
-            'shipping_city' => 'Snowcity',
-            'shipping_country' => 'North Pole',
+            'shipping_name'     => 'Santa',
+            'shipping_address'  => 'Christmas Lane',
+            'shipping_city'     => 'Snowcity',
+            'shipping_country'  => 'North Pole',
             'shipping_zip_code' => 'N0R P0L',
-            'shipping_region' => null,
+            'shipping_region'   => null,
         ]);
 
         StaticCartDriver::use()->setCart($order);
@@ -78,7 +78,6 @@ class RoyalMail implements ShippingMethod
         return true;
     }
 }
-
 
 class DPD implements ShippingMethod
 {

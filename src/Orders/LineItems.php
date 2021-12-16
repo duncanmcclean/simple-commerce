@@ -8,7 +8,7 @@ trait LineItems
 {
     public function lineItems(): Collection
     {
-        if (! $this->has('items')) {
+        if (!$this->has('items')) {
             return collect();
         }
 
@@ -31,7 +31,7 @@ trait LineItems
 
         $this->save();
 
-        if (! $this->withoutRecalculating) {
+        if (!$this->withoutRecalculating) {
             $this->recalculate();
         }
 
@@ -54,7 +54,7 @@ trait LineItems
 
         $this->save();
 
-        if (! $this->withoutRecalculating) {
+        if (!$this->withoutRecalculating) {
             $this->recalculate();
         }
 
@@ -73,7 +73,7 @@ trait LineItems
 
         $this->save();
 
-        if (! $this->withoutRecalculating) {
+        if (!$this->withoutRecalculating) {
             $this->recalculate();
         }
 
@@ -88,7 +88,7 @@ trait LineItems
 
         $this->save();
 
-        if (! $this->withoutRecalculating) {
+        if (!$this->withoutRecalculating) {
             $this->recalculate();
         }
 

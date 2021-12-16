@@ -9,7 +9,7 @@ class IsAGateway implements Rule
 {
     public function passes($attribute, $value)
     {
-        if (! class_exists($value)) {
+        if (!class_exists($value)) {
             return false;
         }
 

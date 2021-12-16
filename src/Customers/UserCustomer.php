@@ -15,7 +15,8 @@ use Statamic\Http\Resources\API\UserResource;
 
 class UserCustomer implements Contract
 {
-    use HasData, Notifiable;
+    use HasData;
+    use Notifiable;
 
     public $id;
     public $name;
@@ -38,7 +39,7 @@ class UserCustomer implements Contract
     {
         $this->user = User::find((string) $id);
 
-        if (! $this->user) {
+        if (!$this->user) {
             throw new CustomerNotFound("Customer with ID [{$id}] could not be found.");
         }
 
@@ -54,7 +55,7 @@ class UserCustomer implements Contract
     {
         $user = User::findByEmail($email);
 
-        if (! $user) {
+        if (!$user) {
             throw new CustomerNotFound("Customer with email [{$email}] could not be found.");
         }
 
@@ -80,7 +81,7 @@ class UserCustomer implements Contract
 
     public function save(): self
     {
-        if (! $this->user) {
+        if (!$this->user) {
             $this->user = User::make()
                 ->id($this->id);
         }

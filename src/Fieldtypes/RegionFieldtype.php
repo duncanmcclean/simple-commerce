@@ -15,10 +15,10 @@ class RegionFieldtype extends Relationship
     {
         return Regions::map(function ($region) {
             return [
-                'id'   => $region['id'],
+                'id'           => $region['id'],
                 'country_iso'  => $region['country_iso'],
                 'country_name' => Countries::findByRegion($region)->first()['name'],
-                'name' => $region['name'],
+                'name'         => $region['name'],
             ];
         })->sortBy('country_name')->values();
     }
@@ -37,14 +37,14 @@ class RegionFieldtype extends Relationship
         $region = Regions::find($id);
 
         return [
-            'id' => $region['id'],
+            'id'    => $region['id'],
             'title' => $region['name'],
         ];
     }
 
     public function preProcessIndex($data)
     {
-        if (! $data) {
+        if (!$data) {
             return;
         }
 

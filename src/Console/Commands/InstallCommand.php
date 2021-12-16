@@ -51,12 +51,12 @@ class InstallCommand extends Command
 
     protected function setupCollections()
     {
-        $productDriver  = SimpleCommerce::productDriver();
+        $productDriver = SimpleCommerce::productDriver();
         $customerDriver = SimpleCommerce::customerDriver();
-        $orderDriver    = SimpleCommerce::orderDriver();
-        $couponDriver   = SimpleCommerce::couponDriver();
+        $orderDriver = SimpleCommerce::orderDriver();
+        $couponDriver = SimpleCommerce::couponDriver();
 
-        if ($productDriver['driver'] === Product::class && ! Collection::handleExists($productDriver['collection'])) {
+        if ($productDriver['driver'] === Product::class && !Collection::handleExists($productDriver['collection'])) {
             $this->info('Creating: Products');
 
             Collection::make($productDriver['collection'])
@@ -70,7 +70,7 @@ class InstallCommand extends Command
             $this->warn('Skipping: Products');
         }
 
-        if ($customerDriver['driver'] === Customer::class && ! Collection::handleExists($customerDriver['collection'])) {
+        if ($customerDriver['driver'] === Customer::class && !Collection::handleExists($customerDriver['collection'])) {
             $this->info('Creating: Customers');
 
             Collection::make($customerDriver['collection'])
@@ -81,7 +81,7 @@ class InstallCommand extends Command
             $this->warn('Skipping: Customers');
         }
 
-        if ($orderDriver['driver'] === Order::class && ! Collection::handleExists($orderDriver['collection'])) {
+        if ($orderDriver['driver'] === Order::class && !Collection::handleExists($orderDriver['collection'])) {
             $this->info('Creating: Orders');
 
             Collection::make($orderDriver['collection'])
@@ -92,7 +92,7 @@ class InstallCommand extends Command
             $this->warn('Skipping: Orders');
         }
 
-        if ($couponDriver['driver'] === Coupon::class && ! Collection::handleExists($couponDriver['collection'])) {
+        if ($couponDriver['driver'] === Coupon::class && !Collection::handleExists($couponDriver['collection'])) {
             $this->info('Creating: Coupons');
 
             Collection::make($couponDriver['collection'])

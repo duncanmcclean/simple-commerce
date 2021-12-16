@@ -33,7 +33,7 @@ class Coupon implements Contract
             ->where('slug', $code)
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 

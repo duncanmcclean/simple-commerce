@@ -10,7 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 class Calculator implements Contract
 {
-    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order $order */
+    /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order */
     protected $order;
 
     public function calculate(OrderContract $order): array
@@ -34,16 +34,16 @@ class Calculator implements Contract
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItem($data, $lineItem);
 
-                $data      = $calculate['data'];
-                $lineItem  = $calculate['lineItem'];
+                $data = $calculate['data'];
+                $lineItem = $calculate['lineItem'];
 
                 return $lineItem;
             })
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItemTax($data, $lineItem);
 
-                $data      = $calculate['data'];
-                $lineItem  = $calculate['lineItem'];
+                $data = $calculate['data'];
+                $lineItem = $calculate['lineItem'];
 
                 return $lineItem;
             })
@@ -82,7 +82,7 @@ class Calculator implements Contract
             $lineItem['total'] = ($productPrice * $lineItem['quantity']);
 
             return [
-                'data' => $data,
+                'data'      => $data,
                 'lineItem'  => $lineItem,
             ];
         }
@@ -99,7 +99,7 @@ class Calculator implements Contract
         $lineItem['total'] = ($productPrice * $lineItem['quantity']);
 
         return [
-            'data' => $data,
+            'data'      => $data,
             'lineItem'  => $lineItem,
         ];
     }
@@ -119,14 +119,14 @@ class Calculator implements Contract
         }
 
         return [
-            'data' => $data,
+            'data'      => $data,
             'lineItem'  => $lineItem,
         ];
     }
 
     public function calculateOrderShipping(array $data): array
     {
-        if (! $this->order->has('shipping_method')) {
+        if (!$this->order->has('shipping_method')) {
             return [
                 'data' => $data,
             ];
@@ -145,7 +145,7 @@ class Calculator implements Contract
             $value = (int) $coupon->get('value');
 
             // Double check coupon is still valid
-            if (! $coupon->isValid($this->order)) {
+            if (!$coupon->isValid($this->order)) {
                 return [
                     'data' => $data,
                 ];

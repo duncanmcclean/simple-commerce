@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use Illuminate\Support\Facades\File;
 use Closure;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
@@ -54,7 +54,7 @@ class SimpleCommerce
                     'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
-                    'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
+                    'webhook_url'     => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook',
                 ];
             })
             ->toArray();
@@ -75,12 +75,11 @@ class SimpleCommerce
         });
     }
 
-
     public static function bootShippingMethods()
     {
         return Statamic::booted(function () {
             foreach (config('simple-commerce.sites') as $siteHandle => $value) {
-                if (! isset($value['shipping']['methods'])) {
+                if (!isset($value['shipping']['methods'])) {
                     continue;
                 }
 
@@ -98,7 +97,7 @@ class SimpleCommerce
 
     public static function taxEngine(): Contracts\TaxEngine
     {
-        return new static::$taxEngine;
+        return new static::$taxEngine();
     }
 
     public static function isUsingStandardTaxEngine(): bool
@@ -186,13 +185,13 @@ class SimpleCommerce
     {
         static::$productPriceHook = $callback;
 
-        return (new static);
+        return new static();
     }
 
     public static function productVariantPriceHook(Closure $callback): self
     {
         static::$productVariantPriceHook = $callback;
 
-        return (new static);
+        return new static();
     }
 }

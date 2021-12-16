@@ -39,7 +39,7 @@ class SimpleCommerceTag extends Tags
 
         $method = isset($tag[1]) ? $tag[1] : 'index';
 
-        if (! $class) {
+        if (!$class) {
             throw new TagNotFoundException("Tag [{$tag[0]}] could not be found.");
         }
 
@@ -73,7 +73,7 @@ class SimpleCommerceTag extends Tags
         } else {
             if ($exclusions = $this->params->explode('exclude', [])) {
                 $countries = $countries->filter(function ($country) use ($exclusions) {
-                    return ! (in_array($country['iso'], $exclusions)
+                    return !(in_array($country['iso'], $exclusions)
                         || in_array($country['name'], $exclusions));
                 });
             }
@@ -87,12 +87,12 @@ class SimpleCommerceTag extends Tags
                     });
 
                 $commonCountries->push([
-                    'iso' => '',
+                    'iso'  => '',
                     'name' => '-',
                 ]);
 
                 $countries = $commonCountries->concat($countries->filter(function ($country) use ($common) {
-                    return ! (in_array($country['iso'], $common) || in_array($country['name'], $common));
+                    return !(in_array($country['iso'], $common) || in_array($country['name'], $common));
                 }));
             }
         }

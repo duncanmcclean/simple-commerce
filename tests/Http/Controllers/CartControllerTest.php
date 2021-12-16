@@ -89,7 +89,7 @@ class CartControllerTest extends TestCase
         $cart = Order::create()->save();
 
         $data = [
-            '_request' => CartUpdateFormRequest::class,
+            '_request'      => CartUpdateFormRequest::class,
             'shipping_note' => 'Be careful pls.',
         ];
 

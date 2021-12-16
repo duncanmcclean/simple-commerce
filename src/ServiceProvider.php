@@ -147,7 +147,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Currency::class           => Support\Currency::class,
             Contracts\Calculator::class         => Orders\Calculator::class,
         ])->each(function ($concrete, $abstract) {
-            if (! $this->app->bound($abstract)) {
+            if (!$this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
             }
         });
@@ -157,7 +157,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootCartDrivers()
     {
-        if (! $this->app->bound(Contracts\CartDriver::class)) {
+        if (!$this->app->bound(Contracts\CartDriver::class)) {
             $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
         }
 
@@ -167,13 +167,13 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootStacheStores()
     {
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
-            $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
+            $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore();
             $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
 
-            $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore;
+            $taxRateStore = new Tax\Standard\Stache\TaxRate\TaxRateStore();
             $taxRateStore->directory(base_path('content/simple-commerce/tax-rates'));
 
-            $taxZoneStore = new Tax\Standard\Stache\TaxZone\TaxZoneStore;
+            $taxZoneStore = new Tax\Standard\Stache\TaxZone\TaxZoneStore();
             $taxZoneStore->directory(base_path('content/simple-commerce/tax-zones'));
 
             app(Stache::class)->registerStore($taxCategoryStore);

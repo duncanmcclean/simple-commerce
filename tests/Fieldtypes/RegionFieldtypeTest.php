@@ -15,7 +15,7 @@ class RegionFieldtypeTest extends TestCase
     {
         parent::setUp();
 
-        $this->fieldtype = new RegionFieldtype;
+        $this->fieldtype = new RegionFieldtype();
     }
 
     /** @test */
@@ -26,10 +26,10 @@ class RegionFieldtypeTest extends TestCase
         $this->assertTrue($getIndexItems instanceof Collection);
 
         $this->assertSame($getIndexItems->last(), [
-            'id' => 'zw-mw',
-            'country_iso' => 'ZW',
+            'id'           => 'zw-mw',
+            'country_iso'  => 'ZW',
             'country_name' => 'Zimbabwe',
-            'name' => 'Mashonaland West',
+            'name'         => 'Mashonaland West',
         ]);
     }
 
@@ -47,7 +47,7 @@ class RegionFieldtypeTest extends TestCase
         $this->assertIsArray($toItemArray);
 
         $this->assertSame($toItemArray, [
-            'id' => 'gb-sct',
+            'id'    => 'gb-sct',
             'title' => 'Scotland',
         ]);
     }

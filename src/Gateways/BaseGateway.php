@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
-use Illuminate\Http\Request;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -52,7 +52,7 @@ class BaseGateway
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
-        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
+        return config('app.url').route('statamic.simple-commerce.gateways.callback', $data, false);
     }
 
     public function webhookUrl()
@@ -88,9 +88,11 @@ class BaseGateway
     /**
      * Method used to complete on-site purchases.
      *
-     * @var Purchase $data
-     * @return Response
+     * @var Purchase
+     *
      * @throws GatewayDoesNotSupportPurchase
+     *
+     * @return Response
      */
     public function purchase(Purchase $data): Response
     {

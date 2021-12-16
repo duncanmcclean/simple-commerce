@@ -25,7 +25,7 @@ class GatewayCallbackController extends BaseActionController
             ->where('handle', $gateway)
             ->first();
 
-        if (! $gateway) {
+        if (!$gateway) {
             throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
         }
 
@@ -35,7 +35,7 @@ class GatewayCallbackController extends BaseActionController
             $callbackSuccess = $order->get('is_paid') === true;
         }
 
-        if (! $callbackSuccess) {
+        if (!$callbackSuccess) {
             return $this->withErrors($request, "Order [{$order->title()}] has not been marked as paid yet.");
         }
 

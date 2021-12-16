@@ -4,10 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use Statamic\Facades\User;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\File;
+use Statamic\Facades\User;
 
 class TaxZoneControllerTest extends TestCase
 {
@@ -56,7 +56,7 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-zones/create', [
-                'name' => 'Special Products',
+                'name'    => 'Special Products',
                 'country' => 'DE',
             ])
             ->assertRedirect()
@@ -75,7 +75,7 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-zones/create', [
-                'name' => 'United States',
+                'name'    => 'United States',
                 'country' => 'US',
             ])
             ->assertRedirect()
@@ -95,9 +95,9 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-zones/create', [
-                'name' => 'Alaska',
+                'name'    => 'Alaska',
                 'country' => 'US',
-                'region' => 'us-ak',
+                'region'  => 'us-ak',
             ])
             ->assertRedirect()
             ->assertSessionHasErrors();
@@ -132,7 +132,7 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-zones/united-kingdom/edit', [
-                'name' => 'The United Kingdom of Scotland, Northern Ireland, Wales and England',
+                'name'    => 'The United Kingdom of Scotland, Northern Ireland, Wales and England',
                 'country' => 'GB',
             ])
             ->assertRedirect('/cp/simple-commerce/tax-zones/united-kingdom/edit');
@@ -158,7 +158,7 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-zones/united-states/edit', [
-                'name' => 'United States',
+                'name'    => 'United States',
                 'country' => 'US',
             ])
             ->assertSessionHasErrors();
@@ -186,9 +186,9 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->post('/cp/simple-commerce/tax-zones/alaska/edit', [
-                'name' => 'Alaska',
+                'name'    => 'Alaska',
                 'country' => 'US',
-                'region' => 'us-ak',
+                'region'  => 'us-ak',
             ])
             ->assertSessionHasErrors();
     }

@@ -67,18 +67,18 @@ class StandardTaxEngineTest extends TestCase
         $taxRate->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => $taxCategory->id(),
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'billing_address' => '1 Test Street',
@@ -89,8 +89,8 @@ class StandardTaxEngineTest extends TestCase
 
         // Ensure tax on line items are right
         $this->assertSame($recalculate->lineItems()->first()['tax'], [
-            'amount' => 167,
-            'rate' => 20,
+            'amount'             => 167,
+            'rate'               => 20,
             'price_includes_tax' => false,
         ]);
 
@@ -132,31 +132,31 @@ class StandardTaxEngineTest extends TestCase
         $taxRate->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => $taxCategory->id(),
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
-            'billing_region' => 'gb-sct',
+            'billing_region'  => 'gb-sct',
         ]);
 
         $recalculate = $order->recalculate();
 
         // Ensure tax on line items are right
         $this->assertSame($recalculate->lineItems()->first()['tax'], [
-            'amount' => 130,
-            'rate' => 15,
+            'amount'             => 130,
+            'rate'               => 15,
             'price_includes_tax' => false,
         ]);
 
@@ -197,18 +197,18 @@ class StandardTaxEngineTest extends TestCase
         $taxRate->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => $taxCategory->id(),
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'billing_address' => '1 Test Street',
@@ -219,8 +219,8 @@ class StandardTaxEngineTest extends TestCase
 
         // Ensure tax on line items are right
         $this->assertSame($recalculate->lineItems()->first()['tax'], [
-            'amount' => 167,
-            'rate' => 20,
+            'amount'             => 167,
+            'rate'               => 20,
             'price_includes_tax' => true,
         ]);
 
@@ -252,18 +252,18 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => 'standard-stuff',
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'billing_address' => '1 Test Street',
@@ -306,18 +306,18 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => 'standard-stuff',
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
             'billing_address' => '1 Test Street',
@@ -335,10 +335,10 @@ class StandardTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.behaviour.default_address', [
             'address_line_1' => '',
             'address_line_2' => '',
-            'city' => '',
-            'region' => '',
-            'country' => 'US',
-            'zip_code' => '',
+            'city'           => '',
+            'region'         => '',
+            'country'        => 'US',
+            'zip_code'       => '',
         ]);
 
         TaxCategory::make()
@@ -361,18 +361,18 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => 'standard-stuff',
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
@@ -414,18 +414,18 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
+            'title'        => 'Cat Food',
+            'price'        => 1000,
             'tax_category' => 'standard-stuff',
         ]);
 
         $order = Order::create([
             'items' => [
                 [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
+                    'id'       => app('stache')->generateId(),
+                    'product'  => $product->id,
                     'quantity' => 1,
-                    'total' => 1000,
+                    'total'    => 1000,
                 ],
             ],
         ]);

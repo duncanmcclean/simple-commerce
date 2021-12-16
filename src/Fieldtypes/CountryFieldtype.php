@@ -34,14 +34,14 @@ class CountryFieldtype extends Relationship
         $country = Countries::firstWhere('iso', $id);
 
         return [
-            'id' => $country['iso'],
+            'id'    => $country['iso'],
             'title' => $country['name'],
         ];
     }
 
     public function preProcessIndex($data)
     {
-        if (! $data) {
+        if (!$data) {
             return;
         }
 

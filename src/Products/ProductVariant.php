@@ -9,7 +9,8 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant
 {
-    use HasData, FluentlyGetsAndSets;
+    use HasData;
+    use FluentlyGetsAndSets;
 
     protected $key;
     protected $product;
@@ -30,7 +31,7 @@ class ProductVariant
         return $this
             ->fluentlyGetOrSet('product')
             ->setter(function ($product) {
-                if (! $product instanceof Product) {
+                if (!$product instanceof Product) {
                     return ProductFacade::find($product);
                 }
 

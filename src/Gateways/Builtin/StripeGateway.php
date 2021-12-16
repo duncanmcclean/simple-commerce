@@ -5,13 +5,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -106,8 +106,8 @@ class StripeGateway extends BaseGateway implements Gateway
             ? $order->get('stripe')['intent']
             : null;
 
-        if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided("Stripe: No Payment Intent was provided to fetch.");
+        if (!$paymentIntent) {
+            throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to fetch.');
         }
 
         $charge = PaymentIntent::retrieve($paymentIntent);
@@ -123,8 +123,8 @@ class StripeGateway extends BaseGateway implements Gateway
             ? $order->get('stripe')['intent']
             : null;
 
-        if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided("Stripe: No Payment Intent was provided to action a refund.");
+        if (!$paymentIntent) {
+            throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to action a refund.');
         }
 
         $refund = Refund::create([
@@ -166,7 +166,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
     protected function setUpWithStripe()
     {
-        if (! $this->config()->has('secret')) {
+        if (!$this->config()->has('secret')) {
             throw new StripeSecretMissing("Could not find your Stripe Secret. Please ensure it's added to your gateway configuration.");
         }
 
@@ -180,7 +180,7 @@ class StripeGateway extends BaseGateway implements Gateway
                 'pp_partner_Jnvy4cdwcRmxfh'
             );
         } catch (\Exception $e) {
-            Log::info("[Simple Commerce] Stripe: Failed to `setAppInfo`");
+            Log::info('[Simple Commerce] Stripe: Failed to `setAppInfo`');
         }
 
         if ($version = $this->config()->has('version')) {

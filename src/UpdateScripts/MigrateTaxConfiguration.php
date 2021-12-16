@@ -5,10 +5,10 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Statamic\UpdateScripts\UpdateScript;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
-use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
 class MigrateTaxConfiguration extends UpdateScript
@@ -52,8 +52,8 @@ class MigrateTaxConfiguration extends UpdateScript
         ConfigWriter::edit('simple-commerce')
             ->set('tax_engine', BasicTaxEngine::class)
             ->set('tax_engine_config', [
-                'rate' => $taxRate,
-                'included_in_prices' => $includedInPrices
+                'rate'               => $taxRate,
+                'included_in_prices' => $includedInPrices,
             ])
             ->save();
 
@@ -77,7 +77,7 @@ class MigrateTaxConfiguration extends UpdateScript
         BLOCK;
 
         $contents = Str::of(File::get(config_path('simple-commerce.php')))
-            ->replace("'tax_engine' =>", $helpComment . PHP_EOL . PHP_EOL . "'tax_engine' =>")
+            ->replace("'tax_engine' =>", $helpComment.PHP_EOL.PHP_EOL."'tax_engine' =>")
             ->__toString();
 
         File::put(config_path('simple-commerce.php'), $contents);

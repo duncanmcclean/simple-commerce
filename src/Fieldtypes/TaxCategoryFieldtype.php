@@ -14,26 +14,26 @@ class TaxCategoryFieldtype extends Relationship
     {
         return [
             'max_items' => [
-                'display' => __('Max Items'),
+                'display'      => __('Max Items'),
                 'instructions' => __('statamic::messages.max_items_instructions'),
-                'type' => 'integer',
-                'width' => 50,
-                'read_only' => true,
-                'default' => 1,
+                'type'         => 'integer',
+                'width'        => 50,
+                'read_only'    => true,
+                'default'      => 1,
             ],
             'mode' => [
-                'display' => __('Mode'),
+                'display'      => __('Mode'),
                 'instructions' => __('statamic::fieldtypes.relationship.config.mode'),
-                'type' => 'radio',
-                'default' => 'default',
-                'options' => [
-                    'default' => __('Stack Selector'),
-                    'select' => __('Select Dropdown'),
+                'type'         => 'radio',
+                'default'      => 'default',
+                'options'      => [
+                    'default'   => __('Stack Selector'),
+                    'select'    => __('Select Dropdown'),
                     'typeahead' => __('Typeahead Field'),
                 ],
-                'width' => 50,
+                'width'     => 50,
                 'read_only' => true,
-                'default' => 'select',
+                'default'   => 'select',
             ],
         ];
     }
@@ -42,8 +42,8 @@ class TaxCategoryFieldtype extends Relationship
     {
         return TaxCategory::all()->map(function ($taxCategory) {
             return [
-                'id' => $taxCategory->id(),
-                'name' => $taxCategory->name(),
+                'id'    => $taxCategory->id(),
+                'name'  => $taxCategory->name(),
                 'title' => $taxCategory->name(),
             ];
         })->values();
@@ -61,14 +61,14 @@ class TaxCategoryFieldtype extends Relationship
         $taxCategory = TaxCategory::find($id);
 
         return [
-            'id' => $taxCategory->id(),
+            'id'    => $taxCategory->id(),
             'title' => $taxCategory->name(),
         ];
     }
 
     public function preProcessIndex($data)
     {
-        if (! $data) {
+        if (!$data) {
             return;
         }
 

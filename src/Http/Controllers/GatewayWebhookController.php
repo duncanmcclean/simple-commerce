@@ -18,7 +18,7 @@ class GatewayWebhookController extends BaseActionController
             ->where('handle', $gateway)
             ->first();
 
-        if (! $gateway) {
+        if (!$gateway) {
             throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
         }
 

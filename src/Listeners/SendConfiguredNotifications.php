@@ -20,7 +20,7 @@ class SendConfiguredNotifications implements ShouldQueue
 
         $notifications = collect(Config::get('simple-commerce.notifications'))->get($eventName);
 
-        if (! $notifications) {
+        if (!$notifications) {
             return;
         }
 
@@ -30,12 +30,12 @@ class SendConfiguredNotifications implements ShouldQueue
             $notifiables = $this->getNotifiables($config, $notification, $event);
             $notification = new $notification(...$this->getNotificationParameters($config, $notification, $event));
 
-            if (! $notifiables) {
+            if (!$notifiables) {
                 break;
             }
 
             foreach ($notifiables as $notifiable) {
-                if (! $freshNotification) {
+                if (!$freshNotification) {
                     $freshNotification = Notification::route($notifiable['channel'], $notifiable['route']);
                 } else {
                     $freshNotification->route($notifiable['channel'], $notifiable['route']);
@@ -73,7 +73,7 @@ class SendConfiguredNotifications implements ShouldQueue
 
         if (is_string($config['to'])) {
             return [
-                ['channel' => 'mail', 'route' => $config['to']]
+                ['channel' => 'mail', 'route' => $config['to']],
             ];
         }
 

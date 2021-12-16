@@ -131,7 +131,7 @@ class CustomerControllerTest extends TestCase
 
         $data = [
             '_request' => CustomerUpdateFormRequest::class,
-            'vip' => true,
+            'vip'      => true,
         ];
 
         $response = $this

@@ -35,7 +35,7 @@ class BasicTaxEngineTest extends TestCase
             ],
         ]);
 
-        $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
+        $taxCalculation = (new BasicTaxEngine())->calculate($order, $lineItem);
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
@@ -65,7 +65,7 @@ class BasicTaxEngineTest extends TestCase
             ],
         ]);
 
-        $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
+        $taxCalculation = (new BasicTaxEngine())->calculate($order, $lineItem);
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
@@ -77,7 +77,7 @@ class BasicTaxEngineTest extends TestCase
     /** @test */
     public function can_calculate_tax_when_tax_rate_is_decimal_number()
     {
-        $this->markTestIncomplete("Need to figure out the calculation issue, oh well!");
+        $this->markTestIncomplete('Need to figure out the calculation issue, oh well!');
 
         Config::set('simple-commerce.tax_engine_config.rate', 10.5);
 
@@ -96,7 +96,7 @@ class BasicTaxEngineTest extends TestCase
             ],
         ]);
 
-        $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
+        $taxCalculation = (new BasicTaxEngine())->calculate($order, $lineItem);
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
@@ -126,7 +126,7 @@ class BasicTaxEngineTest extends TestCase
             ],
         ]);
 
-        $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
+        $taxCalculation = (new BasicTaxEngine())->calculate($order, $lineItem);
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
@@ -159,7 +159,7 @@ class BasicTaxEngineTest extends TestCase
             ],
         ]);
 
-        $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
+        $taxCalculation = (new BasicTaxEngine())->calculate($order, $lineItem);
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 

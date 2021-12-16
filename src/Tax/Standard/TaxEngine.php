@@ -24,7 +24,7 @@ class TaxEngine implements Contract
     {
         $taxRate = $this->decideOnRate($order, $lineItem);
 
-        if (! $taxRate) {
+        if (!$taxRate) {
             $noRateAvailable = config('simple-commerce.tax_engine_config.behaviour.no_rate_available');
 
             if ($noRateAvailable === 'default_rate') {
@@ -32,7 +32,7 @@ class TaxEngine implements Contract
             }
 
             if ($noRateAvailable === 'prevent_checkout') {
-                throw new PreventCheckout(__("This order cannot be completed as no tax rate is available."));
+                throw new PreventCheckout(__('This order cannot be completed as no tax rate is available.'));
             }
         }
 
@@ -51,7 +51,7 @@ class TaxEngine implements Contract
             ? $order->billingAddress()
             : $order->shippingAddress();
 
-        if (! $address) {
+        if (!$address) {
             $noAddressProvided = config('simple-commerce.tax_engine_config.behaviour.no_address_provided');
 
             if ($noAddressProvided === 'default_address') {
@@ -59,7 +59,7 @@ class TaxEngine implements Contract
             }
 
             if ($noAddressProvided === 'prevent_checkout') {
-                throw new PreventCheckout(__("This order cannot be completed as no address has been added to this order."));
+                throw new PreventCheckout(__('This order cannot be completed as no address has been added to this order.'));
             }
         }
 

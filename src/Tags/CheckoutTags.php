@@ -29,7 +29,7 @@ class CheckoutTags extends SubTag
                     return true;
                 })
                 ->filter(function ($gateway) {
-                    return ! Gateway::use($gateway['class'])->isOffsiteGateway();
+                    return !Gateway::use($gateway['class'])->isOffsiteGateway();
                 })
                 ->each(function ($gateway) use (&$cart, &$data) {
                     try {
@@ -77,7 +77,7 @@ class CheckoutTags extends SubTag
             ->where('handle', $gatewayHandle)
             ->first();
 
-        if (! $gateway) {
+        if (!$gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);
         }
 
@@ -101,7 +101,7 @@ class CheckoutTags extends SubTag
             $gateway['handle'] => $prepare->data(), // TODO
         ])->save();
 
-        if (! $prepare->checkoutUrl()) {
+        if (!$prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
 

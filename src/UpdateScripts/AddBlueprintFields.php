@@ -30,8 +30,8 @@ class AddBlueprintFields extends UpdateScript
 
         $blueprint = Blueprint::find("collections.{$orderCollection}.{$orderCollectionSingular}");
 
-        if (! $blueprint) {
-            $this->console()->error("Failed to update order blueprint.");
+        if (!$blueprint) {
+            $this->console()->error('Failed to update order blueprint.');
         }
 
         $contents = $blueprint->fileData();
@@ -47,12 +47,12 @@ class AddBlueprintFields extends UpdateScript
                     if ($metaDataFieldAlreadyExists === 0) {
                         $contents['sections'][$sectionKey]['fields'][$sectionFieldKey]['field']['fields'][] = [
                             'handle' => 'metadata',
-                            'field' => [
-                                'type' => 'array',
+                            'field'  => [
+                                'type'     => 'array',
                                 'listable' => false,
-                                'display' => 'Metadata',
-                                'mode' => 'dynamic',
-                                'icon' => 'array',
+                                'display'  => 'Metadata',
+                                'mode'     => 'dynamic',
+                                'icon'     => 'array',
                             ],
                         ];
                     }
@@ -64,6 +64,6 @@ class AddBlueprintFields extends UpdateScript
             ->setContents($contents)
             ->save();
 
-        $this->console()->info("Successfully updated order blueprint.");
+        $this->console()->info('Successfully updated order blueprint.');
     }
 }

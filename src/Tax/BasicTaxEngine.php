@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Illuminate\Support\Facades\Config;
-use Statamic\Facades\Site;
 
 class BasicTaxEngine implements TaxEngine
 {
@@ -31,7 +30,7 @@ class BasicTaxEngine implements TaxEngine
         $product = Product::find($lineItem['product']);
 
         if ($product->get('exempt_from_tax') === true) {
-            return new TaxCalculation;
+            return new TaxCalculation();
         }
 
         if ($this->includedInPrices) {

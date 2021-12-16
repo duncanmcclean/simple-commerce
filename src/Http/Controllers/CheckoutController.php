@@ -25,7 +25,8 @@ use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use CartDriver, AcceptsFormRequests;
+    use CartDriver;
+    use AcceptsFormRequests;
 
     public $cart;
     public StoreRequest $request;
@@ -54,7 +55,7 @@ class CheckoutController extends BaseActionController
             $this->cart->removeLineItem($lineItem['id']);
             $this->cart->save();
 
-            return $this->withErrors($this->request, __("Checkout failed. A product in your cart has no stock left. The product has been removed from your cart."));
+            return $this->withErrors($this->request, __('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
         } catch (PreventCheckout $e) {
             return $this->withErrors($this->request, $e->getMessage());
         }
@@ -84,7 +85,7 @@ class CheckoutController extends BaseActionController
                 ? Gateway::use($this->request->get('gateway'))->purchaseRules()
                 : [],
             [
-                'coupon' => ['nullable', new ValidCoupon($this->cart)]
+                'coupon' => ['nullable', new ValidCoupon($this->cart)],
             ],
         );
 
@@ -126,8 +127,8 @@ class CheckoutController extends BaseActionController
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
                 $customer = Customer::create([
-                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                    'email' => $customerData['email'],
+                    'name'      => isset($customerData['name']) ? $customerData['name'] : '',
+                    'email'     => $customerData['email'],
                     'published' => true,
                 ], $this->guessSiteFromRequest()->handle());
             }
@@ -246,8 +247,8 @@ class CheckoutController extends BaseActionController
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
-            throw new NoGatewayProvided("No gateway provided.");
+        if (!$this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+            throw new NoGatewayProvided('No gateway provided.');
         }
 
         $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
@@ -267,7 +268,7 @@ class CheckoutController extends BaseActionController
             $this->cart->customer()->addOrder($this->cart->id);
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') === 0) {
+        if (!$this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') === 0) {
             $this->cart->markAsPaid();
         }
 

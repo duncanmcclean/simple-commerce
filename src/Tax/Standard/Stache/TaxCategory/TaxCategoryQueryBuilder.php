@@ -9,7 +9,7 @@ class TaxCategoryQueryBuilder extends Builder
 {
     protected function getFilteredKeys()
     {
-        if (! empty($this->wheres)) {
+        if (!empty($this->wheres)) {
             return $this->getKeysWithWheres();
         }
 
