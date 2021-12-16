@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Statamic\Fields\Field;
+use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
 use Statamic\Fields\Validator;
@@ -25,57 +26,9 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return array_merge(
             [
-                'variant_fields' => [
-                    (new Field('name', [
-                        'type'       => 'text',
-                        'listable'   => 'hidden',
-                        'display'    => 'Name',
-                        'width'      => 50,
-                        'input_type' => 'text',
-                        'validate'   => 'required',
-                    ]))->toPublishArray(),
-                    (new Field('values', [
-                        'type'     => 'taggable',
-                        'listable' => 'hidden',
-                        'display'  => 'Values',
-                        'width'    => 50,
-                        'validate' => 'required',
-                    ]))->toPublishArray(),
-                ],
-                'option_fields' => array_merge(
-                    [
-                        (new Field('key', [
-                            'type'      => 'hidden',
-                            'listable'  => 'hidden',
-                            'display'   => 'Key',
-                            'read_only' => true,
-                            'validate'  => 'required',
-                        ]))->toPublishArray(),
-                        (new Field('variant', [
-                            'type'      => 'textarea',
-                            'listable'  => 'hidden',
-                            'display'   => 'Variant',
-                            'read_only' => true,
-                            'validate'  => 'required',
-                            'width'     => 50,
-                        ]))->toPublishArray(),
-                        (new Field('price', [
-                            'type'      => 'money',
-                            'read_only' => false,
-                            'listable'  => 'hidden',
-                            'display'   => 'Price',
-                            'validate'  => 'required',
-                            'width'     => 50,
-                        ]))->toPublishArray(),
-                    ],
-                    collect($this->config('option_fields'))
-                        ->map(function ($field) {
-                            return (
-                                new Field($field['handle'], $field['field'])
-                            )->toPublishArray();
-                        })
-                        ->toArray(),
-                ),
+                'variant_fields' => $this->variantFields()->toPublishArray(),
+                'option_fields' => $this->optionFields()->toPublishArray(),
+
                 'option_field_defaults' => collect($this->config('option_fields'))
                     ->mapWithKeys(function ($field) {
                         $field = (
@@ -87,6 +40,7 @@ class ProductVariantsFieldtype extends Fieldtype
                         ];
                     })
                     ->toArray(),
+
                 'variant' => resolve(Textarea::class)->preload(),
                 'price'   => resolve(MoneyFieldtype::class)->preload(),
             ],
@@ -233,5 +187,74 @@ class ProductVariantsFieldtype extends Fieldtype
             'variants' => ['array'],
             'options' => ['array'],
         ], $variantFieldRules, $optionFieldRules);
+    }
+
+    protected function variantFields(): Fields
+    {
+        $variantFields = [
+            [
+                'handle' => 'name',
+                'field' => [
+                    'type'       => 'text',
+                    'listable'   => 'hidden',
+                    'display'    => 'Name',
+                    'width'      => 50,
+                    'input_type' => 'text',
+                    'validate'   => 'required',
+                ],
+            ],
+            [
+                'handle' => 'values',
+                'field' => [
+                    'type'     => 'taggable',
+                    'listable' => 'hidden',
+                    'display'  => 'Values',
+                    'width'    => 50,
+                    'validate' => 'required',
+                ],
+            ],
+        ];
+
+        return new Fields($variantFields, $this->field()->parent(), $this->field());
+    }
+
+    protected function optionFields(): Fields
+    {
+        $optionFields = array_merge([
+            [
+                'handle' => 'key',
+                'field' => [
+                    'type'      => 'hidden',
+                    'listable'  => 'hidden',
+                    'display'   => 'Key',
+                    'read_only' => true,
+                    'validate'  => 'required',
+                ],
+            ],
+            [
+                'handle' => 'variant',
+                'field' => [
+                    'type'      => 'textarea',
+                    'listable'  => 'hidden',
+                    'display'   => 'Variant',
+                    'read_only' => true,
+                    'validate'  => 'required',
+                    'width'     => 50,
+                ],
+            ],
+            [
+                'handle' => 'price',
+                'field' => [
+                    'type'      => 'money',
+                    'read_only' => false,
+                    'listable'  => 'hidden',
+                    'display'   => 'Price',
+                    'validate'  => 'required',
+                    'width'     => 50,
+                ],
+            ],
+        ], $this->config('option_fields'));
+
+        return new Fields($optionFields, $this->field()->parent(), $this->field());
     }
 }
