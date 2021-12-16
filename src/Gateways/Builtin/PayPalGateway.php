@@ -136,7 +136,7 @@ class PayPalGateway extends BaseGateway implements Gateway
     {
         $this->setupPayPal();
 
-        $request = new CapturesRefundRequest($order->get('gateway_data')['purchase_units'][0]['payments']['captures'][0]['id']);
+        $request = new CapturesRefundRequest($order->get('gateway')['data']['purchase_units'][0]['payments']['captures'][0]['id']);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
@@ -213,10 +213,13 @@ class PayPalGateway extends BaseGateway implements Gateway
                     ->save();
             }
 
-            $order->set('gateway_data', $responseBody)->save();
+            $order->set('gateway', array_merge($order->get('gateway'), [
+                'data' => $responseBody,
+            ]))->save();
+
             $this->markOrderAsPaid($order);
 
-            event(new PostCheckout($order));
+            event(new PostCheckout($order, $request));
         }
 
         return new HttpResponse();

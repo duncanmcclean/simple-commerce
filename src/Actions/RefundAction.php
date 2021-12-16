@@ -39,7 +39,11 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id());
 
-                return Gateway::use($order->get('gateway'))->refundCharge($order);
+                $gatewayClass = is_string($order->get('gateway'))
+                    ? $order->get('gateway')
+                    : $order->get('gateway')['use'];
+
+                return Gateway::use($gatewayClass)->refundCharge($order);
             });
     }
 }

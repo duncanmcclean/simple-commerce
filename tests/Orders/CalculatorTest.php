@@ -613,6 +613,11 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['coupon_total'], 0);
 
         $this->assertSame($calculate['items'][0]['total'], 200);
+
+        // Revert hook
+        SimpleCommerce::productPriceHook(function ($order, $product) {
+            return $product->get('price');
+        });
     }
 
     /** @test */
@@ -673,6 +678,11 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['coupon_total'], 0);
 
         $this->assertSame($calculate['items'][0]['total'], 200);
+
+        // Revert hook
+        SimpleCommerce::productVariantPriceHook(function ($order, $product, $variant) {
+            return $variant->price();
+        });
     }
 }
 

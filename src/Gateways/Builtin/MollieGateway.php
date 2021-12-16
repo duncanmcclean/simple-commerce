@@ -54,7 +54,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->data()['gateway_data']['id']);
+        $payment = $this->mollie->payments->get($order->get('gateway')['data']['id']);
 
         return new Response(true, [
             'id'                              => $payment->id,
@@ -99,7 +99,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->data()['gateway_data']['id']);
+        $payment = $this->mollie->payments->get($order->get('gateway')['data']['id']);
         $payment->refund([]);
 
         return new Response(true, []);
@@ -127,7 +127,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
             $this->markOrderAsPaid($order);
 
-            event(new PostCheckout($order));
+            event(new PostCheckout($order, $request));
         }
     }
 

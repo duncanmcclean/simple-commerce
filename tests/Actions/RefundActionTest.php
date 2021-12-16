@@ -102,9 +102,11 @@ class RefundActionTest extends TestCase
             ->data([
                 'is_paid'      => true,
                 'is_refunded'  => false,
-                'gateway'      => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
-                'gateway_data' => [
-                    'id' => '123456789abcdefg',
+                'gateway' => [
+                    'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                    'data' => [
+                        'id' => '123456789abcdefg',
+                    ],
                 ],
             ])
             ->save();
@@ -114,6 +116,6 @@ class RefundActionTest extends TestCase
         $order->fresh();
 
         $this->assertTrue($order->data()->get('is_refunded'));
-        $this->assertArrayHasKey('refund', $order->data()->get('gateway_data'));
+        $this->assertArrayHasKey('refund', $order->data()->get('gateway'));
     }
 }

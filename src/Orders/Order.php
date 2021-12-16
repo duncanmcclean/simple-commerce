@@ -119,9 +119,15 @@ class Order implements Contract
 
     public function gateway()
     {
-        return $this->has('gateway')
-            ? collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'))
-            : null;
+        if (is_string($this->get('gateway'))) {
+            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'));
+        }
+
+        if (is_array($this->get('gateway'))) {
+            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway')['use']);
+        }
+
+        return null;
     }
 
     // TODO: refactor

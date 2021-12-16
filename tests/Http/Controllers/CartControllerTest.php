@@ -212,7 +212,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_email()
     {
-        // $this->markTestSkipped();
+        $this->markTestSkipped();
 
         $customer = Customer::create()->data([
             'name'  => 'Jak Simpson',
