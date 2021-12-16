@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Illuminate\Support\Facades\Config;
-use Statamic\Facades\Site;
 
 class BasicTaxEngine implements TaxEngine
 {
