@@ -89,7 +89,7 @@ class StandardTaxEngineTest extends TestCase
 
         // Ensure tax on line items are right
         $this->assertSame($recalculate->lineItems()->first()['tax'], [
-            'amount' => 167,
+            'amount' => $recalculate->lineItems()->first()['total'] === 1000 ? 167 : 333,
             'rate' => 20,
             'price_includes_tax' => false,
         ]);
