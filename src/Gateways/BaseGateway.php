@@ -3,12 +3,16 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Checkout\HandleStock;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class BaseGateway
 {
+    use HandleStock;
+
     protected array $config = [];
     protected string $handle = '';
     protected string $webhookUrl = '';
@@ -52,7 +56,7 @@ class BaseGateway
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
-        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
+        return config('app.url').route('statamic.simple-commerce.gateways.callback', $data, false);
     }
 
     public function webhookUrl()
@@ -88,8 +92,10 @@ class BaseGateway
     /**
      * Method used to complete on-site purchases.
      *
-     * @var Purchase $data
+     * @var Purchase
+     *
      * @return Response
+     *
      * @throws GatewayDoesNotSupportPurchase
      */
     public function purchase(Purchase $data): Response
@@ -105,5 +111,16 @@ class BaseGateway
     public function purchaseRules(): array
     {
         return [];
+    }
+
+    public function markOrderAsPaid(Order $order): bool
+    {
+        if ($this->isOffsiteGateway()) {
+            $this->handleStock($order);
+        }
+
+        $order->markAsPaid();
+
+        return true;
     }
 }

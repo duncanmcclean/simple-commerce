@@ -8,7 +8,7 @@ trait FormBuilder
 {
     use RendersForms;
 
-    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'name', 'request'];
+    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'request'];
 
     protected function createForm(string $action, array $data = [], string $method = 'POST'): string
     {
@@ -64,7 +64,7 @@ trait FormBuilder
      */
     public function errors()
     {
-        if (!$this->hasErrors()) {
+        if (! $this->hasErrors()) {
             return false;
         }
 
@@ -75,7 +75,7 @@ trait FormBuilder
         }
 
         return ($this->content === '')    // If this is a single tag...
-            ? !empty($errors)             // just output a boolean.
+            ? ! empty($errors)             // just output a boolean.
             : $errors;  // Otherwise, parse the content loop.
     }
 

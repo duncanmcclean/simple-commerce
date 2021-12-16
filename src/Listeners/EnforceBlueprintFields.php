@@ -11,7 +11,7 @@ class EnforceBlueprintFields
     public function handle(EntryBlueprintFound $event)
     {
         $productDriver = SimpleCommerce::productDriver();
-        $orderDriver   = SimpleCommerce::orderDriver();
+        $orderDriver = SimpleCommerce::orderDriver();
 
         if (isset($productDriver['collection']) && $event->blueprint->namespace() === "collections.{$productDriver['collection']}") {
             return $this->enforceProductFields($event);
@@ -21,7 +21,6 @@ class EnforceBlueprintFields
             return $this->enforceOrderFields($event);
         }
 
-        return;
     }
 
     protected function enforceProductFields($event): Blueprint

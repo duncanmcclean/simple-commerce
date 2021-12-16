@@ -8,7 +8,7 @@ class ReceiptShowRequest extends FormRequest
 {
     public function authorize()
     {
-        if (!$this->hasValidSignature()) {
+        if (! $this->hasValidSignature()) {
             return false;
         }
 
