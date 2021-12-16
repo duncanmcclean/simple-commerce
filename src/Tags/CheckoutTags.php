@@ -66,7 +66,7 @@ class CheckoutTags extends SubTag
     // {{ sc:checkout:mollie }}
     public function wildcard(string $tag)
     {
-        if (!$tag || $tag === 'index') {
+        if (! $tag || $tag === 'index') {
             return $this->index();
         }
 

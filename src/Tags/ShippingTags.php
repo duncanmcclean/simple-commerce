@@ -20,7 +20,7 @@ class ShippingTags extends SubTag
             ->map(function ($method) use ($order) {
                 $instance = Shipping::use($method);
 
-                if (!$shipingAddress = $order->shippingAddress()) {
+                if (! $shipingAddress = $order->shippingAddress()) {
                     return null;
                 }
 

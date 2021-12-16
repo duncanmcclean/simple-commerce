@@ -121,7 +121,7 @@ export default {
         },
 
         baseContainer() {
-             let parent = this.$parent
+            let parent = this.$parent
 
             while (parent && parent.$options._componentTag !== 'publish-container') {
                 parent = parent.$parent
@@ -170,11 +170,7 @@ export default {
         },
 
         updatedOptions(optionIndex, fieldHandle, value) {
-            this.options[optionIndex][fieldHandle] = value;
-        },
-
-        optionUpdated(row, value) {
-            //
+            this.options[optionIndex][fieldHandle] = value
         },
 
         metaUpdated(fieldHandle, event) {
@@ -201,6 +197,10 @@ export default {
                         existingData = {
                             price: 0,
                         }
+
+                        Object.entries(this.meta.option_field_defaults).forEach(([key, value]) => {
+                            existingData[key] = value
+                        })
                     }
 
                     return {

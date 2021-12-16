@@ -1729,7 +1729,7 @@ class CheckoutFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'accept_terms.required' => "Please accept the terms & conditions.",
+            'accept_terms.required' => 'Please accept the terms & conditions.',
         ];
     }
 }

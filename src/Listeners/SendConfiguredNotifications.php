@@ -73,7 +73,7 @@ class SendConfiguredNotifications implements ShouldQueue
 
         if (is_string($config['to'])) {
             return [
-                ['channel' => 'mail', 'route' => $config['to']]
+                ['channel' => 'mail', 'route' => $config['to']],
             ];
         }
 

@@ -51,16 +51,16 @@ class SimpleCommerceTagTest extends TestCase
         $this->assertStringContainsString('United States', $usage);
     }
 
-     /** @test */
-     public function can_get_countries_with_common_parameter()
-     {
-         $usage = $this->tag('{{ sc:countries common="IE" }}{{ name }},{{ /sc:countries }}');
+    /** @test */
+    public function can_get_countries_with_common_parameter()
+    {
+        $usage = $this->tag('{{ sc:countries common="IE" }}{{ name }},{{ /sc:countries }}');
 
-         $this->assertStringContainsString('Ireland,-,', $usage);
+        $this->assertStringContainsString('Ireland,-,', $usage);
 
-         $this->assertStringContainsString('United Kingdom', $usage);
-         $this->assertStringContainsString('United States', $usage);
-     }
+        $this->assertStringContainsString('United Kingdom', $usage);
+        $this->assertStringContainsString('United States', $usage);
+    }
 
     /** @test */
     public function can_get_countries_with_regions_inside()

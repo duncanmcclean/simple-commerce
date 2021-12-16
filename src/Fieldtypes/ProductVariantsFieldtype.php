@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Statamic\Fields\Validator;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
+use Statamic\Fields\Validator;
 use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
@@ -76,14 +76,32 @@ class ProductVariantsFieldtype extends Fieldtype
                         })
                         ->toArray(),
                 ),
+                'option_field_defaults' => collect($this->config('option_fields'))
+                    ->mapWithKeys(function ($field) {
+                        $field = (
+                            new Field($field['handle'], $field['field'])
+                        );
+
+                        return [
+                            $field->handle() => $field->fieldtype()->preProcess($field->defaultValue()),
+                        ];
+                    })
+                    ->toArray(),
                 'variant' => resolve(Textarea::class)->preload(),
                 'price'   => resolve(MoneyFieldtype::class)->preload(),
             ],
             collect($this->config('option_fields'))
                 ->mapWithKeys(function ($field) {
-                    return [$field['handle'] => (
-                        new Field($field['handle'], $field['field'])
-                    )->meta()];
+                    $fieldMeta = (new Field($field['handle'], $field['field']))->meta();
+
+                    // Fix the assets fieldtype (for now!)
+                    if (isset($fieldMeta['data']) && collect($fieldMeta['data'])->count() === 0) {
+                        $fieldMeta['data'] = null;
+                    }
+
+                    return [
+                        $field['handle'] => $fieldMeta,
+                    ];
                 })
                 ->toArray(),
         );
@@ -133,7 +151,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        if (!$value) {
+        if (! $value) {
             return null;
         }
 

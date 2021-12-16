@@ -36,7 +36,7 @@ class Customer implements Contract
             ->where('slug', Str::slug($email))
             ->first();
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [
                 'email' => $email,
             ]));
