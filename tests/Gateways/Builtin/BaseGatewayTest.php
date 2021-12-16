@@ -83,7 +83,7 @@ class BaseGatewayTest extends TestCase
 
 class FakeOnsiteGateway extends BaseGateway
 {
-    public function name()
+    public function name(): string
     {
         return 'Fake Onsite Gateway';
     }
@@ -96,7 +96,7 @@ class FakeOnsiteGateway extends BaseGateway
 
 class FakeOffsiteGateway extends BaseGateway
 {
-    public function name()
+    public function name(): string
     {
         return 'Fake Offsite Gateway';
     }
