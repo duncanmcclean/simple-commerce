@@ -92,10 +92,10 @@ class CookieDriver implements CartDriver
     {
         $site = $this->guessSiteFromRequest();
 
-        if (Config::get('simple-commerce.cart.single_cart')) {
-            return Config::get('simple-commerce.cart.key');
+        if (Site::hasMultiple() && ! Config::get('simple-commerce.cart.single_cart')) {
+            return Config::get('simple-commerce.cart.key') . '_' . $site->handle();
         }
 
-        return Config::get('simple-commerce.cart.key') . '_' . $site->handle();
+        return Config::get('simple-commerce.cart.key');
     }
 }
