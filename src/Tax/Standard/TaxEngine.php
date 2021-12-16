@@ -32,7 +32,7 @@ class TaxEngine implements Contract
             }
 
             if ($noRateAvailable === 'prevent_checkout') {
-                throw new PreventCheckout(__("This order cannot be completed as no tax rate is available."));
+                throw new PreventCheckout(__('This order cannot be completed as no tax rate is available.'));
             }
         }
 
@@ -59,7 +59,7 @@ class TaxEngine implements Contract
             }
 
             if ($noAddressProvided === 'prevent_checkout') {
-                throw new PreventCheckout(__("This order cannot be completed as no address has been added to this order."));
+                throw new PreventCheckout(__('This order cannot be completed as no address has been added to this order.'));
             }
         }
 
