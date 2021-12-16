@@ -20,7 +20,6 @@ class EnforceBlueprintFields
         if (isset($orderDriver['collection']) && $event->blueprint->namespace() === "collections.{$orderDriver['collection']}") {
             return $this->enforceOrderFields($event);
         }
-
     }
 
     protected function enforceProductFields($event): Blueprint

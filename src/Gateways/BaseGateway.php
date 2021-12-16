@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
-use Illuminate\Http\Request;
 use DoubleThreeDigital\SimpleCommerce\Checkout\HandleStock;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 

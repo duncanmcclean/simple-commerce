@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
@@ -84,7 +83,7 @@ class TaxZone
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-zones')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-zones')->directory().$this->id().'.yaml';
     }
 
     public function fileData()

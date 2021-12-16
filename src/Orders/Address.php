@@ -20,10 +20,10 @@ class Address
         $this->name = $name;
         $this->addressLine1 = $addressLine1;
         $this->addressLine2 = $addressLine2;
-        $this->city         = $city;
-        $this->country      = $country;
-        $this->zipCode      = $zipCode;
-        $this->region       = $region;
+        $this->city = $city;
+        $this->country = $country;
+        $this->zipCode = $zipCode;
+        $this->region = $region;
     }
 
     public function toArray(): array
