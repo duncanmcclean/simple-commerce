@@ -21,7 +21,7 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
         $product = Product::create([
-            'price' => 2000,
+            'price' => 1000,
         ]);
 
         $order = Order::create([
@@ -30,7 +30,7 @@ class BasicTaxEngineTest extends TestCase
                 $lineItem = [
                     'product'  => $product->id,
                     'quantity' => 1,
-                    'total'    => 2000,
+                    'total'    => 1000,
                 ],
             ],
         ]);
@@ -39,7 +39,7 @@ class BasicTaxEngineTest extends TestCase
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
-        $this->assertSame($taxCalculation->amount(), 400);
+        $this->assertSame($taxCalculation->amount(), 200);
         $this->assertSame($taxCalculation->priceIncludesTax(), false);
         $this->assertSame($taxCalculation->rate(), 20);
     }
