@@ -3,11 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use Statamic\Facades\User;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\File;
+use Statamic\Facades\User;
 
 class TaxRateControllerTest extends TestCase
 {

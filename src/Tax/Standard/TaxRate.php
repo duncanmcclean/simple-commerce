@@ -96,7 +96,7 @@ class TaxRate
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-rates')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-rates')->directory().$this->id().'.yaml';
     }
 
     public function fileData()

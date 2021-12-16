@@ -77,7 +77,7 @@ class BasicTaxEngineTest extends TestCase
     /** @test */
     public function can_calculate_tax_when_tax_rate_is_decimal_number()
     {
-        $this->markTestIncomplete("Need to figure out the calculation issue, oh well!");
+        $this->markTestIncomplete('Need to figure out the calculation issue, oh well!');
 
         Config::set('simple-commerce.tax_engine_config.rate', 10.5);
 

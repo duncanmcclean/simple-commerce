@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use Illuminate\Support\Facades\File;
 use Closure;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
@@ -74,7 +74,6 @@ class SimpleCommerce
             static::$taxEngine = config('simple-commerce.tax_engine');
         });
     }
-
 
     public static function bootShippingMethods()
     {
