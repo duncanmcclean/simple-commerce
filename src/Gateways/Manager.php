@@ -75,7 +75,7 @@ class Manager implements Contract
 
         $cart->data([
             'is_refunded'  => true,
-            'gateway' => array_merge($cart->get('gateway'), [
+            'gateway' => array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
                 'refund' => $refund,
             ]),
         ])->save();

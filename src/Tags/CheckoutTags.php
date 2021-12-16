@@ -94,7 +94,7 @@ class CheckoutTags extends SubTag
         $prepare = $prepare->prepare(request(), $cart);
 
         $cart->data([
-            'gateway' => array_merge($cart->get('gateway') ?? [], [
+            'gateway' => array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
                 'use' => $gateway['class'],
             ]),
 
