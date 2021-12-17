@@ -10,7 +10,20 @@ This tag lets you loop through countries.
 {{ /sc:countries }}
 ```
 
-It also supports some optional parameters:
+When looping through, you may also loop through the country's related regions, like so:
+
+```antlers
+{{ sc:countries }}
+  <h2>{{ name }}</h2>
+  <ul>
+    {{ regions }}
+        <li>{{ name }}</li>
+    {{ /regions }}
+  </ul>
+{{ /sc:countries }}
+```
+
+## Parameters
 
 ### only
 
