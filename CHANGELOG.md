@@ -20,6 +20,39 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 * Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 * The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.1 (2021-12-17)
+
+Simple Commerce v2.4 is on it's way - this is the very first beta release! The plan is to have a few beta releases for folks to test, then I'll release during the New Year!
+
+### Updating to the beta
+
+* Set `minimum-stability` to `"dev"` or `"alpha"`
+
+* Change `"doublethreedigital/simple-commerce"` to `"2.4.*"`
+
+```json
+// composer.json
+
+"minimum-stability": "alpha",
+"require": {
+    "doublethreedigital/simple-commerce": "2.3.*",
+    // all the other stuff...
+},
+```
+
+* Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
+
+After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/master/docs/upgrade-guide.md) which explains any changes you may need to make.
+
+### Full Changelog
+
+For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
+
+
+
+
+
+
 
 
 
