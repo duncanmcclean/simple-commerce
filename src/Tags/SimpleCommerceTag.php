@@ -107,11 +107,19 @@ class SimpleCommerceTag extends Tags
 
     public function regions()
     {
-        return Regions::map(function ($region) {
-            return array_merge($region, [
-                'country' => Countries::findByRegion($region)->first(),
-            ]);
-        })->toArray();
+        $regions = collect(Regions::all());
+
+        if ($country = $this->params->get('country')) {
+            $regions->where('country_iso', $country);
+        }
+
+        return $regions
+            ->map(function ($region) {
+                return array_merge($region, [
+                    'country' => Countries::findByRegion($region)->first(),
+                ]);
+            })
+            ->toArray();
     }
 
     public function errors()

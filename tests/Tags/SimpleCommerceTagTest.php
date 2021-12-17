@@ -92,6 +92,17 @@ class SimpleCommerceTagTest extends TestCase
     }
 
     /** @test */
+    public function can_get_regions_scoped_by_country()
+    {
+        $usage = $this->tag('{{ sc:regions country="GB" }}{{ name }} ({{ country:iso }}),{{ /sc:regions }}');
+
+        foreach (Regions::where('country_iso', 'GB')->toArray() as $region) {
+            $this->assertStringContainsString($region['name'], $usage);
+            $this->assertStringContainsString($region['country_iso'], $usage);
+        }
+    }
+
+    /** @test */
     public function can_get_sub_tag_index()
     {
         $usage = $this->tag('{{ sc:test }}');
