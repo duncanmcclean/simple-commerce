@@ -13,6 +13,7 @@ To help you integrate Simple Commerce into your Antlers templates, Simple Commer
 * [Currencies](/tags/currencies)
 * [Customer](/tags/customer)
 * [Gateways](/tags/gateways)
+* [Regions](/tags/regions)
 * [Shipping](/tags/shipping)
 
 ## Form Tags
