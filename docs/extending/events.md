@@ -87,6 +87,7 @@ This event is fired after the checkout process has been completed.
 public function handle(PostCheckout $event)
 {
 	$event->order;
+    $event->request;
 }
 ```
 
@@ -100,6 +101,7 @@ This event is fired before the checkout process begins.
 public function handle(PreCheckout $event)
 {
 	$event->order;
+    $event->request;
 }
 ```
 
