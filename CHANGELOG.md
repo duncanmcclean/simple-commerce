@@ -4,37 +4,23 @@
 
 ## v2.4.0 (xx-xx-xx)
 
-### What's improved
+**After a long wait, Simple Commerce v2.4 is finally here!!**
 
-* Shipping Methods now have access to the full order
+Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading. It notes how to update & any breaking changes you might want to know about.
 
 ### What's new
 
-* A brand new tax system
-* A new `withoutRecalculating` method that lets you do stuff on the `Order` without the order being recalculated #440
+* Brand new Tax Engine ✨ #438
+* Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
 
-### Breaking changes
+### What's improved
 
-This release contains various breaking changes.
+* Gateway data has been combined, under a single key #498
+* Shipping Methods can now access the order when checking availability
+* Multisites: each site will now have it's own cart (rather than sharing one between them) #519
+* The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
-### [Medium] Shipping Methods: Updated signature of `checkAvailability` method
 
-**Previously:**
-
-```php
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-
-public function checkAvailability(Address $address): bool;
-```
-
-**Now:**
-
-```php
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-
-public function checkAvailability(Order $order, Address $address): bool;
-```
 
 
 

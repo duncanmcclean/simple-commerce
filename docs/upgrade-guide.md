@@ -2,14 +2,14 @@
 title: Upgrade Guide
 ---
 
-When upgrading from v2.2 to v2.3, please read through this guide in case there's anything you need to change. Most of the updates around the configuration file and blueprint changes have been automated to help speed up the process.
+## Overview
 
-You may also [review the changes](https://github.com/doublethreedigital/simple-commerce/compare/v2.3...v2.2) manually if you wish.
+When updating, read through this guide to see if there's anything you might need to change. A good chunk of updates will be done automatically for you but there will still be some manual steps you will need to take.
 
 In your `composer.json` file, change the `doublethreedigital/simple-commerce` version constraint:
 
 ```json
-"doublethreedigital/simple-commerce": "2.3.*"
+"doublethreedigital/simple-commerce": "2.4.*"
 ```
 
 Then run:
@@ -18,228 +18,96 @@ Then run:
 composer update doublethreedigital/simple-commerce --with-dependencies
 ```
 
-## High: Gateways
+## New Features
 
-### Built-in gateway namespace changes
+### Tax
 
-The namespace of all built-in gateways (Dummy, Stripe & Mollie) have been updated from `Gateways\GatewayName` to `Gateways\Builtin\GatewayName`.
+Simple Commerce v2.4 includes a brand new Tax System!
 
-If you're using one of these gateways, you must update the namespace in your `simple-commerce.php` config file.
+When you're upgraded to v2.4, Simple Commerce will update your configuration file to use a new 'basic tax engine'. Essentially, the 'basic tax engine' is the same thing you had previously - with a single tax rate.
 
-**Note: this is one of the upgrade steps that's automated for you.**
+If you wish, you may enable the 'standard tax engine'. The Standard Tax Engine is more complicated but comes with super powers (compared to a single tax rate 😅). It allows you to set tax rates based on the type of products purchased and the customer's billing address.
+
+A full explination of both engines is available in [the documentation](https://simple-commerce.duncanmcclean.com/tax).
+
+## Changes
+
+### Low Impact: Dropped Laravel 6 support
+
+We've dropped support for sites using Laravel 6. If you're unsure as to the Laravel version you're using, run `php artisan --version` which will tell you.
+
+Simple Commerce supports Laravel 7 onwards. If you're on Laravel 6, you may upgrade by following the official [Laravel Upgrade Guide](https://laravel.com/docs/7.x/upgrade#upgrade-7.0).
+
+### Low Impact: One cart per site
+
+In v2.3, if you had multiple sites on the same domain, they would all share a single cart. This meant you could add one product on one site and another product on another site. This would mean currencies would be mixed up, shipping methods would get mixed up, etc.
+
+Now in v2.4, each cart will have it's own cart. Simple Commerce will append the site handle to the cart key in your cookies/session.
+
+Any multi-sites migrated to v2.4 will continue to use the v2.3 behaviour. To opt-out, and use a 'cart per site', remove the `cart.single_cart` config value:
 
 ```php
-/*
-|--------------------------------------------------------------------------
-| Gateways
-|--------------------------------------------------------------------------
-|
-| You can setup multiple payment gateways for your store with Simple Commerce.
-| Here's where you can configure the gateways in use.
-|
-| https://simple-commerce.duncanmcclean.com/gateways
-|
-*/
-
-'gateways' => [
-    \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
-        'display' => 'Card',
-    ],
+'cart' => [
+    'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+    'key' => 'simple-commerce-cart',
+    'single_cart' => true, // [tl! --]
 ],
 ```
 
-### Custom gateway namespace changes
+### Medium Impact: Changes to how 'gateway data' is stored
 
-If you're using a custom gateway, please update the namespaces of the Data Transfer Objects (DTOs) provided by SC.
+Previously, the data from a gateway would look something like this in your order entry:
 
-```
-// Before
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPrep;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayPurchase;
-use DoubleThreeDigital\SimpleCommerce\Data\Gateways\GatewayResponse;
-
-// Now
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
+```yaml
+gateway: DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway
+stripe:
+  intent: pi_whatever
+  client_secret: pi_whateveragain_secret_something
+gateway_data:
+  id: pm_whatever
 ```
 
-## High: Email notifications
+We've improved this, so the `gateway` and `gateway_data` values are under a single key, like so:
 
-Previously, Mailables were used to send email notifications to customers and store owners.
-
-However, in order to easily support more notification types in the future, I've changed the way email notifications work. They now use Laravel's [Notifications feature](https://laravel.com/docs/master/notifications).
-
-### Updated configuration
-
-You may now specifiy multiple notifications for an 'event'. You can also specify who you'd like each of the notifications to be sent to. You can choose from
-
-```
-/*
-|--------------------------------------------------------------------------
-| Notifications
-|--------------------------------------------------------------------------
-|
-| Simple Commerce can automatically send notifications after events occur in your store.
-| eg. a cart being completed.
-|
-| Here's where you can toggle if certain notifications are enabled/disabled.
-|
-| https://simple-commerce.duncanmcclean.com/email
-|
-*/
-
-'notifications' => [
-    'order_paid' => [
-        \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
-        \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
-    ],
-],
+```yaml
+gateway:
+  use: DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway
+  data:
+    id: pm_whatever
+stripe:
+ intent: pi_whatever
+ client_secret: pi_whateveragain_secret_something
 ```
 
-**Note: this is one of the upgrade steps that's automated for you.**
+This will cleanup your order entry a little and means we can make a 'Gateway' fieldtype in the future.
 
-## Medium: Events
+When updating to v2.4, Simple Commerce will re-format your order entries for you.
 
-I've updated the names of events, the parameters available in events and there's a few events which have also been removed. A full list of changes is available below:
+### Medium Impact: Updated signature of `checkAvailability` method on shipping methods
 
-### `CartUpdated`
+The signature of the `checkAvailability` method on shipping methods has changed. We now pass in the order.
 
-This event has been removed.
-
-### `CouponRedeemed`
-
-Previously the `$coupon` was an `Entry` instance, this has been changed to a `Coupon` instance.
+**Previously:**
 
 ```php
-public function handle(CouponRedeemed $event)
-{
-	$event->coupon; // is now a Coupon
-}
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+
+public function checkAvailability(Address $address): bool;
 ```
 
-### `CustomerAddedToCart`
-
-This event has been removed. In place, I'd recommend listening for order entries being updated and checking if the `customer` field has been changed.
-
-### `CartCompleted` -> `OrderPaid`
-
-This event has been renamed `OrderPaid`. Additionally, the `$cart` parameter has been removed, `$order` should now be used (all of the same methods are available).
+**Now:**
 
 ```php
-public function handle(OrderPaid $event)
-{
-	$event->order; // will return an Order, should be used in place of $cart
-}
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+
+public function checkAvailability(Order $order, Address $address): bool;
 ```
 
-### `CartSaved` -> `OrderSaved`
+## Previous upgrade guides
 
-This event has been renamed `OrderSaved`. Additionally, the `$cart` parameter has been removed and a `$order` parameter has been added.
-
-The `$order` parameter will return an `Order` instance.
-
-```php
-public function handle(OrderSaved $event)
-{
-	$event->order; // will return an Order, should be used in place of $cart
-}
-```
-
-### `PostCheckout`
-
-Previously, only an order's data array was passed into this event. However, now the full `$order` is available.
-
-```php
-public function handle(PostCheckout $event)
-{
-	$event->order; // will return an Order
-}
-```
-
-### `PreCheckout`
-
-Previously, only an order's data array was passed into this event. However, now the full `$order` is available.
-
-```php
-public function handle(PreCheckout $event)
-{
-	$event->order; // will return an Order
-}
-```
-
-## Medium: Translations
-
-I've simplified the translations into a single file, `messages.php`. If you were previously using your own translations, please [review the updated file](https://github.com/doublethreedigital/simple-commerce/blob/2.3/resources/lang/en/messages.php).
-
-## Medium: Custom Data Classes
-
-To help with future features I've got planned (👀), I've updated a few things around custom data classes.
-
-Note: You'll now find me referring to these as 'content drivers'.
-
-### Updates to binding your custom data class
-
-Instead of directly binding to the service container in your `AppServiceProvider.php` file, please bind your data class from inside the `simple-commerce.php` config file.
-
-```php
-/*
-|--------------------------------------------------------------------------
-| Content Drivers
-|--------------------------------------------------------------------------
-|
-| Simple Commerce stores all products, orders, coupons etc as flat-file entries.
-| This works great for store stores where you want to keep everything simple. But
-| sometimes, for more complex stores, you may want use a database instead. To do so,
-| just swap out the 'content driver' in place below.
-|
-*/
-
-'content' => [
-    'orders' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
-        'collection' => 'orders',
-    ],
-
-    'products' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
-        'collection' => 'products',
-    ],
-
-    'coupons' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
-        'collection' => 'coupons',
-    ],
-
-    'customers' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
-        'collection' => 'customers',
-    ],
-],
-```
-
-When updating, we will **automate** the change of configuration format. However, it will not automatically switch it to your custom driver/data class.
-
-### Contract changes
-
-I've also made various changes to the contracts implemented by custom drivers/data classes. You may [review the changes on GitHub](https://github.com/doublethreedigital/simple-commerce/tree/2.3/src/Contracts).
-
-## Low: Cart facade
-
-Like mentioned in the [v2.2 upgrade guide](https://simple-commerce.duncanmcclean.com//update-guide#cart-facade-being-phased-out), the `Cart` facade has now been completley removed.
-
-You should now use the `Order` facade which provides all of the same methods.
-
-```php
-// Before
-Cart::find('abc-123');
-
-// After
-Order::find('abc-123');
-```
+* [v2.2 to v2.3](https://github.com/doublethreedigital/simple-commerce/blob/2.3/docs/upgrade-guide.md)
 
 ---
 
-Please feel free to [reach out](mailto:duncan@doublethree.digital) if you've got any questions about upgrading! I'm always happy to help.
+[You may also view a diff of changes between v2.3 and v3.4](https://github.com/doublethreedigital/simple-commerce/compare/2.3...2.4)
