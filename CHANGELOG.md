@@ -35,7 +35,7 @@ Simple Commerce v2.4 is on it's way - this is the very first beta release! The p
 
 "minimum-stability": "alpha",
 "require": {
-    "doublethreedigital/simple-commerce": "2.3.*",
+    "doublethreedigital/simple-commerce": "2.4.*",
     // all the other stuff...
 },
 ```
