@@ -35,9 +35,9 @@ trait HasData
         return $this->data()->has($key);
     }
 
-    public function get(string $key)
+    public function get(string $key, $default = null)
     {
-        return $this->data()->get($key);
+        return $this->data()->get($key, $default);
     }
 
     public function set(string $key, $value): self

@@ -36,7 +36,7 @@ interface Customer
 
     public function has(string $key): bool;
 
-    public function get(string $key);
+    public function get(string $key, $default = null);
 
     public function set(string $key, $value);
 
