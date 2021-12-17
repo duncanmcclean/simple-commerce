@@ -155,6 +155,11 @@ return [
     'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class,
 
     'tax_engine_config' => [
+        // Basic Engine
+        'rate'               => 20,
+        'included_in_prices' => false,
+
+        // Standard Tax Engine
         'address' => 'billing',
 
         'behaviour' => [
