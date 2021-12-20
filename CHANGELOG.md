@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.57 (2021-12-20)
+
+### What's fixed
+
+* Fixed issue when using `UserCustomer` and Eloquent users together
+
 ## v2.3.56 (2021-12-13)
 
 ### What's fixed
