@@ -9,7 +9,6 @@ use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Statamic\Contracts\Auth\UserRepository;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Http\Resources\API\UserResource;
