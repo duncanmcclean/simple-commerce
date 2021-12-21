@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.58 (2021-12-21)
+
+### What's new
+
+* Country names are now translatable! #522
+
 ## v2.3.57 (2021-12-20)
 
 ### What's fixed
