@@ -28,7 +28,7 @@ When you're upgraded to v2.4, Simple Commerce will update your configuration fil
 
 If you wish, you may enable the 'standard tax engine'. The Standard Tax Engine is more complicated but comes with super powers (compared to a single tax rate 😅). It allows you to set tax rates based on the type of products purchased and the customer's billing address.
 
-A full explination of both engines is available in [the documentation](https://simple-commerce.duncanmcclean.com/tax).
+A full explanation of both engines is available in [the documentation](./tax).
 
 ## Changes
 
