@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.3.59 (2022-01-03)
+
+### What's improved
+
+* When setting up a multisite, developers will see a more helpful exception reminding them to add the site to their Simple Commerce config #524
+
+### What's fixed
+
+* Currency formatting on the Sales Widget has been fixed for certain currencies #529
+* CP Listings will now show the right currency on Money fields (only an issue where there's multiple sites) #526
+
 ## v2.3.58 (2021-12-21)
 
 ### What's new
