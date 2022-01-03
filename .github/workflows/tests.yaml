@@ -36,6 +36,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
 
+      - name: Delete composer.lock
+        run: rm composer.lock
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
