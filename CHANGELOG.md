@@ -10,8 +10,8 @@
 
 ### What's fixed
 
-* Currency formatting on the Sales Widget has been fixed for certain currencies #529
-* CP Listings will now show the right currency on Money fields (only an issue where there's multiple sites) #526
+* Currency formatting on the Sales Widget has been fixed for certain currencies #527 #529
+* CP Listings will now show the right currency on Money fields (only an issue where there's multiple sites) #523 #526
 
 ## v2.3.58 (2021-12-21)
 
