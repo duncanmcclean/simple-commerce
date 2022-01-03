@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         php: [8.1, 8.0, 7.4]
-        laravel: [8.*, 7.*, 6.*]
+        laravel: [8.*, 7.*]
         statamic: [^3.1, ^3.2]
         os: [ubuntu-latest]
         include:
@@ -21,12 +21,12 @@ jobs:
           - laravel: 7.*
             framework: ^7.30.4
             testbench: 5.*
-          - laravel: 6.*
-            framework: ^6.20.14
-            testbench: 4.*
+          # - laravel: 6.*
+          #   framework: ^6.20.14
+          #   testbench: 4.*
         exclude:
-          - laravel: 6.*
-            php: 8.1
+          # - laravel: 6.*
+          #   php: 8.1
           - laravel: 7.*
             php: 8.1
 
