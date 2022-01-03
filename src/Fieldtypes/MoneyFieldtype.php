@@ -75,6 +75,6 @@ class MoneyFieldtype extends Fieldtype
             return;
         }
 
-        return $this->augment($value);
+        return Currency::parse($value, Site::selected());
     }
 }
