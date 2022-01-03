@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Support;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Currency as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\SiteNotConfiguredException;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
@@ -18,6 +19,10 @@ class Currency implements Contract
     {
         $siteSettings = collect(Config::get('simple-commerce.sites'))
             ->get($site->handle());
+
+        if (! $siteSettings) {
+            throw new SiteNotConfiguredException("Site config not found [{$site->handle()}]");
+        }
 
         return Currencies::where('code', $siteSettings['currency'])
             ->first();
