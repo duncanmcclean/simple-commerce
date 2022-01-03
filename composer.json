@@ -42,7 +42,7 @@
         "nunomaduro/collision": "^4.2",
         "orchestra/testbench": "^4.0|^5.0|^6.0",
         "spatie/ray": "^1.17",
-        "spatie/test-time": "dev-master"
+        "spatie/test-time": "^1.2"
     },
     "scripts": {
         "lint": [
@@ -56,6 +56,10 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "process-timeout": 0
+        "process-timeout": 0,
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true,
+            "composer/package-versions-deprecated": true
+        }
     }
 }
