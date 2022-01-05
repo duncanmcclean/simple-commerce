@@ -123,6 +123,16 @@ sections:
           listable: false
           display: Shipping
       -
+        handle: shipping_method
+        field:
+          max_items: 1
+          mode: default
+          display: 'Shipping method'
+          type: shipping_methods
+          icon: shipping_methods
+          read_only: true
+          listable: hidden
+      -
         handle: shipping_name
         field:
           input_type: text
@@ -179,6 +189,16 @@ sections:
           type: section
           listable: false
           display: Billing
+      -
+        handle: gateway
+        field:
+          max_items: 1
+          mode: default
+          display: Gateway
+          type: gateways
+          icon: gateways
+          listable: hidden
+          read_only: true
       -
         handle: use_shipping_address_for_billing
         field:
