@@ -2,11 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Statamic\Fieldtypes\Relationship;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use Illuminate\Support\Facades\Config;
 use Statamic\CP\Column;
 use Statamic\Facades\Site;
+use Statamic\Fieldtypes\Relationship;
 
 class ShippingMethodsFieldtype extends Relationship
 {
@@ -25,12 +25,11 @@ class ShippingMethodsFieldtype extends Relationship
             })
             ->whereNotNull()
             ->toArray();
-        
     }
-     
+
     protected function toItemArray($id)
     {
-        if (!class_exists($id)) {
+        if (! class_exists($id)) {
             return null;
         }
 
@@ -41,7 +40,7 @@ class ShippingMethodsFieldtype extends Relationship
             'title'   => $instance->name(),
         ];
     }
- 
+
     protected function getColumns()
     {
         return [

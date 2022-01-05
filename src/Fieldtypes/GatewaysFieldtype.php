@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use Statamic\Fieldtypes\Relationship;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\CP\Column;
+use Statamic\Fieldtypes\Relationship;
 
 class GatewaysFieldtype extends Relationship
 {
@@ -23,9 +23,8 @@ class GatewaysFieldtype extends Relationship
             })
             ->whereNotNull()
             ->toArray();
-        
     }
-     
+
     protected function toItemArray($id)
     {
         if (! $instance = collect(SimpleCommerce::gateways())->firstWhere('class', $id)) {
@@ -37,7 +36,7 @@ class GatewaysFieldtype extends Relationship
             'title'   => $instance['name'],
         ];
     }
- 
+
     protected function getColumns()
     {
         return [
