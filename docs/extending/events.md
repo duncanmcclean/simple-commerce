@@ -87,6 +87,7 @@ This event is fired after the checkout process has been completed.
 public function handle(PostCheckout $event)
 {
 	$event->order;
+    $event->request;
 }
 ```
 
