@@ -125,6 +125,10 @@ class MollieGateway extends BaseGateway implements Gateway
                 })
                 ->first();
 
+            if ($order->get('is_paid') === true) {
+                return;
+            }
+
             $this->markOrderAsPaid($order);
 
             event(new PostCheckout($order, $request));
