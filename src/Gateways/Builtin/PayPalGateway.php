@@ -217,7 +217,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             $order->set('gateway_data', $responseBody)->save();
             $this->markOrderAsPaid($order);
 
-            event(new PostCheckout($order));
+            event(new PostCheckout($order, $request));
         }
 
         return new HttpResponse();
