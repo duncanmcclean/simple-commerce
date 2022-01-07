@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.60 (2022-01-07)
+
+### What's fixed
+
+* Fixed an issue with Off-site Gateways and the `PostCheckout` event #535 #536
+* Added a check to fix an issue with Mollie Webhook, where if it fails, it fails continuously
+
 ## v2.3.59 (2022-01-03)
 
 ### What's improved
