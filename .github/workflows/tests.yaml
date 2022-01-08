@@ -6,8 +6,7 @@ on:
 
 jobs:
   php_tests:
-    # runs-on: ubuntu-latest
-    runs-on: buildjet-8vcpu-ubuntu-2004
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
