@@ -71,6 +71,14 @@ class Coupon implements Contract
             }
         }
 
+        if ($this->isCustomerSpecific()) {
+            $isCustomerAllowed = collect($this->get('customers'))->contains($order->get('customer'));
+
+            if (! $isCustomerAllowed) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -87,6 +95,12 @@ class Coupon implements Contract
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
+    }
+
+    protected function isCustomerSpecific()
+    {
+        return $this->has('customers')
+            && collect($this->get('customers'))->count() >= 1;
     }
 
     public function collection(): string
