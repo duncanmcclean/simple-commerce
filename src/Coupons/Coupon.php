@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
@@ -71,6 +72,14 @@ class Coupon implements Contract
             }
         }
 
+        if ($this->isCustomerSpecific()) {
+            $isCustomerAllowed = collect($this->get('customers'))->contains($order->get('customer'));
+
+            if (! $isCustomerAllowed) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -87,6 +96,12 @@ class Coupon implements Contract
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
+    }
+
+    protected function isCustomerSpecific()
+    {
+        return $this->has('customers')
+            && collect($this->get('customers'))->count() >= 1;
     }
 
     public function collection(): string
