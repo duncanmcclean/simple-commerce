@@ -1710,6 +1710,61 @@ class CheckoutControllerTest extends TestCase
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
     }
+
+    /** @test */
+    public function can_post_checkout_and_ensure_temp_gateway_data_is_tidied_up()
+    {
+        Notification::fake();
+
+        $product = Product::create([
+            'title' => 'Bacon',
+            'price' => 5000,
+        ]);
+
+        $order = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ],
+            'grand_total' => 5000,
+            'dummy' => [
+                'foo' => 'bar',
+            ],
+        ]);
+
+        // Double check 'dummy' temp data is actually present
+        $this->assertIsArray($order->get('dummy'));
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ]);
+
+        $order->fresh();
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->published);
+
+        $this->assertTrue($order->get('is_paid'));
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+
+        // Finally, assert 'dummy' gateway temp data has been tiedied up
+        $this->assertNull($order->get('dummy'));
+    }
 }
 
 class CheckoutFormRequest extends FormRequest
