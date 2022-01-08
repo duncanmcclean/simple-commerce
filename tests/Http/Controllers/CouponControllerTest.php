@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
@@ -242,6 +243,102 @@ class CouponControllerTest extends TestCase
 
         $data = [
             'code' => 'half-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertRedirect('/cart');
+        $response->assertSessionHasErrors();
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertNotSame($this->cart->data['coupon'], $coupon->id());
+        $this->assertSame($this->cart->data['coupon_total'], 0000);
+    }
+
+    /** @test */
+    public function can_store_coupon_limited_to_certain_customers_and_current_customer_is_in_allow_list()
+    {
+        Event::fake();
+
+        $this->buildCartWithProducts();
+
+        $customer = Customer::create([
+            'name' => 'John Doe',
+            'email' => 'john@doe.com',
+        ])->save();
+
+        $this->cart->set('customer', $customer->id);
+
+        $coupon = Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('hof-price')
+            ->data([
+                'title'              => 'Hof Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+                'customers'          => [$customer->id],
+            ]);
+
+        $coupon->save();
+        $coupon->fresh();
+
+        $data = [
+            'code' => 'hof-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertRedirect('/cart');
+        $response->assertSessionHasNoErrors();
+
+        $this->cart->find($this->cart->id);
+
+        $this->assertSame($this->cart->data['coupon'], $coupon->id());
+        $this->assertNotSame($this->cart->data['coupon_total'], 0000);
+
+        Event::assertDispatched(CouponRedeemed::class);
+    }
+
+    /** @test */
+    public function cant_store_coupon_limited_to_certain_customers_and_current_customer_is_not_in_allow_list()
+    {
+        $this->buildCartWithProducts();
+
+        $customer = Customer::create([
+            'name' => 'John Doe',
+            'email' => 'john@doe.com',
+        ])->save();
+
+        $this->cart->set('customer', null);
+
+        $coupon = Entry::make()
+            ->collection('coupons')
+            ->id(Stache::generateId())
+            ->slug('halv-price')
+            ->data([
+                'title'              => 'Halv Price',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+                'customers'          => [$customer->id],
+            ]);
+
+        $coupon->save();
+        $coupon->fresh();
+
+        $data = [
+            'code' => 'halv-price',
         ];
 
         $response = $this
