@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CartTags extends SubTag
@@ -190,6 +191,14 @@ class CartTags extends SubTag
             [],
             'DELETE'
         );
+    }
+
+    public function alreadyExists()
+    {
+        return $this->getCart()->lineItems()
+            ->where('product', $this->params->get('product'))
+            ->where('variant', $this->params->get('variant'))
+            ->count() >= 1;
     }
 
     public function wildcard($method)

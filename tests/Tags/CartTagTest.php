@@ -321,6 +321,111 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
+    public function can_output_if_product_already_exists_in_cart()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id' => 'one-two-three',
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                ],
+            ],
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->tag->setParameters([
+            'product' => $product->id,
+        ]);
+
+        $usage = $this->tag->alreadyExists();
+
+        $this->assertTrue($usage);
+    }
+
+    /** @test */
+    public function can_output_if_product_and_variant_already_exists_in_cart()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'product_variants' => [
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
+                        ],
+                    ],
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 5000,
+                    ],
+                ],
+            ],
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id' => 'one-two-three',
+                    'product' => $product->id,
+                    'variant' => 'Red_Small',
+                    'quantity' => 1,
+                    'total' => 5000,
+                ],
+            ],
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->tag->setParameters([
+            'product' => $product->id,
+            'variant' => 'Red_Small',
+        ]);
+
+        $usage = $this->tag->alreadyExists();
+
+        $this->assertTrue($usage);
+    }
+
+    /** @test */
+    public function can_output_if_product_does_not_already_exists_in_cart()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([]);
+
+        $this->fakeCart($cart);
+
+        $this->tag->setParameters([
+            'product' => $product->id,
+        ]);
+
+        $usage = $this->tag->alreadyExists();
+
+        $this->assertFalse($usage);
+    }
+
+    /** @test */
     public function can_get_data_from_cart()
     {
         $cart = Order::create([
