@@ -9,4 +9,5 @@ use Spatie\Enum\Enum;
  * @method static self VARIANT()
  */
 class ProductType extends Enum
-{}
+{
+}
