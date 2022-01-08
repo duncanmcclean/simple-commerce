@@ -35,13 +35,13 @@ class Product implements Contract
         return (int) $this->get('stock');
     }
 
-    public function purchasableType(): string
+    public function purchasableType(): ProductType
     {
         if (isset($this->data()['product_variants']['variants'])) {
-            return 'variants';
+            return ProductType::VARIANT();
         }
 
-        return 'product';
+        return ProductType::PRODUCT();
     }
 
     public function variants(): Collection

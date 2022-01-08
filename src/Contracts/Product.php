@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
+use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductVariant;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Collection;
@@ -46,7 +47,7 @@ interface Product
 
     public function stockCount();
 
-    public function purchasableType(): string;
+    public function purchasableType(): ProductType;
 
     public function variants(): Collection;
 
