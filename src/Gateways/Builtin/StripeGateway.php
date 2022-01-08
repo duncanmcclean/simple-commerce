@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -172,16 +173,12 @@ class StripeGateway extends BaseGateway implements Gateway
 
         Stripe::setApiKey($this->config()->get('secret'));
 
-        try {
-            Stripe::setAppInfo(
-                'Statamic Simple Commerce',
-                Addon::get('doublethreedigital/simple-commerce')->version(),
-                'https://github.com/doublethreedigital/simple-commerce',
-                'pp_partner_Jnvy4cdwcRmxfh'
-            );
-        } catch (\Exception $e) {
-            Log::info('[Simple Commerce] Stripe: Failed to `setAppInfo`');
-        }
+        Stripe::setAppInfo(
+            'Simple Commerce (Statamic)',
+            SimpleCommerce::version(),
+            'https://statamic.com/addons/double-three-digital/simple-commerce',
+            'pp_partner_Jnvy4cdwcRmxfh'
+        );
 
         if ($version = $this->config()->has('version')) {
             Stripe::setApiVersion($version);
