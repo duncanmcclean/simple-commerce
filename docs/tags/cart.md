@@ -115,3 +115,23 @@ If you want to empty all the items from the cart and start from scratch. You can
   <button>I messed up.. there's too much in my cart. I need a fresh start.</button>
 {{ /sc:cart:empty }}
 ```
+
+## Checking if a product exists in the customer's cart
+
+Sometimes you'll want to know if a certain product (or product variant) exists in a customer's cart. Well, it's a good thing it's easy peasy to check.
+
+**Standard Products**
+
+```antlers
+{{ if {sc:cart:alreadyExists :product="id"} }}
+  This product is already in your cart.
+{{ /if }}
+```
+
+**Variant Products**
+
+```antlers
+{{ if {sc:cart:alreadyExists :product="id" variant="Red_Small"} }}
+  This product is already in your cart.
+{{ /if }}
+```
