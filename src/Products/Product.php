@@ -28,20 +28,20 @@ class Product implements Contract
 
     public function stockCount()
     {
-        if ($this->purchasableType() === 'variants' || ! $this->has('stock')) {
+        if ($this->purchasableType() === ProductType::VARIANT() || ! $this->has('stock')) {
             return null;
         }
 
         return (int) $this->get('stock');
     }
 
-    public function purchasableType(): string
+    public function purchasableType(): ProductType
     {
         if (isset($this->data()['product_variants']['variants'])) {
-            return 'variants';
+            return ProductType::VARIANT();
         }
 
-        return 'product';
+        return ProductType::PRODUCT();
     }
 
     public function variants(): Collection

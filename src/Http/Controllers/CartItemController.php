@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -71,11 +72,11 @@ class CartItemController extends BaseActionController
         }
 
         // Ensure there's enough stock to fulfill the customer's quantity
-        if ($product->purchasableType() === 'product') {
+        if ($product->purchasableType() === ProductType::PRODUCT()) {
             if ($product->has('stock') && $product->get('stock') !== null && $product->get('stock') < $request->quantity) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
-        } elseif ($product->purchasableType() === 'variants') {
+        } elseif ($product->purchasableType() === ProductType::VARIANT()) {
             $variant = $product->variant($request->get('variant'));
 
             if ($variant !== null && $variant->stockCount() !== null && $variant->stockCount() < $request->quantity) {

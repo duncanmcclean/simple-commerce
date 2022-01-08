@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 class Calculator implements Contract
@@ -65,7 +66,7 @@ class Calculator implements Contract
     {
         $product = ProductAPI::find($lineItem['product']);
 
-        if ($product->purchasableType() === 'variants') {
+        if ($product->purchasableType() === ProductType::VARIANT()) {
             $variant = $product->variant(
                 isset($lineItem['variant']['variant']) ? $lineItem['variant']['variant'] : $lineItem['variant']
             );
