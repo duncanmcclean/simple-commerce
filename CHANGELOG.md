@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## v2.3.61 (2022-01-08)
+
+### What's new
+
+* Added a new `{{ sc:cart:alreadyExists }}` tag for checking if a product exists in the cart
+
+### What's improved
+
+* We're now telling Gateways which version of Simple Commerce is being used to send API requests
+
+### What's fixed
+
+* Fixed compatibility issues with the 'Order Status' filter in the CP
+
 ## v2.3.60 (2022-01-07)
 
 ### What's fixed
