@@ -16,14 +16,14 @@
             >No product selected.</p>
 
             <select-field
-                v-if="productVariantsData && productVariantsData.purchasable_type === 'variants'"
+                v-if="productVariantsData && productVariantsData.purchasable_type === 'VARIANT'"
                 :options="productVariantOptions"
                 :disabled="readOnly"
                 v-model="variant.variant"
             ></select-field>
 
             <p
-                v-else-if="productVariantsData && productVariantsData.purchasable_type === 'product'"
+                v-else-if="productVariantsData && productVariantsData.purchasable_type === 'PRODUCT'"
                 class="text-sm p-1"
             >Product doesn't support variants.</p>
         </div>

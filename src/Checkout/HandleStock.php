@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 
 trait HandleStock
 {
@@ -16,7 +17,7 @@ trait HandleStock
             ->each(function ($item) {
                 $product = Product::find($item['product']);
 
-                if ($product->purchasableType() === 'product') {
+                if ($product->purchasableType() === ProductType::PRODUCT()) {
                     if ($product->has('stock') && $product->get('stock') !== null) {
                         $stockCount = $product->get('stock') - $item['quantity'];
 
@@ -38,7 +39,7 @@ trait HandleStock
                     }
                 }
 
-                if ($product->purchasableType() === 'variants') {
+                if ($product->purchasableType() === ProductType::VARIANT()) {
                     $variant = $product->variant($item['variant']['variant'] ?? $item['variant']);
 
                     if ($variant !== null && $variant->stockCount() !== null) {
