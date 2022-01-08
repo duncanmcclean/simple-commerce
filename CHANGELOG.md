@@ -16,9 +16,22 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 ### What's improved
 
 * Gateway data has been combined, under a single key #498
+* 'Temporary' gateway data will now be cleared after checking out
 * Shipping Methods can now access the order when checking availability
 * Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 * The `PreCheckout` and `PostCheckout` events now includes the context of the request
+
+## v2.4.0-beta.2 (2022-12-08)
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+* Ability to limit coupons to certain customers
+
+### What's improved
+
+* 'Temporary gateway data' will now be cleared from orders after checkout
 
 ## v2.4.0-beta.1 (2021-12-17)
 
