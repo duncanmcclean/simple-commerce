@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
