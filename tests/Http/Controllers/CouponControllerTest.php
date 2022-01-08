@@ -269,7 +269,7 @@ class CouponControllerTest extends TestCase
         $customer = Customer::create([
             'name' => 'John Doe',
             'email' => 'john@doe.com',
-        ])->save();
+        ]);
 
         $this->cart->set('customer', $customer->id);
 
@@ -317,7 +317,7 @@ class CouponControllerTest extends TestCase
         $customer = Customer::create([
             'name' => 'John Doe',
             'email' => 'john@doe.com',
-        ])->save();
+        ]);
 
         $this->cart->set('customer', null);
 
