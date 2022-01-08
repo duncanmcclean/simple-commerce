@@ -19,6 +19,10 @@ class SimpleCommerce
 
     public static function version(): string
     {
+        if (! Addon::isInstalled('doublethreedigital/simple-commerce') && app()->environment('testing')) {
+            return 'v2.0.0';
+        }
+
         return Addon::get('doublethreedigital/simple-commerce')->version();
     }
 
