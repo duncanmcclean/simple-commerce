@@ -56,6 +56,35 @@ For more information on what's new/what's changed, review the [`CHANGELOG.md`](h
 
 
 
+## v2.3.60 (2022-01-07)
+
+### What's fixed
+
+* Fixed an issue with Off-site Gateways and the `PostCheckout` event #535 #536
+* Added a check to fix an issue with Mollie Webhook, where if it fails, it fails continuously
+
+## v2.3.59 (2022-01-03)
+
+### What's improved
+
+* When setting up a multisite, developers will see a more helpful exception reminding them to add the site to their Simple Commerce config #524
+
+### What's fixed
+
+* Currency formatting on the Sales Widget has been fixed for certain currencies #527 #529
+* CP Listings will now show the right currency on Money fields (only an issue where there's multiple sites) #523 #526
+
+## v2.3.58 (2021-12-21)
+
+### What's new
+
+* Country names are now translatable! #522
+
+## v2.3.57 (2021-12-20)
+
+### What's fixed
+
+* Fixed issue when using `UserCustomer` and Eloquent users together
 
 ## v2.3.56 (2021-12-13)
 

@@ -47,7 +47,8 @@ class OrderStatusFilter extends Filter
     public function visibleTo($key)
     {
         return $key === 'entries'
-            && SimpleCommerce::orderDriver()['driver'] === Order::class
+            // && SimpleCommerce::orderDriver()['driver'] === Order::class
+            && isset(SimpleCommerce::orderDriver()['driver'])
             && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
     }
 }

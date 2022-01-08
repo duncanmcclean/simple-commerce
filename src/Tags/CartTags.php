@@ -192,6 +192,14 @@ class CartTags extends SubTag
         );
     }
 
+    public function alreadyExists()
+    {
+        return $this->getCart()->lineItems()
+            ->where('product', $this->params->get('product'))
+            ->where('variant', $this->params->get('variant'))
+            ->count() >= 1;
+    }
+
     public function wildcard($method)
     {
         $cart = $this->getCart();

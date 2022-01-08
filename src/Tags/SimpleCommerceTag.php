@@ -97,7 +97,11 @@ class SimpleCommerceTag extends Tags
             }
         }
 
-        return $countries->toArray();
+        return $countries->map(function ($country) {
+            return array_merge($country, [
+                'name' => __($country['name']),
+            ]);
+        })->toArray();
     }
 
     public function currencies()
