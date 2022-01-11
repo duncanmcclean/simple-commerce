@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.62 (2022-01-11)
+
+### What's fixed
+
+* Fixed an error when you have no 'option fields' configured on your Product Variants field #542
+
 ## v2.3.61 (2022-01-08)
 
 ### What's new
