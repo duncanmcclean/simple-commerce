@@ -112,6 +112,7 @@ class CartItemController extends BaseActionController
 
         // Ensure the product doesn't already exist in the cart
         $alreadyExistsQuery = collect($items);
+        $metadata = Arr::except($request->all(), $this->reservedKeys);
 
         if ($request->has('variant')) {
             $alreadyExistsQuery = $alreadyExistsQuery->where('variant', [
@@ -121,6 +122,8 @@ class CartItemController extends BaseActionController
         } else {
             $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
         }
+
+        $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', $metadata);
 
         if ($alreadyExistsQuery->count() >= 1) {
             $cart->updateLineItem($alreadyExistsQuery->first()['id'], [
@@ -143,7 +146,7 @@ class CartItemController extends BaseActionController
             $item = array_merge(
                 $item,
                 [
-                    'metadata' => Arr::except($request->all(), $this->reservedKeys),
+                    'metadata' => $metadata,
                 ]
             );
 
