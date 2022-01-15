@@ -122,8 +122,9 @@ class CartItemController extends BaseActionController
         } else {
             $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
         }
-
-        $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', $metadata);
+        
+        if (config('simple-commerce.cart.metadata_duplication_check',false))
+            $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', $metadata);
 
         if ($alreadyExistsQuery->count() >= 1) {
             $cart->updateLineItem($alreadyExistsQuery->first()['id'], [
