@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.63 (2022-01-17)
+
+### What's new
+
+* You may now configure if you'd like the metadata to be unique or not in line items #546
+
 ## v2.3.62 (2022-01-11)
 
 ### What's fixed
