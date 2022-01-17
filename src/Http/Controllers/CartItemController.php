@@ -123,7 +123,7 @@ class CartItemController extends BaseActionController
             $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
         }
 
-        if (config('simple-commerce.cart.metadata_duplication_check', false)) {
+        if (config('simple-commerce.cart.unique_metadata')) {
             $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', $metadata);
         }
 
