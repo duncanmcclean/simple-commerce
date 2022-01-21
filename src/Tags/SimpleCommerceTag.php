@@ -18,6 +18,7 @@ class SimpleCommerceTag extends Tags
         'coupon'   => CouponTags::class,
         'customer' => CustomerTags::class,
         'gateways' => GatewayTags::class,
+        'order'    => OrderTags::class,
         'shipping' => ShippingTags::class,
     ];
 
@@ -43,11 +44,19 @@ class SimpleCommerceTag extends Tags
         }
 
         if (method_exists($class, $method)) {
-            return (new $class($this))->{$method}();
+            return (new $class($this))
+                ->setContent($this->content)
+                ->setContext($this->context)
+                ->setParameters($this->params)
+                ->{$method}();
         }
 
         if (method_exists($class, 'wildcard')) {
-            return (new $class($this))->wildcard($method);
+            return (new $class($this))
+                ->setContent($this->content)
+                ->setContext($this->context)
+                ->setParameters($this->params)
+                ->wildcard($method);
         }
 
         throw new TagNotFoundException("Tag [{$tag[0]}] could not be found.");
