@@ -6,23 +6,22 @@ title: Tags
 
 To help you integrate Simple Commerce into your Antlers templates, Simple Commerce provides various tags:
 
-- [Cart](/tags/cart)
-- [Checkout](/tags/checkout)
-- [Countries](/tags/countries)
-- [Coupon](/tags/coupon)
-- [Currencies](/tags/currencies)
-- [Customer](/tags/customer)
-- [Gateways](/tags/gateways)
-- [Orders](/tags/orders)
-- [Shipping](/tags/shipping)
+* [Cart](/tags/cart)
+* [Checkout](/tags/checkout)
+* [Countries](/tags/countries)
+* [Coupon](/tags/coupon)
+* [Currencies](/tags/currencies)
+* [Customer](/tags/customer)
+* [Gateways](/tags/gateways)
+* [Shipping](/tags/shipping)
 
 ## Form Tags
 
 Some Simple Commerce tags output `<form>` elements that submit to Simple Commerce endpoints. There's a couple of optional parameters you can add to form tags.
 
-- `redirect` - the URL where you'd like to redirect the user after a successful form submission.
-- `error_redirect` - the URL where you'd like to redirect the user after any validation errors are thrown by the form.
-- `request` - the name of the [Form Request](https://laravel.com/docs/master/validation#creating-form-requests) you wish to use for validation of the form.
+* `redirect` - the URL where you'd like to redirect the user after a successful form submission.
+* `error_redirect` - the URL where you'd like to redirect the user after any validation errors are thrown by the form.
+* `request` - the name of the [Form Request](https://laravel.com/docs/master/validation#creating-form-requests) you wish to use for validation of the form.
 
 ```antlers
 {{ sc:cart:addItem redirect="/cart" }}
@@ -46,11 +45,11 @@ Like noted above, you can use the `request` parameter when creating form tags to
 
 Although you can specify the `request` parameter on any form tag, not all of them will actually use it. Here's a list of the forms that do:
 
-- `{{ sc:cart:addItem }}`
-- `{{ sc:cart:updateItem }}`
-- `{{ sc:cart:update }}`
-- `{{ sc:customer:update }}`
-- `{{ sc:checkout }}`
+* `{{ sc:cart:addItem }}`
+* `{{ sc:cart:updateItem }}`
+* `{{ sc:cart:update }}`
+* `{{ sc:customer:update }}`
+* `{{ sc:checkout }}`
 
 ## Blade support
 
