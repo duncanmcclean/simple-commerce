@@ -34,6 +34,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $listen = [
         EntryBlueprintFound::class  => [
             Listeners\EnforceBlueprintFields::class,
+            Listeners\AddHiddenFields::class,
         ],
         Events\OrderPaid::class => [
             Listeners\SendConfiguredNotifications::class,
