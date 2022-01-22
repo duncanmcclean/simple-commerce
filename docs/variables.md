@@ -2,6 +2,8 @@
 title: Variables
 ---
 
+> Note: You'll need to be on Simple Commerce v2.3.64 or higher for Simple Commerce's variables to work.
+
 ## Available variables
 
 ### Orders
