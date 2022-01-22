@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use Statamic\Events\EntryBlueprintFound;
 use Illuminate\Support\Str;
+use Statamic\Events\EntryBlueprintFound;
 
 class AddHiddenFields
 {
@@ -23,7 +23,7 @@ class AddHiddenFields
             return $event->blueprint;
         }
 
-        $method = 'handle' . Str::studly($collectionType) . 'Collection';
+        $method = 'handle'.Str::studly($collectionType).'Collection';
 
         if (method_exists($this, $method)) {
             return $this->{$method}($event);
