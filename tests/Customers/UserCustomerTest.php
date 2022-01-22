@@ -273,8 +273,6 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_get_orders()
     {
-        $this->markTestIncomplete();
-
         $order = Order::create(['title' => 'Order #0001']);
 
         $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example')->set('orders', [$order->id()]);
