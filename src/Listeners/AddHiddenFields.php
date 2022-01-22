@@ -14,7 +14,7 @@ class AddHiddenFields
         }
 
         $collections = collect(config('simple-commerce.content'))->map(function ($contentType) {
-            return $contentType['collection'];
+            return isset($contentType['collection']) ? $contentType['collection'] : null;
         })->flip();
 
         $collectionType = $collections->get($event->entry->collection()->handle());
