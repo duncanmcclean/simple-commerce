@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use Illuminate\Support\Str;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
 
 class AddHiddenFields
@@ -13,29 +13,48 @@ class AddHiddenFields
             return $event->blueprint;
         }
 
-        $collections = collect(config('simple-commerce.content'))->map(function ($contentType) {
-            return isset($contentType['collection']) ? $contentType['collection'] : null;
-        })->flip();
-
-        $collectionType = $collections->get($event->entry->collection()->handle());
-
-        if (! $collectionType) {
-            return $event->blueprint;
+        if (
+            isset(SimpleCommerce::couponDriver()['collection'])
+            && SimpleCommerce::couponDriver()['collection'] === $event->entry->collectionHandle()
+        ) {
+            return $this->addCouponFields($event);
         }
 
-        $method = 'handle'.Str::studly($collectionType).'Collection';
-
-        if (method_exists($this, $method)) {
-            return $this->{$method}($event);
+        if (
+            isset(SimpleCommerce::customerDriver()['collection'])
+            && SimpleCommerce::customerDriver()['collection'] === $event->entry->collectionHandle()
+        ) {
+            return $this->addCustomerFields($event);
         }
+
+        if (
+            isset(SimpleCommerce::orderDriver()['collection'])
+            && SimpleCommerce::orderDriver()['collection'] === $event->entry->collectionHandle()
+        ) {
+            return $this->addOrderFields($event);
+        }
+
+        if (
+            isset(SimpleCommerce::productDriver()['collection'])
+            && SimpleCommerce::productDriver()['collection'] === $event->entry->collectionHandle()
+        ) {
+            return $this->addProductFields($event);
+        }
+
+        return $event->blueprint;
     }
 
-    protected function handleProductsCollection(EntryBlueprintFound $event)
+    protected function addCouponFields(EntryBlueprintFound $event)
     {
         return $event->blueprint;
     }
 
-    protected function handleOrdersCollection(EntryBlueprintFound $event)
+    protected function addCustomerFields(EntryBlueprintFound $event)
+    {
+        return $event->blueprint;
+    }
+
+    protected function addOrderFields(EntryBlueprintFound $event)
     {
         $event->blueprint->ensureField('receipt_url', [
             'type'    => 'receipt_url',
@@ -45,12 +64,7 @@ class AddHiddenFields
         return $event->blueprint;
     }
 
-    protected function handleCustomersCollection(EntryBlueprintFound $event)
-    {
-        return $event->blueprint;
-    }
-
-    protected function handleCouponsCollection(EntryBlueprintFound $event)
+    protected function addProductFields(EntryBlueprintFound $event)
     {
         return $event->blueprint;
     }
