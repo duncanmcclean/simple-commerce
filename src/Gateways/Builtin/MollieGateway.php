@@ -10,10 +10,12 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
 use Statamic\Facades\Site;
+use Statamic\Statamic;
 
 class MollieGateway extends BaseGateway implements Gateway
 {
@@ -125,9 +127,13 @@ class MollieGateway extends BaseGateway implements Gateway
                 })
                 ->first();
 
+            if ($order->get('is_paid') === true) {
+                return;
+            }
+
             $this->markOrderAsPaid($order);
 
-            event(new PostCheckout($order));
+            event(new PostCheckout($order, $request));
         }
     }
 
@@ -140,5 +146,8 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->mollie = new MollieApiClient();
         $this->mollie->setApiKey($this->config()->get('key'));
+
+        $this->mollie->addVersionString('Statamic/'.Statamic::version());
+        $this->mollie->addVersionString('SimpleCommerce/'.SimpleCommerce::version());
     }
 }

@@ -253,7 +253,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'width'     => 50,
                 ],
             ],
-        ], $this->config('option_fields'));
+        ], $this->config('option_fields', []));
 
         return new Fields($optionFields, $this->field()->parent(), $this->field());
     }

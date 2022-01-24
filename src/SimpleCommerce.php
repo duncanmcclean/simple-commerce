@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use Closure;
 use Illuminate\Support\Str;
+use Statamic\Facades\Addon;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
@@ -15,6 +16,15 @@ class SimpleCommerce
 
     public static $productPriceHook;
     public static $productVariantPriceHook;
+
+    public static function version(): string
+    {
+        if (app()->environment('testing')) {
+            return 'v2.0.0';
+        }
+
+        return Addon::get('doublethreedigital/simple-commerce')->version();
+    }
 
     public static function bootGateways()
     {

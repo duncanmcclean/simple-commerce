@@ -28,11 +28,13 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
+        Fieldtypes\Variables\ReceiptUrl::class,
     ];
 
     protected $listen = [
         EntryBlueprintFound::class  => [
             Listeners\EnforceBlueprintFields::class,
+            Listeners\AddHiddenFields::class,
         ],
         Events\OrderPaid::class => [
             Listeners\SendConfiguredNotifications::class,
