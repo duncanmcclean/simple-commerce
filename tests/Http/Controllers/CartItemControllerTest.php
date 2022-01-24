@@ -241,7 +241,6 @@ class CartItemControllerTest extends TestCase
             ->assertSessionHasErrors();
     }
 
-
     /** @test */
     public function can_store_item_with_variant_and_ensure_the_quantity_is_not_more_than_stock()
     {
@@ -1079,6 +1078,44 @@ class CartItemControllerTest extends TestCase
 
         $this->assertSame($cart->data['items'][0]['metadata']['foo'], 'bar');
         $this->assertSame($cart->data['items'][0]['metadata']['bar'], 'baz');
+    }
+
+    /** @test */
+    public function can_update_item_with_string_quantity_and_ensure_quantity_is_saved_as_integer()
+    {
+        $product = Product::create([
+            'title' => 'Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ],
+        ]);
+
+        $data = [
+            'quantity' => '3',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->data['items'][0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart->find($cart->id);
+
+        $this->assertSame(3, $cart->data['items'][0]['quantity']);
+        $this->assertIsInt($cart->data['items'][0]['quantity']);
     }
 
     /** @test */

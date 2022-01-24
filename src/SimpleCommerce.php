@@ -49,7 +49,7 @@ class SimpleCommerce
                     'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
-                    'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
+                    'webhook_url'     => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook',
                 ];
             })
             ->toArray();
@@ -109,7 +109,7 @@ class SimpleCommerce
             })
             ->last();
 
-        if (!$query) {
+        if (! $query) {
             return $minimum + 1;
         }
 
@@ -140,13 +140,13 @@ class SimpleCommerce
     {
         static::$productPriceHook = $callback;
 
-        return (new static);
+        return new static;
     }
 
     public static function productVariantPriceHook(Closure $callback): self
     {
         static::$productVariantPriceHook = $callback;
 
-        return (new static);
+        return new static;
     }
 }

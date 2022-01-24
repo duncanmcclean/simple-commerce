@@ -2,8 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-
 interface Calculator
 {
     public function calculate(Order $order): array;

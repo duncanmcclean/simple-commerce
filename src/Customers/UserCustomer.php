@@ -67,6 +67,10 @@ class UserCustomer implements Contract
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->email = $data['email']; // TODO: if it doesn't exist, throw an exception
 
+        if ($this->isUsingEloquentUsers() && isset($data['published'])) {
+            unset($data['published']);
+        }
+
         $data = array_merge($data, $this->defaultFieldsInBlueprint());
 
         $this->data(
@@ -81,8 +85,11 @@ class UserCustomer implements Contract
     public function save(): self
     {
         if (! $this->user) {
-            $this->user = User::make()
-                ->id($this->id);
+            $this->user = User::make();
+
+            if (! $this->isUsingEloquentUsers()) {
+                $this->user->id($this->id);
+            }
         }
 
         $data = $this->data;
@@ -232,5 +239,10 @@ class UserCustomer implements Contract
     public static function bindings(): array
     {
         return [];
+    }
+
+    protected function isUsingEloquentUsers(): bool
+    {
+        return config('statamic.users.repository') === 'eloquent';
     }
 }

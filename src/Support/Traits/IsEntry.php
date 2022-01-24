@@ -33,7 +33,7 @@ trait IsEntry
     {
         $this->entry = EntryAPI::find((string) $id);
 
-        if (!$this->entry) {
+        if (! $this->entry) {
             throw new EntryNotFound("Entry [{$id}] could not be found.");
         }
 
@@ -54,7 +54,7 @@ trait IsEntry
     public function create(array $data = [], string $site = ''): self
     {
         if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
-            $this->id = !is_null($this->id) ? $this->id : Stache::generateId();
+            $this->id = ! is_null($this->id) ? $this->id : Stache::generateId();
         }
 
         $this->site = $site !== '' ? $site : SiteAPI::current()->handle();

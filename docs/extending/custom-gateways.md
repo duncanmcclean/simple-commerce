@@ -61,7 +61,7 @@ public function callback(Request $request): bool
 
     $order = OrderFacade::find($request->get('_order_id'));
 
-    if (!$order) {
+    if (! $order) {
         return false;
     }
 

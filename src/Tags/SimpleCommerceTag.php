@@ -92,7 +92,11 @@ class SimpleCommerceTag extends Tags
             }
         }
 
-        return $countries->toArray();
+        return $countries->map(function ($country) {
+            return array_merge($country, [
+                'name' => __($country['name']),
+            ]);
+        })->toArray();
     }
 
     public function currencies()
@@ -102,7 +106,7 @@ class SimpleCommerceTag extends Tags
 
     public function errors()
     {
-        if (!$this->hasErrors()) {
+        if (! $this->hasErrors()) {
             return null;
         }
 

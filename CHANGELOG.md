@@ -2,6 +2,39 @@
 
 ## Unreleased
 
+## v2.3.58 (2021-12-21)
+
+### What's new
+
+* Country names are now translatable! #522
+
+## v2.3.57 (2021-12-20)
+
+### What's fixed
+
+* Fixed issue when using `UserCustomer` and Eloquent users together
+
+## v2.3.56 (2021-12-13)
+
+### What's fixed
+
+* Fixed issue where selected images would not be shown after save on Product Variants fieldtype #511
+
+## v2.3.55 (2021-12-13)
+
+### What's fixed
+
+* The 'Stock' feature will now work when using an off-site gateway #506 #509
+* Fixed issue with custom option fields not working before initial save #503 #510
+* The `name` parameter will no longer be stripped when using form tags #505
+* When updating line items, the quantity will always be saved as an integer, not a string.
+
+## v2.3.54 (2021-11-30)
+
+### What's fixed
+
+* Removed `ray` call from Variants fieldtype which would cause errors #496 by @ryanmitchell
+
 ## v2.3.53 (2021-11-20)
 
 ### What's improved

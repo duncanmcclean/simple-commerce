@@ -5,13 +5,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
+use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -79,7 +79,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $paymentMethod = PaymentMethod::retrieve($data->request()->payment_method);
 
         if ($paymentIntent->status === 'succeeded') {
-            $data->order()->markAsPaid();
+            $this->markOrderAsPaid($data->order());
         }
 
         return new GatewayResponse(true, [
@@ -107,7 +107,7 @@ class StripeGateway extends BaseGateway implements Gateway
             : null;
 
         if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided("Stripe: No Payment Intent was provided to fetch.");
+            throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to fetch.');
         }
 
         $charge = PaymentIntent::retrieve($paymentIntent);
@@ -124,7 +124,7 @@ class StripeGateway extends BaseGateway implements Gateway
             : null;
 
         if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided("Stripe: No Payment Intent was provided to action a refund.");
+            throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to action a refund.');
         }
 
         $refund = Refund::create([
@@ -180,7 +180,7 @@ class StripeGateway extends BaseGateway implements Gateway
                 'pp_partner_Jnvy4cdwcRmxfh'
             );
         } catch (\Exception $e) {
-            Log::info("[Simple Commerce] Stripe: Failed to `setAppInfo`");
+            Log::info('[Simple Commerce] Stripe: Failed to `setAppInfo`');
         }
 
         if ($version = $this->config()->has('version')) {
