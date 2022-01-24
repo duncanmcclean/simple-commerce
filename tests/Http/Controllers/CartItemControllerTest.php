@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 
 class CartItemControllerTest extends TestCase
@@ -186,6 +187,125 @@ class CartItemControllerTest extends TestCase
 
         $this->assertArrayHasKey('items', $cart->data);
         $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+    }
+
+    /** @test */
+    public function can_store_item_with_metadata_where_metadata_is_unique()
+    {
+        Config::set('simple-commerce.cart.unique_metadata', true);
+
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id' => 'smth',
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                    'metadata' => [
+                        'foo' => 'bar',
+                        'bar' => 'baz',
+                    ],
+                ],
+            ],
+            'items_total' => 1000,
+            'grand_total' => 1000,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'foo' => 'bar',
+            'barz' => 'baz',
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(2000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+
+        $this->assertSame(1, $cart->lineItems()->first()['quantity']);
+        $this->assertArrayHasKey('foo', $cart->lineItems()->first()['metadata']);
+        $this->assertArrayHasKey('bar', $cart->lineItems()->first()['metadata']);
+        $this->assertArrayNotHasKey('barz', $cart->lineItems()->first()['metadata']);
+
+        $this->assertSame(1, $cart->lineItems()->first()['quantity']);
+        $this->assertArrayHasKey('foo', $cart->lineItems()->last()['metadata']);
+        $this->assertArrayNotHasKey('bar', $cart->lineItems()->last()['metadata']);
+        $this->assertArrayHasKey('barz', $cart->lineItems()->last()['metadata']);
+
+        Config::set('simple-commerce.cart.unique_metadata', false);
+    }
+
+    /** @test */
+    public function can_store_item_with_metadata_where_metadata_is_not_unique()
+    {
+        Config::set('simple-commerce.cart.unique_metadata', true);
+
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $cart = Order::create([
+            'items' => [
+                [
+                    'id' => 'smth',
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                    'metadata' => [
+                        'foo' => 'bar',
+                        'bar' => 'baz',
+                    ],
+                ],
+            ],
+            'items_total' => 1000,
+            'grand_total' => 1000,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'foo' => 'bar',
+            'bar' => 'baz',
+        ];
+
+        $response = $this
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->from('/products/'.$product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(2000, $cart->data['items_total']);
+
+        $this->assertArrayHasKey('items', $cart->data);
+        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+
+        $this->assertSame(2, $cart->lineItems()->first()['quantity']);
+
+        $this->assertArrayHasKey('foo', $cart->lineItems()->first()['metadata']);
+        $this->assertArrayHasKey('bar', $cart->lineItems()->first()['metadata']);
+
+        Config::set('simple-commerce.cart.unique_metadata', false);
     }
 
     /** @test */

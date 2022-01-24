@@ -67,7 +67,7 @@ jobs:
           asset_content_type: application/tar+gz
 
       - name: Comment on related issues
-        uses: duncanmcclean/post-release-comments@v1.0.5
+        uses: duncanmcclean/post-release-comments@v1.0.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
