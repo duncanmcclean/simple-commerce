@@ -26,8 +26,6 @@ class MakeCommandsTest extends TestCase
     /** @test */
     public function it_can_make_an_onsite_gateway_using_argument_fallback()
     {
-        $this->markTestSkipped('Common issue when running: The command "statamic:make:gateway" does not exist.');
-
         $path = $this->preparePath('app/Gateways/StriPal.php');
 
         $this->assertFileDoesNotExist($path);
@@ -43,8 +41,6 @@ class MakeCommandsTest extends TestCase
     /** @test */
     public function it_can_make_an_onsite_gateway_by_specifying_argument()
     {
-        $this->markTestSkipped('Common issue when running: The command "statamic:make:gateway" does not exist.');
-
         $path = $this->preparePath('app/Gateways/StriPal.php');
 
         $this->assertFileDoesNotExist($path);
@@ -60,8 +56,6 @@ class MakeCommandsTest extends TestCase
     /** @test */
     public function it_can_make_an_offsite_gateway_by_specifying_argument()
     {
-        $this->markTestSkipped('Common issue when running: The command "statamic:make:gateway" does not exist.');
-
         $path = $this->preparePath('app/Gateways/Molipe.php');
 
         $this->assertFileDoesNotExist($path);
@@ -77,8 +71,6 @@ class MakeCommandsTest extends TestCase
     /** @test */
     public function it_can_make_a_shipping_method()
     {
-        $this->markTestSkipped('Common issue when running: The command "statamic:make:gateway" does not exist.');
-
         $path = $this->preparePath('app/ShippingMethods/FirstClass.php');
 
         $this->assertFileDoesNotExist($path);
