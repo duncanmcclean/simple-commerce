@@ -3,32 +3,39 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class Product implements Contract
 {
-    use IsEntry;
     use HasData;
 
     public $id;
-    public $site;
-    public $title;
-    public $slug;
     public $data;
-    public $published;
 
     protected $entry;
-    protected $collection;
+
+    public function id($id = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
+
+    public function entry($entry = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('entry')
+            ->args(func_get_args());
+    }
 
     public function stockCount()
     {
-        if ($this->purchasableType() === ProductType::VARIANT() || ! $this->has('stock')) {
+        if ($this->purchasableType() === ProductType::VARIANT() || !$this->has('stock')) {
             return null;
         }
 
@@ -46,7 +53,7 @@ class Product implements Contract
 
     public function variants(): Collection
     {
-        if (! isset($this->data()['product_variants']['options'])) {
+        if (!isset($this->data()['product_variants']['options'])) {
             return collect();
         }
 
@@ -74,22 +81,42 @@ class Product implements Contract
         })->first();
     }
 
-    public function collection(): string
-    {
-        return SimpleCommerce::productDriver()['collection'];
-    }
-
     public function taxCategory(): ?TaxCategory
     {
-        if (! isset($this->data['tax_category'])) {
+        if (!isset($this->data['tax_category'])) {
             return TaxCategoryFacade::find('default');
         }
 
         return TaxCategoryFacade::find($this->data['tax_category']);
     }
 
-    public static function bindings(): array
+    public function beforeSaved()
     {
-        return [];
+        return null;
+    }
+
+    public function afterSaved()
+    {
+        return null;
+    }
+
+    public function save(): self
+    {
+        if (method_exists($this, 'beforeSaved')) {
+            $this->beforeSaved();
+        }
+
+        ProductFacade::save($this);
+
+        if (method_exists($this, 'afterSaved')) {
+            $this->afterSaved();
+        }
+
+        return $this;
+    }
+
+    public function fresh()
+    {
+        return ProductFacade::find($this->id());
     }
 }

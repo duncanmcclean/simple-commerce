@@ -147,7 +147,8 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Order::class              => SimpleCommerce::orderDriver()['driver'],
             Contracts\Coupon::class             => SimpleCommerce::couponDriver()['driver'],
             Contracts\Customer::class           => SimpleCommerce::customerDriver()['driver'],
-            Contracts\Product::class            => SimpleCommerce::productDriver()['driver'],
+            // Contracts\Product::class            => SimpleCommerce::productDriver()['driver'],
+            Contracts\ProductRepository::class  => Products\EntryProductRepository::class,
             Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\ShippingManager::class    => Shipping\Manager::class,
             Contracts\Currency::class           => Support\Currency::class,
@@ -157,6 +158,8 @@ class ServiceProvider extends AddonServiceProvider
                 Statamic::repository($abstract, $concrete);
             }
         });
+
+        $this->app->bind(Contracts\Product::class, Products\Product::class);
 
         return $this;
     }
