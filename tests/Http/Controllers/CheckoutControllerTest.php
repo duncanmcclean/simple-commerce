@@ -716,8 +716,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-        $this->assertSame($product->get('stock'), 49);
+        $this->assertSame($product->fresh()->get('stock'), 49);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -773,8 +772,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-        $this->assertSame($product->get('stock'), 8);
+        $this->assertSame($product->fresh()->get('stock'), 8);
 
         Event::assertDispatched(StockRunningLow::class);
 
@@ -895,8 +893,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-        $this->assertSame($product->get('stock'), 0);
+        $this->assertSame($product->fresh()->get('stock'), 0);
 
         Event::assertDispatched(StockRunningLow::class);
         Event::assertNotDispatched(StockRunOut::class);
@@ -976,9 +973,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-
-        $this->assertSame($product->variant('Red_Small')->stockCount(), 49);
+        $this->assertSame($product->fresh()->variant('Red_Small')->stockCount(), 49);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -1057,8 +1052,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-        $this->assertSame($product->variant('Red_Small')->stockCount(), 8);
+        $this->assertSame($product->fresh()->variant('Red_Small')->stockCount(), 8);
 
         Event::assertDispatched(StockRunningLow::class);
 
@@ -1143,8 +1137,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-        $this->assertSame($product->variant('Red_Small')->stockCount(), 0);
+        $this->assertSame($product->fresh()->variant('Red_Small')->stockCount(), 0);
 
         Event::assertNotDispatched(StockRunningLow::class);
         Event::assertDispatched(StockRunOut::class);
@@ -1226,8 +1219,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert stock has been reduced
-        $product->fresh();
-        $this->assertSame($product->variant('Red_Small')->stockCount(), 0);
+        $this->assertSame($product->fresh()->variant('Red_Small')->stockCount(), 0);
 
         Event::assertDispatched(StockRunningLow::class);
         Event::assertNotDispatched(StockRunOut::class);
