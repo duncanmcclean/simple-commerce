@@ -4643,16 +4643,16 @@
         },
         {
             "name": "statamic/cms",
-            "version": "v3.2.31",
+            "version": "v3.2.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/statamic/cms.git",
-                "reference": "8938cf0088a654703d66435dd66784465a589052"
+                "reference": "4b7318189b97be2b5b53f9b460dd8c7585cc9ae4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/statamic/cms/zipball/8938cf0088a654703d66435dd66784465a589052",
-                "reference": "8938cf0088a654703d66435dd66784465a589052",
+                "url": "https://api.github.com/repos/statamic/cms/zipball/4b7318189b97be2b5b53f9b460dd8c7585cc9ae4",
+                "reference": "4b7318189b97be2b5b53f9b460dd8c7585cc9ae4",
                 "shasum": ""
             },
             "require": {
@@ -4721,7 +4721,7 @@
             ],
             "support": {
                 "issues": "https://github.com/statamic/cms/issues",
-                "source": "https://github.com/statamic/cms/tree/v3.2.31"
+                "source": "https://github.com/statamic/cms/tree/v3.2.32"
             },
             "funding": [
                 {
@@ -4729,7 +4729,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-14T18:48:54+00:00"
+            "time": "2022-01-26T15:55:16+00:00"
         },
         {
             "name": "statamic/stringy",
