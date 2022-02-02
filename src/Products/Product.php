@@ -115,6 +115,11 @@ class Product implements Contract
         return $this;
     }
 
+    public function delete(): void
+    {
+        ProductFacade::delete($this);
+    }
+
     public function fresh()
     {
         return ProductFacade::find($this->id());

@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;

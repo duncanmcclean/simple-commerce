@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-interface Coupon
+interface CouponRepository
 {
     //
 }
