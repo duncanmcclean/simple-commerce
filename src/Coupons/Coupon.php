@@ -68,7 +68,7 @@ class Coupon implements Contract
         if ($this->isCustomerSpecific()) {
             $isCustomerAllowed = collect($this->get('customers'))->contains($order->get('customer'));
 
-            if (!$isCustomerAllowed) {
+            if (! $isCustomerAllowed) {
                 return false;
             }
         }

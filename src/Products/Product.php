@@ -35,7 +35,7 @@ class Product implements Contract
 
     public function stockCount()
     {
-        if ($this->purchasableType() === ProductType::VARIANT() || !$this->has('stock')) {
+        if ($this->purchasableType() === ProductType::VARIANT() || ! $this->has('stock')) {
             return null;
         }
 
@@ -53,7 +53,7 @@ class Product implements Contract
 
     public function variants(): Collection
     {
-        if (!isset($this->data()['product_variants']['options'])) {
+        if (! isset($this->data()['product_variants']['options'])) {
             return collect();
         }
 
@@ -83,7 +83,7 @@ class Product implements Contract
 
     public function taxCategory(): ?TaxCategory
     {
-        if (!isset($this->data['tax_category'])) {
+        if (! isset($this->data['tax_category'])) {
             return TaxCategoryFacade::find('default');
         }
 

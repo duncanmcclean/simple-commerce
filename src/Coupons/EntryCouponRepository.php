@@ -28,7 +28,7 @@ class EntryCouponRepository implements RepositoryContract
     {
         $entry = Entry::find($id);
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CouponNotFound("Coupon [{$id}] could not be found.");
         }
 
@@ -46,7 +46,7 @@ class EntryCouponRepository implements RepositoryContract
             ->where('slug', $code)
             ->first();
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 
@@ -55,7 +55,7 @@ class EntryCouponRepository implements RepositoryContract
 
     public function create(array $data = [], string $site = ''): Coupon
     {
-        if (!$this->isUsingEloquentDriverWithIncrementingIds()) {
+        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
             $id = Stache::generateId();
         }
 
@@ -73,7 +73,7 @@ class EntryCouponRepository implements RepositoryContract
     {
         $entry = $coupon->entry();
 
-        if (!$entry) {
+        if (! $entry) {
             $entry = Entry::make()
                 ->id($coupon->id())
                 ->collection($this->collection);

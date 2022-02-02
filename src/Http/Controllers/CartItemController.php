@@ -89,7 +89,7 @@ class CartItemController extends BaseActionController
             /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Customer $customer */
             $customer = $cart->customer();
 
-            if (!$customer) {
+            if (! $customer) {
                 return $this->withErrors($request, __('Please login/register before purchasing this product.'));
             }
 
@@ -106,7 +106,7 @@ class CartItemController extends BaseActionController
                 })
                 ->count() > 0;
 
-            if (!$hasPurchasedPrerequisiteProduct) {
+            if (! $hasPurchasedPrerequisiteProduct) {
                 return $this->withErrors($request, __("Before purchasing this product, you must purchase {$prerequisiteProduct->get('title')} first."));
             }
         }
