@@ -28,7 +28,7 @@ class EntryProductRepository implements RepositoryContract
     {
         $entry = Entry::find($id);
 
-        if (!$entry) {
+        if (! $entry) {
             throw new ProductNotFound("Product [{$id}] could not be found.");
         }
 
@@ -40,7 +40,7 @@ class EntryProductRepository implements RepositoryContract
 
     public function create(array $data = [], string $site = ''): Product
     {
-        if (!$this->isUsingEloquentDriverWithIncrementingIds()) {
+        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
             $id = Stache::generateId();
         }
 
@@ -57,7 +57,7 @@ class EntryProductRepository implements RepositoryContract
     {
         $entry = $product->entry();
 
-        if (!$entry) {
+        if (! $entry) {
             $entry = Entry::make()
                 ->id($product->id())
                 ->collection($this->collection);
