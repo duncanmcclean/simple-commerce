@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.65 (2022-02-03)
+
+### What's fixed
+
+* Squashed an error that would appear when a coupon was being augmented #558 #559
+
 ## v2.3.64 (2022-01-22)
 
 ### What's new
