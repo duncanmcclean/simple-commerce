@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Statamic\Facades\Entry;
-use Statamic\Fields\Field;
 
 class Coupon implements Contract
 {
@@ -34,7 +33,7 @@ class Coupon implements Contract
             ->where('slug', $code)
             ->first();
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 
