@@ -384,7 +384,7 @@ class CheckoutControllerTest extends TestCase
     /** @test */
     public function can_post_checkout_with_coupon()
     {
-        $this->markTestSkipped('Breaks every so often, needs fixed.');
+        // $this->markTestSkipped('Breaks every so often, needs fixed.');
 
         Config::set('simple-commerce.sites.default.tax.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);

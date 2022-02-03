@@ -89,6 +89,20 @@ class Coupon implements Contract
             && collect($this->get('products'))->count() >= 1;
     }
 
+    public function toAugmentedArray($keys = null)
+    {
+        $blueprintFields = $this->blueprint()->fields()->items()->reject(function ($field) {
+            return $field['handle'] === 'value';
+        })->pluck('handle')->toArray();
+
+        $augmentedData = $this->entry()->toAugmentedArray($blueprintFields);
+
+        return array_merge(
+            $this->toArray(),
+            $augmentedData,
+        );
+    }
+
     public function collection(): string
     {
         return SimpleCommerce::couponDriver()['collection'];
