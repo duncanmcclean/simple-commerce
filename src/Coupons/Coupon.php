@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Statamic\Facades\Entry;
+use Statamic\Fields\Field;
 
 class Coupon implements Contract
 {
@@ -33,7 +34,7 @@ class Coupon implements Contract
             ->where('slug', $code)
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 
@@ -87,6 +88,20 @@ class Coupon implements Contract
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
+    }
+
+    public function toAugmentedArray($keys = null)
+    {
+        $blueprintFields = $this->blueprint()->fields()->items()->reject(function ($field) {
+            return $field['handle'] === 'value';
+        })->pluck('handle')->toArray();
+
+        $augmentedData = $this->entry()->toAugmentedArray($blueprintFields);
+
+        return array_merge(
+            $this->toArray(),
+            $augmentedData,
+        );
     }
 
     public function collection(): string
