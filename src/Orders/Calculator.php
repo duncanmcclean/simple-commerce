@@ -129,9 +129,9 @@ class Calculator implements Contract
     public function calculateOrderShipping(array $data): array
     {
         $shippingMethod = $this->order->get('shipping_method');
-        $defaultShippingMethod = config('simple-commerce.sites.' . Site::current()->handle() . '.shipping.default_method');
+        $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
 
-        if (!$shippingMethod && !$defaultShippingMethod) {
+        if (! $shippingMethod && ! $defaultShippingMethod) {
             return [
                 'data' => $data,
             ];
@@ -150,7 +150,7 @@ class Calculator implements Contract
             $value = (int) $coupon->get('value');
 
             // Double check coupon is still valid
-            if (!$coupon->isValid($this->order)) {
+            if (! $coupon->isValid($this->order)) {
                 return [
                     'data' => $data,
                 ];
