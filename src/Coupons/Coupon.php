@@ -33,7 +33,7 @@ class Coupon implements Contract
             ->where('slug', $code)
             ->first();
 
-        if (! $entry) {
+        if (!$entry) {
             throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 
@@ -74,7 +74,7 @@ class Coupon implements Contract
         if ($this->isCustomerSpecific()) {
             $isCustomerAllowed = collect($this->get('customers'))->contains($order->get('customer'));
 
-            if (! $isCustomerAllowed) {
+            if (!$isCustomerAllowed) {
                 return false;
             }
         }
@@ -101,6 +101,20 @@ class Coupon implements Contract
     {
         return $this->has('customers')
             && collect($this->get('customers'))->count() >= 1;
+    }
+
+    public function toAugmentedArray($keys = null)
+    {
+        $blueprintFields = $this->blueprint()->fields()->items()->reject(function ($field) {
+            return $field['handle'] === 'value';
+        })->pluck('handle')->toArray();
+
+        $augmentedData = $this->entry()->toAugmentedArray($blueprintFields);
+
+        return array_merge(
+            $this->toArray(),
+            $augmentedData,
+        );
     }
 
     public function collection(): string

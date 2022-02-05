@@ -28,7 +28,7 @@
         }
     },
     "require": {
-        "php": "^7.4 || ^8.0 || ^8.1",
+        "php": "^7.4 || ^8.0",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "laravel/framework": "^7.0|^8.0",
         "mollie/mollie-api-php": "^2.30.0",
@@ -44,7 +44,7 @@
         "nunomaduro/collision": "^4.2",
         "orchestra/testbench": "^4.0|^5.0|^6.0",
         "spatie/ray": "^1.17",
-        "spatie/test-time": "^1.2"
+        "spatie/test-time": "dev-master"
     },
     "scripts": {
         "lint": [
@@ -60,8 +60,8 @@
         "sort-packages": true,
         "process-timeout": 0,
         "allow-plugins": {
-            "pixelfear/composer-dist-plugin": true,
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "pixelfear/composer-dist-plugin": true
         }
     }
 }
