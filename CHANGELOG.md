@@ -12,6 +12,7 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 
 - Brand new Tax Engine ✨ #438
 - Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
+- Ability to set a 'default shipping method' #555 #562
 
 ### What's improved
 
@@ -21,7 +22,15 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
-## v2.4.0-beta.2 (2022-12-08)
+## v2.4.0-beta.3 (2022-02-05)
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+- Ability to set a 'default shipping method' #555 #562
+
+## v2.4.0-beta.2 (2021-12-08)
 
 Everything from the latest in v2.3 and...
 
@@ -60,6 +69,8 @@ After this, I'd recommend running through the [upgrade guide](https://github.com
 ### Full Changelog
 
 For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
+
+---
 
 ## v2.3.65 (2022-02-03)
 
