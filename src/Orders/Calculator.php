@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Statamic\Facades\Site;
 
 class Calculator implements Contract
 {
@@ -127,13 +128,16 @@ class Calculator implements Contract
 
     public function calculateOrderShipping(array $data): array
     {
-        if (! $this->order->has('shipping_method')) {
+        $shippingMethod = $this->order->get('shipping_method');
+        $defaultShippingMethod = config('simple-commerce.sites.' . Site::current()->handle() . '.shipping.default_method');
+
+        if (!$shippingMethod && !$defaultShippingMethod) {
             return [
                 'data' => $data,
             ];
         }
 
-        $data['shipping_total'] = Shipping::use($this->order->get('shipping_method'))->calculateCost($this->order);
+        $data['shipping_total'] = Shipping::use($shippingMethod ?? $defaultShippingMethod)->calculateCost($this->order);
 
         return [
             'data' => $data,
@@ -146,7 +150,7 @@ class Calculator implements Contract
             $value = (int) $coupon->get('value');
 
             // Double check coupon is still valid
-            if (! $coupon->isValid($this->order)) {
+            if (!$coupon->isValid($this->order)) {
                 return [
                     'data' => $data,
                 ];
