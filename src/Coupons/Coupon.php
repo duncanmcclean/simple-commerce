@@ -33,7 +33,7 @@ class Coupon implements Contract
             ->where('slug', $code)
             ->first();
 
-        if (!$entry) {
+        if (! $entry) {
             throw new CouponNotFound("Coupon [{$code}] could not be found.");
         }
 
@@ -74,7 +74,7 @@ class Coupon implements Contract
         if ($this->isCustomerSpecific()) {
             $isCustomerAllowed = collect($this->get('customers'))->contains($order->get('customer'));
 
-            if (!$isCustomerAllowed) {
+            if (! $isCustomerAllowed) {
                 return false;
             }
         }
