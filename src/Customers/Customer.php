@@ -46,33 +46,33 @@ class Customer implements Contract
             ->args(func_get_args());
     }
 
-    public function generateTitleAndSlug(): self
-    {
-        $name = '';
-        $email = '';
+    // public function generateTitleAndSlug(): self
+    // {
+    //     $name = '';
+    //     $email = '';
 
-        if ($this->has('name')) {
-            $name = $this->get('name');
-        }
+    //     if ($this->has('name')) {
+    //         $name = $this->get('name');
+    //     }
 
-        if ($this->has('email')) {
-            $email = $this->get('email');
-        }
+    //     if ($this->has('email')) {
+    //         $email = $this->get('email');
+    //     }
 
-        $title = __('simple-commerce::messages.customer_title', [
-            'name'  => $name,
-            'email' => $email,
-        ]);
+    //     $title = __('simple-commerce::messages.customer_title', [
+    //         'name'  => $name,
+    //         'email' => $email,
+    //     ]);
 
-        $slug = Str::slug($email);
+    //     $slug = Str::slug($email);
 
-        $this->title = $title;
-        $this->data['title'] = $title;
+    //     $this->title = $title;
+    //     $this->data['title'] = $title;
 
-        $this->slug = $slug;
+    //     $this->slug = $slug;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function orders(): Collection
     {
