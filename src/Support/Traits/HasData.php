@@ -38,4 +38,9 @@ trait HasData
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return $this->data()->toArray();
+    }
 }
