@@ -83,7 +83,7 @@ class Product implements Contract
 
     public function taxCategory(): ?TaxCategory
     {
-        if (! isset($this->get('tax_category'))) {
+        if (! $this->get('tax_category')) {
             return TaxCategoryFacade::find('default');
         }
 
