@@ -71,7 +71,7 @@ class EntryOrderRepository implements RepositoryContract
         }
 
         if (! $order->has('title')) {
-            $order->set('title', SimpleCommerce::freshOrderNumber());
+            $entry->set('title', SimpleCommerce::freshOrderNumber());
         }
 
         if ($order->get('site')) {

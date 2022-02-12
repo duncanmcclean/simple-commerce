@@ -59,12 +59,11 @@ class CartController extends BaseActionController
             }
 
             if (is_array($data['customer'])) {
-                $customer->data($data['customer'])->save();
+                $customer->merge($data['customer'])->save();
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->set('customer', $customer->id());
+            $cart = $cart->fresh();
 
             unset($data['customer']);
         }
@@ -84,20 +83,19 @@ class CartController extends BaseActionController
                 ], $this->guessSiteFromRequest()->handle());
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->set('customer', $customer->id());
+            $cart = $cart->fresh();
 
             unset($data['name']);
             unset($data['email']);
         }
 
         if ($data !== null) {
-            $cart->data($data);
+            $cart = $cart->merge($data);
         }
 
-        $cart->save()
-            ->recalculate();
+        $cart->save();
+        $cart->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_updated'),
@@ -109,9 +107,7 @@ class CartController extends BaseActionController
     {
         $this
             ->getCart()
-            ->data([
-                'items' => [],
-            ])
+            ->set('items', [])
             ->save()
             ->recalculate();
 

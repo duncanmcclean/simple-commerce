@@ -272,6 +272,7 @@ class CouponControllerTest extends TestCase
         ]);
 
         $this->cart->set('customer', $customer->id);
+        $this->cart->save();
 
         $coupon = Entry::make()
             ->collection('coupons')
@@ -320,6 +321,7 @@ class CouponControllerTest extends TestCase
         ]);
 
         $this->cart->set('customer', null);
+        $this->cart->save();
 
         $coupon = Entry::make()
             ->collection('coupons')
@@ -375,9 +377,8 @@ class CouponControllerTest extends TestCase
         $coupon->save();
         $coupon->fresh();
 
-        $this->cart->data([
-            'coupon' => $coupon->id(),
-        ])->save();
+        $this->cart->set('coupon', $coupon->id());
+        $this->cart->save();
 
         $response = $this
             ->from('/cart')
@@ -412,9 +413,8 @@ class CouponControllerTest extends TestCase
         $coupon->save();
         $coupon->fresh();
 
-        $this->cart->data([
-            'coupon' => $coupon->id(),
-        ])->save();
+        $this->cart->set('coupon', $coupon->id());
+        $this->cart->save();
 
         $response = $this
             ->from('/cart')

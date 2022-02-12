@@ -35,7 +35,7 @@ class MigrateLineItemMetadata extends UpdateScript
                     })
                     ->toArray();
 
-                $entry->data(['items' => $lineItems])->save();
+                $entry->set('items', $lineItems)->save();
             });
 
         $this->console()->info('Migrated line item metdata!');

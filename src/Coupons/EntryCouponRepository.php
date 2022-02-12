@@ -94,11 +94,11 @@ class EntryCouponRepository implements RepositoryContract
         //     $entry->slug($coupon->get('slug'));
         // }
 
+        $entry->slug($coupon->code());
+
         if ($coupon->get('published')) {
             $entry->published($coupon->get('published'));
         }
-
-        $entry->slug($coupon->code());
 
         $entry->data(
             Arr::except($coupon->data(), ['id', 'site', 'slug', 'published'])

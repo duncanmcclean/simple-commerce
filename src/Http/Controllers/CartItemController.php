@@ -52,9 +52,7 @@ class CartItemController extends BaseActionController
                 }
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->set('customer', $customer->id);
         } elseif ($request->has('email')) {
             try {
                 $customer = Customer::findByEmail($request->get('email'));
@@ -66,9 +64,7 @@ class CartItemController extends BaseActionController
                 ], $this->guessSiteFromRequest()->handle());
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->set('customer', $customer->id);
         }
 
         // Ensure there's enough stock to fulfill the customer's quantity

@@ -21,7 +21,7 @@ class CustomerController extends BaseActionController
         // TODO: only save validated data, not everything
 
         Customer::find($customer)
-            ->data(Arr::except($request->all(), [
+            ->merge(Arr::except($request->all(), [
                 '_params',
                 '_redirect',
                 '_token',

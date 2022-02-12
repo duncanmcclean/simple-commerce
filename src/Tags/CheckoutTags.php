@@ -35,9 +35,8 @@ class CheckoutTags extends SubTag
                     try {
                         $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
 
-                        $cart->data([
-                            $gateway['handle'] => $prepare->data(),
-                        ])->save();
+                        $cart->set($gateway['handle'], $prepare->data());
+                        $cart->save();
 
                         $data = array_merge($data, $prepare->data());
                     } catch (\Exception $e) {
@@ -93,13 +92,13 @@ class CheckoutTags extends SubTag
 
         $prepare = $prepare->prepare(request(), $cart);
 
-        $cart->data([
-            'gateway' => array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
-                'use' => $gateway['class'],
-            ]),
+        $cart->set('gateway', array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
+            'use' => $gateway['class'],
+        ]));
 
-            $gateway['handle'] => $prepare->data(), // TODO
-        ])->save();
+        $cart->set($gateway['handle'], $prepare->data());
+
+        $cart->save();
 
         if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');

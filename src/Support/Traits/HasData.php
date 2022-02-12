@@ -39,6 +39,13 @@ trait HasData
         return $this;
     }
 
+    public function merge($data): self
+    {
+        $this->data = $this->data->merge($data);
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->data()->toArray();

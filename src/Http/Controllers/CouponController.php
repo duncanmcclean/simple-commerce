@@ -30,9 +30,7 @@ class CouponController extends BaseActionController
     {
         // TODO: We need to figure out a way of making this work with different drivers (eg. Eloquent uses coupon_id instead of coupon)
         $this->getCart()
-            ->data([
-                'coupon' => null,
-            ])
+            ->set('coupon', null)
             ->save()
             ->recalculate();
 

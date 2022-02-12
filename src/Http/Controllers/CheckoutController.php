@@ -105,6 +105,7 @@ class CheckoutController extends BaseActionController
 
         if (is_string($customerData)) {
             $this->cart->set('customer', $customerData);
+            $this->cart->save();
 
             $this->excludedKeys[] = 'customer';
 
@@ -130,11 +131,12 @@ class CheckoutController extends BaseActionController
                 ], $this->guessSiteFromRequest()->handle());
             }
 
-            $customer->data($customerData)->save();
+            $customer->merge($customerData)->save();
 
-            $this->cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $this->cart->set('customer', $customer->id);
+            $this->cart->save();
+
+            $this->cart = $this->cart->fresh();
         }
 
         $this->excludedKeys[] = 'customer';
@@ -146,6 +148,7 @@ class CheckoutController extends BaseActionController
     {
         if ($coupon = $this->request->get('coupon')) {
             $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
+            $this->cart->save();
 
             $this->excludedKeys[] = 'coupon';
         }
@@ -172,7 +175,10 @@ class CheckoutController extends BaseActionController
         }
 
         if ($data !== []) {
-            $this->cart->data($data)->save();
+            $this->cart->merge($data)->save();
+            $this->cart->save();
+
+            $this->cart = $this->cart->fresh();
         }
 
         return $this;

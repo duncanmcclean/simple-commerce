@@ -34,11 +34,10 @@ class UserCustomerTest extends TestCase
     {
         parent::tearDownAfterClass();
 
-        $this->app['config']->set('simple-commerce.content.customers', [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
-        ]);
-
-        $this->app->bind(\DoubleThreeDigital\SimpleCommerce\Contracts\Customer::class, \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class);
+        Statamic::repository(
+            \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
+            \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
+        );
     }
 
     /** @test */

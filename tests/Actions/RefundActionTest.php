@@ -111,7 +111,7 @@ class RefundActionTest extends TestCase
         $order = Entry::make()
             ->collection('orders')
             ->id(Stache::generateId())
-            ->data([
+            ->merge([
                 'is_paid'      => true,
                 'is_refunded'  => false,
                 'gateway' => [

@@ -86,6 +86,7 @@ class Coupon implements Contract
         $redeemed = $this->has('redeemed') ? $this->get('redeemed') : 0;
 
         $this->set('redeemed', $redeemed + 1);
+        $this->save();
 
         return $this;
     }

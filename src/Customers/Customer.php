@@ -93,6 +93,7 @@ class Customer implements Contract
         $orders[] = $orderId;
 
         $this->set('orders', $orders);
+        $this->save();
 
         return $this;
     }

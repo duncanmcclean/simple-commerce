@@ -141,6 +141,24 @@ class HasDataTest extends TestCase
     }
 
     /** @test */
+    public function can_merge_data()
+    {
+        $this->trait->data = collect([
+            'foo' => 'barz',
+        ]);
+
+        $set = $this->trait->merge([
+            'fiz' => 'baa',
+        ]);
+
+        $this->assertArrayHasKey('foo', $this->trait->data->toArray());
+        $this->assertArrayHasKey('fiz', $this->trait->data->toArray());
+
+        $this->assertSame($this->trait->data->get('foo'), 'barz');
+        $this->assertSame($this->trait->data->get('fiz'), 'baa');
+    }
+
+    /** @test */
     public function can_get_data_as_array()
     {
         $this->trait->data = collect([

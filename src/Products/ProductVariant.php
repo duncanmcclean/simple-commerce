@@ -74,6 +74,7 @@ class ProductVariant
         return (int) $this->stock;
     }
 
+    // TODO: This should not do the saving.
     public function set(string $key, $value): self
     {
         $this->product()->set(

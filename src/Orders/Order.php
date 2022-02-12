@@ -94,6 +94,7 @@ class Order implements Contract
     {
         if ($customer !== null) {
             $this->set('customer', $customer);
+            $this->save();
 
             return $this;
         }
@@ -109,6 +110,7 @@ class Order implements Contract
     {
         if ($coupon !== null) {
             $this->set('coupon', $coupon);
+            $this->save();
 
             return $this;
         }
@@ -140,6 +142,8 @@ class Order implements Contract
 
         if ($coupon->isValid($this)) {
             $this->set('coupon', $coupon->id());
+            $this->save();
+
             event(new CouponRedeemed($coupon));
 
             return true;
@@ -152,7 +156,7 @@ class Order implements Contract
     {
         $this->published = true;
 
-        $this->data([
+        $this->merge([
             'is_paid'   => true,
             'paid_date' => now()->format('Y-m-d H:i'),
         ]);
@@ -175,7 +179,7 @@ class Order implements Contract
     {
         $calculate = resolve(CalculatorContract::class)->calculate($this);
 
-        $this->data($calculate);
+        $this->merge($calculate);
 
         $this->save();
 
@@ -209,6 +213,7 @@ class Order implements Contract
     {
         if (! $this->has('items')) {
             $this->set('items', []);
+            $this->save();
         }
     }
 
