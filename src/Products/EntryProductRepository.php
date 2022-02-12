@@ -35,7 +35,14 @@ class EntryProductRepository implements RepositoryContract
         return app(Product::class)
             ->entry($entry)
             ->id($entry->id())
-            ->data($entry->data()->toArray());
+            ->data(array_merge(
+                $entry->data()->toArray(),
+                [
+                    'site' => optional($entry->site())->handle(),
+                    'slug' => $entry->slug(),
+                    'published' => $entry->published(),
+                ]
+            ));
     }
 
     public function create(array $data = [], string $site = ''): Product

@@ -36,7 +36,14 @@ class EntryCouponRepository implements RepositoryContract
             ->entry($entry)
             ->id($entry->id())
             ->code($entry->slug())
-            ->data($entry->data()->toArray());
+            ->data(array_merge(
+                $entry->data()->toArray(),
+                [
+                    'site' => optional($entry->site())->handle(),
+                    'slug' => $entry->slug(),
+                    'published' => $entry->published(),
+                ]
+            ));
     }
 
     public function findByCode(string $code): ?Coupon
