@@ -134,7 +134,7 @@ class Customer implements Contract
 
     public function toArray(): array
     {
-        $toArray = $this->data;
+        $toArray = $this->data->toArray();
 
         $toArray['id'] = $this->id();
 
