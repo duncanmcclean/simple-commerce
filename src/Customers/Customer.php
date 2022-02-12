@@ -3,46 +3,35 @@
 namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Statamic\Facades\Entry;
 
 class Customer implements Contract
 {
-    use IsEntry;
-    use HasData;
-    use Notifiable;
+    use HasData, Notifiable;
 
     public $id;
-    public $site;
-    public $title;
-    public $slug;
+    public $email;
     public $data;
-    public $published;
 
-    protected $entry;
-    protected $collection;
+    public $entry;
 
-    public function findByEmail(string $email): self
+    public function id($id = null)
     {
-        $entry = Entry::query()
-            ->where('collection', $this->collection())
-            ->where('slug', Str::slug($email))
-            ->first();
+        return $this
+            ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
 
-        if (! $entry) {
-            throw new CustomerNotFound(__('simple-commerce::messages.customer_not_found_by_email', [
-                'email' => $email,
-            ]));
-        }
-
-        return $this->find($entry->id());
+    public function entry($entry = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('entry')
+            ->args(func_get_args());
     }
 
     public function name(): string
@@ -50,9 +39,11 @@ class Customer implements Contract
         return $this->get('name');
     }
 
-    public function email(): string
+    public function email($email = null)
     {
-        return $this->get('email');
+        return $this
+            ->fluentlyGetOrSet('email')
+            ->args(func_get_args());
     }
 
     public function generateTitleAndSlug(): self
@@ -106,13 +97,47 @@ class Customer implements Contract
         return $this->email();
     }
 
-    public function collection(): string
+    public function beforeSaved()
     {
-        return SimpleCommerce::customerDriver()['collection'];
+        return null;
     }
 
-    public static function bindings(): array
+    public function afterSaved()
     {
-        return [];
+        return null;
+    }
+
+    public function save(): self
+    {
+        if (method_exists($this, 'beforeSaved')) {
+            $this->beforeSaved();
+        }
+
+        CustomerFacade::save($this);
+
+        if (method_exists($this, 'afterSaved')) {
+            $this->afterSaved();
+        }
+
+        return $this;
+    }
+
+    public function delete(): void
+    {
+        CustomerFacade::delete($this);
+    }
+
+    public function fresh()
+    {
+        return CustomerFacade::find($this->id());
+    }
+
+    public function toArray(): array
+    {
+        $toArray = $this->data;
+
+        $toArray['id'] = $this->id();
+
+        return $toArray;
     }
 }

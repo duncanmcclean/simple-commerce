@@ -16,6 +16,8 @@ class CustomerTest extends TestCase
             'email' => 'joe.smith@example.com',
         ]);
 
+        $create = $create->fresh();
+
         $this->assertTrue($create instanceof CustomersCustomer);
 
         $this->assertNotNull($create->id());
@@ -32,13 +34,15 @@ class CustomerTest extends TestCase
             'published' => true,
         ]);
 
+        $create = $create->fresh();
+
         $this->assertTrue($create instanceof CustomersCustomer);
 
         $this->assertNotNull($create->id());
         $this->assertSame($create->name(), 'Joe Smith');
         $this->assertSame($create->email(), 'joe.smith@example.com');
 
-        $this->assertTrue($create->published);
+        $this->assertTrue($create->get('published'));
         $this->assertTrue($create->entry()->published());
     }
 }

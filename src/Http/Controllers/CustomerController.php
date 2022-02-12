@@ -11,7 +11,9 @@ class CustomerController extends BaseActionController
 {
     public function index(IndexRequest $request, $customer)
     {
-        return Customer::find($customer)->toResource();
+        // return Customer::find($customer)->toResource();
+
+        return ['data' => Customer::find($customer)->toArray()];
     }
 
     public function update(UpdateRequest $request, $customer)
@@ -28,7 +30,8 @@ class CustomerController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message'  => __('simple-commerce.messages.customer_updated'),
-            'customer' => Customer::find($customer)->toResource(),
+            // 'customer' => Customer::find($customer)->toResource(),
+            'customer' => Customer::find($customer)->toArray(),
         ]);
     }
 }
