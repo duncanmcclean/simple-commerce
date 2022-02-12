@@ -330,7 +330,10 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart()
     {
-        $product = Product::create(['price' => 1000])->save();
+        $product = Product::make()
+            ->data(['price' => 1000]);
+
+        $product->save();
 
         $cart = Order::create()
             ->save()
@@ -361,7 +364,10 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart_and_request_json_response()
     {
-        $product = Product::create(['price' => 1000])->save();
+        $product = Product::make()
+            ->data(['price' => 1000]);
+
+        $product->save();
 
         $cart = Order::create([
             'items' => [

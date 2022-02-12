@@ -58,10 +58,13 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_update_line_item()
     {
-        $product = Product::create([
-            'title' => 'Four Five Six',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Four Five Six',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -89,10 +92,13 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_clear_line_items()
     {
-        $product = Product::create([
-            'title' => 'Four Five Six',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Four Five Six',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [

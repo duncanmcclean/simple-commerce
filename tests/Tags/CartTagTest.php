@@ -53,10 +53,13 @@ class CartTagTest extends TestCase
         // TODO: work out issues with toAugmentedArray() playing up in tests
         $this->markTestIncomplete();
 
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $cart = Order::create([
             'items' => [
@@ -77,15 +80,21 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_count()
     {
-        $productOne = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $productOne = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'price' => 1000,
+            ]);
 
-        $productTwo = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1200,
-        ]);
+        $productOne->save();
+
+        $productTwo = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1200,
+            ]);
+
+        $productTwo->save();
 
         $cart = Order::create([
             'items' => [
@@ -112,15 +121,21 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_quantity_total()
     {
-        $productOne = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $productOne = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'price' => 1000,
+            ]);
 
-        $productTwo = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1200,
-        ]);
+        $productOne->save();
+
+        $productTwo = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1200,
+            ]);
+
+        $productTwo->save();
 
         $cart = Order::create([
             'items' => [
@@ -219,17 +234,20 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_add_item_form()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $this->tag->setParameters([]);
 
         $this->tag->setContent('
             <h2>Add Item</h2>
 
-            <input type="hidden" name="product" value="{{ '.$product->id.' }}">
+            <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
             <input type="number" name="quantity">
             <button type="submit">Add to cart</submit>
         ');
@@ -323,10 +341,13 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_if_product_already_exists_in_cart()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $cart = Order::create([
             'items' => [
@@ -353,32 +374,35 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_if_product_and_variant_already_exists_in_cart()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'product_variants' => [
-                'variants' => [
-                    [
-                        'name'   => 'Colours',
-                        'values' => [
-                            'Red',
+        $product = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name'   => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name'   => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
                         ],
                     ],
-                    [
-                        'name'   => 'Sizes',
-                        'values' => [
-                            'Small',
+                    'options' => [
+                        [
+                            'key'     => 'Red_Small',
+                            'variant' => 'Red Small',
+                            'price'   => 5000,
                         ],
                     ],
                 ],
-                'options' => [
-                    [
-                        'key'     => 'Red_Small',
-                        'variant' => 'Red Small',
-                        'price'   => 5000,
-                    ],
-                ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $cart = Order::create([
             'items' => [
@@ -407,10 +431,13 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_if_product_does_not_already_exists_in_cart()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $cart = Order::create([]);
 

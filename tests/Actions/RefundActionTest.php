@@ -74,10 +74,13 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $product = Product::create([
-            'title' => 'Medium Jumper',
-            'price' => 1200,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Medium Jumper',
+                'price' => 1200,
+            ]);
+
+        $product->save();
 
         $action = $this->action->visibleTo($product->entry());
 

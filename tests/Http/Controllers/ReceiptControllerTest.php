@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\URL;
@@ -14,10 +15,13 @@ class ReceiptControllerTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $product = Product::create([
-            'title' => 'Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Food',
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $cart = Order::create([
             'items' => [

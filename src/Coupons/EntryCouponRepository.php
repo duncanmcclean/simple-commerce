@@ -60,20 +60,9 @@ class EntryCouponRepository implements RepositoryContract
         return $this->find($entry->id());
     }
 
-    public function create(array $data = [], string $site = ''): Coupon
+    public function make(): Coupon
     {
-        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
-            $id = Stache::generateId();
-        }
-
-        $coupon = app(Coupon::class)
-            ->id($id)
-            ->code(isset($data['code']) ? $data['code'] : $data['slug'])
-            ->data($data);
-
-        $coupon->save();
-
-        return $coupon;
+        return app(Coupon::class);
     }
 
     public function save($coupon): void
@@ -82,7 +71,7 @@ class EntryCouponRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id($coupon->id())
+                ->id(Stache::generateId())
                 ->collection($this->collection);
         }
 
@@ -105,6 +94,8 @@ class EntryCouponRepository implements RepositoryContract
         );
 
         $entry->save();
+
+        $coupon->id = $entry->id();
     }
 
     public function delete($coupon): void

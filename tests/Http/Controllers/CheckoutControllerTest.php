@@ -40,10 +40,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -90,10 +93,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -144,10 +150,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -204,10 +213,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -259,10 +271,13 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $customer = Customer::create([
             'name' => 'Dwight Schrute',
@@ -324,10 +339,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $customer = Customer::create([
             'name' => 'Stanley Hudson',
@@ -394,19 +412,25 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
 
-        $coupon = Coupon::create([
-            'slug'               => 'fifty-friday',
-            'title'              => 'Fifty Friday',
-            'redeemed'           => 0,
-            'value'              => 50,
-            'type'               => 'percentage',
-            'minimum_cart_value' => null,
-        ]);
+        $product->save();
+
+        $coupon = Coupon::make()
+            ->code('fifty-friday')
+            ->data([
+                'title'              => 'Fifty Friday',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+            ]);
+
+        $coupon->save();
 
         $order = Order::create([
             'items' => [
@@ -465,19 +489,25 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
 
-        $coupon = Coupon::create([
-            'slug'               => 'fifty-thursday',
-            'title'              => 'Fifty Thursday',
-            'redeemed'           => 0,
-            'value'              => 50,
-            'type'               => 'percentage',
-            'minimum_cart_value' => 9000,
-        ]);
+        $product->save();
+
+        $coupon = Coupon::make()
+            ->code('fifty-thursday')
+            ->data([
+                'title'              => 'Fifty Thursday',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => 9000,
+            ]);
+
+        $coupon->save();
 
         $order = Order::create([
             'items' => [
@@ -536,20 +566,26 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
 
-        $coupon = Coupon::create([
-            'slug'               => 'fifty-thursday',
-            'title'              => 'Fifty Thursday',
-            'redeemed'           => 10,
-            'maximum_uses'       => 10,
-            'value'              => 50,
-            'type'               => 'percentage',
-            'minimum_cart_value' => null,
-        ]);
+        $product->save();
+
+        $coupon = Coupon::make()
+            ->code('fifty-thursday')
+            ->data([
+                'title'              => 'Fifty Thursday',
+                'redeemed'           => 10,
+                'maximum_uses'       => 10,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+            ]);
+
+        $coupon->save();
 
         $order = Order::create([
             'items' => [
@@ -608,20 +644,26 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
 
-        $coupon = Coupon::create([
-            'slug'               => 'fifty-wednesday',
-            'title'              => 'Fifty Wednesday',
-            'redeemed'           => 0,
-            'value'              => 50,
-            'type'               => 'percentage',
-            'minimum_cart_value' => null,
-            'products'           => ['a-random-product'],
-        ]);
+        $product->save();
+
+        $coupon = Coupon::make()
+            ->code('fifty-wednesday')
+            ->data([
+                'title'              => 'Fifty Wednesday',
+                'redeemed'           => 0,
+                'value'              => 50,
+                'type'               => 'percentage',
+                'minimum_cart_value' => null,
+                'products'           => ['a-random-product'],
+            ]);
+
+        $coupon->save();
 
         $order = Order::create([
             'items' => [
@@ -677,11 +719,14 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-            'stock' => 50,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+                'stock' => 50,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -733,11 +778,14 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-            'stock' => 9,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+                'stock' => 9,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -789,11 +837,14 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-            'stock' => 0,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+                'stock' => 0,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -853,11 +904,14 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-            'stock' => 1,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+                'stock' => 1,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -911,33 +965,36 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'product_variants' => [
-                'variants' => [
-                    [
-                        'name'   => 'Colours',
-                        'values' => [
-                            'Red',
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name'   => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name'   => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
                         ],
                     ],
-                    [
-                        'name'   => 'Sizes',
-                        'values' => [
-                            'Small',
+                    'options' => [
+                        [
+                            'key'     => 'Red_Small',
+                            'variant' => 'Red Small',
+                            'price'   => 5000,
+                            'stock'   => 50,
                         ],
                     ],
                 ],
-                'options' => [
-                    [
-                        'key'     => 'Red_Small',
-                        'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 50,
-                    ],
-                ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -990,33 +1047,36 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'product_variants' => [
-                'variants' => [
-                    [
-                        'name'   => 'Colours',
-                        'values' => [
-                            'Red',
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name'   => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name'   => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
                         ],
                     ],
-                    [
-                        'name'   => 'Sizes',
-                        'values' => [
-                            'Small',
+                    'options' => [
+                        [
+                            'key'     => 'Red_Small',
+                            'variant' => 'Red Small',
+                            'price'   => 5000,
+                            'stock'   => 9,
                         ],
                     ],
                 ],
-                'options' => [
-                    [
-                        'key'     => 'Red_Small',
-                        'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 9,
-                    ],
-                ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1069,33 +1129,36 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'product_variants' => [
-                'variants' => [
-                    [
-                        'name'   => 'Colours',
-                        'values' => [
-                            'Red',
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name'   => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name'   => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
                         ],
                     ],
-                    [
-                        'name'   => 'Sizes',
-                        'values' => [
-                            'Small',
+                    'options' => [
+                        [
+                            'key'     => 'Red_Small',
+                            'variant' => 'Red Small',
+                            'price'   => 5000,
+                            'stock'   => 0,
                         ],
                     ],
                 ],
-                'options' => [
-                    [
-                        'key'     => 'Red_Small',
-                        'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 0,
-                    ],
-                ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1157,33 +1220,36 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'product_variants' => [
-                'variants' => [
-                    [
-                        'name'   => 'Colours',
-                        'values' => [
-                            'Red',
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name'   => 'Colours',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                        [
+                            'name'   => 'Sizes',
+                            'values' => [
+                                'Small',
+                            ],
                         ],
                     ],
-                    [
-                        'name'   => 'Sizes',
-                        'values' => [
-                            'Small',
+                    'options' => [
+                        [
+                            'key'     => 'Red_Small',
+                            'variant' => 'Red Small',
+                            'price'   => 5000,
+                            'stock'   => 1,
                         ],
                     ],
                 ],
-                'options' => [
-                    [
-                        'key'     => 'Red_Small',
-                        'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 1,
-                    ],
-                ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1237,10 +1303,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1296,10 +1365,13 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'grand_total' => 0,
@@ -1350,10 +1422,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Nothing',
-            'price' => 0,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Nothing',
+                'price' => 0,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1398,10 +1473,13 @@ class CheckoutControllerTest extends TestCase
 
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1445,10 +1523,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1491,10 +1572,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1538,10 +1622,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1599,10 +1686,13 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1657,10 +1747,13 @@ class CheckoutControllerTest extends TestCase
     {
         Notification::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -1714,10 +1807,13 @@ class CheckoutControllerTest extends TestCase
     {
         Notification::fake();
 
-        $product = Product::create([
-            'title' => 'Bacon',
-            'price' => 5000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Bacon',
+                'price' => 5000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [

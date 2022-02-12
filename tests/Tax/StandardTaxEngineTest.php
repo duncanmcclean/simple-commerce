@@ -66,11 +66,14 @@ class StandardTaxEngineTest extends TestCase
 
         $taxRate->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => $taxCategory->id(),
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => $taxCategory->id(),
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -131,11 +134,14 @@ class StandardTaxEngineTest extends TestCase
 
         $taxRate->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => $taxCategory->id(),
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => $taxCategory->id(),
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -196,11 +202,14 @@ class StandardTaxEngineTest extends TestCase
 
         $taxRate->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => $taxCategory->id(),
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => $taxCategory->id(),
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -251,11 +260,14 @@ class StandardTaxEngineTest extends TestCase
             ->category('default-category')
             ->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => 'standard-stuff',
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => 'standard-stuff',
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -305,11 +317,14 @@ class StandardTaxEngineTest extends TestCase
             ->category('default-category')
             ->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => 'standard-stuff',
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => 'standard-stuff',
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -360,11 +375,14 @@ class StandardTaxEngineTest extends TestCase
             ->zone('for-the-us')
             ->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => 'standard-stuff',
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => 'standard-stuff',
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [
@@ -413,11 +431,14 @@ class StandardTaxEngineTest extends TestCase
             ->zone('for-the-us')
             ->save();
 
-        $product = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1000,
-            'tax_category' => 'standard-stuff',
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Cat Food',
+                'price' => 1000,
+                'tax_category' => 'standard-stuff',
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [

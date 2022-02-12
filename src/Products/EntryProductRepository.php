@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
-use Statamic\Facades\Stache;
 
 class EntryProductRepository implements RepositoryContract
 {
@@ -45,19 +44,9 @@ class EntryProductRepository implements RepositoryContract
             ));
     }
 
-    public function create(array $data = [], string $site = ''): Product
+    public function make(): Product
     {
-        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
-            $id = Stache::generateId();
-        }
-
-        $product = app(Product::class)
-            ->id($id)
-            ->data($data);
-
-        $product->save();
-
-        return $product;
+        return app(Product::class);
     }
 
     public function save($product): void
@@ -66,7 +55,6 @@ class EntryProductRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id($product->id())
                 ->collection($this->collection);
         }
 
@@ -87,6 +75,8 @@ class EntryProductRepository implements RepositoryContract
         );
 
         $entry->save();
+
+        $product->id = $entry->id();
     }
 
     public function delete($product): void
@@ -94,10 +84,10 @@ class EntryProductRepository implements RepositoryContract
         $product->entry()->delete();
     }
 
-    protected function isUsingEloquentDriverWithIncrementingIds(): bool
-    {
-        return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
-    }
+    // protected function isUsingEloquentDriverWithIncrementingIds(): bool
+    // {
+    //     return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
+    // }
 
     public static function bindings(): array
     {

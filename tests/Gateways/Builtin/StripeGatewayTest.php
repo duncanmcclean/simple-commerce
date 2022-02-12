@@ -49,7 +49,13 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Concert Ticket',
+                'price' => 5500,
+            ]);
+
+        $product->save();
 
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
@@ -90,7 +96,14 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Theatre Ticket', 'price' => 1299]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Concert Ticket',
+                'price' => 1299,
+            ]);
+
+        $product->save();
+
         $customer = Customer::create(['name' => 'George', 'email' => 'george@example.com']);
 
         $prepare = $this->gateway->prepare(new Prepare(
@@ -139,7 +152,14 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Talent Show Ticket', 'price' => 1299]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Talent Show Ticket',
+                'price' => 1299,
+            ]);
+
+        $product->save();
+
         $customer = Customer::create(['name' => 'George', 'email' => 'george@example.com']);
 
         $this->gateway->setConfig([
@@ -195,7 +215,13 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $product = Product::create(['title' => 'Zoo Ticket', 'price' => 1234]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Zoo Ticket',
+                'price' => 1234,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'items' => [

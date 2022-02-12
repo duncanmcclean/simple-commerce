@@ -58,7 +58,7 @@ class ProductVariantFieldtypeTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $product = Product::create();
+        $product = Product::make()->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
@@ -73,13 +73,16 @@ class ProductVariantFieldtypeTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $product = Product::create([
-            'variants' => [
-                'options' => [
-                    ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
+        $product = Product::make()
+            ->set([
+                'variants' => [
+                    'options' => [
+                        ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
+                    ],
                 ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
@@ -94,13 +97,16 @@ class ProductVariantFieldtypeTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $product = Product::create([
-            'variants' => [
-                'options' => [
-                    ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
+        $product = Product::make()
+            ->set([
+                'variants' => [
+                    'options' => [
+                        ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
+                    ],
                 ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,

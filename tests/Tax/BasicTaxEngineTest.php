@@ -20,9 +20,12 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'is_paid' => false,
@@ -50,9 +53,12 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'is_paid' => false,
@@ -81,9 +87,12 @@ class BasicTaxEngineTest extends TestCase
 
         Config::set('simple-commerce.tax_engine_config.rate', 10.5);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'is_paid' => false,
@@ -111,9 +120,12 @@ class BasicTaxEngineTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->data([
+                'price' => 1000,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'is_paid' => false,
@@ -144,9 +156,12 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
-        $product = Product::create([
-            'price' => 2600,
-        ]);
+        $product = Product::make()
+            ->data([
+                'price' => 2600,
+            ]);
+
+        $product->save();
 
         $order = Order::create([
             'is_paid' => false,

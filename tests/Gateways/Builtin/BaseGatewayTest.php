@@ -26,7 +26,13 @@ class BaseGatewayTest extends TestCase
 
         $fakeGateway = new FakeOffsiteGateway();
 
-        $product = Product::create(['title' => 'Smth', 'price' => 1500, 'stock' => 10]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Smth',
+                'price' => 1500,
+                'stock' => 10,
+            ]);
+
         $product->save();
 
         $order = Order::create([
@@ -58,7 +64,12 @@ class BaseGatewayTest extends TestCase
 
         $fakeGateway = new FakeOnsiteGateway();
 
-        $product = Product::create(['title' => 'Smth', 'price' => 1500]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Smth',
+                'price' => 1500,
+            ]);
+
         $product->save();
 
         $order = Order::create([
