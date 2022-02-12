@@ -258,6 +258,8 @@ class Order implements Contract
 
     public function toResource()
     {
+        return ['data' => []]; // TODO
+
         return new EntryResource($this->entry());
     }
 
