@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-interface Order
+interface OrderRepository
 {
     //
 }

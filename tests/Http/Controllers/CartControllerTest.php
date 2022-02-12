@@ -123,7 +123,7 @@ class CartControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart.update'), $data)
             ->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
         $this->assertArrayNotHasKey('_request', $cart->data());
     }

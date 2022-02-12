@@ -297,7 +297,7 @@ class UserCustomerTest extends TestCase
         $this->assertTrue($customer->orders() instanceof Collection);
         $this->assertTrue($customer->orders()->first() instanceof ContractsOrder);
 
-        $this->assertSame($customer->orders()->first()->title(), 'Order #0001');
+        $this->assertSame($customer->orders()->first()->get('title'), 'Order #0001');
     }
 
     /** @test */
@@ -312,7 +312,7 @@ class UserCustomerTest extends TestCase
         $customer->addOrder($order->id())->save();
 
         $this->assertSame($customer->orders()->count(), 1);
-        $this->assertSame($customer->orders()->first()->title(), 'Order #0002');
+        $this->assertSame($customer->orders()->first()->get('title'), 'Order #0002');
     }
 
     /** @test */

@@ -43,7 +43,7 @@ trait HasData
     public function set(string $key, $value): self
     {
         $this->data[$key] = $value;
-        $this->entry()->set($key, $value)->save();
+        // $this->entry()->set($key, $value)->save();
 
         return $this;
     }

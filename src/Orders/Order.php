@@ -9,36 +9,25 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use Illuminate\Support\Facades\URL;
-use Statamic\Facades\Stache;
+use Statamic\Http\Resources\API\EntryResource;
 
 class Order implements Contract
 {
-    use IsEntry;
-    use HasData;
-    use LineItems;
+    use HasData, LineItems;
 
     public $id;
-    public $site;
-    public $title;
-    public $slug;
     public $data;
-    public $published;
 
-    protected $entry;
-    protected $collection;
+    public $entry;
     protected $withoutRecalculating = false;
 
     public function __construct()
     {
-        $this->id = Stache::generateId();
-        $this->slug = $this->id;
-
         $this->data = [
-            'title'          => '#'.SimpleCommerce::freshOrderNumber(),
             'items'          => [],
             'is_paid'        => false,
             'grand_total'    => 0,
@@ -47,6 +36,20 @@ class Order implements Contract
             'shipping_total' => 0,
             'coupon_total'   => 0,
         ];
+    }
+
+    public function id($id = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
+
+    public function entry($entry = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('entry')
+            ->args(func_get_args());
     }
 
     public function billingAddress()
@@ -184,18 +187,6 @@ class Order implements Contract
         return $this->blueprint()->fields()->validator()->rules();
     }
 
-    public function beforeSaved()
-    {
-        if (! $this->has('items')) {
-            $this->data['items'] = [];
-        }
-    }
-
-    public function afterSaved()
-    {
-        event(new OrderSaved($this));
-    }
-
     public function collection(): string
     {
         return SimpleCommerce::orderDriver()['collection'];
@@ -212,8 +203,59 @@ class Order implements Contract
         return $return;
     }
 
-    public static function bindings(): array
+    public function beforeSaved()
     {
-        return [];
+        if (! $this->has('items')) {
+            $this->data['items'] = [];
+        }
+    }
+
+    public function afterSaved()
+    {
+        event(new OrderSaved($this));
+    }
+
+    public function save(): self
+    {
+        if (method_exists($this, 'beforeSaved')) {
+            $this->beforeSaved();
+        }
+
+        OrderFacade::save($this);
+
+        if (method_exists($this, 'afterSaved')) {
+            $this->afterSaved();
+        }
+
+        return $this;
+    }
+
+    public function delete(): void
+    {
+        OrderFacade::delete($this);
+    }
+
+    public function fresh()
+    {
+        return OrderFacade::find($this->id());
+    }
+
+    public function toArray(): array
+    {
+        $toArray = $this->data;
+
+        $toArray['id'] = $this->id();
+
+        return $toArray;
+    }
+
+    public function toResource()
+    {
+        return new EntryResource($this->entry());
+    }
+
+    public function toAugmentedArray(): array
+    {
+        return $this->toArray();
     }
 }
