@@ -56,7 +56,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                         'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
                         'currency_code' => Currency::get(Site::current())['code'],
                     ],
-                    'description' => "Order {$order->title()}",
+                    'description' => "Order {$order->get('title')}",
                     'custom_id'   => $order->id(),
                 ],
             ],
@@ -190,7 +190,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                     $customer = Customer::findByEmail($responseBody['payer']['email_address']);
                 } catch (CustomerNotFound $e) {
                     $customer = Customer::create([
-                        'name' => $responseBody['payer']['name']['given_name'].' '.$responseBody['payer']['name']['surname'],
+                        'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
                         'email' => $responseBody['payer']['email_address'],
                     ]);
                 }

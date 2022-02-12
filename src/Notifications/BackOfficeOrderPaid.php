@@ -47,13 +47,13 @@ class BackOfficeOrderPaid extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject("New Order: {$this->order->title()}")
-            ->line("Order **{$this->order->title()}** has just been paid and is ready for fulfilment.")
+            ->subject("New Order: {$this->order->get('title')}")
+            ->line("Order **{$this->order->get('title')}** has just been paid and is ready for fulfilment.")
             ->line('# Order Details')
-            ->line('Grand Total: '.Currency::parse($this->order->get('grand_total'), Site::current()))
-            ->line('Items Total: '.Currency::parse($this->order->get('items_total'), Site::current()))
-            ->line('Shipping Total: '.Currency::parse($this->order->get('shipping_total'), Site::current()))
-            ->line('Customer: '.optional($this->order->customer())->email() ?? 'Guest')
-            ->line('Payment Gateway: '.optional($this->order->gateway())['display'] ?? 'N/A');
+            ->line('Grand Total: ' . Currency::parse($this->order->get('grand_total'), Site::current()))
+            ->line('Items Total: ' . Currency::parse($this->order->get('items_total'), Site::current()))
+            ->line('Shipping Total: ' . Currency::parse($this->order->get('shipping_total'), Site::current()))
+            ->line('Customer: ' . optional($this->order->customer())->email() ?? 'Guest')
+            ->line('Payment Gateway: ' . optional($this->order->gateway())['display'] ?? 'N/A');
     }
 }

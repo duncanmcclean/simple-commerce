@@ -39,7 +39,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $intentData = [
             'amount'             => $order->get('grand_total'),
             'currency'           => Currency::get(Site::current())['code'],
-            'description'        => "Order: {$order->title()}",
+            'description'        => "Order: {$order->get('title')}",
             'setup_future_usage' => 'off_session',
             'metadata'           => [
                 'order_id' => $order->id,
@@ -138,7 +138,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $this->setUpWithStripe();
 
         $payload = json_decode($request->getContent(), true);
-        $method = 'handle'.Str::studly(str_replace('.', '_', $payload['type']));
+        $method = 'handle' . Str::studly(str_replace('.', '_', $payload['type']));
 
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($payload['metadata']['order_id']);

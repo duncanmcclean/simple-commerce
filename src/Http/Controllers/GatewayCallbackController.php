@@ -36,7 +36,7 @@ class GatewayCallbackController extends BaseActionController
         }
 
         if (! $callbackSuccess) {
-            return $this->withErrors($request, "Order [{$order->title()}] has not been marked as paid yet.");
+            return $this->withErrors($request, "Order [{$order->get('title')}] has not been marked as paid yet.");
         }
 
         $this->forgetCart();
