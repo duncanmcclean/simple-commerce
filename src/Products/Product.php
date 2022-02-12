@@ -19,6 +19,11 @@ class Product implements Contract
 
     protected $entry;
 
+    public function __construct()
+    {
+        $this->data = collect();
+    }
+
     public function id($id = null)
     {
         return $this

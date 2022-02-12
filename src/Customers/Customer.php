@@ -20,6 +20,11 @@ class Customer implements Contract
 
     public $entry;
 
+    public function __construct()
+    {
+        $this->data = collect();
+    }
+
     public function id($id = null)
     {
         return $this

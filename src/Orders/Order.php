@@ -27,7 +27,7 @@ class Order implements Contract
 
     public function __construct()
     {
-        $this->data = [
+        $this->data = collect([
             'items'          => [],
             'is_paid'        => false,
             'grand_total'    => 0,
@@ -35,7 +35,7 @@ class Order implements Contract
             'tax_total'      => 0,
             'shipping_total' => 0,
             'coupon_total'   => 0,
-        ];
+        ]);
     }
 
     public function id($id = null)
