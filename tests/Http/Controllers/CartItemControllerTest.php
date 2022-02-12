@@ -38,18 +38,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->postJson(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertJsonStructure([
@@ -80,10 +80,10 @@ class CartItemControllerTest extends TestCase
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -102,18 +102,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         $this->assertArrayHasKey('foo', $cart->lineItems()->first()['metadata']);
     }
@@ -134,10 +134,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHasErrors('smth');
     }
 
@@ -179,18 +179,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -230,18 +230,18 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(2000, $cart->data['items_total']);
+        $this->assertSame(2000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         $this->assertSame(1, $cart->lineItems()->first()['quantity']);
         $this->assertArrayHasKey('foo', $cart->lineItems()->first()['metadata']);
@@ -293,18 +293,18 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(2000, $cart->data['items_total']);
+        $this->assertSame(2000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         $this->assertSame(2, $cart->lineItems()->first()['quantity']);
 
@@ -331,19 +331,19 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $cart = $cart->find($cart->id);
 
         $this->assertSame(session()->get('simple-commerce-cart'), $cart->id);
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -364,7 +364,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
             ->assertSessionHasErrors();
@@ -411,7 +411,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
             ->assertSessionHasErrors();
@@ -449,21 +449,21 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$productTwo->get('slug'))
+            ->from('/products/' . $productTwo->get('slug'))
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$productTwo->get('slug'));
+        $response->assertRedirect('/products/' . $productTwo->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = $cart->find($cart->id);
 
         $this->assertArrayHasKey('items', $cart->data);
         $this->assertSame(session()->get('simple-commerce-cart'), $cart->id);
-        // $this->assertSame(3300, $cart->data['items_total']);
+        // $this->assertSame(3300, $cart->get('items_total'));
 
-        $this->assertStringContainsString($productOne->id, json_encode($cart->data['items']));
-        $this->assertStringContainsString($productTwo->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($productOne->id, json_encode($cart->get('items')));
+        $this->assertStringContainsString($productTwo->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -482,7 +482,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/checkout');
@@ -490,10 +490,10 @@ class CartItemControllerTest extends TestCase
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -513,18 +513,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->get('customer'));
@@ -549,18 +549,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->get('customer'));
@@ -594,18 +594,18 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $order->id()])
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->get('customer'));
@@ -635,18 +635,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1000, $cart->data['items_total']);
+        $this->assertSame(1000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id, json_encode($cart->get('items')));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->get('customer'));
@@ -698,18 +698,18 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(1599, $cart->data['items_total']);
+        $this->assertSame(1599, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($product->id(), json_encode($cart->data['items']));
+        $this->assertStringContainsString($product->id(), json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -733,20 +733,20 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $response->assertSessionHasErrors();
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertNotSame(2000, $cart->data['items_total']);
+        $this->assertNotSame(2000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringNotContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringNotContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -776,20 +776,20 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
         $response->assertSessionHasErrors();
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertNotSame(2000, $cart->data['items_total']);
+        $this->assertNotSame(2000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringNotContainsString($product->id, json_encode($cart->data['items']));
+        $this->assertStringNotContainsString($product->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -825,7 +825,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$productTwo->get('slug'))
+            ->from('/products/' . $productTwo->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/checkout');
@@ -833,10 +833,10 @@ class CartItemControllerTest extends TestCase
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
 
-        $this->assertSame(2000, $cart->data['items_total']);
+        $this->assertSame(2000, $cart->get('items_total'));
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertStringContainsString($productTwo->id, json_encode($cart->data['items']));
+        $this->assertStringContainsString($productTwo->id, json_encode($cart->get('items')));
     }
 
     /** @test */
@@ -871,8 +871,8 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->find($cart->id);
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertSame(1, count($cart->data['items']));
-        $this->assertSame(2, $cart->data['items'][0]['quantity']);
+        $this->assertSame(1, count($cart->get('items')));
+        $this->assertSame(2, $cart->get('items')[0]['quantity']);
     }
 
     /** @test */
@@ -935,8 +935,8 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->find($cart->id);
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertSame(1, count($cart->data['items']));
-        $this->assertSame(5, $cart->data['items'][0]['quantity']);
+        $this->assertSame(1, count($cart->get('items')));
+        $this->assertSame(5, $cart->get('items')[0]['quantity']);
     }
 
     /** @test */
@@ -1006,7 +1006,7 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->find($cart->id);
 
         $this->assertArrayHasKey('items', $cart->data);
-        $this->assertSame(2, count($cart->data['items']));
+        $this->assertSame(2, count($cart->get('items')));
     }
 
     /** @test */
@@ -1024,10 +1024,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->get('slug'));
+        $response->assertRedirect('/products/' . $product->get('slug'));
         $response->assertSessionHasErrors();
     }
 
@@ -1059,14 +1059,14 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertRedirect('/cart');
 
         $cart->find($cart->id);
 
-        $this->assertSame(2, $cart->data['items'][0]['quantity']);
+        $this->assertSame(2, $cart->get('items')[0]['quantity']);
     }
 
     /** @test */
@@ -1098,7 +1098,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertRedirect('/cart');
@@ -1132,14 +1132,14 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertSessionHasErrors();
 
         $cart->find($cart->id);
 
-        $this->assertSame(1, $cart->data['items'][0]['quantity']);
+        $this->assertSame(1, $cart->get('items')[0]['quantity']);
     }
 
     /** @test */
@@ -1170,7 +1170,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertRedirect('/cart');
@@ -1213,7 +1213,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertRedirect('/cart');
@@ -1226,8 +1226,8 @@ class CartItemControllerTest extends TestCase
         $this->assertArrayNotHasKey('foo', $cart->lineItems()->first());
         $this->assertArrayNotHasKey('bar', $cart->lineItems()->first());
 
-        $this->assertSame($cart->data['items'][0]['metadata']['foo'], 'bar');
-        $this->assertSame($cart->data['items'][0]['metadata']['bar'], 'baz');
+        $this->assertSame($cart->get('items')[0]['metadata']['foo'], 'bar');
+        $this->assertSame($cart->get('items')[0]['metadata']['bar'], 'baz');
     }
 
     /** @test */
@@ -1258,15 +1258,15 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertRedirect('/cart');
 
         $cart->find($cart->id);
 
-        $this->assertSame(3, $cart->data['items'][0]['quantity']);
-        $this->assertIsInt($cart->data['items'][0]['quantity']);
+        $this->assertSame(3, $cart->get('items')[0]['quantity']);
+        $this->assertIsInt($cart->get('items')[0]['quantity']);
     }
 
     /** @test */
@@ -1297,7 +1297,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->postJson(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]), $data);
 
         $response->assertJsonStructure([
@@ -1308,7 +1308,7 @@ class CartItemControllerTest extends TestCase
 
         $cart->find($cart->id);
 
-        $this->assertSame(2, $cart->data['items'][0]['quantity']);
+        $this->assertSame(2, $cart->get('items')[0]['quantity']);
     }
 
     /** @test */
@@ -1335,7 +1335,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->deleteJson(route('statamic.simple-commerce.cart-items.destroy', [
-                'item' => $cart->data['items'][0]['id'],
+                'item' => $cart->get('items')[0]['id'],
             ]));
 
         $response->assertJsonStructure([
@@ -1344,7 +1344,7 @@ class CartItemControllerTest extends TestCase
             'cart',
         ]);
 
-        $this->assertEmpty($cart->data['items']);
+        $this->assertEmpty($cart->get('items'));
     }
 }
 

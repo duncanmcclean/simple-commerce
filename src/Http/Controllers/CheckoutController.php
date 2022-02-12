@@ -150,7 +150,7 @@ class CheckoutController extends BaseActionController
             $this->excludedKeys[] = 'coupon';
         }
 
-        if (isset($this->cart->data['coupon'])) {
+        if ($this->cart->has('coupon')) {
             $this->cart->coupon()->redeem();
         }
 

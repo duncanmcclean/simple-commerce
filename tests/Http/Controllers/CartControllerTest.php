@@ -53,9 +53,9 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
-        $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
+        $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
     }
 
     /** @test */
@@ -78,9 +78,9 @@ class CartControllerTest extends TestCase
             'cart',
         ]);
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
-        $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
+        $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
         $this->assertArrayNotHasKey('shipping_note', $cart->data());
     }
@@ -149,10 +149,10 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
-        $this->assertSame($cart->data['shipping_note'], 'Be careful pls.');
-        $this->assertSame($cart->data['customer'], $customer->id);
+        $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
+        $this->assertSame($cart->get('customer'), $customer->id);
     }
 
     /** @test */
@@ -172,10 +172,10 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
         $customer = Customer::findByEmail($data['email']);
 
-        $this->assertSame($cart->data['customer'], $customer->id);
+        $this->assertSame($cart->get('customer'), $customer->id);
         $this->assertSame($customer->name(), 'Joe Doe');
         $this->assertSame($customer->email(), 'joedoe@gmail.com');
     }
@@ -203,10 +203,10 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
-        $this->assertSame($cart->data['customer'], $customer->id);
-        $this->assertSame($customer->data['name'], 'Jordan Smith');
+        $this->assertSame($cart->get('customer'), $customer->id);
+        $this->assertSame($customer->get('name'), 'Jordan Smith');
     }
 
     /** @test */
@@ -237,11 +237,11 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
         $customer = Customer::findByEmail('jack.simpson@example.com');
 
-        $this->assertSame($cart->data['customer'], $customer->id);
-        $this->assertSame($customer->data['name'], 'Jack Simpson');
+        $this->assertSame($cart->get('customer'), $customer->id);
+        $this->assertSame($customer->get('name'), 'Jack Simpson');
     }
 
     /** @test */
@@ -263,11 +263,11 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
         $customer = Customer::findByEmail('rebecca.logan@example.com');
 
-        $this->assertTrue(isset($cart->data['customer']));
-        $this->assertIsString($cart->data['customer']);
+        $this->assertTrue($cart->has('customer'));
+        $this->assertIsString($cart->get('customer'));
         $this->assertSame($customer->name(), 'Rebecca Logan');
         $this->assertSame($customer->email(), 'rebecca.logan@example.com');
     }
@@ -350,9 +350,9 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect();
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
-        $this->assertSame($cart->data['items'], []);
+        $this->assertSame($cart->get('items'), []);
     }
 
     /** @test */
@@ -381,9 +381,9 @@ class CartControllerTest extends TestCase
             'cart',
         ]);
 
-        $cart->find($cart->id);
+        $cart = $cart->fresh();
 
-        $this->assertSame($cart->data['items'], []);
+        $this->assertSame($cart->get('items'), []);
     }
 }
 

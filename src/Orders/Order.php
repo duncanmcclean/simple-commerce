@@ -184,7 +184,9 @@ class Order implements Contract
 
     public function rules(): array
     {
-        return $this->blueprint()->fields()->validator()->rules();
+        return []; // TODO
+
+        // return $this->blueprint()->fields()->validator()->rules();
     }
 
     public function collection(): string
@@ -206,7 +208,7 @@ class Order implements Contract
     public function beforeSaved()
     {
         if (! $this->has('items')) {
-            $this->data['items'] = [];
+            $this->set('items', []);
         }
     }
 
