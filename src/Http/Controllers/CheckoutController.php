@@ -83,6 +83,16 @@ class CheckoutController extends BaseActionController
                 : [],
             [
                 'coupon' => ['nullable', new ValidCoupon($this->cart)],
+                'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                    if (preg_match('/^\S*$/u', $value) === 0) {
+                        return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
+                    }
+                }],
+                'customer.email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                    if (preg_match('/^\S*$/u', $value) === 0) {
+                        return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
+                    }
+                }],
             ],
         );
 
