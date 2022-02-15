@@ -33,7 +33,7 @@ class Customer implements Contract
     {
         $entry = Entry::query()
             ->where('collection', $this->collection())
-            ->where('slug', Str::slug($email))
+            ->whereIn('slug', [$email, Str::slug($email)])
             ->first();
 
         if (! $entry) {
@@ -73,7 +73,7 @@ class Customer implements Contract
             'email' => $email,
         ]);
 
-        $slug = Str::slug($email);
+        $slug = $email;
 
         $this->title = $title;
         $this->data['title'] = $title;
