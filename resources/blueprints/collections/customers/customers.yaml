@@ -3,16 +3,14 @@ sections:
   main:
     display: Main
     fields:
-      -
-        handle: title
+      - handle: title
         field:
           input_type: text
           type: text
           localizable: false
           listable: hidden
           display: Title
-      -
-        handle: name
+      - handle: name
         field:
           input_type: text
           type: text
@@ -21,8 +19,7 @@ sections:
           listable: hidden
           display: Name
           validate: required
-      -
-        handle: email
+      - handle: email
         field:
           input_type: email
           type: text
@@ -34,11 +31,11 @@ sections:
   sidebar:
     display: Sidebar
     fields:
-      -
-        handle: slug
+      - handle: slug
         field:
           input_type: text
           type: text
           localizable: false
           listable: hidden
           display: Slug
+          read_only: true
