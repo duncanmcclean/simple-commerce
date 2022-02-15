@@ -50,6 +50,7 @@ return [
         'tax_category_exists' => 'Sorry, the tax category provided could not be found.',
         'tax_zone_exists' => 'Sorry, the tax zone provided could not be found.',
         'valid_coupon' => 'Sorry, this coupon is not valid for your order.',
+        'email_address_contains_spaces' => 'Your email may not contain any spaces.',
     ],
 
     'customer_title'            => ':name <:email>',

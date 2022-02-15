@@ -72,6 +72,28 @@ For more information on what's new/what's changed, review the [`CHANGELOG.md`](h
 
 ---
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## v2.3.66 (2022-02-15)
+
+### What's fixed
+
+- Added validation to ensure email addresses with spaces don't work #564 #565 by @duncanmcclean
+
 ## v2.3.65 (2022-02-03)
 
 ### What's fixed
