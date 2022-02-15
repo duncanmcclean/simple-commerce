@@ -25,12 +25,12 @@ class UpdateRequest extends FormRequest
         $rules = array_merge($this->getCart()->rules(), [
             'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
-                    return $fail(__('Your email may not contain any spaces.'));
+                    return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
                 }
             }],
             'customer.email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
-                    return $fail(__('Your email may not contain any spaces.'));
+                    return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
                 }
             }],
         ]);
