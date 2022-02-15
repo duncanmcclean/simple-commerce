@@ -23,6 +23,17 @@ class StoreRequest extends FormRequest
             'product'  => ['required', 'string'],
             'variant'  => ['string'],
             'quantity' => ['required', 'numeric', 'gt:0'],
+
+            'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                if (preg_match('/^\S*$/u', $value) === 0) {
+                    return $fail(__('Your email may not contain any spaces.'));
+                }
+            }],
+            'customer.email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                if (preg_match('/^\S*$/u', $value) === 0) {
+                    return $fail(__('Your email may not contain any spaces.'));
+                }
+            }],
         ];
 
         if ($formRequest = $this->get('_request')) {
