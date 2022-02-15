@@ -2,11 +2,17 @@
 
 ## Unreleased
 
+## v2.3.66 (2022-02-15)
+
+### What's fixed
+
+- Added validation to ensure email addresses with spaces don't work #564 #565 by @duncanmcclean
+
 ## v2.3.65 (2022-02-03)
 
 ### What's fixed
 
-* Squashed an error that would appear when a coupon was being augmented #558 #559
+- Squashed an error that would appear when a coupon was being augmented #558 #559
 
 ## v2.3.64 (2022-01-22)
 
