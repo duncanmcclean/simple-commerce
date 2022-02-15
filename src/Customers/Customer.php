@@ -73,12 +73,10 @@ class Customer implements Contract
             'email' => $email,
         ]);
 
-        $slug = $email;
-
         $this->title = $title;
         $this->data['title'] = $title;
 
-        $this->slug = $slug;
+        $this->slug = $email;
 
         return $this;
     }
