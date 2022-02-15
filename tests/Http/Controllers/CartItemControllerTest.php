@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -36,10 +37,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -65,7 +66,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->postJson(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertJsonStructure([
@@ -99,10 +100,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -130,10 +131,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHasErrors('smth');
     }
 
@@ -174,10 +175,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -224,10 +225,10 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -286,10 +287,10 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -323,11 +324,11 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
         $this->assertSame(1000, $cart->data['items_total']);
 
@@ -355,7 +356,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
             ->assertSessionHasErrors();
@@ -401,7 +402,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
             ->assertSessionHasErrors();
@@ -437,11 +438,11 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$productTwo->slug)
+            ->from('/products/' . $productTwo->slug)
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$productTwo->slug);
+        $response->assertRedirect('/products/' . $productTwo->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = $cart->find($cart->id);
@@ -469,7 +470,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/checkout');
@@ -499,10 +500,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -520,6 +521,36 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_store_item_with_email_that_contains_spaces()
+    {
+        $product = Product::create([
+            'title' => 'Dog Food',
+            'price' => 1000,
+        ]);
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'name' => 'Spud Man',
+            'email' => 'spud man@potato.net',
+        ];
+
+        $response = $this
+            ->from('/products/' . $product->slug)
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertSessionHasErrors()
+            ->assertSessionMissing('simple-commerce-cart');
+
+        try {
+            Customer::findByEmail('spud man@potato.net');
+
+            $this->assertTrue(false);
+        } catch (CustomerNotFound $e) {
+            $this->assertTrue(true);
+        }
+    }
+
+    /** @test */
     public function can_store_item_with_only_email()
     {
         $product = Product::create([
@@ -534,10 +565,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -578,10 +609,10 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $order->id()])
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -618,10 +649,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -678,10 +709,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -712,10 +743,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $response->assertSessionHasErrors();
@@ -754,10 +785,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHas('simple-commerce-cart');
 
         $response->assertSessionHasErrors();
@@ -802,7 +833,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$productTwo->slug)
+            ->from('/products/' . $productTwo->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/checkout');
@@ -998,10 +1029,10 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/'.$product->slug)
+            ->from('/products/' . $product->slug)
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
-        $response->assertRedirect('/products/'.$product->slug);
+        $response->assertRedirect('/products/' . $product->slug);
         $response->assertSessionHasErrors();
     }
 

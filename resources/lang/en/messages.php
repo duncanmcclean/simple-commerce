@@ -47,6 +47,7 @@ return [
         'country_exists' => 'The selected country is not recognised.',
         'is_a_gateway' => ':value is not a gateway',
         'valid_coupon' => 'Sorry, this coupon is not valid for your order.',
+        'email_address_contains_spaces' => 'Your email may not contain any spaces.',
     ],
 
     'customer_title'            => ':name <:email>',
