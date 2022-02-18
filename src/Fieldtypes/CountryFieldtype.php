@@ -25,7 +25,9 @@ class CountryFieldtype extends Relationship
     {
         return [
             Column::make('name'),
-            Column::make('iso'),
+
+            Column::make('iso')
+                ->label('ISO Code'),
         ];
     }
 
