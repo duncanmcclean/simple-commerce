@@ -13,9 +13,7 @@ class EntryExistsTest extends TestCase
     /** @test */
     public function it_passes_if_entry_exists()
     {
-        $this->markTestIncomplete();
-
-        $collection = Collection::make('products')->save();
+        Collection::make('products')->save();
 
         $entry = Entry::make()
             ->collection('products');
@@ -23,7 +21,7 @@ class EntryExistsTest extends TestCase
         $entry->save();
 
         $validate = Validator::make([
-            'entry' => $entry->id,
+            'entry' => $entry->id(),
         ], [
             'entry' => [new EntryExists()],
         ]);

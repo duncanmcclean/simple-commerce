@@ -2,10 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -25,7 +27,7 @@ class UserCustomerTest extends TestCase
 
         $this->app->bind(\DoubleThreeDigital\SimpleCommerce\Contracts\Customer::class, \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer::class);
 
-        File::deleteDirectory(__DIR__.'/../__fixtures__/users');
+        File::deleteDirectory(__DIR__ . '/../__fixtures__/users');
 
         app('stache')->stores()->get('users')->clear();
     }
@@ -61,8 +63,18 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_query_users()
     {
-        // TODO
-        $this->markTestIncomplete("No one really uses `query` so I'm going to leave this out for now.");
+        User::make()
+            ->email('james@example.com')
+            ->save();
+
+        User::make()
+            ->email('ben@example.com')
+            ->save();
+
+        $query = Customer::all();
+
+        $this->assertTrue($query instanceof Collection);
+        $this->assertSame($query->count(), 2);
     }
 
     /** @test */
@@ -315,6 +327,10 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_get_blueprint_default_fields()
     {
-        $this->markTestIncomplete();
+        $customerInstance = resolve(CustomerContract::class);
+
+        $defaultFieldsInBlueprint = (new Invader($customerInstance))->defaultFieldsInBlueprint();
+
+        $this->assertIsArray($defaultFieldsInBlueprint);
     }
 }

@@ -41,9 +41,6 @@ class CheckoutTagTest extends TestCase
     /** @test */
     public function can_output_checkout_form()
     {
-        // TODO: causes timeout issues on Github Actions
-        $this->markTestIncomplete();
-
         $this->fakeCart();
 
         $this->tag->setParameters([]);
@@ -53,38 +50,32 @@ class CheckoutTagTest extends TestCase
 
             {{ sc:gateways }}
                 ---
-                {{ name }} - Duncan Cool ({{ gateway-config:is-duncan-cool }}) - Haggis {{ haggis }} - Tatties {{ tatties }}
+                {{ name }} - Duncan Cool ({{ gateway-config:is-duncan-cool }}) - Haggis - Tatties
                 ---
             {{ /sc:gateways }}
         ');
 
         $usage = $this->tag->index();
 
-        $this->assertStringContainsString('Test On-site Gateway - Duncan Cool (yes) - Haggis 1 - Tatties 1', $usage);
+        $this->assertStringContainsString('Test On-site Gateway - Duncan Cool (yes) - Haggis - Tatties', $usage);
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/checkout"', $usage);
     }
 
     /** @test */
     public function can_redirect_user_to_offsite_gateway()
     {
-        // TODO: no idea why this test is failing
-        $this->markTestIncomplete();
-
         $this->fakeCart();
 
         $this->tag->setParameters([]);
 
         $this->expectException(HttpResponseException::class);
 
-        $usage = $this->tag->wildcard('testOffSiteGateway');
+        $usage = $this->tag->wildcard('testoffsitegateway');
     }
 
     /** @test */
     public function can_redirect_user_to_offsite_gateway_with_redirect_url()
     {
-        // TODO: no idea why this test is failing
-        $this->markTestIncomplete();
-
         $this->fakeCart();
 
         $this->tag->setParameters([
@@ -93,7 +84,7 @@ class CheckoutTagTest extends TestCase
 
         $this->expectException(HttpResponseException::class);
 
-        $usage = $this->tag->wildcard('testOffSiteGateway');
+        $this->tag->wildcard('testoffsitegateway');
     }
 
     protected function fakeCart($cart = null)
