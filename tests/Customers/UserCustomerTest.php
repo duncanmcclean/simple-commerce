@@ -62,8 +62,18 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_query_users()
     {
-        // TODO
-        $this->markTestIncomplete("No one really uses `query` so I'm going to leave this out for now.");
+        User::make()
+            ->email('james@example.com')
+            ->save();
+
+        User::make()
+            ->email('ben@example.com')
+            ->save();
+
+        $query = Customer::all();
+
+        $this->assertTrue($query instanceof Collection);
+        $this->assertSame($query->count(), 2);
     }
 
     /** @test */
