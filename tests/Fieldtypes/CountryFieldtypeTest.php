@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -36,7 +37,7 @@ class CountryFieldtypeTest extends TestCase
     /** @test */
     public function can_get_columns()
     {
-        $getColumns = invade($this->fieldtype)->getColumns();
+        $getColumns = (new Invader($this->fieldtype))->getColumns();
 
         $this->assertIsArray($getColumns);
 

@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -328,7 +329,7 @@ class UserCustomerTest extends TestCase
     {
         $customerInstance = resolve(CustomerContract::class);
 
-        $defaultFieldsInBlueprint = invade($customerInstance)->defaultFieldsInBlueprint();
+        $defaultFieldsInBlueprint = (new Invader($customerInstance))->defaultFieldsInBlueprint();
 
         $this->assertIsArray($defaultFieldsInBlueprint);
     }
