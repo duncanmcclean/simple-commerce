@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -25,7 +26,7 @@ class UserCustomerTest extends TestCase
 
         $this->app->bind(\DoubleThreeDigital\SimpleCommerce\Contracts\Customer::class, \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer::class);
 
-        File::deleteDirectory(__DIR__.'/../__fixtures__/users');
+        File::deleteDirectory(__DIR__ . '/../__fixtures__/users');
 
         app('stache')->stores()->get('users')->clear();
     }
@@ -315,6 +316,10 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_get_blueprint_default_fields()
     {
-        $this->markTestIncomplete();
+        $customerInstance = resolve(CustomerContract::class);
+
+        $defaultFieldsInBlueprint = invade($customerInstance)->defaultFieldsInBlueprint();
+
+        $this->assertIsArray($defaultFieldsInBlueprint);
     }
 }
