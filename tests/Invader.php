@@ -15,7 +15,7 @@ class Invader
         $this->reflected = new ReflectionClass($obj);
     }
 
-    public function __get(string $name): mixed
+    public function __get(string $name)
     {
         $property = $this->reflected->getProperty($name);
 
@@ -33,7 +33,7 @@ class Invader
         $property->setValue($this->obj, $value);
     }
 
-    public function __call(string $name, array $params = []): mixed
+    public function __call(string $name, array $params = [])
     {
         $method = $this->reflected->getMethod($name);
 
