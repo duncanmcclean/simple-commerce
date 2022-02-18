@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\URL;
@@ -12,8 +13,6 @@ class ReceiptControllerTest extends TestCase
     /** @test */
     public function can_show_receipt()
     {
-        $this->markTestIncomplete();
-
         $product = Product::create([
             'title' => 'Food',
             'price' => 1000,
