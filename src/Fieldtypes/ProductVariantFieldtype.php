@@ -49,8 +49,7 @@ class ProductVariantFieldtype extends Fieldtype
 
         $augmentedValue = $product
             ->entry()
-            ->augmentedValue('product_variants')
-            ->value();
+            ->augmentedValue('product_variants');
 
         $variantSearch = collect($augmentedValue['options'])
             ->where('key', $value['variant']);
