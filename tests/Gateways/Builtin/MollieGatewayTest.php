@@ -3,13 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\MollieGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
+use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
-use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 
 class MollieGatewayTest extends TestCase
@@ -20,12 +19,12 @@ class MollieGatewayTest extends TestCase
     {
         parent::setUp();
 
-        $this->gateway = new MollieGateway();
-
-        $this->gateway->setConfig([
+        $config = [
             'key' => env('MOLLIE_KEY'),
             'profile' => env('MOLLIE_PROFILE'),
-        ]);
+        ];
+
+        $this->gateway = new MollieGateway($config, 'mollie');
 
         Collection::make('orders')->title('Order')->save();
     }
@@ -46,82 +45,70 @@ class MollieGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
         }
 
+        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            Order::create()
+            $order = Order::create([
+                'items' => [
+                    [
+                        'id' => app('stache')->generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 5500,
+                        'metadata' => [],
+                    ],
+                ],
+                'grand_total' => 5500,
+                'title' => '#0001',
+            ])
         ));
-
-        dd($prepare);
 
         $this->assertIsObject($prepare);
         $this->assertTrue($prepare->success());
-        $this->assertSame($prepare->data(), []);
-    }
+        $this->assertStringContainsString('tr_', $prepare->data()['id']);
 
-    /** @test */
-    public function can_purchase()
-    {
-        $this->markTestIncomplete();
+        $molliePayment = (new Invader($this->gateway))->mollie->payments->get($prepare->data()['id']);
 
-        Notification::fake();
-
-        TestTime::freeze();
-
-        $purchase = $this->gateway->purchase(new Purchase(
-            new Request(),
-            Order::create()
-        ));
-
-        $this->assertIsObject($purchase);
-        $this->assertTrue($purchase->success());
-        $this->assertSame([
-            'id'        => '123456789abcdefg',
-            'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
-        ], $purchase->data());
-    }
-
-    /** @test */
-    public function has_purchase_rules()
-    {
-        $this->markTestIncomplete();
-
-        $rules = $this->gateway->purchaseRules();
-
-        $this->assertIsArray($rules);
-        $this->assertSame([
-            'card_number'   => 'required|string',
-            'expiry_month'  => 'required',
-            'expiry_year'   => 'required',
-            'cvc'           => 'required',
-        ], $rules);
+        $this->assertSame('55.00', $molliePayment->amount->value);
+        $this->assertSame('Order #0001', $molliePayment->description);
+        $this->assertStringContainsString('/!/simple-commerce/gateways/mollie/callback?_order_id=' . $order->id(), $molliePayment->redirectUrl);
     }
 
     /** @test */
     public function can_get_charge()
     {
-        $this->markTestIncomplete();
+        (new Invader($this->gateway))->setupMollie();
 
-        TestTime::freeze();
+        $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
+            'amount' => [
+                'currency' => 'GBP',
+                'value'    => '12.34',
+            ],
+            'description' => 'Order #12345689',
+            'redirectUrl' => 'https://example.com/redirect',
+            'webhookUrl'  => 'https://example.com/webhook',
+            'metadata'    => [
+                'order_id' => '12345689',
+            ],
+        ]);
 
         $charge = $this->gateway->getCharge(
-            Order::create()
+            Order::create(['gateway' => ['data' => ['id' => $molliePayment->id]]])
         );
 
         $this->assertIsObject($charge);
-        $this->assertSame([
-            'id'        => '123456789abcdefg',
-            'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
-        ], $charge->data());
+        $this->assertTrue($charge->success());
+        $this->assertArrayHasKey('id', $charge->data());
+        $this->assertArrayHasKey('mode', $charge->data());
+        $this->assertArrayHasKey('amount', $charge->data());
+        $this->assertArrayHasKey('description', $charge->data());
     }
 
     /** @test */
     public function can_refund_charge()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('How do we fake a refund?');
 
         $refund = $this->gateway->refundCharge(Order::create());
 
@@ -132,7 +119,7 @@ class MollieGatewayTest extends TestCase
     /** @test */
     public function can_hit_webhook()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('Need to hit the webhook with the expected payload.');
 
         $webhook = $this->gateway->webhook(new Request());
 
