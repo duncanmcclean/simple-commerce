@@ -92,9 +92,7 @@ class RefundActionTest extends TestCase
     /** @test */
     public function order_can_be_refunded()
     {
-        $this->markTestSkipped();
-
-        $collection = Collection::make('orders')->save();
+        Collection::make('orders')->save();
 
         $order = Entry::make()
             ->collection('orders')
@@ -108,10 +106,11 @@ class RefundActionTest extends TestCase
                         'id' => '123456789abcdefg',
                     ],
                 ],
-            ])
-            ->save();
+            ]);
 
-        $action = $this->action->run([$order], null);
+        $order->save();
+
+        $this->action->run([$order], null);
 
         $order->fresh();
 

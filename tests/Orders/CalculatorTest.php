@@ -255,10 +255,8 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_tax_is_subracted_from_item_total_if_included_in_price()
     {
-        $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
-
-        Config::set('simple-commerce.tax_engine_config.rate', 20);
-        Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
+        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
 
         $product = Product::create([
             'price' => 1000,
@@ -291,10 +289,8 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_tax_is_not_subtracted_from_item_total_if_not_included_in_prices()
     {
-        $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
-
-        Config::set('simple-commerce.tax_engine_config.rate', 20);
-        Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
+        Config::set('simple-commerce.sites.default.tax.rate', 20);
+        Config::set('simple-commerce.sites.default.tax.included_in_prices', false);
 
         $product = Product::create([
             'price' => 1000,
@@ -315,10 +311,10 @@ class CalculatorTest extends TestCase
 
         $this->assertIsArray($calculate);
 
-        $this->assertSame($calculate['grand_total'], 2333);
+        $this->assertSame($calculate['grand_total'], 2400);
         $this->assertSame($calculate['items_total'], 2000);
         $this->assertSame($calculate['shipping_total'], 0);
-        $this->assertSame($calculate['tax_total'], 333);
+        $this->assertSame($calculate['tax_total'], 400);
         $this->assertSame($calculate['coupon_total'], 0);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
