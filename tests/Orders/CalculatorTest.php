@@ -220,77 +220,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function can_calculate_correct_tax_amount()
     {
-        $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
-
         Config::set('simple-commerce.tax_engine_config.rate', 20);
-
-        $product = Product::create([
-            'price' => 1000,
-        ]);
-
-        $cart = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
-            ],
-        ]);
-
-        $calculate = (new Calculator())->calculate($cart);
-
-        $this->assertIsArray($calculate);
-
-        $this->assertSame($calculate['grand_total'], 2333);
-        $this->assertSame($calculate['items_total'], 2000);
-        $this->assertSame($calculate['shipping_total'], 0);
-        $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 0);
-
-        $this->assertSame($calculate['items'][0]['total'], 2000);
-    }
-
-    /** @test */
-    public function ensure_tax_is_subracted_from_item_total_if_included_in_price()
-    {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', true);
-
-        $product = Product::create([
-            'price' => 1000,
-        ]);
-
-        $cart = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
-            ],
-        ]);
-
-        $calculate = (new Calculator())->calculate($cart);
-
-        $this->assertIsArray($calculate);
-
-        $this->assertSame($calculate['grand_total'], 2000);
-        $this->assertSame($calculate['items_total'], 1667);
-        $this->assertSame($calculate['shipping_total'], 0);
-        $this->assertSame($calculate['tax_total'], 333);
-        $this->assertSame($calculate['coupon_total'], 0);
-
-        $this->assertSame($calculate['items'][0]['total'], 1667);
-    }
-
-    /** @test */
-    public function ensure_tax_is_not_subtracted_from_item_total_if_not_included_in_prices()
-    {
-        Config::set('simple-commerce.sites.default.tax.rate', 20);
-        Config::set('simple-commerce.sites.default.tax.included_in_prices', false);
 
         $product = Product::create([
             'price' => 1000,
@@ -318,42 +248,6 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['coupon_total'], 0);
 
         $this->assertSame($calculate['items'][0]['total'], 2000);
-    }
-
-    /** @test */
-    public function ensure_round_value_tax_is_calculated_correctly()
-    {
-        $this->markTestSkipped("The actual tax engines themselves are now being tested, it may be the case we don't need such exhaustive tests in here.");
-
-        Config::set('simple-commerce.tax_engine_config.rate', 20);
-        Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
-
-        $product = Product::create([
-            'price' => 2600,
-        ]);
-
-        $cart = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 3,
-                    'total'    => 7800,
-                ],
-            ],
-        ]);
-
-        $calculate = (new Calculator())->calculate($cart);
-
-        $this->assertIsArray($calculate);
-
-        $this->assertSame($calculate['grand_total'], 7800);
-        $this->assertSame($calculate['items_total'], 6500);
-        $this->assertSame($calculate['shipping_total'], 0);
-        $this->assertSame($calculate['tax_total'], 1300);
-        $this->assertSame($calculate['coupon_total'], 0);
-
-        $this->assertSame($calculate['items'][0]['total'], 6500);
     }
 
     /** @test */
