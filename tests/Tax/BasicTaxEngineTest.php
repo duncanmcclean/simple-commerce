@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
+use Statamic\Facades\Collection;
 
 class BasicTaxEngineTest extends TestCase
 {
@@ -77,9 +78,10 @@ class BasicTaxEngineTest extends TestCase
     /** @test */
     public function can_calculate_tax_when_tax_rate_is_decimal_number()
     {
-        $this->markTestIncomplete('Need to figure out the calculation issue, oh well!');
-
         Config::set('simple-commerce.tax_engine_config.rate', 10.5);
+
+        Collection::make('products')->save();
+        Collection::make('orders')->save();
 
         $product = Product::create([
             'price' => 1000,
@@ -100,7 +102,6 @@ class BasicTaxEngineTest extends TestCase
 
         $this->assertTrue($taxCalculation instanceof TaxCalculation);
 
-        // Returning 190, not 210?
         $this->assertSame($taxCalculation->amount(), 210);
         $this->assertSame($taxCalculation->priceIncludesTax(), false);
         $this->assertSame($taxCalculation->rate(), 10.5);
