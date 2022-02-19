@@ -101,7 +101,7 @@ class RefundActionTest extends TestCase
                 'is_paid'      => true,
                 'is_refunded'  => false,
                 'gateway' => [
-                    'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\DummyGateway',
+                    'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',
                     'data' => [
                         'id' => '123456789abcdefg',
                     ],
