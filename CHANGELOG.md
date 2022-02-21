@@ -10,28 +10,37 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 
 ### What's new
 
-* Brand new Tax Engine ✨ #438
-* Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
+- Brand new Tax Engine ✨ #438
+- Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
+- Ability to set a 'default shipping method' #555 #562
 
 ### What's improved
 
-* Gateway data has been combined, under a single key #498
-* 'Temporary' gateway data will now be cleared after checking out
-* Shipping Methods can now access the order when checking availability
-* Multisites: each site will now have it's own cart (rather than sharing one between them) #519
-* The `PreCheckout` and `PostCheckout` events now includes the context of the request
+- Gateway data has been combined, under a single key #498
+- 'Temporary' gateway data will now be cleared after checking out
+- Shipping Methods can now access the order when checking availability
+- Multisites: each site will now have it's own cart (rather than sharing one between them) #519
+- The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
-## v2.4.0-beta.2 (2022-12-08)
+## v2.4.0-beta.3 (2022-02-05)
 
 Everything from the latest in v2.3 and...
 
 ### What's new
 
-* Ability to limit coupons to certain customers
+- Ability to set a 'default shipping method' #555 #562
+
+## v2.4.0-beta.2 (2021-12-08)
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+- Ability to limit coupons to certain customers
 
 ### What's improved
 
-* 'Temporary gateway data' will now be cleared from orders after checkout
+- 'Temporary gateway data' will now be cleared from orders after checkout
 
 ## v2.4.0-beta.1 (2021-12-17)
 
@@ -39,9 +48,9 @@ Simple Commerce v2.4 is on it's way - this is the very first beta release! The p
 
 ### Updating to the beta
 
-* Set `minimum-stability` to `"dev"` or `"alpha"`
+- Set `minimum-stability` to `"dev"` or `"alpha"`
 
-* Change `"doublethreedigital/simple-commerce"` to `"2.4.*"`
+- Change `"doublethreedigital/simple-commerce"` to `"2.4.*"`
 
 ```json
 // composer.json
@@ -53,7 +62,7 @@ Simple Commerce v2.4 is on it's way - this is the very first beta release! The p
 },
 ```
 
-* Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
+- Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
 
 After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/master/docs/upgrade-guide.md) which explains any changes you may need to make.
 
@@ -61,12 +70,35 @@ After this, I'd recommend running through the [upgrade guide](https://github.com
 
 For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
 
+---
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+## v2.3.66 (2022-02-15)
+
+### What's fixed
+
+- Added validation to ensure email addresses with spaces don't work #564 #565 #567 by @duncanmcclean
+
+## v2.3.65 (2022-02-03)
+
+### What's fixed
+
+- Squashed an error that would appear when a coupon was being augmented #558 #559
 
 ## v2.3.64 (2022-01-22)
 

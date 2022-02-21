@@ -16,14 +16,9 @@ jobs:
         os: [ubuntu-latest]
         include:
           - laravel: 8.*
-            framework: ^8.24.0
             testbench: 6.*
           - laravel: 7.*
-            framework: ^7.30.4
             testbench: 5.*
-        exclude:
-          - laravel: 7.*
-            php: 8.1
 
     name: ${{ matrix.php }} - ${{ matrix.statamic }} - ${{ matrix.laravel }}
 
@@ -31,18 +26,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
 
-      - name: Delete composer.lock
-        run: rm composer.lock
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          tools: composer:v2
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.framework }}" "statamic/cms:${{ matrix.statamic }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "statamic/cms:${{ matrix.statamic }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer install --no-interaction
 
       - name: Run PHPUnit

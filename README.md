@@ -16,32 +16,32 @@ Stay with what you love - Statamic entries. With Simple Commerce, all of your pr
 
 Out-of-the-box, Simple Commerce ships with support for three of the big payment gateways: Stripe, PayPal and Mollie. Use whichever one you need, or if you need something else: it's easy to build one.
 
-* [Documentation: Payment Gateways](https://simple-commerce.duncanmcclean.com/gateways)
-* [Documentation: Building custom gateways](https://simple-commerce.duncanmcclean.com/extending/custom-gateways)
+- [Documentation: Payment Gateways](https://simple-commerce.duncanmcclean.com/gateways)
+- [Documentation: Building custom gateways](https://simple-commerce.duncanmcclean.com/extending/custom-gateways)
 
 ### Flexible shipping
 
 Provide your customers with different shipping options depending on their address.
 
-* [Documentation: Shipping](https://simple-commerce.duncanmcclean.com/shipping)
+- [Documentation: Shipping](https://simple-commerce.duncanmcclean.com/shipping)
 
 ### Discounting
 
 Simple Commerce has support for discount coupons. You can limit coupons to certain products or to be used a max number of times. All your customer has to do is redeem the discount during checkout.
 
-* [Documentation: Coupons](https://simple-commerce.duncanmcclean.com/coupons)
+- [Documentation: Coupons](https://simple-commerce.duncanmcclean.com/coupons)
 
 ### Product variants
 
 Sometimes you need to sell different versions of the same product. Like a t-shirt, you might want to sell it in Small, Medium & Large - each with different prices and stock levels. That's where Product Variants come in. Create a single product and configure the variants inside it.
 
-* [Documentation: Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
+- [Documentation: Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
 
 ### Multi-site friendly
 
 If you need to sell across different countries, you can take advantage of Statamic's multi-site feature in Simple Commerce to have a site per currency. Each site may also have its own set of shipping methods.
 
-* [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/multisite)
+- [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/multisite)
 
 ### And lots more...
 
@@ -73,7 +73,7 @@ Simple Commerce is a commercial addon - you **must purchase a license** via the 
 
 ## Security
 
-Only the latest version of Simple Commerce (v2.3) will receive security updates if a vulnerability is found. 
+Only the latest version of Simple Commerce (v2.4) will receive security updates if a vulnerability is found.
 
 If you discover a security vulnerability, please report it to Duncan straight away, [via email](mailto:security@doublethree.digital). Please don't report security issues through GitHub Issues.
 
@@ -83,8 +83,8 @@ If you're in need of some help with Simple Commerce, [send me an email](mailto:h
 
 ## Other Repositories
 
-* [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
-* [**Digital Products Addon**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
+- [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
+- [**Digital Products Addon**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
 
 <!-- statamic:hide -->
 

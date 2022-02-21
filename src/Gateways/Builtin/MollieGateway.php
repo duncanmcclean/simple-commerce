@@ -89,7 +89,6 @@ class MollieGateway extends BaseGateway implements Gateway
             '_embedded'                       => $payment->_embedded,
             'isCancelable'                    => $payment->isCancelable,
             'amountCaptured'                  => $payment->amountCaptured,
-            'applicationFeeAmount'            => $payment->applicationFeeAmount,
             'authorizedAt'                    => $payment->authorizedAt,
             'expiredAt'                       => $payment->expiredAt,
             'customerId'                      => $payment->customerId,
@@ -110,7 +109,7 @@ class MollieGateway extends BaseGateway implements Gateway
     public function webhook(Request $request)
     {
         $this->setupMollie();
-        $mollieId = $request->id;
+        $mollieId = $request->get('id');
 
         $payment = $this->mollie->payments->get($mollieId);
 

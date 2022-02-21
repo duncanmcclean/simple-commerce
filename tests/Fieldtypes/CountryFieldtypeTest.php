@@ -3,9 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
+use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Statamic\CP\Column;
 
 class CountryFieldtypeTest extends TestCase
 {
@@ -35,7 +37,17 @@ class CountryFieldtypeTest extends TestCase
     /** @test */
     public function can_get_columns()
     {
-        $this->markTestIncomplete('Can not test this method as it is protected.');
+        $getColumns = (new Invader($this->fieldtype))->getColumns();
+
+        $this->assertIsArray($getColumns);
+
+        $this->assertTrue($getColumns[0] instanceof Column);
+        $this->assertSame($getColumns[0]->field(), 'name');
+        $this->assertSame($getColumns[0]->label(), 'Name');
+
+        $this->assertTrue($getColumns[1] instanceof Column);
+        $this->assertSame($getColumns[1]->field(), 'iso');
+        $this->assertSame($getColumns[1]->label(), 'ISO Code');
     }
 
     /** @test */

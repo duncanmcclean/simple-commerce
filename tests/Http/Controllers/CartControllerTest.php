@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -183,6 +184,35 @@ class CartControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_update_cart_and_create_new_customer_if_email_contains_spaces()
+    {
+        $cart = Order::create()->save();
+
+        $data = [
+            'name'  => 'Joe Mo',
+            'email' => 'joe mo@gmail.com',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data)
+            ->assertSessionHasErrors('email');
+
+        $cart->find($cart->id);
+
+        $this->assertArrayNotHasKey('customer', $cart->data);
+
+        try {
+            Customer::findByEmail($data['email']);
+
+            $this->assertTrue(false);
+        } catch (CustomerNotFound $e) {
+            $this->assertTrue(true);
+        }
+    }
+
+    /** @test */
     public function can_update_cart_and_existing_customer_by_id()
     {
         $customer = Customer::create()->data([
@@ -214,8 +244,6 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_email()
     {
-        $this->markTestSkipped();
-
         $customer = Customer::create()->data([
             'name'  => 'Jak Simpson',
             'email' => 'jack.simpson@example.com',
@@ -272,6 +300,37 @@ class CartControllerTest extends TestCase
         $this->assertIsString($cart->get('customer'));
         $this->assertSame($customer->name(), 'Rebecca Logan');
         $this->assertSame($customer->email(), 'rebecca.logan@example.com');
+    }
+
+    /** @test */
+    public function cant_update_cart_and_create_new_customer_via_customer_array_if_email_contains_spaces()
+    {
+        $cart = Order::create()->save();
+
+        $data = [
+            'customer' => [
+                'name'  => 'CJ Cregg',
+                'email' => 'cj cregg@example.com',
+            ],
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data)
+            ->assertSessionHasErrors();
+
+        $cart->find($cart->id);
+
+        $this->assertNull($cart->get('customer'));
+
+        try {
+            Customer::findByEmail('cj cregg@example.com');
+
+            $this->assertTrue(false);
+        } catch (CustomerNotFound $e) {
+            $this->assertTrue(true);
+        }
     }
 
     /**

@@ -50,9 +50,6 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items()
     {
-        // TODO: work out issues with toAugmentedArray() playing up in tests
-        $this->markTestIncomplete();
-
         $product = Product::make()
             ->data([
                 'title' => 'Dog Food',
@@ -466,13 +463,6 @@ class CartTagTest extends TestCase
         $usage = $this->tag->wildcard('note');
 
         $this->assertSame($usage, 'Deliver by front door.');
-    }
-
-    /** @test */
-    public function can_get_augmented_value_from_cart_data()
-    {
-        // TODO: Write a test to ensure we can grab the value of an augmented field with the `wildcard` magic.
-        $this->markTestIncomplete();
     }
 
     protected function tag($tag)

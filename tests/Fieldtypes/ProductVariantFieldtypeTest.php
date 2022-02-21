@@ -56,8 +56,6 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_null_if_purcaseable_type_is_product()
     {
-        $this->markTestSkipped();
-
         $product = Product::make()->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
@@ -71,11 +69,19 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_null_if_variant_does_not_exist()
     {
-        $this->markTestSkipped();
-
         $product = Product::make()
             ->set([
-                'variants' => [
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name' => 'Colour',
+                            'values' => ['Yellow'],
+                        ],
+                        [
+                            'name' => 'Size',
+                            'values' => ['Large'],
+                        ],
+                    ],
                     'options' => [
                         ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
                     ],
@@ -95,11 +101,19 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_variant_data()
     {
-        $this->markTestSkipped();
-
         $product = Product::make()
             ->set([
-                'variants' => [
+                'product_variants' => [
+                    'variants' => [
+                        [
+                            'name' => 'Colour',
+                            'values' => ['Yellow'],
+                        ],
+                        [
+                            'name' => 'Size',
+                            'values' => ['Large'],
+                        ],
+                    ],
                     'options' => [
                         ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
                     ],
@@ -112,5 +126,10 @@ class ProductVariantFieldtypeTest extends TestCase
             'product' => $product->id,
             'variant' => 'Yellow_Large',
         ]);
+
+        $this->assertIsArray($augment);
+
+        $this->assertArrayHasKey('key', $augment);
+        $this->assertArrayHasKey('variant', $augment);
     }
 }
