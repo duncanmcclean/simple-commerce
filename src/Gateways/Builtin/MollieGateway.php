@@ -37,7 +37,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'currency' => Currency::get(Site::current())['code'],
                 'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
             ],
-            'description' => "Order {$order->title()}",
+            'description' => "Order {$order->get('title')}",
             'redirectUrl' => $this->callbackUrl([
                 '_order_id' => $data->order()->id(),
             ]),
@@ -89,7 +89,6 @@ class MollieGateway extends BaseGateway implements Gateway
             '_embedded'                       => $payment->_embedded,
             'isCancelable'                    => $payment->isCancelable,
             'amountCaptured'                  => $payment->amountCaptured,
-            'applicationFeeAmount'            => $payment->applicationFeeAmount,
             'authorizedAt'                    => $payment->authorizedAt,
             'expiredAt'                       => $payment->expiredAt,
             'customerId'                      => $payment->customerId,
@@ -110,7 +109,7 @@ class MollieGateway extends BaseGateway implements Gateway
     public function webhook(Request $request)
     {
         $this->setupMollie();
-        $mollieId = $request->id;
+        $mollieId = $request->get('id');
 
         $payment = $this->mollie->payments->get($mollieId);
 
@@ -147,7 +146,7 @@ class MollieGateway extends BaseGateway implements Gateway
         $this->mollie = new MollieApiClient();
         $this->mollie->setApiKey($this->config()->get('key'));
 
-        $this->mollie->addVersionString('Statamic/'.Statamic::version());
-        $this->mollie->addVersionString('SimpleCommerce/'.SimpleCommerce::version());
+        $this->mollie->addVersionString('Statamic/' . Statamic::version());
+        $this->mollie->addVersionString('SimpleCommerce/' . SimpleCommerce::version());
     }
 }
