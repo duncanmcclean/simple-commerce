@@ -271,8 +271,6 @@ class CartControllerTest extends TestCase
             ],
         ];
 
-        $this->withoutExceptionHandling();
-
         $response = $this
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
