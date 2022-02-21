@@ -79,6 +79,10 @@ class MollieGatewayTest extends TestCase
     /** @test */
     public function can_get_charge()
     {
+        if (! env('MOLLIE_KEY')) {
+            $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
+        }
+
         (new Invader($this->gateway))->setupMollie();
 
         $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
@@ -111,6 +115,10 @@ class MollieGatewayTest extends TestCase
     {
         $this->markTestIncomplete('Need to figure out how we can fake a REAL payment, so we can then go onto refund it.');
 
+        if (! env('MOLLIE_KEY')) {
+            $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
+        }
+
         $refund = $this->gateway->refundCharge(Order::create());
 
         $this->assertIsObject($refund);
@@ -120,6 +128,10 @@ class MollieGatewayTest extends TestCase
     /** @test */
     public function can_hit_webhook()
     {
+        if (! env('MOLLIE_KEY')) {
+            $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
+        }
+
         (new Invader($this->gateway))->setupMollie();
 
         $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
