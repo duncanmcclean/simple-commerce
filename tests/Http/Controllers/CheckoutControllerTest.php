@@ -48,7 +48,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -59,6 +59,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -101,7 +103,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -112,6 +114,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -158,7 +162,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -169,6 +173,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -213,12 +219,14 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::create([
+        $product = Product::make()->data([
             'title' => 'Bacon',
             'price' => 5000,
         ]);
 
-        $order = Order::create([
+        $product->save();
+
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -229,6 +237,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -275,7 +285,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -286,6 +296,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -333,12 +345,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::create([
+        $customer = Customer::make()->data([
             'name' => 'Dwight Schrute',
             'email' => 'dwight.schrute@example.com',
         ]);
 
-        $order = Order::create([
+        $customer->save();
+
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -350,6 +364,8 @@ class CheckoutControllerTest extends TestCase
             'grand_total' => 5000,
             'customer'    => $customer->id,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -401,12 +417,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::create([
+        $customer = Customer::make()->data([
             'name' => 'Stanley Hudson',
             'email' => 'stanley.hudson@example.com',
         ]);
 
-        $order = Order::create([
+        $customer->save();
+
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -417,6 +435,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -484,7 +504,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -495,6 +515,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -561,7 +583,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -573,6 +595,8 @@ class CheckoutControllerTest extends TestCase
             'grand_total' => 5000,
             'items_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -639,7 +663,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -651,6 +675,8 @@ class CheckoutControllerTest extends TestCase
             'grand_total' => 5000,
             'items_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -717,7 +743,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -729,6 +755,8 @@ class CheckoutControllerTest extends TestCase
             'grand_total' => 5000,
             'items_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -780,7 +808,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -791,6 +819,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -839,7 +869,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -850,6 +880,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -898,7 +930,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -909,6 +941,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -965,7 +999,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -976,6 +1010,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1048,7 +1084,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1060,6 +1096,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1130,7 +1168,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1142,6 +1180,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1212,7 +1252,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1224,6 +1264,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1303,7 +1345,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1315,6 +1357,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1363,7 +1407,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1376,6 +1420,8 @@ class CheckoutControllerTest extends TestCase
             'gift_note' => 'I like jam on toast!',
             'delivery_note' => 'We live at the red house at the top of the hill.',
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1425,9 +1471,11 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'grand_total' => 0,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1482,7 +1530,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1493,6 +1541,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 0,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1533,7 +1583,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1544,6 +1594,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1583,7 +1635,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1594,6 +1646,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1632,7 +1686,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1643,6 +1697,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1682,7 +1738,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1693,6 +1749,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1746,7 +1804,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1757,6 +1815,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1807,7 +1867,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1818,6 +1878,8 @@ class CheckoutControllerTest extends TestCase
             ],
             'grand_total' => 5000,
         ]);
+
+        $order->save();
 
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
@@ -1867,7 +1929,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1881,6 +1943,8 @@ class CheckoutControllerTest extends TestCase
                 'foo' => 'bar',
             ],
         ]);
+
+        $order->save();
 
         // Double check 'dummy' temp data is actually present
         $this->assertIsArray($order->get('dummy'));

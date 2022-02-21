@@ -75,7 +75,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -87,6 +87,8 @@ class StandardTaxEngineTest extends TestCase
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
+
+        $order->save();
 
         $recalculate = $order->recalculate();
 
@@ -143,7 +145,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -156,6 +158,8 @@ class StandardTaxEngineTest extends TestCase
             'billing_country' => 'GB',
             'billing_region' => 'gb-sct',
         ]);
+
+        $order->save();
 
         $recalculate = $order->recalculate();
 
@@ -211,7 +215,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -223,6 +227,8 @@ class StandardTaxEngineTest extends TestCase
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
+
+        $order->save();
 
         $recalculate = $order->recalculate();
 
@@ -269,7 +275,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -281,6 +287,8 @@ class StandardTaxEngineTest extends TestCase
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
+
+        $order->save();
 
         $recalculate = $order->recalculate();
 
@@ -326,7 +334,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -338,6 +346,8 @@ class StandardTaxEngineTest extends TestCase
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
+
+        $order->save();
 
         $order->recalculate();
     }
@@ -384,7 +394,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -394,6 +404,8 @@ class StandardTaxEngineTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $recalculate = $order->recalculate();
 
@@ -440,16 +452,19 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
+        $order = Order::make()
+            ->data([
+                'items' => [
+                    [
+                        'id' => app('stache')->generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 1000,
+                    ],
                 ],
-            ],
-        ]);
+            ]);
+
+        $order->save();
 
         $recalculate = $order->recalculate();
 

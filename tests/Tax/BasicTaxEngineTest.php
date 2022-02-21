@@ -28,7 +28,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->save([
             'is_paid' => false,
             'items'   => [
                 $lineItem = [
@@ -38,6 +38,8 @@ class BasicTaxEngineTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -61,7 +63,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'is_paid' => false,
             'items'   => [
                 $lineItem = [
@@ -71,6 +73,8 @@ class BasicTaxEngineTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -96,7 +100,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'is_paid' => false,
             'items'   => [
                 $lineItem = [
@@ -106,6 +110,8 @@ class BasicTaxEngineTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -128,7 +134,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'is_paid' => false,
             'items'   => [
                 $lineItem = [
@@ -138,6 +144,8 @@ class BasicTaxEngineTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -164,7 +172,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'is_paid' => false,
             'items'   => [
                 $lineItem = [
@@ -174,6 +182,8 @@ class BasicTaxEngineTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 

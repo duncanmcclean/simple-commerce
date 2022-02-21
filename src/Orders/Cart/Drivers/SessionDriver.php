@@ -30,9 +30,8 @@ class SessionDriver implements CartDriver
 
     public function makeCart(): Order
     {
-        $cart = OrderAPI::create()
-            // ->site($this->guessSiteFromRequest())
-            ->save();
+        $cart = OrderAPI::make();
+        $cart->save();
 
         Session::put($this->getKey(), $cart->id);
 

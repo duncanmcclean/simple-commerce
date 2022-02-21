@@ -35,15 +35,18 @@ class BaseGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
-            'items' => [
-                [
-                    'product' => $product->id(),
-                    'quantity' => 1,
-                    'total' => 1500,
+        $order = Order::make()
+            ->data([
+                'items' => [
+                    [
+                        'product' => $product->id(),
+                        'quantity' => 1,
+                        'total' => 1500,
+                    ],
                 ],
-            ],
-        ])->save();
+            ]);
+
+        $order->save();
 
         $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
@@ -72,15 +75,18 @@ class BaseGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
-            'items' => [
-                [
-                    'product' => $product->id(),
-                    'quantity' => 1,
-                    'total' => 1500,
+        $order = Order::make()
+            ->data([
+                'items' => [
+                    [
+                        'product' => $product->id(),
+                        'quantity' => 1,
+                        'total' => 1500,
+                    ],
                 ],
-            ],
-        ])->save();
+            ]);
+
+        $order->save();
 
         $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 

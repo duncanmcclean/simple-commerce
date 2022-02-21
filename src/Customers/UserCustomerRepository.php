@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Illuminate\Support\Arr;
-use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 
 class UserCustomerRepository implements RepositoryContract
@@ -42,20 +41,9 @@ class UserCustomerRepository implements RepositoryContract
         return $this->find($user->id());
     }
 
-    public function create(array $data = [], string $site = ''): Customer
+    public function make(): Customer
     {
-        if (! $this->isUsingEloquentUsers()) {
-            $id = Stache::generateId();
-        }
-
-        $customer = app(Customer::class)
-            ->id($id)
-            ->email(Arr::get($data, 'email'))
-            ->data($data);
-
-        $customer->save();
-
-        return $customer;
+        return app(Customer::class);
     }
 
     public function save($customer): void

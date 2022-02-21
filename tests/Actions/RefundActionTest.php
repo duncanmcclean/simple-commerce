@@ -31,9 +31,12 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::create([
-            'is_paid' => true,
-        ]);
+        $order = Order::make()
+            ->data([
+                'is_paid' => true,
+            ]);
+
+        $order->save();
 
         $action = $this->action->visibleTo($order->entry());
 
@@ -45,9 +48,12 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::create([
-            'is_paid' => false,
-        ]);
+        $order = Order::make()
+            ->data([
+                'is_paid' => false,
+            ]);
+
+        $order->save();
 
         $action = $this->action->visibleTo($order->entry());
 
@@ -59,10 +65,13 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::create([
-            'is_paid'     => true,
-            'is_refunded' => true,
-        ]);
+        $order = Order::make()
+            ->data([
+                'is_paid' => true,
+                'is_refunded' => true,
+            ]);
+
+        $order->save();
 
         $action = $this->action->visibleTo($order->entry());
 
@@ -92,10 +101,13 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::create([
-            'is_paid'     => true,
-            'is_refunded' => true,
-        ]);
+        $order = Order::make()
+            ->data([
+                'is_paid' => true,
+                'is_refunded' => true,
+            ]);
+
+        $order->save();
 
         $action = $this->action->visibleToBulk([$order->entry()]);
 

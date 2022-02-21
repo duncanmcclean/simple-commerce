@@ -23,7 +23,7 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_get_line_items()
     {
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => 'one-two-three',
@@ -38,6 +38,8 @@ class LineItemsTest extends TestCase
             ],
         ]);
 
+        $order->save();
+
         $lineItems = $order->lineItems();
 
         $this->assertTrue($lineItems instanceof Collection);
@@ -47,7 +49,8 @@ class LineItemsTest extends TestCase
     /** @test */
     public function line_items_return_empty_if_order_has_no_items()
     {
-        $order = Order::create();
+        $order = Order::make();
+        $order->save();
 
         $lineItems = $order->lineItems();
 
@@ -66,7 +69,7 @@ class LineItemsTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => 'ideeeeee-of-item',
@@ -75,6 +78,8 @@ class LineItemsTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $update = $order->updateLineItem('ideeeeee-of-item', [
             'quantity' => 3,
@@ -100,7 +105,7 @@ class LineItemsTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id'       => 'ideeeeee-of-item',
@@ -109,6 +114,8 @@ class LineItemsTest extends TestCase
                 ],
             ],
         ]);
+
+        $order->save();
 
         $lineItems = $order->clearlineItems();
 

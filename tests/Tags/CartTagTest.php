@@ -58,7 +58,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -68,6 +68,8 @@ class CartTagTest extends TestCase
                 ],
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -93,7 +95,7 @@ class CartTagTest extends TestCase
 
         $productTwo->save();
 
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -134,7 +136,7 @@ class CartTagTest extends TestCase
 
         $productTwo->save();
 
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -151,6 +153,8 @@ class CartTagTest extends TestCase
             ],
         ]);
 
+        $cart->save();
+
         $this->fakeCart($cart);
 
         $this->assertSame('11', (string) $this->tag('{{ sc:cart:quantityTotal }}'));
@@ -159,9 +163,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_total()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'grand_total' => 2550,
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -171,9 +177,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_grand_total()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'grand_total' => 2550,
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -183,9 +191,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_total()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'items_total' => 2550,
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -195,9 +205,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_shipping_total()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'shipping_total' => 2550,
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -207,9 +219,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_tax_total()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'tax_total' => 2550,
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -219,9 +233,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_coupon_total()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'coupon_total' => 2550,
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -297,7 +313,9 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_cart_update_form()
     {
-        $cart = Order::create([]);
+        $cart = Order::make()->data([]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -346,7 +364,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'items' => [
                 [
                     'id' => 'one-two-three',
@@ -356,6 +374,8 @@ class CartTagTest extends TestCase
                 ],
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -401,7 +421,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'items' => [
                 [
                     'id' => 'one-two-three',
@@ -412,6 +432,8 @@ class CartTagTest extends TestCase
                 ],
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -436,7 +458,8 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::create([]);
+        $cart = Order::make()->data([]);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -452,10 +475,12 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_data_from_cart()
     {
-        $cart = Order::create([
+        $cart = Order::make()->data([
             'title' => '#0001',
             'note'  => 'Deliver by front door.',
         ]);
+
+        $cart->save();
 
         $this->session(['simple-commerce-cart' => $cart->id]);
         $this->tag->setParameters([]);
@@ -473,9 +498,11 @@ class CartTagTest extends TestCase
     protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Order::create([
+            $cart = Order::make()->data([
                 'note' => 'Special note.',
             ]);
+
+            $cart->save();
         }
 
         Session::shouldReceive('get')

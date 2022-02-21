@@ -90,7 +90,8 @@ class CheckoutTagTest extends TestCase
     protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Order::create();
+            $cart = Order::make();
+            $cart->save();
         }
 
         Session::shouldReceive('get')

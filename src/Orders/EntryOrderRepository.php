@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
-use Statamic\Facades\Stache;
 
 class EntryOrderRepository implements RepositoryContract
 {
@@ -45,19 +44,9 @@ class EntryOrderRepository implements RepositoryContract
             ));
     }
 
-    public function create(array $data = [], string $site = ''): Order
+    public function make(): Order
     {
-        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
-            $id = Stache::generateId();
-        }
-
-        $order = app(Order::class)
-            ->id($id)
-            ->data($data);
-
-        $order->save();
-
-        return $order;
+        return app(Order::class);
     }
 
     public function save($order): void

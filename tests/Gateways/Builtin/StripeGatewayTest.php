@@ -57,21 +57,25 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
+        $order = Order::make()->data([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 5500,
+                    'metadata' => [],
+                ],
+            ],
+            'grand_total' => 5500,
+            'title' => '#0001',
+        ]);
+
+        $order->save();
+
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 5500,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 5500,
-                'title' => '#0001',
-            ])
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -104,24 +108,29 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::create(['name' => 'George', 'email' => 'george@example.com']);
+        $customer = Customer::make()->data(['name' => 'George', 'email' => 'george@example.com']);
+        $customer->save();
+
+        $order = Order::make()->data([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1299,
+                    'metadata' => [],
+                ],
+            ],
+            'grand_total' => 1299,
+            'title' => '#0002',
+            'customer' => $customer->id(),
+        ]);
+
+        $order->save();
 
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 1299,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 1299,
-                'title' => '#0002',
-                'customer' => $customer->id(),
-            ])
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -160,29 +169,33 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::create(['name' => 'George', 'email' => 'george@example.com']);
+        $customer = Customer::make()->data(['name' => 'George', 'email' => 'george@example.com']);
 
         $this->gateway->setConfig([
             'secret' => env('STRIPE_SECRET'),
             'receipt_email' => true,
         ]);
 
+        $order = Order::make()->data([
+            'items' => [
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1299,
+                    'metadata' => [],
+                ],
+            ],
+            'grand_total' => 1299,
+            'title' => '#0003',
+            'customer' => $customer->id(),
+        ]);
+
+        $order->save();
+
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 1299,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 1299,
-                'title' => '#0003',
-                'customer' => $customer->id(),
-            ])
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -223,7 +236,7 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -242,6 +255,8 @@ class StripeGatewayTest extends TestCase
                 ])->id,
             ],
         ]);
+
+        $order->save();
 
         $paymentMethod = PaymentMethod::create([
             'type' => 'card',
@@ -297,7 +312,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
@@ -306,6 +321,8 @@ class StripeGatewayTest extends TestCase
             ],
             'grand_total' => 1234,
         ]);
+
+        $order->save();
 
         $charge = $this->gateway->getCharge($order);
 
@@ -325,7 +342,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::create([
+        $order = Order::make()->data([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
@@ -334,6 +351,8 @@ class StripeGatewayTest extends TestCase
             ],
             'grand_total' => 1234,
         ]);
+
+        $order->save();
 
         $paymentMethod = PaymentMethod::create([
             'type' => 'card',
@@ -363,7 +382,8 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_hit_webhook_with_payment_intent_succeeded_event()
     {
-        $order = Order::create();
+        $order = Order::make();
+        $order->save();
 
         $payload = [
             'type' => 'payment_intent.succeeded',

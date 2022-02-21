@@ -129,11 +129,14 @@ class CheckoutController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                    'email' => $customerData['email'],
-                    'published' => true,
-                ], $this->guessSiteFromRequest()->handle());
+                $customer = Customer::make()
+                    ->data([
+                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
+                        'email' => $customerData['email'],
+                        'published' => true,
+                    ]);
+
+                $customer->save();
             }
 
             $customer->merge($customerData)->save();

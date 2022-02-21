@@ -45,7 +45,8 @@ class StaticCartDriver implements CartDriver
 
     public function makeCart(): OrderContract
     {
-        static::$cart = Order::create();
+        static::$cart = Order::make();
+        static::$cart->save();
 
         return static::$cart;
     }

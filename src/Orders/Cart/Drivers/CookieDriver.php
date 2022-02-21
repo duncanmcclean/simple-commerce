@@ -39,10 +39,8 @@ class CookieDriver implements CartDriver
 
     public function makeCart(): Order
     {
-        $cart = OrderAPI::create(
-            [],
-            $this->guessSiteFromRequest()
-        );
+        $cart = OrderAPI::make();
+        $cart->save();
 
         Cookie::queue($this->getKey(), $cart->id);
 
@@ -93,7 +91,7 @@ class CookieDriver implements CartDriver
         $site = $this->guessSiteFromRequest();
 
         if (Site::hasMultiple() && ! Config::get('simple-commerce.cart.single_cart')) {
-            return Config::get('simple-commerce.cart.key').'-'.$site->handle();
+            return Config::get('simple-commerce.cart.key') . '-' . $site->handle();
         }
 
         return Config::get('simple-commerce.cart.key');

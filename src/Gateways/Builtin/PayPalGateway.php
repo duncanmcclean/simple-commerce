@@ -189,10 +189,13 @@ class PayPalGateway extends BaseGateway implements Gateway
                 try {
                     $customer = Customer::findByEmail($responseBody['payer']['email_address']);
                 } catch (CustomerNotFound $e) {
-                    $customer = Customer::create([
-                        'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
-                        'email' => $responseBody['payer']['email_address'],
-                    ]);
+                    $customer = Customer::make()
+                        ->data([
+                            'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
+                            'email' => $responseBody['payer']['email_address'],
+                        ]);
+
+                    $customer->save();
                 }
 
                 $order

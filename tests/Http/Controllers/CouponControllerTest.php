@@ -266,10 +266,13 @@ class CouponControllerTest extends TestCase
 
         $this->buildCartWithProducts();
 
-        $customer = Customer::create([
-            'name' => 'John Doe',
-            'email' => 'john@doe.com',
-        ]);
+        $customer = Customer::make()
+            ->data([
+                'name' => 'John Doe',
+                'email' => 'john@doe.com',
+            ]);
+
+        $customer->save();
 
         $this->cart->set('customer', $customer->id);
         $this->cart->save();
@@ -315,10 +318,13 @@ class CouponControllerTest extends TestCase
     {
         $this->buildCartWithProducts();
 
-        $customer = Customer::create([
-            'name' => 'John Doe',
-            'email' => 'john@doe.com',
-        ]);
+        $customer = Customer::make()
+            ->data([
+                'name' => 'John Doe',
+                'email' => 'john@doe.com',
+            ]);
+
+        $customer->save();
 
         $this->cart->set('customer', null);
         $this->cart->save();
@@ -443,16 +449,19 @@ class CouponControllerTest extends TestCase
 
         $this->product->save();
 
-        $this->cart = Order::create([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $this->product->id,
-                    'quantity' => 1,
-                    'total'    => 1000,
+        $this->cart = Order::make()
+            ->set([
+                'items' => [
+                    [
+                        'id'       => Stache::generateId(),
+                        'product'  => $this->product->id,
+                        'quantity' => 1,
+                        'total'    => 1000,
+                    ],
                 ],
-            ],
-            'coupon' => null,
-        ]);
+                'coupon' => null,
+            ]);
+
+        $this->cart->save();
     }
 }

@@ -42,11 +42,14 @@ class CartItemController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 if (is_array($request->get('customer'))) {
-                    $customer = Customer::create([
-                        'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
-                        'email' => $request->get('customer')['email'],
-                        'published' => true,
-                    ], $this->guessSiteFromRequest()->handle());
+                    $customer = Customer::make()
+                        ->data([
+                            'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
+                            'email' => $request->get('customer')['email'],
+                            'published' => true,
+                        ]);
+
+                    $customer->save();
                 } elseif (is_string($request->get('customer'))) {
                     $customer = Customer::find($request->get('customer'));
                 }
@@ -57,11 +60,14 @@ class CartItemController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($request->get('email'));
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => $request->get('name') ?? $request->get('email'),
-                    'email' => $request->get('email'),
-                    'published' => true,
-                ], $this->guessSiteFromRequest()->handle());
+                $customer = Customer::make()
+                    ->data([
+                        'name'  => $request->get('name') ?? $request->get('email'),
+                        'email' => $request->get('email'),
+                        'published' => true,
+                    ]);
+
+                $customer->save();
             }
 
             $cart->set('customer', $customer->id);

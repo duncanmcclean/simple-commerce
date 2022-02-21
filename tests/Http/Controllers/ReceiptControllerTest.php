@@ -23,16 +23,20 @@ class ReceiptControllerTest extends TestCase
 
         $product->save();
 
-        $cart = Order::create([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 1000,
+        $cart = Order::make()
+            ->data([
+                'items' => [
+                    [
+                        'id'       => Stache::generateId(),
+                        'product'  => $product->id,
+                        'quantity' => 1,
+                        'total'    => 1000,
+                    ],
                 ],
-            ],
-        ])->recalculate()->markAsPaid();
+            ]);
+
+        $cart->save();
+        $cart->recalculate()->markAsPaid()->save();
 
         $url = URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
             'orderId' => $cart->id,

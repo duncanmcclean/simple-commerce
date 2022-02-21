@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
-use Statamic\Facades\Stache;
 
 class EntryCustomerRepository implements RepositoryContract
 {
@@ -60,20 +59,9 @@ class EntryCustomerRepository implements RepositoryContract
         return $this->find($entry->id());
     }
 
-    public function create(array $data = [], string $site = ''): Customer
+    public function make(): Customer
     {
-        if (! $this->isUsingEloquentDriverWithIncrementingIds()) {
-            $id = Stache::generateId();
-        }
-
-        $customer = app(Customer::class)
-            ->id($id)
-            ->email(Arr::get($data, 'email'))
-            ->data($data);
-
-        $customer->save();
-
-        return $customer;
+        return app(Customer::class);
     }
 
     public function save($customer): void

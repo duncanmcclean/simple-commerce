@@ -13,12 +13,13 @@ class CustomerTest extends TestCase
     /** @test */
     public function can_create()
     {
-        $create = Customer::create([
-            'name' => 'Joe Smith',
-            'email' => 'joe.smith@example.com',
-        ]);
+        $create = Customer::make()
+            ->data([
+                'name' => 'Joe Smith',
+                'email' => 'joe.smith@example.com',
+            ]);
 
-        $create = $create->fresh();
+        $create->save();
 
         $this->assertTrue($create instanceof CustomersCustomer);
 
@@ -32,13 +33,14 @@ class CustomerTest extends TestCase
     /** @test */
     public function can_create_and_ensure_customer_entry_is_published()
     {
-        $create = Customer::create([
-            'name' => 'Joe Smith',
-            'email' => 'joe.smith@example.com',
-            'published' => true,
-        ]);
+        $create = Customer::make()
+            ->data([
+                'name' => 'Joe Smith',
+                'email' => 'joe.smith@example.com',
+                'published' => true,
+            ]);
 
-        $create = $create->fresh();
+        $create->save();
 
         $this->assertTrue($create instanceof CustomersCustomer);
 

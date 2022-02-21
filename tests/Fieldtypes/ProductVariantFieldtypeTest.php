@@ -70,7 +70,7 @@ class ProductVariantFieldtypeTest extends TestCase
     public function that_augmentation_returns_null_if_variant_does_not_exist()
     {
         $product = Product::make()
-            ->set([
+            ->data([
                 'product_variants' => [
                     'variants' => [
                         [
@@ -102,7 +102,7 @@ class ProductVariantFieldtypeTest extends TestCase
     public function that_augmentation_returns_variant_data()
     {
         $product = Product::make()
-            ->set([
+            ->data([
                 'product_variants' => [
                     'variants' => [
                         [
