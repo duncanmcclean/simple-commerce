@@ -110,9 +110,9 @@ class UserCustomerTest extends TestCase
     public function can_create()
     {
         $create = Customer::make()
+            ->email('joe.smith@example.com')
             ->data([
                 'name' => 'Joe Smith',
-                'email' => 'joe.smith@example.com',
             ]);
 
         $create->save();

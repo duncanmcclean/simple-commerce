@@ -65,6 +65,9 @@ class UserCustomerRepository implements RepositoryContract
         );
 
         $user->save();
+
+        $customer->id = $user->id();
+        $customer->email = $user->email();
     }
 
     public function delete($customer): void

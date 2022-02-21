@@ -14,9 +14,9 @@ class CustomerTest extends TestCase
     public function can_create()
     {
         $create = Customer::make()
+            ->email('joe.smith@example.com')
             ->data([
                 'name' => 'Joe Smith',
-                'email' => 'joe.smith@example.com',
             ]);
 
         $create->save();
@@ -34,9 +34,9 @@ class CustomerTest extends TestCase
     public function can_create_and_ensure_customer_entry_is_published()
     {
         $create = Customer::make()
+            ->email('joe.smith@example.com')
             ->data([
                 'name' => 'Joe Smith',
-                'email' => 'joe.smith@example.com',
                 'published' => true,
             ]);
 
@@ -49,7 +49,6 @@ class CustomerTest extends TestCase
         $this->assertSame($create->email(), 'joe.smith@example.com');
 
         $this->assertTrue($create->get('published'));
-        $this->assertTrue($create->entry()->published());
     }
 
     /** @test */

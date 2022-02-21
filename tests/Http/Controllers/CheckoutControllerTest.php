@@ -345,9 +345,8 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::make()->data([
+        $customer = Customer::make()->email('dwight.schrute@example.com')->data([
             'name' => 'Dwight Schrute',
-            'email' => 'dwight.schrute@example.com',
         ]);
 
         $customer->save();
@@ -417,9 +416,8 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::make()->data([
+        $customer = Customer::make()->email('stanley.hudson@example.com')->data([
             'name' => 'Stanley Hudson',
-            'email' => 'stanley.hudson@example.com',
         ]);
 
         $customer->save();

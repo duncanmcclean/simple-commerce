@@ -267,9 +267,9 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $customer = Customer::make()
+            ->email('john@doe.com')
             ->data([
                 'name' => 'John Doe',
-                'email' => 'john@doe.com',
             ]);
 
         $customer->save();
@@ -319,9 +319,9 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $customer = Customer::make()
+            ->email('john@doe.com')
             ->data([
                 'name' => 'John Doe',
-                'email' => 'john@doe.com',
             ]);
 
         $customer->save();

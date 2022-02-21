@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Stache;
 
 class EntryProductRepository implements RepositoryContract
 {
@@ -55,6 +56,7 @@ class EntryProductRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
+                ->id(Stache::generateId())
                 ->collection($this->collection);
         }
 

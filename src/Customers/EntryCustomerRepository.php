@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Stache;
 
 class EntryCustomerRepository implements RepositoryContract
 {
@@ -70,7 +71,7 @@ class EntryCustomerRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id($customer->id())
+                ->id(Stache::generateId())
                 ->collection($this->collection);
         }
 
@@ -91,10 +92,21 @@ class EntryCustomerRepository implements RepositoryContract
         }
 
         $entry->data(
-            Arr::except($customer->data(), ['id', 'site', 'slug', 'published'])
+            array_merge(Arr::except($customer->data(), ['id', 'site', 'slug', 'published'])->toArray(), [
+                'email' => $customer->email(),
+            ])
         );
 
         $entry->save();
+
+        $customer->id = $entry->id();
+        $customer->email = $entry->get('email');
+
+        $customer->merge([
+            'site' => $entry->site()->handle(),
+            'slug' => $entry->slug(),
+            'published' => $entry->published(),
+        ]);
     }
 
     public function delete($customer): void

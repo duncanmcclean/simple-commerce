@@ -673,9 +673,9 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $customer = Customer::make()
+            ->email('goofy@clubhouse.disney')
             ->data([
                 'name' => 'Goofy',
-                'email' => 'goofy@clubhouse.disney',
             ]);
 
         $customer->save();
@@ -727,9 +727,9 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $customer = Customer::make()
+            ->email('pluto@clubhouse.disney')
             ->data([
                 'name' => 'Pluto',
-                'email' => 'pluto@clubhouse.disney',
             ]);
 
         $customer->save();
@@ -785,9 +785,9 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $customer = Customer::make()
+            ->email('test@test.test')
             ->data([
                 'name' => 'Test Test',
-                'email' => 'test@test.test',
             ]);
 
         $customer->save();
@@ -894,9 +894,9 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $customer = Customer::make()
+            ->email('test@test.test')
             ->data([
                 'name' => 'Test Test',
-                'email' => 'test@test.test',
             ]);
 
         $customer->save();

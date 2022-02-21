@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Stache;
 
 class EntryOrderRepository implements RepositoryContract
 {
@@ -55,7 +56,7 @@ class EntryOrderRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id($order->id())
+                ->id(Stache::generateId())
                 ->collection($this->collection);
         }
 
@@ -80,6 +81,8 @@ class EntryOrderRepository implements RepositoryContract
         );
 
         $entry->save();
+
+        $order->id = $entry->id();
     }
 
     public function delete($order): void

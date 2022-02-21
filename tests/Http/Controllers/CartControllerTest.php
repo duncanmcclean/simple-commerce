@@ -138,9 +138,9 @@ class CartControllerTest extends TestCase
     public function can_update_cart_with_customer_already_in_cart()
     {
         $customer = Customer::make()
+            ->email('dan.smith@example.com')
             ->data([
                 'name'  => 'Dan Smith',
-                'email' => 'dan.smith@example.com',
             ]);
 
         $customer->save();
@@ -210,8 +210,6 @@ class CartControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart.update'), $data)
             ->assertSessionHasErrors('email');
 
-        $cart->find($cart->id);
-
         $this->assertArrayNotHasKey('customer', $cart->data);
 
         try {
@@ -226,10 +224,10 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_id()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::make()->email('jordan.smith@example.com')->data([
             'name'  => 'Jordan Smith',
-            'email' => 'jordan.smith@example.com',
         ]);
+
         $customer->save();
 
         $cart = Order::make()->data(['customer' => $customer->id]);
@@ -257,10 +255,10 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_existing_customer_by_email()
     {
-        $customer = Customer::make()->data([
+        $customer = Customer::make()->email('jack.simpson@example.com')->data([
             'name'  => 'Jak Simpson',
-            'email' => 'jack.simpson@example.com',
         ]);
+
         $customer->save();
 
         $cart = Order::make();
@@ -273,6 +271,8 @@ class CartControllerTest extends TestCase
             ],
         ];
 
+        $this->withoutExceptionHandling();
+
         $response = $this
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
@@ -280,7 +280,8 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart = $cart->fresh();
+        $cart->fresh();
+
         $customer = Customer::findByEmail('jack.simpson@example.com');
 
         $this->assertSame($cart->get('customer'), $customer->id);
@@ -358,10 +359,10 @@ class CartControllerTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $customer = Customer::make()->data([
+        $customer = Customer::make()->email('duncan@test.com')->data([
             'name'  => 'Duncan',
-            'email' => 'duncan@test.com',
         ]);
+
         $customer->save();
 
         $order = Order::make()->data([

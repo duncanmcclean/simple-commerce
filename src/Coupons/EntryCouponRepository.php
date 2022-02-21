@@ -96,6 +96,13 @@ class EntryCouponRepository implements RepositoryContract
         $entry->save();
 
         $coupon->id = $entry->id();
+        $coupon->code = $entry->slug();
+
+        $coupon->merge([
+            'site' => $entry->site()->handle(),
+            'slug' => $entry->slug(),
+            'published' => $entry->published(),
+        ]);
     }
 
     public function delete($coupon): void

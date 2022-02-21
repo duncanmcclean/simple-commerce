@@ -108,7 +108,7 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::make()->data(['name' => 'George', 'email' => 'george@example.com']);
+        $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
         $customer->save();
 
         $order = Order::make()->data([
@@ -169,7 +169,7 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::make()->data(['name' => 'George', 'email' => 'george@example.com']);
+        $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
 
         $this->gateway->setConfig([
             'secret' => env('STRIPE_SECRET'),
