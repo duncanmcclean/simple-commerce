@@ -13,6 +13,8 @@ class ReceiptControllerTest extends TestCase
     /** @test */
     public function can_show_receipt()
     {
+        $this->useBasicTaxEngine();
+
         $product = Product::create([
             'title' => 'Food',
             'price' => 1000,
