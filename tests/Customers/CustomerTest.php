@@ -26,7 +26,7 @@ class CustomerTest extends TestCase
 
         $this->assertSame($create->name(), 'Joe Smith');
         $this->assertSame($create->email(), 'joe.smith@example.com');
-        $this->assertSame($create->slug, 'joesmith-at-examplecom');
+        $this->assertSame($create->get('slug'), 'joesmith-at-examplecom');
     }
 
     /** @test */
@@ -69,7 +69,7 @@ class CustomerTest extends TestCase
 
         $this->assertSame($findByEmail->name(), 'Smoke Fire');
         $this->assertSame($findByEmail->email(), 'smoke@fire.com');
-        $this->assertSame($findByEmail->slug, 'smoke-at-firecom');
+        $this->assertSame($findByEmail->get('slug'), 'smoke-at-firecom');
     }
 
     /** @test */
@@ -91,6 +91,6 @@ class CustomerTest extends TestCase
 
         $this->assertSame($findByEmail->name(), 'Sam Seaboarn');
         $this->assertSame($findByEmail->email(), 'sam@whitehouse.gov');
-        $this->assertSame($findByEmail->slug, 'sam-at-whitehousegov');
+        $this->assertSame($findByEmail->get('slug'), 'sam-at-whitehousegov');
     }
 }

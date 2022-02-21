@@ -607,7 +607,7 @@ class CartItemControllerTest extends TestCase
         ];
 
         $response = $this
-            ->from('/products/' . $product->slug)
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data)
             ->assertSessionHasErrors()
             ->assertSessionMissing('simple-commerce-cart');
