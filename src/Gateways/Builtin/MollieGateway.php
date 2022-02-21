@@ -109,7 +109,7 @@ class MollieGateway extends BaseGateway implements Gateway
     public function webhook(Request $request)
     {
         $this->setupMollie();
-        $mollieId = $request->id;
+        $mollieId = $request->get('id');
 
         $payment = $this->mollie->payments->get($mollieId);
 

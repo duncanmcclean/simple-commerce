@@ -13,7 +13,7 @@ use Statamic\Facades\Collection;
 
 class MollieGatewayTest extends TestCase
 {
-    public $gateway;
+    public MollieGateway $gateway;
 
     public function setUp(): void
     {
@@ -26,6 +26,7 @@ class MollieGatewayTest extends TestCase
 
         $this->gateway = new MollieGateway($config, 'mollie');
 
+        Collection::make('products')->title('Products')->save();
         Collection::make('orders')->title('Order')->save();
     }
 
@@ -108,7 +109,7 @@ class MollieGatewayTest extends TestCase
     /** @test */
     public function can_refund_charge()
     {
-        $this->markTestIncomplete('How do we fake a refund?');
+        $this->markTestIncomplete('Need to figure out how we can fake a REAL payment, so we can then go onto refund it.');
 
         $refund = $this->gateway->refundCharge(Order::create());
 
@@ -119,9 +120,26 @@ class MollieGatewayTest extends TestCase
     /** @test */
     public function can_hit_webhook()
     {
-        $this->markTestIncomplete('Need to hit the webhook with the expected payload.');
+        (new Invader($this->gateway))->setupMollie();
 
-        $webhook = $this->gateway->webhook(new Request());
+        $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
+            'amount' => [
+                'currency' => 'GBP',
+                'value'    => '12.34',
+            ],
+            'description' => 'Order #12345689',
+            'redirectUrl' => 'https://example.com/redirect',
+            'webhookUrl'  => 'https://example.com/webhook',
+            'metadata'    => [
+                'order_id' => '12345689',
+            ],
+        ]);
+
+        $payload = [
+            'id' => $molliePayment->id,
+        ];
+
+        $webhook = $this->gateway->webhook(new Request([], $payload));
 
         $this->assertSame($webhook, null);
     }
