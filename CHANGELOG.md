@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.67 (2022-02-22)
+
+### What's fixed
+
+- Fixed a compatibility issue with PHP 8.1 and the package we use for Currency formatting #575 #576 by @duncanmcclean
+- Fixed 'Division by zero' issue when generating receipts #576 by @duncanmcclean
+
 ## v2.3.66 (2022-02-15)
 
 ### What's fixed
