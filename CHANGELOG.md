@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.68 (2022-02-23)
+
+### What's new
+
+- Order Receipts are now attached to the back-office confirmation email #569 #577 by @duncanmcclean
+
 ## v2.3.67 (2022-02-22)
 
 ### What's fixed
