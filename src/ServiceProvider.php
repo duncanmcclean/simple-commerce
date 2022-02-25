@@ -79,6 +79,8 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
+        UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
+
         UpdateScripts\AddBlueprintFields::class,
         UpdateScripts\MigrateConfig::class,
         UpdateScripts\MigrateLineItemMetadata::class,
