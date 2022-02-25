@@ -7,7 +7,7 @@ use Statamic\Facades\Site;
 
 class LineItemTax extends VariableFieldtype
 {
-    protected static $handle = 'simple-commerce::line-item-tax';
+    protected static $handle = 'sc_line_items_tax';
 
     public static function title()
     {
