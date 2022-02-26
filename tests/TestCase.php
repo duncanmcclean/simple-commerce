@@ -109,6 +109,14 @@ abstract class TestCase extends OrchestraTestCase
             Site::setCurrent('default');
         });
 
+        if (! file_exists(base_path('content'))) {
+            mkdir(base_path('content'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce'))) {
+            mkdir(base_path('content/simple-commerce'));
+        }
+
         if (! file_exists(base_path('content/simple-commerce/tax-categories'))) {
             mkdir(base_path('content/simple-commerce/tax-categories'));
         }
