@@ -93,7 +93,7 @@ abstract class TestCase extends OrchestraTestCase
 
         $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
-        Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
+        // Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
 
         $app['config']->set('statamic.sites.sites', [
             'default' => [
@@ -106,7 +106,7 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.editions.pro', true);
 
         Statamic::booted(function () {
-            Site::setCurrent('default');
+            // Site::setCurrent('default');
         });
 
         if (! file_exists(base_path('content'))) {
