@@ -23,12 +23,20 @@ jobs:
             testbench: 5.*
           - laravel: 6.*
             testbench: 4.*
+        exclude:
+          - laravel: 9.*
+            statamic: ^3.2
+          - laravel: 9.*
+            php: 7.4
 
     name: ${{ matrix.php }} - ${{ matrix.statamic }} - ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
+
+      - name: Delete composer.lock
+        run: rm composer.lock
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
