@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use Illuminate\Encryption\Encrypter;
-use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
@@ -110,16 +109,16 @@ abstract class TestCase extends OrchestraTestCase
             Site::setCurrent('default');
         });
 
-        if (! File::exists(base_path('content/simple-commerce/tax-categories'))) {
-            File::makeDirectory(base_path('content/simple-commerce/tax-categories'));
+        if (! file_exists(base_path('content/simple-commerce/tax-categories'))) {
+            mkdir(base_path('content/simple-commerce/tax-categories'));
         }
 
-        if (! File::exists(base_path('content/simple-commerce/tax-rates'))) {
-            File::makeDirectory(base_path('content/simple-commerce/tax-rates'));
+        if (! file_exists(base_path('content/simple-commerce/tax-rates'))) {
+            mkdir(base_path('content/simple-commerce/tax-rates'));
         }
 
-        if (! File::exists(base_path('content/simple-commerce/tax-zones'))) {
-            File::makeDirectory(base_path('content/simple-commerce/tax-zones'));
+        if (! file_exists(base_path('content/simple-commerce/tax-zones'))) {
+            mkdir(base_path('content/simple-commerce/tax-zones'));
         }
     }
 
