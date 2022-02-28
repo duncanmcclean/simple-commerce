@@ -106,6 +106,10 @@ sections:
                 icon: array
                 listable: hidden
                 read_only: true
+            -
+              handle: tax
+              field:
+                type: sc_line_items_tax
           mode: stacked
           reorderable: false
           type: grid

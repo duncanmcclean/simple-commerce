@@ -34,6 +34,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\RegionFieldtype::class,
         Fieldtypes\TaxCategoryFieldtype::class,
 
+        Fieldtypes\Variables\LineItemTax::class,
         Fieldtypes\Variables\ReceiptUrl::class,
     ];
 
@@ -78,6 +79,8 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
+        UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
+
         UpdateScripts\AddBlueprintFields::class,
         UpdateScripts\MigrateConfig::class,
         UpdateScripts\MigrateLineItemMetadata::class,
