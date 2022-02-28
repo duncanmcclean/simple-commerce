@@ -13,6 +13,7 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Brand new Tax Engine ✨ #438
 - Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
 - Ability to set a 'default shipping method' #555 #562
+- Statamic 3.3 compatibility #580
 
 ### What's improved
 
@@ -72,21 +73,18 @@ For more information on what's new/what's changed, review the [`CHANGELOG.md`](h
 
 ---
 
+## v2.3.68 (2022-02-23)
 
+### What's new
 
+- Order Receipts are now attached to the back-office confirmation email #569 #577 by @duncanmcclean
 
+## v2.3.67 (2022-02-22)
 
+### What's fixed
 
-
-
-
-
-
-
-
-
-
-
+- Fixed a compatibility issue with PHP 8.1 and the package we use for Currency formatting #575 #576 by @duncanmcclean
+- Fixed 'Division by zero' issue when generating receipts #576 by @duncanmcclean
 
 ## v2.3.66 (2022-02-15)
 

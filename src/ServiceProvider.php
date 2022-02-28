@@ -188,6 +188,18 @@ class ServiceProvider extends AddonServiceProvider
             app(Stache::class)->registerStore($taxCategoryStore);
             app(Stache::class)->registerStore($taxRateStore);
             app(Stache::class)->registerStore($taxZoneStore);
+
+            $this->app->bind(Contracts\TaxCategoryRepository::class, function () {
+                return new Tax\Standard\Stache\TaxCategory\TaxCategoryRepository(app('stache'));
+            });
+
+            $this->app->bind(Contracts\TaxRateRepository::class, function () {
+                return new Tax\Standard\Stache\TaxRate\TaxRateRepository(app('stache'));
+            });
+
+            $this->app->bind(Contracts\TaxZoneRepository::class, function () {
+                return new Tax\Standard\Stache\TaxZone\TaxZoneRepository(app('stache'));
+            });
         }
 
         return $this;

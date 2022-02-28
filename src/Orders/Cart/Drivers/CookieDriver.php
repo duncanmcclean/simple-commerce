@@ -71,14 +71,14 @@ class CookieDriver implements CartDriver
             return Site::get($site);
         }
 
-        foreach (Site::all() as $site) {
+        foreach (Site::all()->reverse() as $site) {
             if (Str::contains(request()->url(), $site->url())) {
                 return $site;
             }
         }
 
         if ($referer = request()->header('referer')) {
-            foreach (Site::all() as $site) {
+            foreach (Site::all()->reverse() as $site) {
                 if (Str::contains($referer, $site->url())) {
                     return $site;
                 }
@@ -93,7 +93,7 @@ class CookieDriver implements CartDriver
         $site = $this->guessSiteFromRequest();
 
         if (Site::hasMultiple() && ! Config::get('simple-commerce.cart.single_cart')) {
-            return Config::get('simple-commerce.cart.key').'-'.$site->handle();
+            return Config::get('simple-commerce.cart.key') . '-' . $site->handle();
         }
 
         return Config::get('simple-commerce.cart.key');

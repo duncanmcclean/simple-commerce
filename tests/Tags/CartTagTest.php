@@ -435,7 +435,9 @@ class CartTagTest extends TestCase
 
         $usage = $this->tag->wildcard('note');
 
-        $this->assertSame($usage, 'Deliver by front door.');
+        // Statamic 3.3: From 3.3, this will return a Value instance
+        $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_string($usage));
+        $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 'Deliver by front door.');
     }
 
     protected function tag($tag)

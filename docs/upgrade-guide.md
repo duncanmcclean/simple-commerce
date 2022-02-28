@@ -38,6 +38,10 @@ We've dropped support for sites using Laravel 6. If you're unsure as to the Lara
 
 Simple Commerce supports Laravel 7 onwards. If you're on Laravel 6, you may upgrade by following the official [Laravel Upgrade Guide](https://laravel.com/docs/7.x/upgrade#upgrade-7.0).
 
+### Low Impact: Dropped Statamic 3.1 support
+
+We've dropped support for Statamic 3.1. Now, only 3.2 and above is supported.
+
 ### Low Impact: One cart per site
 
 In v2.3, if you had multiple sites on the same domain, they would all share a single cart. This meant you could add one product on one site and another product on another site. This would mean currencies would be mixed up, shipping methods would get mixed up, etc.
@@ -75,8 +79,8 @@ gateway:
   data:
     id: pm_whatever
 stripe:
- intent: pi_whatever
- client_secret: pi_whateveragain_secret_something
+  intent: pi_whatever
+  client_secret: pi_whateveragain_secret_something
 ```
 
 And for new orders, we'll automatically get rid of the 'temporary gateway data' added to order entries before checking out.
@@ -108,7 +112,7 @@ public function checkAvailability(Order $order, Address $address): bool;
 
 ## Previous upgrade guides
 
-* [v2.2 to v2.3](https://github.com/doublethreedigital/simple-commerce/blob/2.3/docs/upgrade-guide.md)
+- [v2.2 to v2.3](https://github.com/doublethreedigital/simple-commerce/blob/2.3/docs/upgrade-guide.md)
 
 ---
 
