@@ -40,7 +40,11 @@ Simple Commerce supports Laravel 7 onwards. If you're on Laravel 6, you may upgr
 
 ### Low Impact: Dropped Statamic 3.1 support
 
-We've dropped support for Statamic 3.1. Now, only 3.2 and above is supported.
+We've dropped support for Statamic 3.1. Now, only 3.2 and above is supported. Ideally, you should be using Statamic 3.3 (when it's been fully released).
+
+### Low Impact: 'Line Items Tax' field added to Orders blueprint
+
+During the upgrade process, Simple Commerce will automatically add a 'Line Items Tax' field to your Orders blueprint. This field is used to let you display tax information (like amount, rate, etc) on a per line item basis via Antlers.
 
 ### Low Impact: One cart per site
 
