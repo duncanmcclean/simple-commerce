@@ -30,7 +30,7 @@ Everything from the latest in v2.3 and...
 ### What's new
 
 - Statamic 3.3 compatibility #580 by @duncanmcclean
-- Added 'Line Items Tax' fieldtype to allow for augmentation of line item tax information #579
+- Added 'Line Items Tax' fieldtype to allow for augmentation of line item tax information #579 by @duncanmcclean
 
 ### Breaking changes
 
