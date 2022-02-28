@@ -76,24 +76,27 @@ abstract class TestCase extends OrchestraTestCase
         foreach ($configs as $config) {
             $app['config']->set(
                 "statamic.$config",
-                require(__DIR__."/../vendor/statamic/cms/config/{$config}.php")
+                require(__DIR__ . "/../vendor/statamic/cms/config/{$config}.php")
             );
         }
 
-        $app['config']->set('app.key', 'base64:'.base64_encode(
+        $app['config']->set('app.key', 'base64:' . base64_encode(
             Encrypter::generateKey($app['config']['app.cipher'])
         ));
+
         $app['config']->set('statamic.users.repository', 'file');
+
         $app['config']->set('statamic.stache.stores.users', [
             'class'     => UsersStore::class,
-            'directory' => __DIR__.'/__fixtures__/users',
+            'directory' => __DIR__ . '/__fixtures__/users',
         ]);
-        $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
+
+        $app['config']->set('simple-commerce', require(__DIR__ . '/../config/simple-commerce.php'));
         $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
 
         $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
-        Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
+        Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
 
         $app['config']->set('statamic.sites.sites', [
             'default' => [
@@ -108,6 +111,31 @@ abstract class TestCase extends OrchestraTestCase
         Statamic::booted(function () {
             Site::setCurrent('default');
         });
+
+        $this->ensureContentDirectoriesExist();
+    }
+
+    protected function ensureContentDirectoriesExist(): void
+    {
+        if (! file_exists(base_path('content'))) {
+            mkdir(base_path('content'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce'))) {
+            mkdir(base_path('content/simple-commerce'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce/tax-categories'))) {
+            mkdir(base_path('content/simple-commerce/tax-categories'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce/tax-rates'))) {
+            mkdir(base_path('content/simple-commerce/tax-rates'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce/tax-zones'))) {
+            mkdir(base_path('content/simple-commerce/tax-zones'));
+        }
     }
 
     protected function useBasicTaxEngine()
