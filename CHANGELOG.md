@@ -23,6 +23,19 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.4 (2022-02-28)
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+- Statamic 3.3 compatibility #580 by @duncanmcclean
+- Added 'Line Items Tax' fieldtype to allow for augmentation of line item tax information #579
+
+### Breaking changes
+
+* Dropped support for Statamic 3.1
+
 ## v2.4.0-beta.3 (2022-02-05)
 
 Everything from the latest in v2.3 and...
@@ -70,6 +83,16 @@ After this, I'd recommend running through the [upgrade guide](https://github.com
 ### Full Changelog
 
 For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
+
+
+
+
+
+
+
+
+
+
 
 ---
 
