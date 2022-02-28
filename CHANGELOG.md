@@ -13,6 +13,7 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Brand new Tax Engine ✨ #438
 - Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
 - Ability to set a 'default shipping method' #555 #562
+- Statamic 3.3 compatibility #580
 
 ### What's improved
 
@@ -71,21 +72,6 @@ After this, I'd recommend running through the [upgrade guide](https://github.com
 For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
 
 ---
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## v2.3.68 (2022-02-23)
 
