@@ -23,6 +23,21 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.5 (2022-02-28)
+
+> This is a re-tag of `v2.4.0-beta.4` which had some issues during the build pipeline. It was easier to simply issue a fresh build.
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+- Statamic 3.3 compatibility #580 by @duncanmcclean
+- Added 'Line Items Tax' fieldtype to allow for augmentation of line item tax information #579 by @duncanmcclean
+
+### Breaking changes
+
+- Dropped support for Statamic 3.1
+
 ## v2.4.0-beta.4 (2022-02-28)
 
 Everything from the latest in v2.3 and...
@@ -34,7 +49,7 @@ Everything from the latest in v2.3 and...
 
 ### Breaking changes
 
-* Dropped support for Statamic 3.1
+- Dropped support for Statamic 3.1
 
 ## v2.4.0-beta.3 (2022-02-05)
 
@@ -83,16 +98,6 @@ After this, I'd recommend running through the [upgrade guide](https://github.com
 ### Full Changelog
 
 For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
-
-
-
-
-
-
-
-
-
-
 
 ---
 
@@ -952,8 +957,8 @@ A whole lot of API related changes this release...
 
 **v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://simple-commerce.duncanmcclean.com//update-guide) to ensure your site will work with the update.**
 
-- [new] [Product Variants](https://simple-commerce.duncanmcclean.com//product-variants)
-- [new] [Built-in Mollie Gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
+- [new][product variants](https://simple-commerce.duncanmcclean.com//product-variants)
+- [new][built-in mollie gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
 - [new] Product Stock
 - [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 - [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.
