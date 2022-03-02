@@ -34,7 +34,7 @@ class TaxCategoryController
 
         $taxCategory->save();
 
-        return redirect($taxCategory->editUrl());
+        return redirect(cp_route('simple-commerce.tax-categories.index'));
     }
 
     public function edit(EditRequest $request, $taxCategory)
