@@ -244,7 +244,7 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         TaxRate::make()
-            ->id('default')
+            ->id('default-rate')
             ->name('Default')
             ->rate(12)
             ->includeInPrice(true)
