@@ -28,7 +28,7 @@ class TaxEngine implements Contract
             $noRateAvailable = config('simple-commerce.tax_engine_config.behaviour.no_rate_available');
 
             if ($noRateAvailable === 'default_rate') {
-                $taxRate = TaxRate::find('default');
+                $taxRate = TaxRate::find('default-rate');
             }
 
             if ($noRateAvailable === 'prevent_checkout') {
