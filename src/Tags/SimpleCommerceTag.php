@@ -141,8 +141,12 @@ class SimpleCommerceTag extends Tags
         return $this->parseLoop($errors);
     }
 
-    public function hasErrors()
+    public function hasErrors(): bool
     {
-        return session()->has('errors');
+        if (! session()->has('errors')) {
+            return false;
+        }
+
+        return session()->get('errors')->hasBag('simple-commerce');
     }
 }

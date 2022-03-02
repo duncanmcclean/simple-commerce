@@ -9,6 +9,8 @@ class UpdateRequest extends FormRequest
 {
     use AcceptsFormRequests;
 
+    protected $errorBag = 'simple-commerce';
+
     public function authorize()
     {
         return true;
