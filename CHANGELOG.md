@@ -23,6 +23,18 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.6 (2022-03-02)
+
+### What's improved
+
+- After creating a tax zone/tax rate/tax category, you'll now be redirected to the index page, not the edit page
+
+### What's fixed
+
+- Fixed an issue when trying to save the 'Everywhere' tax zone
+- Fixed an issue where it would assume the wrong ID for the default tax rate
+- Simple Commerce errors now use their own error bag & `{{ sc:hasErrors }}` should _ACTUALLY_ give you the expected answer now.
+
 ## v2.4.0-beta.5 (2022-02-28)
 
 > This is a re-tag of `v2.4.0-beta.4` which had some issues during the build pipeline. It was easier to simply issue a fresh build.
