@@ -18,9 +18,12 @@ class UpdateRequest extends FormRequest
 
     public function rules()
     {
-        return [
+        $rules = [
             'name'    => ['required', 'string'],
-            'country' => ['required', new CountryExists, function ($attribute, $value, $fail) {
+        ];
+
+        if ($this->taxZone !== 'everywhere') {
+            $rules['country'] = ['required', new CountryExists, function ($attribute, $value, $fail) {
                 if ($this->region === null) {
                     $taxZoneWithCountryAlreadyExists = TaxZone::all()
                         ->where('country', $value)
@@ -36,8 +39,9 @@ class UpdateRequest extends FormRequest
                         $fail("There is already a tax zone for {$country['name']}");
                     }
                 }
-            }],
-            'region'  => ['nullable', new RegionExists, function ($attribute, $value, $fail) {
+            }];
+
+            $rules['region'] = ['nullable', new RegionExists, function ($attribute, $value, $fail) {
                 $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
                     ->where('country', $this->country)
                     ->where('region', $value)
@@ -52,7 +56,9 @@ class UpdateRequest extends FormRequest
 
                     $fail("There is already a tax zone for {$region['name']}, {$country['name']}");
                 }
-            }],
-        ];
+            }];
+        }
+
+        return $rules;
     }
 }
