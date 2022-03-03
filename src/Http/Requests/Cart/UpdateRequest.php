@@ -11,8 +11,6 @@ class UpdateRequest extends FormRequest
 {
     use CartDriver, AcceptsFormRequests;
 
-    protected $errorBag = 'simple-commerce';
-
     public function authorize()
     {
         return true;

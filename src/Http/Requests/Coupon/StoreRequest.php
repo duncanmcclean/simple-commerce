@@ -7,8 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
-    protected $errorBag = 'simple-commerce';
-
     public function authorize()
     {
         return true;

@@ -10,8 +10,6 @@ class StoreRequest extends FormRequest
 {
     use CartDriver;
 
-    protected $errorBag = 'simple-commerce';
-
     public function authorize()
     {
         return true;
