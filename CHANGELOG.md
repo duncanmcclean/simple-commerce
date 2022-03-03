@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.69 (2022-03-03)
+
+### What's fixed
+
+- Validation errors use the `default` error bag, so SC shouldn't try and use its own when pulling out errors #581 #583 by @duncanmcclean
+
 ## v2.3.68 (2022-02-23)
 
 ### What's new
@@ -858,8 +864,8 @@ A whole lot of API related changes this release...
 
 **v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://simple-commerce.duncanmcclean.com//update-guide) to ensure your site will work with the update.**
 
-- [new] [Product Variants](https://simple-commerce.duncanmcclean.com//product-variants)
-- [new] [Built-in Mollie Gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
+- [new][product variants](https://simple-commerce.duncanmcclean.com//product-variants)
+- [new][built-in mollie gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
 - [new] Product Stock
 - [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 - [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.
