@@ -23,6 +23,12 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.7 (2022-03-03)
+
+### What's fixed
+
+- Reverted back to using the `default` error back, rather than our own. #582
+
 ## v2.4.0-beta.6 (2022-03-02)
 
 ### What's improved
