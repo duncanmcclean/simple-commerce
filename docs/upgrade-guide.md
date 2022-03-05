@@ -91,7 +91,7 @@ And for new orders, we'll automatically get rid of the 'temporary gateway data' 
 
 These changes should hopefully help to tidy up your order entry. It also lets us do cool things in the future, like a Gateway fieldtype.
 
-> You don't need to worry about anythng - Simple Commerce will automatically re-format your order entries for you during the upgrade process.
+> You don't need to worry about anything - Simple Commerce will automatically re-format your order entries for you during the upgrade process.
 
 ### Medium Impact: Updated signature of `checkAvailability` method on shipping methods
 
