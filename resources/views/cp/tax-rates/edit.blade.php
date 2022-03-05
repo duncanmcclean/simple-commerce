@@ -14,7 +14,7 @@
 
         <header class="mb-3">
             <div class="flex items-center justify-between">
-                <h1>{{ $taxRate->name() }}</h1>
+                <h1>{{ $taxRate->name() }} (Category: {{ $taxRate->category()->name() }})</h1>
                 <button type="submit" class="btn-primary">Save</button>
             </div>
         </header>
