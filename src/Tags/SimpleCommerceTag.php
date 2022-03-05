@@ -60,7 +60,7 @@ class SimpleCommerceTag extends Tags
             return array_merge($country, [
                 'regions' => Regions::findByCountry($country)->toArray(),
             ]);
-        })->values();
+        })->sortBy('name')->values();
 
         if ($inclusions = $this->params->explode('only', [])) {
             $countries = $countries
@@ -77,6 +77,7 @@ class SimpleCommerceTag extends Tags
                         || in_array($country['name'], $exclusions));
                 });
             }
+
             if ($common = $this->params->explode('common', [])) {
                 $commonCountries = $countries
                     ->filter(function ($country) use ($common) {
@@ -101,7 +102,7 @@ class SimpleCommerceTag extends Tags
             return array_merge($country, [
                 'name' => __($country['name']),
             ]);
-        })->sortBy('name')->toArray();
+        })->toArray();
     }
 
     public function currencies()
