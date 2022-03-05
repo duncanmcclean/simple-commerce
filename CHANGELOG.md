@@ -23,6 +23,22 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.8 (2022-03-05)
+
+### What's improved
+
+- When viewing tax rates, it's now clearer which category that rate is assosiated with
+- Country & regions are now alphabetically sorted when using their respective tags
+- Updated built-in order blueprint (there were some duplicate fields in their before)
+
+### What's fixed
+
+- The 'Line Items Tax' field is now properly hidden in the CP
+- The default tax rate will be 0%, not `null` like before 🤦‍♂️
+- If no tax zone is found to match the customer's address, it'll now (properly) fallback to the 'Everything' tax zone
+- When editing a tax rate, the 'tax zone' dropdown will no longer autoselect the first in the list
+- Fixed the 'included in price' config option not working on tax rates
+
 ## v2.4.0-beta.7 (2022-03-03)
 
 ### What's fixed
