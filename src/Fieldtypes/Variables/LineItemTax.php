@@ -7,6 +7,7 @@ use Statamic\Facades\Site;
 
 class LineItemTax extends VariableFieldtype
 {
+    protected $component = 'hidden';
     protected static $handle = 'sc_line_items_tax';
 
     public static function title()
