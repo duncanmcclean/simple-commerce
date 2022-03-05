@@ -101,7 +101,7 @@ class SimpleCommerceTag extends Tags
             return array_merge($country, [
                 'name' => __($country['name']),
             ]);
-        })->toArray();
+        })->sortBy('name')->toArray();
     }
 
     public function currencies()
@@ -123,6 +123,7 @@ class SimpleCommerceTag extends Tags
                     'country' => Countries::findByRegion($region)->first(),
                 ]);
             })
+            ->sortBy('name')
             ->toArray();
     }
 
