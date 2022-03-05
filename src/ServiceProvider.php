@@ -83,12 +83,14 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
-        UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
+        UpdateScripts\v2_3\AddBlueprintFields::class,
+        UpdateScripts\v2_3\MigrateConfig::class,
+        UpdateScripts\v2_3\MigrateLineItemMetadata::class,
 
-        UpdateScripts\AddBlueprintFields::class,
-        UpdateScripts\MigrateConfig::class,
-        UpdateScripts\MigrateLineItemMetadata::class,
-        UpdateScripts\MigrateTaxConfiguration::class,
+        UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
+        UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
+        UpdateScripts\v2_4\MigrateSingleCartConfig::class,
+        UpdateScripts\v2_4\MigrateTaxConfiguration::class,
     ];
 
     public function boot()

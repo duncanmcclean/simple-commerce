@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
+namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_3;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
