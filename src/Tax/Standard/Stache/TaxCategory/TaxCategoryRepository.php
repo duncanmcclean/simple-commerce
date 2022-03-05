@@ -71,6 +71,7 @@ class TaxCategoryRepository
             ->name('Default')
             ->category('default')
             ->zone('everywhere')
+            ->rate(0)
             ->save();
     }
 }
