@@ -45,7 +45,7 @@
                 <select name="zone" class="input-text" value="{{ $taxRate->zone()->id() }}">
                     @foreach($taxZones as $taxZone)
                         {{-- <option selected>Please select</option> --}}
-                        <option value="{{ $taxZone->id() }}">{{ $taxZone->name() }}</option>
+                        <option value="{{ $taxZone->id() }}" @if($taxZone->id() === $taxRate->zone()->id()) selected @endif>{{ $taxZone->name() }}</option>
                     @endforeach
                 </select>
 
