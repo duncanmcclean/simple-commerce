@@ -68,7 +68,7 @@ class TaxEngine implements Contract
                 return $taxRate->category()->id() === $product->taxCategory()->id();
             });
 
-        $taxZoneQuery = TaxZone::all();
+        $taxZoneQuery = TaxZone::all()->where('id', '!=', 'everywhere');
 
         if ($address->country()) {
             $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
@@ -80,6 +80,10 @@ class TaxEngine implements Contract
                     return $taxZone->region() === $address->region();
                 });
             }
+        }
+
+        if ($taxZoneQuery->count() < 1) {
+            $taxZoneQuery = TaxZone::query()->where('id', 'everywhere')->get();
         }
 
         return $taxRateQuery
