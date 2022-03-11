@@ -6,7 +6,7 @@
 
 ### What's fixed
 
-- Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff)
+- Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff) #585
 
 ## v2.3.69 (2022-03-03)
 
