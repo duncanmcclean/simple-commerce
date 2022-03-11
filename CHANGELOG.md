@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.3.70 (2022-03-11)
+
+### What's fixed
+
+- Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff)
+
 ## v2.3.69 (2022-03-03)
 
 ### What's fixed
