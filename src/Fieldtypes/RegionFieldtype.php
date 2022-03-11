@@ -54,4 +54,13 @@ class RegionFieldtype extends Relationship
             return $region['name'];
         })->join(', ');
     }
+
+    public function rules(): array
+    {
+        if ($this->config('max_items') === 1) {
+            return ['string', 'in:' . implode(',', Regions::values()->pluck('id')->toArray())];
+        }
+
+        return parent::rules();
+    }
 }
