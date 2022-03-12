@@ -23,6 +23,20 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
 
+## v2.4.0-beta.9 (2022-03-12)
+
+### What's improved
+
+- Tidied up the default Simple Commerce config
+- All new sites will use the Cookie Cart driver 🍪
+- An event will now be dispatched by gateways if a payment fails
+- Implemented webhooks in the Stripe Gateway (you don't have to use them though - only when using Stripe Elements)
+
+### What's fixed
+
+- Added proper validation rules to the Country & Region fieldtypes
+- (v2.3) Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff) #585
+
 ## v2.4.0-beta.8 (2022-03-05)
 
 ### What's improved
