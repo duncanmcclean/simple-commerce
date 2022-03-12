@@ -68,6 +68,7 @@ trait LineItems
                 ->reject(function ($item) use ($lineItemId) {
                     return $item['id'] === $lineItemId;
                 })
+                ->values()
                 ->toArray(),
         ]);
 

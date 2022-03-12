@@ -135,6 +135,18 @@ For more information on what's new/what's changed, review the [`CHANGELOG.md`](h
 
 ---
 
+## v2.3.70 (2022-03-11)
+
+### What's fixed
+
+- Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff) #585
+
+## v2.3.69 (2022-03-03)
+
+### What's fixed
+
+- Validation errors use the `default` error bag, so SC shouldn't try and use its own when pulling out errors #581 #583 by @duncanmcclean
+
 ## v2.3.68 (2022-02-23)
 
 ### What's new

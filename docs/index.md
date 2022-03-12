@@ -1,5 +1,6 @@
 ---
 title: Introduction
+table_of_contents: false
 ---
 
 **Ecommerce is hard, don't do it alone.** Get back to doing what you love: building beautiful websites for your clients.
