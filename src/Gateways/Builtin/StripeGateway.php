@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
@@ -44,6 +45,9 @@ class StripeGateway extends BaseGateway implements Gateway
             'metadata'           => [
                 'order_id' => $order->id,
             ],
+            // 'automatic_payment_methods' => [
+            //     'enabled' => 'true',
+            // ],
         ];
 
         $customer = $order->customer();
@@ -138,26 +142,28 @@ class StripeGateway extends BaseGateway implements Gateway
         $this->setUpWithStripe();
 
         $payload = json_decode($request->getContent(), true);
-        $method = 'handle'.Str::studly(str_replace('.', '_', $payload['type']));
+        $method = 'handle' . Str::studly(str_replace('.', '_', $payload['type']));
+
+        $data = $payload['data']['object'];
 
         if ($method === 'handlePaymentIntentSucceeded') {
-            $order = Order::find($payload['metadata']['order_id']);
+            $order = Order::find($data['metadata']['order_id']);
 
             $order->markAsPaid();
 
             return new Response('Webhook handled', 200);
         }
 
-        if ($method === 'handlePaymentIntentPaymentFailed') {
-            // Email the customer
-        }
-
         if ($method === 'handlePaymentIntentProcessing') {
-            // Wait?
+            // Wait?..
         }
 
-        if ($method === 'handlePaymentIntentAmountCapturableUpdated') {
-            // Cool, thanks Stripe?
+        if ($method === 'handlePaymentIntentPaymentFailed') {
+            $order = Order::find($data['metadata']['order_id']);
+
+            event(new OrderPaymentFailed($order));
+
+            return new Response('Webhook handled', 200);
         }
 
         return new Response();
