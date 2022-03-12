@@ -213,6 +213,9 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
+                    // 'automatic_payment_methods' => [
+                    //     'enabled' => 'true',
+                    // ],
                 ])->id,
             ],
         ]);
@@ -276,6 +279,9 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
+                    // 'automatic_payment_methods' => [
+                    //     'enabled' => 'true',
+                    // ],
                 ])->id,
             ],
             'grand_total' => 1234,
@@ -304,6 +310,9 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
+                    // 'automatic_payment_methods' => [
+                    //     'enabled' => 'true',
+                    // ],
                 ])->id,
             ],
             'grand_total' => 1234,
