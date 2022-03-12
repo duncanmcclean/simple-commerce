@@ -12,7 +12,7 @@ After that, you can populate your products with the correct amount of stock. The
 
 ### Variant Product
 
-To start using the stock functionality with variant products, you'll need to add an 'option field' to your Product Variants field, with the handle of `stock` and using the [Integer fieldtype]((https://statamic.dev/fieldtypes/integer#content)).
+To start using the stock functionality with variant products, you'll need to add an 'option field' to your Product Variants field, with the handle of `stock` and using the [Integer fieldtype](<(https://statamic.dev/fieldtypes/integer#content)>).
 
 ![Stock Variant Options](/img/simple-commerce/variant-options-stock.jpg)
 
@@ -36,5 +36,5 @@ You can configure the threshold for when you want to start dispatching the `Stoc
  |
 */
 
-'low_stock_threshold' => 25,
+'low_stock_threshold' => 10,
 ```

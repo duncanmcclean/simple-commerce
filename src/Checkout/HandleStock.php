@@ -33,7 +33,7 @@ trait HandleStock
                             $stockCount = $product->get('stock') - $item['quantity']
                         )->save();
 
-                        if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                        if ($stockCount <= config('simple-commerce.low_stock_threshold', 10)) {
                             event(new StockRunningLow($product, $stockCount));
                         }
                     }
@@ -57,7 +57,7 @@ trait HandleStock
                             $stockCount = $variant->stockCount() - $item['quantity']
                         );
 
-                        if ($stockCount <= config('simple-commerce.low_stock_threshold')) {
+                        if ($stockCount <= config('simple-commerce.low_stock_threshold', 10)) {
                             event(new StockRunningLow($product, $stockCount));
                         }
                     }
