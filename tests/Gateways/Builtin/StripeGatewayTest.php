@@ -350,8 +350,12 @@ class StripeGatewayTest extends TestCase
 
         $payload = [
             'type' => 'payment_intent.succeeded',
-            'metadata' => [
-                'order_id' => $order->id(),
+            'data' => [
+                'object' => [
+                    'metadata' => [
+                        'order_id' => $order->id(),
+                    ],
+                ],
             ],
         ];
 
