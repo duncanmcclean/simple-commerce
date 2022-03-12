@@ -24,6 +24,8 @@ interface GatewayManager
 
     public function callback(Request $request);
 
+    public function callbackUrl(array $extraParamters = []);
+
     public function webhook(Request $request);
 
     public function isOffsiteGateway(): bool;
