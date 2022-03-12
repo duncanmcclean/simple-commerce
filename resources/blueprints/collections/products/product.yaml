@@ -3,8 +3,13 @@ sections:
   main:
     display: Main
     fields:
-      -
-        handle: description
+      - handle: title
+        field:
+          type: text
+          required: true
+          validate:
+            - required
+      - handle: description
         field:
           restrict: false
           automatic_line_breaks: true
@@ -12,17 +17,32 @@ sections:
           escape_markup: false
           smartypants: false
           type: markdown
-          localizable: false
           listable: hidden
           display: Description
+      - handle: gallery
+        field:
+          mode: grid
+          container: assets
+          restrict: false
+          allow_uploads: true
+          max_files: 3
+          display: "Gallery Images"
+          type: assets
+          icon: assets
+          listable: hidden
   sidebar:
     display: Sidebar
     fields:
-      -
-        handle: price
+      - handle: price
         field:
           read_only: false
           type: money
-          localizable: false
           listable: hidden
           display: Price
+      - handle: slug
+        field:
+          type: slug
+          required: true
+          localizable: true
+          validate:
+            - required
