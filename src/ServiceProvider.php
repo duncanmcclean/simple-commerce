@@ -43,11 +43,14 @@ class ServiceProvider extends AddonServiceProvider
             Listeners\EnforceBlueprintFields::class,
             Listeners\AddHiddenFields::class,
         ],
+        Events\PostCheckout::class => [
+            Listeners\TidyTemporaryGatewayData::class,
+        ],
         Events\OrderPaid::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
-        Events\PostCheckout::class => [
-            Listeners\TidyTemporaryGatewayData::class,
+        Events\OrderPaymentFailed::class => [
+            //
         ],
         Events\StockRunningLow::class => [
             Listeners\SendConfiguredNotifications::class,
