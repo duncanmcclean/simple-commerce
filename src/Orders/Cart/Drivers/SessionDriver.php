@@ -78,12 +78,13 @@ class SessionDriver implements CartDriver
 
     protected function getKey(): string
     {
+        $key = Config::get('simple-commerce.cart.key', 'simple-commerce-cart');
         $site = $this->guessSiteFromRequest();
 
         if (Site::hasMultiple() && ! Config::get('simple-commerce.cart.single_cart')) {
-            return Config::get('simple-commerce.cart.key').'-'.$site->handle();
+            return $key . '-' . $site->handle();
         }
 
-        return Config::get('simple-commerce.cart.key');
+        return $key;
     }
 }
