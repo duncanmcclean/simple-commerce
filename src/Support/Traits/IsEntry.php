@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\EntryNotFound;
 use Illuminate\Support\Arr;
 use Statamic\Entries\Entry;
+use Statamic\Facades\Blueprint as FacadesBlueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry as EntryAPI;
 use Statamic\Facades\Site as SiteAPI;
@@ -100,23 +101,23 @@ trait IsEntry
             $data['title'] = $this->title;
         }
 
-        if (! $this->get('blueprint')) {
-            if ($this->collection() === 'customers') {
-                $this->data['blueprint'] = 'customer';
-            }
+        // if (! $this->get('blueprint')) {
+        //     if ($this->collection() === 'customers') {
+        //         $this->data['blueprint'] = 'customer';
+        //     }
 
-            if ($this->collection() === 'orders') {
-                $this->data['blueprint'] = 'order';
-            }
+        //     if ($this->collection() === 'orders') {
+        //         $this->data['blueprint'] = 'order';
+        //     }
 
-            if ($this->collection() === 'products') {
-                $this->data['blueprint'] = 'product';
-            }
+        //     if ($this->collection() === 'products') {
+        //         $this->data['blueprint'] = 'product';
+        //     }
 
-            if ($this->collection() === 'coupons') {
-                $this->data['blueprint'] = 'coupon';
-            }
-        }
+        //     if ($this->collection() === 'coupons') {
+        //         $this->data['blueprint'] = 'coupon';
+        //     }
+        // }
 
         $this->entry
             ->collection($this->collection())
@@ -127,6 +128,8 @@ trait IsEntry
         if (method_exists($this, 'beforeSaved')) {
             $this->beforeSaved();
         }
+
+        // dd(FacadesBlueprint::find('collections.products'));
 
         $this->entry->save();
 
