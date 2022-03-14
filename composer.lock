@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc3d5748c59984141dcdddcb49672348",
+    "content-hash": "1f3813546c6e1001046b1131916fbf63",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -5131,16 +5131,16 @@
         },
         {
             "name": "statamic/cms",
-            "version": "v3.3.0-beta.5",
+            "version": "v3.3.0-beta.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/statamic/cms.git",
-                "reference": "e938ca80d1f15d95dfdc9c0a6143668313940b49"
+                "reference": "7cee2660177701ca078227e1b67d170e6461fd49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/statamic/cms/zipball/e938ca80d1f15d95dfdc9c0a6143668313940b49",
-                "reference": "e938ca80d1f15d95dfdc9c0a6143668313940b49",
+                "url": "https://api.github.com/repos/statamic/cms/zipball/7cee2660177701ca078227e1b67d170e6461fd49",
+                "reference": "7cee2660177701ca078227e1b67d170e6461fd49",
                 "shasum": ""
             },
             "require": {
@@ -5155,11 +5155,11 @@
                 "league/commonmark": "^1.5 || ^2.0",
                 "league/csv": "^9.0",
                 "league/glide": "^1.1 || ^2.0",
-                "michelf/php-smartypants": "^1.8.1",
+                "michelf/php-smartypants": "^1.8",
                 "pixelfear/composer-dist-plugin": "^0.1.4",
                 "rebing/graphql-laravel": "^6.5 || ^8.0",
                 "spatie/blink": "^1.1.2",
-                "statamic/stringy": "^3.1.2",
+                "statamic/stringy": "^3.1",
                 "symfony/http-foundation": "^4.3.3 || ^5.1.4 || ^6.0",
                 "symfony/lock": "^5.1",
                 "symfony/var-exporter": "^4.3 || ^5.1",
@@ -5197,8 +5197,7 @@
             },
             "autoload": {
                 "files": [
-                    "src/helpers.php",
-                    "src/namespaced_helpers.php"
+                    "src/helpers.php"
                 ],
                 "psr-4": {
                     "Statamic\\": "src/"
@@ -5217,7 +5216,7 @@
             ],
             "support": {
                 "issues": "https://github.com/statamic/cms/issues",
-                "source": "https://github.com/statamic/cms/tree/v3.3.0-beta.5"
+                "source": "https://github.com/statamic/cms/tree/v3.3.0-beta.2"
             },
             "funding": [
                 {
@@ -5225,7 +5224,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-07T20:11:55+00:00"
+            "time": "2022-02-25T23:25:47+00:00"
         },
         {
             "name": "statamic/stringy",
@@ -11664,7 +11663,6 @@
     "aliases": [],
     "minimum-stability": "beta",
     "stability-flags": {
-        "statamic/cms": 10,
         "spatie/test-time": 20
     },
     "prefer-stable": false,
