@@ -68,7 +68,9 @@ trait IsEntry
             $this->published = $data['published'];
         }
 
-        $data = array_merge($data, $this->defaultFieldsInBlueprint());
+        // $data is the second parameter here so the default values
+        // don't override anything already present.
+        $data = array_merge($this->defaultFieldsInBlueprint(), $data);
 
         $this->data(
             Arr::except($data, ['id', 'site', 'slug', 'published'])

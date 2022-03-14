@@ -38,7 +38,7 @@ class Order implements Contract
         $this->slug = $this->id;
 
         $this->data = [
-            'title'          => '#'.SimpleCommerce::freshOrderNumber(),
+            'title'          => '#' . SimpleCommerce::freshOrderNumber(),
             'items'          => [],
             'is_paid'        => false,
             'grand_total'    => 0,
@@ -51,7 +51,7 @@ class Order implements Contract
 
     public function billingAddress()
     {
-        if ($this->has('use_shipping_address_for_billing')) {
+        if ($this->get('use_shipping_address_for_billing', false)) {
             return $this->shippingAddress();
         }
 

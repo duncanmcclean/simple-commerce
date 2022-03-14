@@ -9,12 +9,15 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 
 class StandardTaxEngineTest extends TestCase
 {
+    use SetupCollections;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -33,6 +36,8 @@ class StandardTaxEngineTest extends TestCase
             ->each(function ($file) {
                 File::delete($file);
             });
+
+        $this->setupCollections();
     }
 
     /** @test */
@@ -83,6 +88,7 @@ class StandardTaxEngineTest extends TestCase
             ],
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $recalculate = $order->recalculate();
@@ -149,6 +155,7 @@ class StandardTaxEngineTest extends TestCase
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
             'billing_region' => 'gb-sct',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $recalculate = $order->recalculate();
@@ -213,6 +220,7 @@ class StandardTaxEngineTest extends TestCase
             ],
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $recalculate = $order->recalculate();
@@ -268,6 +276,7 @@ class StandardTaxEngineTest extends TestCase
             ],
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $recalculate = $order->recalculate();
@@ -322,6 +331,7 @@ class StandardTaxEngineTest extends TestCase
             ],
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $order->recalculate();
