@@ -12,7 +12,7 @@ jobs:
       matrix:
         php: [8.1, 8.0, 7.4]
         laravel: [9.*, 8.*]
-        statamic: [^3.2, ^3.3]
+        statamic: [^3.2, v3.3.0-beta.6]
         os: [ubuntu-latest]
         include:
           - laravel: 9.*
