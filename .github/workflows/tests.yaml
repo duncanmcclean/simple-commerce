@@ -12,18 +12,18 @@ jobs:
       matrix:
         php: [8.1, 8.0, 7.4]
         laravel: [9.*, 8.*]
-        statamic: [^3.2]
+        statamic: [3.2.*, 3.3.*]
         os: [ubuntu-latest]
         include:
-          # - laravel: 9.*
-          #   framework: ^9.1.0
-          #   testbench: 7.*
+          - laravel: 9.*
+            framework: ^9.1.0
+            testbench: 7.*
           - laravel: 8.*
             framework: ^8.24.0
             testbench: 6.*
         exclude:
           - laravel: 9.*
-            statamic: ^3.2
+            statamic: 3.2.*
           - laravel: 9.*
             php: 7.4
 
