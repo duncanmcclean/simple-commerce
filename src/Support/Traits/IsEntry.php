@@ -100,6 +100,24 @@ trait IsEntry
             $data['title'] = $this->title;
         }
 
+        if (! $this->get('blueprint')) {
+            if ($this->collection() === 'customers') {
+                $this->data['blueprint'] = 'customer';
+            }
+
+            if ($this->collection() === 'orders') {
+                $this->data['blueprint'] = 'order';
+            }
+
+            if ($this->collection() === 'products') {
+                $this->data['blueprint'] = 'product';
+            }
+
+            if ($this->collection() === 'coupons') {
+                $this->data['blueprint'] = 'coupon';
+            }
+        }
+
         $this->entry
             ->collection($this->collection())
             ->slug($this->slug)
