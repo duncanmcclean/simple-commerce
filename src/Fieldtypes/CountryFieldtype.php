@@ -57,7 +57,7 @@ class CountryFieldtype extends Relationship
     public function rules(): array
     {
         if ($this->config('max_items') === 1) {
-            return ['string', 'in:' . implode(',', Countries::values()->pluck('iso')->toArray())];
+            return ['string'];
         }
 
         return parent::rules();
