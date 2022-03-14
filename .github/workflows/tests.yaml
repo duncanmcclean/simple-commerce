@@ -15,9 +15,9 @@ jobs:
         statamic: [^3.2]
         os: [ubuntu-latest]
         include:
-          - laravel: 9.*
-            framework: ^9.1.0
-            testbench: 7.*
+          # - laravel: 9.*
+          #   framework: ^9.1.0
+          #   testbench: 7.*
           - laravel: 8.*
             framework: ^8.24.0
             testbench: 6.*
