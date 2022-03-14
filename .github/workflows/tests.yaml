@@ -48,6 +48,9 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "statamic/cms:${{ matrix.statamic }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer install --no-interaction
 
+      - name: statamic version
+        run: composer show statamic/cms | grep 'versions' | grep -o -E '\*\ .+' | cut -d' ' -f2 | cut -d',' -f1;
+
       - name: Run PHPUnit
         run: composer test
         env:
