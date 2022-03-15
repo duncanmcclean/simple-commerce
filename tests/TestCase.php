@@ -96,8 +96,6 @@ abstract class TestCase extends OrchestraTestCase
 
         $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
-        // Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
-
         $app['config']->set('statamic.sites.sites', [
             'default' => [
                 'name'   => config('app.name'),
