@@ -7,8 +7,10 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
+use Facades\Statamic\Version;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Statamic\Console\Processes\Composer;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Site;
@@ -25,8 +27,10 @@ abstract class TestCase extends OrchestraTestCase
         parent::setUp();
 
         if ($this->shouldFakeVersion) {
-            \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.1.0-testing');
-            $this->addToAssertionCount(-1); // Dont want to assert this
+            Version::shouldReceive('get')
+                ->andReturn(Composer::create(__DIR__ . '/../')->installedVersion(Statamic::PACKAGE));
+
+            $this->addToAssertionCount(-1);
         }
     }
 
