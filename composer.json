@@ -30,7 +30,7 @@
     "require": {
         "php": "^7.4 || ^8.0 || ^8.1",
         "barryvdh/laravel-dompdf": "^1.0.0",
-        "laravel/framework": "^7.0|^8.0",
+        "laravel/framework": "^7.0|^8.0|^9.0",
         "mollie/mollie-api-php": "^2.30.0",
         "moneyphp/money": "^3.0 || ^4.0.3",
         "paypal/paypal-checkout-sdk": "^1.0",
