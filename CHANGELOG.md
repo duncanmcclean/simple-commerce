@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## v2.4.0 (xx-xx-xx)
+## v2.4.0 (2022-03-15)
 
 **After a long wait, Simple Commerce v2.4 is finally here!!**
 
