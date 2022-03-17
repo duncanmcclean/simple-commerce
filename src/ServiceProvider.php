@@ -91,7 +91,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v2_3\MigrateLineItemMetadata::class,
 
         UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
-        UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
+        // UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
         UpdateScripts\v2_4\MigrateSingleCartConfig::class,
         UpdateScripts\v2_4\MigrateTaxConfiguration::class,
     ];
