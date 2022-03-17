@@ -4,6 +4,7 @@ return [
 
     'actions' => [
         'mark_as_paid' => 'Mark As Paid',
+        'mark_as_shipped' => 'Mark As Shipped',
         'refund' => 'Refund',
     ],
 
