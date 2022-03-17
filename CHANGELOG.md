@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.2 (2022-03-17)
+
+### What's fixed
+
+- Removed an upgrade script which could potentially cause issues with sites with large amounts of orders.
+
 ## v2.4.1 (2022-03-15)
 
 ### What's fixed
