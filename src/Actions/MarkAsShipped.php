@@ -22,7 +22,11 @@ class MarkAsShipped extends Action
 
     public function visibleToBulk($items)
     {
-        return false;
+        $allowedOnItems = $items->filter(function ($item) {
+            return $this->visibleTo($item);
+        });
+
+        return $items->count() === $allowedOnItems->count();
     }
 
     public function run($items, $values)
