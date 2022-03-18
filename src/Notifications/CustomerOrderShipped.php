@@ -45,8 +45,8 @@ class CustomerOrderShipped extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Your order was shipped!')
-            ->line('Your order was shipped today.')
+            ->subject('Your order has been shipped!')
+            ->line('Thanks again for your purchase. Your order has been shipped.')
             ->line('Please get in touch if you have any questions.');
     }
 }
