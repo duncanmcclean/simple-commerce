@@ -46,6 +46,7 @@ You may also configure who you wish to send each notification to. If you'd like 
 You may listen to any of the following events:
 
 - `order_paid`
+- `order_payment_failed`
 - `order_shipped`
 - `stock_running_low`
 - `stock_run_out`
