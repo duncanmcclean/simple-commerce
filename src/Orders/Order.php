@@ -166,7 +166,7 @@ class Order implements Contract
     {
         $this->data([
             'is_shipped'    => true,
-            'shipped_date'  => now()->format('Y-m-d'),
+            'shipped_date'  => now()->format('Y-m-d H:i'),
         ]);
 
         $this->save();
