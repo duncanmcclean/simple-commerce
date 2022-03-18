@@ -62,6 +62,10 @@ return [
             \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
             \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
         ],
+
+        'order_shipped' => [
+            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class   => ['to' => 'customer'],
+        ],
     ],
 
     /*

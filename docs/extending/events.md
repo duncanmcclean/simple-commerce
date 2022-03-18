@@ -77,6 +77,19 @@ public function handle(OrderPaid $event)
 }
 ```
 
+### OrderShipped
+
+[**`DoubleThreeDigital\SimpleCommerce\Events\OrderShipped`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/OrderShipped.php)
+
+This event is fired when an order has been marked as shipped.
+
+```php
+public function handle(OrderShipped $event)
+{
+	$event->order;
+}
+```
+
 ### PostCheckout
 
 [**`DoubleThreeDigital\SimpleCommerce\Events\PostCheckout`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/PostCheckout.php)

@@ -56,6 +56,8 @@ interface Order
 
     public function markAsPaid(): self;
 
+    public function markAsShipped(): self;
+
     public function receiptUrl(): string;
 
     public function recalculate(): self;
