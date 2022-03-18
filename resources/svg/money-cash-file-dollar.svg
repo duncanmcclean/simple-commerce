@@ -1,13 +1,1 @@
-<svg width="136px" height="136px" viewBox="0 0 136 136" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>streamline-icon-money-cash-file-dollar@140x140</title>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="streamline-icon-money-cash-file-dollar@140x140" transform="translate(3.000000, 3.000000)" stroke="#000000" stroke-width="5">
-            <path d="M80,0 L10,0 C4.4771525,0 0,4.4771525 0,10 L0,120 C0,125.522847 4.4771525,130 10,130 L120,130 C125.522847,130 130,125.522847 130,120 L130,50 L80,0 Z" id="Path"></path>
-            <path d="M80,45 L80,0 L130,50 L85,50 C82.2385763,50 80,47.7614237 80,45 Z" id="Path"></path>
-            <line x1="40" y1="40" x2="40" y2="25" id="Path"></line>
-            <path d="M25,80 C25,87.5 31.72,90 40,90 C48.28,90 55,90 55,80 C55,65 25,65 25,50 C25,40 31.72,40 40,40 C48.28,40 55,43.79 55,50" id="Path"></path>
-            <line x1="40" y1="90" x2="40" y2="105" id="Path"></line>
-            <line x1="80" y1="90" x2="110" y2="90" id="Path"></line>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="136" height="136" version="1.1" viewBox="0 0 136 136"><title>streamline-icon-money-cash-file-dollar@140x140</title><g id="Page-1" fill="none" fill-rule="evenodd" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><g id="streamline-icon-money-cash-file-dollar@140x140" stroke="#000" stroke-width="5" transform="translate(3.000000, 3.000000)"><path id="Path" d="M80,0 L10,0 C4.4771525,0 0,4.4771525 0,10 L0,120 C0,125.522847 4.4771525,130 10,130 L120,130 C125.522847,130 130,125.522847 130,120 L130,50 L80,0 Z"/><path id="Path" d="M80,45 L80,0 L130,50 L85,50 C82.2385763,50 80,47.7614237 80,45 Z"/><line id="Path" x1="40" x2="40" y1="40" y2="25"/><path id="Path" d="M25,80 C25,87.5 31.72,90 40,90 C48.28,90 55,90 55,80 C55,65 25,65 25,50 C25,40 31.72,40 40,40 C48.28,40 55,43.79 55,50"/><line id="Path" x1="40" x2="40" y1="90" y2="105"/><line id="Path" x1="80" x2="110" y1="90" y2="90"/></g></g></svg>
