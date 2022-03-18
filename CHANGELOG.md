@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.3 (2022-03-18)
+
+### What's new
+
+- You can now mark orders as 'Shipped' #588 by @steffenschmidt
+
 ## v2.4.2 (2022-03-17)
 
 ### What's fixed
