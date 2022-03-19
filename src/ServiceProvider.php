@@ -123,6 +123,10 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         Filters\OrderStatusFilter::register();
+
+        if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
+            \Barryvdh\Debugbar\Facade::addCollector(new DebugbarDataCollector('simple-commerce'));
+        }
     }
 
     protected function bootVendorAssets()
