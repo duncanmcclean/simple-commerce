@@ -37,16 +37,16 @@ class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implem
 
     public function getName()
     {
-        return 'simple-commerce';
+        return 'Simple Commerce';
     }
 
     public function getWidgets()
     {
         return [
-            'simple-commerce' => [
+            'Simple Commerce' => [
                 'icon' => 'shopping-cart',
                 'widget' => 'PhpDebugBar.Widgets.VariableListWidget',
-                'map' => 'simple-commerce',
+                'map' => 'Simple Commerce',
                 'default' => '{}',
             ],
         ];
