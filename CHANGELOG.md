@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.4 (2022-03-21)
+
+### What's new
+
+- Added a 'Simple Commerce' tab to Laravel Debugbar #590 by @duncanmcclean
+
 ## v2.4.3 (2022-03-18)
 
 ### What's new
