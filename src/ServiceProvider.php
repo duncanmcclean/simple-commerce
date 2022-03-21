@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
@@ -125,7 +126,7 @@ class ServiceProvider extends AddonServiceProvider
         Filters\OrderStatusFilter::register();
 
         if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
-            \Barryvdh\Debugbar\Facade::addCollector(new DebugbarDataCollector('simple-commerce'));
+            Debugbar::addCollector(new DebugbarDataCollector('simple-commerce'));
         }
     }
 
