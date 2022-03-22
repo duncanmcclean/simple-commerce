@@ -117,6 +117,8 @@ class CartTagTest extends TestCase
             ],
         ]);
 
+        $cart->save();
+
         $this->fakeCart($cart);
 
         $this->assertSame('2', (string) $this->tag('{{ sc:cart:count }}'));
