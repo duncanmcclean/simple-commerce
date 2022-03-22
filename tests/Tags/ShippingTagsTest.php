@@ -36,7 +36,7 @@ class ShippingTagsTest extends TestCase
         SimpleCommerce::registerShippingMethod('default', DPD::class);
 
         $order = Order::make()
-            ->data([
+            ->merge([
                 'shipping_name' => 'Santa',
                 'shipping_address' => 'Christmas Lane',
                 'shipping_city' => 'Snowcity',
