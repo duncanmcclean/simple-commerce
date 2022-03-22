@@ -38,7 +38,7 @@ class CheckoutTags extends SubTag
                         $cart->set($gateway['handle'], $prepare->data());
                         $cart->save();
 
-                        $data = array_merge($data, $prepare->data());
+                        $data->merge($prepare->data());
                     } catch (\Exception $e) {
                         throw new GatewayException($e->getMessage());
                     }
@@ -46,9 +46,7 @@ class CheckoutTags extends SubTag
                     try {
                         $config = Gateway::use($gateway['class'])->config();
 
-                        $data = array_merge($data, [
-                            'gateway-config' => $config,
-                        ]);
+                        $data->merge(['gateway-config' => $config]);
                     } catch (\Exception $e) {
                         throw new GatewayException($e->getMessage());
                     }
@@ -57,7 +55,7 @@ class CheckoutTags extends SubTag
 
         return $this->createForm(
             route('statamic.simple-commerce.checkout.store'),
-            $data,
+            $data->toArray(),
             'POST'
         );
     }
