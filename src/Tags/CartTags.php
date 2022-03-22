@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use Statamic\Statamic;
 
 class CartTags extends SubTag
 {
@@ -24,16 +23,8 @@ class CartTags extends SubTag
     {
         $cart = $this->getOrMakeCart();
 
-        // If we're using Statamic 3.2.*, we need to do it a little differently...
-        if (version_compare(Statamic::version(), '3.3.0', '<')) {
-            return $cart->lineItems()->count() >= 1
-                ? is_array($cart->toAugmentedArray()['items']) ? $cart->toAugmentedArray()['items'] : $cart->toAugmentedArray()['items']->value()
-                : [];
-        }
-
-        // Soon: $cart->entry()->items itself should work - the regex parser currently has a bug in it 😅
         return $cart->lineItems()->count() >= 1
-            ? collect($cart->entry()->items)->map(fn ($item) => $item->all())->all()
+            ? $cart->lineItems()->all()
             : [];
     }
 
