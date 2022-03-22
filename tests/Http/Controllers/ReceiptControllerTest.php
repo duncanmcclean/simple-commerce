@@ -4,12 +4,22 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\URL;
 use Statamic\Facades\Stache;
 
 class ReceiptControllerTest extends TestCase
 {
+    use SetupCollections;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupCollections();
+    }
+
     /** @test */
     public function can_show_receipt()
     {
