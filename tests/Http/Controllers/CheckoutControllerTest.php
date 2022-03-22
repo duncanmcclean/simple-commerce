@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,7 +26,6 @@ use Statamic\Facades\Stache;
 
 class CheckoutControllerTest extends TestCase
 {
-    use SetupCollections;
     use SetupCollections, RefreshContent;
 
     public function setUp(): void
@@ -49,7 +49,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -104,7 +104,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -134,7 +134,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertEquals(session('errors')->default->first('accept_terms'), 'Please accept the terms & conditions.');
 
-        $order = $order->fresh();
+        $order->fresh();
 
         // Assert events have been dispatched
         Event::assertDispatched(PreCheckout::class);
@@ -163,7 +163,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -227,7 +227,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -261,7 +261,7 @@ class CheckoutControllerTest extends TestCase
         Event::assertNotDispatched(PostCheckout::class);
 
         // Assert order has been marked as paid
-        $this->assertFalse($order->published);
+        $this->assertFalse($order->get('published'));
 
         $this->assertFalse($order->get('is_paid'));
         $this->assertNull($order->get('paid_date'));
@@ -286,7 +286,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -352,7 +352,7 @@ class CheckoutControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -423,7 +423,7 @@ class CheckoutControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -503,7 +503,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -582,7 +582,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -662,7 +662,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -742,7 +742,7 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -807,7 +807,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -868,7 +868,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -929,7 +929,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -998,7 +998,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1083,7 +1083,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1167,7 +1167,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1251,7 +1251,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1344,7 +1344,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1406,7 +1406,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1470,7 +1470,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'grand_total' => 0,
         ]);
 
@@ -1529,7 +1529,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1582,7 +1582,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1634,7 +1634,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1685,7 +1685,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1737,7 +1737,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1803,7 +1803,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1866,7 +1866,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -1928,7 +1928,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
