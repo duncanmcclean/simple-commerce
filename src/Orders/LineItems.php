@@ -25,7 +25,10 @@ trait LineItems
     {
         $lineItemData['id'] = app('stache')->generateId();
 
-        $this->set('items', array_merge($this->lineItems()->toArray(), [$lineItemData]));
+        $this->merge([
+            'items' => $this->lineItems()->push($lineItemData)->toArray(),
+        ]);
+
         $this->save();
 
         if (! $this->withoutRecalculating) {
