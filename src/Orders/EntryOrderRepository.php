@@ -72,17 +72,16 @@ class EntryOrderRepository implements RepositoryContract
             $entry->slug($order->get('slug'));
         }
 
-        if ($order->get('published')) {
-            $entry->published($order->get('published'));
-        }
+        $entry->published($order->get('published', false));
 
         $entry->data(
-            Arr::except($order->data(), ['id', 'site', 'slug', 'published'])
+            Arr::except($order->data(), ['id', 'site', 'slug'])
         );
 
         $entry->save();
 
         $order->id = $entry->id();
+        $order->data = $entry->data();
         $order->entry = $entry;
     }
 
