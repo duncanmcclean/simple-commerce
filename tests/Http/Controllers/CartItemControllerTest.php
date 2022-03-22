@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,7 +15,7 @@ use Statamic\Facades\Stache;
 
 class CartItemControllerTest extends TestCase
 {
-    use SetupCollections;
+    use SetupCollections, RefreshContent;
 
     public function setUp(): void
     {
@@ -224,7 +225,7 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->make([
+            ->data([
                 'items' => [
                     [
                         'id' => 'smth',
