@@ -147,8 +147,15 @@ class Coupon implements Contract
         );
     }
 
-    public function fresh()
+    public function fresh(): self
     {
-        return CouponFacade::find($this->id());
+        $freshCoupon = CouponFacade::find($this->id());
+
+        $this->id = $freshCoupon->id;
+        $this->code = $freshCoupon->code;
+        $this->data = $freshCoupon->data;
+        $this->entry = $freshCoupon->entry;
+
+        return $this;
     }
 }

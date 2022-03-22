@@ -133,9 +133,16 @@ class Customer implements Contract
         CustomerFacade::delete($this);
     }
 
-    public function fresh()
+    public function fresh(): self
     {
-        return CustomerFacade::find($this->id());
+        $freshCustomer = CustomerFacade::find($this->id());
+
+        $this->id = $freshCustomer->id;
+        $this->email = $freshCustomer->email;
+        $this->data = $freshCustomer->data;
+        $this->entry = $freshCustomer->entry;
+
+        return $this;
     }
 
     public function toArray(): array

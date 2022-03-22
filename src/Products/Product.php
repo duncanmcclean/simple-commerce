@@ -125,8 +125,14 @@ class Product implements Contract
         ProductFacade::delete($this);
     }
 
-    public function fresh()
+    public function fresh(): self
     {
-        return ProductFacade::find($this->id());
+        $freshProduct = ProductFacade::find($this->id());
+
+        $this->id = $freshProduct->id;
+        $this->data = $freshProduct->data;
+        $this->entry = $freshProduct->entry;
+
+        return $this;
     }
 }

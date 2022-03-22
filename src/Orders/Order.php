@@ -242,9 +242,15 @@ class Order implements Contract
         OrderFacade::delete($this);
     }
 
-    public function fresh()
+    public function fresh(): self
     {
-        return OrderFacade::find($this->id());
+        $freshOrder = OrderFacade::find($this->id());
+
+        $this->id = $freshOrder->id;
+        $this->data = $freshOrder->data;
+        $this->entry = $freshOrder->entry;
+
+        return $this;
     }
 
     public function toArray(): array
