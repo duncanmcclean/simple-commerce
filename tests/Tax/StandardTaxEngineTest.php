@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngin
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 
 class StandardTaxEngineTest extends TestCase
 {
@@ -19,20 +20,24 @@ class StandardTaxEngineTest extends TestCase
     {
         parent::setUp();
 
-        collect(File::allFiles(base_path('content/simple-commerce/tax-categories')))
-            ->each(function ($file) {
-                File::delete($file);
-            });
+        try {
+            collect(File::allFiles(base_path('content/simple-commerce/tax-categories')))
+                ->each(function ($file) {
+                    File::delete($file);
+                });
 
-        collect(File::allFiles(base_path('content/simple-commerce/tax-rates')))
-            ->each(function ($file) {
-                File::delete($file);
-            });
+            collect(File::allFiles(base_path('content/simple-commerce/tax-rates')))
+                ->each(function ($file) {
+                    File::delete($file);
+                });
 
-        collect(File::allFiles(base_path('content/simple-commerce/tax-zones')))
-            ->each(function ($file) {
-                File::delete($file);
-            });
+            collect(File::allFiles(base_path('content/simple-commerce/tax-zones')))
+                ->each(function ($file) {
+                    File::delete($file);
+                });
+        } catch (DirectoryNotFoundException $e) {
+            // That's fine...
+        }
     }
 
     /** @test */
