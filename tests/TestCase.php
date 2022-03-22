@@ -114,6 +114,22 @@ abstract class TestCase extends OrchestraTestCase
         });
     }
 
+    /**
+     * Boot the testing helper traits.
+     *
+     * @return array<class-string, class-string>
+     */
+    protected function setUpTraits()
+    {
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[RefreshContent::class])) {
+            $this->refreshContent();
+        }
+
+        return $this->setUpTheTestEnvironmentTraits($uses);
+    }
+
     protected function useBasicTaxEngine()
     {
         SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class);
