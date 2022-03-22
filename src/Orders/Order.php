@@ -63,15 +63,7 @@ class Order implements Contract
             return null;
         }
 
-        return new Address(
-            $this->get('billing_name'),
-            $this->get('billing_address') ?? $this->get('billing_address_line1'),
-            $this->get('billing_address_line2'),
-            $this->get('billing_city'),
-            $this->get('billing_country'),
-            $this->get('billing_zip_code') ?? $this->get('billing_postal_code'),
-            $this->get('billing_region')
-        );
+        return Address::from('billing', $this);
     }
 
     public function shippingAddress()
@@ -80,15 +72,7 @@ class Order implements Contract
             return null;
         }
 
-        return new Address(
-            $this->get('shipping_name'),
-            $this->get('shipping_address') ?? $this->get('shipping_address_line1'),
-            $this->get('shipping_address_line2'),
-            $this->get('shipping_city'),
-            $this->get('shipping_country'),
-            $this->get('shipping_zip_code') ?? $this->get('shipping_postal_code'),
-            $this->get('shipping_region')
-        );
+        return Address::from('shipping', $this);
     }
 
     public function customer($customer = null)
