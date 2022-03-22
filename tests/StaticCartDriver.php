@@ -40,7 +40,7 @@ class StaticCartDriver implements CartDriver
 
     public function hasCart(): bool
     {
-        return is_null(static::$cart);
+        return ! is_null(static::$cart);
     }
 
     public function makeCart(): OrderContract
