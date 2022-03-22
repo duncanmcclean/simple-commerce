@@ -17,7 +17,7 @@ class Product implements Contract
     public $id;
     public $data;
 
-    protected $entry;
+    public $entry;
 
     public function __construct()
     {

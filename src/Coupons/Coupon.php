@@ -16,7 +16,7 @@ class Coupon implements Contract
     public $code;
     public $data;
 
-    protected $entry;
+    public $entry;
 
     public function __construct()
     {
