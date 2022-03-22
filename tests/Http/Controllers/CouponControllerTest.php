@@ -450,7 +450,7 @@ class CouponControllerTest extends TestCase
         $this->product->save();
 
         $this->cart = Order::make()
-            ->set([
+            ->merge([
                 'items' => [
                     [
                         'id'       => Stache::generateId(),
