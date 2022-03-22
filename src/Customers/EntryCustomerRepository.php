@@ -101,6 +101,7 @@ class EntryCustomerRepository implements RepositoryContract
 
         $customer->id = $entry->id();
         $customer->email = $entry->get('email');
+        $customer->entry = $entry;
 
         $customer->merge([
             'site' => $entry->site()->handle(),

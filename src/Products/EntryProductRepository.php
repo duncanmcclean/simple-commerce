@@ -79,6 +79,7 @@ class EntryProductRepository implements RepositoryContract
         $entry->save();
 
         $product->id = $entry->id();
+        $product->entry = $entry;
     }
 
     public function delete($product): void

@@ -97,6 +97,7 @@ class EntryCouponRepository implements RepositoryContract
 
         $coupon->id = $entry->id();
         $coupon->code = $entry->slug();
+        $coupon->entry = $entry;
 
         $coupon->merge([
             'site' => $entry->site()->handle(),

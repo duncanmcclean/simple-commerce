@@ -83,6 +83,7 @@ class EntryOrderRepository implements RepositoryContract
         $entry->save();
 
         $order->id = $entry->id();
+        $order->entry = $entry;
     }
 
     public function delete($order): void
