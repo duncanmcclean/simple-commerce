@@ -52,9 +52,9 @@ class CartController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
+                    ->email($data['customer']['email'])
                     ->data([
                         'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                        'email' => $data['customer']['email'],
                         'published' => true,
                     ]);
 
@@ -65,7 +65,7 @@ class CartController extends BaseActionController
                 $customer->merge($data['customer'])->save();
             }
 
-            $cart->set('customer', $customer->id());
+            $cart->set('customer', $customer->id())->save();
             $cart = $cart->fresh();
 
             unset($data['customer']);
@@ -80,9 +80,9 @@ class CartController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
+                    ->email($data['email'])
                     ->data([
                         'name'  => isset($data['name']) ? $data['name'] : '',
-                        'email' => $data['email'],
                         'published' => true,
                     ]);
 

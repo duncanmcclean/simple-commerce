@@ -130,9 +130,9 @@ class CheckoutController extends BaseActionController
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
+                    ->email($customerData['email'])
                     ->data([
                         'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                        'email' => $customerData['email'],
                         'published' => true,
                     ]);
 

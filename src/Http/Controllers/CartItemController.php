@@ -43,9 +43,9 @@ class CartItemController extends BaseActionController
             } catch (CustomerNotFound $e) {
                 if (is_array($request->get('customer'))) {
                     $customer = Customer::make()
+                        ->email($request->get('customer')['email'])
                         ->data([
                             'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
-                            'email' => $request->get('customer')['email'],
                             'published' => true,
                         ]);
 
@@ -61,9 +61,9 @@ class CartItemController extends BaseActionController
                 $customer = Customer::findByEmail($request->get('email'));
             } catch (CustomerNotFound $e) {
                 $customer = Customer::make()
+                    ->email($request->get('email'))
                     ->data([
                         'name'  => $request->get('name') ?? $request->get('email'),
-                        'email' => $request->get('email'),
                         'published' => true,
                     ]);
 
