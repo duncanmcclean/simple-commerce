@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,7 +14,7 @@ use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
 {
-    use SetupCollections;
+    use SetupCollections, RefreshContent;
 
     public function setUp(): void
     {
@@ -278,7 +279,7 @@ class CartControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $cart->fresh();
+        $cart = $cart->fresh();
 
         $customer = Customer::findByEmail('jack.simpson@example.com');
 
@@ -336,7 +337,7 @@ class CartControllerTest extends TestCase
             ->post(route('statamic.simple-commerce.cart.update'), $data)
             ->assertSessionHasErrors();
 
-        $cart->find($cart->id);
+        $cart->fresh();
 
         $this->assertNull($cart->get('customer'));
 
