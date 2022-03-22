@@ -135,7 +135,7 @@ class Coupon implements Contract
 
     public function toAugmentedArray($keys = null)
     {
-        $blueprintFields = $this->blueprint()->fields()->items()->reject(function ($field) {
+        $blueprintFields = $this->entry()->blueprint()->fields()->items()->reject(function ($field) {
             return $field['handle'] === 'value';
         })->pluck('handle')->toArray();
 

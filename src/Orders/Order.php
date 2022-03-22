@@ -271,6 +271,15 @@ class Order implements Contract
 
     public function toAugmentedArray(): array
     {
-        return $this->toArray();
+        $blueprintFields = $this->entry()->blueprint()->fields()->items()->reject(function ($field) {
+            return $field['handle'] === 'value';
+        })->pluck('handle')->toArray();
+
+        $augmentedData = $this->entry()->toAugmentedArray($blueprintFields);
+
+        return array_merge(
+            $this->toArray(),
+            $augmentedData,
+        );
     }
 }

@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Statamic\Http\Resources\API\EntryResource;
 
 class Product implements Contract
 {
@@ -134,5 +135,26 @@ class Product implements Contract
         $this->entry = $freshProduct->entry;
 
         return $this;
+    }
+
+    public function toResource()
+    {
+        return ['data' => []]; // TODO
+
+        return new EntryResource($this->entry());
+    }
+
+    public function toAugmentedArray(): array
+    {
+        $blueprintFields = $this->entry()->blueprint()->fields()->items()->reject(function ($field) {
+            return $field['handle'] === 'value';
+        })->pluck('handle')->toArray();
+
+        $augmentedData = $this->entry()->toAugmentedArray($blueprintFields);
+
+        return array_merge(
+            $this->toArray(),
+            $augmentedData,
+        );
     }
 }
