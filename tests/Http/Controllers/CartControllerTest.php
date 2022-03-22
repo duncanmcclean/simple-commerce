@@ -146,7 +146,7 @@ class CartControllerTest extends TestCase
 
         $customer->save();
 
-        $cart = Order::make()->data(['customer' => $customer->id]);
+        $cart = Order::make()->merge(['customer' => $customer->id]);
         $cart->save();
 
         $data = [
@@ -231,7 +231,7 @@ class CartControllerTest extends TestCase
 
         $customer->save();
 
-        $cart = Order::make()->data(['customer' => $customer->id]);
+        $cart = Order::make()->merge(['customer' => $customer->id]);
         $cart->save();
 
         $data = [
@@ -364,7 +364,7 @@ class CartControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'customer' => $customer->id,
         ]);
         $order->save();
@@ -449,7 +449,7 @@ class CartControllerTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
