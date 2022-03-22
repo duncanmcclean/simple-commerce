@@ -62,7 +62,7 @@ class CouponControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertSame($this->cart->get('coupon'), $coupon->id());
         $this->assertNotSame($this->cart->get('coupon_total'), 0);
@@ -106,7 +106,7 @@ class CouponControllerTest extends TestCase
             'cart',
         ]);
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertSame($this->cart->get('coupon'), $coupon->id());
         $this->assertNotSame($this->cart->get('coupon_total'), 0000);
@@ -147,7 +147,7 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertNotSame($this->cart->get('coupon'), $coupon->id());
         $this->assertSame($this->cart->get('coupon_total'), 0000);
@@ -170,7 +170,7 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertNull($this->cart->get('coupon'));
         $this->assertSame($this->cart->get('coupon_total'), 0000);
@@ -211,7 +211,7 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasNoErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertSame($this->cart->get('coupon'), $coupon->id());
         $this->assertNotSame($this->cart->get('coupon_total'), 0000);
@@ -253,7 +253,7 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertNotSame($this->cart->get('coupon'), $coupon->id());
         $this->assertSame($this->cart->get('coupon_total'), 0000);
@@ -305,7 +305,7 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasNoErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertSame($this->cart->get('coupon'), $coupon->id());
         $this->assertNotSame($this->cart->get('coupon_total'), 0000);
@@ -357,7 +357,7 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertNotSame($this->cart->get('coupon'), $coupon->id());
         $this->assertSame($this->cart->get('coupon_total'), 0000);
@@ -393,7 +393,7 @@ class CouponControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertNull($this->cart->get('coupon'));
         $this->assertSame($this->cart->get('coupon_total'), 0000);
@@ -433,7 +433,7 @@ class CouponControllerTest extends TestCase
             'cart',
         ]);
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
         $this->assertNull($this->cart->get('coupon'));
         $this->assertSame($this->cart->get('coupon_total'), 0000);
