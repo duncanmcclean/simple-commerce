@@ -9,10 +9,11 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Statamic\Facades\Collection;
 use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -20,17 +21,19 @@ use Stripe\Stripe;
 
 class StripeGatewayTest extends TestCase
 {
+    use SetupCollections, RefreshContent;
+
     public StripeGateway $gateway;
 
     public function setUp(): void
     {
         parent::setUp();
 
+        $this->setupCollections();
+
         $this->gateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
         ]);
-
-        Collection::make('orders')->title('Order')->save();
     }
 
     /** @test */
@@ -170,6 +173,7 @@ class StripeGatewayTest extends TestCase
         $product->save();
 
         $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
+        $customer->save();
 
         $this->gateway->setConfig([
             'secret' => env('STRIPE_SECRET'),

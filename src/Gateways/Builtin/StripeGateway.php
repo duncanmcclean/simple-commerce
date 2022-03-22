@@ -48,7 +48,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $customer = $order->customer();
 
-        if ($customer && $customer->has('email')) {
+        if ($customer) {
             $stripeCustomerData = [
                 'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
                 'email' => $customer->email(),
