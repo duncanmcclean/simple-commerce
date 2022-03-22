@@ -135,7 +135,7 @@ class UserCustomerTest extends TestCase
 
         $customer->set('name', 'Sarah Test');
 
-        $save = $customer->fresh();
+        $customer->save();
 
         $this->assertSame($user->id(), 'sarah');
         $this->assertSame($customer->name(), 'Sarah Test');
@@ -149,7 +149,7 @@ class UserCustomerTest extends TestCase
 
         $customer = Customer::find('sam');
 
-        $delete = $customer->delete();
+        $customer->delete();
 
         $this->assertNull(User::find('sam'));
     }
