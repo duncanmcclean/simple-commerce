@@ -22,6 +22,8 @@ class TaxRate
     public $zone;
     public $includeInPrice = false;
 
+    protected $selectedQueryRelations = [];
+
     public function __construct()
     {
         $this->data = collect();
@@ -96,7 +98,7 @@ class TaxRate
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-rates')->directory().$this->id().'.yaml';
+        return Stache::store('simple-commerce-tax-rates')->directory() . $this->id() . '.yaml';
     }
 
     public function fileData()
@@ -130,5 +132,13 @@ class TaxRate
         return cp_route('simple-commerce.tax-rates.destroy', [
             'taxRate' => $this->id(),
         ]);
+    }
+
+    // Statamic 3.3
+    public function selectedQueryRelations($relations)
+    {
+        $this->selectedQueryRelations = $relations;
+
+        return $this;
     }
 }

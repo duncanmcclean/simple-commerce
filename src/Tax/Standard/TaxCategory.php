@@ -18,6 +18,8 @@ class TaxCategory
     public $name;
     public $description;
 
+    protected $selectedQueryRelations = [];
+
     public function __construct()
     {
         $this->data = collect();
@@ -67,7 +69,7 @@ class TaxCategory
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-categories')->directory().$this->id().'.yaml';
+        return Stache::store('simple-commerce-tax-categories')->directory() . $this->id() . '.yaml';
     }
 
     public function fileData()
@@ -98,5 +100,13 @@ class TaxCategory
         return cp_route('simple-commerce.tax-categories.destroy', [
             'taxCategory' => $this->id(),
         ]);
+    }
+
+    // Statamic 3.3
+    public function selectedQueryRelations($relations)
+    {
+        $this->selectedQueryRelations = $relations;
+
+        return $this;
     }
 }

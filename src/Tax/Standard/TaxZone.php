@@ -21,6 +21,8 @@ class TaxZone
     public $country;
     public $region;
 
+    protected $selectedQueryRelations = [];
+
     public function __construct()
     {
         $this->data = collect();
@@ -83,7 +85,7 @@ class TaxZone
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-zones')->directory().$this->id().'.yaml';
+        return Stache::store('simple-commerce-tax-zones')->directory() . $this->id() . '.yaml';
     }
 
     public function fileData()
@@ -115,5 +117,13 @@ class TaxZone
         return cp_route('simple-commerce.tax-zones.destroy', [
             'taxZone' => $this->id(),
         ]);
+    }
+
+    // Statamic 3.3
+    public function selectedQueryRelations($relations)
+    {
+        $this->selectedQueryRelations = $relations;
+
+        return $this;
     }
 }

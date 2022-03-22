@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
@@ -13,11 +14,15 @@ use Statamic\Facades\Stache;
 
 class CartTagTest extends TestCase
 {
+    use SetupCollections;
+
     protected $tag;
 
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->setupCollections();
 
         $this->tag = resolve(CartTags::class)
             ->setParser(Antlers::parser())

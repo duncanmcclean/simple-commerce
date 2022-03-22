@@ -7,8 +7,10 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
+use Facades\Statamic\Version;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Statamic\Console\Processes\Composer;
 use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Site;
@@ -25,8 +27,10 @@ abstract class TestCase extends OrchestraTestCase
         parent::setUp();
 
         if ($this->shouldFakeVersion) {
-            \Facades\Statamic\Version::shouldReceive('get')->andReturn('3.1.0-testing');
-            $this->addToAssertionCount(-1); // Dont want to assert this
+            Version::shouldReceive('get')
+                ->andReturn(Composer::create(__DIR__ . '/../')->installedVersion(Statamic::PACKAGE));
+
+            $this->addToAssertionCount(-1);
         }
     }
 
@@ -76,24 +80,22 @@ abstract class TestCase extends OrchestraTestCase
         foreach ($configs as $config) {
             $app['config']->set(
                 "statamic.$config",
-                require(__DIR__."/../vendor/statamic/cms/config/{$config}.php")
+                require(__DIR__ . "/../vendor/statamic/cms/config/{$config}.php")
             );
         }
 
-        $app['config']->set('app.key', 'base64:'.base64_encode(
+        $app['config']->set('app.key', 'base64:' . base64_encode(
             Encrypter::generateKey($app['config']['app.cipher'])
         ));
         $app['config']->set('statamic.users.repository', 'file');
         $app['config']->set('statamic.stache.stores.users', [
             'class'     => UsersStore::class,
-            'directory' => __DIR__.'/__fixtures__/users',
+            'directory' => __DIR__ . '/__fixtures__/users',
         ]);
-        $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
+        $app['config']->set('simple-commerce', require(__DIR__ . '/../config/simple-commerce.php'));
         $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
 
         $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
-
-        Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
         $app['config']->set('statamic.sites.sites', [
             'default' => [
@@ -107,6 +109,8 @@ abstract class TestCase extends OrchestraTestCase
 
         Statamic::booted(function () {
             Site::setCurrent('default');
+
+            Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
         });
     }
 
