@@ -35,6 +35,7 @@ class Order implements Contract
             'tax_total'      => 0,
             'shipping_total' => 0,
             'coupon_total'   => 0,
+            'published'      => false,
         ]);
     }
 
@@ -154,11 +155,10 @@ class Order implements Contract
 
     public function markAsPaid(): self
     {
-        $this->published = true;
-
         $this->merge([
             'is_paid'   => true,
             'paid_date' => now()->format('Y-m-d H:i'),
+            'published' => true,
         ]);
 
         $this->save();
