@@ -23,7 +23,7 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_get_line_items()
     {
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => 'one-two-three',
@@ -69,7 +69,7 @@ class LineItemsTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => 'ideeeeee-of-item',
@@ -105,7 +105,7 @@ class LineItemsTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id'       => 'ideeeeee-of-item',

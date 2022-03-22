@@ -34,7 +34,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => true,
             'grand_total' => 123,
             'items_total' => 123,
@@ -75,7 +75,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => true,
             'grand_total' => 500,
             'items_total' => 500,
@@ -126,7 +126,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => true,
             'grand_total' => 250,
             'items_total' => 250,
@@ -168,7 +168,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => true,
             'grand_total' => 1550,
             'items_total' => 1550,
@@ -219,7 +219,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => true,
             'grand_total' => 1550,
             'items_total' => 1550,
@@ -261,7 +261,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid' => false,
             'items'   => [
                 [
@@ -301,7 +301,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid' => false,
             'items'   => [
                 [
@@ -354,7 +354,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid' => false,
             'items'   => [
                 [
@@ -405,7 +405,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid' => false,
             'items'   => [
                 [
@@ -455,7 +455,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid' => false,
             'items'   => [
                 [
@@ -505,7 +505,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid' => false,
             'items'   => [
                 [
@@ -544,7 +544,7 @@ class CalculatorTest extends TestCase
             return $product->get('price') * 2;
         });
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => false,
             'grand_total' => 0,
             'items_total' => 0,
@@ -613,7 +613,7 @@ class CalculatorTest extends TestCase
             return $variant->price() * 2;
         });
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'is_paid'     => false,
             'grand_total' => 0,
             'items_total' => 0,

@@ -63,7 +63,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -100,7 +100,7 @@ class CartTagTest extends TestCase
 
         $productTwo->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -141,7 +141,7 @@ class CartTagTest extends TestCase
 
         $productTwo->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items' => [
                 [
                     'id'       => Stache::generateId(),
@@ -168,7 +168,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_total()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'grand_total' => 2550,
         ]);
 
@@ -182,7 +182,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_grand_total()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'grand_total' => 2550,
         ]);
 
@@ -196,7 +196,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_total()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items_total' => 2550,
         ]);
 
@@ -210,7 +210,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_shipping_total()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'shipping_total' => 2550,
         ]);
 
@@ -224,7 +224,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_tax_total()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'tax_total' => 2550,
         ]);
 
@@ -238,7 +238,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_coupon_total()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'coupon_total' => 2550,
         ]);
 
@@ -318,7 +318,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_cart_update_form()
     {
-        $cart = Order::make()->data([]);
+        $cart = Order::make()->merge([]);
 
         $cart->save();
 
@@ -369,7 +369,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items' => [
                 [
                     'id' => 'one-two-three',
@@ -426,7 +426,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'items' => [
                 [
                     'id' => 'one-two-three',
@@ -463,7 +463,7 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->data([]);
+        $cart = Order::make()->merge([]);
         $cart->save();
 
         $this->fakeCart($cart);
@@ -480,7 +480,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_data_from_cart()
     {
-        $cart = Order::make()->data([
+        $cart = Order::make()->merge([
             'title' => '#0001',
             'note'  => 'Deliver by front door.',
         ]);
@@ -503,7 +503,7 @@ class CartTagTest extends TestCase
     protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Order::make()->data([
+            $cart = Order::make()->merge([
                 'note' => 'Special note.',
             ]);
 

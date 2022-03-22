@@ -301,7 +301,7 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_get_orders()
     {
-        $order = Order::make()->data(['title' => 'Order #0001']);
+        $order = Order::make()->merge(['title' => 'Order #0001']);
         $order->save();
 
         $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example')->set('orders', [$order->id()]);
@@ -318,7 +318,7 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_add_order()
     {
-        $order = Order::make()->data(['title' => 'Order #0002']);
+        $order = Order::make()->merge(['title' => 'Order #0002']);
         $order->save();
 
         $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');

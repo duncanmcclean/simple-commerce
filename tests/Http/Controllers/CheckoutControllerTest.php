@@ -26,6 +26,7 @@ use Statamic\Facades\Stache;
 class CheckoutControllerTest extends TestCase
 {
     use SetupCollections;
+    use SetupCollections, RefreshContent;
 
     public function setUp(): void
     {

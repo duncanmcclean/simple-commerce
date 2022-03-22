@@ -75,7 +75,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -145,7 +145,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -215,7 +215,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -275,7 +275,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -334,7 +334,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -394,7 +394,7 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),

@@ -57,7 +57,7 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -111,7 +111,7 @@ class StripeGatewayTest extends TestCase
         $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
         $customer->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -176,7 +176,7 @@ class StripeGatewayTest extends TestCase
             'receipt_email' => true,
         ]);
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -236,7 +236,7 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'items' => [
                 [
                     'id' => app('stache')->generateId(),
@@ -312,7 +312,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
@@ -342,7 +342,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->data([
+        $order = Order::make()->merge([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
