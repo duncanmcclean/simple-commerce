@@ -163,7 +163,7 @@ class UserCustomerTest extends TestCase
         $customer = Customer::find('sam');
 
         // $this->assertTrue($customer instanceof UserCustomer);
-        $this->assertTrue($customer->entry() instanceof AuthUser); // TODO
+        $this->assertTrue($customer->related() instanceof AuthUser); // TODO
     }
 
     /** @test */

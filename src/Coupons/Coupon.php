@@ -16,7 +16,7 @@ class Coupon implements Contract
     public $code;
     public $data;
 
-    public $entry;
+    public $related;
 
     public function __construct()
     {
@@ -37,10 +37,10 @@ class Coupon implements Contract
             ->args(func_get_args());
     }
 
-    public function entry($entry = null)
+    public function related($related = null)
     {
         return $this
-            ->fluentlyGetOrSet('entry')
+            ->fluentlyGetOrSet('related')
             ->args(func_get_args());
     }
 
@@ -135,11 +135,11 @@ class Coupon implements Contract
 
     public function toAugmentedArray($keys = null)
     {
-        $blueprintFields = $this->entry()->blueprint()->fields()->items()->reject(function ($field) {
+        $blueprintFields = $this->related()->blueprint()->fields()->items()->reject(function ($field) {
             return $field['handle'] === 'value';
         })->pluck('handle')->toArray();
 
-        $augmentedData = $this->entry()->toAugmentedArray($blueprintFields);
+        $augmentedData = $this->related()->toAugmentedArray($blueprintFields);
 
         return array_merge(
             $this->toArray(),
@@ -154,7 +154,7 @@ class Coupon implements Contract
         $this->id = $freshCoupon->id;
         $this->code = $freshCoupon->code;
         $this->data = $freshCoupon->data;
-        $this->entry = $freshCoupon->entry;
+        $this->related = $freshCoupon->related;
 
         return $this;
     }

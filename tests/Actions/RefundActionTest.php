@@ -38,7 +38,7 @@ class RefundActionTest extends TestCase
 
         $order->save();
 
-        $action = $this->action->visibleTo($order->entry());
+        $action = $this->action->visibleTo($order->related());
 
         $this->assertTrue($action);
     }
@@ -55,7 +55,7 @@ class RefundActionTest extends TestCase
 
         $order->save();
 
-        $action = $this->action->visibleTo($order->entry());
+        $action = $this->action->visibleTo($order->related());
 
         $this->assertFalse($action);
     }
@@ -73,7 +73,7 @@ class RefundActionTest extends TestCase
 
         $order->save();
 
-        $action = $this->action->visibleTo($order->entry());
+        $action = $this->action->visibleTo($order->related());
 
         $this->assertFalse($action);
     }
@@ -91,7 +91,7 @@ class RefundActionTest extends TestCase
 
         $product->save();
 
-        $action = $this->action->visibleTo($product->entry());
+        $action = $this->action->visibleTo($product->related());
 
         $this->assertFalse($action);
     }
@@ -109,7 +109,7 @@ class RefundActionTest extends TestCase
 
         $order->save();
 
-        $action = $this->action->visibleToBulk([$order->entry()]);
+        $action = $this->action->visibleToBulk([$order->related()]);
 
         $this->assertFalse($action);
     }

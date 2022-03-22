@@ -33,7 +33,7 @@ class EntryCustomerRepository implements RepositoryContract
         }
 
         return app(Customer::class)
-            ->entry($entry)
+            ->related($entry)
             ->id($entry->id())
             ->email($entry->get('email'))
             ->data(array_merge(
@@ -67,7 +67,7 @@ class EntryCustomerRepository implements RepositoryContract
 
     public function save($customer): void
     {
-        $entry = $customer->entry();
+        $entry = $customer->related();
 
         if (! $entry) {
             $entry = Entry::make()
@@ -101,7 +101,7 @@ class EntryCustomerRepository implements RepositoryContract
 
         $customer->id = $entry->id();
         $customer->email = $entry->get('email');
-        $customer->entry = $entry;
+        $customer->related = $entry;
 
         $customer->merge([
             'site' => $entry->site()->handle(),
@@ -112,7 +112,7 @@ class EntryCustomerRepository implements RepositoryContract
 
     public function delete($customer): void
     {
-        $customer->entry()->delete();
+        $customer->related()->delete();
     }
 
     protected function isUsingEloquentDriverWithIncrementingIds(): bool
