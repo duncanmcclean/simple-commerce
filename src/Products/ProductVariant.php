@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant

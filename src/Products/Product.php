@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Products;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

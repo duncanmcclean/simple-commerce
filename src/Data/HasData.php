@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
+namespace DoubleThreeDigital\SimpleCommerce\Data;
 
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 

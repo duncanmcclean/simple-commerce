@@ -11,7 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Illuminate\Support\Facades\URL;
 use Statamic\Http\Resources\API\EntryResource;
 

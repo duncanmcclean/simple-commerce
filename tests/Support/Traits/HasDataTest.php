@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Support\Traits;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class HasDataTest extends TestCase

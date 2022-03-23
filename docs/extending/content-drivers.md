@@ -8,10 +8,10 @@ Essentially, a content driver is a class which implements a certain interface. T
 
 You can configure content drivers for the following:
 
-* Products
-* Orders
-* Coupons
-* Customers
+- Products
+- Orders
+- Coupons
+- Customers
 
 ## Configuration
 
@@ -59,7 +59,7 @@ Here's a bare bones example to get you started:
 namespace App\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Illuminate\Support\Collection;
 
 class OrderRepository implements Contract

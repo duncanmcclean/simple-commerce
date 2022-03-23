@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Statamic\Http\Resources\API\EntryResource;
 
 class Coupon implements Contract
