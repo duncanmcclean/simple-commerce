@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support;
+namespace DoubleThreeDigital\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Currency as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;

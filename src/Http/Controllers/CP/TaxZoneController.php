@@ -9,7 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\EditRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Countries;
 use Statamic\Facades\Stache;
 
 class TaxZoneController

@@ -61,12 +61,12 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $routes = [
-        'actions' => __DIR__.'/../routes/actions.php',
-        'cp'      => __DIR__.'/../routes/cp.php',
+        'actions' => __DIR__ . '/../routes/actions.php',
+        'cp'      => __DIR__ . '/../routes/cp.php',
     ];
 
     protected $scripts = [
-        __DIR__.'/../resources/dist/js/cp.js',
+        __DIR__ . '/../resources/dist/js/cp.js',
     ];
 
     protected $tags = [
@@ -112,31 +112,31 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootVendorAssets()
     {
         $this->publishes([
-            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
+            __DIR__ . '/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce');
 
         $this->publishes([
-            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+            __DIR__ . '/../config/simple-commerce.php' => config_path('simple-commerce.php'),
         ], 'simple-commerce-config');
 
         $this->publishes([
-            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
+            __DIR__ . '/../resources/blueprints' => resource_path('blueprints'),
         ], 'simple-commerce-blueprints');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
         ], 'simple-commerce-translations');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/simple-commerce'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/simple-commerce'),
         ], 'simple-commerce-views');
 
         if (app()->environment() !== 'testing') {
-            $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
+            $this->mergeConfigFrom(__DIR__ . '/../config/simple-commerce.php', 'simple-commerce');
         }
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'simple-commerce');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'simple-commerce');
 
         return $this;
     }
@@ -154,7 +154,7 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\ProductRepository::class  => Products\EntryProductRepository::class,
             Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\ShippingManager::class    => Shipping\Manager::class,
-            Contracts\Currency::class           => Support\Currency::class,
+            Contracts\Currency::class           => Currency::class,
             Contracts\Calculator::class         => Orders\Calculator::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {

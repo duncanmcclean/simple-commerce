@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Regions;
+use DoubleThreeDigital\SimpleCommerce\Regions;
 use Illuminate\Contracts\Validation\Rule;
 
 class RegionExists implements Rule

@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
-use DoubleThreeDigital\SimpleCommerce\Support\Regions;
+use DoubleThreeDigital\SimpleCommerce\Countries;
+use DoubleThreeDigital\SimpleCommerce\Regions;
 use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
 use DoubleThreeDigital\SimpleCommerce\Rules\RegionExists;
 use Illuminate\Foundation\Http\FormRequest;
