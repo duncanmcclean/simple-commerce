@@ -20,7 +20,6 @@ class CartControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 

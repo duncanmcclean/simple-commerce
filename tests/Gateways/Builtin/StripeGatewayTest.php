@@ -29,8 +29,6 @@ class StripeGatewayTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
-
         $this->gateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
         ]);

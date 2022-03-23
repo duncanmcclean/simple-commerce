@@ -16,7 +16,6 @@ class LineItemsTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 

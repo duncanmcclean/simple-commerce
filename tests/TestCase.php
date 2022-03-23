@@ -127,6 +127,10 @@ abstract class TestCase extends OrchestraTestCase
             $this->refreshContent();
         }
 
+        if (isset($uses[SetupCollections::class])) {
+            $this->setupCollections();
+        }
+
         return $this->setUpTheTestEnvironmentTraits($uses);
     }
 

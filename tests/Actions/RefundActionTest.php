@@ -21,8 +21,6 @@ class RefundActionTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
-
         $this->action = new RefundAction();
     }
 

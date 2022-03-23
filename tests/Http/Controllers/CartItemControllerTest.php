@@ -21,7 +21,6 @@ class CartItemControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 

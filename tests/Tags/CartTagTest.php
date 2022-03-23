@@ -22,8 +22,6 @@ class CartTagTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
-
         $this->tag = resolve(CartTags::class)
             ->setParser(Antlers::parser())
             ->setContext([]);

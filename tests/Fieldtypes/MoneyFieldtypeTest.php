@@ -96,6 +96,7 @@ class MoneyFieldtypeWithMockedField extends MoneyFieldtype
     public function field(): ?Field
     {
         $this->setupProducts();
+
         $products = Collection::findByHandle('products');
 
         return (new Field('price', [

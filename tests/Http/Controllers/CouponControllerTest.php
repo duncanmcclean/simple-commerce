@@ -26,7 +26,6 @@ class CouponControllerTest extends TestCase
 
         File::deleteDirectory(base_path('content/collections/coupons'));
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 

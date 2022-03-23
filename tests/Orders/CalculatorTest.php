@@ -22,7 +22,6 @@ class CalculatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 
