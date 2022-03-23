@@ -15,7 +15,7 @@ class CustomerTags extends SubTag
 
     public function index()
     {
-        return Customer::find($this->params->get('id'))->related()->toAugmentedArray();
+        return Customer::find($this->params->get('id'))->resource()->toAugmentedArray();
     }
 
     public function update()
@@ -37,7 +37,7 @@ class CustomerTags extends SubTag
             return Customer::find($this->params->get('customer'))
                 ->orders()
                 ->map(function (Order $order) {
-                    return $order->related()->toAugmentedArray();
+                    return $order->resource()->toAugmentedArray();
                 })
                 ->toArray();
         }

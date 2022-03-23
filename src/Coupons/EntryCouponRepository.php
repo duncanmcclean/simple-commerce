@@ -33,7 +33,7 @@ class EntryCouponRepository implements RepositoryContract
         }
 
         return app(Coupon::class)
-            ->related($entry)
+            ->resource($entry)
             ->id($entry->id())
             ->code($entry->slug())
             ->data(array_merge(
@@ -67,7 +67,7 @@ class EntryCouponRepository implements RepositoryContract
 
     public function save($coupon): void
     {
-        $entry = $coupon->related();
+        $entry = $coupon->resource();
 
         if (! $entry) {
             $entry = Entry::make()
@@ -97,7 +97,7 @@ class EntryCouponRepository implements RepositoryContract
 
         $coupon->id = $entry->id();
         $coupon->code = $entry->slug();
-        $coupon->related = $entry;
+        $coupon->resource = $entry;
 
         $coupon->merge([
             'site' => $entry->site()->handle(),
@@ -108,7 +108,7 @@ class EntryCouponRepository implements RepositoryContract
 
     public function delete($coupon): void
     {
-        $coupon->related()->delete();
+        $coupon->resource()->delete();
     }
 
     protected function isUsingEloquentDriverWithIncrementingIds(): bool

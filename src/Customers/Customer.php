@@ -19,7 +19,7 @@ class Customer implements Contract
     public $email;
     public $data;
 
-    public $related;
+    public $resource;
 
     public function __construct()
     {
@@ -33,10 +33,10 @@ class Customer implements Contract
             ->args(func_get_args());
     }
 
-    public function related($related = null)
+    public function resource($resource = null)
     {
         return $this
-            ->fluentlyGetOrSet('related')
+            ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
     }
 
@@ -141,7 +141,7 @@ class Customer implements Contract
         $this->id = $freshCustomer->id;
         $this->email = $freshCustomer->email;
         $this->data = $freshCustomer->data;
-        $this->related = $freshCustomer->related;
+        $this->resource = $freshCustomer->resource;
 
         return $this;
     }
@@ -159,16 +159,16 @@ class Customer implements Contract
     {
         return ['data' => []]; // TODO
 
-        return new EntryResource($this->related());
+        return new EntryResource($this->resource());
     }
 
     public function toAugmentedArray(): array
     {
-        $blueprintFields = $this->related()->blueprint()->fields()->items()->reject(function ($field) {
+        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
             return $field['handle'] === 'value';
         })->pluck('handle')->toArray();
 
-        $augmentedData = $this->related()->toAugmentedArray($blueprintFields);
+        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
 
         return array_merge(
             $this->toArray(),

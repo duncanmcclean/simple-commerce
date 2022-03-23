@@ -15,7 +15,7 @@ class ReceiptUrl extends VariableFieldtype
 
     public function augment($value)
     {
-        $order = Order::find($this->related()->id());
+        $order = Order::find($this->resource()->id());
 
         return $order->receiptUrl();
     }

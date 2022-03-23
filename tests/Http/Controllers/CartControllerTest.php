@@ -383,7 +383,7 @@ class CartControllerTest extends TestCase
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart.update'), $data);
 
-        $cartCustomer = Customer::find($cart->related()->get('customer'));
+        $cartCustomer = Customer::find($cart->resource()->get('customer'));
 
         $this->assertSame($customer->id, $cartCustomer->id);
         $this->assertSame($customer->get('name'), $cartCustomer->get('name'));

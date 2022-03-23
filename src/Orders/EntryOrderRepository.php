@@ -33,7 +33,7 @@ class EntryOrderRepository implements RepositoryContract
         }
 
         return app(Order::class)
-            ->related($entry)
+            ->resource($entry)
             ->id($entry->id())
             ->data(array_merge(
                 $entry->data()->toArray(),
@@ -52,7 +52,7 @@ class EntryOrderRepository implements RepositoryContract
 
     public function save($order): void
     {
-        $entry = $order->related();
+        $entry = $order->resource();
 
         if (! $entry) {
             $entry = Entry::make()
@@ -82,12 +82,12 @@ class EntryOrderRepository implements RepositoryContract
 
         $order->id = $entry->id();
         $order->data = $entry->data();
-        $order->related = $entry;
+        $order->resource = $entry;
     }
 
     public function delete($order): void
     {
-        $order->related()->delete();
+        $order->resource()->delete();
     }
 
     protected function isUsingEloquentDriverWithIncrementingIds(): bool

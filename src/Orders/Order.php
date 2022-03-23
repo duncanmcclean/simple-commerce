@@ -22,7 +22,7 @@ class Order implements Contract
     public $id;
     public $data;
 
-    public $related;
+    public $resource;
     protected $withoutRecalculating = false;
 
     public function __construct()
@@ -46,10 +46,10 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function related($related = null)
+    public function resource($resource = null)
     {
         return $this
-            ->fluentlyGetOrSet('related')
+            ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
     }
 
@@ -232,7 +232,7 @@ class Order implements Contract
 
         $this->id = $freshOrder->id;
         $this->data = $freshOrder->data;
-        $this->related = $freshOrder->related;
+        $this->resource = $freshOrder->resource;
 
         return $this;
     }
@@ -250,16 +250,16 @@ class Order implements Contract
     {
         return ['data' => []]; // TODO
 
-        return new EntryResource($this->related());
+        return new EntryResource($this->resource());
     }
 
     public function toAugmentedArray(): array
     {
-        $blueprintFields = $this->related()->blueprint()->fields()->items()->reject(function ($field) {
+        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
             return $field['handle'] === 'value';
         })->pluck('handle')->toArray();
 
-        $augmentedData = $this->related()->toAugmentedArray($blueprintFields);
+        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
 
         return array_merge(
             $this->toArray(),

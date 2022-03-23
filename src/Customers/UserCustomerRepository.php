@@ -24,7 +24,7 @@ class UserCustomerRepository implements RepositoryContract
         }
 
         return app(Customer::class)
-            ->related($user)
+            ->resource($user)
             ->id($user->id())
             ->email($user->email())
             ->data($user->data()->toArray());
@@ -49,7 +49,7 @@ class UserCustomerRepository implements RepositoryContract
     public function save($customer): void
     {
         // We're going to use this in the meantime...
-        $user = $customer->related();
+        $user = $customer->resource();
 
         if (! $user) {
             $user = User::make()
@@ -72,7 +72,7 @@ class UserCustomerRepository implements RepositoryContract
 
     public function delete($customer): void
     {
-        $customer->related()->delete();
+        $customer->resource()->delete();
     }
 
     protected function isUsingEloquentUsers(): bool
