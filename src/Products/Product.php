@@ -139,8 +139,6 @@ class Product implements Contract
 
     public function toResource()
     {
-        return ['data' => []]; // TODO
-
         return new EntryResource($this->resource());
     }
 

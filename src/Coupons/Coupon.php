@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use Statamic\Http\Resources\API\EntryResource;
 
 class Coupon implements Contract
 {
@@ -133,6 +134,23 @@ class Coupon implements Contract
         CouponFacade::delete($this);
     }
 
+    public function fresh(): self
+    {
+        $freshCoupon = CouponFacade::find($this->id());
+
+        $this->id = $freshCoupon->id;
+        $this->code = $freshCoupon->code;
+        $this->data = $freshCoupon->data;
+        $this->resource = $freshCoupon->resource;
+
+        return $this;
+    }
+
+    public function toResource()
+    {
+        return new EntryResource($this->resource());
+    }
+
     public function toAugmentedArray($keys = null)
     {
         $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
@@ -145,17 +163,5 @@ class Coupon implements Contract
             $this->toArray(),
             $augmentedData,
         );
-    }
-
-    public function fresh(): self
-    {
-        $freshCoupon = CouponFacade::find($this->id());
-
-        $this->id = $freshCoupon->id;
-        $this->code = $freshCoupon->code;
-        $this->data = $freshCoupon->data;
-        $this->resource = $freshCoupon->resource;
-
-        return $this;
     }
 }

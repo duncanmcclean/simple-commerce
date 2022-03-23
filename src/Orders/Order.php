@@ -172,7 +172,7 @@ class Order implements Contract
 
     public function rules(): array
     {
-        return []; // TODO
+        return [];
 
         // return $this->blueprint()->fields()->validator()->rules();
     }
@@ -248,8 +248,6 @@ class Order implements Contract
 
     public function toResource()
     {
-        return ['data' => []]; // TODO
-
         return new EntryResource($this->resource());
     }
 
