@@ -17,7 +17,7 @@ class Calculator implements Contract
 
     public function calculate(OrderContract $order): array
     {
-        if ($order->has('is_paid') && $order->get('is_paid') === true) {
+        if ($order->isPaid()) {
             return $order->data()->toArray();
         }
 
@@ -129,7 +129,7 @@ class Calculator implements Contract
     public function calculateOrderShipping(array $data): array
     {
         $shippingMethod = $this->order->get('shipping_method');
-        $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
+        $defaultShippingMethod = config('simple-commerce.sites.' . Site::current()->handle() . '.shipping.default_method');
 
         if (! $shippingMethod && ! $defaultShippingMethod) {
             return [

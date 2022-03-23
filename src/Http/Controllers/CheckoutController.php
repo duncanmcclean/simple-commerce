@@ -202,7 +202,7 @@ class CheckoutController extends BaseActionController
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+        if (! $this->request->has('gateway') && $this->cart->isPaid() === false && $this->cart->get('grand_total') !== 0) {
             throw new NoGatewayProvided('No gateway provided.');
         }
 
@@ -223,7 +223,7 @@ class CheckoutController extends BaseActionController
             $this->cart->customer()->addOrder($this->cart->id);
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') === 0) {
+        if (! $this->request->has('gateway') && $this->cart->isPaid() === false && $this->cart->get('grand_total') === 0) {
             $this->cart->markAsPaid();
         }
 

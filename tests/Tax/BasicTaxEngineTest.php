@@ -28,8 +28,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->save([
-            'is_paid' => false,
+        $order = Order::make()->isPaid(false)->save([
             'items'   => [
                 $lineItem = [
                     'product'  => $product->id,
@@ -63,8 +62,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'is_paid' => false,
+        $order = Order::make()->isPaid(false)->merge([
             'items'   => [
                 $lineItem = [
                     'product'  => $product->id,
@@ -100,8 +98,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'is_paid' => false,
+        $order = Order::make()->isPaid(false)->merge([
             'items'   => [
                 $lineItem = [
                     'product'  => $product->id,
@@ -134,8 +131,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'is_paid' => false,
+        $order = Order::make()->isPaid(false)->merge([
             'items'   => [
                 $lineItem = [
                     'product'  => $product->id,
@@ -172,8 +168,7 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'is_paid' => false,
+        $order = Order::make()->isPaid(false)->merge([
             'items'   => [
                 $lineItem = [
                     'product'  => $product->id,

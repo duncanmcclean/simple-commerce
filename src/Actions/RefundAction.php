@@ -24,7 +24,7 @@ class RefundAction extends Action
 
         return $item instanceof Entry &&
             $item->collectionHandle() === SimpleCommerce::orderDriver()['collection'] &&
-            ($item->data()->has('is_paid') && $item->data()->get('is_paid')) &&
+            ($item->data()->has('is_paid') && $item->data()->get('is_paid') === true) &&
             ($item->data()->get('is_refunded') === false || $item->data()->get('is_refunded') === null);
     }
 

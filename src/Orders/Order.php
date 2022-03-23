@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
@@ -11,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Illuminate\Support\Facades\URL;
 use Statamic\Http\Resources\API\EntryResource;
 
@@ -20,16 +20,18 @@ class Order implements Contract
     use HasData, LineItems;
 
     public $id;
+    public $isPaid;
     public $data;
-
     public $resource;
+
     protected $withoutRecalculating = false;
 
     public function __construct()
     {
+        $this->isPaid = false;
+
         $this->data = collect([
             'items'          => [],
-            'is_paid'        => false,
             'grand_total'    => 0,
             'items_total'    => 0,
             'tax_total'      => 0,
@@ -43,6 +45,13 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
+
+    public function isPaid($isPaid = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('isPaid')
             ->args(func_get_args());
     }
 
@@ -139,8 +148,9 @@ class Order implements Contract
 
     public function markAsPaid(): self
     {
+        $this->isPaid(true);
+
         $this->merge([
-            'is_paid'   => true,
             'paid_date' => now()->format('Y-m-d H:i'),
             'published' => true,
         ]);
@@ -231,6 +241,7 @@ class Order implements Contract
         $freshOrder = OrderFacade::find($this->id());
 
         $this->id = $freshOrder->id;
+        $this->isPaid = $freshOrder->isPaid;
         $this->data = $freshOrder->data;
         $this->resource = $freshOrder->resource;
 

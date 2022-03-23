@@ -29,11 +29,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()
-            ->data([
-                'is_paid' => true,
-            ]);
-
+        $order = Order::make()->isPaid(true);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
@@ -46,11 +42,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()
-            ->data([
-                'is_paid' => false,
-            ]);
-
+        $order = Order::make()->isPaid(true);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
@@ -64,8 +56,8 @@ class RefundActionTest extends TestCase
         $this->markTestSkipped();
 
         $order = Order::make()
+            ->isPaid(true)
             ->data([
-                'is_paid' => true,
                 'is_refunded' => true,
             ]);
 
@@ -100,8 +92,8 @@ class RefundActionTest extends TestCase
         $this->markTestSkipped();
 
         $order = Order::make()
+            ->isPaid(true)
             ->data([
-                'is_paid' => true,
                 'is_refunded' => true,
             ]);
 

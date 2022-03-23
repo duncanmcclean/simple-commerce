@@ -52,7 +52,7 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->get('is_paid'));
+        $this->assertTrue($order->fresh()->isPaid());
 
         Event::assertDispatched(OrderPaid::class);
 
@@ -92,7 +92,7 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->get('is_paid'));
+        $this->assertTrue($order->fresh()->isPaid());
 
         Event::assertDispatched(OrderPaid::class);
     }

@@ -99,7 +99,7 @@ class CartItemController extends BaseActionController
 
             $hasPurchasedPrerequisiteProduct = $customer->orders()
                 ->filter(function ($order) {
-                    return $order->get('is_paid') === true;
+                    return $order->isPaid() === true;
                 })
                 ->filter(function ($order) use ($product) {
                     return collect($order->get('items'))

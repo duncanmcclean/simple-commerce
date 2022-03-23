@@ -33,8 +33,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid'     => true,
+        $cart = Order::make()->isPaid(true)->merge([
             'grand_total' => 123,
             'items_total' => 123,
             'shipping_total' => 0,
@@ -74,8 +73,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid'     => true,
+        $cart = Order::make()->isPaid(true)->merge([
             'grand_total' => 500,
             'items_total' => 500,
             'shipping_total' => 0,
@@ -125,8 +123,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid'     => true,
+        $cart = Order::make()->isPaid(true)->merge([
             'grand_total' => 250,
             'items_total' => 250,
             'shipping_total' => 0,
@@ -167,8 +164,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid'     => true,
+        $cart = Order::make()->isPaid(true)->merge([
             'grand_total' => 1550,
             'items_total' => 1550,
             'shipping_total' => 0,
@@ -218,8 +214,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid'     => true,
+        $cart = Order::make()->isPaid(true)->merge([
             'grand_total' => 1550,
             'items_total' => 1550,
             'shipping_total' => 0,
@@ -260,8 +255,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid' => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'items'   => [
                 [
                     'product'  => $product->id,
@@ -300,8 +294,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'is_paid' => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'items'   => [
                 [
                     'product'  => $product->id,
@@ -353,8 +346,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->merge([
-            'is_paid' => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'items'   => [
                 [
                     'product'  => $product->id,
@@ -404,8 +396,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->merge([
-            'is_paid' => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'items'   => [
                 [
                     'product'  => $product->id,
@@ -454,8 +445,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->merge([
-            'is_paid' => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'items'   => [
                 [
                     'product'  => $product->id,
@@ -504,8 +494,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->merge([
-            'is_paid' => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'items'   => [
                 [
                     'product'  => $product->id,
@@ -543,8 +532,7 @@ class CalculatorTest extends TestCase
             return $product->get('price') * 2;
         });
 
-        $cart = Order::make()->merge([
-            'is_paid'     => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'grand_total' => 0,
             'items_total' => 0,
             'items'       => [
@@ -612,8 +600,7 @@ class CalculatorTest extends TestCase
             return $variant->price() * 2;
         });
 
-        $cart = Order::make()->merge([
-            'is_paid'     => false,
+        $cart = Order::make()->isPaid(false)->merge([
             'grand_total' => 0,
             'items_total' => 0,
             'items'       => [

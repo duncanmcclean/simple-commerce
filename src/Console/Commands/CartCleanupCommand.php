@@ -17,7 +17,7 @@ class CartCleanupCommand extends Command
     {
         Order::query()
             ->reject(function ($order) {
-                return $order->get('is_paid');
+                return $order->isPaid();
             })
             ->filter(function ($order) {
                 return $order->date()->isBefore(now()->subDays(14));

@@ -126,7 +126,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 })
                 ->first();
 
-            if ($order->get('is_paid') === true) {
+            if ($order->isPaid() === true) {
                 return;
             }
 
