@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\EntryExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\EntryExists;
 use Illuminate\Http\Request;
 
 class VariantFieldtypeController

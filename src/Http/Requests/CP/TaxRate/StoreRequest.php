@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\TaxCategoryExists;
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\TaxZoneExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\TaxCategoryExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\TaxZoneExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest

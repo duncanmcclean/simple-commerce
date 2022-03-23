@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support\Rules;
+namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
 use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use Illuminate\Contracts\Validation\Rule;
