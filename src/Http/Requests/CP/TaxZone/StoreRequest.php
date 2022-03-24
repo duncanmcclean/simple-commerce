@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Countries;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Regions;
 use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
 use DoubleThreeDigital\SimpleCommerce\Rules\RegionExists;

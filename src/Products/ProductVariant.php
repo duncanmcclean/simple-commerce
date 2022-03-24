@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant

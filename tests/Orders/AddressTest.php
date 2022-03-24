@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Countries;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Regions;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
