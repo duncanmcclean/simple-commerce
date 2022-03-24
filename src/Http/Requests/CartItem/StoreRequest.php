@@ -4,8 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Orders\Order as EntryOrder;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Rules\EntryExists;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest

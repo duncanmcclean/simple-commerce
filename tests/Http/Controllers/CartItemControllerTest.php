@@ -482,9 +482,9 @@ class CartItemControllerTest extends TestCase
             ->lineItems([
                 [
                     'id'       => Stache::generateId(),
-                        'product'  => $productOne->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
+                    'product'  => $productOne->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 

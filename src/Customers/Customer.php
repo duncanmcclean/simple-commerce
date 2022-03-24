@@ -3,9 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

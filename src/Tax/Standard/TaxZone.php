@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
+use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
-use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Regions;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
