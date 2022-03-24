@@ -112,6 +112,8 @@ abstract class TestCase extends OrchestraTestCase
 
             Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
         });
+
+        $this->ensureContentDirectoriesExist();
     }
 
     /**
@@ -132,6 +134,29 @@ abstract class TestCase extends OrchestraTestCase
         }
 
         return $this->setUpTheTestEnvironmentTraits($uses);
+    }
+
+    protected function ensureContentDirectoriesExist(): void
+    {
+        if (! file_exists(base_path('content'))) {
+            mkdir(base_path('content'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce'))) {
+            mkdir(base_path('content/simple-commerce'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce/tax-categories'))) {
+            mkdir(base_path('content/simple-commerce/tax-categories'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce/tax-rates'))) {
+            mkdir(base_path('content/simple-commerce/tax-rates'));
+        }
+
+        if (! file_exists(base_path('content/simple-commerce/tax-zones'))) {
+            mkdir(base_path('content/simple-commerce/tax-zones'));
+        }
     }
 
     protected function useBasicTaxEngine()
