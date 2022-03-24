@@ -31,7 +31,7 @@ class Order implements Contract
     public function __construct()
     {
         $this->isPaid = false;
-        $this->lineItems = [];
+        $this->lineItems = collect();
 
         $this->data = collect([
             'items'          => [],

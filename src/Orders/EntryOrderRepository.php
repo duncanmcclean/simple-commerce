@@ -90,7 +90,7 @@ class EntryOrderRepository implements RepositoryContract
 
         $order->id = $entry->id();
         $order->isPaid = $entry->get('is_paid');
-        $order->lineItems = $entry->get('items');
+        $order->lineItems = collect($entry->get('items'));
         $order->data = $entry->data();
         $order->resource = $entry;
     }
