@@ -49,19 +49,19 @@ class MollieGatewayTest extends TestCase
         $product = Product::make()->save(['title' => 'Concert Ticket', 'price' => 5500]);
         $product->save();
 
-        $order = Order::make()->set([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 5500,
-                    'metadata' => [],
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 5500,
+                'metadata' => [],
             ],
+        ])->merge([
             'grand_total' => 5500,
             'title' => '#0001',
         ]);
+
         $order->save();
 
         $prepare = $this->gateway->prepare(new Prepare(

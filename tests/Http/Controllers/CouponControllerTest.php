@@ -449,15 +449,15 @@ class CouponControllerTest extends TestCase
         $this->product->save();
 
         $this->cart = Order::make()
-            ->merge([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $this->product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $this->product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
+            ])
+            ->merge([
                 'coupon' => null,
             ]);
 

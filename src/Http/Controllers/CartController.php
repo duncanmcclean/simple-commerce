@@ -111,11 +111,11 @@ class CartController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $this
-            ->getCart()
-            ->set('items', [])
-            ->save()
-            ->recalculate();
+        $cart = $this->getCart();
+
+        $cart->clearLineItems();
+
+        $cart->save()->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_deleted'),

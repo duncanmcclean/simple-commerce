@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 use Statamic\Http\Resources\API\EntryResource;
 
@@ -21,6 +22,7 @@ class Order implements Contract
 
     public $id;
     public $isPaid;
+    public $lineItems;
     public $data;
     public $resource;
 
@@ -29,6 +31,7 @@ class Order implements Contract
     public function __construct()
     {
         $this->isPaid = false;
+        $this->lineItems = [];
 
         $this->data = collect([
             'items'          => [],
@@ -173,7 +176,9 @@ class Order implements Contract
     {
         $calculate = resolve(CalculatorContract::class)->calculate($this);
 
-        $this->merge($calculate);
+        $this->lineItems($calculate['items']);
+
+        $this->merge(Arr::except($calculate, 'items'));
 
         $this->save();
 
@@ -242,6 +247,7 @@ class Order implements Contract
 
         $this->id = $freshOrder->id;
         $this->isPaid = $freshOrder->isPaid;
+        $this->lineItems = $freshOrder->lineItems;
         $this->data = $freshOrder->data;
         $this->resource = $freshOrder->resource;
 

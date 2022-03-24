@@ -224,19 +224,19 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id' => 'smth',
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total' => 1000,
-                        'metadata' => [
-                            'foo' => 'bar',
-                            'bar' => 'baz',
-                        ],
+            ->lineItems([
+                [
+                    'id' => 'smth',
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                    'metadata' => [
+                        'foo' => 'bar',
+                        'bar' => 'baz',
                     ],
                 ],
+            ])
+            ->data([
                 'items_total' => 1000,
                 'grand_total' => 1000,
             ]);
@@ -293,19 +293,19 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id' => 'smth',
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total' => 1000,
-                        'metadata' => [
-                            'foo' => 'bar',
-                            'bar' => 'baz',
-                        ],
+            ->lineItems([
+                [
+                    'id' => 'smth',
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
+                    'metadata' => [
+                        'foo' => 'bar',
+                        'bar' => 'baz',
                     ],
                 ],
+            ])
+            ->data([
                 'items_total' => 1000,
                 'grand_total' => 1000,
             ]);
@@ -479,14 +479,12 @@ class CartItemControllerTest extends TestCase
         $productTwo->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
                         'product'  => $productOne->id,
                         'quantity' => 1,
                         'total'    => 1000,
-                    ],
                 ],
             ]);
 
@@ -505,14 +503,13 @@ class CartItemControllerTest extends TestCase
         $response->assertRedirect('/products/' . $productTwo->get('slug'));
         $response->assertSessionHas('simple-commerce-cart');
 
-        $cart = $cart->fresh();
+        $cart->fresh();
 
-        $this->assertArrayHasKey('items', $cart->data);
         $this->assertSame(session()->get('simple-commerce-cart'), $cart->id);
         // $this->assertSame(3300, $cart->get('items_total'));
 
-        $this->assertStringContainsString($productOne->id, json_encode($cart->get('items')));
-        $this->assertStringContainsString($productTwo->id, json_encode($cart->get('items')));
+        $this->assertStringContainsString($productOne->id, json_encode($cart->lineItems()->toArray()));
+        $this->assertStringContainsString($productTwo->id, json_encode($cart->lineItems()->toArray()));
     }
 
     /** @test */
@@ -793,15 +790,15 @@ class CartItemControllerTest extends TestCase
         $customer->save();
 
         Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id' => 'smth',
-                        'product' => $prerequisiteProduct->id,
-                        'quantity' => 1,
-                        'total' => 1599,
-                    ],
+            ->lineItems([
+                [
+                    'id' => 'smth',
+                    'product' => $prerequisiteProduct->id,
+                    'quantity' => 1,
+                    'total' => 1599,
                 ],
+            ])
+            ->data([
                 'items_total' => 1599,
                 'grand_total' => 1599,
                 'customer' => $customer->id,
@@ -946,13 +943,11 @@ class CartItemControllerTest extends TestCase
         $productTwo->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $productOne->id,
-                        'quantity' => 1,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $productOne->id,
+                    'quantity' => 1,
                 ],
             ]);
 
@@ -994,14 +989,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1059,18 +1052,16 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'      => Stache::generateId(),
+            ->lineItems([
+                [
+                    'id'      => Stache::generateId(),
+                    'product' => $product->id,
+                    'variant' => [
+                        'variant' => 'Red_Small',
                         'product' => $product->id,
-                        'variant' => [
-                            'variant' => 'Red_Small',
-                            'product' => $product->id,
-                        ],
-                        'quantity' => 1,
-                        'total'    => 1000,
                     ],
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1135,18 +1126,16 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'      => Stache::generateId(),
+            ->lineItems([
+                [
+                    'id'      => Stache::generateId(),
+                    'product' => $product->id,
+                    'variant' => [
+                        'variant' => 'Red_Small',
                         'product' => $product->id,
-                        'variant' => [
-                            'variant' => 'Red_Small',
-                            'product' => $product->id,
-                        ],
-                        'quantity' => 1,
-                        'total'    => 1000,
                     ],
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1208,14 +1197,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1252,14 +1239,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1293,14 +1278,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1336,14 +1319,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1383,16 +1364,14 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                        'metadata' => [
-                            'foo' => 'bar',
-                        ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                    'metadata' => [
+                        'foo' => 'bar',
                     ],
                 ],
             ]);
@@ -1436,14 +1415,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1480,14 +1457,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 
@@ -1529,14 +1504,12 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 

@@ -27,14 +27,12 @@ class ReceiptControllerTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
                 ],
             ]);
 

@@ -437,7 +437,7 @@ class CartControllerTest extends TestCase
 
         $cart = $cart->fresh();
 
-        $this->assertSame($cart->get('items'), []);
+        $this->assertSame($cart->lineItems()->toArray(), []);
     }
 
     /** @test */
@@ -448,14 +448,12 @@ class CartControllerTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 1000,
-                ],
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 1000,
             ],
         ]);
 
@@ -473,7 +471,7 @@ class CartControllerTest extends TestCase
 
         $cart = $cart->fresh();
 
-        $this->assertSame($cart->get('items'), []);
+        $this->assertSame($cart->lineItems()->toArray(), []);
     }
 }
 

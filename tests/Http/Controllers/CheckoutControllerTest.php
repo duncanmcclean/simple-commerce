@@ -48,15 +48,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -103,15 +102,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -162,15 +160,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -226,15 +223,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -285,15 +281,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -351,15 +346,14 @@ class CheckoutControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
             'customer'    => $customer->id,
         ]);
@@ -422,15 +416,14 @@ class CheckoutControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -502,15 +495,14 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -581,15 +573,14 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
             'items_total' => 5000,
         ]);
@@ -661,15 +652,14 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
             'items_total' => 5000,
         ]);
@@ -741,15 +731,14 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
             'items_total' => 5000,
         ]);
@@ -806,15 +795,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -867,15 +855,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -928,15 +915,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -997,15 +983,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1082,16 +1067,15 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Small',
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'variant'  => 'Red_Small',
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1166,16 +1150,15 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Small',
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'variant'  => 'Red_Small',
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1250,16 +1233,15 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Small',
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'variant'  => 'Red_Small',
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1343,16 +1325,15 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Small',
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'variant'  => 'Red_Small',
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1405,15 +1386,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
             'gift_note' => 'I like jam on toast!',
             'delivery_note' => 'We live at the red house at the top of the hill.',
@@ -1528,15 +1508,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 0,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 0,
             ],
+        ])->merge([
             'grand_total' => 0,
         ]);
 
@@ -1581,15 +1560,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1633,15 +1611,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1684,15 +1661,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1736,15 +1712,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1802,15 +1777,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1865,15 +1839,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
         ]);
 
@@ -1927,15 +1900,14 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 5000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
             ],
+        ])->merge([
             'grand_total' => 5000,
             'dummy' => [
                 'foo' => 'bar',

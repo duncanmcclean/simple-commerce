@@ -22,18 +22,16 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_get_line_items()
     {
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => 'one-two-three',
-                    'product'  => 'oon-doo-twa',
-                    'quantity' => 2,
-                ],
-                [
-                    'id'       => 'nine-ten-eleven',
-                    'product'  => 'noin-dois-tre',
-                    'quantity' => 2,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'one-two-three',
+                'product'  => 'oon-doo-twa',
+                'quantity' => 2,
+            ],
+            [
+                'id'       => 'nine-ten-eleven',
+                'product'  => 'noin-dois-tre',
+                'quantity' => 2,
             ],
         ]);
 
@@ -68,13 +66,11 @@ class LineItemsTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => 'ideeeeee-of-item',
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'ideeeeee-of-item',
+                'product'  => $product->id,
+                'quantity' => 2,
             ],
         ]);
 
@@ -104,13 +100,11 @@ class LineItemsTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => 'ideeeeee-of-item',
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'ideeeeee-of-item',
+                'product'  => $product->id,
+                'quantity' => 2,
             ],
         ]);
 

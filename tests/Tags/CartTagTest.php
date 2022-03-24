@@ -61,14 +61,12 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 5,
-                    'total'    => 1000,
-                ],
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 5,
+                'total'    => 1000,
             ],
         ]);
 
@@ -98,20 +96,18 @@ class CartTagTest extends TestCase
 
         $productTwo->save();
 
-        $cart = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productOne->id,
-                    'quantity' => 5,
-                    'total'    => 1000,
-                ],
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productTwo->id,
-                    'quantity' => 5,
-                    'total'    => 1200,
-                ],
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productOne->id,
+                'quantity' => 5,
+                'total'    => 1000,
+            ],
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productTwo->id,
+                'quantity' => 5,
+                'total'    => 1200,
             ],
         ]);
 
@@ -141,20 +137,18 @@ class CartTagTest extends TestCase
 
         $productTwo->save();
 
-        $cart = Order::make()->merge([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productOne->id,
-                    'quantity' => 7,
-                    'total'    => 1000,
-                ],
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productTwo->id,
-                    'quantity' => 4,
-                    'total'    => 1200,
-                ],
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productOne->id,
+                'quantity' => 7,
+                'total'    => 1000,
+            ],
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productTwo->id,
+                'quantity' => 4,
+                'total'    => 1200,
             ],
         ]);
 
@@ -369,14 +363,12 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => 'one-two-three',
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $cart = Order::make()->lineItems([
+            [
+                'id' => 'one-two-three',
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
         ]);
 
@@ -426,15 +418,13 @@ class CartTagTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => 'one-two-three',
-                    'product' => $product->id,
-                    'variant' => 'Red_Small',
-                    'quantity' => 1,
-                    'total' => 5000,
-                ],
+        $cart = Order::make()->lineItems([
+            [
+                'id' => 'one-two-three',
+                'product' => $product->id,
+                'variant' => 'Red_Small',
+                'quantity' => 1,
+                'total' => 5000,
             ],
         ]);
 

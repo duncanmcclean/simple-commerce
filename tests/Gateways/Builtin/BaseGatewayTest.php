@@ -36,13 +36,11 @@ class BaseGatewayTest extends TestCase
         $product->save();
 
         $order = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'product' => $product->id(),
-                        'quantity' => 1,
-                        'total' => 1500,
-                    ],
+            ->lineItems([
+                [
+                    'product' => $product->id(),
+                    'quantity' => 1,
+                    'total' => 1500,
                 ],
             ]);
 
@@ -76,13 +74,11 @@ class BaseGatewayTest extends TestCase
         $product->save();
 
         $order = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'product' => $product->id(),
-                        'quantity' => 1,
-                        'total' => 1500,
-                    ],
+            ->lineItems([
+                [
+                    'product' => $product->id(),
+                    'quantity' => 1,
+                    'total' => 1500,
                 ],
             ]);
 

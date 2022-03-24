@@ -182,6 +182,14 @@ class CheckoutController extends BaseActionController
             $data[$key] = $value;
         }
 
+        // We don't recommend doing this BUT if you want to you can override all the line items at the
+        // last minute like this. We just need to ensure it's set correctly.
+        if (isset($data['items'])) {
+            $this->cart->lineItems($data['items']);
+
+            unset($data['items']);
+        }
+
         if ($data !== []) {
             $this->cart->merge($data)->save();
             $this->cart->save();

@@ -58,16 +58,15 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 5500,
-                    'metadata' => [],
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 5500,
+                'metadata' => [],
             ],
+        ])->merge([
             'grand_total' => 5500,
             'title' => '#0001',
         ]);
@@ -112,16 +111,15 @@ class StripeGatewayTest extends TestCase
         $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
         $customer->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1299,
-                    'metadata' => [],
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1299,
+                'metadata' => [],
             ],
+        ])->merge([
             'grand_total' => 1299,
             'title' => '#0002',
             'customer' => $customer->id(),
@@ -178,16 +176,15 @@ class StripeGatewayTest extends TestCase
             'receipt_email' => true,
         ]);
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1299,
-                    'metadata' => [],
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1299,
+                'metadata' => [],
             ],
+        ])->merge([
             'grand_total' => 1299,
             'title' => '#0003',
             'customer' => $customer->id(),
@@ -238,16 +235,15 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1234,
-                    'metadata' => [],
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1234,
+                'metadata' => [],
             ],
+        ])->merge([
             'grand_total' => 1234,
             'title' => '#0004',
             'stripe' => [

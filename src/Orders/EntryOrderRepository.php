@@ -36,6 +36,7 @@ class EntryOrderRepository implements RepositoryContract
             ->resource($entry)
             ->id($entry->id())
             ->isPaid($entry->get('is_paid') ?? false)
+            ->lineItems($entry->get('items') ?? [])
             ->data(array_merge(
                 Arr::except($entry->data()->toArray(), ['is_paid']),
                 [
@@ -80,6 +81,7 @@ class EntryOrderRepository implements RepositoryContract
                 $order->data()->except(['id', 'site', 'slug'])->toArray(),
                 [
                     'is_paid' => $order->isPaid(),
+                    'items' => $order->lineItems()->toArray(),
                 ],
             )
         );
@@ -88,6 +90,7 @@ class EntryOrderRepository implements RepositoryContract
 
         $order->id = $entry->id();
         $order->isPaid = $entry->get('is_paid');
+        $order->lineItems = $entry->get('items');
         $order->data = $entry->data();
         $order->resource = $entry;
     }

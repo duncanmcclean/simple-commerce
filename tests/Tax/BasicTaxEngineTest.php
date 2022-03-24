@@ -28,13 +28,11 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->isPaid(false)->save([
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 1000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 1000,
             ],
         ]);
 
@@ -62,13 +60,11 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
 
@@ -98,13 +94,11 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
 
@@ -131,13 +125,11 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
 
@@ -168,13 +160,11 @@ class BasicTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 3,
-                    'total'    => 7800,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 3,
+                'total'    => 7800,
             ],
         ]);
 

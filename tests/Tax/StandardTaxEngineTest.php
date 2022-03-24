@@ -80,15 +80,14 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
+        ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
@@ -150,15 +149,14 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
+        ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
             'billing_region' => 'gb-sct',
@@ -220,15 +218,14 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
+        ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
@@ -280,15 +277,14 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
+        ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
@@ -339,15 +335,14 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
+        ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
         ]);
@@ -399,14 +394,12 @@ class StandardTaxEngineTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
         ]);
 
@@ -458,14 +451,12 @@ class StandardTaxEngineTest extends TestCase
         $product->save();
 
         $order = Order::make()
-            ->data([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 1000,
-                    ],
+            ->lineItems([
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $product->id,
+                    'quantity' => 1,
+                    'total' => 1000,
                 ],
             ]);
 

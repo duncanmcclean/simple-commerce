@@ -33,19 +33,18 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->merge([
+        $cart = Order::make()->isPaid(true)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 123,
+            ],
+        ])->merge([
             'grand_total' => 123,
             'items_total' => 123,
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 123,
-                ],
-            ],
         ]);
 
         $cart->save();
@@ -73,19 +72,18 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->merge([
+        $cart = Order::make()->isPaid(true)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 500,
+            ],
+        ])->merge([
             'grand_total' => 500,
             'items_total' => 500,
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 500,
-                ],
-            ],
         ]);
 
         $cart->save();
@@ -123,20 +121,19 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->merge([
+        $cart = Order::make()->isPaid(true)->lineItems([
+            [
+                'product'  => $product->id,
+                'variant'  => 'Red_Large',
+                'quantity' => 1,
+                'total'    => 250,
+            ],
+        ])->merge([
             'grand_total' => 250,
             'items_total' => 250,
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Large',
-                    'quantity' => 1,
-                    'total'    => 250,
-                ],
-            ],
         ]);
 
         $cart->save();
@@ -164,19 +161,18 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->merge([
+        $cart = Order::make()->isPaid(true)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 1550,
+            ],
+        ])->merge([
             'grand_total' => 1550,
             'items_total' => 1550,
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 1550,
-                ],
-            ],
         ]);
 
         $cart->save();
@@ -214,20 +210,19 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->merge([
+        $cart = Order::make()->isPaid(true)->lineItems([
+            [
+                'product'  => $product->id,
+                'variant'  => 'Red_Large',
+                'quantity' => 1,
+                'total'    => 1550,
+            ],
+        ])->merge([
             'grand_total' => 1550,
             'items_total' => 1550,
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Large',
-                    'quantity' => 1,
-                    'total'    => 1550,
-                ],
-            ],
         ]);
 
         $cart->save();
@@ -255,13 +250,11 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
 
@@ -294,14 +287,13 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
+        ])->merge([
             'shipping_method' => Postage::class,
         ]);
 
@@ -346,14 +338,13 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
+        ])->merge([
             'shipping_method' => Postage::class,
             'coupon' => $coupon->id,
         ]);
@@ -396,14 +387,13 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 10000,
-                ],
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 10000,
             ],
+        ])->merge([
             'coupon' => $coupon->id,
         ]);
 
@@ -445,14 +435,13 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 10000,
-                ],
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 10000,
             ],
+        ])->merge([
             'coupon' => $coupon->id,
         ]);
 
@@ -494,14 +483,13 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->merge([
-            'items'   => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 10000,
-                ],
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 10000,
             ],
+        ])->merge([
             'coupon' => $coupon->id,
         ]);
 
@@ -532,16 +520,15 @@ class CalculatorTest extends TestCase
             return $product->get('price') * 2;
         });
 
-        $cart = Order::make()->isPaid(false)->merge([
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 0,
+            ],
+        ])->merge([
             'grand_total' => 0,
             'items_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 0,
-                ],
-            ],
         ]);
 
         $cart->save();
@@ -600,17 +587,16 @@ class CalculatorTest extends TestCase
             return $variant->price() * 2;
         });
 
-        $cart = Order::make()->isPaid(false)->merge([
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'variant'  => 'Red_Small',
+                'quantity' => 1,
+                'total'    => 0,
+            ],
+        ])->merge([
             'grand_total' => 0,
             'items_total' => 0,
-            'items'       => [
-                [
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Small',
-                    'quantity' => 1,
-                    'total'    => 0,
-                ],
-            ],
         ]);
 
         $cart->save();
