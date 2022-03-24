@@ -6,7 +6,7 @@
 
 <!-- /statamic:hide -->
 
-Simple Commerce is a simple e-commerce addon for Statamic. Developers can build custom stores for their clients without fuss. Simple Commerce doesn't hold you down: you have complete control over the content structure and front-end of your site.
+Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. Developers can build custom stores for their clients without fuss. Simple Commerce doesn't hold you down: you have complete control over the content structure and front-end of your site.
 
 ### Everything's just an entry
 
