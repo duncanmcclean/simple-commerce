@@ -49,6 +49,8 @@ Simple Commerce might be simple but it's not basic - there's dozens of handy fea
 
 ## Installation
 
+> If you're starting a fresh site, you might be better using the Simple Commerce Starter Kit. [→ Learn More](https://github.com/doublethreedigital/sc-starter-kit#quick-start)
+
 First, require Simple Commerce as a Composer dependency:
 
 ```
