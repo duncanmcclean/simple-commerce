@@ -45,9 +45,6 @@ class StripeGateway extends BaseGateway implements Gateway
             'metadata'           => [
                 'order_id' => $order->id,
             ],
-            // 'automatic_payment_methods' => [
-            //     'enabled' => 'true',
-            // ],
         ];
 
         $customer = $order->customer();
