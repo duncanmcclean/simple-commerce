@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.5 (2022-03-28)
+
+### What's new
+
+- Ability to customise the 'Payment Intent Data' sent to Stripe #592 by @duncanmcclean
+
 ## v2.4.4 (2022-03-21)
 
 ### What's new
