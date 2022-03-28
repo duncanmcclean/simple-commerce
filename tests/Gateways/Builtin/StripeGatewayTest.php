@@ -211,18 +211,18 @@ class StripeGatewayTest extends TestCase
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
             $order = Order::create([
-                 'items' => [
-                     [
-                         'id' => app('stache')->generateId(),
-                         'product' => $product->id,
-                         'quantity' => 1,
-                         'total' => 5500,
-                         'metadata' => [],
-                     ],
-                 ],
-                 'grand_total' => 5500,
-                 'title' => '#0001',
-             ])
+                'items' => [
+                    [
+                        'id' => app('stache')->generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 5500,
+                        'metadata' => [],
+                    ],
+                ],
+                'grand_total' => 5500,
+                'title' => '#0001',
+            ])
         ));
 
         $this->assertIsObject($prepare);
