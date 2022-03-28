@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -9,10 +10,10 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Statamic\Facades\Collection;
 use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -20,17 +21,19 @@ use Stripe\Stripe;
 
 class StripeGatewayTest extends TestCase
 {
+    use SetupCollections;
+
     public StripeGateway $gateway;
 
     public function setUp(): void
     {
         parent::setUp();
 
+        $this->setupCollections();
+
         $this->gateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
         ]);
-
-        Collection::make('orders')->title('Order')->save();
     }
 
     /** @test */
@@ -184,6 +187,65 @@ class StripeGatewayTest extends TestCase
         $this->assertSame($stripeCustomer->id, $paymentIntent->customer);
         $this->assertSame($stripeCustomer->name, 'George');
         $this->assertSame($stripeCustomer->email, 'george@example.com');
+    }
+
+    /** @test */
+    public function can_prepare_with_payment_intent_data_closure()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        $this->gateway->setConfig([
+            'secret' => env('STRIPE_SECRET'),
+            'payment_intent_data' => function (ContractsOrder $order) {
+                return [
+                    'description' => 'Some custom description',
+                    'metadata' => [
+                        'foo' => 'bar',
+                    ],
+                ];
+            },
+        ]);
+
+        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+
+        $prepare = $this->gateway->prepare(new Prepare(
+            new Request(),
+            $order = Order::create([
+                'items' => [
+                    [
+                        'id' => app('stache')->generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 5500,
+                        'metadata' => [],
+                    ],
+                ],
+                'grand_total' => 5500,
+                'title' => '#0001',
+            ])
+        ));
+
+        $this->assertIsObject($prepare);
+        $this->assertTrue($prepare instanceof GatewayResponse);
+
+        $this->assertTrue($prepare->success());
+        $this->assertArrayHasKey('intent', $prepare->data());
+        $this->assertArrayHasKey('client_secret', $prepare->data());
+
+        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+
+        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->description, 'Some custom description');
+        $this->assertSame($paymentIntent->metadata->foo, 'bar');
+        $this->assertNull($paymentIntent->customer);
+        $this->assertNull($paymentIntent->receipt_email);
+
+        $this->gateway->setConfig([
+            'secret' => env('STRIPE_SECRET'),
+        ]);
     }
 
     /** @test */

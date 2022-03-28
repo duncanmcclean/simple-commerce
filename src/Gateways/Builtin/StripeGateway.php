@@ -42,12 +42,6 @@ class StripeGateway extends BaseGateway implements Gateway
             'currency'           => Currency::get(Site::current())['code'],
             'description'        => "Order: {$order->title()}",
             'setup_future_usage' => 'off_session',
-            'metadata'           => [
-                'order_id' => $order->id,
-            ],
-            // 'automatic_payment_methods' => [
-            //     'enabled' => 'true',
-            // ],
         ];
 
         $customer = $order->customer();
@@ -65,6 +59,17 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($customer && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
             $intentData['receipt_email'] = $customer->email();
         }
+
+        if ($this->config()->has('payment_intent_data')) {
+            $intentData = array_merge(
+                $intentData,
+                $this->config()->get('payment_intent_data')($order)
+            );
+        }
+
+        // We're setting this after the rest of the payment intent data,
+        // in case the developer adds their own stuff to 'metadata'.
+        $intentData['metadata']['order_id'] = $order->id;
 
         $intent = PaymentIntent::create($intentData);
 
