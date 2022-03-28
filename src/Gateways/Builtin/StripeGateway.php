@@ -66,6 +66,13 @@ class StripeGateway extends BaseGateway implements Gateway
             $intentData['receipt_email'] = $customer->email();
         }
 
+        if ($this->config()->has('payment_intent_data')) {
+            $intentData = array_merge_recursive(
+                $intentData,
+                $this->config()->get('payment_intent_data')($order)
+            );
+        }
+
         $intent = PaymentIntent::create($intentData);
 
         return new GatewayResponse(true, [
