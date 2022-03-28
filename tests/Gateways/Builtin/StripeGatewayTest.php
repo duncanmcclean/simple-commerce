@@ -200,7 +200,7 @@ class StripeGatewayTest extends TestCase
             'secret' => env('STRIPE_SECRET'),
             'payment_intent_data' => function (ContractsOrder $order) {
                 return [
-                    'description' => 'Some custom description',
+                    // 'description' => 'Some custom description',
                     'metadata' => [
                         'foo' => 'bar',
                     ],
@@ -238,7 +238,6 @@ class StripeGatewayTest extends TestCase
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
         $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
-        $this->assertSame($paymentIntent->description, 'Some custom description');
         $this->assertSame($paymentIntent->metadata->foo, 'bar');
         $this->assertNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
