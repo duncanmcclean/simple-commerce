@@ -72,7 +72,7 @@ Bearing in mind, you will need to use that inside of a `{{ sc:gateways }}` tag i
 
 ## Payment Intent
 
-During the 'prepare' stage, Simple Commerce creates a Stripe Payment Intent. The Payment Intent generates a 'client secret' which is later given to Stripe Elements to render the payment fields.
+During the 'prepare' stage, Simple Commerce creates a [Stripe Payment Intent](https://stripe.com/docs/payments/payment-intents#creating-a-paymentintent). The Payment Intent generates a 'client secret' which is later given to Stripe Elements to render the payment fields.
 
 Simple Commerce will automatically set the amount, currency, description and order ID (as metadata) on the Payment Intent. However, there can be times where you may need to add to the array that's sent.
 
@@ -95,3 +95,5 @@ You may do this easily by providing a closure in the Stripe gateway config:
 ```
 
 The closure should accept an `$order` parameter and should then return an array which will be merged with the defaults.
+
+It's worth nothing that Laravel doesn't support using closures in config files alongside config caching.
