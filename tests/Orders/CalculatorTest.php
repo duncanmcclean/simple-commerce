@@ -464,6 +464,7 @@ class CalculatorTest extends TestCase
         ])->coupon($coupon->id);
 
         $cart->save();
+        $cart->fresh();
 
         $calculate = (new Calculator())->calculate($cart);
 

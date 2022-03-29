@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as FacadesCoupon;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
@@ -116,7 +117,9 @@ class EntryOrderRepository implements RepositoryContract
         $order->taxTotal = $entry->get('tax_total');
         $order->shippingTotal = $entry->get('shipping_total');
         $order->couponTotal = $entry->get('coupon_total');
-        $order->coupon = $entry->get('coupon');
+        $order->coupon = $entry->get('coupon') !== null
+            ? FacadesCoupon::find($entry->get('coupon'))
+            : null;
         $order->data = $entry->data();
         $order->resource = $entry;
     }
