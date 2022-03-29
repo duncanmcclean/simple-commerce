@@ -235,24 +235,28 @@ class StripeGatewayTest extends TestCase
             },
         ]);
 
-        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Concert Ticket',
+                'price' => 1299,
+            ]);
 
-        $prepare = $this->gateway->prepare(new Prepare(
-            new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 5500,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 5500,
-                'title' => '#0001',
-            ])
-        ));
+        $product->save();
+
+        $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
+        $customer->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1299,
+                'metadata' => [],
+            ],
+        ])->grandTotal(1299)->customer($customer->id())->merge([
+            'title' => '#0002',
+        ]);
 
         $this->assertIsObject($prepare);
         $this->assertTrue($prepare instanceof GatewayResponse);

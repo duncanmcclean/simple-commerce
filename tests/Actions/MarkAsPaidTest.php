@@ -29,11 +29,10 @@ class MarkAsPaidTest extends TestCase
     /** @test */
     public function is_visible_to_unpaid_orders()
     {
-        $order = Order::create([
-            'is_paid' => false,
-        ]);
+        $order = Order::make()->isPaid(false);
+        $order->save();
 
-        $action = $this->action->visibleTo($order->entry());
+        $action = $this->action->visibleTo($order->resource());
 
         $this->assertTrue($action);
     }
@@ -41,11 +40,10 @@ class MarkAsPaidTest extends TestCase
     /** @test */
     public function is_not_visible_to_paid_order()
     {
-        $order = Order::create([
-            'is_paid' => true,
-        ]);
+        $order = Order::make()->isPaid(true);
+        $order->save();
 
-        $action = $this->action->visibleTo($order->entry());
+        $action = $this->action->visibleTo($order->resource());
 
         $this->assertFalse($action);
     }
@@ -53,12 +51,15 @@ class MarkAsPaidTest extends TestCase
     /** @test */
     public function is_not_visible_to_products()
     {
-        $product = Product::create([
-            'title' => 'Medium Jumper',
-            'price' => 1200,
-        ]);
+        $product = Product::make()
+            ->data([
+                'title' => 'Medium Jumper',
+                'price' => 1200,
+            ]);
 
-        $action = $this->action->visibleTo($product->entry());
+        $product->save();
+
+        $action = $this->action->visibleTo($product->resource());
 
         $this->assertFalse($action);
     }
@@ -66,17 +67,15 @@ class MarkAsPaidTest extends TestCase
     /** @test */
     public function is_not_able_to_be_run_in_bulk()
     {
-        $orderOne = Order::create([
-            'is_paid'     => true,
-        ]);
+        $orderOne = Order::make()->isPaid(true);
+        $orderOne->save();
 
-        $orderTwo = Order::create([
-            'is_paid'     => true,
-        ]);
+        $orderTwo = Order::make()->isPaid(true);
+        $orderTwo->save();
 
         $action = $this->action->visibleToBulk(collect([
-            $orderOne->entry(),
-            $orderTwo->entry(),
+            $orderOne->resource(),
+            $orderTwo->resource(),
         ]));
 
         $this->assertFalse($action);

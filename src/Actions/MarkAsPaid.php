@@ -15,8 +15,7 @@ class MarkAsPaid extends Action
 
     public function visibleTo($item)
     {
-        return $item instanceof Entry
-            && $item->isPaid() === false;
+        return $item instanceof Entry && $item->get('is_paid') === false;
     }
 
     public function visibleToBulk($items)

@@ -169,7 +169,7 @@ class Order implements Contract
 
     public function billingAddress()
     {
-        if ($this->has('use_shipping_address_for_billing')) {
+        if ($this->get('use_shipping_address_for_billing', false)) {
             return $this->shippingAddress();
         }
 
