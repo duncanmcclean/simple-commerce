@@ -217,10 +217,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_coupon_total()
     {
-        $cart = Order::make()->merge([
-            'coupon_total' => 2550,
-        ]);
-
+        $cart = Order::make()->couponTotal(2550);
         $cart->save();
 
         $this->fakeCart($cart);

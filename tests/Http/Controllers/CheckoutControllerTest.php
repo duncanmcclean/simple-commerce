@@ -522,7 +522,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertSame($order->get('coupon'), $coupon->id);
 
         $this->assertSame($order->grandTotal(), 2500);
-        $this->assertSame($order->get('coupon_total'), 2500);
+        $this->assertSame($order->couponTotal(), 2500);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -602,7 +602,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('coupon'));
 
         $this->assertSame($order->grandTotal(), 5000);
-        $this->assertSame($order->get('coupon_total'), 0);
+        $this->assertSame($order->couponTotal(), 0);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -681,7 +681,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('coupon'));
 
         $this->assertSame($order->grandTotal(), 5000);
-        $this->assertSame($order->get('coupon_total'), 0);
+        $this->assertSame($order->couponTotal(), 0);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -760,7 +760,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('coupon'));
 
         $this->assertSame($order->grandTotal(), 5000);
-        $this->assertSame($order->get('coupon_total'), 0);
+        $this->assertSame($order->couponTotal(), 0);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));

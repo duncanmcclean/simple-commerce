@@ -135,7 +135,7 @@ class CartTags extends SubTag
     public function rawCouponTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->get('coupon_total');
+            return $this->getCart()->couponTotal();
         }
 
         return 0;

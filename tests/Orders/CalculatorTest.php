@@ -46,9 +46,7 @@ class CalculatorTest extends TestCase
             ->itemsTotal(123)
             ->taxTotal(0)
             ->shippingTotal(0)
-            ->merge([
-                'coupon_total' => 0,
-            ]);
+            ->couponTotal(0);
 
         $cart->save();
 
@@ -81,9 +79,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 500,
             ],
-        ])->grandTotal(500)->itemsTotal(500)->taxTotal(0)->shippingTotal(0)->merge([
-            'coupon_total' => 0,
-        ]);
+        ])->grandTotal(500)->itemsTotal(500)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
         $cart->save();
 
@@ -127,9 +123,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 250,
             ],
-        ])->grandTotal(250)->itemsTotal(250)->taxTotal(0)->shippingTotal(0)->merge([
-            'coupon_total' => 0,
-        ]);
+        ])->grandTotal(250)->itemsTotal(250)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
         $cart->save();
 
@@ -162,9 +156,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->shippingTotal(0)->merge([
-            'coupon_total' => 0,
-        ]);
+        ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
         $cart->save();
 
@@ -208,9 +200,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->shippingTotal(0)->merge([
-            'coupon_total' => 0,
-        ]);
+        ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
         $cart->save();
 
