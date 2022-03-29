@@ -63,13 +63,6 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('grandTotal')
-            // ->getter(function ($value) {
-            //     if (! $value) {
-            //         return 0;
-            //     }
-
-            //     return $value;
-            // })
             ->args(func_get_args());
     }
 
