@@ -258,6 +258,13 @@ class StripeGatewayTest extends TestCase
             'title' => '#0002',
         ]);
 
+        $order->save();
+
+        $prepare = $this->gateway->prepare(new Prepare(
+            new Request(),
+            $order
+        ));
+
         $this->assertIsObject($prepare);
         $this->assertTrue($prepare instanceof GatewayResponse);
 
