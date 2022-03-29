@@ -272,7 +272,7 @@ class CouponControllerTest extends TestCase
 
         $customer->save();
 
-        $this->cart->set('customer', $customer->id);
+        $this->cart->customer($customer->id());
         $this->cart->save();
 
         $coupon = Entry::make()
@@ -324,7 +324,7 @@ class CouponControllerTest extends TestCase
 
         $customer->save();
 
-        $this->cart->set('customer', null);
+        $this->cart->customer(null);
         $this->cart->save();
 
         $coupon = Entry::make()

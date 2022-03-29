@@ -65,7 +65,9 @@ class CartController extends BaseActionController
                 $customer->merge($data['customer'])->save();
             }
 
-            $cart->set('customer', $customer->id())->save();
+            $cart->customer($customer->id());
+            $cart->save();
+
             $cart = $cart->fresh();
 
             unset($data['customer']);
@@ -89,7 +91,9 @@ class CartController extends BaseActionController
                 $customer->save();
             }
 
-            $cart->set('customer', $customer->id());
+            $cart->customer($customer->id());
+            $cart->save();
+
             $cart = $cart->fresh();
 
             unset($data['name']);

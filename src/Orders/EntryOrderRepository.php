@@ -2,11 +2,13 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as FacadesCoupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
@@ -45,6 +47,10 @@ class EntryOrderRepository implements RepositoryContract
             ->shippingTotal($entry->get('shipping_total') ?? 0)
             ->couponTotal($entry->get('coupon_total') ?? 0);
 
+        if ($entry->has('customer')) {
+            $order->customer($entry->get('customer'));
+        }
+
         if ($entry->has('coupon')) {
             $order->coupon($entry->get('coupon'));
         }
@@ -52,7 +58,7 @@ class EntryOrderRepository implements RepositoryContract
         return $order->data(array_merge(
             Arr::except(
                 $entry->data()->toArray(),
-                ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'coupon']
+                ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon']
             ),
             [
                 'site' => optional($entry->site())->handle(),
@@ -102,7 +108,8 @@ class EntryOrderRepository implements RepositoryContract
                     'tax_total' => $order->taxTotal(),
                     'shipping_total' => $order->shippingTotal(),
                     'coupon_total' => $order->couponTotal(),
-                    'coupon' => $order->coupon() instanceof Coupon ? $order->coupon()->id() : $order->coupon(),
+                    'customer' => $order->customer() instanceof CustomerContract ? $order->customer()->id() : $order->customer(),
+                    'coupon' => $order->coupon() instanceof CouponContract ? $order->coupon()->id() : $order->coupon(),
                 ],
             )
         );
@@ -117,8 +124,11 @@ class EntryOrderRepository implements RepositoryContract
         $order->taxTotal = $entry->get('tax_total');
         $order->shippingTotal = $entry->get('shipping_total');
         $order->couponTotal = $entry->get('coupon_total');
+        $order->customer = $entry->get('customer') !== null
+            ? Customer::find($entry->get('customer'))
+            : null;
         $order->coupon = $entry->get('coupon') !== null
-            ? FacadesCoupon::find($entry->get('coupon'))
+            ? Coupon::find($entry->get('coupon'))
             : null;
         $order->data = $entry->data();
         $order->resource = $entry;

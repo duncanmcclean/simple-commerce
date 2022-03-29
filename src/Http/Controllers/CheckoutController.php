@@ -106,10 +106,12 @@ class CheckoutController extends BaseActionController
 
     protected function handleCustomerDetails()
     {
-        $customerData = $this->request->has('customer') ? $this->request->get('customer') : [];
+        $customerData = $this->request->has('customer')
+            ? $this->request->get('customer')
+            : [];
 
         if (is_string($customerData)) {
-            $this->cart->set('customer', $customerData);
+            $this->cart->customer($customerData);
             $this->cart->save();
 
             $this->excludedKeys[] = 'customer';
@@ -141,7 +143,7 @@ class CheckoutController extends BaseActionController
 
             $customer->merge($customerData)->save();
 
-            $this->cart->set('customer', $customer->id);
+            $this->cart->customer($customer->id());
             $this->cart->save();
 
             $this->cart = $this->cart->fresh();

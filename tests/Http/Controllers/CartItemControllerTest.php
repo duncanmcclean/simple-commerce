@@ -566,7 +566,7 @@ class CartItemControllerTest extends TestCase
         $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($cart->get('customer'));
+        $this->assertNotNull($cart->customer());
 
         $this->assertSame($cart->customer()->name(), 'Michael Scott');
         $this->assertSame($cart->customer()->email(), 'michael@scott.net');
@@ -637,7 +637,7 @@ class CartItemControllerTest extends TestCase
         $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($cart->get('customer'));
+        $this->assertNotNull($cart->customer());
 
         $this->assertSame($cart->customer()->name(), 'donald@duck.disney');
         $this->assertSame($cart->customer()->email(), 'donald@duck.disney');
@@ -663,11 +663,7 @@ class CartItemControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()
-            ->data([
-                'customer' => $customer->id,
-            ]);
-
+        $order = Order::make()->customer($customer->id);
         $order->save();
 
         $data = [
@@ -690,7 +686,7 @@ class CartItemControllerTest extends TestCase
         $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($cart->get('customer'));
+        $this->assertNotNull($cart->customer());
 
         $this->assertSame($cart->customer()->name(), 'Goofy');
         $this->assertSame($cart->customer()->email(), 'goofy@clubhouse.disney');
@@ -736,7 +732,7 @@ class CartItemControllerTest extends TestCase
         $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($cart->get('customer'));
+        $this->assertNotNull($cart->customer());
 
         $this->assertSame($cart->customer()->name(), 'Pluto');
         $this->assertSame($cart->customer()->email(), 'pluto@clubhouse.disney');
@@ -784,9 +780,7 @@ class CartItemControllerTest extends TestCase
             ])
             ->grandTotal(1599)
             ->itemsTotal(1599)
-            ->data([
-                'customer' => $customer->id,
-            ])
+            ->customer($customer->id)
             ->save();
 
         $data = [

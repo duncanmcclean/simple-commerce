@@ -145,7 +145,7 @@ class CartControllerTest extends TestCase
 
         $customer->save();
 
-        $cart = Order::make()->merge(['customer' => $customer->id]);
+        $cart = Order::make()->customer($customer->id);
         $cart->save();
 
         $data = [
@@ -162,7 +162,7 @@ class CartControllerTest extends TestCase
         $cart = $cart->fresh();
 
         $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
-        $this->assertSame($cart->get('customer'), $customer->id);
+        $this->assertSame($cart->customer()->id(), $customer->id);
     }
 
     /** @test */
@@ -188,7 +188,7 @@ class CartControllerTest extends TestCase
         $cart = $cart->fresh();
         $customer = Customer::findByEmail($data['email']);
 
-        $this->assertSame($cart->get('customer'), $customer->id);
+        $this->assertSame($cart->customer(), $customer->id);
         $this->assertSame($customer->name(), 'Joe Doe');
         $this->assertSame($customer->email(), 'joedoe@gmail.com');
     }
@@ -230,7 +230,7 @@ class CartControllerTest extends TestCase
 
         $customer->save();
 
-        $cart = Order::make()->merge(['customer' => $customer->id]);
+        $cart = Order::make()->customer($customer->id);
         $cart->save();
 
         $data = [
@@ -248,7 +248,7 @@ class CartControllerTest extends TestCase
 
         $cart = $cart->fresh();
 
-        $this->assertSame($cart->get('customer'), $customer->id);
+        $this->assertSame($cart->customer()->id(), $customer->id);
         $this->assertSame($customer->get('name'), 'Jordan Smith');
     }
 
@@ -282,7 +282,7 @@ class CartControllerTest extends TestCase
 
         $customer = Customer::findByEmail('jack.simpson@example.com');
 
-        $this->assertSame($cart->get('customer'), $customer->id);
+        $this->assertSame($cart->customer()->id(), $customer->id);
         $this->assertSame($customer->get('name'), 'Jack Simpson');
     }
 
@@ -312,7 +312,7 @@ class CartControllerTest extends TestCase
         $customer = Customer::findByEmail('rebecca.logan@example.com');
 
         $this->assertTrue($cart->has('customer'));
-        $this->assertIsString($cart->get('customer'));
+        $this->assertIsString($cart->customer());
         $this->assertSame($customer->name(), 'Rebecca Logan');
         $this->assertSame($customer->email(), 'rebecca.logan@example.com');
     }
@@ -338,7 +338,7 @@ class CartControllerTest extends TestCase
 
         $cart->fresh();
 
-        $this->assertNull($cart->get('customer'));
+        $this->assertNull($cart->customer());
 
         try {
             Customer::findByEmail('cj cregg@example.com');
@@ -363,13 +363,11 @@ class CartControllerTest extends TestCase
 
         $customer->save();
 
-        $order = Order::make()->merge([
-            'customer' => $customer->id,
-        ]);
+        $order = Order::make()->customer($customer->id);
         $order->save();
 
         $this->assertSame($customer->get('name'), 'Duncan');
-        $this->assertSame($customer->id, $order->get('customer'));
+        $this->assertSame($customer->id, $order->customer());
 
         $cart = Order::make();
         $cart->save();
@@ -382,7 +380,7 @@ class CartControllerTest extends TestCase
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart.update'), $data);
 
-        $cartCustomer = Customer::find($cart->resource()->get('customer'));
+        $cartCustomer = Customer::find($cart->resource()->customer());
 
         $this->assertSame($customer->id, $cartCustomer->id);
         $this->assertSame($customer->get('name'), $cartCustomer->get('name'));

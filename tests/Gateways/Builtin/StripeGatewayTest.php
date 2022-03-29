@@ -118,9 +118,8 @@ class StripeGatewayTest extends TestCase
                 'total' => 1299,
                 'metadata' => [],
             ],
-        ])->grandTotal(1299)->merge([
+        ])->grandTotal(1299)->customer($customer->id())->merge([
             'title' => '#0002',
-            'customer' => $customer->id(),
         ]);
 
         $order->save();
@@ -182,9 +181,8 @@ class StripeGatewayTest extends TestCase
                 'total' => 1299,
                 'metadata' => [],
             ],
-        ])->grandTotal(1299)->merge([
+        ])->grandTotal(1299)->customer($customer->id())->merge([
             'title' => '#0003',
-            'customer' => $customer->id(),
         ]);
 
         $order->save();

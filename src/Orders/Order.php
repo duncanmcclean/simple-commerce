@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
@@ -29,6 +30,7 @@ class Order implements Contract
     public $taxTotal;
     public $shippingTotal;
     public $couponTotal;
+    public $customer;
     public $coupon;
     public $data;
     public $resource;
@@ -102,18 +104,20 @@ class Order implements Contract
 
     public function customer($customer = null)
     {
-        if ($customer !== null) {
-            $this->set('customer', $customer);
-            $this->save();
+        return $this
+            ->fluentlyGetOrSet('customer')
+            ->setter(function ($value) {
+                if (! $value) {
+                    return null;
+                }
 
-            return $this;
-        }
+                if ($value instanceof CustomerContract) {
+                    return $value->id();
+                }
 
-        if (! $this->has('customer') || $this->get('customer') === null) {
-            return null;
-        }
-
-        return Customer::find($this->get('customer'));
+                return Customer::find($value);
+            })
+            ->args(func_get_args());
     }
 
     public function coupon($coupon = null)
@@ -303,6 +307,7 @@ class Order implements Contract
         $this->taxTotal = $freshOrder->taxTotal;
         $this->shippingTotal = $freshOrder->shippingTotal;
         $this->couponTotal = $freshOrder->couponTotal;
+        $this->customer = $freshOrder->customer;
         $this->coupon = $freshOrder->coupon;
         $this->data = $freshOrder->data;
         $this->resource = $freshOrder->resource;

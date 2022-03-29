@@ -13,7 +13,9 @@ class CustomerController extends BaseActionController
     {
         // return Customer::find($customer)->toResource();
 
-        return ['data' => Customer::find($customer)->toArray()];
+        return [
+            'data' => Customer::find($customer)->toArray(),
+        ];
     }
 
     public function update(UpdateRequest $request, $customer)

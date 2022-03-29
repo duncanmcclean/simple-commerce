@@ -192,7 +192,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($order->get('customer'));
+        $this->assertNotNull($order->customer());
 
         $this->assertSame($order->customer()->name(), 'Mike Scott');
         $this->assertSame($order->customer()->email(), 'mike.scott@example.com');
@@ -254,7 +254,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('paid_date'));
 
         // Assert customer has been created with provided details
-        $this->assertNull($order->get('customer'));
+        $this->assertNull($order->customer());
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -308,7 +308,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert email has been set on the order
-        $this->assertNull($order->get('customer'));
+        $this->assertNull($order->customer());
         $this->assertSame($order->get('email'), 'jim@example.com');
 
         // Finally, assert order is no longer attached to the users' session
@@ -372,8 +372,8 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert customer has been updated
-        $this->assertNotNull($order->get('customer'));
-        $this->assertSame($order->get('customer'), $customer->id);
+        $this->assertNotNull($order->customer());
+        $this->assertSame($order->customer(), $customer->id);
 
         $this->assertSame($order->customer()->name(), 'Dwight Schrute');
         $this->assertSame($order->customer()->email(), 'dwight.schrute@example.com');
@@ -440,8 +440,8 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert customer has been updated
-        $this->assertNotNull($order->get('customer'));
-        $this->assertSame($order->get('customer'), $customer->id);
+        $this->assertNotNull($order->customer());
+        $this->assertSame($order->customer()->id(), $customer->id);
 
         $this->assertSame($order->customer()->name(), 'Stanley Hudson');
         $this->assertSame($order->customer()->email(), 'stanley.hudson@example.com');
@@ -1710,7 +1710,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($order->get('customer'));
+        $this->assertNotNull($order->customer());
 
         $this->assertSame($order->customer()->name(), 'Smelly Joe');
         $this->assertSame($order->customer()->email(), 'smelly.joe@example.com');
@@ -1770,7 +1770,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert customer has been created with provided details
-        $this->assertNotNull($order->get('customer'));
+        $this->assertNotNull($order->customer());
 
         $this->assertSame($order->customer()->name(), 'Smelly Joe');
         $this->assertSame($order->customer()->email(), 'smelly.joe@example.com');
