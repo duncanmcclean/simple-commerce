@@ -57,8 +57,7 @@ class MollieGatewayTest extends TestCase
                 'total' => 5500,
                 'metadata' => [],
             ],
-        ])->merge([
-            'grand_total' => 5500,
+        ])->grandTotal(5500)->merge([
             'title' => '#0001',
         ]);
 

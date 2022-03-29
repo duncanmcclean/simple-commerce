@@ -19,7 +19,7 @@ class CheckoutTags extends SubTag
         $cart = $this->getCart();
         $data = $cart->data;
 
-        if ($cart->get('grand_total') > 0) {
+        if ($cart->grandTotal() > 0) {
             collect(SimpleCommerce::gateways())
                 ->filter(function ($gateway) {
                     if ($specifiedGateway = $this->params->get('gateway')) {

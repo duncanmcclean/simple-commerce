@@ -39,8 +39,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 2,
                 'total'    => 123,
             ],
-        ])->merge([
-            'grand_total' => 123,
+        ])->grandTotal(123)->merge([
             'items_total' => 123,
             'shipping_total' => 0,
             'tax_total' => 0,
@@ -78,8 +77,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 500,
             ],
-        ])->merge([
-            'grand_total' => 500,
+        ])->grandTotal(500)->merge([
             'items_total' => 500,
             'shipping_total' => 0,
             'tax_total' => 0,
@@ -128,8 +126,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 250,
             ],
-        ])->merge([
-            'grand_total' => 250,
+        ])->grandTotal(250)->merge([
             'items_total' => 250,
             'shipping_total' => 0,
             'tax_total' => 0,
@@ -167,8 +164,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->merge([
-            'grand_total' => 1550,
+        ])->grandTotal(1550)->merge([
             'items_total' => 1550,
             'shipping_total' => 0,
             'tax_total' => 0,
@@ -217,8 +213,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->merge([
-            'grand_total' => 1550,
+        ])->grandTotal(1550)->merge([
             'items_total' => 1550,
             'shipping_total' => 0,
             'tax_total' => 0,
@@ -526,8 +521,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 0,
             ],
-        ])->merge([
-            'grand_total' => 0,
+        ])->grandTotal(0)->merge([
             'items_total' => 0,
         ]);
 
@@ -594,8 +588,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 0,
             ],
-        ])->merge([
-            'grand_total' => 0,
+        ])->grandTotal(0)->merge([
             'items_total' => 0,
         ]);
 

@@ -63,7 +63,7 @@ class CartTags extends SubTag
     public function rawGrandTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->get('grand_total');
+            return $this->getCart()->grandTotal();
         }
 
         return 0;

@@ -56,11 +56,11 @@ class SalesWidget extends Widget
 
         $ordersCollection
             ->each(function ($order) use (&$total) {
-                if (! $order->has('grand_total')) {
+                if (! $order->grandTotal()) {
                     return;
                 }
 
-                $total = $total + $order->get('grand_total');
+                $total = $total + $order->grandTotal();
             });
 
         return Currency::parse($total, Site::current());

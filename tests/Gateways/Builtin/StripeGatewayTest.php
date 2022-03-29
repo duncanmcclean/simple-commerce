@@ -66,8 +66,7 @@ class StripeGatewayTest extends TestCase
                 'total' => 5500,
                 'metadata' => [],
             ],
-        ])->merge([
-            'grand_total' => 5500,
+        ])->grandTotal(5500)->merge([
             'title' => '#0001',
         ]);
 
@@ -88,7 +87,7 @@ class StripeGatewayTest extends TestCase
         $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
-        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
     }
@@ -119,8 +118,7 @@ class StripeGatewayTest extends TestCase
                 'total' => 1299,
                 'metadata' => [],
             ],
-        ])->merge([
-            'grand_total' => 1299,
+        ])->grandTotal(1299)->merge([
             'title' => '#0002',
             'customer' => $customer->id(),
         ]);
@@ -142,7 +140,7 @@ class StripeGatewayTest extends TestCase
         $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
-        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNotNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
 
@@ -184,8 +182,7 @@ class StripeGatewayTest extends TestCase
                 'total' => 1299,
                 'metadata' => [],
             ],
-        ])->merge([
-            'grand_total' => 1299,
+        ])->grandTotal(1299)->merge([
             'title' => '#0003',
             'customer' => $customer->id(),
         ]);
@@ -207,7 +204,7 @@ class StripeGatewayTest extends TestCase
         $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
-        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNotNull($paymentIntent->customer);
         $this->assertSame($paymentIntent->receipt_email, $customer->email());
 
@@ -243,8 +240,7 @@ class StripeGatewayTest extends TestCase
                 'total' => 1234,
                 'metadata' => [],
             ],
-        ])->merge([
-            'grand_total' => 1234,
+        ])->grandTotal(1234)->merge([
             'title' => '#0004',
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
@@ -310,14 +306,13 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->merge([
+        $order = Order::make()->grandTotal(1234)->merge([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
                 ])->id,
             ],
-            'grand_total' => 1234,
         ]);
 
         $order->save();
@@ -340,14 +335,13 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->merge([
+        $order = Order::make()->grandTotal(1234)->merge([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
                 ])->id,
             ],
-            'grand_total' => 1234,
         ]);
 
         $order->save();

@@ -162,10 +162,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_total()
     {
-        $cart = Order::make()->merge([
-            'grand_total' => 2550,
-        ]);
-
+        $cart = Order::make()->grandTotal(2550);
         $cart->save();
 
         $this->fakeCart($cart);
@@ -176,10 +173,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_grand_total()
     {
-        $cart = Order::make()->merge([
-            'grand_total' => 2550,
-        ]);
-
+        $cart = Order::make()->grandTotal(2550);
         $cart->save();
 
         $this->fakeCart($cart);

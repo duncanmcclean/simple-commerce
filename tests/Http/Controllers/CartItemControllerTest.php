@@ -236,9 +236,9 @@ class CartItemControllerTest extends TestCase
                     ],
                 ],
             ])
+            ->grandTotal(1000)
             ->data([
                 'items_total' => 1000,
-                'grand_total' => 1000,
             ]);
 
         $cart->save();
@@ -305,9 +305,9 @@ class CartItemControllerTest extends TestCase
                     ],
                 ],
             ])
+            ->grandTotal(1000)
             ->data([
                 'items_total' => 1000,
-                'grand_total' => 1000,
             ]);
 
         $cart->save();
@@ -798,9 +798,9 @@ class CartItemControllerTest extends TestCase
                     'total' => 1599,
                 ],
             ])
+            ->grandTotal(1599)
             ->data([
                 'items_total' => 1599,
-                'grand_total' => 1599,
                 'customer' => $customer->id,
             ])
             ->save();

@@ -55,9 +55,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -109,9 +107,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -167,9 +163,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -230,9 +224,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -288,9 +280,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -353,8 +343,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
+        ])->grandTotal(5000)->merge([
             'customer'    => $customer->id,
         ]);
 
@@ -423,9 +412,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -502,9 +489,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -536,7 +521,7 @@ class CheckoutControllerTest extends TestCase
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertSame($order->get('coupon'), $coupon->id);
 
-        $this->assertSame($order->get('grand_total'), 2500);
+        $this->assertSame($order->grandTotal(), 2500);
         $this->assertSame($order->get('coupon_total'), 2500);
 
         // Finally, assert order is no longer attached to the users' session
@@ -580,8 +565,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
+        ])->grandTotal(5000)->merge([
             'items_total' => 5000,
         ]);
 
@@ -616,7 +600,7 @@ class CheckoutControllerTest extends TestCase
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->get('coupon'));
 
-        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->grandTotal(), 5000);
         $this->assertSame($order->get('coupon_total'), 0);
 
         // Finally, assert order is no longer attached to the users' session
@@ -659,8 +643,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
+        ])->grandTotal(5000)->merge([
             'items_total' => 5000,
         ]);
 
@@ -695,7 +678,7 @@ class CheckoutControllerTest extends TestCase
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->get('coupon'));
 
-        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->grandTotal(), 5000);
         $this->assertSame($order->get('coupon_total'), 0);
 
         // Finally, assert order is no longer attached to the users' session
@@ -738,8 +721,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
+        ])->grandTotal(5000)->merge([
             'items_total' => 5000,
         ]);
 
@@ -774,7 +756,7 @@ class CheckoutControllerTest extends TestCase
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->get('coupon'));
 
-        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->grandTotal(), 5000);
         $this->assertSame($order->get('coupon_total'), 0);
 
         // Finally, assert order is no longer attached to the users' session
@@ -802,9 +784,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -862,9 +842,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -922,9 +900,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -946,7 +922,7 @@ class CheckoutControllerTest extends TestCase
 
         // Assert the line item has been wiped out
         $this->assertSame($order->lineItems()->count(), 0);
-        $this->assertSame($order->get('grand_total'), 0);
+        $this->assertSame($order->grandTotal(), 0);
 
         // Assert events have been dispatched
         Event::assertDispatched(PreCheckout::class);
@@ -990,9 +966,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1075,9 +1049,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1158,9 +1130,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1241,9 +1211,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1265,7 +1233,7 @@ class CheckoutControllerTest extends TestCase
 
         // Assert the line item has been wiped out
         $this->assertSame($order->lineItems()->count(), 0);
-        $this->assertSame($order->get('grand_total'), 0);
+        $this->assertSame($order->grandTotal(), 0);
 
         // Assert events have been dispatched
         Event::assertDispatched(PreCheckout::class);
@@ -1333,9 +1301,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1393,8 +1359,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
+        ])->grandTotal(5000)->merge([
             'gift_note' => 'I like jam on toast!',
             'delivery_note' => 'We live at the red house at the top of the hill.',
         ]);
@@ -1449,10 +1414,7 @@ class CheckoutControllerTest extends TestCase
 
         $product->save();
 
-        $order = Order::make()->merge([
-            'grand_total' => 0,
-        ]);
-
+        $order = Order::make();
         $order->save();
 
         $this
@@ -1489,7 +1451,7 @@ class CheckoutControllerTest extends TestCase
 
         // Assert totals are calculated
         $this->assertSame($order->get('items_total'), 5000);
-        $this->assertSame($order->get('grand_total'), 5000);
+        $this->assertSame($order->grandTotal(), 5000);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -1515,13 +1477,11 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 0,
             ],
-        ])->merge([
-            'grand_total' => 0,
-        ]);
+        ])->grandTotal(0);
 
         $order->save();
 
-        $this
+        $response = $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
                 'name'         => 'Smelly Joe',
@@ -1567,9 +1527,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1618,9 +1576,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1668,9 +1624,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1719,9 +1673,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1784,9 +1736,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1846,9 +1796,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
-        ]);
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -1907,8 +1855,7 @@ class CheckoutControllerTest extends TestCase
                 'quantity' => 1,
                 'total'    => 5000,
             ],
-        ])->merge([
-            'grand_total' => 5000,
+        ])->grandTotal(5000)->merge([
             'dummy' => [
                 'foo' => 'bar',
             ],
