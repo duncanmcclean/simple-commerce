@@ -43,7 +43,8 @@ return [
     ],
 
     'validation' => [
-        'entry_exists' => 'The entry :value does not exist.',
+        'product_exists' => 'The product :value does not exist.',
+        'coupon_exists' => 'The coupon :value does not exist.',
         'country_exists' => 'The selected country is not recognised.',
         'is_a_gateway' => ':value is not a gateway',
         'region_exists' => 'The selected region is not recognised.',

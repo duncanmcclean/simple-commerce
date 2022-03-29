@@ -11,7 +11,9 @@ class CouponExists implements Rule
     public function passes($attribute, $value)
     {
         try {
-            return Coupon::findByCode($value) === null ? false : true;
+            Coupon::findByCode($value);
+
+            return true;
         } catch (CouponNotFound $e) {
             return false;
         }
@@ -19,6 +21,6 @@ class CouponExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.entry_exists');
+        return __('simple-commerce::messages.validation.coupon_exists');
     }
 }

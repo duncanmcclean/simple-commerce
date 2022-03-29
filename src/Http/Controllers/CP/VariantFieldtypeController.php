@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Rules\EntryExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\ProductExists;
 use Illuminate\Http\Request;
 
 class VariantFieldtypeController
@@ -11,7 +11,7 @@ class VariantFieldtypeController
     public function __invoke(Request $request)
     {
         $request->validate([
-            'product' => ['required', new EntryExists()],
+            'product' => ['required', new ProductExists()],
         ], $request->all());
 
         $product = Product::find($request->product);
