@@ -493,7 +493,7 @@ class CheckoutControllerTest extends TestCase
 
         $order->save();
 
-        $response = $this
+        $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
                 'name'         => 'Smelly Joe',

@@ -90,9 +90,14 @@ class CheckoutTags extends SubTag
 
         $prepare = $prepare->prepare(request(), $cart);
 
-        $cart->set('gateway', array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
-            'use' => $gateway['class'],
-        ]));
+        $cart->gateway(
+            array_merge(
+                $cart->gateway() !== null && is_string($cart->gateway()) ? $cart->gateway() : [],
+                [
+                    'use' => $gateway['class'],
+                ]
+            )
+        );
 
         $cart->set($gateway['handle'], $prepare->data());
 

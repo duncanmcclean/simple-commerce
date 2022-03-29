@@ -46,7 +46,7 @@ class Manager implements Contract
         if ($purchase->success()) {
             $order = Order::find($order->id());
 
-            $order->set('gateway', [
+            $order->gateway([
                 'use' => $this->className,
                 'data' => $purchase->data(),
             ]);
@@ -76,9 +76,15 @@ class Manager implements Contract
         $order = Order::find($order->id());
 
         $order->set('is_refunded', true);
-        $order->set('gateway', array_merge($order->has('gateway') && is_string($order->get('gateway')) ? $order->get('gateway') : [], [
-            'refund' => $refund,
-        ]));
+
+        $order->gateway(
+            array_merge(
+                $order->gateway() && is_string($order->gateway()) ? $order->gateway() : [],
+                [
+                    'refund' => $refund,
+                ]
+            )
+        );
 
         $order->save();
 

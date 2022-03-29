@@ -55,10 +55,14 @@ class EntryOrderRepository implements RepositoryContract
             $order->coupon($entry->get('coupon'));
         }
 
+        if ($entry->has('gateway')) {
+            $order->gateway($entry->get('gateway'));
+        }
+
         return $order->data(array_merge(
             Arr::except(
                 $entry->data()->toArray(),
-                ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon']
+                ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway']
             ),
             [
                 'site' => optional($entry->site())->handle(),
@@ -110,6 +114,7 @@ class EntryOrderRepository implements RepositoryContract
                     'coupon_total' => $order->couponTotal(),
                     'customer' => $order->customer() instanceof CustomerContract ? $order->customer()->id() : $order->customer(),
                     'coupon' => $order->coupon() instanceof CouponContract ? $order->coupon()->id() : $order->coupon(),
+                    'gateway' => $order->gateway(),
                 ],
             )
         );
@@ -130,6 +135,7 @@ class EntryOrderRepository implements RepositoryContract
         $order->coupon = $entry->get('coupon') !== null
             ? Coupon::find($entry->get('coupon'))
             : null;
+        $order->gateway = $entry->get('gateway');
         $order->data = $entry->data();
         $order->resource = $entry;
     }

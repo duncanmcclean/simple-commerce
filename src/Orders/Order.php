@@ -32,6 +32,7 @@ class Order implements Contract
     public $couponTotal;
     public $customer;
     public $coupon;
+    public $gateway;
     public $data;
     public $resource;
 
@@ -138,14 +139,21 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function gateway()
+    public function gateway($gateway = null)
     {
-        if (is_string($this->get('gateway'))) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'));
+        return $this
+            ->fluentlyGetOrSet('gateway')
+            ->args(func_get_args());
+    }
+
+    public function currentGateway()
+    {
+        if (is_string($this->gateway())) {
+            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway());
         }
 
-        if (is_array($this->get('gateway'))) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway')['use']);
+        if (is_array($this->gateway())) {
+            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway()['use']);
         }
 
         return null;
@@ -309,6 +317,7 @@ class Order implements Contract
         $this->couponTotal = $freshOrder->couponTotal;
         $this->customer = $freshOrder->customer;
         $this->coupon = $freshOrder->coupon;
+        $this->gateway = $freshOrder->gateway;
         $this->data = $freshOrder->data;
         $this->resource = $freshOrder->resource;
 

@@ -101,7 +101,13 @@ class MollieGatewayTest extends TestCase
             ],
         ]);
 
-        $order = Order::make()->set(['gateway' => ['data' => ['id' => $molliePayment->id]]]);
+        $order = Order::make()
+            ->gateway([
+                'data' => [
+                    'id' => $molliePayment->id,
+                ],
+            ]);
+
         $order->save();
 
         $charge = $this->gateway->getCharge($order);
