@@ -243,9 +243,6 @@ class StripeGatewayTest extends TestCase
 
         $product->save();
 
-        $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
-        $customer->save();
-
         $order = Order::make()->lineItems([
             [
                 'id' => app('stache')->generateId(),
@@ -254,7 +251,7 @@ class StripeGatewayTest extends TestCase
                 'total' => 1299,
                 'metadata' => [],
             ],
-        ])->grandTotal(1299)->customer($customer->id())->merge([
+        ])->grandTotal(1299)->merge([
             'title' => '#0002',
         ]);
 
