@@ -50,7 +50,7 @@ class EntryCustomerRepository implements RepositoryContract
     {
         $entry = Entry::query()
             ->where('collection', $this->collection)
-            ->where('slug', str_slug($email)) // TODO: index the email?
+            ->where('slug', str_slug($email))
             ->first();
 
         if (! $entry) {
