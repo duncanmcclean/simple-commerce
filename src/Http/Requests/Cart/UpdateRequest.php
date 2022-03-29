@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
             return $this->buildFormRequest($formRequest, $this)->rules();
         }
 
-        $rules = array_merge($this->getCart()->rules(), [
+        $rules = [
             'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
                     return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
@@ -33,7 +33,7 @@ class UpdateRequest extends FormRequest
                     return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
                 }
             }],
-        ]);
+        ];
 
         // v2.4 TODO: Don't validate against blueprints anymore, use an empty array here
         return Arr::except($rules, [

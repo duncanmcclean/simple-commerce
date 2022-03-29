@@ -247,13 +247,6 @@ class Order implements Contract
         return $this;
     }
 
-    public function rules(): array
-    {
-        return [];
-
-        // return $this->blueprint()->fields()->validator()->rules();
-    }
-
     public function collection(): string
     {
         return SimpleCommerce::orderDriver()['collection'];
