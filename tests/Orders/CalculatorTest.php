@@ -44,9 +44,9 @@ class CalculatorTest extends TestCase
             ])
             ->grandTotal(123)
             ->itemsTotal(123)
+            ->taxTotal(0)
             ->merge([
                 'shipping_total' => 0,
-                'tax_total' => 0,
                 'coupon_total' => 0,
             ]);
 
@@ -81,9 +81,8 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 500,
             ],
-        ])->grandTotal(500)->itemsTotal(500)->merge([
+        ])->grandTotal(500)->itemsTotal(500)->taxTotal(0)->merge([
             'shipping_total' => 0,
-            'tax_total' => 0,
             'coupon_total' => 0,
         ]);
 
@@ -129,9 +128,8 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 250,
             ],
-        ])->grandTotal(250)->itemsTotal(250)->merge([
+        ])->grandTotal(250)->itemsTotal(250)->taxTotal(0)->merge([
             'shipping_total' => 0,
-            'tax_total' => 0,
             'coupon_total' => 0,
         ]);
 
@@ -166,9 +164,8 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->grandTotal(1550)->itemsTotal(1550)->merge([
+        ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->merge([
             'shipping_total' => 0,
-            'tax_total' => 0,
             'coupon_total' => 0,
         ]);
 
@@ -214,9 +211,8 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->grandTotal(1550)->itemsTotal(1550)->merge([
+        ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->merge([
             'shipping_total' => 0,
-            'tax_total' => 0,
             'coupon_total' => 0,
         ]);
 

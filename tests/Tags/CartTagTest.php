@@ -209,10 +209,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_tax_total()
     {
-        $cart = Order::make()->merge([
-            'tax_total' => 2550,
-        ]);
-
+        $cart = Order::make()->taxTotal(2550);
         $cart->save();
 
         $this->fakeCart($cart);
