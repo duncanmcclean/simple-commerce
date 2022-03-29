@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\RunsUpdateScripts;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use DoubleThreeDigital\SimpleCommerce\UpdateScripts\MigrateGatewayDataToNewFormat;
+use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_4\MigrateGatewayDataToNewFormat;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Entry;
 

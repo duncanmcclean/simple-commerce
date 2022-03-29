@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
+namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_4;
 
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use Illuminate\Support\Facades\Artisan;
@@ -77,7 +77,7 @@ class MigrateTaxConfiguration extends UpdateScript
         BLOCK;
 
         $contents = Str::of(File::get(config_path('simple-commerce.php')))
-            ->replace("'tax_engine' =>", $helpComment.PHP_EOL.PHP_EOL."'tax_engine' =>")
+            ->replace("'tax_engine' =>", $helpComment . PHP_EOL . PHP_EOL . "'tax_engine' =>")
             ->__toString();
 
         File::put(config_path('simple-commerce.php'), $contents);

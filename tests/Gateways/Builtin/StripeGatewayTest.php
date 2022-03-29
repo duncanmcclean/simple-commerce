@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -28,6 +29,8 @@ class StripeGatewayTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->setupCollections();
 
         $this->gateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
@@ -214,6 +217,65 @@ class StripeGatewayTest extends TestCase
     }
 
     /** @test */
+    public function can_prepare_with_payment_intent_data_closure()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        $this->gateway->setConfig([
+            'secret' => env('STRIPE_SECRET'),
+            'payment_intent_data' => function (ContractsOrder $order) {
+                return [
+                    'description' => 'Some custom description',
+                    'metadata' => [
+                        'foo' => 'bar',
+                    ],
+                ];
+            },
+        ]);
+
+        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+
+        $prepare = $this->gateway->prepare(new Prepare(
+            new Request(),
+            $order = Order::create([
+                'items' => [
+                    [
+                        'id' => app('stache')->generateId(),
+                        'product' => $product->id,
+                        'quantity' => 1,
+                        'total' => 5500,
+                        'metadata' => [],
+                    ],
+                ],
+                'grand_total' => 5500,
+                'title' => '#0001',
+            ])
+        ));
+
+        $this->assertIsObject($prepare);
+        $this->assertTrue($prepare instanceof GatewayResponse);
+
+        $this->assertTrue($prepare->success());
+        $this->assertArrayHasKey('intent', $prepare->data());
+        $this->assertArrayHasKey('client_secret', $prepare->data());
+
+        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+
+        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->description, 'Some custom description');
+        $this->assertSame($paymentIntent->metadata->foo, 'bar');
+        $this->assertNull($paymentIntent->customer);
+        $this->assertNull($paymentIntent->receipt_email);
+
+        $this->gateway->setConfig([
+            'secret' => env('STRIPE_SECRET'),
+        ]);
+    }
+
+    /** @test */
     public function can_purchase()
     {
         if (! env('STRIPE_SECRET')) {
@@ -244,6 +306,9 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
+                    // 'automatic_payment_methods' => [
+                    //     'enabled' => 'true',
+                    // ],
                 ])->id,
             ],
         ]);
@@ -309,6 +374,9 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
+                    // 'automatic_payment_methods' => [
+                    //     'enabled' => 'true',
+                    // ],
                 ])->id,
             ],
         ]);
@@ -338,6 +406,9 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
+                    // 'automatic_payment_methods' => [
+                    //     'enabled' => 'true',
+                    // ],
                 ])->id,
             ],
         ]);
@@ -377,8 +448,12 @@ class StripeGatewayTest extends TestCase
 
         $payload = [
             'type' => 'payment_intent.succeeded',
-            'metadata' => [
-                'order_id' => $order->id(),
+            'data' => [
+                'object' => [
+                    'metadata' => [
+                        'order_id' => $order->id(),
+                    ],
+                ],
             ],
         ];
 

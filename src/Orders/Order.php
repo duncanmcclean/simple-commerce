@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderShipped as OrderShippedEvent;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
@@ -217,6 +218,20 @@ class Order implements Contract
         $this->save();
 
         event(new OrderPaidEvent($this));
+
+        return $this;
+    }
+
+    public function markAsShipped(): self
+    {
+        $this->data([
+            'is_shipped'    => true,
+            'shipped_date'  => now()->format('Y-m-d H:i'),
+        ]);
+
+        $this->save();
+
+        event(new OrderShippedEvent($this));
 
         return $this;
     }

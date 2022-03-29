@@ -43,7 +43,7 @@ class TaxRateController
 
         $taxRate->save();
 
-        return redirect($taxRate->editUrl());
+        return redirect(cp_route('simple-commerce.tax-rates.index'));
     }
 
     public function edit(EditRequest $request, $taxRate)

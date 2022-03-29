@@ -8,6 +8,7 @@ package-lock.json
 .antlers.json
 
 resources/dist/js/*.js
+resources/dist/css/*.css
 resources/dist/mix-manifest.json
 
 tests/__fixtures__/users/*.yaml

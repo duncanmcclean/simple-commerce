@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
+namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_4;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;

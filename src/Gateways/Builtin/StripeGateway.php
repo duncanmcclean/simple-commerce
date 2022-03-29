@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
@@ -41,9 +42,6 @@ class StripeGateway extends BaseGateway implements Gateway
             'currency'           => Currency::get(Site::current())['code'],
             'description'        => "Order: {$order->get('title')}",
             'setup_future_usage' => 'off_session',
-            'metadata'           => [
-                'order_id' => $order->id,
-            ],
         ];
 
         $customer = $order->customer();
@@ -61,6 +59,17 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($customer && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
             $intentData['receipt_email'] = $customer->email();
         }
+
+        if ($this->config()->has('payment_intent_data')) {
+            $intentData = array_merge(
+                $intentData,
+                $this->config()->get('payment_intent_data')($order)
+            );
+        }
+
+        // We're setting this after the rest of the payment intent data,
+        // in case the developer adds their own stuff to 'metadata'.
+        $intentData['metadata']['order_id'] = $order->id;
 
         $intent = PaymentIntent::create($intentData);
 
@@ -140,24 +149,26 @@ class StripeGateway extends BaseGateway implements Gateway
         $payload = json_decode($request->getContent(), true);
         $method = 'handle' . Str::studly(str_replace('.', '_', $payload['type']));
 
+        $data = $payload['data']['object'];
+
         if ($method === 'handlePaymentIntentSucceeded') {
-            $order = Order::find($payload['metadata']['order_id']);
+            $order = Order::find($data['metadata']['order_id']);
 
             $order->markAsPaid();
 
             return new Response('Webhook handled', 200);
         }
 
-        if ($method === 'handlePaymentIntentPaymentFailed') {
-            // Email the customer
-        }
-
         if ($method === 'handlePaymentIntentProcessing') {
-            // Wait?
+            // Wait?..
         }
 
-        if ($method === 'handlePaymentIntentAmountCapturableUpdated') {
-            // Cool, thanks Stripe?
+        if ($method === 'handlePaymentIntentPaymentFailed') {
+            $order = Order::find($data['metadata']['order_id']);
+
+            event(new OrderPaymentFailed($order));
+
+            return new Response('Webhook handled', 200);
         }
 
         return new Response();

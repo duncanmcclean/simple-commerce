@@ -6,17 +6,19 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
-use Statamic\Facades\Collection;
 
 class BaseGatewayTest extends TestCase
 {
+    use SetupCollections;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        Collection::make('orders')->title('Order')->save();
+        $this->setupCollections();
     }
 
     /** @test */

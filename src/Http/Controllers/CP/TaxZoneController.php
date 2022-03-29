@@ -41,7 +41,7 @@ class TaxZoneController
 
         $taxZone->save();
 
-        return redirect($taxZone->editUrl());
+        return redirect(cp_route('simple-commerce.tax-zones.index'));
     }
 
     public function edit(EditRequest $request, $taxZone)

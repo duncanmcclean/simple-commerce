@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
+use Barryvdh\DomPDF\Facade as PDF;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use Illuminate\Bus\Queueable;
@@ -46,6 +47,8 @@ class BackOfficeOrderPaid extends Notification
      */
     public function toMail($notifiable)
     {
+        $pdf = PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray());
+
         return (new MailMessage)
             ->subject("New Order: {$this->order->get('title')}")
             ->line("Order **{$this->order->get('title')}** has just been paid and is ready for fulfilment.")

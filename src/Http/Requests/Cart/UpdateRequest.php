@@ -40,6 +40,7 @@ class UpdateRequest extends FormRequest
             'title',
             'items',
             'slug',
+            'customer',
             'paid_date',
             'items_total',
             'coupon_total',

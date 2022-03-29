@@ -60,7 +60,7 @@ class SimpleCommerceTag extends Tags
             return array_merge($country, [
                 'regions' => Regions::findByCountry($country)->toArray(),
             ]);
-        })->values();
+        })->sortBy('name')->values();
 
         if ($inclusions = $this->params->explode('only', [])) {
             $countries = $countries
@@ -77,6 +77,7 @@ class SimpleCommerceTag extends Tags
                         || in_array($country['name'], $exclusions));
                 });
             }
+
             if ($common = $this->params->explode('common', [])) {
                 $commonCountries = $countries
                     ->filter(function ($country) use ($common) {
@@ -123,6 +124,7 @@ class SimpleCommerceTag extends Tags
                     'country' => Countries::findByRegion($region)->first(),
                 ]);
             })
+            ->sortBy('name')
             ->toArray();
     }
 
@@ -134,15 +136,19 @@ class SimpleCommerceTag extends Tags
 
         $errors = [];
 
-        foreach (session('errors')->getBag('simple-commerce')->all() as $error) {
+        foreach (session('errors')->getBag('default')->all() as $error) {
             $errors[]['value'] = $error;
         }
 
         return $this->parseLoop($errors);
     }
 
-    public function hasErrors()
+    public function hasErrors(): bool
     {
-        return session()->has('errors');
+        if (! session()->has('errors')) {
+            return false;
+        }
+
+        return session()->get('errors')->hasBag('default');
     }
 }

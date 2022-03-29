@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts;
+namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_4;
 
 use Statamic\Facades\Site;
 use Statamic\UpdateScripts\UpdateScript;

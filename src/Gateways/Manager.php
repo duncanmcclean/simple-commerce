@@ -100,6 +100,11 @@ class Manager implements Contract
         return new GatewayCallbackMethodDoesNotExist("Gateway [{$this->className}] does not have a `callback` method.");
     }
 
+    public function callbackUrl(array $extraParamters = [])
+    {
+        return $this->resolve()->callbackUrl($extraParamters);
+    }
+
     public function webhook(Request $request)
     {
         return $this->resolve()->webhook($request);

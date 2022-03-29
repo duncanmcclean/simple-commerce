@@ -2,7 +2,37 @@
 
 ## Unreleased
 
-## v2.4.0 (xx-xx-xx)
+## v2.4.5 (2022-03-28)
+
+### What's new
+
+- Ability to customise the 'Payment Intent Data' sent to Stripe #592 by @duncanmcclean
+
+## v2.4.4 (2022-03-21)
+
+### What's new
+
+- Added a 'Simple Commerce' tab to Laravel Debugbar #590 by @duncanmcclean
+
+## v2.4.3 (2022-03-18)
+
+### What's new
+
+- You can now mark orders as 'Shipped' #588 by @steffenschmidt
+
+## v2.4.2 (2022-03-17)
+
+### What's fixed
+
+- Removed an upgrade script which could potentially cause issues with sites with large amounts of orders.
+
+## v2.4.1 (2022-03-15)
+
+### What's fixed
+
+- _Actually_ support Laravel 9
+
+## v2.4.0 (2022-03-15)
 
 **After a long wait, Simple Commerce v2.4 is finally here!!**
 
@@ -13,6 +43,7 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Brand new Tax Engine ✨ #438
 - Regions - ties into tax, allowing you to specify an area of a country (eg. Scotland, UK)
 - Ability to set a 'default shipping method' #555 #562
+- Statamic 3.3 compatibility #580
 
 ### What's improved
 
@@ -21,6 +52,82 @@ Please ensure you read the [upgrade guide](https://simple-commerce.duncanmcclean
 - Shipping Methods can now access the order when checking availability
 - Multisites: each site will now have it's own cart (rather than sharing one between them) #519
 - The `PreCheckout` and `PostCheckout` events now includes the context of the request
+
+## v2.4.0-beta.9 (2022-03-12)
+
+### What's improved
+
+- Tidied up the default Simple Commerce config
+- All new sites will use the Cookie Cart driver 🍪
+- An event will now be dispatched by gateways if a payment fails
+- Implemented webhooks in the Stripe Gateway (you don't have to use them though - only when using Stripe Elements)
+
+### What's fixed
+
+- Added proper validation rules to the Country & Region fieldtypes
+- (v2.3) Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff) #585
+
+## v2.4.0-beta.8 (2022-03-05)
+
+### What's improved
+
+- When viewing tax rates, it's now clearer which category that rate is assosiated with
+- Country & regions are now alphabetically sorted when using their respective tags
+- Updated built-in order blueprint (there were some duplicate fields in their before)
+
+### What's fixed
+
+- The 'Line Items Tax' field is now properly hidden in the CP
+- The default tax rate will be 0%, not `null` like before 🤦‍♂️
+- If no tax zone is found to match the customer's address, it'll now (properly) fallback to the 'Everything' tax zone
+- When editing a tax rate, the 'tax zone' dropdown will no longer autoselect the first in the list
+- Fixed the 'included in price' config option not working on tax rates
+
+## v2.4.0-beta.7 (2022-03-03)
+
+### What's fixed
+
+- Reverted back to using the `default` error back, rather than our own. #582
+
+## v2.4.0-beta.6 (2022-03-02)
+
+### What's improved
+
+- After creating a tax zone/tax rate/tax category, you'll now be redirected to the index page, not the edit page
+
+### What's fixed
+
+- Fixed an issue when trying to save the 'Everywhere' tax zone
+- Fixed an issue where it would assume the wrong ID for the default tax rate
+- Simple Commerce errors now use their own error bag & `{{ sc:hasErrors }}` should _ACTUALLY_ give you the expected answer now.
+
+## v2.4.0-beta.5 (2022-02-28)
+
+> This is a re-tag of `v2.4.0-beta.4` which had some issues during the build pipeline. It was easier to simply issue a fresh build.
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+- Statamic 3.3 compatibility #580 by @duncanmcclean
+- Added 'Line Items Tax' fieldtype to allow for augmentation of line item tax information #579 by @duncanmcclean
+
+### Breaking changes
+
+- Dropped support for Statamic 3.1
+
+## v2.4.0-beta.4 (2022-02-28)
+
+Everything from the latest in v2.3 and...
+
+### What's new
+
+- Statamic 3.3 compatibility #580 by @duncanmcclean
+- Added 'Line Items Tax' fieldtype to allow for augmentation of line item tax information #579 by @duncanmcclean
+
+### Breaking changes
+
+- Dropped support for Statamic 3.1
 
 ## v2.4.0-beta.3 (2022-02-05)
 
@@ -72,21 +179,30 @@ For more information on what's new/what's changed, review the [`CHANGELOG.md`](h
 
 ---
 
+## v2.3.70 (2022-03-11)
 
+### What's fixed
 
+- Fixed an issue when removing an item from a cart, where the items would end up with keys (which could break stuff) #585
 
+## v2.3.69 (2022-03-03)
 
+### What's fixed
 
+- Validation errors use the `default` error bag, so SC shouldn't try and use its own when pulling out errors #581 #583 by @duncanmcclean
 
+## v2.3.68 (2022-02-23)
 
+### What's new
 
+- Order Receipts are now attached to the back-office confirmation email #569 #577 by @duncanmcclean
 
+## v2.3.67 (2022-02-22)
 
+### What's fixed
 
-
-
-
-
+- Fixed a compatibility issue with PHP 8.1 and the package we use for Currency formatting #575 #576 by @duncanmcclean
+- Fixed 'Division by zero' issue when generating receipts #576 by @duncanmcclean
 
 ## v2.3.66 (2022-02-15)
 
@@ -931,8 +1047,8 @@ A whole lot of API related changes this release...
 
 **v2.1 contains various breaking changes, we recommend reviewing [the update guide](https://simple-commerce.duncanmcclean.com//update-guide) to ensure your site will work with the update.**
 
-- [new] [Product Variants](https://simple-commerce.duncanmcclean.com//product-variants)
-- [new] [Built-in Mollie Gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
+- [new][product variants](https://simple-commerce.duncanmcclean.com//product-variants)
+- [new][built-in mollie gateway](https://simple-commerce.duncanmcclean.com//gateways#builtin-gateways)
 - [new] Product Stock
 - [new] Sales Widget - dashboard widget for reviewing sales over a week, 14 days and a month.
 - [new] Support for Off-site gateways and a bunch of changes to the way gateways work overall.

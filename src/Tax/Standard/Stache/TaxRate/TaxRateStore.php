@@ -27,7 +27,8 @@ class TaxRateStore extends BasicStore
             ->name(array_pull($data, 'name'))
             ->rate(array_pull($data, 'rate'))
             ->category(array_pull($data, 'category'))
-            ->zone(array_pull($data, 'zone'));
+            ->zone(array_pull($data, 'zone'))
+            ->includeInPrice(array_pull($data, 'include_in_price'));
 
         if (isset($idGenerated)) {
             $taxCategory->save();

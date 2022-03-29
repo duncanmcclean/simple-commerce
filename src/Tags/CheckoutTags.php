@@ -46,7 +46,15 @@ class CheckoutTags extends SubTag
                     try {
                         $config = Gateway::use($gateway['class'])->config();
 
-                        $data->merge(['gateway-config' => $config]);
+                        $callbackUrl = Gateway::use($gateway['class'])
+                            ->withRedirectUrl($this->params->get('redirect'))
+                            ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
+                            ->callbackUrl();
+
+                        $data->merge([
+                            'gateway-config' => $config,
+                            'callback_url' => $callbackUrl,
+                        ]);
                     } catch (\Exception $e) {
                         throw new GatewayException($e->getMessage());
                     }

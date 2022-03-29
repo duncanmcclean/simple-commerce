@@ -64,7 +64,7 @@ class SimpleCommerce
                     'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'purchaseRules'   => $instance->purchaseRules(),
                     'gateway-config'  => $gateway[1],
-                    'webhook_url'     => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook',
+                    'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
                 ];
             })
             ->toArray();
@@ -136,9 +136,9 @@ class SimpleCommerce
 
     public static function freshOrderNumber()
     {
-        $minimum = config('simple-commerce.minimum_order_number');
+        $minimum = config('simple-commerce.minimum_order_number', 1000);
 
-        $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
+        $query = Collection::find(self::orderDriver()['collection'])
             ->queryEntries()
             ->orderBy('title', 'asc')
             ->where('title', '!=', null)
@@ -184,8 +184,8 @@ class SimpleCommerce
      */
     public static function svg($name)
     {
-        if (File::exists(__DIR__.'/../resources/svg/'.$name.'.svg')) {
-            return File::get(__DIR__.'/../resources/svg/'.$name.'.svg');
+        if (File::exists(__DIR__ . '/../resources/svg/' . $name . '.svg')) {
+            return File::get(__DIR__ . '/../resources/svg/' . $name . '.svg');
         }
 
         return Statamic::svg($name);

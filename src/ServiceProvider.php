@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
@@ -16,6 +17,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $actions = [
         Actions\MarkAsPaid::class,
+        Actions\MarkAsShipped::class,
         Actions\RefundAction::class,
     ];
 
@@ -34,6 +36,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\RegionFieldtype::class,
         Fieldtypes\TaxCategoryFieldtype::class,
 
+        Fieldtypes\Variables\LineItemTax::class,
         Fieldtypes\Variables\ReceiptUrl::class,
     ];
 
@@ -42,11 +45,17 @@ class ServiceProvider extends AddonServiceProvider
             Listeners\EnforceBlueprintFields::class,
             Listeners\AddHiddenFields::class,
         ],
+        Events\PostCheckout::class => [
+            Listeners\TidyTemporaryGatewayData::class,
+        ],
         Events\OrderPaid::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
-        Events\PostCheckout::class => [
-            Listeners\TidyTemporaryGatewayData::class,
+        Events\OrderPaymentFailed::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\OrderShipped::class => [
+            Listeners\SendConfiguredNotifications::class,
         ],
         Events\StockRunningLow::class => [
             Listeners\SendConfiguredNotifications::class,
@@ -65,6 +74,10 @@ class ServiceProvider extends AddonServiceProvider
         'cp'      => __DIR__ . '/../routes/cp.php',
     ];
 
+    protected $stylesheets = [
+        __DIR__ . '/../resources/dist/css/cp.css',
+    ];
+
     protected $scripts = [
         __DIR__ . '/../resources/dist/js/cp.js',
     ];
@@ -78,10 +91,14 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
-        UpdateScripts\AddBlueprintFields::class,
-        UpdateScripts\MigrateConfig::class,
-        UpdateScripts\MigrateLineItemMetadata::class,
-        UpdateScripts\MigrateTaxConfiguration::class,
+        UpdateScripts\v2_3\AddBlueprintFields::class,
+        UpdateScripts\v2_3\MigrateConfig::class,
+        UpdateScripts\v2_3\MigrateLineItemMetadata::class,
+
+        UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
+        // UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
+        UpdateScripts\v2_4\MigrateSingleCartConfig::class,
+        UpdateScripts\v2_4\MigrateTaxConfiguration::class,
     ];
 
     public function boot()
@@ -107,6 +124,10 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         Filters\OrderStatusFilter::register();
+
+        if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
+            Debugbar::addCollector(new DebugbarDataCollector('simple-commerce'));
+        }
     }
 
     protected function bootVendorAssets()
@@ -169,7 +190,10 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootCartDrivers()
     {
         if (! $this->app->bound(Contracts\CartDriver::class)) {
-            $this->app->bind(Contracts\CartDriver::class, config('simple-commerce.cart.driver'));
+            $this->app->bind(
+                Contracts\CartDriver::class,
+                config('simple-commerce.cart.driver', \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class)
+            );
         }
 
         return $this;

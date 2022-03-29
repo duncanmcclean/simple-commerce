@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -16,6 +17,8 @@ use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 
 class StandardTaxEngineTest extends TestCase
 {
+    use SetupCollections;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -90,6 +93,7 @@ class StandardTaxEngineTest extends TestCase
         ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $order->save();
@@ -160,6 +164,7 @@ class StandardTaxEngineTest extends TestCase
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
             'billing_region' => 'gb-sct',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $order->save();
@@ -228,6 +233,7 @@ class StandardTaxEngineTest extends TestCase
         ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $order->save();
@@ -261,7 +267,7 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         TaxRate::make()
-            ->id('default')
+            ->id('default-rate')
             ->name('Default')
             ->rate(12)
             ->includeInPrice(true)
@@ -287,6 +293,7 @@ class StandardTaxEngineTest extends TestCase
         ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $order->save();
@@ -345,6 +352,7 @@ class StandardTaxEngineTest extends TestCase
         ])->merge([
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
         ]);
 
         $order->save();

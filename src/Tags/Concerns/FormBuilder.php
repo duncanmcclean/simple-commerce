@@ -40,12 +40,12 @@ trait FormBuilder
 
     private function redirectField()
     {
-        return '<input type="hidden" name="_redirect" value="'.$this->params->get('redirect').'" />';
+        return '<input type="hidden" name="_redirect" value="' . $this->params->get('redirect') . '" />';
     }
 
     private function requestField()
     {
-        return '<input type="hidden" name="_request" value="'.$this->params->get('request').'" />';
+        return '<input type="hidden" name="_request" value="' . $this->params->get('request') . '" />';
     }
 
     private function params(): array
@@ -70,7 +70,7 @@ trait FormBuilder
 
         $errors = [];
 
-        foreach (session('errors')->getBag('simple-commerce')->all() as $error) {
+        foreach (session('errors')->getBag('default')->all() as $error) {
             $errors[]['value'] = $error;
         }
 
@@ -85,7 +85,7 @@ trait FormBuilder
     private function hasErrors(): bool
     {
         return (session()->has('errors'))
-            ? session('errors')->hasBag('simple-commerce')
+            ? session('errors')->hasBag('default')
             : false;
     }
 
@@ -97,7 +97,7 @@ trait FormBuilder
     private function getErrorBag()
     {
         if ($this->hasErrors()) {
-            return session('errors')->getBag('simple-commerce');
+            return session('errors')->getBag('default');
         }
     }
 }
