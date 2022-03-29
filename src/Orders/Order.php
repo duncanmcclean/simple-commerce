@@ -39,7 +39,6 @@ class Order implements Contract
         $this->grandTotal = 0;
 
         $this->data = collect([
-            'items'          => [], // TODO
             'coupon_total'   => 0,
             'published'      => false,
         ]);

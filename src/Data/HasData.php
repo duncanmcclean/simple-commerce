@@ -29,15 +29,6 @@ trait HasData
 
     public function get(string $key, $default = null)
     {
-        // For now, we want to fallback to properties with the same name if they exist..
-        if (! $this->has($key) && property_exists($this, $key)) {
-            return $this->{$key};
-        }
-
-        if (! $this->has($key) && $key === 'items' && property_exists($this, 'lineItems')) {
-            return $this->lineItems->toArray();
-        }
-
         return $this->data()->get($key, $default);
     }
 
