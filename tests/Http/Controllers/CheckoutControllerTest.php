@@ -558,16 +558,17 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->lineItems([
-            [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'quantity' => 1,
-                'total'    => 5000,
-            ],
-        ])->grandTotal(5000)->merge([
-            'items_total' => 5000,
-        ]);
+        $order = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ])
+            ->grandTotal(5000)
+            ->itemsTotal(5000);
 
         $order->save();
 
@@ -636,16 +637,17 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->lineItems([
-            [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'quantity' => 1,
-                'total'    => 5000,
-            ],
-        ])->grandTotal(5000)->merge([
-            'items_total' => 5000,
-        ]);
+        $order = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ])
+            ->grandTotal(5000)
+            ->itemsTotal(5000);
 
         $order->save();
 
@@ -714,16 +716,17 @@ class CheckoutControllerTest extends TestCase
 
         $coupon->save();
 
-        $order = Order::make()->lineItems([
-            [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'quantity' => 1,
-                'total'    => 5000,
-            ],
-        ])->grandTotal(5000)->merge([
-            'items_total' => 5000,
-        ]);
+        $order = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 5000,
+                ],
+            ])
+            ->grandTotal(5000)
+            ->itemsTotal(5000);
 
         $order->save();
 
@@ -1450,7 +1453,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert totals are calculated
-        $this->assertSame($order->get('items_total'), 5000);
+        $this->assertSame($order->itemsTotal(), 5000);
         $this->assertSame($order->grandTotal(), 5000);
 
         // Finally, assert order is no longer attached to the users' session

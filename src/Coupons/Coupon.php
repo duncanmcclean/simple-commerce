@@ -49,8 +49,8 @@ class Coupon implements Contract
     {
         $order = OrderFacade::find($order->id());
 
-        if ($this->has('minimum_cart_value') && $order->has('items_total')) {
-            if ($order->get('items_total') < $this->get('minimum_cart_value')) {
+        if ($this->has('minimum_cart_value') && $order->itemsTotal()) {
+            if ($order->itemsTotal() < $this->get('minimum_cart_value')) {
                 return false;
             }
         }

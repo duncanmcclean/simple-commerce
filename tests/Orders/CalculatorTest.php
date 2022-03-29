@@ -33,18 +33,22 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->lineItems([
-            [
-                'product'  => $product->id,
-                'quantity' => 2,
-                'total'    => 123,
-            ],
-        ])->grandTotal(123)->merge([
-            'items_total' => 123,
-            'shipping_total' => 0,
-            'tax_total' => 0,
-            'coupon_total' => 0,
-        ]);
+        $cart = Order::make()
+            ->isPaid(true)
+            ->lineItems([
+                [
+                    'product'  => $product->id,
+                    'quantity' => 2,
+                    'total'    => 123,
+                ],
+            ])
+            ->grandTotal(123)
+            ->itemsTotal(123)
+            ->merge([
+                'shipping_total' => 0,
+                'tax_total' => 0,
+                'coupon_total' => 0,
+            ]);
 
         $cart->save();
 
@@ -77,8 +81,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 500,
             ],
-        ])->grandTotal(500)->merge([
-            'items_total' => 500,
+        ])->grandTotal(500)->itemsTotal(500)->merge([
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
@@ -126,8 +129,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 250,
             ],
-        ])->grandTotal(250)->merge([
-            'items_total' => 250,
+        ])->grandTotal(250)->itemsTotal(250)->merge([
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
@@ -164,8 +166,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->grandTotal(1550)->merge([
-            'items_total' => 1550,
+        ])->grandTotal(1550)->itemsTotal(1550)->merge([
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
@@ -213,8 +214,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 1,
                 'total'    => 1550,
             ],
-        ])->grandTotal(1550)->merge([
-            'items_total' => 1550,
+        ])->grandTotal(1550)->itemsTotal(1550)->merge([
             'shipping_total' => 0,
             'tax_total' => 0,
             'coupon_total' => 0,
@@ -515,15 +515,17 @@ class CalculatorTest extends TestCase
             return $product->get('price') * 2;
         });
 
-        $cart = Order::make()->isPaid(false)->lineItems([
-            [
-                'product'  => $product->id,
-                'quantity' => 1,
-                'total'    => 0,
-            ],
-        ])->grandTotal(0)->merge([
-            'items_total' => 0,
-        ]);
+        $cart = Order::make()
+            ->isPaid(false)
+            ->lineItems([
+                [
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 0,
+                ],
+            ])
+            ->grandTotal(0)
+            ->itemsTotal(0);
 
         $cart->save();
 
@@ -581,16 +583,18 @@ class CalculatorTest extends TestCase
             return $variant->price() * 2;
         });
 
-        $cart = Order::make()->isPaid(false)->lineItems([
-            [
-                'product'  => $product->id,
-                'variant'  => 'Red_Small',
-                'quantity' => 1,
-                'total'    => 0,
-            ],
-        ])->grandTotal(0)->merge([
-            'items_total' => 0,
-        ]);
+        $cart = Order::make()
+            ->isPaid(false)
+            ->lineItems([
+                [
+                    'product'  => $product->id,
+                    'variant'  => 'Red_Small',
+                    'quantity' => 1,
+                    'total'    => 0,
+                ],
+            ])
+            ->grandTotal(0)
+            ->itemsTotal(0);
 
         $cart->save();
 

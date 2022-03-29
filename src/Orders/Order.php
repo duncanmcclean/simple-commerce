@@ -24,6 +24,7 @@ class Order implements Contract
     public $isPaid;
     public $lineItems;
     public $grandTotal;
+    public $itemsTotal;
     public $data;
     public $resource;
 
@@ -37,7 +38,6 @@ class Order implements Contract
 
         $this->data = collect([
             'items'          => [],
-            'items_total'    => 0,
             'tax_total'      => 0,
             'shipping_total' => 0,
             'coupon_total'   => 0,
@@ -63,6 +63,13 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('grandTotal')
+            ->args(func_get_args());
+    }
+
+    public function itemsTotal($itemsTotal = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('itemsTotal')
             ->args(func_get_args());
     }
 
@@ -187,6 +194,7 @@ class Order implements Contract
         $this->lineItems($calculate['items']);
 
         $this->grandTotal($calculate['grand_total']);
+        $this->itemsTotal($calculate['items_total']);
 
         $this->merge(Arr::except($calculate, 'items'));
 
@@ -259,6 +267,7 @@ class Order implements Contract
         $this->isPaid = $freshOrder->isPaid;
         $this->lineItems = $freshOrder->lineItems;
         $this->grandTotal = $freshOrder->grandTotal;
+        $this->itemsTotal = $freshOrder->itemsTotal;
         $this->data = $freshOrder->data;
         $this->resource = $freshOrder->resource;
 

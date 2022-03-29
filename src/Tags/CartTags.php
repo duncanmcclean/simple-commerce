@@ -81,7 +81,7 @@ class CartTags extends SubTag
     public function rawItemsTotal()
     {
         if ($this->hasCart()) {
-            return $this->getCart()->get('items_total');
+            return $this->getCart()->itemsTotal();
         }
 
         return 0;

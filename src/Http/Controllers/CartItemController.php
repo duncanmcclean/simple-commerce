@@ -28,7 +28,7 @@ class CartItemController extends BaseActionController
         $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
         $product = Product::find($request->product);
 
-        $items = $cart->has('items') ? $cart->get('items') : [];
+        $items = $cart->lineItems();
 
         // Handle customer stuff..
         if ($request->has('customer')) {
@@ -102,7 +102,7 @@ class CartItemController extends BaseActionController
                     return $order->isPaid() === true;
                 })
                 ->filter(function ($order) use ($product) {
-                    return collect($order->get('items'))
+                    return $order->lineItems()
                         ->where('product', $product->get('prerequisite_product'))
                         ->count() > 0;
                 })
@@ -114,7 +114,7 @@ class CartItemController extends BaseActionController
         }
 
         // Ensure the product doesn't already exist in the cart
-        $alreadyExistsQuery = collect($items);
+        $alreadyExistsQuery = $items;
         $metadata = Arr::except($request->all(), $this->reservedKeys);
 
         if ($request->has('variant')) {
