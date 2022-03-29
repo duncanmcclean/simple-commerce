@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
@@ -32,7 +33,7 @@ class EntryOrderRepository implements RepositoryContract
             throw new OrderNotFound("Order [{$id}] could not be found.");
         }
 
-        return app(Order::class)
+        $order = app(Order::class)
             ->resource($entry)
             ->id($entry->id())
             ->isPaid($entry->get('is_paid') ?? false)
@@ -41,18 +42,23 @@ class EntryOrderRepository implements RepositoryContract
             ->itemsTotal($entry->get('items_total') ?? 0)
             ->taxTotal($entry->get('tax_total') ?? 0)
             ->shippingTotal($entry->get('shipping_total') ?? 0)
-            ->couponTotal($entry->get('coupon_total') ?? 0)
-            ->data(array_merge(
-                Arr::except(
-                    $entry->data()->toArray(),
-                    ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total']
-                ),
-                [
-                    'site' => optional($entry->site())->handle(),
-                    'slug' => $entry->slug(),
-                    'published' => $entry->published(),
-                ]
-            ));
+            ->couponTotal($entry->get('coupon_total') ?? 0);
+
+        if ($entry->has('coupon')) {
+            $order->coupon($entry->get('coupon'));
+        }
+
+        return $order->data(array_merge(
+            Arr::except(
+                $entry->data()->toArray(),
+                ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'coupon']
+            ),
+            [
+                'site' => optional($entry->site())->handle(),
+                'slug' => $entry->slug(),
+                'published' => $entry->published(),
+            ]
+        ));
     }
 
     public function make(): Order
@@ -95,6 +101,7 @@ class EntryOrderRepository implements RepositoryContract
                     'tax_total' => $order->taxTotal(),
                     'shipping_total' => $order->shippingTotal(),
                     'coupon_total' => $order->couponTotal(),
+                    'coupon' => $order->coupon() instanceof Coupon ? $order->coupon()->id() : $order->coupon(),
                 ],
             )
         );
@@ -109,6 +116,7 @@ class EntryOrderRepository implements RepositoryContract
         $order->taxTotal = $entry->get('tax_total');
         $order->shippingTotal = $entry->get('shipping_total');
         $order->couponTotal = $entry->get('coupon_total');
+        $order->coupon = $entry->get('coupon');
         $order->data = $entry->data();
         $order->resource = $entry;
     }

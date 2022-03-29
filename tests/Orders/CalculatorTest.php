@@ -321,9 +321,8 @@ class CalculatorTest extends TestCase
                 'quantity' => 2,
                 'total'    => 2000,
             ],
-        ])->merge([
+        ])->coupon($coupon->id)->merge([
             'shipping_method' => Postage::class,
-            'coupon' => $coupon->id,
         ]);
 
         $cart->save();
@@ -370,9 +369,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 2,
                 'total'    => 10000,
             ],
-        ])->merge([
-            'coupon' => $coupon->id,
-        ]);
+        ])->coupon($coupon->id);
 
         $cart->save();
 
@@ -418,9 +415,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 2,
                 'total'    => 10000,
             ],
-        ])->merge([
-            'coupon' => $coupon->id,
-        ]);
+        ])->coupon($coupon->id);
 
         $cart->save();
 
@@ -466,9 +461,7 @@ class CalculatorTest extends TestCase
                 'quantity' => 2,
                 'total'    => 10000,
             ],
-        ])->merge([
-            'coupon' => $coupon->id,
-        ]);
+        ])->coupon($coupon->id);
 
         $cart->save();
 

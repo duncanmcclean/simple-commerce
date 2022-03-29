@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
@@ -28,6 +29,7 @@ class Order implements Contract
     public $taxTotal;
     public $shippingTotal;
     public $couponTotal;
+    public $coupon;
     public $data;
     public $resource;
 
@@ -98,6 +100,56 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
+    public function customer($customer = null)
+    {
+        if ($customer !== null) {
+            $this->set('customer', $customer);
+            $this->save();
+
+            return $this;
+        }
+
+        if (! $this->has('customer') || $this->get('customer') === null) {
+            return null;
+        }
+
+        return Customer::find($this->get('customer'));
+    }
+
+    public function coupon($coupon = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('coupon')
+            ->getter(function ($value) {
+                if (! $value) {
+                    return null;
+                }
+
+                return Coupon::find($value);
+            })
+            ->setter(function ($value) {
+                if ($value instanceof CouponContract) {
+                    return $value->id();
+                }
+
+                return $value;
+            })
+            ->args(func_get_args());
+    }
+
+    public function gateway()
+    {
+        if (is_string($this->get('gateway'))) {
+            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'));
+        }
+
+        if (is_array($this->get('gateway'))) {
+            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway')['use']);
+        }
+
+        return null;
+    }
+
     public function resource($resource = null)
     {
         return $this
@@ -127,58 +179,13 @@ class Order implements Contract
         return Address::from('shipping', $this);
     }
 
-    public function customer($customer = null)
-    {
-        if ($customer !== null) {
-            $this->set('customer', $customer);
-            $this->save();
-
-            return $this;
-        }
-
-        if (! $this->has('customer') || $this->get('customer') === null) {
-            return null;
-        }
-
-        return Customer::find($this->get('customer'));
-    }
-
-    public function coupon($coupon = null)
-    {
-        if ($coupon !== null) {
-            $this->set('coupon', $coupon);
-            $this->save();
-
-            return $this;
-        }
-
-        if (! $this->has('coupon') || $this->get('coupon') === null) {
-            return null;
-        }
-
-        return Coupon::find($this->get('coupon'));
-    }
-
-    public function gateway()
-    {
-        if (is_string($this->get('gateway'))) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway'));
-        }
-
-        if (is_array($this->get('gateway'))) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->get('gateway')['use']);
-        }
-
-        return null;
-    }
-
     // TODO: refactor
     public function redeemCoupon(string $code): bool
     {
         $coupon = Coupon::findByCode($code);
 
         if ($coupon->isValid($this)) {
-            $this->set('coupon', $coupon->id());
+            $this->coupon($coupon);
             $this->save();
 
             event(new CouponRedeemed($coupon));
@@ -299,6 +306,7 @@ class Order implements Contract
         $this->taxTotal = $freshOrder->taxTotal;
         $this->shippingTotal = $freshOrder->shippingTotal;
         $this->couponTotal = $freshOrder->couponTotal;
+        $this->coupon = $freshOrder->coupon;
         $this->data = $freshOrder->data;
         $this->resource = $freshOrder->resource;
 

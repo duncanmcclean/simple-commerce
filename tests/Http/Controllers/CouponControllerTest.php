@@ -63,7 +63,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
         $this->assertNotSame($this->cart->couponTotal(), 0);
 
         Event::assertDispatched(CouponRedeemed::class);
@@ -107,7 +107,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
         $this->assertNotSame($this->cart->couponTotal(), 0000);
 
         Event::assertDispatched(CouponRedeemed::class);
@@ -148,7 +148,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertNotSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertNull($this->cart->coupon());
         $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
@@ -171,8 +171,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertNull($this->cart->get('coupon'));
-        $this->assertSame($this->cart->couponTotal(), 0000);
+        $this->assertNull($this->cart->coupon(), 0000);
     }
 
     /** @test */
@@ -212,7 +211,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
         $this->assertNotSame($this->cart->couponTotal(), 0000);
 
         Event::assertDispatched(CouponRedeemed::class);
@@ -254,7 +253,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertNotSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertNull($this->cart->coupon());
         $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
@@ -306,7 +305,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
         $this->assertNotSame($this->cart->couponTotal(), 0000);
 
         Event::assertDispatched(CouponRedeemed::class);
@@ -356,9 +355,9 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart = $this->cart->fresh();
+        $this->cart->fresh();
 
-        $this->assertNotSame($this->cart->get('coupon'), $coupon->id());
+        $this->assertNull($this->cart->coupon());
         $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
@@ -382,7 +381,7 @@ class CouponControllerTest extends TestCase
         $coupon->save();
         $coupon->fresh();
 
-        $this->cart->set('coupon', $coupon->id());
+        $this->cart->coupon($coupon->id());
         $this->cart->save();
 
         $response = $this
@@ -394,7 +393,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertNull($this->cart->get('coupon'));
+        $this->assertNull($this->cart->coupon());
         $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
@@ -418,12 +417,12 @@ class CouponControllerTest extends TestCase
         $coupon->save();
         $coupon->fresh();
 
-        $this->cart->set('coupon', $coupon->id());
+        $this->cart->coupon($coupon->id());
         $this->cart->save();
 
         $response = $this
             ->from('/cart')
-            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->withSession(['simple-commerce-cart' => $this->cart->id()])
             ->deleteJson(route('statamic.simple-commerce.coupon.destroy'));
 
         $response->assertJsonStructure([
@@ -434,7 +433,7 @@ class CouponControllerTest extends TestCase
 
         $this->cart = $this->cart->fresh();
 
-        $this->assertNull($this->cart->get('coupon'));
+        $this->assertNull($this->cart->coupon());
         $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
@@ -456,9 +455,6 @@ class CouponControllerTest extends TestCase
                     'quantity' => 1,
                     'total'    => 1000,
                 ],
-            ])
-            ->merge([
-                'coupon' => null,
             ]);
 
         $this->cart->save();

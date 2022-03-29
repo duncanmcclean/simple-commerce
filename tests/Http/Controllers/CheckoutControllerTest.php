@@ -493,7 +493,7 @@ class CheckoutControllerTest extends TestCase
 
         $order->save();
 
-        $this
+        $response = $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
                 'name'         => 'Smelly Joe',
@@ -503,7 +503,7 @@ class CheckoutControllerTest extends TestCase
                 'expiry_month' => '01',
                 'expiry_year'  => '2025',
                 'cvc'          => '123',
-                'coupon'       => $coupon->code(),
+                'coupon'       => 'fifty-friday',
             ]);
 
         $order = $order->fresh();
@@ -519,7 +519,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
-        $this->assertSame($order->get('coupon'), $coupon->id);
+        $this->assertSame($order->coupon()->id(), $coupon->id);
 
         $this->assertSame($order->grandTotal(), 2500);
         $this->assertSame($order->couponTotal(), 2500);
@@ -599,7 +599,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('paid_date'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
-        $this->assertNull($order->get('coupon'));
+        $this->assertNull($order->coupon());
 
         $this->assertSame($order->grandTotal(), 5000);
         $this->assertSame($order->couponTotal(), 0);
@@ -678,7 +678,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('paid_date'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
-        $this->assertNull($order->get('coupon'));
+        $this->assertNull($order->coupon());
 
         $this->assertSame($order->grandTotal(), 5000);
         $this->assertSame($order->couponTotal(), 0);
@@ -757,7 +757,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertNull($order->get('paid_date'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
-        $this->assertNull($order->get('coupon'));
+        $this->assertNull($order->coupon());
 
         $this->assertSame($order->grandTotal(), 5000);
         $this->assertSame($order->couponTotal(), 0);

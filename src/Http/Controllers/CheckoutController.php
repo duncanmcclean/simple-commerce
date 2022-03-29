@@ -155,13 +155,15 @@ class CheckoutController extends BaseActionController
     protected function handleCoupon()
     {
         if ($coupon = $this->request->get('coupon')) {
-            $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
+            $coupon = Coupon::findByCode($coupon);
+
+            $this->cart->coupon($coupon);
             $this->cart->save();
 
             $this->excludedKeys[] = 'coupon';
         }
 
-        if ($this->cart->has('coupon')) {
+        if ($this->cart->coupon()) {
             $this->cart->coupon()->redeem();
         }
 
