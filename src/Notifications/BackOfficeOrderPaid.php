@@ -52,7 +52,7 @@ class BackOfficeOrderPaid extends Notification
             ->line('# Order Details')
             ->line('Grand Total: ' . Currency::parse($this->order->grandTotal(), Site::current()))
             ->line('Items Total: ' . Currency::parse($this->order->itemsTotal(), Site::current()))
-            ->line('Shipping Total: ' . Currency::parse($this->order->get('shipping_total'), Site::current()))
+            ->line('Shipping Total: ' . Currency::parse($this->order->shippingTotal(), Site::current()))
             ->line('Customer: ' . optional($this->order->customer())->email() ?? 'Guest')
             ->line('Payment Gateway: ' . optional($this->order->gateway())['display'] ?? 'N/A');
     }

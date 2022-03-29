@@ -195,10 +195,7 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_shipping_total()
     {
-        $cart = Order::make()->merge([
-            'shipping_total' => 2550,
-        ]);
-
+        $cart = Order::make()->shippingTotal(2550);
         $cart->save();
 
         $this->fakeCart($cart);

@@ -40,8 +40,9 @@ class EntryOrderRepository implements RepositoryContract
             ->grandTotal($entry->get('grand_total') ?? 0)
             ->itemsTotal($entry->get('items_total') ?? 0)
             ->taxTotal($entry->get('tax_total') ?? 0)
+            ->shippingTotal($entry->get('shipping_total') ?? 0)
             ->data(array_merge(
-                Arr::except($entry->data()->toArray(), ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total']),
+                Arr::except($entry->data()->toArray(), ['is_paid', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total']),
                 [
                     'site' => optional($entry->site())->handle(),
                     'slug' => $entry->slug(),
@@ -88,6 +89,7 @@ class EntryOrderRepository implements RepositoryContract
                     'grand_total' => $order->grandTotal(),
                     'items_total' => $order->itemsTotal(),
                     'tax_total' => $order->taxTotal(),
+                    'shipping_total' => $order->shippingTotal(),
                 ],
             )
         );
@@ -100,6 +102,7 @@ class EntryOrderRepository implements RepositoryContract
         $order->grandTotal = $entry->get('grand_total');
         $order->itemsTotal = $entry->get('items_total');
         $order->taxTotal = $entry->get('tax_total');
+        $order->shippingTotal = $entry->get('shipping_total');
         $order->data = $entry->data();
         $order->resource = $entry;
     }
