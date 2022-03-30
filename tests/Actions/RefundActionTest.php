@@ -57,9 +57,7 @@ class RefundActionTest extends TestCase
 
         $order = Order::make()
             ->isPaid(true)
-            ->data([
-                'is_refunded' => true,
-            ]);
+            ->isRefunded(true);
 
         $order->save();
 
@@ -93,9 +91,7 @@ class RefundActionTest extends TestCase
 
         $order = Order::make()
             ->isPaid(true)
-            ->data([
-                'is_refunded' => true,
-            ]);
+            ->isRefunded(true);
 
         $order->save();
 

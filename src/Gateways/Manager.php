@@ -73,18 +73,9 @@ class Manager implements Contract
     {
         $refund = $this->resolve()->refundCharge($order);
 
-        $order = Order::find($order->id());
-
-        $order->set('is_refunded', true);
-
-        $order->gateway(
-            array_merge(
-                $order->gateway() && is_string($order->gateway()) ? $order->gateway() : [],
-                [
-                    'refund' => $refund,
-                ]
-            )
-        );
+        $order
+            ->fresh()
+            ->refund($refund);
 
         $order->save();
 

@@ -41,6 +41,7 @@ class EntryOrderRepository implements RepositoryContract
             ->id($entry->id())
             ->isPaid($entry->get('is_paid') ?? false)
             ->isShipped($entry->get('is_shipped') ?? false)
+            ->isRefunded($entry->get('is_refunded') ?? false)
             ->lineItems($entry->get('items') ?? [])
             ->grandTotal($entry->get('grand_total') ?? 0)
             ->itemsTotal($entry->get('items_total') ?? 0)
@@ -63,7 +64,7 @@ class EntryOrderRepository implements RepositoryContract
         return $order->data(array_merge(
             Arr::except(
                 $entry->data()->toArray(),
-                ['is_paid', 'is_shipped', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway']
+                ['is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway']
             ),
             [
                 'site' => optional($entry->site())->handle(),
@@ -108,6 +109,7 @@ class EntryOrderRepository implements RepositoryContract
                 [
                     'is_paid' => $order->isPaid(),
                     'is_shipped' => $order->isShipped(),
+                    'is_refunded' => $order->isRefunded(),
                     'items' => $order->lineItems()->toArray(),
                     'grand_total' => $order->grandTotal(),
                     'items_total' => $order->itemsTotal(),
@@ -126,6 +128,7 @@ class EntryOrderRepository implements RepositoryContract
         $order->id = $entry->id();
         $order->isPaid = $entry->get('is_paid');
         $order->isShipped = $entry->get('is_shipped');
+        $order->isRefunded = $entry->get('is_refunded');
         $order->lineItems = collect($entry->get('items'));
         $order->grandTotal = $entry->get('grand_total');
         $order->itemsTotal = $entry->get('items_total');

@@ -26,6 +26,7 @@ class Order implements Contract
     public $id;
     public $isPaid;
     public $isShipped;
+    public $isRefunded;
     public $lineItems;
     public $grandTotal;
     public $itemsTotal;
@@ -44,6 +45,7 @@ class Order implements Contract
     {
         $this->isPaid = false;
         $this->isShipped = false;
+        $this->isRefunded = false;
         $this->lineItems = collect();
 
         $this->grandTotal = 0;
@@ -75,6 +77,13 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('isShipped')
+            ->args(func_get_args());
+    }
+
+    public function isRefunded($isRefunded = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('isRefunded')
             ->args(func_get_args());
     }
 
@@ -242,6 +251,22 @@ class Order implements Contract
         $this->save();
 
         event(new OrderShippedEvent($this));
+
+        return $this;
+    }
+
+    public function refund($refundData): self
+    {
+        $this->isRefunded(true);
+
+        $this->gateway(
+            array_merge(
+                $this->gateway() && is_string($this->gateway()) ? $this->gateway() : [],
+                [
+                    'refund' => $refundData,
+                ]
+            )
+        );
 
         return $this;
     }
