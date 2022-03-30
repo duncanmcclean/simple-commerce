@@ -8,7 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;

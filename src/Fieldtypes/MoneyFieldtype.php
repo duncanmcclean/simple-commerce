@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 

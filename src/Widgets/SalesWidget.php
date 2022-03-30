@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 
 use Carbon\Carbon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Support\Collection;
 use Statamic\Entries\Entry as AnEntry;

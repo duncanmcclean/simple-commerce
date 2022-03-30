@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Modifiers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency as CurrencyFacade;
+use DoubleThreeDigital\SimpleCommerce\Currency as CurrencyFacade;
 use Statamic\Facades\Site;
 use Statamic\Modifiers\Modifier;
 

@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes\Variables;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use Statamic\Facades\Site;
 
 class LineItemTax extends VariableFieldtype

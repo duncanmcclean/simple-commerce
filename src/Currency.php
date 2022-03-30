@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Currency as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\SiteNotConfiguredException;
 use Illuminate\Support\Facades\Config;
@@ -13,9 +12,9 @@ use Money\Money;
 use NumberFormatter;
 use Statamic\Sites\Site;
 
-class Currency implements Contract
+class Currency
 {
-    public function get(Site $site): array
+    public static function get(Site $site): array
     {
         $siteSettings = collect(Config::get('simple-commerce.sites'))
             ->get($site->handle());
@@ -28,7 +27,7 @@ class Currency implements Contract
             ->first();
     }
 
-    public function parse($amount, Site $site): string
+    public static function parse($amount, Site $site): string
     {
         if (is_string($amount)) {
             if (str_contains($amount, '.')) {
@@ -43,7 +42,7 @@ class Currency implements Contract
         }
 
         try {
-            $money = new Money(str_replace('.', '', (int) $amount), new MoneyCurrency($this->get($site)['code']));
+            $money = new Money(str_replace('.', '', (int) $amount), new MoneyCurrency(self::get($site)['code']));
 
             $numberFormatter = new NumberFormatter($site->locale(), \NumberFormatter::CURRENCY);
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
@@ -54,18 +53,13 @@ class Currency implements Contract
         }
     }
 
-    public function toPence(float $amount): int
+    public static function toPence(float $amount): int
     {
         return $amount * 100;
     }
 
-    public function toDecimal(int $amount): float
+    public static function toDecimal(int $amount): float
     {
         return $amount / 100;
-    }
-
-    public static function bindings(): array
-    {
-        return [];
     }
 }
