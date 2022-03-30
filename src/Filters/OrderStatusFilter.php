@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Filters;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Query\Scopes\Filter;
 
@@ -18,7 +17,8 @@ class OrderStatusFilter extends Filter
                 'type' => 'radio',
                 'options' => [
                     'cart' => 'Cart',
-                    'order' => 'Order',
+                    'paid' => 'Paid',
+                    'shipped' => 'Shipped',
                 ],
             ],
         ];
@@ -27,14 +27,28 @@ class OrderStatusFilter extends Filter
     public function autoApply()
     {
         return [
-            'type' => 'order',
+            'type' => 'paid',
         ];
     }
 
     public function apply($query, $values)
     {
-        $query
-            ->where('is_paid', $values['type'] === 'order');
+        if ($values['type'] === 'cart') {
+            return $query
+                ->where('is_paid', false);
+        }
+
+        if ($values['type'] === 'paid') {
+            return $query
+                ->where('is_paid', true)
+                ->where('is_shipped', false);
+        }
+
+        if ($values['type'] === 'shipped') {
+            return $query
+                ->where('is_paid', true)
+                ->where('is_shipped', true);
+        }
     }
 
     public function badge($values)
@@ -47,7 +61,6 @@ class OrderStatusFilter extends Filter
     public function visibleTo($key)
     {
         return $key === 'entries'
-            // && SimpleCommerce::orderDriver()['driver'] === Order::class
             && isset(SimpleCommerce::orderDriver()['driver'])
             && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
     }
