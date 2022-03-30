@@ -57,32 +57,37 @@ class ProductVariant
     {
         return $this
             ->fluentlyGetOrSet('stock')
+            ->setter(function ($value) {
+                if ($value === null) {
+                    return null;
+                }
+
+                return (int) $value;
+            })
             ->args(func_get_args());
     }
 
-    /**
-     * Use this to get the product's stock count.
-     *
-     * @return int
-     */
-    public function stockCount()
-    {
-        if ($this->stock === null) {
-            return null;
-        }
-
-        return (int) $this->stock;
-    }
-
-    public function set(string $key, $value): self
+    public function save(): self
     {
         $this->product->productVariants(
             collect($this->product->productVariants())
-                ->map(function ($itemValue, $itemKey) use ($key, $value) {
+                ->map(function ($itemValue, $itemKey) {
                     if ($itemKey === 'options') {
                         foreach ($itemValue as $i => $option) {
                             if ($itemValue[$i]['key'] === $this->key()) {
-                                $itemValue[$i][$key] = $value;
+                                $variantData = [
+                                    'key' => $this->key(),
+                                    'variant' => $this->name(),
+                                    'price' => $this->price(),
+                                    'stock' => $this->stock(),
+                                ];
+
+                                $variantData = array_merge(
+                                    $variantData,
+                                    $this->data()->except(['key', 'name', 'price', 'stock'])->toArray()
+                                );
+
+                                $itemValue[$i] = $variantData;
                             }
                         }
                     }

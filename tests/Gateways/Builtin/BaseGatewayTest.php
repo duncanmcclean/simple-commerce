@@ -30,9 +30,9 @@ class BaseGatewayTest extends TestCase
 
         $product = Product::make()
             ->price(1500)
+            ->stock(10)
             ->data([
                 'title' => 'Smth',
-                'stock' => 10,
             ]);
 
         $product->save();
@@ -57,7 +57,7 @@ class BaseGatewayTest extends TestCase
         Event::assertDispatched(OrderPaid::class);
 
         // Assert stock count has been updated
-        $this->assertSame($product->fresh()->get('stock'), 9);
+        $this->assertSame($product->fresh()->stock(), 9);
     }
 
     /** @test */

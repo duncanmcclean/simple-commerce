@@ -372,10 +372,10 @@ class CartItemControllerTest extends TestCase
     {
         $product = Product::make()
             ->price(1567)
+            ->stock(2)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'stock' => 2,
             ]);
 
         $product->save();

@@ -18,6 +18,7 @@ class Product implements Contract
     public $id;
     public $price;
     public $productVariants;
+    public $stock;
     public $data;
 
     public $resource;
@@ -48,20 +49,32 @@ class Product implements Contract
             ->args(func_get_args());
     }
 
+    public function stock($stock = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('stock')
+            ->getter(function ($value) {
+                if ($this->purchasableType() === ProductType::VARIANT()) {
+                    return null;
+                }
+
+                return $value;
+            })
+            ->setter(function ($value) {
+                if ($value === null) {
+                    return null;
+                }
+
+                return (int) $value;
+            })
+            ->args(func_get_args());
+    }
+
     public function resource($resource = null)
     {
         return $this
             ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
-    }
-
-    public function stockCount()
-    {
-        if ($this->purchasableType() === ProductType::VARIANT() || ! $this->has('stock')) {
-            return null;
-        }
-
-        return (int) $this->get('stock');
     }
 
     public function purchasableType(): ProductType
@@ -149,6 +162,7 @@ class Product implements Contract
         $this->id = $freshProduct->id;
         $this->price = $freshProduct->price;
         $this->productVariants = $freshProduct->productVariants;
+        $this->stock = $freshProduct->stock;
         $this->data = $freshProduct->data;
         $this->resource = $freshProduct->resource;
 
