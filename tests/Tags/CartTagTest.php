@@ -56,9 +56,9 @@ class CartTagTest extends TestCase
     public function can_get_cart_items()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -83,17 +83,17 @@ class CartTagTest extends TestCase
     public function can_get_cart_items_count()
     {
         $productOne = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $productOne->save();
 
         $productTwo = Product::make()
+            ->price(1200)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1200,
             ]);
 
         $productTwo->save();
@@ -124,17 +124,17 @@ class CartTagTest extends TestCase
     public function can_get_cart_items_quantity_total()
     {
         $productOne = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $productOne->save();
 
         $productTwo = Product::make()
+            ->price(1200)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1200,
             ]);
 
         $productTwo->save();
@@ -231,9 +231,9 @@ class CartTagTest extends TestCase
     public function can_output_add_item_form()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -340,9 +340,9 @@ class CartTagTest extends TestCase
     public function can_output_if_product_already_exists_in_cart()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -430,9 +430,9 @@ class CartTagTest extends TestCase
     public function can_output_if_product_does_not_already_exists_in_cart()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $product->save();

@@ -28,10 +28,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -59,10 +59,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_and_request_json()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -95,10 +95,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_extra_data()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -129,10 +129,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_and_ensure_custom_form_request_is_used()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -211,10 +211,10 @@ class CartItemControllerTest extends TestCase
         Config::set('simple-commerce.cart.unique_metadata', true);
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -277,10 +277,10 @@ class CartItemControllerTest extends TestCase
         Config::set('simple-commerce.cart.unique_metadata', true);
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -336,10 +336,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_existing_cart()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
                 'slug' => 'cat-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -371,10 +371,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_and_ensure_the_quantity_is_not_more_than_stock()
     {
         $product = Product::make()
+            ->price(1567)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1567,
                 'stock' => 2,
             ]);
 
@@ -450,19 +450,19 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_and_ensure_existing_items_are_not_overwritten()
     {
         $productOne = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Rabbit Food',
                 'slug' => 'rabbit-food',
-                'price' => 1000,
             ]);
 
         $productOne->save();
 
         $productTwo = Product::make()
+            ->price(2300)
             ->data([
                 'title' => 'Fish Food',
                 'slug' => 'fish-food',
-                'price' => 2300,
             ]);
 
         $productTwo->save();
@@ -505,10 +505,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_custom_redirect_url()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Horse Food',
                 'slug' => 'horse-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -537,10 +537,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_name_and_email()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -576,9 +576,9 @@ class CartItemControllerTest extends TestCase
     public function cant_store_item_with_email_that_contains_spaces()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -609,10 +609,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_only_email()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -647,10 +647,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_customer_already_in_present_in_order()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -696,10 +696,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_customer_present_in_request()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -744,18 +744,18 @@ class CartItemControllerTest extends TestCase
         $this->markTestSkipped();
 
         $prerequisiteProduct = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $prerequisiteProduct->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
                 'prerequisite_product' => $prerequisiteProduct->id,
             ]);
 
@@ -807,18 +807,18 @@ class CartItemControllerTest extends TestCase
     public function cant_store_item_where_product_requires_prerequisite_product_and_no_customer_available()
     {
         $prerequisiteProduct = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $prerequisiteProduct->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
                 'prerequisite_product' => $prerequisiteProduct->id,
             ]);
 
@@ -849,18 +849,18 @@ class CartItemControllerTest extends TestCase
     public function cant_store_item_where_product_requires_prerequisite_product_and_customer_has_not_purchased_prerequisite_product()
     {
         $prerequisiteProduct = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $prerequisiteProduct->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
-                'price' => 1000,
                 'prerequisite_product' => $prerequisiteProduct->id,
             ]);
 
@@ -902,17 +902,17 @@ class CartItemControllerTest extends TestCase
         $this->markTestSkipped();
 
         $productOne = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Product One',
-                'price' => 1000,
             ]);
 
         $productOne->save();
 
         $productTwo = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Product Two',
-                'price' => 1000,
             ]);
 
         $productTwo->save();
@@ -954,10 +954,10 @@ class CartItemControllerTest extends TestCase
     public function can_store_a_product_that_is_already_in_the_cart()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Horse Food',
                 'slug' => 'horse-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1134,10 +1134,10 @@ class CartItemControllerTest extends TestCase
     public function cant_store_item_with_negative_quantity()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1159,10 +1159,10 @@ class CartItemControllerTest extends TestCase
     public function can_update_item()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
                 'slug' => 'food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1201,10 +1201,10 @@ class CartItemControllerTest extends TestCase
     public function can_update_item_and_ensure_custom_form_request_is_used()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
                 'slug' => 'food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1241,9 +1241,9 @@ class CartItemControllerTest extends TestCase
     public function cant_update_item_with_zero_item_quantity()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1282,9 +1282,9 @@ class CartItemControllerTest extends TestCase
     public function can_update_item_with_extra_data()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1327,9 +1327,9 @@ class CartItemControllerTest extends TestCase
         $this->markTestSkipped();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1378,9 +1378,9 @@ class CartItemControllerTest extends TestCase
     public function can_update_item_with_string_quantity_and_ensure_quantity_is_saved_as_integer()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1420,9 +1420,9 @@ class CartItemControllerTest extends TestCase
     public function can_update_item_and_request_json()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -1467,9 +1467,9 @@ class CartItemControllerTest extends TestCase
         $this->markTestSkipped();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();

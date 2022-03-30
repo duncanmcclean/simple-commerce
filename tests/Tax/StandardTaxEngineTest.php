@@ -75,9 +75,9 @@ class StandardTaxEngineTest extends TestCase
         $taxRate->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => $taxCategory->id(),
             ]);
 
@@ -145,9 +145,9 @@ class StandardTaxEngineTest extends TestCase
         $taxRate->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => $taxCategory->id(),
             ]);
 
@@ -215,9 +215,9 @@ class StandardTaxEngineTest extends TestCase
         $taxRate->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => $taxCategory->id(),
             ]);
 
@@ -275,9 +275,9 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => 'standard-stuff',
             ]);
 
@@ -334,9 +334,9 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => 'standard-stuff',
             ]);
 
@@ -394,9 +394,9 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => 'standard-stuff',
             ]);
 
@@ -450,9 +450,9 @@ class StandardTaxEngineTest extends TestCase
             ->save();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Cat Food',
-                'price' => 1000,
                 'tax_category' => 'standard-stuff',
             ]);
 

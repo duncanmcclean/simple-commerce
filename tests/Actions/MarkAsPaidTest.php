@@ -52,9 +52,9 @@ class MarkAsPaidTest extends TestCase
     public function is_not_visible_to_products()
     {
         $product = Product::make()
+            ->price(1200)
             ->data([
                 'title' => 'Medium Jumper',
-                'price' => 1200,
             ]);
 
         $product->save();

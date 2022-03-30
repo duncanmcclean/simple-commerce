@@ -32,17 +32,25 @@ class EntryProductRepository implements RepositoryContract
             throw new ProductNotFound("Product [{$id}] could not be found.");
         }
 
-        return app(Product::class)
+        $product = app(Product::class)
             ->resource($entry)
-            ->id($entry->id())
-            ->data(array_merge(
+            ->id($entry->id());
+
+        if ($entry->has('price')) {
+            $product->price($entry->get('price'));
+        }
+
+        return $product->data(array_merge(
+            Arr::except(
                 $entry->data()->toArray(),
-                [
-                    'site' => optional($entry->site())->handle(),
-                    'slug' => $entry->slug(),
-                    'published' => $entry->published(),
-                ]
-            ));
+                ['price']
+            ),
+            [
+                'site' => optional($entry->site())->handle(),
+                'slug' => $entry->slug(),
+                'published' => $entry->published(),
+            ]
+        ));
     }
 
     public function make(): Product
@@ -73,12 +81,19 @@ class EntryProductRepository implements RepositoryContract
         }
 
         $entry->data(
-            Arr::except($product->data(), ['id', 'site', 'slug', 'published'])
+            array_merge(
+                $product->data()->except(['id', 'site', 'slug', 'published'])->toArray(),
+                [
+                    'price' => $product->price(),
+                ]
+            )
         );
 
         $entry->save();
 
         $product->id = $entry->id();
+        $product->price = $entry->get('price');
+        $product->data = $entry->data();
         $product->resource = $entry;
     }
 

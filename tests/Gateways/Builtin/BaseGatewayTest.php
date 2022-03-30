@@ -29,9 +29,9 @@ class BaseGatewayTest extends TestCase
         $fakeGateway = new FakeOffsiteGateway();
 
         $product = Product::make()
+            ->price(1500)
             ->data([
                 'title' => 'Smth',
-                'price' => 1500,
                 'stock' => 10,
             ]);
 
@@ -68,9 +68,9 @@ class BaseGatewayTest extends TestCase
         $fakeGateway = new FakeOnsiteGateway();
 
         $product = Product::make()
+            ->price(1500)
             ->data([
                 'title' => 'Smth',
-                'price' => 1500,
             ]);
 
         $product->save();

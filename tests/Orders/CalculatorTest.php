@@ -28,9 +28,7 @@ class CalculatorTest extends TestCase
     /** @test */
     public function does_not_calculate_totals_if_order_is_paid()
     {
-        $product = Product::make()
-            ->data(['price' => 500]);
-
+        $product = Product::make()->price(500);
         $product->save();
 
         $cart = Order::make()
@@ -68,9 +66,7 @@ class CalculatorTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
-        $product = Product::make()
-            ->data(['price' => 500]);
-
+        $product = Product::make()->price(500);
         $product->save();
 
         $cart = Order::make()->isPaid(true)->lineItems([
@@ -145,9 +141,7 @@ class CalculatorTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
-        $product = Product::make()
-            ->data(['price' => 15.50]);
-
+        $product = Product::make()->price(15.50);
         $product->save();
 
         $cart = Order::make()->isPaid(true)->lineItems([
@@ -222,9 +216,7 @@ class CalculatorTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 20);
 
-        $product = Product::make()
-            ->data(['price' => 1000]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $cart = Order::make()->isPaid(false)->lineItems([
@@ -259,9 +251,7 @@ class CalculatorTest extends TestCase
             Postage::class,
         ]);
 
-        $product = Product::make()
-            ->data(['price' => 1000]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $cart = Order::make()->isPaid(false)->lineItems([
@@ -298,9 +288,7 @@ class CalculatorTest extends TestCase
             Postage::class,
         ]);
 
-        $product = Product::make()
-            ->data(['price' => 1000]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $coupon = Coupon::make()
@@ -346,9 +334,7 @@ class CalculatorTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
-        $product = Product::make()
-            ->data(['price' => 5000]);
-
+        $product = Product::make()->price(5000);
         $product->save();
 
         $coupon = Coupon::make()
@@ -392,9 +378,7 @@ class CalculatorTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 0);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
-        $product = Product::make()
-            ->data(['price' => 5000]);
-
+        $product = Product::make()->price(5000);
         $product->save();
 
         $coupon = Coupon::make()
@@ -438,9 +422,7 @@ class CalculatorTest extends TestCase
         Config::set('simple-commerce.sites.default.tax.rate', 20);
         Config::set('simple-commerce.sites.default.shipping.methods', []);
 
-        $product = Product::make()
-            ->data(['price' => 5000]);
-
+        $product = Product::make()->price(5000);
         $product->save();
 
         $coupon = Coupon::make()
@@ -482,13 +464,11 @@ class CalculatorTest extends TestCase
     /** @test */
     public function ensure_product_price_hook_is_used_to_determine_price_of_product()
     {
-        $product = Product::make()
-            ->data(['price' => 100]);
-
+        $product = Product::make()->price(100);
         $product->save();
 
         SimpleCommerce::productPriceHook(function ($order, $product) {
-            return $product->get('price') * 2;
+            return $product->price() * 2;
         });
 
         $cart = Order::make()
@@ -519,7 +499,7 @@ class CalculatorTest extends TestCase
 
         // Revert hook
         SimpleCommerce::productPriceHook(function ($order, $product) {
-            return $product->get('price');
+            return $product->price();
         });
     }
 

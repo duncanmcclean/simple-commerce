@@ -54,9 +54,9 @@ class StripeGatewayTest extends TestCase
         }
 
         $product = Product::make()
+            ->price(5500)
             ->data([
                 'title' => 'Concert Ticket',
-                'price' => 5500,
             ]);
 
         $product->save();
@@ -103,9 +103,9 @@ class StripeGatewayTest extends TestCase
         }
 
         $product = Product::make()
+            ->price(1299)
             ->data([
                 'title' => 'Concert Ticket',
-                'price' => 1299,
             ]);
 
         $product->save();
@@ -161,9 +161,9 @@ class StripeGatewayTest extends TestCase
         }
 
         $product = Product::make()
+            ->price(1299)
             ->data([
                 'title' => 'Talent Show Ticket',
-                'price' => 1299,
             ]);
 
         $product->save();
@@ -236,9 +236,9 @@ class StripeGatewayTest extends TestCase
         ]);
 
         $product = Product::make()
+            ->price(1299)
             ->data([
                 'title' => 'Concert Ticket',
-                'price' => 1299,
             ]);
 
         $product->save();
@@ -293,9 +293,9 @@ class StripeGatewayTest extends TestCase
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $product = Product::make()
+            ->price(1234)
             ->data([
                 'title' => 'Zoo Ticket',
-                'price' => 1234,
             ]);
 
         $product->save();

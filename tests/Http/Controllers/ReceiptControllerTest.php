@@ -19,9 +19,9 @@ class ReceiptControllerTest extends TestCase
         $this->useBasicTaxEngine();
 
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $product->save();

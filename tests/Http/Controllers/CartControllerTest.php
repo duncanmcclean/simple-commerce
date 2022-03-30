@@ -407,9 +407,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart()
     {
-        $product = Product::make()
-            ->data(['price' => 1000]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $cart = Order::make()
@@ -441,9 +439,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_destroy_cart_and_request_json_response()
     {
-        $product = Product::make()
-            ->data(['price' => 1000]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $cart = Order::make()->lineItems([

@@ -92,7 +92,7 @@ class Calculator implements Contract
         if (SimpleCommerce::$productPriceHook) {
             $productPrice = (SimpleCommerce::$productPriceHook)($this->order, $product);
         } else {
-            $productPrice = $product->get('price');
+            $productPrice = $product->price();
         }
 
         // Ensure we strip any decimals from price

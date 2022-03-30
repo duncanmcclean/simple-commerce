@@ -46,7 +46,10 @@ class MollieGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
         }
 
-        $product = Product::make()->save(['title' => 'Concert Ticket', 'price' => 5500]);
+        $product = Product::make()
+            ->price(5500)
+            ->data(['title' => 'Concert Ticket']);
+
         $product->save();
 
         $order = Order::make()->lineItems([

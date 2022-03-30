@@ -440,9 +440,9 @@ class CouponControllerTest extends TestCase
     protected function buildCartWithProducts()
     {
         $this->product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Food',
-                'price' => 1000,
             ]);
 
         $this->product->save();

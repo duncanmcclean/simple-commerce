@@ -21,11 +21,7 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
-        $product = Product::make()
-            ->data([
-                'price' => 1000,
-            ]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $order = Order::make()->isPaid(false)->lineItems([
@@ -53,11 +49,7 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
-        $product = Product::make()
-            ->data([
-                'price' => 1000,
-            ]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $order = Order::make()->isPaid(false)->lineItems([
@@ -87,11 +79,7 @@ class BasicTaxEngineTest extends TestCase
         Collection::make('products')->save();
         Collection::make('orders')->save();
 
-        $product = Product::make()
-            ->data([
-                'price' => 1000,
-            ]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $order = Order::make()->isPaid(false)->lineItems([
@@ -118,11 +106,7 @@ class BasicTaxEngineTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
-        $product = Product::make()
-            ->data([
-                'price' => 1000,
-            ]);
-
+        $product = Product::make()->price(1000);
         $product->save();
 
         $order = Order::make()->isPaid(false)->lineItems([
@@ -153,11 +137,7 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
-        $product = Product::make()
-            ->data([
-                'price' => 2600,
-            ]);
-
+        $product = Product::make()->price(2600);
         $product->save();
 
         $order = Order::make()->isPaid(false)->lineItems([

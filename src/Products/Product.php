@@ -16,6 +16,7 @@ class Product implements Contract
     use HasData;
 
     public $id;
+    public $price;
     public $data;
 
     public $resource;
@@ -29,6 +30,13 @@ class Product implements Contract
     {
         return $this
             ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
+
+    public function price($price = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('price')
             ->args(func_get_args());
     }
 
@@ -131,6 +139,7 @@ class Product implements Contract
         $freshProduct = ProductFacade::find($this->id());
 
         $this->id = $freshProduct->id;
+        $this->price = $freshProduct->price;
         $this->data = $freshProduct->data;
         $this->resource = $freshProduct->resource;
 

@@ -59,9 +59,9 @@ class LineItemsTest extends TestCase
     public function can_update_line_item()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Four Five Six',
-                'price' => 1000,
             ]);
 
         $product->save();
@@ -93,9 +93,9 @@ class LineItemsTest extends TestCase
     public function can_clear_line_items()
     {
         $product = Product::make()
+            ->price(1000)
             ->data([
                 'title' => 'Four Five Six',
-                'price' => 1000,
             ]);
 
         $product->save();

@@ -41,9 +41,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -93,9 +93,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -149,9 +149,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -210,9 +210,8 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
-        $product = Product::make()->data([
+        $product = Product::make()->price(5000)->data([
             'title' => 'Bacon',
-            'price' => 5000,
         ]);
 
         $product->save();
@@ -266,9 +265,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -323,9 +322,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -392,9 +391,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -465,9 +464,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -541,9 +540,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -619,9 +618,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -698,9 +697,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -774,9 +773,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
                 'stock' => 50,
             ]);
 
@@ -832,9 +831,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
                 'stock' => 9,
             ]);
 
@@ -890,9 +889,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
                 'stock' => 0,
             ]);
 
@@ -956,9 +955,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
                 'stock' => 1,
             ]);
 
@@ -1350,9 +1349,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1412,9 +1411,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1468,9 +1467,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(0)
             ->data([
                 'title' => 'Nothing',
-                'price' => 0,
             ]);
 
         $product->save();
@@ -1518,9 +1517,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1567,9 +1566,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1615,9 +1614,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1664,9 +1663,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1727,9 +1726,9 @@ class CheckoutControllerTest extends TestCase
         Event::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1787,9 +1786,9 @@ class CheckoutControllerTest extends TestCase
         Notification::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
@@ -1846,9 +1845,9 @@ class CheckoutControllerTest extends TestCase
         Notification::fake();
 
         $product = Product::make()
+            ->price(5000)
             ->data([
                 'title' => 'Bacon',
-                'price' => 5000,
             ]);
 
         $product->save();
