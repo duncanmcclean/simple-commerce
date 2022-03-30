@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.6 (2022-03-30)
+
+### What's improved
+
+- You can now filter by 'Shipped' orders via the Order Status filter in the CP #597 by @duncanmcclean
+
 ## v2.4.5 (2022-03-28)
 
 ### What's new
