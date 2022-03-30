@@ -91,15 +91,6 @@ class Product implements Contract
             ->args(func_get_args());
     }
 
-    // public function taxCategory(): ?TaxCategory
-    // {
-    //     if (! $this->get('tax_category')) {
-    //         return TaxCategoryFacade::find('default');
-    //     }
-
-    //     return TaxCategoryFacade::find($this->get('tax_category'));
-    // }
-
     public function resource($resource = null)
     {
         return $this
