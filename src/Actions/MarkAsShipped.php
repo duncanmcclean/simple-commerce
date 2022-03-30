@@ -17,7 +17,7 @@ class MarkAsShipped extends Action
     {
         return $item instanceof Entry
             && $item->get('is_paid') === true
-            && ! $item->has('is_shipped');
+            && $item->get('is_shipped') !== true;
     }
 
     public function visibleToBulk($items)

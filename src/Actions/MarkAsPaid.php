@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -15,7 +16,9 @@ class MarkAsPaid extends Action
 
     public function visibleTo($item)
     {
-        return $item instanceof Entry && $item->get('is_paid') === false;
+        return $item instanceof Entry
+            && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
+            && $item->get('is_paid') !== true;
     }
 
     public function visibleToBulk($items)

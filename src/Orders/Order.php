@@ -25,6 +25,7 @@ class Order implements Contract
 
     public $id;
     public $isPaid;
+    public $isShipped;
     public $lineItems;
     public $grandTotal;
     public $itemsTotal;
@@ -42,6 +43,7 @@ class Order implements Contract
     public function __construct()
     {
         $this->isPaid = false;
+        $this->isShipped = false;
         $this->lineItems = collect();
 
         $this->grandTotal = 0;
@@ -66,6 +68,13 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('isPaid')
+            ->args(func_get_args());
+    }
+
+    public function isShipped($isShipped = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('isShipped')
             ->args(func_get_args());
     }
 
@@ -224,8 +233,9 @@ class Order implements Contract
 
     public function markAsShipped(): self
     {
+        $this->isShipped(true);
+
         $this->data([
-            'is_shipped'    => true,
             'shipped_date'  => now()->format('Y-m-d H:i'),
         ]);
 
@@ -317,6 +327,7 @@ class Order implements Contract
 
         $this->id = $freshOrder->id;
         $this->isPaid = $freshOrder->isPaid;
+        $this->isShipped = $freshOrder->isShipped;
         $this->lineItems = $freshOrder->lineItems;
         $this->grandTotal = $freshOrder->grandTotal;
         $this->itemsTotal = $freshOrder->itemsTotal;

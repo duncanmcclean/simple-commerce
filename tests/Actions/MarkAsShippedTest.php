@@ -51,7 +51,7 @@ class MarkAsShippedTest extends TestCase
     /** @test */
     public function is_not_visible_to_already_shipped_orders()
     {
-        $order = Order::make()->isPaid(true)->merge(['is_shipped' => true]);
+        $order = Order::make()->isPaid(true)->isShipped(true);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
