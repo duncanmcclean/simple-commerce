@@ -99,6 +99,8 @@ class ServiceProvider extends AddonServiceProvider
         // UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
         UpdateScripts\v2_4\MigrateSingleCartConfig::class,
         UpdateScripts\v2_4\MigrateTaxConfiguration::class,
+
+        UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
     ];
 
     public function boot()
@@ -164,17 +166,29 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bindContracts()
     {
-        collect([
-            Contracts\CouponRepository::class   => SimpleCommerce::couponDriver()['repository'],
-            Contracts\CustomerRepository::class => SimpleCommerce::customerDriver()['repository'],
-            Contracts\OrderRepository::class    => SimpleCommerce::orderDriver()['repository'],
-            Contracts\ProductRepository::class  => SimpleCommerce::productDriver()['repository'],
-
+        $bindings = [
             Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\ShippingManager::class    => Shipping\Manager::class,
-
             Contracts\Calculator::class         => Orders\Calculator::class,
-        ])->each(function ($concrete, $abstract) {
+        ];
+
+        if (isset(SimpleCommerce::couponDriver()['repository'])) {
+            $bindings[Contracts\CouponRepository::class] = SimpleCommerce::couponDriver()['repository'];
+        }
+
+        if (isset(SimpleCommerce::customerDriver()['repository'])) {
+            $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
+        }
+
+        if (isset(SimpleCommerce::orderDriver()['repository'])) {
+            $bindings[Contracts\OrderRepository::class] = SimpleCommerce::orderDriver()['repository'];
+        }
+
+        if (isset(SimpleCommerce::productDriver()['repository'])) {
+            $bindings[Contracts\ProductRepository::class] = SimpleCommerce::productDriver()['repository'];
+        }
+
+        collect($bindings)->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
             }
