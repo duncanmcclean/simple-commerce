@@ -48,7 +48,7 @@ class EntryProductRepository implements RepositoryContract
             $product->stock($entry->get('stock'));
         }
 
-        if ($entry->has('tax_category')) {
+        if (SimpleCommerce::isUsingStandardTaxEngine() && $entry->has('tax_category')) {
             $product->taxCategory($entry->get('tax_category'));
         }
 
@@ -99,7 +99,7 @@ class EntryProductRepository implements RepositoryContract
                     'price' => $product->price(),
                     'product_variants' => $product->productVariants(),
                     'stock' => $product->stock(),
-                    'tax_category' => $product->taxCategory(),
+                    'tax_category' => SimpleCommerce::isUsingStandardTaxEngine() ? $product->taxCategory() : null,
                 ]
             )
         );

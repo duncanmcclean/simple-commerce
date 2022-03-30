@@ -53,12 +53,6 @@ trait HandleStock
                             throw new CheckoutProductHasNoStockException($product, $variant);
                         }
 
-                        // TODO: use variant stock helper
-                        // $variant->set(
-                        //     'stock',
-                        //     $stock = $variant->stock() - $item['quantity']
-                        // );
-
                         $variant->stock(
                             $stock = $variant->stock() - $item['quantity']
                         );

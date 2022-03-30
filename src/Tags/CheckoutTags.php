@@ -38,7 +38,7 @@ class CheckoutTags extends SubTag
                         $cart->set($gateway['handle'], $prepare->data());
                         $cart->save();
 
-                        $data->merge($prepare->data());
+                        $data = $data->merge($prepare->data());
                     } catch (\Exception $e) {
                         throw new GatewayException($e->getMessage());
                     }
@@ -51,7 +51,7 @@ class CheckoutTags extends SubTag
                             ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
                             ->callbackUrl();
 
-                        $data->merge([
+                        $data = $data->merge([
                             'gateway-config' => $config,
                             'callback_url' => $callbackUrl,
                         ]);

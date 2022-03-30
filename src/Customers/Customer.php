@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Statamic\Http\Resources\API\EntryResource;
 
 class Customer implements Contract
@@ -51,34 +50,6 @@ class Customer implements Contract
             ->fluentlyGetOrSet('email')
             ->args(func_get_args());
     }
-
-    // public function generateTitleAndSlug(): self
-    // {
-    //     $name = '';
-    //     $email = '';
-
-    //     if ($this->has('name')) {
-    //         $name = $this->get('name');
-    //     }
-
-    //     if ($this->has('email')) {
-    //         $email = $this->get('email');
-    //     }
-
-    //     $title = __('simple-commerce::messages.customer_title', [
-    //         'name'  => $name,
-    //         'email' => $email,
-    //     ]);
-
-    //     $slug = Str::slug($email);
-
-    //     $this->title = $title;
-    //     $this->data['title'] = $title;
-
-    //     $this->slug = $slug;
-
-    //     return $this;
-    // }
 
     public function orders(): Collection
     {

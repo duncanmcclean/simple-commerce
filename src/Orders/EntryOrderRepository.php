@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
@@ -89,10 +90,6 @@ class EntryOrderRepository implements RepositoryContract
                 ->collection($this->collection);
         }
 
-        if (! $order->has('title')) {
-            $entry->set('title', SimpleCommerce::freshOrderNumber());
-        }
-
         if ($order->get('site')) {
             $entry->site($order->get('site'));
         }
@@ -122,6 +119,10 @@ class EntryOrderRepository implements RepositoryContract
                 ],
             )
         );
+
+        if (! $entry->has('title')) {
+            $entry->set('title', '#' . $this->generateFreshOrderNumber());
+        }
 
         $entry->save();
 
@@ -154,6 +155,30 @@ class EntryOrderRepository implements RepositoryContract
     protected function isUsingEloquentDriverWithIncrementingIds(): bool
     {
         return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
+    }
+
+    protected function generateFreshOrderNumber()
+    {
+        $minimum = config('simple-commerce.minimum_order_number', 1000);
+
+        $query = Collection::find($this->collection)
+            ->queryEntries()
+            ->orderBy('title', 'asc')
+            ->where('title', '!=', null)
+            ->get()
+            ->map(function ($order) {
+                $order->title = str_replace('Order ', '', $order->title);
+                $order->title = str_replace('#', '', $order->title);
+
+                return $order->title;
+            })
+            ->last();
+
+        if (! $query) {
+            return $minimum + 1;
+        }
+
+        return ((int) $query) + 1;
     }
 
     public static function bindings(): array
