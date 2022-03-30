@@ -1017,28 +1017,28 @@ class CheckoutControllerTest extends TestCase
         $product = Product::make()
             ->data([
                 'title' => 'Bacon',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 5000,
-                            'stock'   => 50,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 5000,
+                        'stock'   => 50,
                     ],
                 ],
             ]);
@@ -1098,28 +1098,28 @@ class CheckoutControllerTest extends TestCase
         $product = Product::make()
             ->data([
                 'title' => 'Bacon',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 5000,
-                            'stock'   => 9,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 5000,
+                        'stock'   => 9,
                     ],
                 ],
             ]);
@@ -1179,28 +1179,28 @@ class CheckoutControllerTest extends TestCase
         $product = Product::make()
             ->data([
                 'title' => 'Bacon',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 5000,
-                            'stock'   => 0,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 5000,
+                        'stock'   => 0,
                     ],
                 ],
             ]);
@@ -1269,28 +1269,28 @@ class CheckoutControllerTest extends TestCase
         $product = Product::make()
             ->data([
                 'title' => 'Bacon',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 5000,
-                            'stock'   => 1,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 5000,
+                        'stock'   => 1,
                     ],
                 ],
             ]);

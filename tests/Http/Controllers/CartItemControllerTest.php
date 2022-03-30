@@ -158,27 +158,27 @@ class CartItemControllerTest extends TestCase
             ->data([
                 'title'            => 'Dog Food',
                 'slug'             => 'dog-food',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 1000,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                 ],
             ]);
@@ -402,28 +402,28 @@ class CartItemControllerTest extends TestCase
             ->data([
                 'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 1000,
-                            'stock'   => 2,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
+                        'stock'   => 2,
                     ],
                 ],
             ]);
@@ -997,27 +997,27 @@ class CartItemControllerTest extends TestCase
             ->data([
                 'title'            => 'Dog Food',
                 'slug' => 'dog-food',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 1000,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
                     ],
                 ],
             ]);
@@ -1062,35 +1062,35 @@ class CartItemControllerTest extends TestCase
     {
         $product = Product::make()
             ->data([
-                'title'            => 'Dog Food',
+                'title' => 'Dog Food',
                 'slug' => 'dog-food',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                                'Medium',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 1000,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                            'Medium',
                         ],
-                        [
-                            'key'     => 'Red_Medium',
-                            'variant' => 'Red Medium',
-                            'price'   => 1000,
-                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
+                    ],
+                    [
+                        'key'     => 'Red_Medium',
+                        'variant' => 'Red Medium',
+                        'price'   => 1000,
                     ],
                 ],
             ]);

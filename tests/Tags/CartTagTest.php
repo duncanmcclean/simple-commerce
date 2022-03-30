@@ -375,27 +375,27 @@ class CartTagTest extends TestCase
         $product = Product::make()
             ->data([
                 'title' => 'Dog Food',
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 5000,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 5000,
                     ],
                 ],
             ]);

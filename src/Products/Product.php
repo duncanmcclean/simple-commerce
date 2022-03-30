@@ -17,6 +17,7 @@ class Product implements Contract
 
     public $id;
     public $price;
+    public $productVariants;
     public $data;
 
     public $resource;
@@ -40,6 +41,13 @@ class Product implements Contract
             ->args(func_get_args());
     }
 
+    public function productVariants($productVariants = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('productVariants')
+            ->args(func_get_args());
+    }
+
     public function resource($resource = null)
     {
         return $this
@@ -58,20 +66,20 @@ class Product implements Contract
 
     public function purchasableType(): ProductType
     {
-        if (isset($this->get('product_variants')['variants'])) {
+        if ($this->productVariants) {
             return ProductType::VARIANT();
         }
 
         return ProductType::PRODUCT();
     }
 
-    public function variants(): Collection
+    public function variantOptions(): Collection
     {
-        if (! isset($this->get('product_variants')['options'])) {
+        if (! $this->productVariants) {
             return collect();
         }
 
-        return collect($this->get('product_variants')['options'])
+        return collect($this->productVariants()['options'])
             ->map(function ($variantOption) {
                 $productVariant = (new ProductVariant)
                     ->key($variantOption['key'])
@@ -90,7 +98,7 @@ class Product implements Contract
 
     public function variant(string $optionKey): ?ProductVariant
     {
-        return $this->variants()->filter(function ($variant) use ($optionKey) {
+        return $this->variantOptions()->filter(function ($variant) use ($optionKey) {
             return $variant->key() === $optionKey;
         })->first();
     }
@@ -140,6 +148,7 @@ class Product implements Contract
 
         $this->id = $freshProduct->id;
         $this->price = $freshProduct->price;
+        $this->productVariants = $freshProduct->productVariants;
         $this->data = $freshProduct->data;
         $this->resource = $freshProduct->resource;
 

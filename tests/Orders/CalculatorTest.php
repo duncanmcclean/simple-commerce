@@ -98,14 +98,12 @@ class CalculatorTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::make()
-            ->data([
-                'product_variants' => [
-                    'options' => [
-                        [
-                            'key'     => 'Red_Large',
-                            'variant' => 'Red, Large',
-                            'price'   => 250,
-                        ],
+            ->productVariants([
+                'options' => [
+                    [
+                        'key'     => 'Red_Large',
+                        'variant' => 'Red, Large',
+                        'price'   => 250,
                     ],
                 ],
             ]);
@@ -173,14 +171,12 @@ class CalculatorTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
         $product = Product::make()
-            ->data([
-                'product_variants' => [
-                    'options' => [
-                        [
-                            'key'     => 'Red_Large',
-                            'variant' => 'Red, Large',
-                            'price'   => 15.50,
-                        ],
+            ->productVariants([
+                'options' => [
+                    [
+                        'key'     => 'Red_Large',
+                        'variant' => 'Red, Large',
+                        'price'   => 15.50,
                     ],
                 ],
             ]);
@@ -507,28 +503,26 @@ class CalculatorTest extends TestCase
     public function ensure_product_variant_price_hook_is_used_to_determine_price_of_product_variant()
     {
         $product = Product::make()
-            ->data([
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name'   => 'Colours',
-                            'values' => [
-                                'Red',
-                            ],
-                        ],
-                        [
-                            'name'   => 'Sizes',
-                            'values' => [
-                                'Small',
-                            ],
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
                         ],
                     ],
-                    'options' => [
-                        [
-                            'key'     => 'Red_Small',
-                            'variant' => 'Red Small',
-                            'price'   => 100,
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
                         ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 100,
                     ],
                 ],
             ]);

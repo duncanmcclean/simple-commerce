@@ -17,8 +17,8 @@ class VariantFieldtypeController
         $product = Product::find($request->product);
 
         return [
+            'variants' => $product->productVariants() ?? [],
             'purchasable_type' => $product->purchasableType(),
-            'variants'         => $product->has('product_variants') ? $product->get('product_variants')['options'] : [],
         ];
     }
 }

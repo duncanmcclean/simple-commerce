@@ -74,12 +74,10 @@ class ProductVariant
         return (int) $this->stock;
     }
 
-    // TODO: This should not do the saving.
     public function set(string $key, $value): self
     {
-        $this->product()->set(
-            'product_variants',
-            collect($this->product()->get('product_variants'))
+        $this->product->productVariants(
+            collect($this->product->productVariants())
                 ->map(function ($itemValue, $itemKey) use ($key, $value) {
                     if ($itemKey === 'options') {
                         foreach ($itemValue as $i => $option) {
@@ -92,7 +90,9 @@ class ProductVariant
                     return $itemValue;
                 })
                 ->toArray()
-        )->save();
+        );
+
+        $this->product->save();
 
         return $this;
     }

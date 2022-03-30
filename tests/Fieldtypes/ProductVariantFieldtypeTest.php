@@ -70,21 +70,19 @@ class ProductVariantFieldtypeTest extends TestCase
     public function that_augmentation_returns_null_if_variant_does_not_exist()
     {
         $product = Product::make()
-            ->data([
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name' => 'Colour',
-                            'values' => ['Yellow'],
-                        ],
-                        [
-                            'name' => 'Size',
-                            'values' => ['Large'],
-                        ],
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name' => 'Colour',
+                        'values' => ['Yellow'],
                     ],
-                    'options' => [
-                        ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
+                    [
+                        'name' => 'Size',
+                        'values' => ['Large'],
                     ],
+                ],
+                'options' => [
+                    ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
                 ],
             ]);
 
@@ -102,21 +100,19 @@ class ProductVariantFieldtypeTest extends TestCase
     public function that_augmentation_returns_variant_data()
     {
         $product = Product::make()
-            ->data([
-                'product_variants' => [
-                    'variants' => [
-                        [
-                            'name' => 'Colour',
-                            'values' => ['Yellow'],
-                        ],
-                        [
-                            'name' => 'Size',
-                            'values' => ['Large'],
-                        ],
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name' => 'Colour',
+                        'values' => ['Yellow'],
                     ],
-                    'options' => [
-                        ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
+                    [
+                        'name' => 'Size',
+                        'values' => ['Large'],
                     ],
+                ],
+                'options' => [
+                    ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
                 ],
             ]);
 
