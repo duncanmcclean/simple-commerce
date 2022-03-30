@@ -18,22 +18,22 @@ You can configure content drivers for the following:
 ```php
 'content' => [
     'orders' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
         'collection' => 'orders',
     ],
 
     'products' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
         'collection' => 'products',
     ],
 
     'coupons' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
         'collection' => 'coupons',
     ],
 
     'customers' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
         'collection' => 'customers',
     ],
 ],

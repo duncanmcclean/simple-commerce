@@ -29,7 +29,7 @@ They live in their own `customers` collection, which you can change if you need 
 	// All the other bits..
 
     'customers' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
         'collection' => 'customers', // [tl! --]
         'collection' => 'members', // [tl! ++]
     ],
@@ -62,8 +62,8 @@ To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\Customer::class`
 	// All the other bits..
 
     'customers' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // [tl! --]
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer::class, // [tl! ++]
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // [tl! --]
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer::class, // [tl! ++]
     ],
 ],
 ```

@@ -1,5 +1,5 @@
 ---
-title: 'Using an existing collection for Simple Commerce Products'
+title: "Using an existing collection for Simple Commerce Products"
 ---
 
 There's some cases where you'll need to bring in Simple Commerce to allow charging for events or tickets.
@@ -37,7 +37,7 @@ return [
 
     'content' => [
         'products' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+            'repository' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
             'collection' => 'products', // handle of your collection
         ],
     ],

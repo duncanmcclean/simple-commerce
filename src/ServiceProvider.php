@@ -165,10 +165,10 @@ class ServiceProvider extends AddonServiceProvider
     protected function bindContracts()
     {
         collect([
-            Contracts\CouponRepository::class   => SimpleCommerce::couponDriver()['driver'],
-            Contracts\CustomerRepository::class => SimpleCommerce::customerDriver()['driver'],
-            Contracts\OrderRepository::class    => SimpleCommerce::orderDriver()['driver'],
-            Contracts\ProductRepository::class  => SimpleCommerce::productDriver()['driver'],
+            Contracts\CouponRepository::class   => SimpleCommerce::couponDriver()['repository'],
+            Contracts\CustomerRepository::class => SimpleCommerce::customerDriver()['repository'],
+            Contracts\OrderRepository::class    => SimpleCommerce::orderDriver()['repository'],
+            Contracts\ProductRepository::class  => SimpleCommerce::productDriver()['repository'],
 
             Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\ShippingManager::class    => Shipping\Manager::class,
