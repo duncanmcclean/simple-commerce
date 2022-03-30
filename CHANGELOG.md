@@ -2,6 +2,36 @@
 
 ## Unreleased
 
+## v2.4.5 (2022-03-28)
+
+### What's new
+
+- Ability to customise the 'Payment Intent Data' sent to Stripe #592 by @duncanmcclean
+
+## v2.4.4 (2022-03-21)
+
+### What's new
+
+- Added a 'Simple Commerce' tab to Laravel Debugbar #590 by @duncanmcclean
+
+## v2.4.3 (2022-03-18)
+
+### What's new
+
+- You can now mark orders as 'Shipped' #588 by @steffenschmidt
+
+## v2.4.2 (2022-03-17)
+
+### What's fixed
+
+- Removed an upgrade script which could potentially cause issues with sites with large amounts of orders.
+
+## v2.4.1 (2022-03-15)
+
+### What's fixed
+
+- _Actually_ support Laravel 9
+
 ## v2.4.0 (2022-03-15)
 
 **After a long wait, Simple Commerce v2.4 is finally here!!**

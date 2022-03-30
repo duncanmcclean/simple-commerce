@@ -4,11 +4,11 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
@@ -53,10 +53,10 @@ class PayPalGateway extends BaseGateway implements Gateway
             'purchase_units' => [
                 [
                     'amount' => [
-                        'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
+                        'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
                         'currency_code' => Currency::get(Site::current())['code'],
                     ],
-                    'description' => "Order {$order->title()}",
+                    'description' => "Order {$order->get('title')}",
                     'custom_id'   => $order->id(),
                 ],
             ],
@@ -136,7 +136,7 @@ class PayPalGateway extends BaseGateway implements Gateway
     {
         $this->setupPayPal();
 
-        $request = new CapturesRefundRequest($order->get('gateway')['data']['purchase_units'][0]['payments']['captures'][0]['id']);
+        $request = new CapturesRefundRequest($order->gateway()['data']['purchase_units'][0]['payments']['captures'][0]['id']);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
@@ -189,10 +189,13 @@ class PayPalGateway extends BaseGateway implements Gateway
                 try {
                     $customer = Customer::findByEmail($responseBody['payer']['email_address']);
                 } catch (CustomerNotFound $e) {
-                    $customer = Customer::create([
-                        'name' => $responseBody['payer']['name']['given_name'].' '.$responseBody['payer']['name']['surname'],
-                        'email' => $responseBody['payer']['email_address'],
-                    ]);
+                    $customer = Customer::make()
+                        ->email($responseBody['payer']['email_address'])
+                        ->data([
+                            'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
+                        ]);
+
+                    $customer->save();
                 }
 
                 $order
@@ -213,9 +216,16 @@ class PayPalGateway extends BaseGateway implements Gateway
                     ->save();
             }
 
-            $order->set('gateway', array_merge($order->get('gateway'), [
-                'data' => $responseBody,
-            ]))->save();
+            $order->gateway(
+                array_merge(
+                    $order->gateway(),
+                    [
+                        'data' => $responseBody,
+                    ]
+                )
+            );
+
+            $order->save();
 
             $this->markOrderAsPaid($order);
 

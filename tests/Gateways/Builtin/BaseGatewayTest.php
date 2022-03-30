@@ -28,29 +28,36 @@ class BaseGatewayTest extends TestCase
 
         $fakeGateway = new FakeOffsiteGateway();
 
-        $product = Product::create(['title' => 'Smth', 'price' => 1500, 'stock' => 10]);
+        $product = Product::make()
+            ->price(1500)
+            ->stock(10)
+            ->data([
+                'title' => 'Smth',
+            ]);
+
         $product->save();
 
-        $order = Order::create([
-            'items' => [
+        $order = Order::make()
+            ->lineItems([
                 [
                     'product' => $product->id(),
                     'quantity' => 1,
                     'total' => 1500,
                 ],
-            ],
-        ])->save();
+            ]);
+
+        $order->save();
 
         $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->get('is_paid'));
+        $this->assertTrue($order->fresh()->isPaid());
 
         Event::assertDispatched(OrderPaid::class);
 
         // Assert stock count has been updated
-        $this->assertSame($product->fresh()->get('stock'), 9);
+        $this->assertSame($product->fresh()->stock(), 9);
     }
 
     /** @test */
@@ -60,24 +67,30 @@ class BaseGatewayTest extends TestCase
 
         $fakeGateway = new FakeOnsiteGateway();
 
-        $product = Product::create(['title' => 'Smth', 'price' => 1500]);
+        $product = Product::make()
+            ->price(1500)
+            ->data([
+                'title' => 'Smth',
+            ]);
+
         $product->save();
 
-        $order = Order::create([
-            'items' => [
+        $order = Order::make()
+            ->lineItems([
                 [
                     'product' => $product->id(),
                     'quantity' => 1,
                     'total' => 1500,
                 ],
-            ],
-        ])->save();
+            ]);
+
+        $order->save();
 
         $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->get('is_paid'));
+        $this->assertTrue($order->fresh()->isPaid());
 
         Event::assertDispatched(OrderPaid::class);
     }

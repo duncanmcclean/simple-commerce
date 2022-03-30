@@ -3,54 +3,117 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\IsEntry;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Statamic\Http\Resources\API\EntryResource;
 
 class Product implements Contract
 {
-    use IsEntry;
     use HasData;
 
     public $id;
-    public $site;
-    public $title;
-    public $slug;
+    public $price;
+    public $productVariants;
+    public $stock;
+    public $taxCategory;
     public $data;
-    public $published;
+    public $resource;
 
-    protected $entry;
-    protected $collection;
-
-    public function stockCount()
+    public function __construct()
     {
-        if ($this->purchasableType() === ProductType::VARIANT() || ! $this->has('stock')) {
-            return null;
-        }
+        $this->data = collect();
+    }
 
-        return (int) $this->get('stock');
+    public function id($id = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
+
+    public function price($price = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('price')
+            ->args(func_get_args());
+    }
+
+    public function productVariants($productVariants = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('productVariants')
+            ->args(func_get_args());
+    }
+
+    public function stock($stock = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('stock')
+            ->getter(function ($value) {
+                if ($this->purchasableType() === ProductType::VARIANT()) {
+                    return null;
+                }
+
+                return $value;
+            })
+            ->setter(function ($value) {
+                if ($value === null) {
+                    return null;
+                }
+
+                return (int) $value;
+            })
+            ->args(func_get_args());
+    }
+
+    public function taxCategory($taxCategory = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('taxCategory')
+            ->getter(function ($value) {
+                if (! $value) {
+                    return TaxCategoryFacade::find('default');
+                }
+
+                return $value;
+            })
+            ->setter(function ($taxCategory) {
+                if ($taxCategory instanceof TaxCategory) {
+                    return $taxCategory;
+                }
+
+                return TaxCategoryFacade::find($taxCategory);
+            })
+            ->args(func_get_args());
+    }
+
+    public function resource($resource = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('resource')
+            ->args(func_get_args());
     }
 
     public function purchasableType(): ProductType
     {
-        if (isset($this->data()['product_variants']['variants'])) {
+        if ($this->productVariants) {
             return ProductType::VARIANT();
         }
 
         return ProductType::PRODUCT();
     }
 
-    public function variants(): Collection
+    public function variantOptions(): Collection
     {
-        if (! isset($this->data()['product_variants']['options'])) {
+        if (! $this->productVariants) {
             return collect();
         }
 
-        return collect($this->get('product_variants')['options'])
+        return collect($this->productVariants()['options'])
             ->map(function ($variantOption) {
                 $productVariant = (new ProductVariant)
                     ->key($variantOption['key'])
@@ -69,27 +132,72 @@ class Product implements Contract
 
     public function variant(string $optionKey): ?ProductVariant
     {
-        return $this->variants()->filter(function ($variant) use ($optionKey) {
+        return $this->variantOptions()->filter(function ($variant) use ($optionKey) {
             return $variant->key() === $optionKey;
         })->first();
     }
 
-    public function collection(): string
+    public function beforeSaved()
     {
-        return SimpleCommerce::productDriver()['collection'];
+        return null;
     }
 
-    public function taxCategory(): ?TaxCategory
+    public function afterSaved()
     {
-        if (! isset($this->data['tax_category'])) {
-            return TaxCategoryFacade::find('default');
+        return null;
+    }
+
+    public function save(): self
+    {
+        if (method_exists($this, 'beforeSaved')) {
+            $this->beforeSaved();
         }
 
-        return TaxCategoryFacade::find($this->data['tax_category']);
+        ProductFacade::save($this);
+
+        if (method_exists($this, 'afterSaved')) {
+            $this->afterSaved();
+        }
+
+        return $this;
     }
 
-    public static function bindings(): array
+    public function delete(): void
     {
-        return [];
+        ProductFacade::delete($this);
+    }
+
+    public function fresh(): self
+    {
+        $freshProduct = ProductFacade::find($this->id());
+
+        $this->id = $freshProduct->id;
+        $this->price = $freshProduct->price;
+        $this->productVariants = $freshProduct->productVariants;
+        $this->stock = $freshProduct->stock;
+        $this->taxCategory = $freshProduct->taxCategory;
+        $this->data = $freshProduct->data;
+        $this->resource = $freshProduct->resource;
+
+        return $this;
+    }
+
+    public function toResource()
+    {
+        return new EntryResource($this->resource());
+    }
+
+    public function toAugmentedArray(): array
+    {
+        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
+            return $field['handle'] === 'value';
+        })->pluck('handle')->toArray();
+
+        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
+
+        return array_merge(
+            $this->toArray(),
+            $augmentedData,
+        );
     }
 }

@@ -51,20 +51,24 @@ class CartController extends BaseActionController
                     throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                    'email' => $data['customer']['email'],
-                    'published' => true,
-                ], $this->guessSiteFromRequest()->handle());
+                $customer = Customer::make()
+                    ->email($data['customer']['email'])
+                    ->data([
+                        'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
+                        'published' => true,
+                    ]);
+
+                $customer->save();
             }
 
             if (is_array($data['customer'])) {
-                $customer->data($data['customer'])->save();
+                $customer->merge($data['customer'])->save();
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->customer($customer->id());
+            $cart->save();
+
+            $cart = $cart->fresh();
 
             unset($data['customer']);
         }
@@ -77,27 +81,31 @@ class CartController extends BaseActionController
                     throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => isset($data['name']) ? $data['name'] : '',
-                    'email' => $data['email'],
-                    'published' => true,
-                ], $this->guessSiteFromRequest()->handle());
+                $customer = Customer::make()
+                    ->email($data['email'])
+                    ->data([
+                        'name'  => isset($data['name']) ? $data['name'] : '',
+                        'published' => true,
+                    ]);
+
+                $customer->save();
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->customer($customer->id());
+            $cart->save();
+
+            $cart = $cart->fresh();
 
             unset($data['name']);
             unset($data['email']);
         }
 
         if ($data !== null) {
-            $cart->data($data);
+            $cart = $cart->merge($data);
         }
 
-        $cart->save()
-            ->recalculate();
+        $cart->save();
+        $cart->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_updated'),
@@ -107,13 +115,11 @@ class CartController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $this
-            ->getCart()
-            ->data([
-                'items' => [],
-            ])
-            ->save()
-            ->recalculate();
+        $cart = $this->getCart();
+
+        $cart->clearLineItems();
+
+        $cart->save()->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.cart_deleted'),

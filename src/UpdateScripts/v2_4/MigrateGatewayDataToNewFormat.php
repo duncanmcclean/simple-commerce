@@ -17,7 +17,7 @@ class MigrateGatewayDataToNewFormat extends UpdateScript
 
     public function update()
     {
-        if (SimpleCommerce::orderDriver()['driver'] !== Order::class) {
+        if (SimpleCommerce::orderDriver()['repository'] !== Order::class) {
             $this->console()->error('Gateway data could not be migrated. You are not using the default Order driver.');
         }
 

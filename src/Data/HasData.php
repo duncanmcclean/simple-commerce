@@ -1,8 +1,7 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support\Traits;
+namespace DoubleThreeDigital\SimpleCommerce\Data;
 
-use Illuminate\Support\Collection;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait HasData
@@ -14,18 +13,11 @@ trait HasData
         return $this
             ->fluentlyGetOrSet('data')
             ->setter(function ($data) {
-                if (! $this->data) {
-                    return $data;
+                if (is_array($data)) {
+                    $data = collect($data);
                 }
 
-                if ($this->data instanceof Collection) {
-                    $this->data = $this->data->toArray();
-                }
-
-                return array_merge($this->data, $data);
-            })
-            ->getter(function ($data) {
-                return collect($data);
+                return $data;
             })
             ->args(func_get_args());
     }
@@ -43,7 +35,13 @@ trait HasData
     public function set(string $key, $value): self
     {
         $this->data[$key] = $value;
-        $this->entry()->set($key, $value)->save();
+
+        return $this;
+    }
+
+    public function merge($data): self
+    {
+        $this->data = $this->data->merge($data);
 
         return $this;
     }

@@ -1,10 +1,1 @@
-<svg width="136px" height="136px" viewBox="0 0 136 136" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Group</title>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Group" transform="translate(3.000000, 3.000000)" stroke="#000000" stroke-width="5">
-            <polygon id="Path" points="43.33 120 0 130 0 10 43.33 0"></polygon>
-            <polygon id="Path" points="43.33 120 86.67 130 86.67 10 43.33 0"></polygon>
-            <polygon id="Path" points="130 120 86.67 130 86.67 10 130 0"></polygon>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="136" height="136" version="1.1" viewBox="0 0 136 136"><title>Group</title><g id="Page-1" fill="none" fill-rule="evenodd" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><g id="Group" stroke="#000" stroke-width="5" transform="translate(3.000000, 3.000000)"><polygon id="Path" points="43.33 120 0 130 0 10 43.33 0"/><polygon id="Path" points="43.33 120 86.67 130 86.67 10 43.33 0"/><polygon id="Path" points="130 120 86.67 130 86.67 10 130 0"/></g></g></svg>

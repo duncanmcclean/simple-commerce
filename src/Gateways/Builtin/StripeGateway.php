@@ -4,10 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
@@ -38,24 +38,18 @@ class StripeGateway extends BaseGateway implements Gateway
         $order = $data->order();
 
         $intentData = [
-            'amount'             => $order->get('grand_total'),
+            'amount'             => $order->grandTotal(),
             'currency'           => Currency::get(Site::current())['code'],
-            'description'        => "Order: {$order->title()}",
+            'description'        => "Order: {$order->get('title')}",
             'setup_future_usage' => 'off_session',
-            'metadata'           => [
-                'order_id' => $order->id,
-            ],
-            // 'automatic_payment_methods' => [
-            //     'enabled' => 'true',
-            // ],
         ];
 
         $customer = $order->customer();
 
-        if ($customer && $customer->has('email')) {
+        if ($customer) {
             $stripeCustomerData = [
                 'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
-                'email' => $customer->get('email'),
+                'email' => $customer->email(),
             ];
 
             $stripeCustomer = StripeCustomer::create($stripeCustomerData);
@@ -65,6 +59,17 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($customer && $this->config()->has('receipt_email') && $this->config()->get('receipt_email') === true) {
             $intentData['receipt_email'] = $customer->email();
         }
+
+        if ($this->config()->has('payment_intent_data')) {
+            $intentData = array_merge(
+                $intentData,
+                $this->config()->get('payment_intent_data')($order)
+            );
+        }
+
+        // We're setting this after the rest of the payment intent data,
+        // in case the developer adds their own stuff to 'metadata'.
+        $intentData['metadata']['order_id'] = $order->id;
 
         $intent = PaymentIntent::create($intentData);
 

@@ -18,13 +18,13 @@ class RefundAction extends Action
 
     public function visibleTo($item)
     {
-        if (SimpleCommerce::orderDriver()['driver'] !== EntryOrderDriver::class) {
+        if (SimpleCommerce::orderDriver()['repository'] !== EntryOrderDriver::class) {
             return false;
         }
 
         return $item instanceof Entry &&
             $item->collectionHandle() === SimpleCommerce::orderDriver()['collection'] &&
-            ($item->data()->has('is_paid') && $item->data()->get('is_paid')) &&
+            ($item->data()->has('is_paid') && $item->data()->get('is_paid') === true) &&
             ($item->data()->get('is_refunded') === false || $item->data()->get('is_refunded') === null);
     }
 
@@ -39,11 +39,8 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id());
 
-                $gatewayClass = is_string($order->get('gateway'))
-                    ? $order->get('gateway')
-                    : $order->get('gateway')['use'];
-
-                return Gateway::use($gatewayClass)->refundCharge($order);
+                return Gateway::use($order->currentGateway()['class'])
+                    ->refundCharge($order);
             });
     }
 }

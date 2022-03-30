@@ -15,7 +15,7 @@ class CustomerTags extends SubTag
 
     public function index()
     {
-        return Customer::find($this->params->get('id'))->entry()->toAugmentedArray();
+        return Customer::find($this->params->get('id'))->resource()->toAugmentedArray();
     }
 
     public function update()
@@ -34,16 +34,16 @@ class CustomerTags extends SubTag
     public function orders()
     {
         if ($this->params->get('from') === 'customer') {
-            return Customer::find($this->params->get('customer'))
+            return Customer::find($this->params->customer())
                 ->orders()
                 ->map(function (Order $order) {
-                    return $order->entry()->toAugmentedArray();
+                    return $order->resource()->toAugmentedArray();
                 })
                 ->toArray();
         }
 
         return Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
-            ->where('customer', $this->params->get('customer'))
+            ->where('customer', $this->params->customer())
             ->map(function (EntriesEntry $entry) {
                 return $entry->toAugmentedArray();
             })

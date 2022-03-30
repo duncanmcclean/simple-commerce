@@ -93,7 +93,7 @@ If, for whatever reason you find yourself needing to use the same cart between a
 */
 
 'cart' => [
-    'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+    'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
     'key' => 'simple-commerce-cart',
     'single_cart' => false, // [tl! add]
 ],

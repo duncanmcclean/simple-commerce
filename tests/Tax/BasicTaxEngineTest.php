@@ -21,20 +21,18 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()->price(1000);
+        $product->save();
 
-        $order = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 1,
-                    'total'    => 1000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 1000,
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -51,20 +49,18 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()->price(1000);
+        $product->save();
 
-        $order = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -83,20 +79,18 @@ class BasicTaxEngineTest extends TestCase
         Collection::make('products')->save();
         Collection::make('orders')->save();
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()->price(1000);
+        $product->save();
 
-        $order = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -112,20 +106,18 @@ class BasicTaxEngineTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 0);
 
-        $product = Product::create([
-            'price' => 1000,
-        ]);
+        $product = Product::make()->price(1000);
+        $product->save();
 
-        $order = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                    'total'    => 2000,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 2000,
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
@@ -145,20 +137,18 @@ class BasicTaxEngineTest extends TestCase
         Config::set('simple-commerce.tax_engine_config.rate', 20);
         Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
-        $product = Product::create([
-            'price' => 2600,
-        ]);
+        $product = Product::make()->price(2600);
+        $product->save();
 
-        $order = Order::create([
-            'is_paid' => false,
-            'items'   => [
-                $lineItem = [
-                    'product'  => $product->id,
-                    'quantity' => 3,
-                    'total'    => 7800,
-                ],
+        $order = Order::make()->isPaid(false)->lineItems([
+            $lineItem = [
+                'product'  => $product->id,
+                'quantity' => 3,
+                'total'    => 7800,
             ],
         ]);
+
+        $order->save();
 
         $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 

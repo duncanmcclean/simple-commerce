@@ -15,7 +15,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\ValidCoupon;
+use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -106,10 +106,13 @@ class CheckoutController extends BaseActionController
 
     protected function handleCustomerDetails()
     {
-        $customerData = $this->request->has('customer') ? $this->request->get('customer') : [];
+        $customerData = $this->request->has('customer')
+            ? $this->request->get('customer')
+            : [];
 
         if (is_string($customerData)) {
-            $this->cart->set('customer', $customerData);
+            $this->cart->customer($customerData);
+            $this->cart->save();
 
             $this->excludedKeys[] = 'customer';
 
@@ -128,18 +131,22 @@ class CheckoutController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                    'email' => $customerData['email'],
-                    'published' => true,
-                ], $this->guessSiteFromRequest()->handle());
+                $customer = Customer::make()
+                    ->email($customerData['email'])
+                    ->data([
+                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
+                        'published' => true,
+                    ]);
+
+                $customer->save();
             }
 
-            $customer->data($customerData)->save();
+            $customer->merge($customerData)->save();
 
-            $this->cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $this->cart->customer($customer->id());
+            $this->cart->save();
+
+            $this->cart = $this->cart->fresh();
         }
 
         $this->excludedKeys[] = 'customer';
@@ -150,12 +157,15 @@ class CheckoutController extends BaseActionController
     protected function handleCoupon()
     {
         if ($coupon = $this->request->get('coupon')) {
-            $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
+            $coupon = Coupon::findByCode($coupon);
+
+            $this->cart->coupon($coupon);
+            $this->cart->save();
 
             $this->excludedKeys[] = 'coupon';
         }
 
-        if (isset($this->cart->data['coupon'])) {
+        if ($this->cart->coupon()) {
             $this->cart->coupon()->redeem();
         }
 
@@ -176,8 +186,19 @@ class CheckoutController extends BaseActionController
             $data[$key] = $value;
         }
 
+        // We don't recommend doing this BUT if you want to you can override all the line items at the
+        // last minute like this. We just need to ensure it's set correctly.
+        if (isset($data['items'])) {
+            $this->cart->lineItems($data['items']);
+
+            unset($data['items']);
+        }
+
         if ($data !== []) {
-            $this->cart->data($data)->save();
+            $this->cart->merge($data)->save();
+            $this->cart->save();
+
+            $this->cart = $this->cart->fresh();
         }
 
         return $this;
@@ -187,13 +208,13 @@ class CheckoutController extends BaseActionController
     {
         $this->cart = $this->cart->recalculate();
 
-        if ($this->cart->get('grand_total') <= 0) {
+        if ($this->cart->grandTotal() <= 0) {
             $this->cart->markAsPaid();
 
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') !== 0) {
+        if (! $this->request->has('gateway') && $this->cart->isPaid() === false && $this->cart->grandTotal() !== 0) {
             throw new NoGatewayProvided('No gateway provided.');
         }
 
@@ -214,7 +235,7 @@ class CheckoutController extends BaseActionController
             $this->cart->customer()->addOrder($this->cart->id);
         }
 
-        if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') === 0) {
+        if (! $this->request->has('gateway') && $this->cart->isPaid() === false && $this->cart->grandTotal() === 0) {
             $this->cart->markAsPaid();
         }
 

@@ -32,11 +32,11 @@ class GatewayCallbackController extends BaseActionController
         try {
             $callbackSuccess = Gateway::use($gateway['class'])->callback($request);
         } catch (GatewayCallbackMethodDoesNotExist $e) {
-            $callbackSuccess = $order->get('is_paid') === true;
+            $callbackSuccess = $order->isPaid() === true;
         }
 
         if (! $callbackSuccess) {
-            return $this->withErrors($request, "Order [{$order->title()}] has not been marked as paid yet.");
+            return $this->withErrors($request, "Order [{$order->get('title')}] has not been marked as paid yet.");
         }
 
         $this->forgetCart();

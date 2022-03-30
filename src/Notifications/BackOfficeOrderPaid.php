@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -50,18 +50,13 @@ class BackOfficeOrderPaid extends Notification
         $pdf = PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray());
 
         return (new MailMessage)
-            ->subject("New Order: {$this->order->title()}")
-            ->line("Order **{$this->order->title()}** has just been paid and is ready for fulfilment.")
+            ->subject("New Order: {$this->order->get('title')}")
+            ->line("Order **{$this->order->get('title')}** has just been paid and is ready for fulfilment.")
             ->line('# Order Details')
-            ->line('Grand Total: ' . Currency::parse($this->order->get('grand_total'), Site::current()))
-            ->line('Items Total: ' . Currency::parse($this->order->get('items_total'), Site::current()))
-            ->line('Shipping Total: ' . Currency::parse($this->order->get('shipping_total'), Site::current()))
+            ->line('Grand Total: ' . Currency::parse($this->order->grandTotal(), Site::current()))
+            ->line('Items Total: ' . Currency::parse($this->order->itemsTotal(), Site::current()))
+            ->line('Shipping Total: ' . Currency::parse($this->order->shippingTotal(), Site::current()))
             ->line('Customer: ' . optional($this->order->customer())->email() ?? 'Guest')
-            ->line('Payment Gateway: ' . optional($this->order->gateway())['display'] ?? 'N/A')
-            ->attachData(
-                $pdf->output(),
-                'receipt.pdf',
-                ['mime' => 'application/pdf']
-            );
+            ->line('Payment Gateway: ' . optional($this->order->currentGateway())['display'] ?? 'N/A');
     }
 }

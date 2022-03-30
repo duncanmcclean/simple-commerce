@@ -26,7 +26,6 @@ class CouponControllerTest extends TestCase
 
         File::deleteDirectory(base_path('content/collections/coupons'));
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 
@@ -62,10 +61,10 @@ class CouponControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertNotSame($this->cart->data['coupon_total'], 0);
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
+        $this->assertNotSame($this->cart->couponTotal(), 0);
 
         Event::assertDispatched(CouponRedeemed::class);
     }
@@ -106,10 +105,10 @@ class CouponControllerTest extends TestCase
             'cart',
         ]);
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertNotSame($this->cart->data['coupon_total'], 0000);
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
+        $this->assertNotSame($this->cart->couponTotal(), 0000);
 
         Event::assertDispatched(CouponRedeemed::class);
     }
@@ -147,10 +146,10 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertNotSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertSame($this->cart->data['coupon_total'], 0000);
+        $this->assertNull($this->cart->coupon());
+        $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
     /** @test */
@@ -170,10 +169,9 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertNull($this->cart->data['coupon']);
-        $this->assertSame($this->cart->data['coupon_total'], 0000);
+        $this->assertNull($this->cart->coupon(), 0000);
     }
 
     /** @test */
@@ -211,10 +209,10 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasNoErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertNotSame($this->cart->data['coupon_total'], 0000);
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
+        $this->assertNotSame($this->cart->couponTotal(), 0000);
 
         Event::assertDispatched(CouponRedeemed::class);
     }
@@ -253,10 +251,10 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertNotSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertSame($this->cart->data['coupon_total'], 0000);
+        $this->assertNull($this->cart->coupon());
+        $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
     /** @test */
@@ -266,12 +264,16 @@ class CouponControllerTest extends TestCase
 
         $this->buildCartWithProducts();
 
-        $customer = Customer::create([
-            'name' => 'John Doe',
-            'email' => 'john@doe.com',
-        ]);
+        $customer = Customer::make()
+            ->email('john@doe.com')
+            ->data([
+                'name' => 'John Doe',
+            ]);
 
-        $this->cart->set('customer', $customer->id);
+        $customer->save();
+
+        $this->cart->customer($customer->id());
+        $this->cart->save();
 
         $coupon = Entry::make()
             ->collection('coupons')
@@ -301,10 +303,10 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasNoErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertNotSame($this->cart->data['coupon_total'], 0000);
+        $this->assertSame($this->cart->coupon()->id(), $coupon->id());
+        $this->assertNotSame($this->cart->couponTotal(), 0000);
 
         Event::assertDispatched(CouponRedeemed::class);
     }
@@ -314,12 +316,16 @@ class CouponControllerTest extends TestCase
     {
         $this->buildCartWithProducts();
 
-        $customer = Customer::create([
-            'name' => 'John Doe',
-            'email' => 'john@doe.com',
-        ]);
+        $customer = Customer::make()
+            ->email('john@doe.com')
+            ->data([
+                'name' => 'John Doe',
+            ]);
 
-        $this->cart->set('customer', null);
+        $customer->save();
+
+        $this->cart->customer(null);
+        $this->cart->save();
 
         $coupon = Entry::make()
             ->collection('coupons')
@@ -349,10 +355,10 @@ class CouponControllerTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHasErrors();
 
-        $this->cart->find($this->cart->id);
+        $this->cart->fresh();
 
-        $this->assertNotSame($this->cart->data['coupon'], $coupon->id());
-        $this->assertSame($this->cart->data['coupon_total'], 0000);
+        $this->assertNull($this->cart->coupon());
+        $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
     /** @test */
@@ -375,9 +381,8 @@ class CouponControllerTest extends TestCase
         $coupon->save();
         $coupon->fresh();
 
-        $this->cart->data([
-            'coupon' => $coupon->id(),
-        ])->save();
+        $this->cart->coupon($coupon->id());
+        $this->cart->save();
 
         $response = $this
             ->from('/cart')
@@ -386,10 +391,10 @@ class CouponControllerTest extends TestCase
 
         $response->assertRedirect('/cart');
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertNull($this->cart->data['coupon']);
-        $this->assertSame($this->cart->data['coupon_total'], 0000);
+        $this->assertNull($this->cart->coupon());
+        $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
     /** @test */
@@ -412,13 +417,12 @@ class CouponControllerTest extends TestCase
         $coupon->save();
         $coupon->fresh();
 
-        $this->cart->data([
-            'coupon' => $coupon->id(),
-        ])->save();
+        $this->cart->coupon($coupon->id());
+        $this->cart->save();
 
         $response = $this
             ->from('/cart')
-            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->withSession(['simple-commerce-cart' => $this->cart->id()])
             ->deleteJson(route('statamic.simple-commerce.coupon.destroy'));
 
         $response->assertJsonStructure([
@@ -427,29 +431,32 @@ class CouponControllerTest extends TestCase
             'cart',
         ]);
 
-        $this->cart->find($this->cart->id);
+        $this->cart = $this->cart->fresh();
 
-        $this->assertNull($this->cart->data['coupon']);
-        $this->assertSame($this->cart->data['coupon_total'], 0000);
+        $this->assertNull($this->cart->coupon());
+        $this->assertSame($this->cart->couponTotal(), 0000);
     }
 
     protected function buildCartWithProducts()
     {
-        $this->product = Product::create([
-            'title' => 'Food',
-            'price' => 1000,
-        ])->save();
+        $this->product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Food',
+            ]);
 
-        $this->cart = Order::create([
-            'items' => [
+        $this->product->save();
+
+        $this->cart = Order::make()
+            ->lineItems([
                 [
                     'id'       => Stache::generateId(),
                     'product'  => $this->product->id,
                     'quantity' => 1,
                     'total'    => 1000,
                 ],
-            ],
-            'coupon' => null,
-        ]);
+            ]);
+
+        $this->cart->save();
     }
 }

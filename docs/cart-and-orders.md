@@ -1,5 +1,5 @@
 ---
-title: 'Cart & Orders'
+title: "Cart & Orders"
 ---
 
 Under the hood, Carts and Orders are really the same thing. They live under the same collection, use the same blueprint.
@@ -47,7 +47,7 @@ Two cart drivers are provided as standard: the cookie driver & the session drive
  */
 
 'cart' => [
-  'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+  'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
   'key' => 'simple-commerce-cart',
 ],
 ```

@@ -20,7 +20,7 @@ class MigrateLineItemMetadata extends UpdateScript
 
     public function update()
     {
-        if (SimpleCommerce::orderDriver()['driver'] !== Order::class) {
+        if (SimpleCommerce::orderDriver()['repository'] !== Order::class) {
             $this->console()->error("Could not migrate line item metadata. You're not using the entry content driver.");
         }
 
@@ -35,7 +35,7 @@ class MigrateLineItemMetadata extends UpdateScript
                     })
                     ->toArray();
 
-                $entry->data(['items' => $lineItems])->save();
+                $entry->set('items', $lineItems)->save();
             });
 
         $this->console()->info('Migrated line item metdata!');

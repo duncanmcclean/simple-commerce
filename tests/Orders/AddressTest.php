@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
-use DoubleThreeDigital\SimpleCommerce\Support\Regions;
+use DoubleThreeDigital\SimpleCommerce\Countries;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Regions;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class AddressTest extends TestCase
@@ -12,22 +12,24 @@ class AddressTest extends TestCase
     /** @test */
     public function can_get_address_as_array()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsArray($address->toArray());
 
         $this->assertSame($address->toArray(), [
             'name' => 'John Smith',
             'address_line_1' => '11 Test Street',
-            'address_line_2' => '',
+            'address_line_2' => null,
             'city' => 'Glasgow',
             'region' => Regions::find('gb-sct'),
             'country' => Countries::find('GB'),
@@ -38,19 +40,21 @@ class AddressTest extends TestCase
     /** @test */
     public function can_get_address_as_string()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
 
-        $this->assertIsString($address->asString());
+        $address = $order->billingAddress();
 
-        $this->assertSame($address->asString(), 'John Smith,
+        $this->assertIsString((string) $address);
+
+        $this->assertSame((string) $address, 'John Smith,
 11 Test Street,
 Glasgow,
 Scotland,
@@ -61,15 +65,17 @@ G11 222');
     /** @test */
     public function can_get_name()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsString($address->name());
         $this->assertSame($address->name(), 'John Smith');
@@ -78,15 +84,17 @@ G11 222');
     /** @test */
     public function can_get_address_line_1()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsString($address->addressLine1());
         $this->assertSame($address->addressLine1(), '11 Test Street');
@@ -95,15 +103,18 @@ G11 222');
     /** @test */
     public function can_get_address_line_2()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            'Cardonald',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_address_line2' => 'Cardonald',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsString($address->addressLine2());
         $this->assertSame($address->addressLine2(), 'Cardonald');
@@ -112,15 +123,17 @@ G11 222');
     /** @test */
     public function can_get_city()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsString($address->city());
         $this->assertSame($address->city(), 'Glasgow');
@@ -129,15 +142,17 @@ G11 222');
     /** @test */
     public function can_get_region()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsArray($address->region());
 
@@ -151,15 +166,17 @@ G11 222');
     /** @test */
     public function can_get_country()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsArray($address->country());
 
@@ -172,15 +189,17 @@ G11 222');
     /** @test */
     public function can_get_zip_code()
     {
-        $address = new Address(
-            'John Smith',
-            '11 Test Street',
-            '',
-            'Glasgow',
-            'GB',
-            'G11 222',
-            'gb-sct'
-        );
+        $order = Order::make()
+            ->merge([
+                'billing_name' => 'John Smith',
+                'billing_address' => '11 Test Street',
+                'billing_city' => 'Glasgow',
+                'billing_country' => 'GB',
+                'billing_zip_code' => 'G11 222',
+                'billing_region' => 'gb-sct',
+            ]);
+
+        $address = $order->billingAddress();
 
         $this->assertIsString($address->zipCode());
         $this->assertSame($address->zipCode(), 'G11 222');

@@ -11,8 +11,10 @@ class TidyTemporaryGatewayData
     {
         $order = $event->order;
 
-        collect(SimpleCommerce::gateways())->pluck('handle')->each(function ($gatewayHandle) use ($order) {
+        collect(SimpleCommerce::gateways())->pluck('handle')->each(function ($gatewayHandle) use (&$order) {
             $order->set($gatewayHandle, null);
         });
+
+        $order->save();
     }
 }

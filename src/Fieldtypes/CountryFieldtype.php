@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
+use DoubleThreeDigital\SimpleCommerce\Countries;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 

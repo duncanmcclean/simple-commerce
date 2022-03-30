@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
             'email' => 'sometimes|email',
         ];
 
-        if ($this->getCart()->get('grand_total') > 0) {
+        if ($this->getCart()->grandTotal() > 0) {
             $rules['gateway'] = ['required', 'string', new IsAGateway()];
         }
 

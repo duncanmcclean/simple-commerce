@@ -46,23 +46,29 @@ class MollieGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+        $product = Product::make()
+            ->price(5500)
+            ->data(['title' => 'Concert Ticket']);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 5500,
+                'metadata' => [],
+            ],
+        ])->grandTotal(5500)->merge([
+            'title' => '#0001',
+        ]);
+
+        $order->save();
 
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 5500,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 5500,
-                'title' => '#0001',
-            ])
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -98,9 +104,16 @@ class MollieGatewayTest extends TestCase
             ],
         ]);
 
-        $charge = $this->gateway->getCharge(
-            Order::create(['gateway' => ['data' => ['id' => $molliePayment->id]]])
-        );
+        $order = Order::make()
+            ->gateway([
+                'data' => [
+                    'id' => $molliePayment->id,
+                ],
+            ]);
+
+        $order->save();
+
+        $charge = $this->gateway->getCharge($order);
 
         $this->assertIsObject($charge);
         $this->assertTrue($charge->success());
@@ -119,7 +132,10 @@ class MollieGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
         }
 
-        $refund = $this->gateway->refundCharge(Order::create());
+        $order = Order::make();
+        $order->save();
+
+        $refund = $this->gateway->refundCharge($order);
 
         $this->assertIsObject($refund);
         $this->assertTrue($refund->success());

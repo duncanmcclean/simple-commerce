@@ -97,14 +97,16 @@ class TaxEngine implements Contract
     {
         $defaultAddressConfig = Config::get('simple-commerce.tax_engine_config.default_address');
 
-        return new Address(
-            '',
-            $defaultAddressConfig['address_line_1'],
+        $addressData = collect([
+            'default_name' => '',
+            'default_address_line1' => $defaultAddressConfig['address_line_1'],
             isset($defaultAddressConfig['address_line_2']) ? $defaultAddressConfig['address_line_2'] : '',
-            $defaultAddressConfig['city'],
-            $defaultAddressConfig['country'],
-            $defaultAddressConfig['zip_code'],
-            $defaultAddressConfig['region'],
-        );
+            'default_city' => $defaultAddressConfig['city'],
+            'default_country' => $defaultAddressConfig['country'],
+            'default_zip_code' => $defaultAddressConfig['zip_code'],
+            'default_region' => $defaultAddressConfig['region'],
+        ]);
+
+        return Address::from('default', $addressData);
     }
 }

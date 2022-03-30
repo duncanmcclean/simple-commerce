@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
+use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\CreateRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\DeleteRequest;
@@ -9,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\EditRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
 use Statamic\Facades\Stache;
 
 class TaxZoneController

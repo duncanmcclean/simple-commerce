@@ -16,27 +16,26 @@ class LineItemsTest extends TestCase
     {
         parent::setUp();
 
-        $this->setupCollections();
         $this->useBasicTaxEngine();
     }
 
     /** @test */
     public function can_get_line_items()
     {
-        $order = Order::create([
-            'items' => [
-                [
-                    'id'       => 'one-two-three',
-                    'product'  => 'oon-doo-twa',
-                    'quantity' => 2,
-                ],
-                [
-                    'id'       => 'nine-ten-eleven',
-                    'product'  => 'noin-dois-tre',
-                    'quantity' => 2,
-                ],
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'one-two-three',
+                'product'  => 'oon-doo-twa',
+                'quantity' => 2,
+            ],
+            [
+                'id'       => 'nine-ten-eleven',
+                'product'  => 'noin-dois-tre',
+                'quantity' => 2,
             ],
         ]);
+
+        $order->save();
 
         $lineItems = $order->lineItems();
 
@@ -47,7 +46,8 @@ class LineItemsTest extends TestCase
     /** @test */
     public function line_items_return_empty_if_order_has_no_items()
     {
-        $order = Order::create();
+        $order = Order::make();
+        $order->save();
 
         $lineItems = $order->lineItems();
 
@@ -58,20 +58,23 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_update_line_item()
     {
-        $product = Product::create([
-            'title' => 'Four Five Six',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Four Five Six',
+            ]);
 
-        $order = Order::create([
-            'items' => [
-                [
-                    'id'       => 'ideeeeee-of-item',
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                ],
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'ideeeeee-of-item',
+                'product'  => $product->id,
+                'quantity' => 2,
             ],
         ]);
+
+        $order->save();
 
         $update = $order->updateLineItem('ideeeeee-of-item', [
             'quantity' => 3,
@@ -89,20 +92,23 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_clear_line_items()
     {
-        $product = Product::create([
-            'title' => 'Four Five Six',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Four Five Six',
+            ]);
 
-        $order = Order::create([
-            'items' => [
-                [
-                    'id'       => 'ideeeeee-of-item',
-                    'product'  => $product->id,
-                    'quantity' => 2,
-                ],
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'ideeeeee-of-item',
+                'product'  => $product->id,
+                'quantity' => 2,
             ],
         ]);
+
+        $order->save();
 
         $lineItems = $order->clearlineItems();
 

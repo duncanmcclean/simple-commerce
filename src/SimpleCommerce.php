@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Addon;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
 
@@ -25,7 +24,7 @@ class SimpleCommerce
     public static function version(): string
     {
         if (app()->environment('testing')) {
-            return 'v2.0.0';
+            return 'v3.0.0';
         }
 
         return Addon::get('doublethreedigital/simple-commerce')->version();
@@ -132,30 +131,6 @@ class SimpleCommerce
     public static function registerShippingMethod(string $site, string $shippingMethod)
     {
         static::$shippingMethods[$site][] = $shippingMethod;
-    }
-
-    public static function freshOrderNumber()
-    {
-        $minimum = config('simple-commerce.minimum_order_number', 1000);
-
-        $query = Collection::find(self::orderDriver()['collection'])
-            ->queryEntries()
-            ->orderBy('title', 'asc')
-            ->where('title', '!=', null)
-            ->get()
-            ->map(function ($order) {
-                $order->title = str_replace('Order ', '', $order->title);
-                $order->title = str_replace('#', '', $order->title);
-
-                return $order->title;
-            })
-            ->last();
-
-        if (! $query) {
-            return $minimum + 1;
-        }
-
-        return ((int) $query) + 1;
     }
 
     public static function orderDriver(): array

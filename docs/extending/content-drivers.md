@@ -8,32 +8,32 @@ Essentially, a content driver is a class which implements a certain interface. T
 
 You can configure content drivers for the following:
 
-* Products
-* Orders
-* Coupons
-* Customers
+- Products
+- Orders
+- Coupons
+- Customers
 
 ## Configuration
 
 ```php
 'content' => [
     'orders' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
         'collection' => 'orders',
     ],
 
     'products' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
         'collection' => 'products',
     ],
 
     'coupons' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
         'collection' => 'coupons',
     ],
 
     'customers' => [
-        'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
         'collection' => 'customers',
     ],
 ],
@@ -59,7 +59,7 @@ Here's a bare bones example to get you started:
 namespace App\SimpleCommerce;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use Illuminate\Support\Collection;
 
 class OrderRepository implements Contract

@@ -27,8 +27,6 @@ class MigrateGatewayDataToNewFormatTest extends TestCase
     /** @test */
     public function it_migrates_full_gateway_data_to_new_format()
     {
-        $this->setupOrders();
-
         $order = Entry::make()
             ->collection('orders')
             ->data([
@@ -60,8 +58,6 @@ class MigrateGatewayDataToNewFormatTest extends TestCase
     /** @test */
     public function it_migrates_gateway_class_to_new_format()
     {
-        $this->setupOrders();
-
         $order = Entry::make()
             ->collection('orders')
             ->data([

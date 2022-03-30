@@ -119,6 +119,26 @@ abstract class TestCase extends OrchestraTestCase
         $this->ensureContentDirectoriesExist();
     }
 
+    /**
+     * Boot the testing helper traits.
+     *
+     * @return array<class-string, class-string>
+     */
+    protected function setUpTraits()
+    {
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[RefreshContent::class])) {
+            $this->refreshContent();
+        }
+
+        if (isset($uses[SetupCollections::class])) {
+            $this->setupCollections();
+        }
+
+        return $this->setUpTheTestEnvironmentTraits($uses);
+    }
+
     protected function ensureContentDirectoriesExist(): void
     {
         if (! file_exists(base_path('content'))) {

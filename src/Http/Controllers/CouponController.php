@@ -14,7 +14,10 @@ class CouponController extends BaseActionController
     {
         $redeem = $this->getCart()->redeemCoupon($request->code);
 
-        $this->getCart()->recalculate();
+        $cart = $this->getCart();
+
+        $cart->fresh();
+        $cart->recalculate();
 
         if (! $redeem) {
             return $this->withErrors($request, __('simple-commerce::messages.invalid_coupon'));
@@ -28,13 +31,13 @@ class CouponController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        // TODO: We need to figure out a way of making this work with different drivers (eg. Eloquent uses coupon_id instead of coupon)
-        $this->getCart()
-            ->data([
-                'coupon' => null,
-            ])
-            ->save()
-            ->recalculate();
+        $cart = $this->getCart();
+
+        $cart->coupon = null;
+
+        $cart->save();
+
+        $cart->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('simple-commerce::messages.coupon_removed_from_cart'),

@@ -62,6 +62,10 @@ return [
             \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
             \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
         ],
+
+        'order_shipped' => [
+            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class   => ['to' => 'customer'],
+        ],
     ],
 
     /*
@@ -130,24 +134,24 @@ return [
     */
 
     'content' => [
-        'orders' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
-            'collection' => 'orders',
-        ],
-
-        'products' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
-            'collection' => 'products',
-        ],
-
         'coupons' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+            'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
             'collection' => 'coupons',
         ],
 
         'customers' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
+            'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
             'collection' => 'customers',
+        ],
+
+        'orders' => [
+            'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class,
+            'collection' => 'orders',
+        ],
+
+        'products' => [
+            'repository' => \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class,
+            'collection' => 'products',
         ],
     ],
 

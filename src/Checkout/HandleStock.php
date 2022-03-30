@@ -18,23 +18,24 @@ trait HandleStock
                 $product = Product::find($item['product']);
 
                 if ($product->purchasableType() === ProductType::PRODUCT()) {
-                    if ($product->has('stock') && $product->get('stock') !== null) {
-                        $stockCount = $product->get('stock') - $item['quantity'];
+                    if (is_int($product->stock())) {
+                        $stock = $product->stock() - $item['quantity'];
 
                         // Need to do this check before actually setting the stock
-                        if ($stockCount < 0) {
-                            event(new StockRunOut($product, $stockCount));
+                        if ($stock < 0) {
+                            event(new StockRunOut($product, $stock));
 
                             throw new CheckoutProductHasNoStockException($product);
                         }
 
-                        $product->set(
-                            'stock',
-                            $stockCount = $product->get('stock') - $item['quantity']
-                        )->save();
+                        $product->stock(
+                            $stock = $product->stock() - $item['quantity']
+                        );
 
-                        if ($stockCount <= config('simple-commerce.low_stock_threshold', 10)) {
-                            event(new StockRunningLow($product, $stockCount));
+                        $product->save();
+
+                        if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
+                            event(new StockRunningLow($product, $stock));
                         }
                     }
                 }
@@ -42,23 +43,24 @@ trait HandleStock
                 if ($product->purchasableType() === ProductType::VARIANT()) {
                     $variant = $product->variant($item['variant']['variant'] ?? $item['variant']);
 
-                    if ($variant !== null && $variant->stockCount() !== null) {
-                        $stockCount = $variant->stockCount() - $item['quantity'];
+                    if ($variant !== null && $variant->stock() !== null) {
+                        $stock = $variant->stock() - $item['quantity'];
 
                         // Need to do this check before actually setting the stock
-                        if ($stockCount < 0) {
-                            event(new StockRunOut($product, $stockCount, $variant));
+                        if ($stock < 0) {
+                            event(new StockRunOut($product, $stock, $variant));
 
                             throw new CheckoutProductHasNoStockException($product, $variant);
                         }
 
-                        $variant->set(
-                            'stock',
-                            $stockCount = $variant->stockCount() - $item['quantity']
+                        $variant->stock(
+                            $stock = $variant->stock() - $item['quantity']
                         );
 
-                        if ($stockCount <= config('simple-commerce.low_stock_threshold', 10)) {
-                            event(new StockRunningLow($product, $stockCount));
+                        $variant->save();
+
+                        if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
+                            event(new StockRunningLow($product, $stock));
                         }
                     }
                 }

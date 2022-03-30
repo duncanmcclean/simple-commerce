@@ -28,7 +28,7 @@ class CartItemController extends BaseActionController
         $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
         $product = Product::find($request->product);
 
-        $items = $cart->has('items') ? $cart->get('items') : [];
+        $items = $cart->lineItems();
 
         // Handle customer stuff..
         if ($request->has('customer')) {
@@ -42,44 +42,46 @@ class CartItemController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 if (is_array($request->get('customer'))) {
-                    $customer = Customer::create([
-                        'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
-                        'email' => $request->get('customer')['email'],
-                        'published' => true,
-                    ], $this->guessSiteFromRequest()->handle());
+                    $customer = Customer::make()
+                        ->email($request->get('customer')['email'])
+                        ->data([
+                            'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
+                            'published' => true,
+                        ]);
+
+                    $customer->save();
                 } elseif (is_string($request->get('customer'))) {
                     $customer = Customer::find($request->get('customer'));
                 }
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->customer($customer->id());
         } elseif ($request->has('email')) {
             try {
                 $customer = Customer::findByEmail($request->get('email'));
             } catch (CustomerNotFound $e) {
-                $customer = Customer::create([
-                    'name'  => $request->get('name') ?? $request->get('email'),
-                    'email' => $request->get('email'),
-                    'published' => true,
-                ], $this->guessSiteFromRequest()->handle());
+                $customer = Customer::make()
+                    ->email($request->get('email'))
+                    ->data([
+                        'name'  => $request->get('name') ?? $request->get('email'),
+                        'published' => true,
+                    ]);
+
+                $customer->save();
             }
 
-            $cart->data([
-                'customer' => $customer->id,
-            ])->save();
+            $cart->customer($customer->id());
         }
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::PRODUCT()) {
-            if ($product->has('stock') && $product->get('stock') !== null && $product->get('stock') < $request->quantity) {
+            if ($product->stock() && $product->stock() !== null && $product->stock() < $request->quantity) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         } elseif ($product->purchasableType() === ProductType::VARIANT()) {
             $variant = $product->variant($request->get('variant'));
 
-            if ($variant !== null && $variant->stockCount() !== null && $variant->stockCount() < $request->quantity) {
+            if ($variant !== null && $variant->stock() !== null && $variant->stock() < $request->quantity) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         }
@@ -97,22 +99,22 @@ class CartItemController extends BaseActionController
 
             $hasPurchasedPrerequisiteProduct = $customer->orders()
                 ->filter(function ($order) {
-                    return $order->get('is_paid') === true;
+                    return $order->isPaid() === true;
                 })
                 ->filter(function ($order) use ($product) {
-                    return collect($order->get('items'))
+                    return $order->lineItems()
                         ->where('product', $product->get('prerequisite_product'))
                         ->count() > 0;
                 })
                 ->count() > 0;
 
             if (! $hasPurchasedPrerequisiteProduct) {
-                return $this->withErrors($request, __("Before purchasing this product, you must purchase {$prerequisiteProduct->title()} first."));
+                return $this->withErrors($request, __("Before purchasing this product, you must purchase {$prerequisiteProduct->get('title')} first."));
             }
         }
 
         // Ensure the product doesn't already exist in the cart
-        $alreadyExistsQuery = collect($items);
+        $alreadyExistsQuery = $items;
         $metadata = Arr::except($request->all(), $this->reservedKeys);
 
         if ($request->has('variant')) {

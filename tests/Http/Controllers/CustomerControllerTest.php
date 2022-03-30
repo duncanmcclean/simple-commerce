@@ -11,13 +11,6 @@ class CustomerControllerTest extends TestCase
 {
     use SetupCollections;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->setupCollections();
-    }
-
     /** @test */
     public function can_get_customer()
     {

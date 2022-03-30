@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -9,10 +10,11 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Statamic\Facades\Collection;
 use Stripe\Customer as StripeCustomer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -20,17 +22,19 @@ use Stripe\Stripe;
 
 class StripeGatewayTest extends TestCase
 {
+    use SetupCollections, RefreshContent;
+
     public StripeGateway $gateway;
 
     public function setUp(): void
     {
         parent::setUp();
 
+        $this->setupCollections();
+
         $this->gateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
         ]);
-
-        Collection::make('orders')->title('Order')->save();
     }
 
     /** @test */
@@ -49,23 +53,31 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Concert Ticket', 'price' => 5500]);
+        $product = Product::make()
+            ->price(5500)
+            ->data([
+                'title' => 'Concert Ticket',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 5500,
+                'metadata' => [],
+            ],
+        ])->grandTotal(5500)->merge([
+            'title' => '#0001',
+        ]);
+
+        $order->save();
 
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 5500,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 5500,
-                'title' => '#0001',
-            ])
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -78,7 +90,7 @@ class StripeGatewayTest extends TestCase
         $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
-        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
     }
@@ -90,25 +102,34 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Theatre Ticket', 'price' => 1299]);
-        $customer = Customer::create(['name' => 'George', 'email' => 'george@example.com']);
+        $product = Product::make()
+            ->price(1299)
+            ->data([
+                'title' => 'Concert Ticket',
+            ]);
+
+        $product->save();
+
+        $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
+        $customer->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1299,
+                'metadata' => [],
+            ],
+        ])->grandTotal(1299)->customer($customer->id())->merge([
+            'title' => '#0002',
+        ]);
+
+        $order->save();
 
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 1299,
-                        'metadata' => [],
-                    ],
-                ],
-                'grand_total' => 1299,
-                'title' => '#0002',
-                'customer' => $customer->id(),
-            ])
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -121,7 +142,7 @@ class StripeGatewayTest extends TestCase
         $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
-        $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
+        $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNotNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
 
@@ -139,30 +160,106 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $product = Product::create(['title' => 'Talent Show Ticket', 'price' => 1299]);
-        $customer = Customer::create(['name' => 'George', 'email' => 'george@example.com']);
+        $product = Product::make()
+            ->price(1299)
+            ->data([
+                'title' => 'Talent Show Ticket',
+            ]);
+
+        $product->save();
+
+        $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
+        $customer->save();
 
         $this->gateway->setConfig([
             'secret' => env('STRIPE_SECRET'),
             'receipt_email' => true,
         ]);
 
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1299,
+                'metadata' => [],
+            ],
+        ])->grandTotal(1299)->customer($customer->id())->merge([
+            'title' => '#0003',
+        ]);
+
+        $order->save();
+
         $prepare = $this->gateway->prepare(new Prepare(
             new Request(),
-            $order = Order::create([
-                'items' => [
-                    [
-                        'id' => app('stache')->generateId(),
-                        'product' => $product->id,
-                        'quantity' => 1,
-                        'total' => 1299,
-                        'metadata' => [],
+            $order
+        ));
+
+        $this->assertIsObject($prepare);
+        $this->assertTrue($prepare instanceof GatewayResponse);
+
+        $this->assertTrue($prepare->success());
+        $this->assertArrayHasKey('intent', $prepare->data());
+        $this->assertArrayHasKey('client_secret', $prepare->data());
+
+        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+
+        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->amount, $order->grandTotal());
+        $this->assertNotNull($paymentIntent->customer);
+        $this->assertSame($paymentIntent->receipt_email, $customer->email());
+
+        $stripeCustomer = StripeCustomer::retrieve($paymentIntent->customer);
+
+        $this->assertSame($stripeCustomer->id, $paymentIntent->customer);
+        $this->assertSame($stripeCustomer->name, 'George');
+        $this->assertSame($stripeCustomer->email, 'george@example.com');
+    }
+
+    /** @test */
+    public function can_prepare_with_payment_intent_data_closure()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        $this->gateway->setConfig([
+            'secret' => env('STRIPE_SECRET'),
+            'payment_intent_data' => function (ContractsOrder $order) {
+                return [
+                    'description' => 'Some custom description',
+                    'metadata' => [
+                        'foo' => 'bar',
                     ],
-                ],
-                'grand_total' => 1299,
-                'title' => '#0003',
-                'customer' => $customer->id(),
-            ])
+                ];
+            },
+        ]);
+
+        $product = Product::make()
+            ->price(1299)
+            ->data([
+                'title' => 'Concert Ticket',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1299,
+                'metadata' => [],
+            ],
+        ])->grandTotal(1299)->merge([
+            'title' => '#0002',
+        ]);
+
+        $order->save();
+
+        $prepare = $this->gateway->prepare(new Prepare(
+            new Request(),
+            $order
         ));
 
         $this->assertIsObject($prepare);
@@ -176,14 +273,14 @@ class StripeGatewayTest extends TestCase
 
         $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
         $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
-        $this->assertNotNull($paymentIntent->customer);
-        $this->assertSame($paymentIntent->receipt_email, $customer->email());
+        $this->assertSame($paymentIntent->description, 'Some custom description');
+        $this->assertSame($paymentIntent->metadata->foo, 'bar');
+        $this->assertNull($paymentIntent->customer);
+        $this->assertNull($paymentIntent->receipt_email);
 
-        $stripeCustomer = StripeCustomer::retrieve($paymentIntent->customer);
-
-        $this->assertSame($stripeCustomer->id, $paymentIntent->customer);
-        $this->assertSame($stripeCustomer->name, 'George');
-        $this->assertSame($stripeCustomer->email, 'george@example.com');
+        $this->gateway->setConfig([
+            'secret' => env('STRIPE_SECRET'),
+        ]);
     }
 
     /** @test */
@@ -195,19 +292,23 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $product = Product::create(['title' => 'Zoo Ticket', 'price' => 1234]);
+        $product = Product::make()
+            ->price(1234)
+            ->data([
+                'title' => 'Zoo Ticket',
+            ]);
 
-        $order = Order::create([
-            'items' => [
-                [
-                    'id' => app('stache')->generateId(),
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1234,
-                    'metadata' => [],
-                ],
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1234,
+                'metadata' => [],
             ],
-            'grand_total' => 1234,
+        ])->grandTotal(1234)->merge([
             'title' => '#0004',
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
@@ -219,6 +320,8 @@ class StripeGatewayTest extends TestCase
                 ])->id,
             ],
         ]);
+
+        $order->save();
 
         $paymentMethod = PaymentMethod::create([
             'type' => 'card',
@@ -249,7 +352,7 @@ class StripeGatewayTest extends TestCase
 
         $order = $order->fresh();
 
-        $this->assertTrue($order->get('is_paid'));
+        $this->assertTrue($order->isPaid());
         $this->assertNotNull($order->get('paid_date'));
     }
 
@@ -274,7 +377,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::create([
+        $order = Order::make()->grandTotal(1234)->merge([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
@@ -284,8 +387,9 @@ class StripeGatewayTest extends TestCase
                     // ],
                 ])->id,
             ],
-            'grand_total' => 1234,
         ]);
+
+        $order->save();
 
         $charge = $this->gateway->getCharge($order);
 
@@ -305,7 +409,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::create([
+        $order = Order::make()->grandTotal(1234)->merge([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
@@ -315,8 +419,9 @@ class StripeGatewayTest extends TestCase
                     // ],
                 ])->id,
             ],
-            'grand_total' => 1234,
         ]);
+
+        $order->save();
 
         $paymentMethod = PaymentMethod::create([
             'type' => 'card',
@@ -346,7 +451,8 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function can_hit_webhook_with_payment_intent_succeeded_event()
     {
-        $order = Order::create();
+        $order = Order::make();
+        $order->save();
 
         $payload = [
             'type' => 'payment_intent.succeeded',

@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support;
+namespace DoubleThreeDigital\SimpleCommerce;
 
 class Currencies
 {

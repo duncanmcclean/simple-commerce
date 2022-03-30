@@ -18,7 +18,6 @@ class TaxCategory
     public $name;
     public $description;
 
-    // Statamic 3.3
     protected $selectedQueryRelations = [];
 
     public function __construct()

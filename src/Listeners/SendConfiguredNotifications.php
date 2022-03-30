@@ -61,7 +61,7 @@ class SendConfiguredNotifications implements ShouldQueue
                 ];
             }
 
-            if ($email = $event->order->get('customer')) {
+            if ($email = $event->order->customer()) {
                 return [
                     ['channel' => 'mail', 'route' => $email],
                 ];

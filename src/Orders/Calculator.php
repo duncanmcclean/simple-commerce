@@ -17,8 +17,8 @@ class Calculator implements Contract
 
     public function calculate(OrderContract $order): array
     {
-        if ($order->has('is_paid') && $order->get('is_paid') === true) {
-            return $order->data()->toArray();
+        if ($order->isPaid()) {
+            return $order->data()->merge(['items' => $order->lineItems()->toArray()])->toArray();
         }
 
         $this->order = $order;
@@ -92,7 +92,7 @@ class Calculator implements Contract
         if (SimpleCommerce::$productPriceHook) {
             $productPrice = (SimpleCommerce::$productPriceHook)($this->order, $product);
         } else {
-            $productPrice = $product->get('price');
+            $productPrice = $product->price();
         }
 
         // Ensure we strip any decimals from price
@@ -129,7 +129,7 @@ class Calculator implements Contract
     public function calculateOrderShipping(array $data): array
     {
         $shippingMethod = $this->order->get('shipping_method');
-        $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
+        $defaultShippingMethod = config('simple-commerce.sites.' . Site::current()->handle() . '.shipping.default_method');
 
         if (! $shippingMethod && ! $defaultShippingMethod) {
             return [
@@ -147,7 +147,7 @@ class Calculator implements Contract
     public function calculateOrderCoupons(array $data): array
     {
         if ($coupon = $this->order->coupon()) {
-            $value = (int) $coupon->get('value');
+            $value = (int) $coupon->value();
 
             // Double check coupon is still valid
             if (! $coupon->isValid($this->order)) {
@@ -159,11 +159,11 @@ class Calculator implements Contract
             $baseAmount = $data['items_total'] + $data['tax_total'];
 
             // Otherwise do all the other stuff...
-            if ($coupon->get('type') === 'percentage') {
+            if ($coupon->type() === 'percentage') {
                 $data['coupon_total'] = (int) ($value * $baseAmount) / 100;
             }
 
-            if ($coupon->get('type') === 'fixed') {
+            if ($coupon->type() === 'fixed') {
                 $data['coupon_total'] = (int) $baseAmount - ($baseAmount - $value);
             }
         }

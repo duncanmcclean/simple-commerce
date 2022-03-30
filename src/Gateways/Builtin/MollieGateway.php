@@ -4,8 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
@@ -35,7 +35,7 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->create([
             'amount' => [
                 'currency' => Currency::get(Site::current())['code'],
-                'value'    => (string) substr_replace($order->get('grand_total'), '.', -2, 0),
+                'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
             ],
             'description' => "Order {$order->get('title')}",
             'redirectUrl' => $this->callbackUrl([
@@ -56,7 +56,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->get('gateway')['data']['id']);
+        $payment = $this->mollie->payments->get($order->gateway()['data']['id']);
 
         return new Response(true, [
             'id'                              => $payment->id,
@@ -100,7 +100,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->get('gateway')['data']['id']);
+        $payment = $this->mollie->payments->get($order->gateway()['data']['id']);
         $payment->refund([]);
 
         return new Response(true, []);
@@ -126,7 +126,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 })
                 ->first();
 
-            if ($order->get('is_paid') === true) {
+            if ($order->isPaid() === true) {
                 return;
             }
 

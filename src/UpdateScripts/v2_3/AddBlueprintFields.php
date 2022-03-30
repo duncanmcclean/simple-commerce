@@ -21,7 +21,7 @@ class AddBlueprintFields extends UpdateScript
 
     protected function updateOrderBlueprint()
     {
-        if (SimpleCommerce::orderDriver()['driver'] !== Order::class) {
+        if (SimpleCommerce::orderDriver()['repository'] !== Order::class) {
             $this->console()->error("Could not migrate order blueprint. You're not using the entry content driver.");
         }
 

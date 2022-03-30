@@ -19,7 +19,7 @@ class CheckoutTags extends SubTag
         $cart = $this->getCart();
         $data = $cart->data;
 
-        if ($cart->get('grand_total') > 0) {
+        if ($cart->grandTotal() > 0) {
             collect(SimpleCommerce::gateways())
                 ->filter(function ($gateway) {
                     if ($specifiedGateway = $this->params->get('gateway')) {
@@ -35,11 +35,10 @@ class CheckoutTags extends SubTag
                     try {
                         $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
 
-                        $cart->data([
-                            $gateway['handle'] => $prepare->data(),
-                        ])->save();
+                        $cart->set($gateway['handle'], $prepare->data());
+                        $cart->save();
 
-                        $data = array_merge($data, $prepare->data());
+                        $data = $data->merge($prepare->data());
                     } catch (\Exception $e) {
                         throw new GatewayException($e->getMessage());
                     }
@@ -52,7 +51,7 @@ class CheckoutTags extends SubTag
                             ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
                             ->callbackUrl();
 
-                        $data = array_merge($data, [
+                        $data = $data->merge([
                             'gateway-config' => $config,
                             'callback_url' => $callbackUrl,
                         ]);
@@ -64,7 +63,7 @@ class CheckoutTags extends SubTag
 
         return $this->createForm(
             route('statamic.simple-commerce.checkout.store'),
-            $data,
+            $data->toArray(),
             'POST'
         );
     }
@@ -99,13 +98,18 @@ class CheckoutTags extends SubTag
 
         $prepare = $prepare->prepare(request(), $cart);
 
-        $cart->data([
-            'gateway' => array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
-                'use' => $gateway['class'],
-            ]),
+        $cart->gateway(
+            array_merge(
+                $cart->gateway() !== null && is_string($cart->gateway()) ? $cart->gateway() : [],
+                [
+                    'use' => $gateway['class'],
+                ]
+            )
+        );
 
-            $gateway['handle'] => $prepare->data(), // TODO
-        ])->save();
+        $cart->set($gateway['handle'], $prepare->data());
+
+        $cart->save();
 
         if (! $prepare->checkoutUrl()) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');

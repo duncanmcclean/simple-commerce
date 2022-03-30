@@ -39,10 +39,8 @@ class CookieDriver implements CartDriver
 
     public function makeCart(): Order
     {
-        $cart = OrderAPI::create(
-            [],
-            $this->guessSiteFromRequest()
-        );
+        $cart = OrderAPI::make();
+        $cart->save();
 
         Cookie::queue($this->getKey(), $cart->id);
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Support\Rules;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\EntryExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\ProductExists;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
-class EntryExistsTest extends TestCase
+class ProductExistsTest extends TestCase
 {
     /** @test */
     public function it_passes_if_entry_exists()
@@ -23,7 +23,7 @@ class EntryExistsTest extends TestCase
         $validate = Validator::make([
             'entry' => $entry->id(),
         ], [
-            'entry' => [new EntryExists()],
+            'entry' => [new ProductExists()],
         ]);
 
         $this->assertFalse($validate->fails());
@@ -35,7 +35,7 @@ class EntryExistsTest extends TestCase
         $validate = Validator::make([
             'entry' => 'wippers',
         ], [
-            'entry' => [new EntryExists()],
+            'entry' => [new ProductExists()],
         ]);
 
         $this->assertTrue($validate->fails());

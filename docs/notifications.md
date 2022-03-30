@@ -32,12 +32,24 @@ With this, you can send notifications via email, via SMS or even in real time if
             'to' => 'duncan@example.com',
         ],
     ],
+
+   // ...
 ],
 ```
 
 Inside the `notifications` array, you can list the event you would like to send notifications on, then you can provide another array with each of the notifications you'd like to send when that event happens.
 
 You may also configure who you wish to send each notification to. If you'd like to send the notification to a customer, send it to the `customer`. Otherwise, you can simply send it to an email address.
+
+### Available events
+
+You may listen to any of the following events:
+
+- `order_paid`
+- `order_payment_failed`
+- `order_shipped`
+- `stock_running_low`
+- `stock_run_out`
 
 ## Using a custom notification
 
@@ -75,7 +87,7 @@ php artisan vendor:publish --tag=laravel-notifications
 
 ## Testing emails
 
-While you're in development, you may need to test your emails without faffing around with *real* emails.
+While you're in development, you may need to test your emails without faffing around with _real_ emails.
 
 For this, I'd recommend using a tool like [HELO](https://a.paddle.com/v2/click/103161/130785?link=2990) or [Mailtrap](https://mailtrap.io/) which let you view emails during development.
 

@@ -70,7 +70,7 @@ class MigrateTaxConfiguration extends UpdateScript
         |--------------------------------------------------------------------------
         |
         | Configure the 'tax engine' you would like to use to calculate tax on
-        | products & configure various tax-related settings.
+        | products & configure various tax-resource settings.
         |
         */
 

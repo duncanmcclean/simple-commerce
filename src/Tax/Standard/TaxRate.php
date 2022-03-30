@@ -22,7 +22,6 @@ class TaxRate
     public $zone;
     public $includeInPrice = false;
 
-    // Statamic 3.3
     protected $selectedQueryRelations = [];
 
     public function __construct()

@@ -56,7 +56,7 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_null_if_purcaseable_type_is_product()
     {
-        $product = Product::create();
+        $product = Product::make()->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
@@ -69,8 +69,8 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_null_if_variant_does_not_exist()
     {
-        $product = Product::create([
-            'product_variants' => [
+        $product = Product::make()
+            ->productVariants([
                 'variants' => [
                     [
                         'name' => 'Colour',
@@ -84,8 +84,9 @@ class ProductVariantFieldtypeTest extends TestCase
                 'options' => [
                     ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
                 ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,
@@ -98,8 +99,8 @@ class ProductVariantFieldtypeTest extends TestCase
     /** @test */
     public function that_augmentation_returns_variant_data()
     {
-        $product = Product::create([
-            'product_variants' => [
+        $product = Product::make()
+            ->productVariants([
                 'variants' => [
                     [
                         'name' => 'Colour',
@@ -113,8 +114,9 @@ class ProductVariantFieldtypeTest extends TestCase
                 'options' => [
                     ['key' => 'Yellow_Large', 'variant' => 'Yellow, Large'],
                 ],
-            ],
-        ]);
+            ]);
+
+        $product->save();
 
         $augment = (new ProductVariantFieldtype())->augment([
             'product' => $product->id,

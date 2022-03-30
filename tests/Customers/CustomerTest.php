@@ -13,10 +13,13 @@ class CustomerTest extends TestCase
     /** @test */
     public function can_create()
     {
-        $create = Customer::create([
-            'name' => 'Joe Smith',
-            'email' => 'joe.smith@example.com',
-        ]);
+        $create = Customer::make()
+            ->email('joe.smith@example.com')
+            ->data([
+                'name' => 'Joe Smith',
+            ]);
+
+        $create->save();
 
         $this->assertTrue($create instanceof CustomersCustomer);
 
@@ -24,17 +27,20 @@ class CustomerTest extends TestCase
 
         $this->assertSame($create->name(), 'Joe Smith');
         $this->assertSame($create->email(), 'joe.smith@example.com');
-        $this->assertSame($create->slug, 'joesmith-at-examplecom');
+        $this->assertSame($create->get('slug'), 'joesmith-at-examplecom');
     }
 
     /** @test */
     public function can_create_and_ensure_customer_entry_is_published()
     {
-        $create = Customer::create([
-            'name' => 'Joe Smith',
-            'email' => 'joe.smith@example.com',
-            'published' => true,
-        ]);
+        $create = Customer::make()
+            ->email('joe.smith@example.com')
+            ->data([
+                'name' => 'Joe Smith',
+                'published' => true,
+            ]);
+
+        $create->save();
 
         $this->assertTrue($create instanceof CustomersCustomer);
 
@@ -42,8 +48,7 @@ class CustomerTest extends TestCase
         $this->assertSame($create->name(), 'Joe Smith');
         $this->assertSame($create->email(), 'joe.smith@example.com');
 
-        $this->assertTrue($create->published);
-        $this->assertTrue($create->entry()->published());
+        $this->assertTrue($create->get('published'));
     }
 
     /** @test */
@@ -65,7 +70,7 @@ class CustomerTest extends TestCase
 
         $this->assertSame($findByEmail->name(), 'Smoke Fire');
         $this->assertSame($findByEmail->email(), 'smoke@fire.com');
-        $this->assertSame($findByEmail->slug, 'smoke-at-firecom');
+        $this->assertSame($findByEmail->get('slug'), 'smoke-at-firecom');
     }
 
     /** @test */
@@ -87,6 +92,6 @@ class CustomerTest extends TestCase
 
         $this->assertSame($findByEmail->name(), 'Sam Seaboarn');
         $this->assertSame($findByEmail->email(), 'sam@whitehouse.gov');
-        $this->assertSame($findByEmail->slug, 'sam-at-whitehousegov');
+        $this->assertSame($findByEmail->get('slug'), 'sam-at-whitehousegov');
     }
 }

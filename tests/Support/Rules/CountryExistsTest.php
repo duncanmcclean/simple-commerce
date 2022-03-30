@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Support\Rules;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Rules\CountryExists;
+use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 

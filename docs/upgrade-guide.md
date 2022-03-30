@@ -56,7 +56,7 @@ Any multi-sites migrated to v2.4 will continue to use the v2.3 behaviour. To opt
 
 ```php
 'cart' => [
-    'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+    'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
     'key' => 'simple-commerce-cart',
     'single_cart' => true, // [tl! --]
 ],

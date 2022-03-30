@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support;
+namespace DoubleThreeDigital\SimpleCommerce;
 
 use Illuminate\Support\Facades\File;
 
@@ -8,7 +8,7 @@ class Countries
 {
     public static function __callStatic($method, $parameters)
     {
-        return collect(json_decode(File::get(__DIR__.'/../../resources/json/countries.json'), true))
+        return collect(json_decode(File::get(__DIR__ . '/../resources/json/countries.json'), true))
             ->{$method}(...$parameters);
     }
 

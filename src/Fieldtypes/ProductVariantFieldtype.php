@@ -49,7 +49,7 @@ class ProductVariantFieldtype extends Fieldtype
         }
 
         $augmentedValue = $product
-            ->entry()
+            ->resource()
             ->augmentedValue('product_variants');
 
         if (! is_array($augmentedValue)) {

@@ -17,7 +17,7 @@ class AddTaxFieldToOrderLineItems extends UpdateScript
 
     public function update()
     {
-        if (SimpleCommerce::orderDriver()['driver'] !== Order::class) {
+        if (SimpleCommerce::orderDriver()['repository'] !== Order::class) {
             $this->console()->error("Could not add 'Line Item Tax' field to Order blueprint(s). You're not using the entry content driver.");
         }
 

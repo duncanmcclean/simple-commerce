@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
@@ -16,6 +17,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $actions = [
         Actions\MarkAsPaid::class,
+        Actions\MarkAsShipped::class,
         Actions\RefundAction::class,
     ];
 
@@ -50,7 +52,10 @@ class ServiceProvider extends AddonServiceProvider
             Listeners\SendConfiguredNotifications::class,
         ],
         Events\OrderPaymentFailed::class => [
-            //
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\OrderShipped::class => [
+            Listeners\SendConfiguredNotifications::class,
         ],
         Events\StockRunningLow::class => [
             Listeners\SendConfiguredNotifications::class,
@@ -91,9 +96,11 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v2_3\MigrateLineItemMetadata::class,
 
         UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
-        UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
+        // UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
         UpdateScripts\v2_4\MigrateSingleCartConfig::class,
         UpdateScripts\v2_4\MigrateTaxConfiguration::class,
+
+        UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
     ];
 
     public function boot()
@@ -119,6 +126,10 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         Filters\OrderStatusFilter::register();
+
+        if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
+            Debugbar::addCollector(new DebugbarDataCollector('simple-commerce'));
+        }
     }
 
     protected function bootVendorAssets()
@@ -155,20 +166,38 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bindContracts()
     {
-        collect([
-            Contracts\Order::class              => SimpleCommerce::orderDriver()['driver'],
-            Contracts\Coupon::class             => SimpleCommerce::couponDriver()['driver'],
-            Contracts\Customer::class           => SimpleCommerce::customerDriver()['driver'],
-            Contracts\Product::class            => SimpleCommerce::productDriver()['driver'],
+        $bindings = [
             Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\ShippingManager::class    => Shipping\Manager::class,
-            Contracts\Currency::class           => Support\Currency::class,
             Contracts\Calculator::class         => Orders\Calculator::class,
-        ])->each(function ($concrete, $abstract) {
+        ];
+
+        if (isset(SimpleCommerce::couponDriver()['repository'])) {
+            $bindings[Contracts\CouponRepository::class] = SimpleCommerce::couponDriver()['repository'];
+        }
+
+        if (isset(SimpleCommerce::customerDriver()['repository'])) {
+            $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
+        }
+
+        if (isset(SimpleCommerce::orderDriver()['repository'])) {
+            $bindings[Contracts\OrderRepository::class] = SimpleCommerce::orderDriver()['repository'];
+        }
+
+        if (isset(SimpleCommerce::productDriver()['repository'])) {
+            $bindings[Contracts\ProductRepository::class] = SimpleCommerce::productDriver()['repository'];
+        }
+
+        collect($bindings)->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
             }
         });
+
+        $this->app->bind(Contracts\Order::class, Orders\Order::class);
+        $this->app->bind(Contracts\Coupon::class, Coupons\Coupon::class);
+        $this->app->bind(Contracts\Customer::class, Customers\Customer::class);
+        $this->app->bind(Contracts\Product::class, Products\Product::class);
 
         return $this;
     }

@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
+use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
-use DoubleThreeDigital\SimpleCommerce\Support\Regions;
+use DoubleThreeDigital\SimpleCommerce\Regions;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;
@@ -21,7 +21,6 @@ class TaxZone
     public $country;
     public $region;
 
-    // Statamic 3.3
     protected $selectedQueryRelations = [];
 
     public function __construct()

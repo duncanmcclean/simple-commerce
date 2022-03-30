@@ -55,21 +55,24 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
 
-        $cart = Order::create([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
-                    'quantity' => 5,
-                    'total'    => 1000,
-                ],
+        $product->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 5,
+                'total'    => 1000,
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -79,32 +82,38 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_count()
     {
-        $productOne = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $productOne = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
 
-        $productTwo = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1200,
-        ]);
+        $productOne->save();
 
-        $cart = Order::create([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productOne->id,
-                    'quantity' => 5,
-                    'total'    => 1000,
-                ],
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productTwo->id,
-                    'quantity' => 5,
-                    'total'    => 1200,
-                ],
+        $productTwo = Product::make()
+            ->price(1200)
+            ->data([
+                'title' => 'Cat Food',
+            ]);
+
+        $productTwo->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productOne->id,
+                'quantity' => 5,
+                'total'    => 1000,
+            ],
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productTwo->id,
+                'quantity' => 5,
+                'total'    => 1200,
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -114,32 +123,38 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_quantity_total()
     {
-        $productOne = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $productOne = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
 
-        $productTwo = Product::create([
-            'title' => 'Cat Food',
-            'price' => 1200,
-        ]);
+        $productOne->save();
 
-        $cart = Order::create([
-            'items' => [
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productOne->id,
-                    'quantity' => 7,
-                    'total'    => 1000,
-                ],
-                [
-                    'id'       => Stache::generateId(),
-                    'product'  => $productTwo->id,
-                    'quantity' => 4,
-                    'total'    => 1200,
-                ],
+        $productTwo = Product::make()
+            ->price(1200)
+            ->data([
+                'title' => 'Cat Food',
+            ]);
+
+        $productTwo->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productOne->id,
+                'quantity' => 7,
+                'total'    => 1000,
+            ],
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $productTwo->id,
+                'quantity' => 4,
+                'total'    => 1200,
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -149,9 +164,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_total()
     {
-        $cart = Order::create([
-            'grand_total' => 2550,
-        ]);
+        $cart = Order::make()->grandTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -161,9 +175,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_grand_total()
     {
-        $cart = Order::create([
-            'grand_total' => 2550,
-        ]);
+        $cart = Order::make()->grandTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -173,9 +186,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_items_total()
     {
-        $cart = Order::create([
-            'items_total' => 2550,
-        ]);
+        $cart = Order::make()->itemsTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -185,9 +197,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_shipping_total()
     {
-        $cart = Order::create([
-            'shipping_total' => 2550,
-        ]);
+        $cart = Order::make()->shippingTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -197,9 +208,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_tax_total()
     {
-        $cart = Order::create([
-            'tax_total' => 2550,
-        ]);
+        $cart = Order::make()->taxTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -209,9 +219,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_coupon_total()
     {
-        $cart = Order::create([
-            'coupon_total' => 2550,
-        ]);
+        $cart = Order::make()->couponTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -221,10 +230,13 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_add_item_form()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+
+        $product->save();
 
         $this->tag->setParameters([]);
 
@@ -284,7 +296,9 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_cart_update_form()
     {
-        $cart = Order::create([]);
+        $cart = Order::make()->merge([]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -325,21 +339,24 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_if_product_already_exists_in_cart()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
 
-        $cart = Order::create([
-            'items' => [
-                [
-                    'id' => 'one-two-three',
-                    'product' => $product->id,
-                    'quantity' => 1,
-                    'total' => 1000,
-                ],
+        $product->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'id' => 'one-two-three',
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
             ],
         ]);
+
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -355,9 +372,11 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_if_product_and_variant_already_exists_in_cart()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'product_variants' => [
+        $product = Product::make()
+            ->data([
+                'title' => 'Dog Food',
+            ])
+            ->productVariants([
                 'variants' => [
                     [
                         'name'   => 'Colours',
@@ -379,20 +398,21 @@ class CartTagTest extends TestCase
                         'price'   => 5000,
                     ],
                 ],
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'id' => 'one-two-three',
+                'product' => $product->id,
+                'variant' => 'Red_Small',
+                'quantity' => 1,
+                'total' => 5000,
             ],
         ]);
 
-        $cart = Order::create([
-            'items' => [
-                [
-                    'id' => 'one-two-three',
-                    'product' => $product->id,
-                    'variant' => 'Red_Small',
-                    'quantity' => 1,
-                    'total' => 5000,
-                ],
-            ],
-        ]);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -409,12 +429,16 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_output_if_product_does_not_already_exists_in_cart()
     {
-        $product = Product::create([
-            'title' => 'Dog Food',
-            'price' => 1000,
-        ]);
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
 
-        $cart = Order::create([]);
+        $product->save();
+
+        $cart = Order::make()->merge([]);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -430,10 +454,12 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_data_from_cart()
     {
-        $cart = Order::create([
+        $cart = Order::make()->merge([
             'title' => '#0001',
             'note'  => 'Deliver by front door.',
         ]);
+
+        $cart->save();
 
         $this->session(['simple-commerce-cart' => $cart->id]);
         $this->tag->setParameters([]);
@@ -453,9 +479,11 @@ class CartTagTest extends TestCase
     protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Order::create([
+            $cart = Order::make()->merge([
                 'note' => 'Special note.',
             ]);
+
+            $cart->save();
         }
 
         Session::shouldReceive('get')

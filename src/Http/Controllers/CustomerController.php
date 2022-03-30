@@ -11,7 +11,9 @@ class CustomerController extends BaseActionController
 {
     public function index(IndexRequest $request, $customer)
     {
-        return Customer::find($customer)->toResource();
+        return [
+            'data' => Customer::find($customer)->toResource(),
+        ];
     }
 
     public function update(UpdateRequest $request, $customer)
@@ -19,7 +21,7 @@ class CustomerController extends BaseActionController
         // TODO: only save validated data, not everything
 
         Customer::find($customer)
-            ->data(Arr::except($request->all(), [
+            ->merge(Arr::except($request->all(), [
                 '_params',
                 '_redirect',
                 '_token',

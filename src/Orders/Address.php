@@ -2,28 +2,81 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Support\Countries;
-use DoubleThreeDigital\SimpleCommerce\Support\Regions;
+use DoubleThreeDigital\SimpleCommerce\Countries;
+use DoubleThreeDigital\SimpleCommerce\Regions;
 
 class Address
 {
-    protected $name;
-    protected $addressLine1;
-    protected $addressLine2;
-    protected $city;
-    protected $region;
-    protected $country;
-    protected $zipCode;
+    protected static $name;
+    protected static $addressLine1;
+    protected static $addressLine2;
+    protected static $city;
+    protected static $region;
+    protected static $country;
+    protected static $zipCode;
 
-    public function __construct($name, $addressLine1, $addressLine2, $city, $country, $zipCode, $region = null)
+    public static function from(string $addressType, $data): self
     {
-        $this->name = $name;
-        $this->addressLine1 = $addressLine1;
-        $this->addressLine2 = $addressLine2;
-        $this->city = $city;
-        $this->country = $country;
-        $this->zipCode = $zipCode;
-        $this->region = $region;
+        static::$name = $data->get("{$addressType}_name");
+        static::$addressLine1 = $data->get("{$addressType}_address") ?? $data->get("{$addressType}_address_line1");
+        static::$addressLine2 = $data->get("{$addressType}_address_line2");
+        static::$city = $data->get("{$addressType}_city");
+        static::$country = $data->get("{$addressType}_country");
+        static::$zipCode = $data->get("{$addressType}_zip_code") ?? $data->get("{$addressType}_postal_code");
+        static::$region = $data->get("{$addressType}_region");
+
+        return new static;
+    }
+
+    public function name(): ?string
+    {
+        return static::$name;
+    }
+
+    public function addressLine1(): ?string
+    {
+        return static::$addressLine1;
+    }
+
+    public function addressLine2(): ?string
+    {
+        return static::$addressLine2;
+    }
+
+    public function city(): ?string
+    {
+        return static::$city;
+    }
+
+    public function region(): ?array
+    {
+        if (! static::$region) {
+            return null;
+        }
+
+        if ($region = Regions::find(static::$region)) {
+            return $region;
+        }
+
+        if ($region = Regions::findByName(static::$region)) {
+            return $region;
+        }
+
+        return [
+            'id' => str_slug(static::$region),
+            'name' => static::$region,
+            'country_iso' => static::$country,
+        ];
+    }
+
+    public function country(): ?array
+    {
+        return Countries::find(static::$country);
+    }
+
+    public function zipCode(): ?string
+    {
+        return static::$zipCode;
     }
 
     public function toArray(): array
@@ -39,7 +92,7 @@ class Address
         ];
     }
 
-    public function asString(): string
+    public function __toString()
     {
         return collect($this->toArray())
             ->values()
@@ -53,57 +106,6 @@ class Address
 
                 return $value;
             })
-            ->join(','.PHP_EOL);
-    }
-
-    public function name(): ?string
-    {
-        return $this->name;
-    }
-
-    public function addressLine1(): ?string
-    {
-        return $this->addressLine1;
-    }
-
-    public function addressLine2(): ?string
-    {
-        return $this->addressLine2;
-    }
-
-    public function city(): ?string
-    {
-        return $this->city;
-    }
-
-    public function region(): ?array
-    {
-        if (! $this->region) {
-            return null;
-        }
-
-        if ($region = Regions::find($this->region)) {
-            return $region;
-        }
-
-        if ($region = Regions::findByName($this->region)) {
-            return $region;
-        }
-
-        return [
-            'id' => str_slug($this->region),
-            'name' => $this->region,
-            'country_iso' => $this->country,
-        ];
-    }
-
-    public function country(): ?array
-    {
-        return Countries::find($this->country);
-    }
-
-    public function zipCode(): ?string
-    {
-        return $this->zipCode;
+            ->join(',' . PHP_EOL);
     }
 }

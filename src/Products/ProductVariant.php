@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
+use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
-use DoubleThreeDigital\SimpleCommerce\Support\Traits\HasData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant
@@ -57,33 +57,37 @@ class ProductVariant
     {
         return $this
             ->fluentlyGetOrSet('stock')
+            ->setter(function ($value) {
+                if ($value === null) {
+                    return null;
+                }
+
+                return (int) $value;
+            })
             ->args(func_get_args());
     }
 
-    /**
-     * Use this to get the product's stock count.
-     *
-     * @return int
-     */
-    public function stockCount()
+    public function save(): self
     {
-        if ($this->stock === null) {
-            return null;
-        }
-
-        return (int) $this->stock;
-    }
-
-    public function set(string $key, $value): self
-    {
-        $this->product()->set(
-            'product_variants',
-            collect($this->product()->get('product_variants'))
-                ->map(function ($itemValue, $itemKey) use ($key, $value) {
+        $this->product->productVariants(
+            collect($this->product->productVariants())
+                ->map(function ($itemValue, $itemKey) {
                     if ($itemKey === 'options') {
                         foreach ($itemValue as $i => $option) {
                             if ($itemValue[$i]['key'] === $this->key()) {
-                                $itemValue[$i][$key] = $value;
+                                $variantData = [
+                                    'key' => $this->key(),
+                                    'variant' => $this->name(),
+                                    'price' => $this->price(),
+                                    'stock' => $this->stock(),
+                                ];
+
+                                $variantData = array_merge(
+                                    $variantData,
+                                    $this->data()->except(['key', 'name', 'price', 'stock'])->toArray()
+                                );
+
+                                $itemValue[$i] = $variantData;
                             }
                         }
                     }
@@ -91,7 +95,9 @@ class ProductVariant
                     return $itemValue;
                 })
                 ->toArray()
-        )->save();
+        );
+
+        $this->product->save();
 
         return $this;
     }

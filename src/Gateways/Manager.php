@@ -44,12 +44,14 @@ class Manager implements Contract
         $purchase = $this->resolve()->purchase(new Purchase($request, $order));
 
         if ($purchase->success()) {
-            Order::find($order->id())->data([
-                'gateway' => [
-                    'use' => $this->className,
-                    'data' => $purchase->data(),
-                ],
-            ])->save();
+            $order = Order::find($order->id());
+
+            $order->gateway([
+                'use' => $this->className,
+                'data' => $purchase->data(),
+            ]);
+
+            $order->save();
         } else {
             throw ValidationException::withMessages([$purchase->error()]);
         }
@@ -71,14 +73,11 @@ class Manager implements Contract
     {
         $refund = $this->resolve()->refundCharge($order);
 
-        $cart = Order::find($order->id());
+        $order
+            ->fresh()
+            ->refund($refund);
 
-        $cart->data([
-            'is_refunded'  => true,
-            'gateway' => array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
-                'refund' => $refund,
-            ]),
-        ])->save();
+        $order->save();
 
         return $refund;
     }

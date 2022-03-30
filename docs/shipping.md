@@ -147,3 +147,30 @@ After the customer has entered their address we can find available shipping meth
 ```
 
 After the customer has submitted that form, Simple Commerce will use that shipping method and update the order totals.
+
+## Marking an order as shipped
+
+As of Simple Commerce v2.4, you may now mark an order as 'Shipped'. You can either do this programatically or via the Control Panel.
+
+Marking an order as shipped will dispatch an event which you can use to send notifications to customers.
+
+### Programatically
+
+If you want to mark an order as Shipped from your own code, you may use the `markAsShipped` method available on `Order` objects.
+
+```php
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+
+$order = Order::find(123);
+$order->markAsShipped();
+```
+
+### Via the Control Panel
+
+> **Note:** this will only show if you're using Collections & Entries for your orders. You'll need to build this yourself for custom [content drivers](/extending/content-drivers).
+
+In the Control Panel listing table for orders, find the order you wish to mark as shipped, click the three dots on the right, and select the 'Mark as Shipped' option.
+
+The action will only be available for order which have already been marked as paid.
+
+![Mark as Shipped](/img/simple-commerce/mark-as-shipped.png)

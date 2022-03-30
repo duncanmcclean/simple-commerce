@@ -6,28 +6,34 @@ use Illuminate\Support\Collection;
 
 trait LineItems
 {
-    public function lineItems(): Collection
+    public function lineItems($lineItems = null)
     {
-        if (! $this->has('items')) {
-            return collect();
-        }
+        return $this
+            ->fluentlyGetOrSet('lineItems')
+            ->setter(function ($value) {
+                if ($value === null) {
+                    $value = collect();
+                }
 
-        return collect($this->get('items'));
+                if (is_array($value)) {
+                    $value = collect($value);
+                }
+
+                return $value;
+            })
+            ->args(func_get_args());
     }
 
     public function lineItem($lineItemId): array
     {
-        return $this->lineItems()
-            ->firstWhere('id', $lineItemId);
+        return $this->lineItems()->firstWhere('id', $lineItemId);
     }
 
     public function addLineItem(array $lineItemData): array
     {
         $lineItemData['id'] = app('stache')->generateId();
 
-        $this->data([
-            'items' => array_merge($this->lineItems()->toArray(), [$lineItemData]),
-        ]);
+        $this->lineItems = $this->lineItems->push($lineItemData);
 
         $this->save();
 
@@ -40,17 +46,13 @@ trait LineItems
 
     public function updateLineItem($lineItemId, array $lineItemData): array
     {
-        $this->data([
-            'items' => $this->lineItems()
-                ->map(function ($item) use ($lineItemId, $lineItemData) {
-                    if ($item['id'] !== $lineItemId) {
-                        return $item;
-                    }
+        $this->lineItems = $this->lineItems->map(function ($item) use ($lineItemId, $lineItemData) {
+            if ($item['id'] !== $lineItemId) {
+                return $item;
+            }
 
-                    return array_merge($item, $lineItemData);
-                })
-                ->toArray(),
-        ]);
+            return array_merge($item, $lineItemData);
+        });
 
         $this->save();
 
@@ -63,14 +65,9 @@ trait LineItems
 
     public function removeLineItem($lineItemId): Collection
     {
-        $this->data([
-            'items' => $this->lineItems()
-                ->reject(function ($item) use ($lineItemId) {
-                    return $item['id'] === $lineItemId;
-                })
-                ->values()
-                ->toArray(),
-        ]);
+        $this->lineItems = $this->lineItems->reject(function ($item) use ($lineItemId) {
+            return $item['id'] === $lineItemId;
+        });
 
         $this->save();
 
@@ -83,9 +80,7 @@ trait LineItems
 
     public function clearLineItems(): Collection
     {
-        $this->data([
-            'items' => [],
-        ]);
+        $this->lineItems = collect();
 
         $this->save();
 
