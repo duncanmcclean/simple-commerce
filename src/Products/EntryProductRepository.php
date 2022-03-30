@@ -48,10 +48,14 @@ class EntryProductRepository implements RepositoryContract
             $product->stock($entry->get('stock'));
         }
 
+        if ($entry->has('tax_category')) {
+            $product->taxCategory($entry->get('tax_category'));
+        }
+
         return $product->data(array_merge(
             Arr::except(
                 $entry->data()->toArray(),
-                ['price', 'product_variants', 'stock']
+                ['price', 'product_variants', 'stock', 'tax_category']
             ),
             [
                 'site' => optional($entry->site())->handle(),
@@ -95,6 +99,7 @@ class EntryProductRepository implements RepositoryContract
                     'price' => $product->price(),
                     'product_variants' => $product->productVariants(),
                     'stock' => $product->stock(),
+                    'tax_category' => $product->taxCategory(),
                 ]
             )
         );
@@ -105,6 +110,7 @@ class EntryProductRepository implements RepositoryContract
         $product->price = $entry->get('price');
         $product->productVariants = $entry->get('product_variants');
         $product->stock = $entry->get('stock');
+        $product->taxCategory = $entry->get('tax_category');
         $product->data = $entry->data();
         $product->resource = $entry;
     }

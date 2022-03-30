@@ -76,9 +76,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory($taxCategory->id())
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => $taxCategory->id(),
             ]);
 
         $product->save();
@@ -146,9 +146,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory($taxCategory->id())
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => $taxCategory->id(),
             ]);
 
         $product->save();
@@ -216,9 +216,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory($taxCategory->id())
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => $taxCategory->id(),
             ]);
 
         $product->save();
@@ -276,9 +276,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory('standard-stuff')
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => 'standard-stuff',
             ]);
 
         $product->save();
@@ -335,9 +335,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory('standard-stuff')
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => 'standard-stuff',
             ]);
 
         $product->save();
@@ -395,9 +395,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory('standard-stuff')
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => 'standard-stuff',
             ]);
 
         $product->save();
@@ -451,9 +451,9 @@ class StandardTaxEngineTest extends TestCase
 
         $product = Product::make()
             ->price(1000)
+            ->taxCategory('standard-stuff')
             ->data([
                 'title' => 'Cat Food',
-                'tax_category' => 'standard-stuff',
             ]);
 
         $product->save();

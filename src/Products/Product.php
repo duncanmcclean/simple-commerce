@@ -19,8 +19,8 @@ class Product implements Contract
     public $price;
     public $productVariants;
     public $stock;
+    public $taxCategory;
     public $data;
-
     public $resource;
 
     public function __construct()
@@ -70,6 +70,36 @@ class Product implements Contract
             ->args(func_get_args());
     }
 
+    public function taxCategory($taxCategory = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('taxCategory')
+            ->getter(function ($value) {
+                if (! $value) {
+                    return TaxCategoryFacade::find('default');
+                }
+
+                return $value;
+            })
+            ->setter(function ($taxCategory) {
+                if ($taxCategory instanceof TaxCategory) {
+                    return $taxCategory;
+                }
+
+                return TaxCategoryFacade::find($taxCategory);
+            })
+            ->args(func_get_args());
+    }
+
+    // public function taxCategory(): ?TaxCategory
+    // {
+    //     if (! $this->get('tax_category')) {
+    //         return TaxCategoryFacade::find('default');
+    //     }
+
+    //     return TaxCategoryFacade::find($this->get('tax_category'));
+    // }
+
     public function resource($resource = null)
     {
         return $this
@@ -116,15 +146,6 @@ class Product implements Contract
         })->first();
     }
 
-    public function taxCategory(): ?TaxCategory
-    {
-        if (! $this->get('tax_category')) {
-            return TaxCategoryFacade::find('default');
-        }
-
-        return TaxCategoryFacade::find($this->get('tax_category'));
-    }
-
     public function beforeSaved()
     {
         return null;
@@ -163,6 +184,7 @@ class Product implements Contract
         $this->price = $freshProduct->price;
         $this->productVariants = $freshProduct->productVariants;
         $this->stock = $freshProduct->stock;
+        $this->taxCategory = $freshProduct->taxCategory;
         $this->data = $freshProduct->data;
         $this->resource = $freshProduct->resource;
 
