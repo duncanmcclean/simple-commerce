@@ -36,8 +36,9 @@ class EntryCouponRepository implements RepositoryContract
             ->resource($entry)
             ->id($entry->id())
             ->code($entry->slug())
+            ->value($entry->get('value'))
             ->data(array_merge(
-                $entry->data()->toArray(),
+                $entry->data()->except(['value'])->toArray(),
                 [
                     'site' => optional($entry->site())->handle(),
                     'slug' => $entry->slug(),
@@ -79,10 +80,6 @@ class EntryCouponRepository implements RepositoryContract
             $entry->site($coupon->get('site'));
         }
 
-        // if ($coupon->get('slug')) {
-        //     $entry->slug($coupon->get('slug'));
-        // }
-
         $entry->slug($coupon->code());
 
         if ($coupon->get('published')) {
@@ -90,13 +87,19 @@ class EntryCouponRepository implements RepositoryContract
         }
 
         $entry->data(
-            Arr::except($coupon->data(), ['id', 'site', 'slug', 'published'])
+            array_merge(
+                Arr::except($coupon->data()->toArray(), ['id', 'site', 'slug', 'published']),
+                [
+                    'value' => $coupon->value(),
+                ]
+            )
         );
 
         $entry->save();
 
         $coupon->id = $entry->id();
         $coupon->code = $entry->slug();
+        $coupon->value = $entry->get('value');
         $coupon->resource = $entry;
 
         $coupon->merge([

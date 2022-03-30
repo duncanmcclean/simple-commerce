@@ -289,10 +289,10 @@ class CalculatorTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('half-price')
+            ->value(50)
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'value'              => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -335,10 +335,10 @@ class CalculatorTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('fifty-friday')
+            ->value(50)
             ->data([
                 'title'              => 'Fifty Friday',
                 'redeemed'           => 0,
-                'value'              => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -379,10 +379,10 @@ class CalculatorTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('one-hundred-pence-off')
+            ->value(100)
             ->data([
                 'title'              => 'One Hundred Pence Off (£1)',
                 'redeemed'           => 0,
-                'value'              => 100,
                 'type'               => 'fixed',
                 'minimum_cart_value' => null,
             ]);
@@ -423,10 +423,10 @@ class CalculatorTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('one-hundred-pence-off')
+            ->value(100)
             ->data([
                 'title'              => 'One Hundred Pence Off (£1)',
                 'redeemed'           => 0,
-                'value'              => 100,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);

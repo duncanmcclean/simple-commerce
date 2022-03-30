@@ -147,7 +147,7 @@ class Calculator implements Contract
     public function calculateOrderCoupons(array $data): array
     {
         if ($coupon = $this->order->coupon()) {
-            $value = (int) $coupon->get('value');
+            $value = (int) $coupon->value();
 
             // Double check coupon is still valid
             if (! $coupon->isValid($this->order)) {

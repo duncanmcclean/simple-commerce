@@ -473,10 +473,10 @@ class CheckoutControllerTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('fifty-friday')
+            ->value(50)
             ->data([
                 'title'              => 'Fifty Friday',
                 'redeemed'           => 0,
-                'value'              => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -549,10 +549,10 @@ class CheckoutControllerTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('fifty-thursday')
+            ->value(50)
             ->data([
                 'title'              => 'Fifty Thursday',
                 'redeemed'           => 0,
-                'value'              => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => 9000,
             ]);
@@ -627,11 +627,11 @@ class CheckoutControllerTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('fifty-thursday')
+            ->value(50)
             ->data([
                 'title'              => 'Fifty Thursday',
                 'redeemed'           => 10,
                 'maximum_uses'       => 10,
-                'value'              => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -706,10 +706,10 @@ class CheckoutControllerTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('fifty-wednesday')
+            ->value(50)
             ->data([
                 'title'              => 'Fifty Wednesday',
                 'redeemed'           => 0,
-                'value'              => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'products'           => ['a-random-product'],
