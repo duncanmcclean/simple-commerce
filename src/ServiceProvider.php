@@ -165,13 +165,14 @@ class ServiceProvider extends AddonServiceProvider
     protected function bindContracts()
     {
         collect([
-            Contracts\OrderRepository::class    => Orders\EntryOrderRepository::class,
-            Contracts\CouponRepository::class   => Coupons\EntryCouponRepository::class,
-            Contracts\CustomerRepository::class => Customers\EntryCustomerRepository::class,
-            Contracts\ProductRepository::class  => Products\EntryProductRepository::class,
+            Contracts\CouponRepository::class   => SimpleCommerce::couponDriver()['driver'],
+            Contracts\CustomerRepository::class => SimpleCommerce::customerDriver()['driver'],
+            Contracts\OrderRepository::class    => SimpleCommerce::orderDriver()['driver'],
+            Contracts\ProductRepository::class  => SimpleCommerce::productDriver()['driver'],
+
             Contracts\GatewayManager::class     => Gateways\Manager::class,
             Contracts\ShippingManager::class    => Shipping\Manager::class,
-            Contracts\Currency::class           => Currency::class,
+
             Contracts\Calculator::class         => Orders\Calculator::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {

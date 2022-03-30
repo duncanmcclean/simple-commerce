@@ -134,24 +134,24 @@ return [
     */
 
     'content' => [
-        'orders' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\Order::class,
-            'collection' => 'orders',
-        ],
-
-        'products' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
-            'collection' => 'products',
-        ],
-
         'coupons' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon::class,
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
             'collection' => 'coupons',
         ],
 
         'customers' => [
-            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
             'collection' => 'customers',
+        ],
+
+        'orders' => [
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class,
+            'collection' => 'orders',
+        ],
+
+        'products' => [
+            'driver' => \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class,
+            'collection' => 'products',
         ],
     ],
 
