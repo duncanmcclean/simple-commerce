@@ -159,11 +159,11 @@ class Calculator implements Contract
             $baseAmount = $data['items_total'] + $data['tax_total'];
 
             // Otherwise do all the other stuff...
-            if ($coupon->get('type') === 'percentage') {
+            if ($coupon->type() === 'percentage') {
                 $data['coupon_total'] = (int) ($value * $baseAmount) / 100;
             }
 
-            if ($coupon->get('type') === 'fixed') {
+            if ($coupon->type() === 'fixed') {
                 $data['coupon_total'] = (int) $baseAmount - ($baseAmount - $value);
             }
         }

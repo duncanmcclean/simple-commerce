@@ -16,6 +16,7 @@ class Coupon implements Contract
     public $id;
     public $code;
     public $value;
+    public $type;
     public $data;
     public $resource;
 
@@ -42,6 +43,13 @@ class Coupon implements Contract
     {
         return $this
             ->fluentlyGetOrSet('value')
+            ->args(func_get_args());
+    }
+
+    public function type($type = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('type')
             ->args(func_get_args());
     }
 
@@ -149,6 +157,7 @@ class Coupon implements Contract
         $this->id = $freshCoupon->id;
         $this->code = $freshCoupon->code;
         $this->value = $freshCoupon->value;
+        $this->type = $freshCoupon->type;
         $this->data = $freshCoupon->data;
         $this->resource = $freshCoupon->resource;
 
