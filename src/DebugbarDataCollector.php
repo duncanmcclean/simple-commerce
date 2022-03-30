@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Statamic\Facades\Site;

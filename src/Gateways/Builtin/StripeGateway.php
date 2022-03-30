@@ -4,10 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
-use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
