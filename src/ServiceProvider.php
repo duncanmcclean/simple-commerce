@@ -160,6 +160,7 @@ class ServiceProvider extends AddonServiceProvider
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'simple-commerce');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'simple-commerce');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         return $this;
     }
