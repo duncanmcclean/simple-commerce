@@ -17,6 +17,8 @@ interface Gateway
 
     public function purchaseRules(): array;
 
+    public function purchaseMessages(): array;
+
     public function getCharge(Order $order): Response;
 
     public function refundCharge(Order $order): Response;
