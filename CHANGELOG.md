@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.4.7 (2022-03-31)
+
+### What's new
+
+- Added 'Refunded' option to Order Status filter
+
+### What's fixed
+
+- The 'Refund' action can now be used when overriding default `Order` class
+- Improved exception handling for refunds
+- Fixed an issue around refunds not working as expected
+
 ## v2.4.6 (2022-03-30)
 
 ### What's improved
