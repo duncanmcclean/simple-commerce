@@ -56,7 +56,7 @@ class BaseGateway
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
-        return config('app.url').route('statamic.simple-commerce.gateways.callback', $data, false);
+        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
     }
 
     public function webhookUrl()
@@ -109,6 +109,16 @@ class BaseGateway
      * @return array
      */
     public function purchaseRules(): array
+    {
+        return [];
+    }
+
+    /**
+     * Should return any validation messages required for the gateway when submitting on-site purchases.
+     *
+     * @return array
+     */
+    public function purchaseMessages(): array
     {
         return [];
     }

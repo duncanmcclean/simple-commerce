@@ -9,6 +9,7 @@ This page has documentation on the tag itself but if you're looking for docs on 
 ## Tags
 
 ### All gateways
+
 This tag returns a loop of the gateways setup for your store.
 
 ```antlers
@@ -22,6 +23,7 @@ This tag returns a loop of the gateways setup for your store.
 ```
 
 ### Get a gateway
+
 This tag lets you get a particular gateway and its information, where `stripe` is the handle of the gateway.
 
 ```antlers
@@ -35,11 +37,12 @@ This tag lets you get a particular gateway and its information, where `stripe` i
 
 You might have noticed in the above examples, it uses things like `{{ display }}` and `{{ class }}`. These are variables exposed by Simple Commerce. Here's a full list of the variables you can use inside the `{{ sc:gateways }}` tag.
 
-* `name` - Name of the gateway
-* `handle` - Camel cased version of the gateway name
-* `class` - Class name of the gateway
-* `formatted_class` - Formatted version of the gateway's class name
-* `display` - Display name
-* `purchaseRules` - Validation rules used on the submission of `{{ sc:checkout }}` form
-* `gateway-config` - Everything from the gateways's config
-* `webhook_url` - Gateway's Webhook URL
+- `name` - Name of the gateway
+- `handle` - Camel cased version of the gateway name
+- `class` - Class name of the gateway
+- `formatted_class` - Formatted version of the gateway's class name
+- `display` - Display name
+- `purchaseRules` - Validation rules used on the submission of `{{ sc:checkout }}` form
+- `purchaseMessages` - Validation messages used for errors after the submission of the `{{ sc:checkout`}}` form.
+- `gateway-config` - Everything from the gateways's config
+- `webhook_url` - Gateway's Webhook URL

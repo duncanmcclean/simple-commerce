@@ -95,7 +95,9 @@ class CheckoutController extends BaseActionController
             $this->request->has('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
                 : [],
-            // TODO: gateway custom validation messages?
+            $this->request->has('gateway')
+                ? Gateway::use($this->request->get('gateway'))->purchaseMessages()
+                : [],
             [],
         );
 
