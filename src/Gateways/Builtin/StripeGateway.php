@@ -177,6 +177,8 @@ class StripeGateway extends BaseGateway implements Gateway
             return new Response('Webhook handled', 200);
         }
 
+        // TODO: implement refund handling
+
         return new Response();
     }
 
