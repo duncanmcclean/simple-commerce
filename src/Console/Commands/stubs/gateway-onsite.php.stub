@@ -27,6 +27,11 @@ class DummyClass extends BaseGateway implements Gateway
         return [];
     }
 
+    public function purchaseMessages(): array
+    {
+        return [];
+    }
+
     public function getCharge(Order $order): Response
     {
         return new Response();
