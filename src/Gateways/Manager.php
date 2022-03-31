@@ -73,12 +73,22 @@ class Manager implements Contract
 
         $cart = Order::find($order->id());
 
-        $cart->data([
-            'is_refunded'  => true,
-            'gateway' => array_merge($cart->has('gateway') && is_string($cart->get('gateway')) ? $cart->get('gateway') : [], [
-                'refund' => $refund,
-            ]),
-        ])->save();
+        if (is_string($cart->get('gateway'))) {
+            $cart->data([
+                'is_refunded' => true,
+                'gateway' => [
+                    'use' => $cart->get('gateway'),
+                    'refund' => $refund,
+                ],
+            ])->save();
+        } elseif (is_array($cart->get('gateway'))) {
+            $cart->data([
+                'is_refunded' => true,
+                'gateway' => array_merge($cart->get('gateway'), [
+                    'refund' => $refund,
+                ]),
+            ])->save();
+        }
 
         return $refund;
     }
