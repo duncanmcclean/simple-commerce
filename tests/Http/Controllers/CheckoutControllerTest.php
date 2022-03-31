@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
@@ -11,13 +13,19 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -1896,6 +1904,61 @@ class CheckoutControllerTest extends TestCase
         // Finally, assert 'dummy' gateway temp data has been tiedied up
         $this->assertNull($order->get('dummy'));
     }
+
+    /** @test */
+    public function can_post_checkout_and_ensure_gateway_validation_rules_are_used()
+    {
+        Event::fake();
+
+        SimpleCommerce::registerGateway(TestValidationGateway::class);
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->postJson(route('statamic.simple-commerce.checkout.store'), [
+                'gateway' => TestValidationGateway::class,
+            ])
+            ->assertJson([
+                'errors' => [
+                    'something_mental' => [
+                        'You must have something mental to do.',
+                    ],
+                ],
+            ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertNotDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertFalse($order->get('published'));
+
+        $this->assertFalse($order->isPaid());
+        $this->assertNull($order->get('paid_date'));
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertTrue(session()->has('simple-commerce-cart'));
+    }
 }
 
 class CheckoutFormRequest extends FormRequest
@@ -1917,5 +1980,54 @@ class CheckoutFormRequest extends FormRequest
         return [
             'accept_terms.required' => 'Please accept the terms & conditions.',
         ];
+    }
+}
+
+class TestValidationGateway extends BaseGateway implements Gateway
+{
+    public function name(): string
+    {
+        return 'Test Validation Gateway';
+    }
+
+    public function prepare(Prepare $data): Response
+    {
+        return new Response(true, [
+            'bagpipes' => 'music',
+        ], 'http://backpipes.com');
+    }
+
+    public function purchase(Purchase $data): Response
+    {
+        return new Response(true);
+    }
+
+    public function purchaseRules(): array
+    {
+        return [
+            'something_mental' => ['required'],
+        ];
+    }
+
+    public function purchaseMessages(): array
+    {
+        return [
+            'something_mental.required' => 'You must have something mental to do.',
+        ];
+    }
+
+    public function getCharge(ContractsOrder $order): Response
+    {
+        return new Response(true, []);
+    }
+
+    public function refundCharge(ContractsOrder $order): Response
+    {
+        return new Response(true, []);
+    }
+
+    public function webhook(Request $request)
+    {
+        return 'Success.';
     }
 }
