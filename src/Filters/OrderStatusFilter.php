@@ -19,6 +19,7 @@ class OrderStatusFilter extends Filter
                     'cart' => 'Cart',
                     'paid' => 'Paid',
                     'shipped' => 'Shipped',
+                    'refunded' => 'Refunded',
                 ],
             ],
         ];
@@ -48,6 +49,12 @@ class OrderStatusFilter extends Filter
             return $query
                 ->where('is_paid', true)
                 ->where('is_shipped', true);
+        }
+
+        if ($values['type'] === 'refunded') {
+            return $query
+                ->where('is_paid', true)
+                ->where('is_refunded', true);
         }
     }
 
