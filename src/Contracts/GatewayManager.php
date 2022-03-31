@@ -18,6 +18,8 @@ interface GatewayManager
 
     public function purchaseRules();
 
+    public function purchaseMessages();
+
     public function getCharge($order);
 
     public function refundCharge($order);

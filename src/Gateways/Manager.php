@@ -64,6 +64,11 @@ class Manager implements Contract
         return $this->resolve()->purchaseRules();
     }
 
+    public function purchaseMessages()
+    {
+        return $this->resolve()->purchaseMessages();
+    }
+
     public function getCharge($order)
     {
         return $this->resolve()->getCharge($order);
