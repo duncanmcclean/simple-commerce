@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\Order as EntryOrderDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
@@ -18,7 +17,7 @@ class RefundAction extends Action
 
     public function visibleTo($item)
     {
-        if (SimpleCommerce::orderDriver()['driver'] !== EntryOrderDriver::class) {
+        if (! isset(SimpleCommerce::orderDriver()['collection'])) {
             return false;
         }
 
