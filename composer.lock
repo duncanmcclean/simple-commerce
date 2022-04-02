@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60d8a923bad50b60a5bc35a1062338cc",
+    "content-hash": "013952dcdd1c1ef979b19e0a88b5861a",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -10810,16 +10810,16 @@
         },
         {
             "name": "spatie/test-time",
-            "version": "dev-main",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/test-time.git",
-                "reference": "35044aa60672071784772b6d5cc2d175d0086942"
+                "reference": "5738d4bff591d896d443785c6d787eb8cfa20e27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/test-time/zipball/35044aa60672071784772b6d5cc2d175d0086942",
-                "reference": "35044aa60672071784772b6d5cc2d175d0086942",
+                "url": "https://api.github.com/repos/spatie/test-time/zipball/5738d4bff591d896d443785c6d787eb8cfa20e27",
+                "reference": "5738d4bff591d896d443785c6d787eb8cfa20e27",
                 "shasum": ""
             },
             "require": {
@@ -10829,7 +10829,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5.10"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -10862,7 +10861,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/test-time/issues",
-                "source": "https://github.com/spatie/test-time/tree/main"
+                "source": "https://github.com/spatie/test-time/tree/1.3.0"
             },
             "funding": [
                 {
@@ -10874,7 +10873,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-21T13:06:28+00:00"
+            "time": "2022-02-04T08:55:17+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
@@ -11275,9 +11274,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "spatie/test-time": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
