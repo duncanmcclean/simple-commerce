@@ -160,14 +160,12 @@ class EntryOrderRepository implements RepositoryContract
         $orderNumberQuery = Collection::find($this->collection)
             ->queryEntries()
             ->where('order_number', '!=', null)
-            ->orderBy('order_number', 'DESC')
             ->get();
 
         // Fallback to get order number from title (otherwise: start from the start..)
         if ($orderNumberQuery->isEmpty()) {
             $orderNumberQuery = Collection::find($this->collection)
                 ->queryEntries()
-                ->orderBy('title', 'ASC')
                 ->where('title', '!=', null)
                 ->get();
 
@@ -176,7 +174,7 @@ class EntryOrderRepository implements RepositoryContract
                 return config('simple-commerce.minimum_order_number', 1000);
             }
 
-            $lastOrderNumber = (int) Str::of($orderNumberQuery->first()->get('title'))
+            $lastOrderNumber = (int) Str::of($orderNumberQuery->last()->get('title'))
                 ->replace('Order ', '')
                 ->replace('#', '')
                 ->__toString();
