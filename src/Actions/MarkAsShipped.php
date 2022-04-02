@@ -19,7 +19,7 @@ class MarkAsShipped extends Action
         if (isset(SimpleCommerce::orderDriver()['collection'])) {
             return $item instanceof Entry
                 && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
-                && $this->get('is_paid') === true
+                && $item->get('is_paid') === true
                 && $item->get('is_shipped') !== true;
         }
 
