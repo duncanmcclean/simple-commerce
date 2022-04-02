@@ -17,6 +17,7 @@ class MarkAsPaid extends Action
     public function visibleTo($item)
     {
         return $item instanceof Entry
+            && isset(SimpleCommerce::orderDriver()['collection'])
             && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
             && $item->get('is_paid') !== true;
     }
