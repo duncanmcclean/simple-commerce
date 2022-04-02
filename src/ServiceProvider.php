@@ -26,6 +26,7 @@ class ServiceProvider extends AddonServiceProvider
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\InstallCommand::class,
+        Console\Commands\SwitchToDatabase::class,
     ];
 
     protected $fieldtypes = [
