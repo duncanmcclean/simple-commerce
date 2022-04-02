@@ -72,7 +72,12 @@ class EloquentOrderRepository implements RepositoryContract
         $model->customer_id = optional($order->customer())->id();
         $model->coupon = $order->coupon();
         $model->gateway = $order->gateway();
-        $model->data = $order->data();
+
+        // We need to do this, otherwise we'll end up duplicating data unnecessarily sometimes.
+        $model->data = $order->data()->except([
+            'is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total',
+            'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway',
+        ]);
 
         $model->save();
 
