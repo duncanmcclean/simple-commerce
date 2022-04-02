@@ -175,9 +175,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_free_status_if_order_is_free()
     {
-        $cart = Order::create([
-            'grand_total' => 0,
-        ]);
+        $cart = Order::make()->grandTotal(0);
+        $cart->save();
 
         $this->fakeCart($cart);
 
@@ -187,9 +186,8 @@ class CartTagTest extends TestCase
     /** @test */
     public function can_get_cart_free_status_if_order_is_paid()
     {
-        $cart = Order::create([
-            'grand_total' => 2550,
-        ]);
+        $cart = Order::make()->grandTotal(2550);
+        $cart->save();
 
         $this->fakeCart($cart);
 

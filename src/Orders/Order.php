@@ -259,14 +259,18 @@ class Order implements Contract
     {
         $this->isRefunded(true);
 
-        $this->gateway(
-            array_merge(
-                $this->gateway() && is_string($this->gateway()) ? $this->gateway() : [],
-                [
-                    'refund' => $refundData,
-                ]
-            )
-        );
+        if (is_string($this->gateway())) {
+            $data = [
+                'use' => $this->gateway(),
+                'refund' => $refundData,
+            ];
+        } elseif (is_array($this->gateway())) {
+            $data = array_merge($this->gateway(), [
+                'refund' => $refundData,
+            ]);
+        }
+
+        $this->gateway($data);
 
         return $this;
     }

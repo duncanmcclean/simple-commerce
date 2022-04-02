@@ -78,10 +78,7 @@ class Manager implements Contract
     {
         $refund = $this->resolve()->refundCharge($order);
 
-        $order
-            ->fresh()
-            ->refund($refund);
-
+        $order->fresh()->refund($refund);
         $order->save();
 
         return $refund;
