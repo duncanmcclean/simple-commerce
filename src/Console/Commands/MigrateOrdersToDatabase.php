@@ -58,7 +58,7 @@ class MigrateOrdersToDatabase extends Command
 
                 $customer = Customer::make()
                     ->email($entry->get('email'))
-                    ->data($entry->data()->except(['email'])); // todo: without orders
+                    ->data($data);
 
                 $customer->save();
             });
