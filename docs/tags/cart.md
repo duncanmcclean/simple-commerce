@@ -60,7 +60,7 @@ If you find yourself needing to check if an order is 'free' (grand total is £0)
 {{ if {sc:cart:free} === true }}
     You have nothing to pay!
 {{ else }}
-    You have stuff to pay - caugh up!
+    You have stuff to pay - cough up!
 {{ /if }}
 ```
 
