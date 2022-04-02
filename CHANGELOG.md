@@ -2,6 +2,35 @@
 
 ## Unreleased
 
+## v2.4.8 (2022-04-02)
+
+### What's new
+
+- Added `{{ sc:cart:free }}` tag to check if an order is free
+
+### What's improved
+
+- The Receipt PDF will contain the site name, rather than random admin information
+- Back-office email has some bold text now
+
+## v2.4.7 (2022-03-31)
+
+### What's new
+
+- Added 'Refunded' option to Order Status filter
+
+### What's fixed
+
+- The 'Refund' action can now be used when overriding default `Order` class
+- Improved exception handling for refunds
+- Fixed an issue around refunds not working as expected
+
+## v2.4.6 (2022-03-30)
+
+### What's improved
+
+- You can now filter by 'Shipped' orders via the Order Status filter in the CP #597 by @duncanmcclean
+
 ## v2.4.5 (2022-03-28)
 
 ### What's new

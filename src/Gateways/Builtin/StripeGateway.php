@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\RefundFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -19,6 +20,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Stripe\Customer as StripeCustomer;
+use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Refund;
@@ -132,12 +134,16 @@ class StripeGateway extends BaseGateway implements Gateway
             : null;
 
         if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to action a refund.');
+            throw new RefundFailed('Stripe: No Payment Intent was provided to action a refund.');
         }
 
-        $refund = Refund::create([
-            'payment_intent' => $paymentIntent,
-        ]);
+        try {
+            $refund = Refund::create([
+                'payment_intent' => $paymentIntent,
+            ]);
+        } catch (ApiErrorException $e) {
+            throw new RefundFailed($e->getMessage());
+        }
 
         return new GatewayResponse(true, $refund->toArray());
     }
@@ -170,6 +176,8 @@ class StripeGateway extends BaseGateway implements Gateway
 
             return new Response('Webhook handled', 200);
         }
+
+        // TODO: implement refund handling
 
         return new Response();
     }

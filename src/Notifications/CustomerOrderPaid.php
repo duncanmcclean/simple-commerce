@@ -45,7 +45,14 @@ class CustomerOrderPaid extends Notification
      */
     public function toMail($notifiable)
     {
-        $pdf = PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray());
+        $pdf = PDF::loadView('simple-commerce::receipt', array_merge(
+            $this->order->toAugmentedArray(),
+            [
+                'config' => [
+                    'app' => config('app'),
+                ],
+            ],
+        ));
 
         return (new MailMessage)
             ->subject('Thanks for your order!')

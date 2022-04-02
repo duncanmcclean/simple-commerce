@@ -47,16 +47,28 @@ class BackOfficeOrderPaid extends Notification
      */
     public function toMail($notifiable)
     {
-        $pdf = PDF::loadView('simple-commerce::receipt', $this->order->toAugmentedArray());
+        $pdf = PDF::loadView('simple-commerce::receipt', array_merge(
+            $this->order->toAugmentedArray(),
+            [
+                'config' => [
+                    'app' => config('app'),
+                ],
+            ],
+        ));
 
         return (new MailMessage)
             ->subject("New Order: {$this->order->get('title')}")
             ->line("Order **{$this->order->get('title')}** has just been paid and is ready for fulfilment.")
             ->line('# Order Details')
-            ->line('Grand Total: ' . Currency::parse($this->order->grandTotal(), Site::current()))
-            ->line('Items Total: ' . Currency::parse($this->order->itemsTotal(), Site::current()))
-            ->line('Shipping Total: ' . Currency::parse($this->order->shippingTotal(), Site::current()))
-            ->line('Customer: ' . optional($this->order->customer())->email() ?? 'Guest')
-            ->line('Payment Gateway: ' . optional($this->order->currentGateway())['display'] ?? 'N/A');
+            ->line('**Grand Total:** ' . Currency::parse($this->order->grandTotal(), Site::current()))
+            ->line('**Items Total:** ' . Currency::parse($this->order->itemsTotal(), Site::current()))
+            ->line('**Shipping Total:** ' . Currency::parse($this->order->shippingTotal(), Site::current()))
+            ->line('**Customer:** ' . optional($this->order->customer())->email() ?? 'Guest')
+            ->line('**Payment Gateway:** ' . optional($this->order->gateway())['display'] ?? 'N/A')
+            ->attachData(
+                $pdf->output(),
+                'receipt.pdf',
+                ['mime' => 'application/pdf']
+            );
     }
 }
