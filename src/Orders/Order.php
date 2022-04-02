@@ -317,10 +317,7 @@ class Order implements Contract
 
     public function beforeSaved()
     {
-        if (! $this->has('items')) {
-            $this->set('items', []);
-            $this->save();
-        }
+        //
     }
 
     public function afterSaved()
