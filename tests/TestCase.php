@@ -136,6 +136,10 @@ abstract class TestCase extends OrchestraTestCase
             $this->setupCollections();
         }
 
+        if (isset($uses[UseDatabaseContentDrivers::class])) {
+            $this->setUpDatabaseContentDrivers();
+        }
+
         return $this->setUpTheTestEnvironmentTraits($uses);
     }
 
