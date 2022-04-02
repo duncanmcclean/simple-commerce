@@ -32,8 +32,17 @@ class OrderModel extends Model
         'data' => 'json',
     ];
 
+    protected $appends = [
+        'order_number',
+    ];
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(CustomerModel::class);
+    }
+
+    public function getOrderNumberAttribute()
+    {
+        return "#{$this->id}";
     }
 }
