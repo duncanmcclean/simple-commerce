@@ -56,9 +56,7 @@ class Order implements Contract
         $this->shippingTotal = 0;
         $this->couponTotal = 0;
 
-        $this->data = collect([
-            'published'      => false,
-        ]);
+        $this->data = collect();
     }
 
     public function id($id = null)
