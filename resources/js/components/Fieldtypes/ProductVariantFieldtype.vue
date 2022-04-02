@@ -16,7 +16,7 @@
             >No product selected.</p>
 
             <select-field
-                v-if="productVariantsData && productVariantsData.purchasable_type === 'VARIANT'"
+                v-else-if="productVariantsData && productVariantsData.purchasable_type === 'VARIANT'"
                 :options="productVariantOptions"
                 :disabled="readOnly"
                 v-model="variant.variant"
@@ -60,7 +60,7 @@ export default {
         },
 
         productVariantOptions() {
-            return this.productVariantsData.variants.map((variant) => {
+            return this.productVariantsData.variants.options.map((variant) => {
                 return {
                     label: variant.variant,
                     value: variant.key
@@ -92,7 +92,7 @@ export default {
             this.initializing = false
         }
 
-        if (! this.variant.product) {
+        if (this.variant && ! this.variant.product) {
             this.variant.product = this.product
         }
 
