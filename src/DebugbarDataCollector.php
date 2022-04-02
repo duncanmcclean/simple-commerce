@@ -24,11 +24,11 @@ class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implem
 
                 return "{$lineItem['quantity']} X {$product->get('title')} (Tax: {$formattedTaxAmount}, Total: {$formattedItemAmount})";
             })->join(', '),
-            'Items Total' => Currency::parse($cart->get('items_total'), Site::current()),
-            'Tax Total' => Currency::parse($cart->get('tax_total'), Site::current()),
-            'Shipping Total' => Currency::parse($cart->get('shipping_total'), Site::current()),
-            'Coupon Total' => Currency::parse($cart->get('coupon_total'), Site::current()),
-            'Grand Total' => Currency::parse($cart->get('grand_total'), Site::current()),
+            'Items Total' => Currency::parse($cart->itemsTotal(), Site::current()),
+            'Tax Total' => Currency::parse($cart->taxTotal(), Site::current()),
+            'Shipping Total' => Currency::parse($cart->shippingTotal(), Site::current()),
+            'Coupon Total' => Currency::parse($cart->couponTotal(), Site::current()),
+            'Grand Total' => Currency::parse($cart->grandTotal(), Site::current()),
             'Site Currency' => Currency::get(Site::current())['symbol'] . ' ' . Currency::get(Site::current())['name'],
             'Enabled Gateways' => collect(SimpleCommerce::gateways())->pluck('name')->join(', '),
         ];
