@@ -15,8 +15,10 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
+use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 
 class Order implements Contract
@@ -54,9 +56,7 @@ class Order implements Contract
         $this->shippingTotal = 0;
         $this->couponTotal = 0;
 
-        $this->data = collect([
-            'published'      => false,
-        ]);
+        $this->data = collect();
     }
 
     public function id($id = null)
@@ -315,10 +315,7 @@ class Order implements Contract
 
     public function beforeSaved()
     {
-        if (! $this->has('items')) {
-            $this->set('items', []);
-            $this->save();
-        }
+        //
     }
 
     public function afterSaved()
@@ -384,15 +381,25 @@ class Order implements Contract
 
     public function toAugmentedArray(): array
     {
-        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-            return $field['handle'] === 'value';
-        })->pluck('handle')->toArray();
+        if ($this->resource() instanceof Entry) {
+            $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
+                return $field['handle'] === 'value';
+            })->pluck('handle')->toArray();
 
-        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
+            $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
 
-        return array_merge(
-            $this->toArray(),
-            $augmentedData,
-        );
+            return array_merge(
+                $this->toArray(),
+                $augmentedData,
+            );
+        }
+
+        if ($this->resource() instanceof Model) {
+            $resource = \DoubleThreeDigital\Runway\Runway::findResourceByModel($this->resource());
+
+            return $resource->augment($this->resource());
+        }
+
+        return [];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Filters;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Query\Scopes\Filter;
 
@@ -46,9 +45,18 @@ class OrderStatusFilter extends Filter
 
     public function visibleTo($key)
     {
-        return $key === 'entries'
-            // && SimpleCommerce::orderDriver()['repository'] === Order::class
-            && isset(SimpleCommerce::orderDriver()['repository'])
-            && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
+        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+            return $key === 'entries'
+                && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
+        }
+
+        if (isset(SimpleCommerce::orderDriver()['model'])) {
+            $orderModelClass = SimpleCommerce::orderDriver()['model'];
+            $runwayResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+
+            return $key === "runway_{$runwayResource->handle()}";
+        }
+
+        return false;
     }
 }

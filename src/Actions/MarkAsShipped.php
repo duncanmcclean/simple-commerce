@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -15,9 +16,22 @@ class MarkAsShipped extends Action
 
     public function visibleTo($item)
     {
-        return $item instanceof Entry
-            && $item->get('is_paid') === true
-            && $item->get('is_shipped') !== true;
+        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+            return $item instanceof Entry
+                && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
+                && $item->get('is_paid') === true
+                && $item->get('is_shipped') !== true;
+        }
+
+        if (isset(SimpleCommerce::orderDriver()['model'])) {
+            $orderModelClass = SimpleCommerce::orderDriver()['model'];
+
+            return $item instanceof $orderModelClass
+                && $item->is_paid
+                && ! $item->is_shipped;
+        }
+
+        return false;
     }
 
     public function visibleToBulk($items)
@@ -33,7 +47,7 @@ class MarkAsShipped extends Action
     {
         collect($items)
             ->each(function ($entry) {
-                $order = Order::find($entry->id());
+                $order = Order::find($entry->id);
 
                 return $order->markAsShipped();
             });

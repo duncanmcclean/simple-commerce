@@ -1,0 +1,12 @@
+title: Customers
+sections:
+  main:
+    display: Main
+    fields:
+      - handle: email
+        field:
+          input_type: email
+          type: text
+          width: 50
+          display: Email
+          validate: required

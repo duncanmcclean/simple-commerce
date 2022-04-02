@@ -6,8 +6,10 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 
 class Customer implements Contract
@@ -133,15 +135,25 @@ class Customer implements Contract
 
     public function toAugmentedArray(): array
     {
-        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-            return $field['handle'] === 'value';
-        })->pluck('handle')->toArray();
+        if ($this->resource() instanceof Entry) {
+            $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
+                return $field['handle'] === 'value';
+            })->pluck('handle')->toArray();
 
-        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
+            $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
 
-        return array_merge(
-            $this->toArray(),
-            $augmentedData,
-        );
+            return array_merge(
+                $this->toArray(),
+                $augmentedData,
+            );
+        }
+
+        if ($this->resource() instanceof Model) {
+            $resource = \DoubleThreeDigital\Runway\Runway::findResourceByModel($this->resource());
+
+            return $resource->augment($this->resource());
+        }
+
+        return null;
     }
 }
