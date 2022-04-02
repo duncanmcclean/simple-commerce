@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
@@ -145,6 +146,12 @@ class Customer implements Contract
                 $this->toArray(),
                 $augmentedData,
             );
+        }
+
+        if ($this->resource() instanceof Model) {
+            $resource = \DoubleThreeDigital\Runway\Runway::findResourceByModel($this->resource());
+
+            return $resource->augment($this->resource());
         }
 
         return null;
