@@ -18,66 +18,25 @@ So, instead of your orders & customers living as entries in your `content` folde
 
 ## Switching to a database
 
-> Note: The below steps assume you already have a database setup & have ran the `php artisan migrate` column to create the default tables.
+> Note: The below steps assume you already have a database setup.
 
-TODO: make this process a little more seemless - these steps are scrappy, here until I write something better 😅
+I've written a few command to make the process of switching your site to a database as painless as possible.
 
-1. Copy the Laravel migrations from Simple Commerce `cp vendor/doublethreedigital/simple-commerce/database/migrations/* database/migrations`
-2. Run `php artisan migrate`
-3. Switch the 'repositories' around:
+First, you'll want to run the 'switch' command which will update your Simple Commerce config file & install Runway so you can manage your orders in the [Control Panel](#control-panel-interface).
 
-```php
-// config/simple-commerce.php
-
-'content' => [
-    'orders' => [
-        'collection' => 'orders', // [tl! --]
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class, // [tl! --]
-
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class, // [tl! ++]
-        'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class, // [tl! ++]
-    ],
-
-    'customers' => [
-        'collection' => 'customers', // [tl! --]
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // [tl! --]
-
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class, // [tl! ++]
-        'model' => \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class, // [tl! ++]
-    ],
-
-    // ...
-],
+```
+php please sc:switch-to-database
 ```
 
-4. Copy the blueprints (TODO: need to make special blueprint stubs for the user to copy - can probably also automate this step)
+The above command will publish some database migrations, you'll need to run the `php artisan migrate` for those migrations to take place.
 
-5. Make changes to blueprints (change title to `order_number`, make customer a Runway belongsTo, remove slug, mark pretty much everything as read_only)
+Then, to move over any existing order & customer entries, you can run the provided 'migrate' command. It may be a good idea to run this per environment (eg. local, staging, production).
 
-6. Install Runway:
-
-```bash
-composer require doublethreedigital/runway
-php artisan vendor:publish --tag="runway-config"
+```
+sc:migrate-to-database
 ```
 
-7. Replace the `resources` section of the Runway config file with the following:
-
-```php
-'resources' => [
-    \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class => [
-        'name' => 'Customers',
-        'blueprint' => 'customers',
-    ],
-
-    \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class => [
-        'name' => 'Orders',
-        'blueprint' => 'order',
-    ],
-],
-```
-
-8. If you have existing orders & customers, you'll now want to migrate those to the database. Right now you'll need to write a custom 'migrate script' to handle this. (TODO: handle this step for the users - prompt for old collection names & move everything across)
+One thing worth noting is that the above command will not delete the order/customer entries or the collections. That's something you should do yourself after you're satisfied with the migration.
 
 ## Control Panel interface
 
@@ -87,12 +46,32 @@ Runway has it's own documentation site - you may [read it if you please](https:/
 
 ## Overriding
 
-If you want to add a custom column to the Orders/Customers table, then you'll want to override both the Eloquent model & the repository.
+If you need to add a column or do something special, you can override the Eloquent Model or the Repository used by Simple Commerce.
 
 ### The Model
 
-TODO config change, override class, add new column to fillable, make sure you've done a migration
+First, in order to customise the Eloquent model, you'll need to create your own version of the Model in your app, then tell Simple Commerce to use that version instead of the default.
+
+1. Copy the `OrderModel`/`CustomerModel` class from inside Simple Commerce into your site's `App\Models` directory. You will need to also update the 'namespace' of the class.
+2. In your `simple-commerce.php` config file, replace the `model` reference with your own:
+
+```php
+'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class, // [tl! remove]
+'model' => \App\Models\Order::class, // [tl! add]
+```
+
+And there you go... that's you using a custom version of the Eloquent model.
 
 ### The 'Repository'
 
-TODO config change, copy make/save methods and just add what you need
+> **Note:** Customising the repository could lead to some bug fixes not being passed down into your app in the future.
+
+1. Create a repository class which extends the default one provided by Simple Commerce
+2. In your `simple-commerce.php` config file, with a reference to your new repository:
+
+```
+'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class, // [tl! remove]
+'repository' => \App\SimpleCommerce\EloquentOrderRepository::class, // [tl! add]
+```
+
+And, in theory: that should be you!
