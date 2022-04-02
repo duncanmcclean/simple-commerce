@@ -142,15 +142,11 @@ return [
         'customers' => [
             'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
             'collection' => 'customers',
-
-            'model' => \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class,
         ],
 
         'orders' => [
             'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class,
             'collection' => 'orders',
-
-            'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class,
         ],
 
         'products' => [
