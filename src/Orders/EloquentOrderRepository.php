@@ -35,7 +35,7 @@ class EloquentOrderRepository implements RepositoryContract
             ->isPaid($model->is_paid)
             ->isShipped($model->is_shipped)
             ->isRefunded($model->is_refunded)
-            ->lineItems($model->line_items)
+            ->lineItems($model->items)
             ->grandTotal($model->grand_total)
             ->itemsTotal($model->items_total)
             ->taxTotal($model->tax_total)
@@ -63,7 +63,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->is_paid = $order->isPaid();
         $model->is_shipped = $order->isShipped();
         $model->is_refunded = $order->isRefunded();
-        $model->line_items = $order->lineItems();
+        $model->items = $order->lineItems();
         $model->grand_total = $order->grandTotal();
         $model->items_total = $order->itemsTotal();
         $model->tax_total = $order->taxTotal();
@@ -80,7 +80,7 @@ class EloquentOrderRepository implements RepositoryContract
         $order->isPaid = $model->is_paid;
         $order->isShipped = $model->is_shipped;
         $order->isRefunded = $model->is_refunded;
-        $order->lineItems = collect($model->line_items);
+        $order->lineItems = collect($model->items);
         $order->grandTotal = $model->grand_total;
         $order->itemsTotal = $model->items_total;
         $order->taxTotal = $model->tax_total;

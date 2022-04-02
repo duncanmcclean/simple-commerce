@@ -18,13 +18,13 @@ class CreateOrdersTable extends Migration
             $table->boolean('is_paid')->default(false);
             $table->boolean('is_shipped')->default(false);
             $table->boolean('is_refunded')->default(false);
-            $table->json('line_items')->nullable();
+            $table->json('items')->nullable();
             $table->integer('grand_total')->default(0);
             $table->integer('items_total')->default(0);
             $table->integer('tax_total')->default(0);
             $table->integer('shipping_total')->default(0);
             $table->integer('coupon_total')->default(0);
-            $table->foreignId('customer_id')->constrained()->nullable();
+            $table->foreignId('customer_id')->nullable();
             $table->string('coupon')->nullable();
             $table->json('gateway')->nullable();
             $table->json('data')->nullable();

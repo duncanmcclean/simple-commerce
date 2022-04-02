@@ -14,7 +14,7 @@ class OrderModel extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'is_paid', 'is_shipped', 'is_refunded', 'line_items', 'grand_total', 'items_total', 'tax_total',
+        'is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total', 'tax_total',
         'shipping_total', 'coupon_total', 'customer_id', 'coupon', 'gateway', 'data',
     ];
 
@@ -22,7 +22,7 @@ class OrderModel extends Model
         'is_paid' => 'boolean',
         'is_shipped' => 'boolean',
         'is_refunded' => 'boolean',
-        'line_items' => 'json',
+        'items' => 'json',
         'grand_total' => 'integer',
         'items_total' => 'integer',
         'tax_total' => 'integer',
