@@ -36,7 +36,7 @@ trait UseDatabaseContentDrivers
         );
 
         $this->app->bind(
-            \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class,
+            \DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository::class,
             $this->app['config']->get('simple-commerce.content.orders.repository')
         );
     }
