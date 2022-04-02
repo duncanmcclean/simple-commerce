@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
@@ -104,6 +105,7 @@ class EntryOrderRepository implements RepositoryContract
             array_merge(
                 $order->data()->except(['id', 'site', 'slug'])->toArray(),
                 [
+                    'order_number' => $this->generateOrderNumber(),
                     'is_paid' => $order->isPaid(),
                     'is_shipped' => $order->isShipped(),
                     'is_refunded' => $order->isRefunded(),
@@ -119,10 +121,6 @@ class EntryOrderRepository implements RepositoryContract
                 ],
             )
         );
-
-        if (! $entry->has('title')) {
-            $entry->set('title', '#' . $this->generateFreshOrderNumber());
-        }
 
         $entry->save();
 
@@ -157,28 +155,36 @@ class EntryOrderRepository implements RepositoryContract
         return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
     }
 
-    protected function generateFreshOrderNumber()
+    protected function generateOrderNumber(): int
     {
-        $minimum = config('simple-commerce.minimum_order_number', 1000);
-
-        $query = Collection::find($this->collection)
+        $orderNumberQuery = Collection::find($this->collection)
             ->queryEntries()
-            ->orderBy('title', 'asc')
-            ->where('title', '!=', null)
-            ->get()
-            ->map(function ($order) {
-                $order->title = str_replace('Order ', '', $order->title);
-                $order->title = str_replace('#', '', $order->title);
+            ->where('order_number', '!=', null)
+            ->orderBy('order_number', 'DESC')
+            ->get();
 
-                return $order->title;
-            })
-            ->last();
+        // Fallback to get order number from title (otherwise: start from the start..)
+        if ($orderNumberQuery->isEmpty()) {
+            $orderNumberQuery = Collection::find($this->collection)
+                ->queryEntries()
+                ->orderBy('title', 'ASC')
+                ->where('title', '!=', null)
+                ->get();
 
-        if (! $query) {
-            return $minimum + 1;
+            // And if we don't have any orders with the old title format, start from the start.
+            if ($orderNumberQuery->isEmpty()) {
+                return config('simple-commerce.minimum_order_number', 1000);
+            }
+
+            $lastOrderNumber = (int) Str::of($orderNumberQuery->first()->get('title'))
+                ->replace('Order ', '')
+                ->replace('#', '')
+                ->__toString();
+        } else {
+            $lastOrderNumber = $orderNumberQuery->last()->get('order_number');
         }
 
-        return ((int) $query) + 1;
+        return (int) $lastOrderNumber + 1;
     }
 
     public static function bindings(): array
