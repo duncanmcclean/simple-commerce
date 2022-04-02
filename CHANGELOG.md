@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.4.8 (2022-04-02)
+
+### What's new
+
+- Added `{{ sc:cart:free }}` tag to check if an order is free
+
+### What's improved
+
+- The Receipt PDF will contain the site name, rather than random admin information
+- Back-office email has some bold text now
+
 ## v2.4.7 (2022-03-31)
 
 ### What's new
