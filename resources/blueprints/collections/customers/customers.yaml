@@ -5,11 +5,8 @@ sections:
     fields:
       - handle: title
         field:
-          input_type: text
-          type: text
-          localizable: false
-          listable: hidden
-          display: Title
+          type: hidden
+          required: false
       - handle: name
         field:
           input_type: text
@@ -28,6 +25,15 @@ sections:
           listable: hidden
           display: Email
           validate: required
+      - handle: orders
+        field:
+          mode: default
+          collections:
+            - orders
+          display: Orders
+          type: entries
+          icon: entries
+          listable: hidden
   sidebar:
     display: Sidebar
     fields:

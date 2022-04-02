@@ -5,15 +5,8 @@ sections:
     fields:
       - handle: title
         field:
-          type: text
-          required: true
-          validate:
-            - required
-          display: "Order Number"
-          listable: hidden
-          input_type: text
-          antlers: false
-          read_only: true
+          type: hidden
+          required: false
       - handle: is_paid
         field:
           type: toggle
@@ -332,3 +325,6 @@ sections:
           validate: required
           width: 33
           listable: hidden
+      - handle: order_number
+        field:
+          type: hidden

@@ -102,6 +102,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v2_4\MigrateSingleCartConfig::class,
         UpdateScripts\v2_4\MigrateTaxConfiguration::class,
 
+        UpdateScripts\v3_0\ConfigureTitleFormats::class,
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
     ];
 
