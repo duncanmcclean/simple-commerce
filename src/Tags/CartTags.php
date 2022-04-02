@@ -60,6 +60,11 @@ class CartTags extends SubTag
         return $this->grandTotal();
     }
 
+    public function free()
+    {
+        return $this->rawGrandTotal() === 0;
+    }
+
     public function grandTotal()
     {
         if ($this->hasCart()) {

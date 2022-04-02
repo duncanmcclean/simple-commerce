@@ -159,6 +159,30 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
+    public function can_get_cart_free_status_if_order_is_free()
+    {
+        $cart = Order::create([
+            'grand_total' => 0,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('Yes', (string) $this->tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'));
+    }
+
+    /** @test */
+    public function can_get_cart_free_status_if_order_is_paid()
+    {
+        $cart = Order::create([
+            'grand_total' => 2550,
+        ]);
+
+        $this->fakeCart($cart);
+
+        $this->assertSame('No', (string) $this->tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'));
+    }
+
+    /** @test */
     public function can_get_cart_grand_total()
     {
         $cart = Order::create([
