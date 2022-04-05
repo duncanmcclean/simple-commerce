@@ -10,13 +10,13 @@ trait CartDriver
 {
     protected function getCartKey(): string
     {
-        return resolve(CartDriverContract::class)->getCartKey();
+        return $this->resolve()->getCartKey();
     }
 
     protected function getCart(): Order
     {
         try {
-            return resolve(CartDriverContract::class)->getCart();
+            return $this->resolve()->getCart();
         } catch (EntryNotFound $e) {
             $this->makeCart();
 
@@ -27,7 +27,7 @@ trait CartDriver
     protected function hasCart(): bool
     {
         try {
-            return resolve(CartDriverContract::class)->hasCart();
+            return $this->resolve()->hasCart();
         } catch (EntryNotFound $e) {
             return false;
         }
@@ -35,16 +35,37 @@ trait CartDriver
 
     protected function makeCart(): Order
     {
-        return resolve(CartDriverContract::class)->makeCart();
+        return $this->resolve()->makeCart();
     }
 
     protected function getOrMakeCart(): Order
     {
-        return resolve(CartDriverContract::class)->getOrMakeCart();
+        return $this->resolve()->getOrMakeCart();
     }
 
     protected function forgetCart()
     {
-        return resolve(CartDriverContract::class)->forgetCart();
+        return $this->resolve()->forgetCart();
+    }
+
+    protected function resolve()
+    {
+        if ($checkoutSuccess = request()->session()->get('simple-commerce.checkout.success')) {
+            // Has success expired? Use normal cart driver.
+            if ($checkoutSuccess['expiry']->isPast()) {
+                return resolve(CartDriverContract::class);
+            }
+
+            // Is the user on the redirect URL? If not, use normal cart driver.
+            if (request()->path() !== ltrim($checkoutSuccess['url'], '/')) {
+                return resolve(CartDriverContract::class);
+            }
+
+            return resolve(PostCheckoutDriver::class, [
+                'checkoutSuccess' => $checkoutSuccess,
+            ]);
+        }
+
+        return resolve(CartDriverContract::class);
     }
 }
