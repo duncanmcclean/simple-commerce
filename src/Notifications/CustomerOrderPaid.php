@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Notifications;
 
-use Barryvdh\DomPDF\Facade as PDF;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -45,23 +44,10 @@ class CustomerOrderPaid extends Notification
      */
     public function toMail($notifiable)
     {
-        $pdf = PDF::loadView('simple-commerce::receipt', array_merge(
-            $this->order->toAugmentedArray(),
-            [
-                'config' => [
-                    'app' => config('app'),
-                ],
-            ],
-        ));
-
         return (new MailMessage)
-            ->subject('Thanks for your order!')
-            ->line('Thanks for your order! Your order receipt has been attached to this email.')
-            ->line('Please get in touch if you have any questions.')
-            ->attachData(
-                $pdf->output(),
-                'receipt.pdf',
-                ['mime' => 'application/pdf']
-            );
+            ->subject(config('app.name') . ': Order Confirmation')
+            ->markdown('simple-commerce::emails.customer_order_paid', [
+                'order' => $this->order,
+            ]);
     }
 }
