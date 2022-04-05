@@ -84,6 +84,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $tags = [
         Tags\SimpleCommerceTag::class,
+        Tags\TotalIncludingTax::class,
     ];
 
     protected $widgets = [

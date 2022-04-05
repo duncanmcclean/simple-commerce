@@ -29,7 +29,10 @@ To get a count of the items in the customers' cart, use `{{ sc:cart:count }}`.
 
 To get the total quantity of products in the customers' cart, use `{{ sc:cart:quantityTotal }}`.
 
-In addition, you may get the tax amount for a specific line item with `{{ tax:amount }}` (available when looping through line items).
+When you're looping through line items, you may do some bits like this:
+
+- You can get the tax amount for the current line item with `{{ tax:amount }}`
+- You can get the total including tax with `{{ total_including_tax }}`
 
 ## Check if customer has a cart
 
