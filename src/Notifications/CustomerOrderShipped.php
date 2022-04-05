@@ -45,8 +45,9 @@ class CustomerOrderShipped extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Your order has been shipped!')
-            ->line('Thanks again for your purchase. Your order has been shipped.')
-            ->line('Please get in touch if you have any questions.');
+            ->subject(config('app.name') . ': Order Confirmation')
+            ->markdown('simple-commerce::emails.customer_order_shipped', [
+                'order' => $this->order,
+            ]);
     }
 }
