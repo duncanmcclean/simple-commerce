@@ -136,26 +136,15 @@ class SimpleCommerce
 
     public static function freshOrderNumber()
     {
-        $minimum = config('simple-commerce.minimum_order_number', 1000);
-
-        $query = Collection::find(self::orderDriver()['collection'])
+        $last = Collection::find(self::orderDriver()['collection'])
             ->queryEntries()
-            ->orderBy('title', 'asc')
+            ->orderBy('title', 'desc')
             ->where('title', '!=', null)
-            ->get()
-            ->map(function ($order) {
-                $order->title = str_replace('Order ', '', $order->title);
-                $order->title = str_replace('#', '', $order->title);
+            ->first();
 
-                return $order->title;
-            })
-            ->last();
-
-        if (! $query) {
-            return $minimum + 1;
-        }
-
-        return ((int) $query) + 1;
+        return $last
+            ? (int) Str::after($last->title, '#') + 1
+            : config('simple-commerce.minimum_order_number', 1000) + 1;
     }
 
     public static function orderDriver(): array
