@@ -22,6 +22,9 @@ class LineItemsTest extends TestCase
     /** @test */
     public function can_get_line_items()
     {
+        Product::make()->id('one-two-three')->price(1000)->save();
+        Product::make()->id('nine-ten-eleven')->price(1000)->save();
+
         $order = Order::make()->lineItems([
             [
                 'id'       => 'one-two-three',
@@ -85,7 +88,7 @@ class LineItemsTest extends TestCase
 
         $this->assertSame($order->lineItems()->count(), 1);
 
-        $this->assertSame($order->lineItems()->first()['quantity'], 3);
+        $this->assertSame($order->lineItems()->first()->quantity(), 3);
         $this->assertArrayHasKey('metadata', $order->lineItems()->first());
     }
 

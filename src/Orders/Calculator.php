@@ -33,6 +33,9 @@ class Calculator implements Contract
 
         $data['items'] = $order
             ->lineItems()
+            ->map(function ($lineItem) {
+                return $lineItem->toArray();
+            })
             ->map(function ($lineItem) use (&$data) {
                 $calculate = $this->calculateLineItem($data, $lineItem);
 

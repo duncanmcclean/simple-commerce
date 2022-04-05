@@ -131,8 +131,8 @@ class CartItemController extends BaseActionController
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
-            $cart->updateLineItem($alreadyExistsQuery->first()['id'], [
-                'quantity' => (int) $alreadyExistsQuery->first()['quantity'] + $request->quantity,
+            $cart->updateLineItem($alreadyExistsQuery->first()->id(), [
+                'quantity' => (int) $alreadyExistsQuery->first()->quantity() + $request->quantity,
             ]);
         } else {
             $item = [
@@ -180,10 +180,7 @@ class CartItemController extends BaseActionController
             array_merge(
                 $data,
                 [
-                    'metadata' => array_merge(
-                        isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
-                        Arr::except($request->all(), $this->reservedKeys),
-                    ),
+                    'metadata' => $lineItem->metadata()->merge(Arr::except($request->all(), $this->reservedKeys))->toArray(),
                 ]
             ),
         );

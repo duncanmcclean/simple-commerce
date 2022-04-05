@@ -58,7 +58,7 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['tax_total'], 0);
         $this->assertSame($calculate['coupon_total'], 0);
 
-        $this->assertSame($calculate['items'][0]['total'], 123);
+        $this->assertSame($calculate['items'][0]->total(), 123);
     }
 
     /** @test */
@@ -89,7 +89,7 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['tax_total'], 0);
         $this->assertSame($calculate['coupon_total'], 0);
 
-        $this->assertSame($calculate['items'][0]['total'], 500);
+        $this->assertSame($calculate['items'][0]->total(), 500);
     }
 
     /** @test */
@@ -131,7 +131,7 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['tax_total'], 0);
         $this->assertSame($calculate['coupon_total'], 0);
 
-        $this->assertSame($calculate['items'][0]['total'], 250);
+        $this->assertSame($calculate['items'][0]->total(), 250);
     }
 
     /** @test */
@@ -162,7 +162,7 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['tax_total'], 0);
         $this->assertSame($calculate['coupon_total'], 0);
 
-        $this->assertSame($calculate['items'][0]['total'], 1550);
+        $this->assertSame($calculate['items'][0]->total(), 1550);
     }
 
     /** @test */
@@ -204,7 +204,7 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['tax_total'], 0);
         $this->assertSame($calculate['coupon_total'], 0);
 
-        $this->assertSame($calculate['items'][0]['total'], 1550);
+        $this->assertSame($calculate['items'][0]->total(), 1550);
     }
 
     /** @test */

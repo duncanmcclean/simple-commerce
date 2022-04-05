@@ -19,7 +19,7 @@ class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implem
             'Line Items' => $cart->lineItems()->map(function ($lineItem) {
                 $product = Product::find($lineItem['product']);
 
-                $formattedTaxAmount = Currency::parse($lineItem['tax']['amount'], Site::current());
+                $formattedTaxAmount = Currency::parse($lineItem->tax()['amount'], Site::current());
                 $formattedItemAmount = Currency::parse($lineItem['total'], Site::current());
 
                 return "{$lineItem['quantity']} X {$product->get('title')} (Tax: {$formattedTaxAmount}, Total: {$formattedItemAmount})";

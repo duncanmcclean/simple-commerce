@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Tests\UseDatabaseContentDrivers;
@@ -16,6 +17,9 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_get_all_orders()
     {
+        Product::make()->id('blah')->price(1000)->save();
+        Product::make()->id('rarh')->price(1000)->save();
+
         OrderModel::create([
             'items' => [
                 [
@@ -51,6 +55,8 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_find_order()
     {
+        Product::make()->id('blah')->price(1000)->save();
+
         $order = OrderModel::create([
             'items' => [
                 [
@@ -88,6 +94,8 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_save()
     {
+        Product::make()->id('blah')->price(1000)->save();
+
         $orderRecord = OrderModel::create([
             'items' => [
                 [
