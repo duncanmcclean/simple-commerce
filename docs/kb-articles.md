@@ -7,7 +7,6 @@ Here's a collection of short, helpful articles you'll probably find useful at so
 
 ## How to...
 
-- [Customise the receipt view](/kb-articles/customising-receipt)
 - ['Dyanamically' price products](/kb-articles/dynamic-pricing)
 - [Store a list of orders on customer entries](/kb-articles/storing-orders-on-customer)
 - [Handle Donations](/kb-articles/donations)
