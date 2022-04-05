@@ -39,7 +39,6 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\TaxCategoryFieldtype::class,
 
         Fieldtypes\Variables\LineItemTax::class,
-        Fieldtypes\Variables\ReceiptUrl::class,
     ];
 
     protected $listen = [

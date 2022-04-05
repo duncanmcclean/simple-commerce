@@ -17,7 +17,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\URL;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 
@@ -273,13 +272,6 @@ class Order implements Contract
         $this->gateway($data);
 
         return $this;
-    }
-
-    public function receiptUrl(): string
-    {
-        return URL::temporarySignedRoute('statamic.simple-commerce.receipt.show', now()->addHour(), [
-            'orderId' => $this->id,
-        ]);
     }
 
     public function recalculate(): self
