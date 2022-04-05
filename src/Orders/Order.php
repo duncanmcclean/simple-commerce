@@ -25,6 +25,7 @@ class Order implements Contract
     use HasData, LineItems;
 
     public $id;
+    public $orderNumber;
     public $isPaid;
     public $isShipped;
     public $isRefunded;
@@ -62,6 +63,13 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
+    }
+
+    public function orderNumber($orderNumber = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('orderNumber')
             ->args(func_get_args());
     }
 

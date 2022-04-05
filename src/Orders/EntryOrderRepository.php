@@ -41,6 +41,7 @@ class EntryOrderRepository implements RepositoryContract
         $order = app(Order::class)
             ->resource($entry)
             ->id($entry->id())
+            ->orderNumber($entry->get('order_number') ?? str_replace('#', '', $entry->get('title')))
             ->isPaid($entry->get('is_paid') ?? false)
             ->isShipped($entry->get('is_shipped') ?? false)
             ->isRefunded($entry->get('is_refunded') ?? false)
@@ -125,6 +126,7 @@ class EntryOrderRepository implements RepositoryContract
         $entry->save();
 
         $order->id = $entry->id();
+        $order->orderNumber = $entry->get('order_number');
         $order->isPaid = $entry->get('is_paid');
         $order->isShipped = $entry->get('is_shipped');
         $order->isRefunded = $entry->get('is_refunded');

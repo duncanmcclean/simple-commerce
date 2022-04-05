@@ -1,7 +1,7 @@
 @component('mail::message')
 # Order Confirmation
 
-This email is to confirm that your order has been marked as paid. An overview of your order is shown below:
+This email is to confirm that your order (**#{{ $order->orderNumber() }}**) has been marked as paid. An overview of your order is shown below:
 
 ## Order Details
 

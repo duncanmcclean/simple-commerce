@@ -5,8 +5,7 @@ This email is to confirm that a new order has been placed. An overview of the or
 
 ## Order Details
 
-* **Order ID:** {{ $order->id() }}
-
+* **Order Number:** #{{ $order->orderNumber() }}
 * **Payment Gateway:** {{ optional($order->gateway())['display'] ?? 'N/A' }}
 
 @component('mail::table')
@@ -35,11 +34,9 @@ $product = \DoubleThreeDigital\SimpleCommerce\Facades\Product::find($lineItem['p
 * **Name:** {{ $order->customer()->name() }}
 * **Email:** {{ $order->customer()->email() }}
 @endif
-
 @if($order->billingAddress())
 * **Billing Address:** {{ $order->billingAddress()->__toString() }}
 @endif
-
 @if($order->shippingAddress())
 * **Shipping Address:** {{ $order->shippingAddress()->__toString() }}
 @endif
