@@ -190,11 +190,6 @@ class OrderRepository implements Contract
         return $this;
     }
 
-    public function buildReceipt(): string
-    {
-        return 'blah blah blah';
-    }
-
     public function calculateTotals(): self
     {
         //
