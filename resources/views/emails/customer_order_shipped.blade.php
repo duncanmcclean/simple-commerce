@@ -1,7 +1,7 @@
 @component('mail::message')
 # Order Shipped
 
-This email is to confirm that your recent order has been marked as shipped. An overview of your order is shown below:
+This email is to confirm that your recent order (**#{{ $order->orderNumber() }}**) has been marked as shipped. An overview of your order is shown below:
 
 ## Order Details
 
