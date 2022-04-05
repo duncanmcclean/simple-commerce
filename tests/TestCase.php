@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
-use Barryvdh\DomPDF\ServiceProvider as PDFServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -39,7 +38,6 @@ abstract class TestCase extends OrchestraTestCase
         return [
             StatamicServiceProvider::class,
             ServiceProvider::class,
-            PDFServiceProvider::class,
         ];
     }
 
