@@ -32,6 +32,7 @@ class EloquentOrderRepository implements RepositoryContract
         return app(Order::class)
             ->resource($model)
             ->id($model->id)
+            ->orderNumber($model->id)
             ->isPaid($model->is_paid)
             ->isShipped($model->is_shipped)
             ->isRefunded($model->is_refunded)
@@ -119,6 +120,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->save();
 
         $order->id = $model->id;
+        $order->orderNumber = $model->id;
         $order->isPaid = $model->is_paid;
         $order->isShipped = $model->is_shipped;
         $order->isRefunded = $model->is_refunded;
