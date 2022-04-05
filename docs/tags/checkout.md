@@ -9,7 +9,7 @@ Like with the update cart tag, you can also pass information to the customer ent
 ```antlers
 {{ sc:checkout redirect="/thanks" }}
   {{ if is_paid }}
-  <p>Checkout complete! <a href="{{ receipt_url }}">Download</a> your receipt.</p>
+  <p>Checkout complete!</p>
   {{ else }}
     <input type="text" name="customer[name]" placeholder="Full Name">
     <input type="email" name="customer[email]" placeholder="Email">
