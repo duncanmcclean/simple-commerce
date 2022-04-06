@@ -312,7 +312,7 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->from('/products/' . $product->resource()->get('slug'))
+            ->from('/products/' . $product->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/products/' . $product->get('slug'));
