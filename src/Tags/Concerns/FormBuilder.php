@@ -2,25 +2,22 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
 
+use Illuminate\Support\Str;
 use Statamic\Tags\Concerns\RendersForms;
 
 trait FormBuilder
 {
     use RendersForms;
 
-    private static $knownParams = ['redirect', 'error_redirect', 'action_needed_redirect', 'request'];
+    private static $knownParams = ['redirect', 'error_redirect', 'request'];
 
     protected function createForm(string $action, array $data = [], string $method = 'POST'): string
     {
         $html = $this->formOpen($action, $method, static::$knownParams);
 
-        if ($this->params->get('redirect') != null) {
-            $html .= $this->redirectField();
-        }
-
-        if ($this->params->get('request') != null) {
-            $html .= $this->requestField();
-        }
+        $html .= $this->redirectField();
+        $html .= $this->errorRedirectField();
+        $html .= $this->requestField();
 
         $html .= $this->parse($this->sessionData($data));
 
@@ -40,23 +37,23 @@ trait FormBuilder
 
     private function redirectField()
     {
-        return '<input type="hidden" name="_redirect" value="' . $this->params->get('redirect') . '" />';
+        $redirect = Str::start($this->params->get('redirect', request()->path()), '/');
+
+        return '<input type="hidden" name="_redirect" value="' . encrypt($redirect) . '" />';
+    }
+
+    private function errorRedirectField()
+    {
+        $errorRedirect = Str::start($this->params->get('error_redirect', request()->path()), '/');
+
+        return '<input type="hidden" name="_error_redirect" value="' . encrypt($errorRedirect) . '" />';
     }
 
     private function requestField()
     {
-        return '<input type="hidden" name="_request" value="' . $this->params->get('request') . '" />';
-    }
+        $request = $this->params->get('request', 'Empty');
 
-    private function params(): array
-    {
-        return collect(static::$knownParams)->map(function ($param, $ignore) {
-            if ($redirect = $this->get($param)) {
-                return $params[$param] = $redirect;
-            }
-        })->filter()
-        ->values()
-        ->all();
+        return '<input type="hidden" name="_request" value="' . encrypt($request) . '" />';
     }
 
     /**

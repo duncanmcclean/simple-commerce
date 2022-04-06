@@ -122,7 +122,7 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                '_request'     => CheckoutFormRequest::class,
+                '_request'     => encrypt(CheckoutFormRequest::class),
                 'name'         => 'Smelly Joe',
                 'email'        => 'smelly.joe@example.com',
                 'gateway'      => DummyGateway::class,
@@ -1762,7 +1762,7 @@ class CheckoutControllerTest extends TestCase
                 'expiry_month' => '01',
                 'expiry_year'  => '2025',
                 'cvc'          => '123',
-                '_redirect'    => '/order-confirmation',
+                '_redirect'    => encrypt('/order-confirmation'),
             ])
             ->assertRedirect('/order-confirmation');
 

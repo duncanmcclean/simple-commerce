@@ -123,7 +123,7 @@ class CustomerControllerTest extends TestCase
         $customer->fresh();
 
         $data = [
-            '_request' => CustomerUpdateFormRequest::class,
+            '_request' => encrypt(CustomerUpdateFormRequest::class),
             'vip' => true,
         ];
 

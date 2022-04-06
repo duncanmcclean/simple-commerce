@@ -20,7 +20,7 @@ class CartItemController extends BaseActionController
     use CartDriver;
 
     protected $reservedKeys = [
-        'product', 'quantity', 'variant', '_token', '_params', '_redirect',
+        'product', 'quantity', 'variant', '_token', '_redirect', '_error_redirect', '_request',
     ];
 
     public function store(StoreRequest $request)
