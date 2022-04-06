@@ -76,7 +76,7 @@ class CheckoutController extends BaseActionController
     protected function handleValidation()
     {
         $rules = array_merge(
-            $this->request->has('_request')
+            $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
                 : [],
             $this->request->has('gateway')
@@ -93,7 +93,7 @@ class CheckoutController extends BaseActionController
         );
 
         $messages = array_merge(
-            $this->request->has('_request')
+            $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
                 : [],
             $this->request->has('gateway')
