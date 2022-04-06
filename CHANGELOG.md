@@ -2,6 +2,37 @@
 
 ## Unreleased
 
+## v3.0.0 (2022-xx-xx)
+
+### What's new
+
+- Order Numbers are now stored sepratly on orders #604
+- SC uses 'title formats' to automatically generate titles for order & customer entries #601
+- Database orders #599
+
+### What's improved
+
+- Drastic improvements to order emails #603
+- The Order Confirmation page now retains the order information #605
+- Added some protection for 'hidden form params' #607
+- Additional fields in Form Tags need to be configured for front-end forms #608
+
+### What's fixed
+
+- Fixed a little bug with the Product Variant (singular) fieldtype #600
+
+### Breaking changes
+
+- Data Refactor TODO: #556
+- new minimum system reqs
+- no more receipt pdfs
+- mention upgrade script tasks
+- moneyphp v4 upgrade
+
+## v3.0.0-beta.1 (2022-xx-xx)
+
+---
+
 ## v2.4.8 (2022-04-02)
 
 ### What's new
