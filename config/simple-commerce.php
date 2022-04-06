@@ -76,9 +76,7 @@ return [
             'billing_address_line2', 'billing_city', 'billing_region', 'billing_postal_code', 'billing_country',
         ],
 
-        'line_items' => [
-            '*',
-        ],
+        'line_items' => [],
     ],
 
     /*
