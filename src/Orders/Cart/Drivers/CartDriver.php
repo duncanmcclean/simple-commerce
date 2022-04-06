@@ -50,7 +50,7 @@ trait CartDriver
 
     protected function resolve()
     {
-        if ($checkoutSuccess = request()->session()->get('simple-commerce.checkout.success')) {
+        if (request()->hasSession() && $checkoutSuccess = request()->session()->get('simple-commerce.checkout.success')) {
             // Has success expired? Use normal cart driver.
             if ($checkoutSuccess['expiry']->isPast()) {
                 return resolve(CartDriverContract::class);
