@@ -68,7 +68,18 @@ return [
         ],
     ],
 
-    // TODO: whitelisted fields comment
+     /*
+    |--------------------------------------------------------------------------
+    | Field Whitelist
+    |--------------------------------------------------------------------------
+    |
+    | You may configure the fields you wish to be editable via front-end forms
+    | below. Wildcards are not accepted due to security concerns.
+    |
+    | https://simple-commerce.duncanmcclean.com/tags#field-whitelisting
+    |
+    */
+
     'field_whitelist' => [
         'orders' => [
             'shipping_name', 'shipping_address', 'shipping_address_line2', 'shipping_city', 'shipping_region',
