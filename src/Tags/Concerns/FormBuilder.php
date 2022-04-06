@@ -56,17 +56,6 @@ trait FormBuilder
         return '<input type="hidden" name="_request" value="' . encrypt($request) . '" />';
     }
 
-    // private function params(): array
-    // {
-    //     return collect(static::$knownParams)->map(function ($param, $ignore) {
-    //         if ($redirect = $this->get($param)) {
-    //             return $params[$param] = $redirect;
-    //         }
-    //     })->filter()
-    //     ->values()
-    //     ->all();
-    // }
-
     /**
      * @return bool|string
      */
