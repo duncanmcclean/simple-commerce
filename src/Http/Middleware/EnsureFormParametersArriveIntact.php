@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Middleware;
 
 use Closure;
 
-class EnsureFormParametersArrivedIntact
+class EnsureFormParametersArriveIntact
 {
     /**
      * Handle the incoming request.
