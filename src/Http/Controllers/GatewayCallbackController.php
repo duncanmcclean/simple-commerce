@@ -46,6 +46,7 @@ class GatewayCallbackController extends BaseActionController
             'cart'    => $request->wantsJson()
                 ? $order->toResource()
                 : $order->toAugmentedArray(),
+            'is_checkout_request' => true,
         ]);
     }
 }

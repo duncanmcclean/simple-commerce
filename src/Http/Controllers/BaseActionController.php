@@ -18,6 +18,14 @@ class BaseActionController extends Controller
             return response()->json($data);
         }
 
+        if (isset($data['is_checkout_request'])) {
+            $request->session()->put('simple-commerce.checkout.success', [
+                'order_id' => $data['cart']['id'],
+                'expiry' => now()->addMinutes(30),
+                'url' => $request->_redirect,
+            ]);
+        }
+
         return $request->_redirect ?
             redirect($request->_redirect)->with($data)
             : back()->with($data);

@@ -62,6 +62,7 @@ class CheckoutController extends BaseActionController
             'cart'    => $request->wantsJson()
                 ? $this->cart->toResource()
                 : $this->cart->toAugmentedArray(),
+            'is_checkout_request' => true,
         ]);
     }
 
