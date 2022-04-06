@@ -138,7 +138,7 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $data = [
-            '_request' => CartItemStoreFormRequest::class,
+            '_request' => encrypt(CartItemStoreFormRequest::class),
             'product'  => $product->id,
             'quantity' => 1,
         ];
@@ -312,7 +312,7 @@ class CartItemControllerTest extends TestCase
 
         $response = $this
             ->withSession(['simple-commerce-cart' => $cart->id])
-            ->from('/products/' . $product->get('slug'))
+            ->from('/products/' . $product->resource()->get('slug'))
             ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
         $response->assertRedirect('/products/' . $product->get('slug'));
@@ -516,7 +516,7 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'   => $product->id,
             'quantity'  => 1,
-            '_redirect' => '/checkout',
+            '_redirect' => encrypt('/checkout'),
         ];
 
         $response = $this
@@ -933,7 +933,7 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'   => $productTwo->id,
             'quantity'  => 1,
-            '_redirect' => '/checkout',
+            '_redirect' => encrypt('/checkout'),
         ];
 
         $response = $this
@@ -1222,7 +1222,7 @@ class CartItemControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_request' => CartItemUpdateFormRequest::class,
+            '_request' => encrypt(CartItemUpdateFormRequest::class),
             'quantity' => 2,
         ];
 

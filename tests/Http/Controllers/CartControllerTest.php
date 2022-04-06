@@ -94,7 +94,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_request' => CartUpdateFormRequest::class,
+            '_request' => encrypt(CartUpdateFormRequest::class),
             'shipping_note' => 'Be careful pls.',
         ];
 
@@ -120,7 +120,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_request' => CartUpdateWithNoRulesFormRequest::class,
+            '_request' => encrypt(CartUpdateWithNoRulesFormRequest::class),
         ];
 
         $response = $this
@@ -393,7 +393,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_redirect' => '/checkout',
+            '_redirect' => encrypt('/checkout'),
         ];
 
         $response = $this
