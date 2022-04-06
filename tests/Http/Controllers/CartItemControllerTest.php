@@ -94,6 +94,8 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_with_extra_data()
     {
+        Config::set('simple-commerce.field_whitelist.line_items', ['foo']);
+
         $product = Product::make()
             ->price(1000)
             ->data([
@@ -123,6 +125,42 @@ class CartItemControllerTest extends TestCase
         $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
 
         $this->assertArrayHasKey('foo', $cart->lineItems()->first()['metadata']);
+    }
+
+    /** @test */
+    public function cant_store_item_with_extra_data_if_fields_not_whitelisted_in_config()
+    {
+        Config::set('simple-commerce.field_whitelist.line_items', []);
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+                'slug' => 'dog-food',
+            ]);
+
+        $product->save();
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'foo' => 'bar',
+        ];
+
+        $response = $this
+            ->from('/products/' . $product->get('slug'))
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/' . $product->get('slug'));
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->itemsTotal());
+
+        $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+
+        $this->assertArrayNotHasKey('foo', $cart->lineItems()->first()['metadata']);
     }
 
     /** @test */
@@ -209,6 +247,7 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_metadata_where_metadata_is_unique()
     {
         Config::set('simple-commerce.cart.unique_metadata', true);
+        Config::set('simple-commerce.field_whitelist.line_items', ['foo', 'barz']);
 
         $product = Product::make()
             ->price(1000)
@@ -275,6 +314,7 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_metadata_where_metadata_is_not_unique()
     {
         Config::set('simple-commerce.cart.unique_metadata', true);
+        Config::set('simple-commerce.field_whitelist.line_items', ['foo', 'bar']);
 
         $product = Product::make()
             ->price(1000)
@@ -1281,6 +1321,8 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_update_item_with_extra_data()
     {
+        Config::set('simple-commerce.field_whitelist.line_items', ['gift_note']);
+
         $product = Product::make()
             ->price(1000)
             ->data([
@@ -1317,8 +1359,57 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->fresh();
 
         $this->assertSame($cart->lineItems()->count(), 1);
-        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
         $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
+
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayHasKey('gift_note', $cart->lineItems()->first()['metadata']);
+    }
+
+    /** @test */
+    public function cant_update_item_with_extra_data_if_fields_not_whitelisted_in_config()
+    {
+        Config::set('simple-commerce.field_whitelist.line_items', []);
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Food',
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ]);
+
+        $cart->save();
+
+        $data = [
+            'gift_note' => 'Have a good birthday!',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->lineItems()->toArray()[0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+
+        $this->assertSame($cart->lineItems()->count(), 1);
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
+
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first()['metadata']);
     }
 
     /** @test */

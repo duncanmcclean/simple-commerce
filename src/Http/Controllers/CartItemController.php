@@ -115,7 +115,7 @@ class CartItemController extends BaseActionController
 
         // Ensure the product doesn't already exist in the cart
         $alreadyExistsQuery = $items;
-        $metadata = Arr::except($request->all(), $this->reservedKeys);
+        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
 
         if ($request->has('variant')) {
             $alreadyExistsQuery = $alreadyExistsQuery->where('variant', [
@@ -182,7 +182,7 @@ class CartItemController extends BaseActionController
                 [
                     'metadata' => array_merge(
                         isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
-                        Arr::except($request->all(), $this->reservedKeys),
+                        Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items')),
                     ),
                 ]
             ),

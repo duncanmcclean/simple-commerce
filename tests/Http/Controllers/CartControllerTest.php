@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
@@ -42,6 +43,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $cart = Order::make();
         $cart->save();
 
@@ -64,6 +67,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_request_json_response()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $cart = Order::make();
         $cart->save();
 
@@ -88,8 +93,34 @@ class CartControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_update_cart_if_fields_not_whitelisted_in_config()
+    {
+        Config::set('simple-commerce.field_whitelist.orders', []);
+
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'shipping_note' => 'Be careful pls.',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+
+        $this->assertNull($cart->get('shipping_note'));
+    }
+
+    /** @test */
     public function can_update_cart_and_ensure_custom_form_request_is_used()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $cart = Order::make();
         $cart->save();
 
@@ -137,6 +168,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_with_customer_already_in_cart()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $customer = Customer::make()
             ->email('dan.smith@example.com')
             ->data([
@@ -169,6 +202,8 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_create_new_customer()
     {
         $this->markTestSkipped();
+
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
 
         $cart = Order::make();
         $cart->save();

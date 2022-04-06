@@ -128,6 +128,10 @@ class CheckoutController extends BaseActionController
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';
+        } elseif ($this->request->has('email')) {
+            $customerData['email'] = $this->request->get('email');
+
+            $this->excludedKeys[] = 'email';
         }
 
         if (isset($customerData['email'])) {
@@ -198,7 +202,7 @@ class CheckoutController extends BaseActionController
         }
 
         if ($data !== []) {
-            $this->cart->merge($data)->save();
+            $this->cart->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')))->save();
             $this->cart->save();
 
             $this->cart = $this->cart->fresh();

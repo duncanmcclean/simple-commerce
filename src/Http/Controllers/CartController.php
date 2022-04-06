@@ -101,7 +101,7 @@ class CartController extends BaseActionController
         }
 
         if ($data !== null) {
-            $cart = $cart->merge($data);
+            $cart = $cart->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')));
         }
 
         $cart->save();
