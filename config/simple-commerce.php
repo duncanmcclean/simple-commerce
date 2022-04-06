@@ -68,6 +68,19 @@ return [
         ],
     ],
 
+    // TODO: whitelisted fields comment
+    'field_whitelist' => [
+        'orders' => [
+            'shipping_name', 'shipping_address', 'shipping_address_line2', 'shipping_city', 'shipping_region',
+            'shipping_postal_code', 'shipping_country', 'use_shipping_address_for_billing', 'billing_name', 'billing_address',
+            'billing_address_line2', 'billing_city', 'billing_region', 'billing_postal_code', 'billing_country',
+        ],
+
+        'line_items' => [
+            '*',
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Stock Running Low
