@@ -16,7 +16,7 @@ trait FormBuilder
         $html = $this->formOpen($action, $method, static::$knownParams);
 
         $html .= $this->redirectField();
-        // $html .= $this->errorRedirectField();
+        $html .= $this->errorRedirectField();
         $html .= $this->requestField();
 
         $html .= $this->parse($this->sessionData($data));
@@ -40,6 +40,13 @@ trait FormBuilder
         $redirect = Str::start($this->params->get('redirect', request()->path()), '/');
 
         return '<input type="hidden" name="_redirect" value="' . encrypt($redirect) . '" />';
+    }
+
+    private function errorRedirectField()
+    {
+        $errorRedirect = Str::start($this->params->get('error_redirect', request()->path()), '/');
+
+        return '<input type="hidden" name="_error_redirect" value="' . encrypt($errorRedirect) . '" />';
     }
 
     private function requestField()
