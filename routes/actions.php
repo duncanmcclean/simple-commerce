@@ -18,7 +18,7 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
         Route::post('/cart', [CartController::class, 'update'])->name('cart.update');
         Route::delete('/cart', [CartController::class, 'destroy'])->name('cart.empty');
 
-        Route::post('/cart-items', [CartItemController::class, 'store'])->middleware([EnsureFormParametersArrivedIntact::class])->name('cart-items.store');
+        Route::post('/cart-items', [CartItemController::class, 'store'])->name('cart-items.store');
         Route::post('/cart-items/{item}', [CartItemController::class, 'update'])->name('cart-items.update');
         Route::delete('/cart-items/{item}', [CartItemController::class, 'destroy'])->name('cart-items.destroy');
 
