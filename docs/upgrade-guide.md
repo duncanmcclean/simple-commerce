@@ -4,12 +4,12 @@ title: Upgrade Guide
 
 ## Overview
 
-When updating, read through this guide to see if there's anything you might need to change. A good chunk of updates will be done automatically for you but there will still be some manual steps you will need to take.
+When upgrading, read through this guide to see if there's anything you may need to change. A few of the big common changes will be done automatically (and will be marked as 'Automated' throughout the guide) but there will likely be some manual steps you'll need to take.
 
-In your `composer.json` file, change the `doublethreedigital/simple-commerce` version constraint:
+In your `composer.json` file, update the `doublethreedigital/simple-commerce` version constraint:
 
 ```json
-"doublethreedigital/simple-commerce": "2.4.*"
+"doublethreedigital/simple-commerce": "3.0.*"
 ```
 
 Then run:
@@ -20,104 +20,151 @@ composer update doublethreedigital/simple-commerce --with-dependencies
 
 ## New Features
 
-### Tax
-
-Simple Commerce v2.4 includes a brand new Tax System!
-
-When you're upgraded to v2.4, Simple Commerce will update your configuration file to use a new 'basic tax engine'. Essentially, the 'basic tax engine' is the same thing you had previously - with a single tax rate.
-
-If you wish, you may enable the 'standard tax engine'. The Standard Tax Engine is more complicated but comes with super powers (compared to a single tax rate 😅). It allows you to set tax rates based on the type of products purchased and the customer's billing address.
-
-A full explanation of both engines is available in [the documentation](./tax.md).
+TODO
 
 ## Changes
 
-### Low Impact: Dropped Laravel 6 support
+- Data Refactor TODO: #556
+- new minimum system reqs
+- no more receipt pdfs
+- mention upgrade script tasks
 
-We've dropped support for sites using Laravel 6. If you're unsure as to the Laravel version you're using, run `php artisan --version` which will tell you.
+### High: Changes around the Data APIs (Partially automated)
 
-Simple Commerce supports Laravel 7 onwards. If you're on Laravel 6, you may upgrade by following the official [Laravel Upgrade Guide](https://laravel.com/docs/7.x/upgrade#upgrade-7.0).
+This is probably **the largest change** around how Simple Commerce works. If you've written any kind of custom code that deals with an `Order`, `Product`, etc, I'd recommend you test your code to ensure it's compatible with v3.0.
 
-### Low Impact: Dropped Statamic 3.1 support
-
-We've dropped support for Statamic 3.1. Now, only 3.2 and above is supported. Ideally, you should be using Statamic 3.3 (when it's been fully released).
-
-### Low Impact: 'Line Items Tax' field added to Orders blueprint
-
-During the upgrade process, Simple Commerce will automatically add a 'Line Items Tax' field to your Orders blueprint. This field is used to let you display tax information (like amount, rate, etc) on a per line item basis via Antlers.
-
-### Low Impact: One cart per site
-
-In v2.3, if you had multiple sites on the same domain, they would all share a single cart. This meant you could add one product on one site and another product on another site. This would mean currencies would be mixed up, shipping methods would get mixed up, etc.
-
-Now in v2.4, each cart will have it's own cart. Simple Commerce will append the site handle to the cart key in your cookies/session.
-
-Any multi-sites migrated to v2.4 will continue to use the v2.3 behaviour. To opt-out, and use a 'cart per site', remove the `cart.single_cart` config value:
+As part of the changes, a small configuration change was needed. This change should be **automated** for you. Instead of seeing `driver` keys inside of the 'content drivers' array, you should see `repository` keys.
 
 ```php
-'cart' => [
-    'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
-    'key' => 'simple-commerce-cart',
-    'single_cart' => true, // [tl! --]
+'content' => [
+    'coupons' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
+        'collection' => 'coupons',
+    ],
+
+    'customers' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
+        'collection' => 'customers',
+    ],
+
+    'orders' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class,
+        'collection' => 'orders',
+    ],
+
+    'products' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class,
+        'collection' => 'products',
+    ],
 ],
 ```
 
-### Medium Impact: Changes to how 'gateway data' is stored
+In addition to these changes, you should check any custom code you've written is still compatible with Simple Commerce's updated APIs. Here's a few common examples of patterns in v2.4 and what they look like now in v3.0.
 
-Previously, the data from a gateway would look something like this in your order entry:
-
-```yaml
-gateway: DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway
-stripe:
-  intent: pi_whatever
-  client_secret: pi_whateveragain_secret_something
-gateway_data:
-  id: pm_whatever
-```
-
-We've improved this, so the `gateway` and `gateway_data` values are under a single key, like so:
-
-```yaml
-gateway:
-  use: DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway
-  data:
-    id: pm_whatever
-stripe:
-  intent: pi_whatever
-  client_secret: pi_whateveragain_secret_something
-```
-
-And for new orders, we'll automatically get rid of the 'temporary gateway data' added to order entries before checking out.
-
-These changes should hopefully help to tidy up your order entry. It also lets us do cool things in the future, like a Gateway fieldtype.
-
-> You don't need to worry about anything - Simple Commerce will automatically re-format your order entries for you during the upgrade process.
-
-### Medium Impact: Updated signature of `checkAvailability` method on shipping methods
-
-The signature of the `checkAvailability` method on shipping methods has changed. We now pass in the order.
+#### Creating products/customers/orders/coupons
 
 **Previously:**
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-
-public function checkAvailability(Address $address): bool;
+$order = Order::create([
+    'items' => [
+        [
+            'product' => 'abc',
+            'quantity' => 1,
+            'total' => 1255,
+        ],
+    ],
+    'items_total' => 1255,
+    'gift_note' => 'This is a very special note.',
+]);
 ```
 
 **Now:**
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+$order = Order::make()
+    ->lineItems([
+        [
+            'product' => 'abc',
+            'quantity' => 1,
+            'total' => 1255,
+        ],
+    ])
+    ->itemsTotal(1255)
+    ->data([
+        'gift_note' => 'This is a very special note.',
+    ]);
 
-public function checkAvailability(Order $order, Address $address): bool;
+$order->save();
 ```
+
+A lot of 'things' on Data Models are now properties which can be modified using fluent getter/setters. Anything outside of a property can be set using `->data()`, `->set()` or `->merge()`. We're now using the same pattern for making/saving as Statamic itself.
+
+### High: Field Whitelisting (Partially automated)
+
+To improve the security of your site, we've introduced a 'whitelist' for the fields that will be saved from Simple Commerce's front-end forms.
+
+Previously, Simple Commerce would save anything provided in a request (for example: on the request to add a product to the cart) to your order entry.
+
+Now, SC will only save the request data from the fields you've whitelisted in the Simple Commerce config.
+
+Simple Commerce has **partially automated** this upgrade step for you. Upon upgrade, a `field_whitelist` key will be added to your `simple-commerce.php` config file.
+
+It will have pulled in any fields from your orders that aren't 'reserved' (eg. SC presumes you probably don't want the `is_paid` field to be fillable).
+
+### Medium: Order Emails
+
+Previously, Simple Commerce would send a fairly basic email with a PDF receipt attached.
+
+The library used to generate the PDF receipts (DomPDF) doesn't support new CSS features and was limiting in its available functionality. In v3, the receipr PDF has been removed from order emails. Instead, email body's contain a table with the order line items, along with any customer information which is displayed below.
+
+![](/img/simple-commerce/order-email-example.png)
+
+If you wish to continue with the previous behavior, you may create a copy of the [notifications from v2.4](https://github.com/doublethreedigital/simple-commerce/tree/2.4/src/Notifications) and put them in your `app` folder.
+
+Then, in your config file, you'd adjust the notification class used to match your app one. Be sure to manually require the DomPDF dependency, as this is no longer required for you by Simple Commerce.
+
+```
+composer require dompdf/dompdf
+```
+
+### Medium: Order Confirmation page
+
+Although not technically a breaking change, it's worth noting as it may help to cleaup your code.
+
+On the 'Order Confirmation' page (the one after checking out), you'd previously have to use the `{{ session:cart }}` tag in order to access the previous cart. However, now you may use Simple Commerce's cart tags like normal.
+
+**Previously:**
+
+```antlers
+{{ session:cart }}
+    Thanks for your order ({{ title }}), {{ customer:title }}
+{{ /session:cart }}
+```
+
+**Now:**
+
+```antlers
+{{ sc:cart }}
+    Thanks for your order ({{ title }}), {{ customer:title }}
+{{ /sc:cart }}
+```
+
+### Medium: Custom Content Driver
+
+### Low: Higher System Requirements
+
+Simple Commerce v3 requires you to be using PHP 8.0 (and above), along with Laravel 8 (and above) and Statamic 3.3. Adjusting the system requirements encourages developers to stay up to date and means Simple Commerce can take advantage of new features.
+
+## Running into an issue upgrading?
+
+Like I say, quite a lot has changed between v2.4 and v3.0 so if you're running into issues upgrading, please either [open a GitHub Issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) or [send me an email](mailto:help@doublethree.digital).
 
 ## Previous upgrade guides
 
 - [v2.2 to v2.3](https://github.com/doublethreedigital/simple-commerce/blob/2.3/docs/upgrade-guide.md)
+- [v2.3 to v2.4](https://github.com/doublethreedigital/simple-commerce/blob/2.4/docs/upgrade-guide.md)
 
 ---
 
-[You may also view a diff of changes between v2.3 and v3.4](https://github.com/doublethreedigital/simple-commerce/compare/2.3...2.4)
+[You may also view a diff of changes between v2.4 and v3.0](https://github.com/doublethreedigital/simple-commerce/compare/2.4...3.0)
