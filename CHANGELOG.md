@@ -6,30 +6,27 @@
 
 ### What's new
 
-- Order Numbers are now stored sepratly on orders #604
-- SC uses 'title formats' to automatically generate titles for order & customer entries #601
-- Database orders #599
+- Support for storing [orders & customers in a database](https://simple-commerce.duncanmcclean.com/database-orders) #599
+- Statamic's new-ish ['title format'](https://statamic.dev/collections#titles) feature is now used to generate titles for order/customer entries #601
+- You can now use Simple Commerce's cart tags on the Order Confirmation page #605
 
 ### What's improved
 
-- Drastic improvements to order emails #603
-- The Order Confirmation page now retains the order information #605
-- Added some protection for 'hidden form params' #607
-- Additional fields in Form Tags need to be configured for front-end forms #608
-
-### What's fixed
-
-- Fixed a little bug with the Product Variant (singular) fieldtype #600
+- Huge improvements to order emails #603
+- Added some protection for 'hidden form parameters' #607
+- You may now specify a 'whitelist' of additional fields you wish to provide when submitting front-end forms #608
+- Order Numbers are stored in their own (hidden) field now #604
+- Updated `moneyphp/money` to v4.0
 
 ### Breaking changes
 
-- Data Refactor TODO: #556
-- new minimum system reqs
-- no more receipt pdfs
-- mention upgrade script tasks
-- moneyphp v4 upgrade
+There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
 
 ## v3.0.0-beta.1 (2022-xx-xx)
+
+The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
+
+PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md#v300-2022-xx-xx).
 
 ---
 
