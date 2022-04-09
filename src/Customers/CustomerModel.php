@@ -14,7 +14,7 @@ class CustomerModel extends Model
     protected $table = 'customers';
 
     protected $fillable = [
-        'email', 'data',
+        'name', 'email', 'data',
     ];
 
     protected $casts = [

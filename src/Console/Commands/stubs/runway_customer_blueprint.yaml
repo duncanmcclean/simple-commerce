@@ -3,9 +3,17 @@ sections:
   main:
     display: Main
     fields:
+      - handle: name
+        field:
+          input_type: text
+          type: text
+          width: 50
+          display: Name
+          validate: required
       - handle: email
         field:
           input_type: email
           type: text
+          width: 50
           display: Email
           validate: required
