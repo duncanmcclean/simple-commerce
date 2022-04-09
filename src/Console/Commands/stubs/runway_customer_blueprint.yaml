@@ -17,3 +17,13 @@ sections:
           width: 50
           display: Email
           validate: required
+      - handle: orders
+        field:
+          create: false
+          mode: default
+          resource: ordermodel
+          display: Orders
+          type: has_many
+          icon: has_many
+          listable: hidden
+          instructions_position: above
