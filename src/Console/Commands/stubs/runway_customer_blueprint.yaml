@@ -7,6 +7,5 @@ sections:
         field:
           input_type: email
           type: text
-          width: 50
           display: Email
           validate: required
