@@ -23,7 +23,7 @@
 
 There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
 
-## v3.0.0-beta.1 (2022-xx-xx)
+## v3.0.0-beta.1 (2022-04-09)
 
 The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
 
