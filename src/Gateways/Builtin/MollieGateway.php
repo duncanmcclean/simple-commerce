@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
@@ -114,17 +115,34 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === PaymentStatus::STATUS_PAID) {
-            // TODO: refactor this query
-            $order = collect(OrderFacade::all())
-                ->filter(function ($entry) use ($mollieId) {
-                    return isset($entry->data()->get('mollie')['id'])
-                        && $entry->data()->get('mollie')['id']
-                        === $mollieId;
-                })
-                ->map(function ($entry) {
-                    return OrderFacade::find($entry->id());
-                })
-                ->first();
+            $order = null;
+
+            if (isset(SimpleCommerce::orderDriver()['collection'])) {
+                // TODO: refactor this query
+                $order = collect(OrderFacade::all())
+                    ->filter(function ($entry) use ($mollieId) {
+                        return isset($entry->data()->get('mollie')['id'])
+                            && $entry->data()->get('mollie')['id']
+                            === $mollieId;
+                    })
+                    ->map(function ($entry) {
+                        return OrderFacade::find($entry->id());
+                    })
+                    ->first();
+            }
+
+            if (isset(SimpleCommerce::orderDriver()['model'])) {
+                $order = (new (SimpleCommerce::orderDriver()['model']))
+                    ->query()
+                    ->where('data->mollie->id', $mollieId)
+                    ->first();
+
+                $order = OrderFacade::find($order->id);
+            }
+
+            if (! $order) {
+                throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
+            }
 
             if ($order->isPaid() === true) {
                 return;
