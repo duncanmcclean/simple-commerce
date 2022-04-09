@@ -23,6 +23,6 @@ class CustomerModel extends Model
 
     public function orders(): HasMany
     {
-        return $this->hasMany(OrderModel::class);
+        return $this->hasMany(OrderModel::class, 'customer_id');
     }
 }
