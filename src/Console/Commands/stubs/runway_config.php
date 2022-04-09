@@ -15,7 +15,7 @@ return [
         \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class => [
             'name' => 'Customers',
             'handle' => 'customers',
-            'blueprint' => 'customers',
+            'blueprint' => 'customer',
         ],
 
         \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class => [
