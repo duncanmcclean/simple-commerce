@@ -9,6 +9,7 @@
 - Support for storing [orders & customers in a database](https://simple-commerce.duncanmcclean.com/database-orders) #599
 - Statamic's new-ish ['title format'](https://statamic.dev/collections#titles) feature is now used to generate titles for order/customer entries #601
 - You can now use Simple Commerce's cart tags on the Order Confirmation page #605
+- Gateways may return their own validation messages #598
 
 ### What's improved
 

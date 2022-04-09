@@ -59,6 +59,8 @@ As part of the changes, a small configuration change was needed. This change sho
 ],
 ```
 
+You'll also find that [the 'interfaces'](https://github.com/doublethreedigital/simple-commerce/tree/3.0/src/Contracts) for each of these Data APIs have been rewritten.
+
 In addition to these changes, you should check any custom code you've written is still compatible with Simple Commerce's updated APIs. Here's a few common examples of patterns in v2.4 and what they look like now in v3.0.
 
 #### Creating products/customers/orders/coupons
@@ -99,6 +101,42 @@ $order->save();
 ```
 
 A lot of 'things' on Data Models are now properties which can be modified using fluent getter/setters. Anything outside of a property can be set using `->data()`, `->set()` or `->merge()`. We're now using the same pattern for making/saving as Statamic itself.
+
+#### Getting grand total from an order
+
+**Previously:**
+
+```php
+$order = Order::find('123');
+
+$order->get('grand_total');
+```
+
+**Now:**
+
+```php
+$order = Order::find('123');
+
+$order->grandTotal();
+```
+
+#### Getting the original entry
+
+**Previously:**
+
+```php
+$order = Order::find('123');
+
+$order->entry();
+```
+
+**Now:**
+
+```php
+$order = Order::find('123');
+
+$order->resource();
+```
 
 ### High: Field Whitelisting (Partially automated)
 
@@ -150,11 +188,25 @@ On the 'Order Confirmation' page (the one after checking out), you'd previously 
 {{ /sc:cart }}
 ```
 
-### Medium: Custom Content Driver
-
 ### Low: Higher System Requirements
 
 Simple Commerce v3 requires you to be using PHP 8.0 (and above), along with Laravel 8 (and above) and Statamic 3.3. Adjusting the system requirements encourages developers to stay up to date and means Simple Commerce can take advantage of new features.
+
+### Low: Order Numbers (Automated)
+
+In the past, order numbers would be stored as part of the title on Order entries.
+
+However, SC v3 has taken advantage of a Statamic feature called ['title formats'](https://statamic.dev/collections#titles). This means we store the order number in it's own field, `order_number` (hidden field, added during upgrade).
+
+Then, Simple Commerce will configure the title format to be like so: `#xxxx`.
+
+### Low: Updated namespaces for `Currency`/`Country`/`Region` classes
+
+If you were previously referencing any of these classes, you should update your references to their new namespaces:
+
+- `DoubleThreeDigital\SimpleCommerce\Support\Currency` -> `DoubleThreeDigital\SimpleCommerce\Currency`
+- `DoubleThreeDigital\SimpleCommerce\Support\Country` -> `DoubleThreeDigital\SimpleCommerce\Country`
+- `DoubleThreeDigital\SimpleCommerce\Support\Regions` -> `DoubleThreeDigital\SimpleCommerce\Regions`
 
 ## Running into an issue upgrading?
 
