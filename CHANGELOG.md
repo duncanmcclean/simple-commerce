@@ -31,6 +31,16 @@ PS: A proper list of what's new/improved is available in the [draft v3.0 changel
 
 ---
 
+## v2.4.9 (2022-04-05)
+
+### What's new
+
+- Added a `{{ total_including_tax }}` tag to help you figure out the Line Item Total + Tax #602
+
+### What's fixed
+
+- Made some performance improvements to the way order numbers are generated.
+
 ## v2.4.8 (2022-04-02)
 
 ### What's new
