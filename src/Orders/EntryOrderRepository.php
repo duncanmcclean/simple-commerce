@@ -159,29 +159,31 @@ class EntryOrderRepository implements RepositoryContract
 
     protected function generateOrderNumber(): int
     {
-        $orderNumberQuery = Collection::find($this->collection)
+        $lastOrder = Collection::find($this->collection)
             ->queryEntries()
+            ->orderBy('order_number', 'desc')
             ->where('order_number', '!=', null)
-            ->get();
+            ->first();
 
         // Fallback to get order number from title (otherwise: start from the start..)
-        if ($orderNumberQuery->isEmpty()) {
-            $orderNumberQuery = Collection::find($this->collection)
+        if (! $lastOrder) {
+            $lastOrder = Collection::find($this->collection)
                 ->queryEntries()
+                ->orderBy('title', 'desc')
                 ->where('title', '!=', null)
-                ->get();
+                ->first();
 
             // And if we don't have any orders with the old title format, start from the start.
-            if ($orderNumberQuery->isEmpty()) {
+            if (! $lastOrder) {
                 return config('simple-commerce.minimum_order_number', 1000);
             }
 
-            $lastOrderNumber = (int) Str::of($orderNumberQuery->last()->get('title'))
+            $lastOrderNumber = (int) Str::of($lastOrder->get('title'))
                 ->replace('Order ', '')
                 ->replace('#', '')
                 ->__toString();
         } else {
-            $lastOrderNumber = $orderNumberQuery->last()->get('order_number');
+            $lastOrderNumber = $lastOrder->get('order_number');
         }
 
         return (int) $lastOrderNumber + 1;
