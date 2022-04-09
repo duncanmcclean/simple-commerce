@@ -17,7 +17,9 @@ class OrderStatusFilter extends Filter
                 'type' => 'radio',
                 'options' => [
                     'cart' => 'Cart',
-                    'order' => 'Order',
+                    'paid' => 'Paid',
+                    'shipped' => 'Shipped',
+                    'refunded' => 'Refunded',
                 ],
             ],
         ];
@@ -26,14 +28,34 @@ class OrderStatusFilter extends Filter
     public function autoApply()
     {
         return [
-            'type' => 'order',
+            'type' => 'paid',
         ];
     }
 
     public function apply($query, $values)
     {
-        $query
-            ->where('is_paid', $values['type'] === 'order');
+        if ($values['type'] === 'cart') {
+            return $query
+                ->where('is_paid', false);
+        }
+
+        if ($values['type'] === 'paid') {
+            return $query
+                ->where('is_paid', true)
+                ->where('is_shipped', false);
+        }
+
+        if ($values['type'] === 'shipped') {
+            return $query
+                ->where('is_paid', true)
+                ->where('is_shipped', true);
+        }
+
+        if ($values['type'] === 'refunded') {
+            return $query
+                ->where('is_paid', true)
+                ->where('is_refunded', true);
+        }
     }
 
     public function badge($values)
