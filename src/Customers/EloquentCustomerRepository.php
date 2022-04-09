@@ -66,8 +66,8 @@ class EloquentCustomerRepository implements RepositoryContract
         $model->email = $customer->email();
         $model->data = Arr::except($customer->data()->toArray(), ['name']);
 
-        if ($customer->has('name')) {
-            $model->name = $customer->get('name');
+        if ($name = $customer->get('name')) {
+            $model->name = $name;
         }
 
         $model->save();

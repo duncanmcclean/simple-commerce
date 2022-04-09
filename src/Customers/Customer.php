@@ -41,7 +41,7 @@ class Customer implements Contract
             ->args(func_get_args());
     }
 
-    public function name(): string
+    public function name(): ?string
     {
         return $this->get('name');
     }
