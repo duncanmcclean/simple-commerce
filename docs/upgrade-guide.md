@@ -18,10 +18,6 @@ Then run:
 composer update doublethreedigital/simple-commerce --with-dependencies
 ```
 
-## New Features
-
-TODO
-
 ## Changes
 
 - Data Refactor TODO: #556
