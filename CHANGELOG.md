@@ -23,6 +23,20 @@
 
 There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
 
+## v3.0.0-beta.2 (2022-04-09)
+
+### What's fixed
+
+- Improved performance when generating order numbers (entry driver)
+- Fixed an issue when using the `{{ total_including_tax }}` tag
+- Added a missing upgrade script to the list of upgrade scripts that should be run
+- Fixed an issue where the Mollie webhook would fail if you're using the Eloquent driver
+- Copied over the recent updates of the 'Order Status' filter in the CP
+- Eloquent driver: Store customer name in the database
+- Eloquent driver: Show list of customer's orders when viewing a customer in the CP
+- Eloquent driver: Fixed an issue where `customer_id` would not be set
+- Eloquent driver: The cart cleanup command is now compatible with the Eloquent driver
+
 ## v3.0.0-beta.1 (2022-04-09)
 
 The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
