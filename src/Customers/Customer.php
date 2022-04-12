@@ -43,6 +43,10 @@ class Customer implements Contract
 
     public function name(): ?string
     {
+        if ($this->has('first_name') && $this->has('last_name')) {
+            return "{$this->get('first_name')} {$this->get('last_name')}";
+        }
+
         return $this->get('name');
     }
 

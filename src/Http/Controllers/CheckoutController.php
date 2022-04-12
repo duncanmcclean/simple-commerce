@@ -128,6 +128,14 @@ class CheckoutController extends BaseActionController
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';
+        } elseif ($this->request->has('first_name') && $this->request->has('last_name') && $this->request->has('email')) {
+            $customerData['first_name'] = $this->request->get('first_name');
+            $customerData['last_name'] = $this->request->get('last_name');
+            $customerData['email'] = $this->request->get('email');
+
+            $this->excludedKeys[] = 'first_name';
+            $this->excludedKeys[] = 'last_name';
+            $this->excludedKeys[] = 'email';
         } elseif ($this->request->has('email')) {
             $customerData['email'] = $this->request->get('email');
 
@@ -138,12 +146,22 @@ class CheckoutController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
+                $customerItemData = [
+                    'published' => true,
+                ];
+
+                if (isset($customerData['name'])) {
+                    $customerItemData['name'] = $customerData['name'];
+                }
+
+                if (isset($customerData['first_name']) && isset($customerData['last_name'])) {
+                    $customerItemData['first_name'] = $customerData['first_name'];
+                    $customerItemData['last_name'] = $customerData['last_name'];
+                }
+
                 $customer = Customer::make()
                     ->email($customerData['email'])
-                    ->data([
-                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                        'published' => true,
-                    ]);
+                    ->data($customerItemData);
 
                 $customer->save();
             }

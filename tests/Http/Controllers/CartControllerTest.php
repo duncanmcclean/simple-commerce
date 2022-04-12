@@ -201,8 +201,6 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer()
     {
-        $this->markTestSkipped();
-
         Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
 
         $cart = Order::make();
@@ -223,7 +221,36 @@ class CartControllerTest extends TestCase
         $cart = $cart->fresh();
         $customer = Customer::findByEmail($data['email']);
 
-        $this->assertSame($cart->customer(), $customer->id);
+        $this->assertSame($cart->customer()->id, $customer->id);
+        $this->assertSame($customer->name(), 'Joe Doe');
+        $this->assertSame($customer->email(), 'joedoe@gmail.com');
+    }
+
+    /** @test */
+    public function can_update_cart_and_create_new_customer_with_first_name_and_last_name()
+    {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'first_name' => 'Joe',
+            'last_name' => 'Doe',
+            'email' => 'joedoe@gmail.com',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+        $customer = Customer::findByEmail($data['email']);
+
+        $this->assertSame($cart->customer()->id, $customer->id);
         $this->assertSame($customer->name(), 'Joe Doe');
         $this->assertSame($customer->email(), 'joedoe@gmail.com');
     }
@@ -324,8 +351,6 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer_via_customer_array()
     {
-        $this->markTestSkipped();
-
         $cart = Order::make();
         $cart->save();
 
@@ -346,8 +371,36 @@ class CartControllerTest extends TestCase
         $cart = $cart->fresh();
         $customer = Customer::findByEmail('rebecca.logan@example.com');
 
-        $this->assertTrue($cart->has('customer'));
-        $this->assertIsString($cart->customer());
+        $this->assertSame($cart->customer()->id, $customer->id);
+        $this->assertSame($customer->name(), 'Rebecca Logan');
+        $this->assertSame($customer->email(), 'rebecca.logan@example.com');
+    }
+
+    /** @test */
+    public function can_update_cart_and_create_new_customer_via_customer_array_with_first_name_and_last_name()
+    {
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'customer' => [
+                'first_name'  => 'Rebecca',
+                'last_name'   => 'Logan',
+                'email' => 'rebecca.logan@example.com',
+            ],
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+        $customer = Customer::findByEmail('rebecca.logan@example.com');
+
+        $this->assertSame($cart->customer()->id, $customer->id);
         $this->assertSame($customer->name(), 'Rebecca Logan');
         $this->assertSame($customer->email(), 'rebecca.logan@example.com');
     }

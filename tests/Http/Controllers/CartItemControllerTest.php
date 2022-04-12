@@ -613,6 +613,46 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_store_item_with_first_name_and_last_name_and_email()
+    {
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+                'slug' => 'dog-food',
+            ]);
+
+        $product->save();
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'email' => 'michael@scott.net',
+        ];
+
+        $response = $this
+            ->from('/products/' . $product->get('slug'))
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/' . $product->get('slug'));
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->itemsTotal());
+
+        $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($cart->customer());
+
+        $this->assertSame($cart->customer()->name(), 'Michael Scott');
+        $this->assertSame($cart->customer()->email(), 'michael@scott.net');
+    }
+
+    /** @test */
     public function cant_store_item_with_email_that_contains_spaces()
     {
         $product = Product::make()
@@ -679,7 +719,7 @@ class CartItemControllerTest extends TestCase
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->customer());
 
-        $this->assertSame($cart->customer()->name(), 'donald@duck.disney');
+        $this->assertSame($cart->customer()->name(), null);
         $this->assertSame($cart->customer()->email(), 'donald@duck.disney');
     }
 
