@@ -17,14 +17,14 @@ Shipping Methods can be configured on a site-by-site basis, helpful for if you h
 
         'shipping' => [
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
             ],
         ],
     ],
 ],
 ```
 
-The `methods` array should contain an array of Shipping Method classes, with the `::class` syntax.
+The `methods` array should contain an array of Shipping Method classes, with the `::class` syntax. You may also specify a configuration array as the second parameter.
 
 ### Default shipping method
 
@@ -43,7 +43,7 @@ In these cases, you may configure a default Shipping Method which will be used w
             'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
 
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
             ],
         ],
     ],
