@@ -28,4 +28,6 @@ interface Gateway
     public function webhook(Request $request);
 
     public function isOffsiteGateway(): bool;
+
+    public function paymentDisplay($value): array;
 }
