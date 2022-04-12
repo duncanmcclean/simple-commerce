@@ -251,6 +251,8 @@ class CheckoutController extends BaseActionController
             $this->excludedKeys[] = $key;
         }
 
+        $this->cart->fresh();
+
         return $this;
     }
 
