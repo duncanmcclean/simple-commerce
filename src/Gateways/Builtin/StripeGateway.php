@@ -98,6 +98,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'card'     => $paymentMethod->card->toArray(),
             'customer' => $paymentMethod->customer,
             'livemode' => $paymentMethod->livemode,
+            'payment_intent' => $paymentIntent->id,
         ]);
     }
 
@@ -180,6 +181,20 @@ class StripeGateway extends BaseGateway implements Gateway
         // TODO: implement refund handling
 
         return new Response();
+    }
+
+    public function paymentDisplay($value): array
+    {
+        if (! isset($value['data']['payment_intent'])) {
+            return ['text' => 'Unknown', 'url' => null];
+        }
+
+        $stripePaymentIntent = $value['data']['payment_intent'];
+
+        return [
+            'text' => $stripePaymentIntent,
+            'url' => "https://dashboard.stripe.com/test/payments/{$stripePaymentIntent}",
+        ];
     }
 
     protected function setUpWithStripe()

@@ -13,6 +13,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus;
 use Statamic\Facades\Site;
@@ -159,6 +160,23 @@ class MollieGateway extends BaseGateway implements Gateway
         return true;
     }
 
+    public function paymentDisplay($value): array
+    {
+        if (! isset($value['data']['id'])) {
+            return ['text' => 'Unknown', 'url' => null];
+        }
+
+        $this->setupMollie();
+
+        $molliePayment = $value['data']['id'];
+        $mollieOrganisation = Cache::get('SimpleCommerce::MollieGateway::OrganisationId');
+
+        return [
+            'text' => $molliePayment,
+            'url' => "https://www.mollie.com/dashboard/{$mollieOrganisation}/payments/{$molliePayment}",
+        ];
+    }
+
     protected function setupMollie()
     {
         $this->mollie = new MollieApiClient();
@@ -166,5 +184,13 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $this->mollie->addVersionString('Statamic/' . Statamic::version());
         $this->mollie->addVersionString('SimpleCommerce/' . SimpleCommerce::version());
+
+        Cache::rememberForever('SimpleCommerce::MollieGateway::OrganisationId', function () {
+            $currentProfile = $this->mollie->profiles->getCurrent();
+
+            $profileDashboardUrl = $currentProfile->_links->dashboard->href;
+
+            return explode('/', parse_url($profileDashboardUrl, PHP_URL_PATH))[2];
+        });
     }
 }
