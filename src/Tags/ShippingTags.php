@@ -18,7 +18,8 @@ class ShippingTags extends SubTag
 
         return SimpleCommerce::shippingMethods(Site::current()->handle())
             ->map(function ($shippingMethod) use ($order) {
-                $instance = Shipping::use($shippingMethod['class']);
+                $instance = Shipping::site(Site::current()->handle())
+                    ->use($shippingMethod['class']);
 
                 if (! $shipingAddress = $order->shippingAddress()) {
                     return null;
@@ -38,6 +39,7 @@ class ShippingTags extends SubTag
                 ];
             })
             ->whereNotNull()
+            ->values()
             ->toArray();
     }
 }
