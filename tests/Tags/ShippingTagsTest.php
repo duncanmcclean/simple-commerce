@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\ShippingTags;
+use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\StaticCartDriver;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
@@ -15,6 +16,8 @@ use Statamic\Facades\Antlers;
 
 class ShippingTagsTest extends TestCase
 {
+    use SetupCollections;
+
     protected $tag;
 
     public function setUp(): void
@@ -26,9 +29,7 @@ class ShippingTagsTest extends TestCase
             ->setContext([]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function can_get_available_shipping_method()
     {
         // This will add onto the existing one we have from the default config
