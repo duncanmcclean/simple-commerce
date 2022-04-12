@@ -108,6 +108,11 @@ class Manager implements Contract
         return $this->resolve()->isOffsiteGateway();
     }
 
+    public function paymentDisplay($value)
+    {
+        return $this->resolve()->paymentDisplay($value);
+    }
+
     public function withRedirectUrl(string $redirectUrl): self
     {
         $this->redirectUrl = $redirectUrl;
