@@ -82,4 +82,21 @@ class GatewayFieldtype extends Fieldtype
             'data' => array_pull($value, 'data', []),
         ]);
     }
+
+    public function preProcessIndex($value)
+    {
+        if (! $value) {
+            return;
+        }
+
+        $gateway = collect(SimpleCommerce::gateways())
+            ->where('class', isset($value['use']) ? $value['use'] : $value)
+            ->first();
+
+        if (! $gateway) {
+            return null;
+        }
+
+        return $gateway['name'];
+    }
 }
