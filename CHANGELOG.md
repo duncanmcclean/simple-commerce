@@ -7,9 +7,11 @@
 ### What's new
 
 - Support for storing [orders & customers in a database](https://simple-commerce.duncanmcclean.com/database-orders) #599
+- Brand new Gateway Fieldtype #609
 - Statamic's new-ish ['title format'](https://statamic.dev/collections#titles) feature is now used to generate titles for order/customer entries #601
 - You can now use Simple Commerce's cart tags on the Order Confirmation page #605
 - Gateways may return their own validation messages #598
+- Shipping Methods can now have their own config arrays #610
 
 ### What's improved
 
@@ -17,11 +19,23 @@
 - Added some protection for 'hidden form parameters' #607
 - You may now specify a 'whitelist' of additional fields you wish to provide when submitting front-end forms #608
 - Order Numbers are stored in their own (hidden) field now #604
+- Improved the handling of first/last name fields
 - Updated `moneyphp/money` to v4.0
 
 ### Breaking changes
 
 There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
+
+## v3.0.0-beta.3 (2022-04-13)
+
+### What's new
+
+- Brand new Gateway Fieldtype #609
+- Shipping Methods can now have their own config arrays #610
+
+### What's improved
+
+- Improved the handling of first/last name fields
 
 ## v3.0.0-beta.2 (2022-04-09)
 
