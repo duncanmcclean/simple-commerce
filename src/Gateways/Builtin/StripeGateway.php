@@ -193,7 +193,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         return [
             'text' => $stripePaymentIntent,
-            'url' => "https://dashboard.stripe.com/test/payments/{$stripePaymentIntent}",
+            'url' => "https://dashboard.stripe.com/payments/{$stripePaymentIntent}",
         ];
     }
 
