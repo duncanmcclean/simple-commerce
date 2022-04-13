@@ -70,8 +70,16 @@ class GatewayFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        // TODO
+        $gateway = collect(SimpleCommerce::gateways())
+            ->where('class', isset($value['use']) ? $value['use'] : $value)
+            ->first();
 
-        return [];
+        if (! $gateway) {
+            return null;
+        }
+
+        return array_merge($gateway, [
+            'data' => array_pull($value, 'data', []),
+        ]);
     }
 }
