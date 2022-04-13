@@ -28,6 +28,8 @@ use Stripe\Stripe;
 
 class StripeGateway extends BaseGateway implements Gateway
 {
+    protected bool $isUsingTestMode = false;
+
     public function name(): string
     {
         return 'Stripe';
@@ -189,11 +191,15 @@ class StripeGateway extends BaseGateway implements Gateway
             return ['text' => 'Unknown', 'url' => null];
         }
 
+        $this->setUpWithStripe();
+
         $stripePaymentIntent = $value['data']['payment_intent'];
 
         return [
             'text' => $stripePaymentIntent,
-            'url' => "https://dashboard.stripe.com/payments/{$stripePaymentIntent}",
+            'url' => $this->isUsingTestMode
+                ? "https://dashboard.stripe.com/test/payments/{$stripePaymentIntent}"
+                : "https://dashboard.stripe.com/payments/{$stripePaymentIntent}",
         ];
     }
 
@@ -215,5 +221,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($version = $this->config()->has('version')) {
             Stripe::setApiVersion($version);
         }
+
+        $this->isUsingTestMode = str_contains($this->config()->get('secret'), 'sk_test_');
     }
 }
