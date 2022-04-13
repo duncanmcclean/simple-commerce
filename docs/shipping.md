@@ -70,8 +70,9 @@ namespace App\ShippingMethods;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class FirstClass implements ShippingMethod
+class FirstClass extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {

@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\ShippingTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
@@ -60,7 +61,7 @@ class ShippingTagsTest extends TestCase
     }
 }
 
-class RoyalMail implements ShippingMethod
+class RoyalMail extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
@@ -83,7 +84,7 @@ class RoyalMail implements ShippingMethod
     }
 }
 
-class DPD implements ShippingMethod
+class DPD extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
