@@ -40,7 +40,7 @@ For more documentation around events and event listeners, consider reading [the 
 
 ### CouponRedeemed
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/CouponRedeemed.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/CouponRedeemed.php)
 
 This event is fired when a customer adds a coupon to their cart/order.
 
@@ -53,7 +53,7 @@ public function handle(CouponRedeemed $event)
 
 ### OrderPaid
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderPaid`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/OrderPaid.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\OrderPaid`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/OrderPaid.php)
 
 This event is fired when an order has been marked as paid.
 
@@ -66,7 +66,7 @@ public function handle(OrderPaid $event)
 
 ### OrderSaved
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderSaved`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/OrderSaved.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\OrderSaved`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/OrderSaved.php)
 
 This event is fired when an order has been saved. This event will only be fired when an order is saved via Simple Commerce, not via the Control Panel.
 
@@ -79,7 +79,7 @@ public function handle(OrderPaid $event)
 
 ### OrderShipped
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderShipped`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/OrderShipped.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\OrderShipped`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/OrderShipped.php)
 
 This event is fired when an order has been marked as shipped.
 
@@ -92,7 +92,7 @@ public function handle(OrderShipped $event)
 
 ### PostCheckout
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\PostCheckout`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/PostCheckout.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\PostCheckout`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/PostCheckout.php)
 
 This event is fired after the checkout process has been completed.
 
@@ -106,7 +106,7 @@ public function handle(PostCheckout $event)
 
 ### PreCheckout
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\PreCheckout`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/PreCheckout.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\PreCheckout`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/PreCheckout.php)
 
 This event is fired before the checkout process begins.
 
@@ -120,7 +120,7 @@ public function handle(PreCheckout $event)
 
 ### ReceiveGatewayWebhook
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\ReceiveGatewayWebhook`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/ReceiveGatewayWebhook.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\ReceiveGatewayWebhook`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/ReceiveGatewayWebhook.php)
 
 This event is fired whenever a webhook request from a gateway is received.
 
@@ -133,7 +133,7 @@ public function handle(ReceiveGatewayWebhook $event)
 
 ### StockRunOut
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunOut`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/StockRunOut.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunOut`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/StockRunOut.php)
 
 This event is fired when the [stock](/stock) for a product has ran out.
 
@@ -148,7 +148,7 @@ public function handle(StockRunOut $event)
 
 ### StockRunningLow
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow`**](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/StockRunningLow.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow`**](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/StockRunningLow.php)
 
 This event is fired when the [stock](/stock) for a product is running low.
 

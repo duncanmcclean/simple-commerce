@@ -41,7 +41,7 @@ There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recom
 
 The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
 
-PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md#v300-2022-xx-xx).
+PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md#v300-2022-xx-xx).
 
 ---
 
@@ -253,11 +253,11 @@ Simple Commerce v2.4 is on it's way - this is the very first beta release! The p
 
 - Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
 
-After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/master/docs/upgrade-guide.md) which explains any changes you may need to make.
+After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/main/docs/upgrade-guide.md) which explains any changes you may need to make.
 
 ### Full Changelog
 
-For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
+For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md).
 
 ---
 
@@ -856,7 +856,7 @@ For more information on what's new and any breaking changes, review the [`CHANGE
 
 ## v2.2.14 (2021-03-08)
 
-- [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
+- [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
 - [new] You can now specify a different redirect URL for errors. - `error_redirect`.
 - [fix] Improved handling of Mollie webhooks, we now detect if an order has been paid and redirect correctly. #384
 - [fix] Fixed issue where cookie cart driver wasn't forgetting cart after checkout #383
@@ -1106,7 +1106,7 @@ A whole lot of API related changes this release...
 
 ## v2.1.4 (2020-11-12)
 
-- [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Woodland.php) when installing Simple Commerce for the first time. #313
+- [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Woodland.php) when installing Simple Commerce for the first time. #313
 - [fix] Fixed issue with product variants fieldtype on new product entries. #314
 - [fix] Fixed issue when adding a new variation in product variants fieldtype
 - [fix] Localize and use plural/signular stuff with index text for product variants fields.
