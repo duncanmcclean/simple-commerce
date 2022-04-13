@@ -61,8 +61,8 @@ class GatewayFieldtype extends Fieldtype
 
     public function process($value)
     {
-        if (isset($value['actual'])) {
-            return $value['actual'];
+        if (isset($value['data'])) {
+            return $value['data'];
         }
 
         return $value;
