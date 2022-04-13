@@ -103,6 +103,16 @@ Here's a quick explanation of what each method does.
 - **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
 - **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
 
+### Using config settings
+
+As mentioned earlier, you may let users of your shipping method specify a configuration array which is accessible inside the Shipping Method itself. If you'd like to do this, you may access the config like so:
+
+```php
+// app/ShippingMethods/FirstClass.php
+
+$this->config()->get('api_key');
+```
+
 ## Templating
 
 During the cart/checkout flow, you'll want to do 2 things: first, let the customer enter their shipping address for the order and secondly, let the customer select the shipping method you want to use for the order.
