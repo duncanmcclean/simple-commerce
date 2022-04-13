@@ -34,6 +34,7 @@ The boilerplate gateway has quite a few methods. Here's a quick overview of what
 - `getCharge()` - should get information about a specific order's charge/transaction.
 - `refundCharge()` - should refund an order
 - `webhook()` - should accept incoming webhook payloads, used for off-site payment gateways.
+- `paymentDisplay()` - should return an array with `text` and a `url` which will be returned by the 'Gateway Fieldtype'
 
 ## DTOs
 

@@ -13,11 +13,12 @@ sections:
           input_type: text
           antlers: false
           read_only: true
+          width: 75
       - handle: is_paid
         field:
           type: toggle
           display: "Is Paid?"
-          width: 50
+          width: 25
           read_only: true
       - handle: customer_id
         field:
@@ -41,6 +42,14 @@ sections:
           display: Coupon
           width: 50
           read_only: true
+      - handle: gateway
+        field:
+          display: Gateway
+          type: gateway
+          icon: gateway
+          width: 50
+          listable: hidden
+          instructions_position: above
       - handle: items
         field:
           fields:
