@@ -20,11 +20,6 @@ composer update doublethreedigital/simple-commerce --with-dependencies
 
 ## Changes
 
-- Data Refactor TODO: #556
-- new minimum system reqs
-- no more receipt pdfs
-- mention upgrade script tasks
-
 ### High: Changes around the Data APIs (Partially automated)
 
 This is probably **the largest change** around how Simple Commerce works. If you've written any kind of custom code that deals with an `Order`, `Product`, etc, I'd recommend you test your code to ensure it's compatible with v3.0.
@@ -183,6 +178,17 @@ On the 'Order Confirmation' page (the one after checking out), you'd previously 
     Thanks for your order ({{ title }}), {{ customer:title }}
 {{ /sc:cart }}
 ```
+
+### Medium: Gateway fieldtype
+
+Included in Simple Commerce v3 is a 'Gateway Fieldtype' which allows you to view the gateway used for a specific order, along with information around the payment itself. New sites will get the Gateway fieldtype by default but it's recommended you also add it to your existing order blueprint.
+
+1. Go into the Control Panel, click into 'Blueprints'
+2. Edit your order blueprint, add the 'Gateway' fieldtype. Remember to use the handle of `gateway`, otherwise it won't work.
+
+Now, when you view orders, you'll see information around the particular payment.
+
+> **Note:** When using the Stripe Gateway, only new orders will show any payment information, due to some required data we were not previously storing.
 
 ### Low: Higher System Requirements
 
