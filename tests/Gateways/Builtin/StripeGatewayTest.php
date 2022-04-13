@@ -479,21 +479,15 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->grandTotal(1234)->merge([
-            'gateway' => [
-                'use' => StripeGateway::class,
-                'data' => [
-                    'payment_intent' => $paymentIntent = PaymentIntent::create([
-                        'amount' => 1234,
-                        'currency' => 'GBP',
-                    ])->id,
-                ],
+        $paymentDisplay = $this->gateway->paymentDisplay([
+            'use' => StripeGateway::class,
+            'data' => [
+                'payment_intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
             ],
         ]);
-
-        $order->save();
-
-        $paymentDisplay = $this->gateway->paymentDisplay($order->fresh()->get('gateway'));
 
         $this->assertIsArray($paymentDisplay);
 
@@ -506,16 +500,10 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function does_not_return_array_from_payment_display_if_no_payment_intent_is_set()
     {
-        $order = Order::make()->grandTotal(1234)->merge([
-            'gateway' => [
-                'use' => StripeGateway::class,
-                'data' => [],
-            ],
+        $paymentDisplay = $this->gateway->paymentDisplay([
+            'use' => StripeGateway::class,
+            'data' => [],
         ]);
-
-        $order->save();
-
-        $paymentDisplay = $this->gateway->paymentDisplay($order->fresh()->get('gateway'));
 
         $this->assertIsArray($paymentDisplay);
 
