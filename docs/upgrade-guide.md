@@ -146,6 +146,45 @@ Simple Commerce has **partially automated** this upgrade step for you. Upon upgr
 
 It will have pulled in any fields from your orders that aren't 'reserved' (eg. SC presumes you probably don't want the `is_paid` field to be fillable).
 
+### High: Updates to Shipping Methods
+
+Simple Commerce now allows for passing configuration arrays for shipping methods. However, for this to work, shipping methods must be updated to extend upon the `BaseShippingMethod` class provided by Simple Commerce.
+
+```php
+<?php
+
+namespace App\ShippingMethods;
+
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
+
+class FirstClass extends BaseShippingMethod implements ShippingMethod
+{
+    //
+}
+```
+
+If you wish to start passing in config variables to your shipping methods, you may do it like so:
+
+```php
+'sites' => [
+    'default' => [
+        ...
+
+        'shipping' => [
+            'methods' => [
+                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [
+                    'config' => 'setting',
+                    'foo' => 'bar',
+                ],
+            ],
+        ],
+    ],
+],
+```
+
+And inside the shipping method, you may do `$this->config()->get('key')` to get a specific config value.
+
 ### Medium: Order Emails
 
 Previously, Simple Commerce would send a fairly basic email with a PDF receipt attached.

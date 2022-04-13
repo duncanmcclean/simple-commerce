@@ -9,10 +9,12 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
+use Statamic\Facades\Site;
 
 class CalculatorTest extends TestCase
 {
@@ -243,9 +245,7 @@ class CalculatorTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 20);
 
-        Config::set('simple-commerce.sites.default.shipping.methods', [
-            Postage::class,
-        ]);
+        SimpleCommerce::registerShippingMethod(Site::current()->handle(), Postage::class);
 
         $product = Product::make()->price(1000);
         $product->save();
@@ -280,9 +280,7 @@ class CalculatorTest extends TestCase
     {
         Config::set('simple-commerce.tax_engine_config.rate', 20);
 
-        Config::set('simple-commerce.sites.default.shipping.methods', [
-            Postage::class,
-        ]);
+        SimpleCommerce::registerShippingMethod(Site::current()->handle(), Postage::class);
 
         $product = Product::make()->price(1000);
         $product->save();
@@ -567,7 +565,7 @@ class CalculatorTest extends TestCase
     }
 }
 
-class Postage implements ShippingMethod
+class Postage extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {

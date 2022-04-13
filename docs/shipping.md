@@ -17,14 +17,14 @@ Shipping Methods can be configured on a site-by-site basis, helpful for if you h
 
         'shipping' => [
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
             ],
         ],
     ],
 ],
 ```
 
-The `methods` array should contain an array of Shipping Method classes, with the `::class` syntax.
+The `methods` array should contain an array of Shipping Method classes, with the `::class` syntax. You may also specify a configuration array as the second parameter.
 
 ### Default shipping method
 
@@ -43,7 +43,7 @@ In these cases, you may configure a default Shipping Method which will be used w
             'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
 
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
             ],
         ],
     ],
@@ -70,8 +70,9 @@ namespace App\ShippingMethods;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class FirstClass implements ShippingMethod
+class FirstClass extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
@@ -101,6 +102,16 @@ Here's a quick explanation of what each method does.
 - **description:** Should return a description for your shipping method
 - **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
 - **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
+
+### Using config settings
+
+As mentioned earlier, you may let users of your shipping method specify a configuration array which is accessible inside the Shipping Method itself. If you'd like to do this, you may access the config like so:
+
+```php
+// app/ShippingMethods/FirstClass.php
+
+$this->config()->get('api_key');
+```
 
 ## Templating
 

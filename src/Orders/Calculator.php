@@ -144,7 +144,9 @@ class Calculator implements Contract
             ];
         }
 
-        $data['shipping_total'] = Shipping::use($shippingMethod ?? $defaultShippingMethod)->calculateCost($this->order);
+        $data['shipping_total'] = Shipping::site(Site::current()->handle())
+            ->use($shippingMethod ?? $defaultShippingMethod)
+            ->calculateCost($this->order);
 
         return [
             'data' => $data,

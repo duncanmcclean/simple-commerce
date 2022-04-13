@@ -5,8 +5,9 @@ namespace DummyNamespace;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class DummyClass implements ShippingMethod
+class DummyClass extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
