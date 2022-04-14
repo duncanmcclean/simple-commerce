@@ -22,6 +22,7 @@ return [
             'name' => 'Orders',
             'handle' => 'orders',
             'blueprint' => 'order',
+            'read_only' => true,
         ],
     ],
 
