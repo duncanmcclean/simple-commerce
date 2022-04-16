@@ -229,6 +229,17 @@ Now, when you view orders, you'll see information around the particular payment.
 
 > **Note:** When using the Stripe Gateway, only new orders will show any payment information, due to some required data we were not previously storing.
 
+### Medium: Shipping Method fieldtype
+
+In addition to the Gateway fieldtype, Simple Commerce also comes with a 'Shipping Method fieldtype' so CP users can see which shipping method has been selected for the current orders.
+
+New sites will get the Shipping Method fieldtype by default but it's recommended you also add it to your existing order blueprint.
+
+1. Go into the Control Panel, click into 'Blueprints'
+2. Edit your order blueprint, add the 'Shipping Method' fieldtype. Remember to use the handle of `shipping_method`, otherwise it won't work.
+
+Now, when you view orders, you'll be able to see the selected shipping method.
+
 ### Low: Higher System Requirements
 
 Simple Commerce v3 requires you to be using PHP 8.0 (and above), along with Laravel 8 (and above) and Statamic 3.3. Adjusting the system requirements encourages developers to stay up to date and means Simple Commerce can take advantage of new features.
