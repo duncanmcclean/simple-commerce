@@ -67,7 +67,7 @@ class EntryCouponRepository implements RepositoryContract
         return app(Coupon::class);
     }
 
-    public function save($coupon): void
+    public function save(Coupon $coupon): void
     {
         $entry = $coupon->resource();
 
@@ -112,7 +112,7 @@ class EntryCouponRepository implements RepositoryContract
         ]);
     }
 
-    public function delete($coupon): void
+    public function delete(Coupon $coupon): void
     {
         $coupon->resource()->delete();
     }

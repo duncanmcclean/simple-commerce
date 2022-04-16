@@ -55,7 +55,7 @@ class EloquentCustomerRepository implements RepositoryContract
         return app(Customer::class);
     }
 
-    public function save($customer): void
+    public function save(Customer $customer): void
     {
         $model = $customer->resource();
 
@@ -77,7 +77,7 @@ class EloquentCustomerRepository implements RepositoryContract
         $customer->resource = $model;
     }
 
-    public function delete($customer): void
+    public function delete(Customer $customer): void
     {
         $customer->resource()->delete();
     }

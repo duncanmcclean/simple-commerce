@@ -172,7 +172,7 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function currentGateway()
+    public function currentGateway(): ?array
     {
         if (is_string($this->gateway())) {
             return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway());
@@ -192,7 +192,7 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function billingAddress()
+    public function billingAddress(): ?Address
     {
         if ($this->get('use_shipping_address_for_billing', false)) {
             return $this->shippingAddress();
@@ -205,7 +205,7 @@ class Order implements Contract
         return Address::from('billing', $this);
     }
 
-    public function shippingAddress()
+    public function shippingAddress(): ?Address
     {
         if (! $this->has('shipping_address') && ! $this->has('shipping_address_line1')) {
             return null;
@@ -300,11 +300,6 @@ class Order implements Contract
         return $this;
     }
 
-    public function collection(): string
-    {
-        return SimpleCommerce::orderDriver()['collection'];
-    }
-
     public function withoutRecalculating(callable $callback)
     {
         $this->withoutRecalculating = true;
@@ -382,7 +377,7 @@ class Order implements Contract
         return new EntryResource($this->resource());
     }
 
-    public function toAugmentedArray(): array
+    public function toAugmentedArray($keys = null): array
     {
         if ($this->resource() instanceof Entry) {
             $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {

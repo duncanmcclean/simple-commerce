@@ -82,7 +82,7 @@ class EntryOrderRepository implements RepositoryContract
         return app(Order::class);
     }
 
-    public function save($order): void
+    public function save(Order $order): void
     {
         $entry = $order->resource();
 
@@ -147,7 +147,7 @@ class EntryOrderRepository implements RepositoryContract
         $order->resource = $entry;
     }
 
-    public function delete($order): void
+    public function delete(Order $order): void
     {
         $order->resource()->delete();
     }

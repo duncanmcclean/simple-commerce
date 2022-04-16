@@ -187,7 +187,7 @@ class Product implements Contract
         return new EntryResource($this->resource());
     }
 
-    public function toAugmentedArray(): array
+    public function toAugmentedArray($keys = null): array
     {
         $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
             return $field['handle'] === 'value';
