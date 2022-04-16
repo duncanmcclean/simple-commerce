@@ -214,7 +214,6 @@ class Order implements Contract
         return Address::from('shipping', $this);
     }
 
-    // TODO: refactor
     public function redeemCoupon(string $code): bool
     {
         $coupon = Coupon::findByCode($code);
