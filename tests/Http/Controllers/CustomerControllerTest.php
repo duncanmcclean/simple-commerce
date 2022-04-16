@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
 
 class CustomerControllerTest extends TestCase
@@ -42,6 +43,10 @@ class CustomerControllerTest extends TestCase
     /** @test */
     public function can_update_customer()
     {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'name', 'email', 'vip',
+        ]);
+
         $customer = Entry::make()
             ->collection('customers')
             ->slug('duncan_double_three_digital')
@@ -74,6 +79,10 @@ class CustomerControllerTest extends TestCase
     /** @test */
     public function can_update_customer_and_request_json()
     {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'name', 'email', 'vip',
+        ]);
+
         $customer = Entry::make()
             ->collection('customers')
             ->slug('duncan_double_three_digital')

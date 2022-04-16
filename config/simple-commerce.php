@@ -88,6 +88,8 @@ return [
         ],
 
         'line_items' => [],
+
+        'customers' => ['name', 'email'],
     ],
 
     /*

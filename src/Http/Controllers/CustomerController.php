@@ -18,19 +18,18 @@ class CustomerController extends BaseActionController
 
     public function update(UpdateRequest $request, $customer)
     {
-        // TODO: only save validated data, not everything
+        $customer = Customer::find($customer);
 
-        Customer::find($customer)
-            ->merge(Arr::except($request->all(), [
-                '_params',
-                '_redirect',
-                '_token',
-            ]))
-            ->save();
+        $customer->merge(Arr::only(
+            $request->all(),
+            config('simple-commerce.field_whitelist.customers')
+        ));
+
+        $customer->save();
 
         return $this->withSuccess($request, [
             'message'  => __('simple-commerce.messages.customer_updated'),
-            'customer' => Customer::find($customer)->toResource(),
+            'customer' => $customer->toResource(),
         ]);
     }
 }
