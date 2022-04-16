@@ -2,10 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
-use DoubleThreeDigital\SimpleCommerce\Coupons\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Customers\Customer;
-use DoubleThreeDigital\SimpleCommerce\Orders\Order;
-use DoubleThreeDigital\SimpleCommerce\Products\Product;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -59,7 +55,7 @@ class InstallCommand extends Command
         $orderDriver = SimpleCommerce::orderDriver();
         $couponDriver = SimpleCommerce::couponDriver();
 
-        if ($productDriver['repository'] === Product::class && ! Collection::handleExists($productDriver['collection'])) {
+        if (! Collection::handleExists($productDriver['collection'])) {
             $this->info('Creating: Products');
 
             Collection::make($productDriver['collection'])
@@ -73,7 +69,7 @@ class InstallCommand extends Command
             $this->warn('Skipping: Products');
         }
 
-        if ($customerDriver['repository'] === Customer::class && ! Collection::handleExists($customerDriver['collection'])) {
+        if (! Collection::handleExists($customerDriver['collection'])) {
             $this->info('Creating: Customers');
 
             Collection::make($customerDriver['collection'])
@@ -93,7 +89,7 @@ class InstallCommand extends Command
             $this->warn('Skipping: Customers');
         }
 
-        if ($orderDriver['repository'] === Order::class && ! Collection::handleExists($orderDriver['collection'])) {
+        if (! Collection::handleExists($orderDriver['collection'])) {
             $this->info('Creating: Orders');
 
             Collection::make($orderDriver['collection'])
@@ -113,7 +109,7 @@ class InstallCommand extends Command
             $this->warn('Skipping: Orders');
         }
 
-        if ($couponDriver['repository'] === Coupon::class && ! Collection::handleExists($couponDriver['collection'])) {
+        if (! Collection::handleExists($couponDriver['collection'])) {
             $this->info('Creating: Coupons');
 
             Collection::make($couponDriver['collection'])
