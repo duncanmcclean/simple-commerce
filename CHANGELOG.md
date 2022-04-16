@@ -34,6 +34,15 @@ There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recom
 
 ## v3.0.0-beta.4 (2022-04-16)
 
+### What's fixed
+
+- Removed the title field from Order & Customer blueprints (title formats - no need for them)
+- Gateway & Shipping Method fields are now marked as read-only when added via the upgrade script
+- Fixed an issue where collections were never created when running `sc:install` command
+- Fixed an issue where the upgrade script would grab the blueprint for the wrong collection when filling customer field whitelist during upgrade
+
+## v3.0.0-beta.4 (2022-04-16)
+
 ### What's new
 
 - Shipping Method fieldtype #611
