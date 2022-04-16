@@ -3,17 +3,6 @@ sections:
   main:
     display: Main
     fields:
-      - handle: title
-        field:
-          type: text
-          required: false
-          input_type: text
-          antlers: false
-          display: Title
-          icon: text
-          width: 75
-          listable: hidden
-          instructions_position: above
       - handle: is_paid
         field:
           type: toggle
