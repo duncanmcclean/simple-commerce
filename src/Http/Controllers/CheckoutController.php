@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\NoGatewayProvided;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -240,7 +240,7 @@ class CheckoutController extends BaseActionController
         }
 
         if (! $this->request->has('gateway') && $this->cart->isPaid() === false && $this->cart->grandTotal() !== 0) {
-            throw new NoGatewayProvided('No gateway provided.');
+            throw new GatewayNotProvided('No gateway provided.');
         }
 
         $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
