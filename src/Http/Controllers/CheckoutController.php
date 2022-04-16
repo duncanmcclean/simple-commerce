@@ -259,9 +259,11 @@ class CheckoutController extends BaseActionController
 
     protected function postCheckout()
     {
-        if (isset(SimpleCommerce::customerDriver()['collection']) && $this->cart->customer()) {
+        if (! isset(SimpleCommerce::customerDriver()['model']) && $this->cart->customer()) {
             $this->cart->customer()->merge([
-                'orders' => $this->cart->customer()->orders()->push($this->cart->id())->toArray(),
+                'orders' => $this->cart->customer()->orders()
+                    ->push($this->cart->id())
+                    ->toArray(),
             ]);
 
             $this->cart->customer()->save();
