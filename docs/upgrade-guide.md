@@ -218,27 +218,13 @@ On the 'Order Confirmation' page (the one after checking out), you'd previously 
 {{ /sc:cart }}
 ```
 
-### Medium: Gateway fieldtype
+### Low: Gateway & Shipping Method fields (Automated)
 
-Included in Simple Commerce v3 is a 'Gateway Fieldtype' which allows you to view the gateway used for a specific order, along with information around the payment itself. New sites will get the Gateway fieldtype by default but it's recommended you also add it to your existing order blueprint.
+During the upgrade process, Simple Commerce added two new fields to your Order blueprint. A **Gateway** field and a **Shipping Method** field. These fields should hopefully be useful for your CP users to be able to see the gateway/shipping method that's being used for an order.
 
-1. Go into the Control Panel, click into 'Blueprints'
-2. Edit your order blueprint, add the 'Gateway' fieldtype. Remember to use the handle of `gateway`, otherwise it won't work.
+The fields will automatically be pushed into the Sidebar of the Order blueprint, you may move it as you wish.
 
-Now, when you view orders, you'll see information around the particular payment.
-
-> **Note:** When using the Stripe Gateway, only new orders will show any payment information, due to some required data we were not previously storing.
-
-### Medium: Shipping Method fieldtype
-
-In addition to the Gateway fieldtype, Simple Commerce also comes with a 'Shipping Method fieldtype' so CP users can see which shipping method has been selected for the current orders.
-
-New sites will get the Shipping Method fieldtype by default but it's recommended you also add it to your existing order blueprint.
-
-1. Go into the Control Panel, click into 'Blueprints'
-2. Edit your order blueprint, add the 'Shipping Method' fieldtype. Remember to use the handle of `shipping_method`, otherwise it won't work.
-
-Now, when you view orders, you'll be able to see the selected shipping method.
+> **Note:** When using the Stripe Gateway, past orders will show 'Unknown' as the payment ID. Future orders will show the payment ID as expected.
 
 ### Low: Higher System Requirements
 
