@@ -26,11 +26,13 @@ class AddNewFieldsToOrderBlueprint extends UpdateScript
                 $blueprint->ensureFieldInSection('gateway', [
                     'display' => 'Gateway',
                     'type' => 'gateway',
+                    'read_only' => true,
                 ], 'sidebar');
 
                 $blueprint->ensureFieldInSection('shipping_method', [
                     'display' => 'Shipping Method',
                     'type' => 'shipping_method',
+                    'read_only' => true,
                 ], 'sidebar');
 
                 $blueprint->save();
