@@ -3,10 +3,6 @@ sections:
   main:
     display: Main
     fields:
-      - handle: title
-        field:
-          type: hidden
-          required: false
       - handle: name
         field:
           input_type: text
