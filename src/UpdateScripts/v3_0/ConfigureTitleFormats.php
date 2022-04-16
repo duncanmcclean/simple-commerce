@@ -24,6 +24,8 @@ class ConfigureTitleFormats extends UpdateScript
         $this
             ->setupTitleFormatForOrders()
             ->setupTitleFormatForCustomers();
+
+        $this->console()->info("Simple Commerce has configured 'title formats' for your Order and Customer collections.");
     }
 
     protected function setupTitleFormatForOrders(): self

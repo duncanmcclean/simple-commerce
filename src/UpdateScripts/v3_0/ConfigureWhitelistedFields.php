@@ -39,5 +39,7 @@ class ConfigureWhitelistedFields extends UpdateScript
                 'line_items' => [],
             ])
             ->save();
+
+        $this->console()->info("Simple Commerce has added the 'field_whitelist' config setting to your config file. You should update the list as needed.");
     }
 }
