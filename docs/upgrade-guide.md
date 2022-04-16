@@ -129,6 +129,30 @@ $order = Order::find('123');
 $order->resource();
 ```
 
+#### Line Items
+
+When accessing Line Items, you'll no longer receive an array, you'll now receive an instance of the `LineItem` class.
+
+**Previously:**
+
+```php
+$lineItem = $order->lineItems()->first();
+
+$product = Product::find($lineItem['product']);
+$quantity = $lineItem['quantity'];
+$giftNote = $lineItem['metadata']['gift_note'];
+```
+
+**Now:**
+
+```php
+$lineItem = $order->lineItems()->first();
+
+$product = $lineItem->product();
+$quantity = $lineItem->quantity();
+$giftNote = $lineItem->metdata()->get('gift_note');
+```
+
 ### High: Field Whitelisting (Partially automated)
 
 To improve the security of your site, we've introduced a 'whitelist' for the fields that will be saved from Simple Commerce's front-end forms.
