@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
 class EntryOrderRepositoryTest extends TestCase
@@ -35,6 +36,8 @@ class EntryOrderRepositoryTest extends TestCase
     /** @test */
     public function can_generate_order_number_from_previous_order_titles()
     {
+        Collection::find('orders')->titleFormats([])->save();
+
         Entry::make()
             ->collection('orders')
             ->data(['title' => '#1234'])
@@ -58,6 +61,10 @@ class EntryOrderRepositoryTest extends TestCase
     /** @test */
     public function can_generate_order_number_from_previous_order_number()
     {
+        Collection::find('orders')->titleFormats([
+            'default' => '#{order_number}',
+        ])->save();
+
         Entry::make()
             ->collection('orders')
             ->data(['order_number' => 6001])

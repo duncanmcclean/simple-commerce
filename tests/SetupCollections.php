@@ -30,6 +30,9 @@ trait SetupCollections
         return Collection::make('customers')
             ->title('Customers')
             ->sites(['default'])
+            ->titleFormats([
+                'default' => '{name} <{email}>',
+            ])
             ->save();
     }
 
@@ -38,6 +41,9 @@ trait SetupCollections
         return Collection::make('orders')
             ->title('Orders')
             ->sites(['default'])
+            ->titleFormats([
+                'default' => '#{order_number}',
+            ])
             ->save();
     }
 
