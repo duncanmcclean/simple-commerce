@@ -65,17 +65,6 @@ class Customer implements Contract
             });
     }
 
-    public function addOrder($orderId): self
-    {
-        $orders = $this->has('orders') ? $this->get('orders') : [];
-        $orders[] = $orderId;
-
-        $this->set('orders', $orders);
-        $this->save();
-
-        return $this;
-    }
-
     public function routeNotificationForMail($notification = null)
     {
         return $this->email();
