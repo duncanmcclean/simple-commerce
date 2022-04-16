@@ -37,6 +37,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
         Fieldtypes\RegionFieldtype::class,
+        Fieldtypes\ShippingMethodFieldtype::class,
         Fieldtypes\TaxCategoryFieldtype::class,
 
         Fieldtypes\Variables\LineItemTax::class,
