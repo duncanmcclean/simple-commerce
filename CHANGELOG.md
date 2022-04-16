@@ -32,7 +32,7 @@
 
 There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
 
-## v3.0.0-beta.4 (2022-04-16)
+## v3.0.0-beta.5 (2022-04-16)
 
 ### What's fixed
 
