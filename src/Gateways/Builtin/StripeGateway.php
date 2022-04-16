@@ -180,7 +180,15 @@ class StripeGateway extends BaseGateway implements Gateway
             return new Response('Webhook handled', 200);
         }
 
-        // TODO: implement refund handling
+        if ($method === 'handleChargeRefunded') {
+            $order = Order::find($data['metadata']['order_id']);
+
+            if (! $order->isRefunded()) {
+                $order->refund($payload['data']['object']);
+            }
+
+            return new Response('Webhook handled', 200);
+        }
 
         return new Response();
     }
