@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\EntryNotFound;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -27,7 +27,7 @@ class CookieDriver implements CartDriver
 
         try {
             return OrderAPI::find($this->getCartKey());
-        } catch (EntryNotFound $e) {
+        } catch (OrderNotFound $e) {
             return $this->makeCart();
         }
     }
