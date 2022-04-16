@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\Tests\UseDatabaseContentDrivers;
@@ -16,10 +17,16 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_get_all_orders()
     {
+        $productOne = Product::make()->price(1000);
+        $productOne->save();
+
+        $productTwo = Product::make()->price(1000);
+        $productTwo->save();
+
         OrderModel::create([
             'items' => [
                 [
-                    'product' => 'blah',
+                    'product' => $productOne->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -32,7 +39,7 @@ class EloquentOrderTest extends TestCase
         OrderModel::create([
             'items' => [
                 [
-                    'product' => 'rarh',
+                    'product' => $productTwo->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -51,10 +58,13 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_find_order()
     {
+        $product = Product::make()->price(1000);
+        $product->save();
+
         $order = OrderModel::create([
             'items' => [
                 [
-                    'product' => 'blah',
+                    'product' => $product->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -88,10 +98,13 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_save()
     {
+        $product = Product::make()->price(1000);
+        $product->save();
+
         $orderRecord = OrderModel::create([
             'items' => [
                 [
-                    'product' => 'blah',
+                    'product' => $product->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],

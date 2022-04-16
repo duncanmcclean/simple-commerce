@@ -143,16 +143,16 @@ class CartItemController extends BaseActionController
                 'product' => $request->get('product'),
             ]);
         } else {
-            $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
+            $alreadyExistsQuery = $alreadyExistsQuery->where('product', Product::find($request->product));
         }
 
         if (config('simple-commerce.cart.unique_metadata', false)) {
-            $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', $metadata);
+            $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', collect($metadata));
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
-            $cart->updateLineItem($alreadyExistsQuery->first()['id'], [
-                'quantity' => (int) $alreadyExistsQuery->first()['quantity'] + $request->quantity,
+            $cart->updateLineItem($alreadyExistsQuery->first()->id(), [
+                'quantity' => (int) $alreadyExistsQuery->first()->quantity() + $request->quantity,
             ]);
         } else {
             $item = [
@@ -200,10 +200,7 @@ class CartItemController extends BaseActionController
             array_merge(
                 $data,
                 [
-                    'metadata' => array_merge(
-                        isset($lineItem['metadata']) ? $lineItem['metadata'] : [],
-                        Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items')),
-                    ),
+                    'metadata' => $lineItem->metadata()->merge(Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items')))->toArray(),
                 ]
             ),
         );

@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Statamic\Facades\Site;
 
@@ -17,12 +16,12 @@ class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implem
         return [
             'Cart ID' => $cart->id,
             'Line Items' => $cart->lineItems()->map(function ($lineItem) {
-                $product = Product::find($lineItem['product']);
+                $product = $lineItem->product();
 
-                $formattedTaxAmount = Currency::parse($lineItem['tax']['amount'], Site::current());
-                $formattedItemAmount = Currency::parse($lineItem['total'], Site::current());
+                $formattedTaxAmount = Currency::parse($lineItem->tax()['amount'], Site::current());
+                $formattedItemAmount = Currency::parse($lineItem->total(), Site::current());
 
-                return "{$lineItem['quantity']} X {$product->get('title')} (Tax: {$formattedTaxAmount}, Total: {$formattedItemAmount})";
+                return "{$lineItem->quantity()} X {$product->get('title')} (Tax: {$formattedTaxAmount}, Total: {$formattedItemAmount})";
             })->join(', '),
             'Items Total' => Currency::parse($cart->itemsTotal(), Site::current()),
             'Tax Total' => Currency::parse($cart->taxTotal(), Site::current()),

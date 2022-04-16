@@ -101,7 +101,7 @@ class StandardTaxEngineTest extends TestCase
         $recalculate = $order->recalculate();
 
         // Ensure tax on line items are right
-        $this->assertSame($recalculate->lineItems()->first()['tax'], [
+        $this->assertSame($recalculate->lineItems()->first()->tax(), [
             'amount' => 167,
             'rate' => 20,
             'price_includes_tax' => false,
@@ -172,7 +172,7 @@ class StandardTaxEngineTest extends TestCase
         $recalculate = $order->recalculate();
 
         // Ensure tax on line items are right
-        $this->assertSame($recalculate->lineItems()->first()['tax'], [
+        $this->assertSame($recalculate->lineItems()->first()->tax(), [
             'amount' => 130,
             'rate' => 15,
             'price_includes_tax' => false,
@@ -241,7 +241,7 @@ class StandardTaxEngineTest extends TestCase
         $recalculate = $order->recalculate();
 
         // Ensure tax on line items are right
-        $this->assertSame($recalculate->lineItems()->first()['tax'], [
+        $this->assertSame($recalculate->lineItems()->first()->tax(), [
             'amount' => 167,
             'rate' => 20,
             'price_includes_tax' => true,
@@ -301,7 +301,7 @@ class StandardTaxEngineTest extends TestCase
         $recalculate = $order->recalculate();
 
         // Ensure the tax rate is correct on the line item
-        $this->assertSame($recalculate->lineItems()->first()['tax']['rate'], 12);
+        $this->assertSame($recalculate->lineItems()->first()->tax()['rate'], 12);
 
         // Ensure global order tax is right
         $this->assertSame($recalculate->get('tax_total'), 107);
@@ -416,7 +416,7 @@ class StandardTaxEngineTest extends TestCase
         $recalculate = $order->recalculate();
 
         // Ensure the tax rate is correct on the line item
-        $this->assertSame($recalculate->lineItems()->first()['tax']['rate'], 99);
+        $this->assertSame($recalculate->lineItems()->first()->tax()['rate'], 99);
 
         // Ensure global order tax is right
         $this->assertSame($recalculate->get('tax_total'), 497);
@@ -473,7 +473,7 @@ class StandardTaxEngineTest extends TestCase
         $recalculate = $order->recalculate();
 
         // Ensure the tax rate is correct on the line item
-        $this->assertSame($recalculate->lineItems()->first()['tax']['rate'], 99);
+        $this->assertSame($recalculate->lineItems()->first()->tax()['rate'], 99);
 
         // Ensure global order tax is right
         $this->assertSame($recalculate->get('tax_total'), 497);

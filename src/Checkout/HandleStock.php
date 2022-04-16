@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 
 trait HandleStock
@@ -14,12 +14,12 @@ trait HandleStock
     public function handleStock(Order $order): self
     {
         $order->lineItems()
-            ->each(function ($item) {
-                $product = Product::find($item['product']);
+            ->each(function (LineItem $item) {
+                $product = $item->product();
 
                 if ($product->purchasableType() === ProductType::PRODUCT()) {
                     if (is_int($product->stock())) {
-                        $stock = $product->stock() - $item['quantity'];
+                        $stock = $product->stock() - $item->quantity();
 
                         // Need to do this check before actually setting the stock
                         if ($stock < 0) {
@@ -29,7 +29,7 @@ trait HandleStock
                         }
 
                         $product->stock(
-                            $stock = $product->stock() - $item['quantity']
+                            $stock = $product->stock() - $item->quantity()
                         );
 
                         $product->save();
@@ -41,10 +41,10 @@ trait HandleStock
                 }
 
                 if ($product->purchasableType() === ProductType::VARIANT()) {
-                    $variant = $product->variant($item['variant']['variant'] ?? $item['variant']);
+                    $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
 
                     if ($variant !== null && $variant->stock() !== null) {
-                        $stock = $variant->stock() - $item['quantity'];
+                        $stock = $variant->stock() - $item->quantity();
 
                         // Need to do this check before actually setting the stock
                         if ($stock < 0) {
@@ -54,7 +54,7 @@ trait HandleStock
                         }
 
                         $variant->stock(
-                            $stock = $variant->stock() - $item['quantity']
+                            $stock = $variant->stock() - $item->quantity()
                         );
 
                         $variant->save();
