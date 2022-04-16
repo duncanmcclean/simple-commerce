@@ -6,10 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array all()
- * @method static \Statamic\Entries\EntryCollection query()
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Order find(string $id)
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Order create(array $data = [], string $site = '')
+ * @see \DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository
  */
 class Order extends Facade
 {

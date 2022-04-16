@@ -65,7 +65,7 @@ class EntryCustomerRepository implements RepositoryContract
         return app(Customer::class);
     }
 
-    public function save($customer): void
+    public function save(Customer $customer): void
     {
         $entry = $customer->resource();
 
@@ -110,7 +110,7 @@ class EntryCustomerRepository implements RepositoryContract
         ]);
     }
 
-    public function delete($customer): void
+    public function delete(Customer $customer): void
     {
         $customer->resource()->delete();
     }

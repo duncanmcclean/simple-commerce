@@ -137,7 +137,7 @@ class Customer implements Contract
         return new EntryResource($this->resource());
     }
 
-    public function toAugmentedArray(): array
+    public function toAugmentedArray($keys = null): array
     {
         if ($this->resource() instanceof Entry) {
             $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
