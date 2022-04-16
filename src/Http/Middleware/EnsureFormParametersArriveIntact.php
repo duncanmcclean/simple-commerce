@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Middleware;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidFormParameters;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidFormParametersException;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class EnsureFormParametersArriveIntact
@@ -41,11 +41,11 @@ class EnsureFormParametersArriveIntact
             $errorRedirectParam = decrypt($request->get('_error_redirect'));
             $requestParam = decrypt($request->get('_request'));
         } catch (DecryptException $e) {
-            throw new InvalidFormParameters;
+            throw new InvalidFormParametersException;
         }
 
         if (! $redirectParam || ! $errorRedirectParam || ! $requestParam) {
-            throw new InvalidFormParameters;
+            throw new InvalidFormParametersException;
         }
 
         $request->merge([
