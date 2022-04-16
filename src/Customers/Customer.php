@@ -59,21 +59,17 @@ class Customer implements Contract
 
     public function orders(): Collection
     {
-        return collect($this->has('orders') ? $this->get('orders') : [])
-            ->map(function ($orderId) {
-                return Order::find($orderId);
+        if ($this->resource instanceof Model) {
+            return $this->resource->orders->map(function ($order) {
+                return Order::find($order->id);
             });
-    }
+        }
 
-    public function addOrder($orderId): self
-    {
-        $orders = $this->has('orders') ? $this->get('orders') : [];
-        $orders[] = $orderId;
+        $orders = $this->get('orders', []);
 
-        $this->set('orders', $orders);
-        $this->save();
-
-        return $this;
+        return collect($orders)->map(function ($orderId) {
+            return Order::find($orderId);
+        });
     }
 
     public function routeNotificationForMail($notification = null)

@@ -314,22 +314,6 @@ class UserCustomerTest extends TestCase
     }
 
     /** @test */
-    public function can_add_order()
-    {
-        $order = Order::make()->merge(['title' => 'Order #0002']);
-        $order->save();
-
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
-
-        $customer = Customer::find('sam');
-        $customer->addOrder($order->id())->save();
-
-        $this->assertSame($customer->orders()->count(), 1);
-        $this->assertSame($customer->orders()->first()->get('title'), 'Order #0002');
-    }
-
-    /** @test */
     public function can_get_mail_notification_route()
     {
         $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
