@@ -6,10 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array all()
- * @method static \Statamic\Entries\EntryCollection query()
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Product find(string $id)
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\Product create(array $data = [], string $site = '')
+ * @see \DoubleThreeDigital\SimpleCommerce\Contracts\ProductRepository
  */
 class Product extends Facade
 {
