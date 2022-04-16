@@ -78,7 +78,7 @@ class Coupon implements Contract
 
         if ($this->isProductSpecific()) {
             $couponProductsInOrder = $order->lineItems()->filter(function ($lineItem) {
-                return in_array($lineItem['product'], $this->get('products'));
+                return in_array($lineItem->product()->id(), $this->get('products'));
             });
 
             if ($couponProductsInOrder->count() === 0) {

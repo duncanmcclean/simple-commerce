@@ -46,10 +46,10 @@ class CheckoutController extends BaseActionController
                 ->postCheckout();
         } catch (CheckoutProductHasNoStockException $e) {
             $lineItem = $this->cart->lineItems()->filter(function ($lineItem) use ($e) {
-                return $lineItem['product'] === $e->product->id();
+                return $lineItem->product()->id() === $e->product->id();
             })->first();
 
-            $this->cart->removeLineItem($lineItem['id']);
+            $this->cart->removeLineItem($lineItem->id());
             $this->cart->save();
 
             return $this->withErrors($this->request, __('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));

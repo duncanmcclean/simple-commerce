@@ -143,11 +143,11 @@ class CartItemController extends BaseActionController
                 'product' => $request->get('product'),
             ]);
         } else {
-            $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
+            $alreadyExistsQuery = $alreadyExistsQuery->where('product', Product::find($request->product));
         }
 
         if (config('simple-commerce.cart.unique_metadata', false)) {
-            $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', $metadata);
+            $alreadyExistsQuery = $alreadyExistsQuery->where('metadata', collect($metadata));
         }
 
         if ($alreadyExistsQuery->count() >= 1) {

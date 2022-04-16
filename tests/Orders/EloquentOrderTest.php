@@ -17,13 +17,16 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_get_all_orders()
     {
-        Product::make()->id('blah')->price(1000)->save();
-        Product::make()->id('rarh')->price(1000)->save();
+        $productOne = Product::make()->price(1000);
+        $productOne->save();
+
+        $productTwo = Product::make()->price(1000);
+        $productTwo->save();
 
         OrderModel::create([
             'items' => [
                 [
-                    'product' => 'blah',
+                    'product' => $productOne->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -36,7 +39,7 @@ class EloquentOrderTest extends TestCase
         OrderModel::create([
             'items' => [
                 [
-                    'product' => 'rarh',
+                    'product' => $productTwo->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -55,12 +58,13 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_find_order()
     {
-        Product::make()->id('blah')->price(1000)->save();
+        $product = Product::make()->price(1000);
+        $product->save();
 
         $order = OrderModel::create([
             'items' => [
                 [
-                    'product' => 'blah',
+                    'product' => $product->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],
@@ -94,12 +98,13 @@ class EloquentOrderTest extends TestCase
     /** @test */
     public function can_save()
     {
-        Product::make()->id('blah')->price(1000)->save();
+        $product = Product::make()->price(1000);
+        $product->save();
 
         $orderRecord = OrderModel::create([
             'items' => [
                 [
-                    'product' => 'blah',
+                    'product' => $product->id(),
                     'quantity' => 1,
                     'total' => 1000,
                 ],

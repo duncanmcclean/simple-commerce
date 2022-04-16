@@ -160,7 +160,7 @@ class CartItemControllerTest extends TestCase
 
         $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
 
-        $this->assertArrayNotHasKey('foo', $cart->lineItems()->first()['metadata']);
+        $this->assertArrayNotHasKey('foo', $cart->lineItems()->first()->metadata());
     }
 
     /** @test */
@@ -1399,10 +1399,7 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->fresh();
 
         $this->assertSame($cart->lineItems()->count(), 1);
-        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
-
-        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
-        $this->assertArrayHasKey('gift_note', $cart->lineItems()->first()['metadata']);
+        $this->assertTrue($cart->lineItems()->first()->metadata()->has('gift_note'));
     }
 
     /** @test */
@@ -1438,7 +1435,7 @@ class CartItemControllerTest extends TestCase
             ->from('/cart')
             ->withSession(['simple-commerce-cart' => $cart->id])
             ->post(route('statamic.simple-commerce.cart-items.update', [
-                'item' => $cart->lineItems()->toArray()[0]['id'],
+                'item' => $cart->lineItems()->first()->id(),
             ]), $data);
 
         $response->assertRedirect('/cart');
@@ -1446,10 +1443,7 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->fresh();
 
         $this->assertSame($cart->lineItems()->count(), 1);
-        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
-
-        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
-        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first()['metadata']);
+        $this->assertFalse($cart->lineItems()->first()->metadata()->has('gift_note'));
     }
 
     /** @test */
