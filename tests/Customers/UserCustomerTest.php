@@ -4,14 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Statamic\Contracts\Auth\User as AuthUser;
+use Statamic\Auth\User as StatamicAuthUser;
 use Statamic\Facades\User;
 use Statamic\Http\Resources\API\UserResource;
 use Statamic\Statamic;
@@ -162,8 +161,7 @@ class UserCustomerTest extends TestCase
 
         $customer = Customer::find('sam');
 
-        // $this->assertTrue($customer instanceof UserCustomer);
-        $this->assertTrue($customer->resource() instanceof AuthUser); // TODO
+        $this->assertTrue($customer->resource() instanceof StatamicAuthUser);
     }
 
     /** @test */
