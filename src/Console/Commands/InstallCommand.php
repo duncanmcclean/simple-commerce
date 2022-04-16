@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
+use Statamic\Facades\Site;
 
 class InstallCommand extends Command
 {
@@ -51,6 +52,8 @@ class InstallCommand extends Command
 
     protected function setupCollections()
     {
+        $siteHandles = Site::all()->map->handle()->toArray();
+
         $productDriver = SimpleCommerce::productDriver();
         $customerDriver = SimpleCommerce::customerDriver();
         $orderDriver = SimpleCommerce::orderDriver();
@@ -63,7 +66,7 @@ class InstallCommand extends Command
                 ->title(Str::title($productDriver['collection']))
                 ->pastDateBehavior('public')
                 ->futureDateBehavior('private')
-                ->sites(['default'])
+                ->sites($siteHandles)
                 ->routes('/products/{slug}')
                 ->save();
         } else {
@@ -75,7 +78,16 @@ class InstallCommand extends Command
 
             Collection::make($customerDriver['collection'])
                 ->title(Str::title($customerDriver['collection']))
-                ->sites(['default'])
+                ->sites($siteHandles)
+                ->titleFormats(
+                    collect(Site::all())
+                        ->mapWithKeys(function ($site) {
+                            return [
+                                $site->handle() => '{name} <{email}>',
+                            ];
+                        })
+                        ->toArray()
+                )
                 ->save();
         } else {
             $this->warn('Skipping: Customers');
@@ -86,7 +98,16 @@ class InstallCommand extends Command
 
             Collection::make($orderDriver['collection'])
                 ->title(Str::title($orderDriver['collection']))
-                ->sites(['default'])
+                ->sites($siteHandles)
+                ->titleFormats(
+                    collect(Site::all())
+                        ->mapWithKeys(function ($site) {
+                            return [
+                                $site->handle() => '#{order_number}',
+                            ];
+                        })
+                        ->toArray()
+                )
                 ->save();
         } else {
             $this->warn('Skipping: Orders');
@@ -97,7 +118,7 @@ class InstallCommand extends Command
 
             Collection::make($couponDriver['collection'])
                 ->title(Str::title($couponDriver['collection']))
-                ->sites(['default'])
+                ->sites($siteHandles)
                 ->save();
         } else {
             $this->warn('Skipping: Coupons');
