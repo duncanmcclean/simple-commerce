@@ -28,6 +28,8 @@ use Stripe\Stripe;
 
 class StripeGateway extends BaseGateway implements Gateway
 {
+    protected bool $isUsingTestMode = false;
+
     public function name(): string
     {
         return 'Stripe';
@@ -50,7 +52,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         if ($customer) {
             $stripeCustomerData = [
-                'name'  => $customer->has('name') ? $customer->get('name') : 'Unknown',
+                'name'  => $customer->name() ?? 'Unknown',
                 'email' => $customer->email(),
             ];
 
@@ -98,6 +100,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'card'     => $paymentMethod->card->toArray(),
             'customer' => $paymentMethod->customer,
             'livemode' => $paymentMethod->livemode,
+            'payment_intent' => $paymentIntent->id,
         ]);
     }
 
@@ -182,6 +185,24 @@ class StripeGateway extends BaseGateway implements Gateway
         return new Response();
     }
 
+    public function paymentDisplay($value): array
+    {
+        if (! isset($value['data']['payment_intent'])) {
+            return ['text' => 'Unknown', 'url' => null];
+        }
+
+        $this->setUpWithStripe();
+
+        $stripePaymentIntent = $value['data']['payment_intent'];
+
+        return [
+            'text' => $stripePaymentIntent,
+            'url' => $this->isUsingTestMode
+                ? "https://dashboard.stripe.com/test/payments/{$stripePaymentIntent}"
+                : "https://dashboard.stripe.com/payments/{$stripePaymentIntent}",
+        ];
+    }
+
     protected function setUpWithStripe()
     {
         if (! $this->config()->has('secret')) {
@@ -200,5 +221,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($version = $this->config()->has('version')) {
             Stripe::setApiVersion($version);
         }
+
+        $this->isUsingTestMode = str_contains($this->config()->get('secret'), 'sk_test_');
     }
 }

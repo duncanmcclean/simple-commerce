@@ -17,7 +17,7 @@ class ConfigureTitleFormats extends UpdateScript
 
     public function update()
     {
-        if (! isset(SimpleCommerce::orderDriver()['collection']) || ! isset(SimpleCommerce::productDriver()['collection'])) {
+        if (! isset(SimpleCommerce::orderDriver()['collection']) || ! isset(SimpleCommerce::customerDriver()['collection'])) {
             return;
         }
 

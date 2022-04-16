@@ -2,6 +2,73 @@
 
 ## Unreleased
 
+## v3.0.0 (2022-xx-xx)
+
+### What's new
+
+- Support for storing [orders & customers in a database](https://simple-commerce.duncanmcclean.com/database-orders) #599
+- Brand new Gateway Fieldtype #609
+- Statamic's new-ish ['title format'](https://statamic.dev/collections#titles) feature is now used to generate titles for order/customer entries #601
+- You can now use Simple Commerce's cart tags on the Order Confirmation page #605
+- Gateways may return their own validation messages #598
+- Shipping Methods can now have their own config arrays #610
+
+### What's improved
+
+- Huge improvements to order emails #603
+- Added some protection for 'hidden form parameters' #607
+- You may now specify a 'whitelist' of additional fields you wish to provide when submitting front-end forms #608
+- Order Numbers are stored in their own (hidden) field now #604
+- Improved the handling of first/last name fields
+- Updated `moneyphp/money` to v4.0
+
+### Breaking changes
+
+There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
+
+## v3.0.0-beta.3 (2022-04-13)
+
+### What's new
+
+- Brand new Gateway Fieldtype #609
+- Shipping Methods can now have their own config arrays #610
+
+### What's improved
+
+- Improved the handling of first/last name fields
+
+## v3.0.0-beta.2 (2022-04-09)
+
+### What's fixed
+
+- Improved performance when generating order numbers (entry driver)
+- Fixed an issue when using the `{{ total_including_tax }}` tag
+- Added a missing upgrade script to the list of upgrade scripts that should be run
+- Fixed an issue where the Mollie webhook would fail if you're using the Eloquent driver
+- Copied over the recent updates of the 'Order Status' filter in the CP
+- Eloquent driver: Store customer name in the database
+- Eloquent driver: Show list of customer's orders when viewing a customer in the CP
+- Eloquent driver: Fixed an issue where `customer_id` would not be set
+- Eloquent driver: The cart cleanup command is now compatible with the Eloquent driver
+
+## v3.0.0-beta.1 (2022-04-09)
+
+The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
+
+PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md#v300-2022-xx-xx).
+
+---
+
+## v2.4.9 (2022-04-05)
+
+### What's new
+
+- Added a `{{ total_including_tax }}` tag to help you figure out the Line Item Total + Tax #602
+
+### What's fixed
+
+- Made some performance improvements to the way order numbers are generated.
+
 ## v2.4.8 (2022-04-02)
 
 ### What's new
@@ -200,11 +267,11 @@ Simple Commerce v2.4 is on it's way - this is the very first beta release! The p
 
 - Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
 
-After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/master/docs/upgrade-guide.md) which explains any changes you may need to make.
+After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/main/docs/upgrade-guide.md) which explains any changes you may need to make.
 
 ### Full Changelog
 
-For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/master/CHANGELOG.md).
+For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md).
 
 ---
 
@@ -803,7 +870,7 @@ For more information on what's new and any breaking changes, review the [`CHANGE
 
 ## v2.2.14 (2021-03-08)
 
-- [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
+- [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
 - [new] You can now specify a different redirect URL for errors. - `error_redirect`.
 - [fix] Improved handling of Mollie webhooks, we now detect if an order has been paid and redirect correctly. #384
 - [fix] Fixed issue where cookie cart driver wasn't forgetting cart after checkout #383
@@ -1053,7 +1120,7 @@ A whole lot of API related changes this release...
 
 ## v2.1.4 (2020-11-12)
 
-- [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Woodland.php) when installing Simple Commerce for the first time. #313
+- [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Woodland.php) when installing Simple Commerce for the first time. #313
 - [fix] Fixed issue with product variants fieldtype on new product entries. #314
 - [fix] Fixed issue when adding a new variation in product variants fieldtype
 - [fix] Localize and use plural/signular stuff with index text for product variants fields.

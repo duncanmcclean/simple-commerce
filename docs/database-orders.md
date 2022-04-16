@@ -33,7 +33,7 @@ The above command will publish some database migrations, you'll need to run the 
 Then, to move over any existing order & customer entries, you can run the provided 'migrate' command. It may be a good idea to run this per environment (eg. local, staging, production).
 
 ```
-sc:migrate-to-database
+php please sc:migrate-to-database
 ```
 
 One thing worth noting is that the above command will not delete the order/customer entries or the collections. That's something you should do yourself after you're satisfied with the migration.

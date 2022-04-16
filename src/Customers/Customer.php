@@ -41,8 +41,12 @@ class Customer implements Contract
             ->args(func_get_args());
     }
 
-    public function name(): string
+    public function name(): ?string
     {
+        if ($this->has('first_name') && $this->has('last_name')) {
+            return "{$this->get('first_name')} {$this->get('last_name')}";
+        }
+
         return $this->get('name');
     }
 

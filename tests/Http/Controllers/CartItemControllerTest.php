@@ -94,6 +94,8 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_store_item_with_extra_data()
     {
+        Config::set('simple-commerce.field_whitelist.line_items', ['foo']);
+
         $product = Product::make()
             ->price(1000)
             ->data([
@@ -126,6 +128,42 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_store_item_with_extra_data_if_fields_not_whitelisted_in_config()
+    {
+        Config::set('simple-commerce.field_whitelist.line_items', []);
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+                'slug' => 'dog-food',
+            ]);
+
+        $product->save();
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'foo' => 'bar',
+        ];
+
+        $response = $this
+            ->from('/products/' . $product->get('slug'))
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/' . $product->get('slug'));
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->itemsTotal());
+
+        $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+
+        $this->assertArrayNotHasKey('foo', $cart->lineItems()->first()['metadata']);
+    }
+
+    /** @test */
     public function can_store_item_and_ensure_custom_form_request_is_used()
     {
         $product = Product::make()
@@ -138,7 +176,7 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $data = [
-            '_request' => CartItemStoreFormRequest::class,
+            '_request' => encrypt(CartItemStoreFormRequest::class),
             'product'  => $product->id,
             'quantity' => 1,
         ];
@@ -209,6 +247,7 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_metadata_where_metadata_is_unique()
     {
         Config::set('simple-commerce.cart.unique_metadata', true);
+        Config::set('simple-commerce.field_whitelist.line_items', ['foo', 'barz']);
 
         $product = Product::make()
             ->price(1000)
@@ -275,6 +314,7 @@ class CartItemControllerTest extends TestCase
     public function can_store_item_with_metadata_where_metadata_is_not_unique()
     {
         Config::set('simple-commerce.cart.unique_metadata', true);
+        Config::set('simple-commerce.field_whitelist.line_items', ['foo', 'bar']);
 
         $product = Product::make()
             ->price(1000)
@@ -516,7 +556,7 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'   => $product->id,
             'quantity'  => 1,
-            '_redirect' => '/checkout',
+            '_redirect' => encrypt('/checkout'),
         ];
 
         $response = $this
@@ -549,6 +589,46 @@ class CartItemControllerTest extends TestCase
             'product'  => $product->id,
             'quantity' => 1,
             'name' => 'Michael Scott',
+            'email' => 'michael@scott.net',
+        ];
+
+        $response = $this
+            ->from('/products/' . $product->get('slug'))
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+        $response->assertRedirect('/products/' . $product->get('slug'));
+        $response->assertSessionHas('simple-commerce-cart');
+
+        $cart = Order::find(session()->get('simple-commerce-cart'));
+
+        $this->assertSame(1000, $cart->itemsTotal());
+
+        $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($cart->customer());
+
+        $this->assertSame($cart->customer()->name(), 'Michael Scott');
+        $this->assertSame($cart->customer()->email(), 'michael@scott.net');
+    }
+
+    /** @test */
+    public function can_store_item_with_first_name_and_last_name_and_email()
+    {
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+                'slug' => 'dog-food',
+            ]);
+
+        $product->save();
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
             'email' => 'michael@scott.net',
         ];
 
@@ -639,7 +719,7 @@ class CartItemControllerTest extends TestCase
         // Assert customer has been created with provided details
         $this->assertNotNull($cart->customer());
 
-        $this->assertSame($cart->customer()->name(), 'donald@duck.disney');
+        $this->assertSame($cart->customer()->name(), null);
         $this->assertSame($cart->customer()->email(), 'donald@duck.disney');
     }
 
@@ -933,7 +1013,7 @@ class CartItemControllerTest extends TestCase
         $data = [
             'product'   => $productTwo->id,
             'quantity'  => 1,
-            '_redirect' => '/checkout',
+            '_redirect' => encrypt('/checkout'),
         ];
 
         $response = $this
@@ -1222,7 +1302,7 @@ class CartItemControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_request' => CartItemUpdateFormRequest::class,
+            '_request' => encrypt(CartItemUpdateFormRequest::class),
             'quantity' => 2,
         ];
 
@@ -1281,6 +1361,8 @@ class CartItemControllerTest extends TestCase
     /** @test */
     public function can_update_item_with_extra_data()
     {
+        Config::set('simple-commerce.field_whitelist.line_items', ['gift_note']);
+
         $product = Product::make()
             ->price(1000)
             ->data([
@@ -1317,8 +1399,57 @@ class CartItemControllerTest extends TestCase
         $cart = $cart->fresh();
 
         $this->assertSame($cart->lineItems()->count(), 1);
-        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
         $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
+
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayHasKey('gift_note', $cart->lineItems()->first()['metadata']);
+    }
+
+    /** @test */
+    public function cant_update_item_with_extra_data_if_fields_not_whitelisted_in_config()
+    {
+        Config::set('simple-commerce.field_whitelist.line_items', []);
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Food',
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ]);
+
+        $cart->save();
+
+        $data = [
+            'gift_note' => 'Have a good birthday!',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->lineItems()->toArray()[0]['id'],
+            ]), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+
+        $this->assertSame($cart->lineItems()->count(), 1);
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first());
+
+        $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
+        $this->assertArrayNotHasKey('gift_note', $cart->lineItems()->first()['metadata']);
     }
 
     /** @test */

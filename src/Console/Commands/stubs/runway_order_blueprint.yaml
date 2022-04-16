@@ -12,20 +12,26 @@ sections:
           display: "Order Number"
           input_type: text
           antlers: false
+          read_only: true
+          width: 75
       - handle: is_paid
         field:
           type: toggle
           display: "Is Paid?"
-          width: 50
-      - handle: customer
+          width: 25
+          read_only: true
+      - handle: customer_id
         field:
           max_items: 1
           mode: default
-          collections:
-            - customers
-          type: entries
+          resource: customermodel
           display: Customer
+          type: belongs_to
+          icon: belongs_to
+          listable: hidden
+          instructions_position: above
           width: 50
+          read_only: true
       - handle: coupon
         field:
           max_items: 1
@@ -35,6 +41,15 @@ sections:
           type: entries
           display: Coupon
           width: 50
+          read_only: true
+      - handle: gateway
+        field:
+          display: Gateway
+          type: gateway
+          icon: gateway
+          width: 50
+          listable: hidden
+          instructions_position: above
       - handle: items
         field:
           fields:
@@ -93,6 +108,7 @@ sections:
           display: "Line Items"
           min_rows: 1
           add_row: "Add Line Item"
+          read_only: true
   addresses:
     display: Addresses
     fields:

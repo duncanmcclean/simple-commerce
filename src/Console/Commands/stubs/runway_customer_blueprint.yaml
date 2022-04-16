@@ -3,6 +3,13 @@ sections:
   main:
     display: Main
     fields:
+      - handle: name
+        field:
+          input_type: text
+          type: text
+          width: 50
+          display: Name
+          validate: required
       - handle: email
         field:
           input_type: email
@@ -10,3 +17,13 @@ sections:
           width: 50
           display: Email
           validate: required
+      - handle: orders
+        field:
+          create: false
+          mode: default
+          resource: ordermodel
+          display: Orders
+          type: has_many
+          icon: has_many
+          listable: hidden
+          instructions_position: above

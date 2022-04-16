@@ -51,12 +51,22 @@ class CartController extends BaseActionController
                     throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
+                $customerData = [
+                    'published' => true,
+                ];
+
+                if (isset($customerData['customer']['name'])) {
+                    $customerData['name'] = $customerData['customer']['name'];
+                }
+
+                if (isset($customerData['customer']['first_name'])) {
+                    $customerData['first_name'] = $customerData['customer']['first_name'];
+                    $customerData['last_name'] = $customerData['customer']['last_name'];
+                }
+
                 $customer = Customer::make()
                     ->email($data['customer']['email'])
-                    ->data([
-                        'name'  => isset($data['customer']['name']) ? $data['customer']['name'] : '',
-                        'published' => true,
-                    ]);
+                    ->data($customerData);
 
                 $customer->save();
             }
@@ -81,12 +91,22 @@ class CartController extends BaseActionController
                     throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
                 }
             } catch (CustomerNotFound $e) {
+                $customerData = [
+                    'published' => true,
+                ];
+
+                if (isset($data['name'])) {
+                    $customerData['name'] = $data['name'];
+                }
+
+                if (isset($data['first_name']) && isset($data['last_name'])) {
+                    $customerData['first_name'] = $data['first_name'];
+                    $customerData['last_name'] = $data['last_name'];
+                }
+
                 $customer = Customer::make()
                     ->email($data['email'])
-                    ->data([
-                        'name'  => isset($data['name']) ? $data['name'] : '',
-                        'published' => true,
-                    ]);
+                    ->data($customerData);
 
                 $customer->save();
             }
@@ -97,11 +117,13 @@ class CartController extends BaseActionController
             $cart = $cart->fresh();
 
             unset($data['name']);
+            unset($data['first_name']);
+            unset($data['last_name']);
             unset($data['email']);
         }
 
         if ($data !== null) {
-            $cart = $cart->merge($data);
+            $cart = $cart->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')));
         }
 
         $cart->save();

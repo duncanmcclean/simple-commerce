@@ -123,6 +123,19 @@ class BaseGateway
         return [];
     }
 
+    /**
+     * Should return an array with text & a URL which will be displayed by the Gateway fieldtype in the CP.
+     *
+     * @return array
+     */
+    public function paymentDisplay($value): array
+    {
+        return [
+            'text' => isset($value['data']) ? $value['data']['id'] : $value['id'],
+            'url' => '#',
+        ];
+    }
+
     public function markOrderAsPaid(Order $order): bool
     {
         if ($this->isOffsiteGateway()) {

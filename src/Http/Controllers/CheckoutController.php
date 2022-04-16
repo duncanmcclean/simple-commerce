@@ -62,6 +62,7 @@ class CheckoutController extends BaseActionController
             'cart'    => $request->wantsJson()
                 ? $this->cart->toResource()
                 : $this->cart->toAugmentedArray(),
+            'is_checkout_request' => true,
         ]);
     }
 
@@ -75,7 +76,7 @@ class CheckoutController extends BaseActionController
     protected function handleValidation()
     {
         $rules = array_merge(
-            $this->request->has('_request')
+            $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
                 : [],
             $this->request->has('gateway')
@@ -92,7 +93,7 @@ class CheckoutController extends BaseActionController
         );
 
         $messages = array_merge(
-            $this->request->has('_request')
+            $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
                 : [],
             $this->request->has('gateway')
@@ -127,18 +128,40 @@ class CheckoutController extends BaseActionController
 
             $this->excludedKeys[] = 'name';
             $this->excludedKeys[] = 'email';
+        } elseif ($this->request->has('first_name') && $this->request->has('last_name') && $this->request->has('email')) {
+            $customerData['first_name'] = $this->request->get('first_name');
+            $customerData['last_name'] = $this->request->get('last_name');
+            $customerData['email'] = $this->request->get('email');
+
+            $this->excludedKeys[] = 'first_name';
+            $this->excludedKeys[] = 'last_name';
+            $this->excludedKeys[] = 'email';
+        } elseif ($this->request->has('email')) {
+            $customerData['email'] = $this->request->get('email');
+
+            $this->excludedKeys[] = 'email';
         }
 
         if (isset($customerData['email'])) {
             try {
                 $customer = Customer::findByEmail($customerData['email']);
             } catch (CustomerNotFound $e) {
+                $customerItemData = [
+                    'published' => true,
+                ];
+
+                if (isset($customerData['name'])) {
+                    $customerItemData['name'] = $customerData['name'];
+                }
+
+                if (isset($customerData['first_name']) && isset($customerData['last_name'])) {
+                    $customerItemData['first_name'] = $customerData['first_name'];
+                    $customerItemData['last_name'] = $customerData['last_name'];
+                }
+
                 $customer = Customer::make()
                     ->email($customerData['email'])
-                    ->data([
-                        'name'  => isset($customerData['name']) ? $customerData['name'] : '',
-                        'published' => true,
-                    ]);
+                    ->data($customerItemData);
 
                 $customer->save();
             }
@@ -197,7 +220,7 @@ class CheckoutController extends BaseActionController
         }
 
         if ($data !== []) {
-            $this->cart->merge($data)->save();
+            $this->cart->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')))->save();
             $this->cart->save();
 
             $this->cart = $this->cart->fresh();
@@ -227,6 +250,8 @@ class CheckoutController extends BaseActionController
         foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
             $this->excludedKeys[] = $key;
         }
+
+        $this->cart->fresh();
 
         return $this;
     }

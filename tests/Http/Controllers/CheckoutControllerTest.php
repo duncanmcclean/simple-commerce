@@ -122,7 +122,7 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                '_request'     => CheckoutFormRequest::class,
+                '_request'     => encrypt(CheckoutFormRequest::class),
                 'name'         => 'Smelly Joe',
                 'email'        => 'smelly.joe@example.com',
                 'gateway'      => DummyGateway::class,
@@ -179,6 +179,69 @@ class CheckoutControllerTest extends TestCase
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
                 'name'         => 'Mike Scott',
+                'email'        => 'mike.scott@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($order->customer());
+
+        $this->assertSame($order->customer()->name(), 'Mike Scott');
+        $this->assertSame($order->customer()->email(), 'mike.scott@example.com');
+
+        $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
+            $order->id,
+        ]);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
+    public function can_post_checkout_with_first_name_and_last_name_and_email()
+    {
+        Event::fake();
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'first_name'   => 'Mike',
+                'last_name'    => 'Scott',
                 'email'        => 'mike.scott@example.com',
                 'gateway'      => DummyGateway::class,
                 'card_number'  => '4242424242424242',
@@ -315,8 +378,8 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotNull($order->get('paid_date'));
 
         // Assert email has been set on the order
-        $this->assertNull($order->customer());
-        $this->assertSame($order->get('email'), 'jim@example.com');
+        $this->assertNotNull($order->customer());
+        $this->assertNull($order->get('email'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -1356,6 +1419,8 @@ class CheckoutControllerTest extends TestCase
     {
         Event::fake();
 
+        Config::set('simple-commerce.field_whitelist.orders', ['the_extra']);
+
         $product = Product::make()
             ->price(5000)
             ->data([
@@ -1388,6 +1453,7 @@ class CheckoutControllerTest extends TestCase
                 'expiry_month' => '01',
                 'expiry_year'  => '2025',
                 'cvc'          => '123',
+                'the_extra'    => 'bit_of_data',
             ]);
 
         $order = $order->fresh();
@@ -1405,6 +1471,72 @@ class CheckoutControllerTest extends TestCase
         // Assert that the 'extra remaining data' has been saved to the order
         $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
         $this->assertSame($order->get('delivery_note'), 'We live at the red house at the top of the hill.');
+
+        $this->assertSame($order->get('the_extra'), 'bit_of_data');
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
+    public function cant_post_checkout_and_ensure_remaining_request_data_is_saved_to_order_if_fields_not_whitelisted_in_config()
+    {
+        Event::fake();
+
+        Config::set('simple-commerce.field_whitelist.orders', []);
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000)->merge([
+            'gift_note' => 'I like jam on toast!',
+            'delivery_note' => 'We live at the red house at the top of the hill.',
+        ]);
+
+        $order->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+                'the_extra'    => 'bit_of_data',
+            ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert that the 'extra remaining data' has been saved to the order
+        $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
+        $this->assertSame($order->get('delivery_note'), 'We live at the red house at the top of the hill.');
+
+        $this->assertNull($order->get('the_extra'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -1762,7 +1894,7 @@ class CheckoutControllerTest extends TestCase
                 'expiry_month' => '01',
                 'expiry_year'  => '2025',
                 'cvc'          => '123',
-                '_redirect'    => '/order-confirmation',
+                '_redirect'    => encrypt('/order-confirmation'),
             ])
             ->assertRedirect('/order-confirmation');
 

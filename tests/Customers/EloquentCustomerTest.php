@@ -17,16 +17,18 @@ class EloquentCustomerTest extends TestCase
     public function can_get_all_customers()
     {
         CustomerModel::create([
+            'name' => 'CJ Cregg',
             'email' => 'cj@whitehouse.gov',
             'data' => [
-                'name' => 'CJ Cregg',
+                'role' => 'Press Secretary',
             ],
         ]);
 
         CustomerModel::create([
+            'name' => 'Sam Seaborn',
             'email' => 'sam@whitehouse.gov',
             'data' => [
-                'name' => 'Sam Seaborne',
+                'role' => 'Deputy Communications Director',
             ],
         ]);
 
@@ -40,34 +42,38 @@ class EloquentCustomerTest extends TestCase
     public function can_find_customer()
     {
         $customer = CustomerModel::create([
+            'name' => 'CJ Cregg',
             'email' => 'cj@whitehouse.gov',
             'data' => [
-                'name' => 'CJ Cregg',
+                'role' => 'Press Secretary',
             ],
         ]);
 
         $find = Customer::find($customer->id);
 
         $this->assertSame($find->id(), $customer->id);
+        $this->assertSame($find->name(), $customer->name);
         $this->assertSame($find->email(), $customer->email);
-        $this->assertSame($find->name(), $customer->data['name']);
+        $this->assertSame($find->get('role'), 'Press Secretary');
     }
 
     /** @test */
     public function can_find_customer_by_email()
     {
         $customer = CustomerModel::create([
+            'name' => 'CJ Cregg',
             'email' => 'cj@whitehouse.gov',
             'data' => [
-                'name' => 'CJ Cregg',
+                'role' => 'Press Secretary',
             ],
         ]);
 
         $find = Customer::findByEmail($customer->email);
 
         $this->assertSame($find->id(), $customer->id);
+        $this->assertSame($find->name(), $customer->name);
         $this->assertSame($find->email(), $customer->email);
-        $this->assertSame($find->name(), $customer->data['name']);
+        $this->assertSame($find->get('role'), 'Press Secretary');
     }
 
     /** @test */
@@ -82,17 +88,18 @@ class EloquentCustomerTest extends TestCase
         $create->save();
 
         $this->assertNotNull($create->id());
-        $this->assertSame($create->email(), 'sam@whitehouse.gov');
         $this->assertSame($create->name(), 'Sam Seaborne');
+        $this->assertSame($create->email(), 'sam@whitehouse.gov');
     }
 
     /** @test */
     public function can_save()
     {
         $customerRecord = CustomerModel::create([
+            'name' => 'CJ Cregg',
             'email' => 'cj@whitehouse.gov',
             'data' => [
-                'name' => 'CJ Cregg',
+                'role' => 'Press Secretary',
             ],
         ]);
 
@@ -110,9 +117,10 @@ class EloquentCustomerTest extends TestCase
     public function can_delete()
     {
         $customerRecord = CustomerModel::create([
+            'name' => 'CJ Cregg',
             'email' => 'cj@whitehouse.gov',
             'data' => [
-                'name' => 'CJ Cregg',
+                'role' => 'Press Secretary',
             ],
         ]);
 
@@ -122,6 +130,7 @@ class EloquentCustomerTest extends TestCase
 
         $this->assertDatabaseMissing('customers', [
             'id' => $customerRecord->id,
+            'name' => 'CJ Cregg',
             'email' => $customerRecord->email,
         ]);
     }

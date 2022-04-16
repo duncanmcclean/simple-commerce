@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 
-class StandardPost implements ShippingMethod
+class StandardPost extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
@@ -20,7 +20,7 @@ class StandardPost implements ShippingMethod
 
     public function calculateCost(Order $order): int
     {
-        return 120;
+        return 100;
     }
 
     public function checkAvailability(Order $order, Address $address): bool

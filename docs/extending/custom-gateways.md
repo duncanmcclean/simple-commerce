@@ -34,16 +34,17 @@ The boilerplate gateway has quite a few methods. Here's a quick overview of what
 - `getCharge()` - should get information about a specific order's charge/transaction.
 - `refundCharge()` - should refund an order
 - `webhook()` - should accept incoming webhook payloads, used for off-site payment gateways.
+- `paymentDisplay()` - should return an array with `text` and a `url` which will be returned by the 'Gateway Fieldtype'
 
 ## DTOs
 
 DTOs (also known as Data Transfer Objects) are used to return information back from your gateway to Simple Commerce so it can process it. There's a couple gateway related ones you'll need to know about:
 
-- [`Prepare`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Gateways/Prepare.php)
-- [`Purchase`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Gateways/Purchase.php)
-- [`Response`](https://github.com/doublethreedigital/simple-commerce/blob/master/src/Gateways/Response.php)
+- [`Prepare`](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Gateways/Prepare.php)
+- [`Purchase`](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Gateways/Purchase.php)
+- [`Response`](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Gateways/Response.php)
 
-Each of these DTOs will have slightly different uses. You can view some examples of usage on some of the [built-in gateways](https://github.com/doublethreedigital/simple-commerce/tree/master/src/Gateways/Builtin).
+Each of these DTOs will have slightly different uses. You can view some examples of usage on some of the [built-in gateways](https://github.com/doublethreedigital/simple-commerce/tree/main/src/Gateways/Builtin).
 
 ## Off-site gateways
 

@@ -63,4 +63,12 @@ class DummyGateway extends BaseGateway implements Gateway
     {
         return null;
     }
+
+    public function paymentDisplay($value): array
+    {
+        return [
+            'text' => $value['data']['id'],
+            'url' => null,
+        ];
+    }
 }

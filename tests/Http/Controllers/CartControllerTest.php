@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 
 class CartControllerTest extends TestCase
@@ -42,6 +43,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $cart = Order::make();
         $cart->save();
 
@@ -64,6 +67,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_request_json_response()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $cart = Order::make();
         $cart->save();
 
@@ -88,13 +93,39 @@ class CartControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_update_cart_and_ensure_custom_form_request_is_used()
+    public function cant_update_cart_if_fields_not_whitelisted_in_config()
     {
+        Config::set('simple-commerce.field_whitelist.orders', []);
+
         $cart = Order::make();
         $cart->save();
 
         $data = [
-            '_request' => CartUpdateFormRequest::class,
+            'shipping_note' => 'Be careful pls.',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+
+        $this->assertNull($cart->get('shipping_note'));
+    }
+
+    /** @test */
+    public function can_update_cart_and_ensure_custom_form_request_is_used()
+    {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            '_request' => encrypt(CartUpdateFormRequest::class),
             'shipping_note' => 'Be careful pls.',
         ];
 
@@ -120,7 +151,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_request' => CartUpdateWithNoRulesFormRequest::class,
+            '_request' => encrypt(CartUpdateWithNoRulesFormRequest::class),
         ];
 
         $response = $this
@@ -137,6 +168,8 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_with_customer_already_in_cart()
     {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
         $customer = Customer::make()
             ->email('dan.smith@example.com')
             ->data([
@@ -168,7 +201,7 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer()
     {
-        $this->markTestSkipped();
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
 
         $cart = Order::make();
         $cart->save();
@@ -188,7 +221,36 @@ class CartControllerTest extends TestCase
         $cart = $cart->fresh();
         $customer = Customer::findByEmail($data['email']);
 
-        $this->assertSame($cart->customer(), $customer->id);
+        $this->assertSame($cart->customer()->id, $customer->id);
+        $this->assertSame($customer->name(), 'Joe Doe');
+        $this->assertSame($customer->email(), 'joedoe@gmail.com');
+    }
+
+    /** @test */
+    public function can_update_cart_and_create_new_customer_with_first_name_and_last_name()
+    {
+        Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
+
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'first_name' => 'Joe',
+            'last_name' => 'Doe',
+            'email' => 'joedoe@gmail.com',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+        $customer = Customer::findByEmail($data['email']);
+
+        $this->assertSame($cart->customer()->id, $customer->id);
         $this->assertSame($customer->name(), 'Joe Doe');
         $this->assertSame($customer->email(), 'joedoe@gmail.com');
     }
@@ -289,8 +351,6 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer_via_customer_array()
     {
-        $this->markTestSkipped();
-
         $cart = Order::make();
         $cart->save();
 
@@ -311,8 +371,36 @@ class CartControllerTest extends TestCase
         $cart = $cart->fresh();
         $customer = Customer::findByEmail('rebecca.logan@example.com');
 
-        $this->assertTrue($cart->has('customer'));
-        $this->assertIsString($cart->customer());
+        $this->assertSame($cart->customer()->id, $customer->id);
+        $this->assertSame($customer->name(), 'Rebecca Logan');
+        $this->assertSame($customer->email(), 'rebecca.logan@example.com');
+    }
+
+    /** @test */
+    public function can_update_cart_and_create_new_customer_via_customer_array_with_first_name_and_last_name()
+    {
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'customer' => [
+                'first_name'  => 'Rebecca',
+                'last_name'   => 'Logan',
+                'email' => 'rebecca.logan@example.com',
+            ],
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+        $response->assertRedirect('/cart');
+
+        $cart = $cart->fresh();
+        $customer = Customer::findByEmail('rebecca.logan@example.com');
+
+        $this->assertSame($cart->customer()->id, $customer->id);
         $this->assertSame($customer->name(), 'Rebecca Logan');
         $this->assertSame($customer->email(), 'rebecca.logan@example.com');
     }
@@ -393,7 +481,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            '_redirect' => '/checkout',
+            '_redirect' => encrypt('/checkout'),
         ];
 
         $response = $this

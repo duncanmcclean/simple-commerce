@@ -20,7 +20,7 @@ class CartItemController extends BaseActionController
     use CartDriver;
 
     protected $reservedKeys = [
-        'product', 'quantity', 'variant', '_token', '_params', '_redirect',
+        'product', 'quantity', 'variant', '_token', '_redirect', '_error_redirect', '_request',
     ];
 
     public function store(StoreRequest $request)
@@ -42,12 +42,22 @@ class CartItemController extends BaseActionController
                 }
             } catch (CustomerNotFound $e) {
                 if (is_array($request->get('customer'))) {
+                    $customerData = [
+                        'published' => true,
+                    ];
+
+                    if ($request->get('customer')['name']) {
+                        $customerData['name'] = $request->get('customer')['name'];
+                    }
+
+                    if ($request->get('customer')['first_name'] && $request->get('customer')['last_name']) {
+                        $customerData['first_name'] = $request->get('customer')['first_name'];
+                        $customerData['last_name'] = $request->get('customer')['last_name'];
+                    }
+
                     $customer = Customer::make()
                         ->email($request->get('customer')['email'])
-                        ->data([
-                            'name'  => isset($request->get('customer')['name']) ? $request->get('customer')['name'] : $request->get('customer')['email'],
-                            'published' => true,
-                        ]);
+                        ->data($customerData);
 
                     $customer->save();
                 } elseif (is_string($request->get('customer'))) {
@@ -60,12 +70,22 @@ class CartItemController extends BaseActionController
             try {
                 $customer = Customer::findByEmail($request->get('email'));
             } catch (CustomerNotFound $e) {
+                $customerData = [
+                    'published' => true,
+                ];
+
+                if ($request->get('name')) {
+                    $customerData['name'] = $request->get('name');
+                }
+
+                if ($request->get('first_name') && $request->get('last_name')) {
+                    $customerData['first_name'] = $request->get('first_name');
+                    $customerData['last_name'] = $request->get('last_name');
+                }
+
                 $customer = Customer::make()
                     ->email($request->get('email'))
-                    ->data([
-                        'name'  => $request->get('name') ?? $request->get('email'),
-                        'published' => true,
-                    ]);
+                    ->data($customerData);
 
                 $customer->save();
             }
@@ -115,7 +135,7 @@ class CartItemController extends BaseActionController
 
         // Ensure the product doesn't already exist in the cart
         $alreadyExistsQuery = $items;
-        $metadata = Arr::except($request->all(), $this->reservedKeys);
+        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
 
         if ($request->has('variant')) {
             $alreadyExistsQuery = $alreadyExistsQuery->where('variant', [
@@ -180,7 +200,7 @@ class CartItemController extends BaseActionController
             array_merge(
                 $data,
                 [
-                    'metadata' => $lineItem->metadata()->merge(Arr::except($request->all(), $this->reservedKeys))->toArray(),
+                    'metadata' => $lineItem->metadata()->merge(Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items')))->toArray(),
                 ]
             ),
         );

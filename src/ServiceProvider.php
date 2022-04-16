@@ -32,6 +32,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $fieldtypes = [
         Fieldtypes\CountryFieldtype::class,
+        Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
@@ -39,7 +40,6 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\TaxCategoryFieldtype::class,
 
         Fieldtypes\Variables\LineItemTax::class,
-        Fieldtypes\Variables\ReceiptUrl::class,
     ];
 
     protected $listen = [
@@ -86,6 +86,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $tags = [
         Tags\SimpleCommerceTag::class,
+        Tags\TotalIncludingTax::class,
     ];
 
     protected $widgets = [
@@ -103,6 +104,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v2_4\MigrateTaxConfiguration::class,
 
         UpdateScripts\v3_0\ConfigureTitleFormats::class,
+        UpdateScripts\v3_0\ConfigureWhitelistedFields::class,
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
     ];
 

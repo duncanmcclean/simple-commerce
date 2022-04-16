@@ -71,6 +71,10 @@ class Address
 
     public function country(): ?array
     {
+        if (! static::$country) {
+            return null;
+        }
+
         return Countries::find(static::$country);
     }
 

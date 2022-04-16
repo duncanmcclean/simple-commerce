@@ -92,7 +92,23 @@ class SimpleCommerce
                     continue;
                 }
 
-                static::$shippingMethods[$siteHandle] = $value['shipping']['methods'];
+                static::$shippingMethods[$siteHandle] = collect($value['shipping']['methods'])
+                    ->map(function ($config, $key) {
+                        if (is_string($config)) {
+                            $key = $config;
+                            $config = [];
+                        }
+
+                        $instance = new $key();
+
+                        return [
+                            'name' => $instance->name(),
+                            'description' => $instance->description(),
+                            'class' => $key,
+                            'config' => $config,
+                        ];
+                    })
+                    ->toArray();
             }
 
             return new static();
@@ -128,9 +144,16 @@ class SimpleCommerce
         return collect(static::$shippingMethods[Site::default()->handle()] ?? []);
     }
 
-    public static function registerShippingMethod(string $site, string $shippingMethod)
+    public static function registerShippingMethod(string $site, string $shippingMethod, array $config = [])
     {
-        static::$shippingMethods[$site][] = $shippingMethod;
+        $instance = new $shippingMethod();
+
+        static::$shippingMethods[$site][] = [
+            'name' => $instance->name(),
+            'description' => $instance->description(),
+            'class' => $shippingMethod,
+            'config' => $config,
+        ];
     }
 
     public static function orderDriver(): array

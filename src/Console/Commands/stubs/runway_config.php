@@ -15,13 +15,14 @@ return [
         \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class => [
             'name' => 'Customers',
             'handle' => 'customers',
-            'blueprint' => 'customers',
+            'blueprint' => 'customer',
         ],
 
         \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class => [
             'name' => 'Orders',
             'handle' => 'orders',
             'blueprint' => 'order',
+            'read_only' => true,
         ],
     ],
 

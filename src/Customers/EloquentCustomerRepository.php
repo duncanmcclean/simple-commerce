@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Arr;
 
 class EloquentCustomerRepository implements RepositoryContract
 {
@@ -33,7 +34,9 @@ class EloquentCustomerRepository implements RepositoryContract
             ->resource($model)
             ->id($model->id)
             ->email($model->email)
-            ->data($model->data);
+            ->data(array_merge($model->data, [
+                'name' => $model->name,
+            ]));
     }
 
     public function findByEmail(string $email): ?Customer
@@ -61,7 +64,11 @@ class EloquentCustomerRepository implements RepositoryContract
         }
 
         $model->email = $customer->email();
-        $model->data = $customer->data()->toArray();
+        $model->data = Arr::except($customer->data()->toArray(), ['name']);
+
+        if ($name = $customer->get('name')) {
+            $model->name = $name;
+        }
 
         $model->save();
 

@@ -56,11 +56,6 @@ class AddHiddenFields
 
     protected function addOrderFields(EntryBlueprintFound $event)
     {
-        $event->blueprint->ensureField('receipt_url', [
-            'type'    => 'receipt_url',
-            'display' => 'SC Receipt URL',
-        ], 'sidebar');
-
         return $event->blueprint;
     }
 

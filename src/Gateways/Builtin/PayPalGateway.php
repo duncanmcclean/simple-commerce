@@ -235,6 +235,20 @@ class PayPalGateway extends BaseGateway implements Gateway
         return new HttpResponse();
     }
 
+    public function paymentDisplay($value): array
+    {
+        if (! isset($value['data']['result']['id'])) {
+            return ['text' => 'Unknown', 'url' => null];
+        }
+
+        $payment = $value['data']['result']['id'];
+
+        return [
+            'text' => $payment,
+            'url' => null,
+        ];
+    }
+
     protected function setupPayPal()
     {
         if ($this->config()->get('environment') === 'sandbox') {

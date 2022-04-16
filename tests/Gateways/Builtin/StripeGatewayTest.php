@@ -469,4 +469,47 @@ class StripeGatewayTest extends TestCase
 
         $this->assertTrue($webhook instanceof Response);
     }
+
+    /** @test */
+    public function returns_array_from_payment_display()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $paymentDisplay = $this->gateway->paymentDisplay([
+            'use' => StripeGateway::class,
+            'data' => [
+                'payment_intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
+            ],
+        ]);
+
+        $this->assertIsArray($paymentDisplay);
+
+        $this->assertSame([
+            'text' => $paymentIntent,
+            'url' => 'https://dashboard.stripe.com/test/payments/' . $paymentIntent,
+        ], $paymentDisplay);
+    }
+
+    /** @test */
+    public function does_not_return_array_from_payment_display_if_no_payment_intent_is_set()
+    {
+        $paymentDisplay = $this->gateway->paymentDisplay([
+            'use' => StripeGateway::class,
+            'data' => [],
+        ]);
+
+        $this->assertIsArray($paymentDisplay);
+
+        $this->assertSame([
+            'text' => 'Unknown',
+            'url' => null,
+        ], $paymentDisplay);
+    }
 }

@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 class EloquentOrderRepository implements RepositoryContract
@@ -32,6 +33,7 @@ class EloquentOrderRepository implements RepositoryContract
         return app(Order::class)
             ->resource($model)
             ->id($model->id)
+            ->orderNumber($model->id)
             ->isPaid($model->is_paid)
             ->isShipped($model->is_shipped)
             ->isRefunded($model->is_refunded)
@@ -119,6 +121,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->save();
 
         $order->id = $model->id;
+        $order->orderNumber = $model->id;
         $order->isPaid = $model->is_paid;
         $order->isShipped = $model->is_shipped;
         $order->isRefunded = $model->is_refunded;
@@ -128,7 +131,7 @@ class EloquentOrderRepository implements RepositoryContract
         $order->taxTotal = $model->tax_total;
         $order->shippingTotal = $model->shipping_total;
         $order->couponTotal = $model->coupon_total;
-        $order->customer = $model->customer_id;
+        $order->customer = $model->customer_id ? Customer::find($model->customer_id) : null;
         $order->coupon = $model->coupon;
         $order->gateway = $model->gateway;
 
