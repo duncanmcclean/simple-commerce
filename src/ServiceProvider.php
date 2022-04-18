@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Statamic\Events\EntryBlueprintFound;
+use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
@@ -255,27 +256,79 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function createNavItems()
     {
-        if (SimpleCommerce::isUsingStandardTaxEngine()) {
-            Nav::extend(function ($nav) {
-                $nav->create(__('Tax Rates'))
+        Nav::extend(function ($nav) {
+            $nav->create(__('Overview'))
+                ->section(__('Simple Commerce'))
+                ->url('');
+
+            if (isset(SimpleCommerce::orderDriver()['collection'])) {
+                $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
-                    ->route('simple-commerce.tax-rates.index')
+                    ->route('collections.show', SimpleCommerce::orderDriver()['collection'])
+                    ->can('view', SimpleCommerce::orderDriver()['collection']);
+            } elseif (isset(SimpleCommerce::orderDriver()['model'])) {
+                $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::orderDriver()['model']);
+
+                $nav->create(__('Orders'))
+                    ->section(__('Simple Commerce'))
+                    ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
+                    ->can("View {$orderResource->plural()}");
+            }
+
+            if (isset(SimpleCommerce::customerDriver()['collection'])) {
+                $nav->create(__('Customers'))
+                    ->section(__('Simple Commerce'))
+                    ->route('collections.show', SimpleCommerce::customerDriver()['collection'])
+                    ->can('view', SimpleCommerce::customerDriver()['collection']);
+            } elseif (isset(SimpleCommerce::customerDriver()['model'])) {
+                $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::customerDriver()['model']);
+
+                $nav->create(__('Customers'))
+                    ->section(__('Simple Commerce'))
+                    ->route('runway.index', ['resourceHandle' => $customerResource->handle()])
+                    ->can("View {$customerResource->plural()}");
+            }
+
+            $nav->create(__('Products'))
+                ->section(__('Simple Commerce'))
+                ->route('collections.show', SimpleCommerce::productDriver()['collection'])
+                ->can('view', SimpleCommerce::productDriver()['collection']);
+
+            $nav->create(__('Coupons'))
+                ->section(__('Simple Commerce'))
+                ->route('collections.show', SimpleCommerce::couponDriver()['collection'])
+                ->can('view', SimpleCommerce::couponDriver()['collection'])
+                ->icon('tags');
+
+            if (SimpleCommerce::isUsingStandardTaxEngine()) {
+                $nav->create(__('Tax'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax')
                     ->can('view tax rates')
                     ->icon(SimpleCommerce::svg('money-cash-file-dollar'));
+            }
 
-                $nav->create(__('Tax Categories'))
-                    ->section(__('Simple Commerce'))
-                    ->route('simple-commerce.tax-categories.index')
-                    ->can('view tax categories')
-                    ->icon('tags');
+            // Drop any collection items from 'Collections' nav
+            $collections = $nav->content('Collections');
 
-                $nav->create(__('Tax Zones'))
-                    ->section(__('Simple Commerce'))
-                    ->route('simple-commerce.tax-zones.index')
-                    ->can('view tax zones')
-                    ->icon(SimpleCommerce::svg('travel-map'));
+            $children = $collections->children()()
+                ->reject(function ($child) {
+                    return in_array(
+                        $child->name(),
+                        collect(config('simple-commerce.content'))
+                            ->pluck('collection')
+                            // ->filter()
+                            ->map(function ($collectionHandle) {
+                                return __(Collection::find($collectionHandle)->title());
+                            })
+                            ->toArray(),
+                    );
+                });
+
+            $collections->children(function () use ($children) {
+                return $children;
             });
-        }
+        });
 
         return $this;
     }
