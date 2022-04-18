@@ -259,13 +259,16 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav->create(__('Overview'))
                 ->section(__('Simple Commerce'))
-                ->url('');
+                ->url('')
+                // ->can()
+                ->icon('charts');
 
             if (isset(SimpleCommerce::orderDriver()['collection'])) {
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::orderDriver()['collection'])
-                    ->can('view', SimpleCommerce::orderDriver()['collection']);
+                    ->can('view', SimpleCommerce::orderDriver()['collection'])
+                    ->icon('');
             } elseif (isset(SimpleCommerce::orderDriver()['model'])) {
                 $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::orderDriver()['model']);
 
@@ -279,20 +282,23 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::customerDriver()['collection'])
-                    ->can('view', SimpleCommerce::customerDriver()['collection']);
+                    ->can('view', SimpleCommerce::customerDriver()['collection'])
+                    ->icon('user');
             } elseif (isset(SimpleCommerce::customerDriver()['model'])) {
                 $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::customerDriver()['model']);
 
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resourceHandle' => $customerResource->handle()])
-                    ->can("View {$customerResource->plural()}");
+                    ->can("View {$customerResource->plural()}")
+                    ->icon('user');
             }
 
             $nav->create(__('Products'))
                 ->section(__('Simple Commerce'))
                 ->route('collections.show', SimpleCommerce::productDriver()['collection'])
-                ->can('view', SimpleCommerce::productDriver()['collection']);
+                ->can('view', SimpleCommerce::productDriver()['collection'])
+                ->icon('entries');
 
             $nav->create(__('Coupons'))
                 ->section(__('Simple Commerce'))
