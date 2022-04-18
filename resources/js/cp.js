@@ -42,9 +42,10 @@ if (simpleCommerceCollectionNavItems.length) {
         })
 }
 
-// Move 'Simple Commerce' nav section to under 'Content' section
-
-let contentSection = document.getElementsByClassName('nav-section-content')
+// Move 'Simple Commerce' nav section to under 'Content' section (& above 'Fields')
+let fieldsSectionHeader = Object.values(document.querySelectorAll('.nav-main-inner h6')).filter((el) => {
+    return el.innerText == 'Fields'
+})
 
 let simpleCommerceHeading = Object.values(document.querySelectorAll('.nav-main-inner h6')).filter((el) => {
     return el.innerText == 'Simple Commerce'
@@ -52,11 +53,12 @@ let simpleCommerceHeading = Object.values(document.querySelectorAll('.nav-main-i
 
 let simpleCommerceSection = document.getElementsByClassName('nav-section-simple-commerce')
 
-if (contentSection.length && simpleCommerceHeading.length && simpleCommerceSection.length) {
-    contentSection = contentSection[0]
+if (fieldsSectionHeader.length && simpleCommerceHeading.length && simpleCommerceSection.length) {
+    fieldsSectionHeader = fieldsSectionHeader[0]
+
     simpleCommerceHeading = simpleCommerceHeading[0]
     simpleCommerceSection = simpleCommerceSection[0]
 
-    contentSection.appendChild(simpleCommerceHeading)
-    contentSection.appendChild(simpleCommerceSection)
+    document.querySelector('.nav-main-inner').insertBefore(simpleCommerceHeading, fieldsSectionHeader)
+    document.querySelector('.nav-main-inner').insertBefore(simpleCommerceSection, fieldsSectionHeader)
 }
