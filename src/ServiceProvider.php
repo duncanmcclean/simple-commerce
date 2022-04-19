@@ -259,7 +259,7 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav->create(__('Overview'))
                 ->section(__('Simple Commerce'))
-                ->url('')
+                ->route('simple-commerce.overview')
                 // ->can()
                 ->icon('charts');
 
