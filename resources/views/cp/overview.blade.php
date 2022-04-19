@@ -8,6 +8,8 @@
     <!-- Toggle widgets (will tie in with user preferences) -->
 </header>
 
+<!-- TODO: Warning about using entries driver with lots of entries -->
+
 <div class="card p-2 content mb-2">
     <p>TODO: Orders chart</p>
 </div>
