@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
+use Carbon\CarbonPeriod;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -14,10 +15,34 @@ class OverviewController
     public function index(Request $request)
     {
         return view('simple-commerce::cp.overview', [
+            // 'chartOrders' => $this->getChartOrders($request),
             'recentOrders' => $this->getRecentOrders($request),
             'topCustomers' => $this->getTopCustomers($request),
             'lowStockProducts' => $this->getLowStockProducts($request),
         ]);
+    }
+
+    protected function getChartOrders($request)
+    {
+        $timePeriod = CarbonPeriod::create('2022-04-01', '2022-05-01');
+
+        return collect($timePeriod)->map(function ($date) {
+            if (isset(SimpleCommerce::orderDriver()['collection'])) {
+                $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
+                    ->queryEntries()
+                    ->where('is_paid', true)
+                    ->whereDate('paid_date', $date->format('d-m-Y'))
+                    ->get();
+            }
+
+            // TODO: implement Eloquent query
+
+            return [
+                'date' => $date->format('d-m-Y'),
+                'total' => $query->map(fn ($order) => $order->get('grand_total'))->sum(),
+                'count' => $query->count(),
+            ];
+        });
     }
 
     protected function getRecentOrders($request)
