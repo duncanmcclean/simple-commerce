@@ -268,14 +268,15 @@ class ServiceProvider extends AddonServiceProvider
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::orderDriver()['collection'])
                     ->can('view', SimpleCommerce::orderDriver()['collection'])
-                    ->icon('');
+                    ->icon(SimpleCommerce::svg('shop'));
             } elseif (isset(SimpleCommerce::orderDriver()['model'])) {
                 $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::orderDriver()['model']);
 
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
-                    ->can("View {$orderResource->plural()}");
+                    ->can("View {$orderResource->plural()}")
+                    ->icon(SimpleCommerce::svg('shop'));
             }
 
             if (isset(SimpleCommerce::customerDriver()['collection'])) {
