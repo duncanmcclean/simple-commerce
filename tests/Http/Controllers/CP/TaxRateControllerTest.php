@@ -36,7 +36,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-rates')
+            ->get('/cp/simple-commerce/tax/rates')
             ->assertOk()
             ->assertSee('UK - Standard Products')
             ->assertSee('20%')
@@ -50,7 +50,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-rates/create?taxCategory=standard')
+            ->get('/cp/simple-commerce/tax/rates/create?taxCategory=standard')
             ->assertOk()
             ->assertSee('Create Tax Rate')
             ->assertSee('Name')
@@ -67,7 +67,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-rates/create', [
+            ->post('/cp/simple-commerce/tax/rates/create', [
                 'name' => 'UK - Special',
                 'rate' => 5,
                 'category' => 'special',
@@ -94,7 +94,7 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-rates/uk-standard-products/edit')
+            ->get('/cp/simple-commerce/tax/rates/uk-standard-products/edit')
             ->assertOk()
             ->assertSee('UK - Standard Products')
             ->assertSee('20')
@@ -120,14 +120,14 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-rates/uk-standard-products/edit', [
+            ->post('/cp/simple-commerce/tax/rates/uk-standard-products/edit', [
                 'name' => 'UK - Standard Products (15% for COVID)',
                 'rate' => 15,
                 'zone' => 'the-uk',
                 'category' => 'standard',
                 'include_in_price' => 'true',
             ])
-            ->assertRedirect('/cp/simple-commerce/tax-rates/uk-standard-products/edit');
+            ->assertRedirect('/cp/simple-commerce/tax/rates/uk-standard-products/edit');
     }
 
     /** @test */
@@ -146,8 +146,8 @@ class TaxRateControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->delete('/cp/simple-commerce/tax-rates/uk-standard-products/delete')
-            ->assertRedirect('/cp/simple-commerce/tax-rates');
+            ->delete('/cp/simple-commerce/tax/rates/uk-standard-products/delete')
+            ->assertRedirect('/cp/simple-commerce/tax/rates');
     }
 
     protected function user()

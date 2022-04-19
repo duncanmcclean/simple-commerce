@@ -14,7 +14,12 @@ class SalesWidget extends Widget
 {
     public function html()
     {
-        $baseQuery = Order::query()
+        // $baseQuery = Order::query()
+        //     ->filter(function (AnEntry $entry) {
+        //         return $entry->has('paid_date');
+        //     });
+
+        $baseQuery = collect(Order::all())
             ->filter(function (AnEntry $entry) {
                 return $entry->has('paid_date');
             });
@@ -56,11 +61,11 @@ class SalesWidget extends Widget
 
         $ordersCollection
             ->each(function ($order) use (&$total) {
-                if (! $order->grandTotal()) {
+                if (! $order->get('grand_total')) {
                     return;
                 }
 
-                $total = $total + $order->grandTotal();
+                $total = $total + $order->get('grand_total');
             });
 
         return Currency::parse($total, Site::current());

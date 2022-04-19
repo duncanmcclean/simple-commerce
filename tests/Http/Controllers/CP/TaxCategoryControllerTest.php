@@ -33,7 +33,7 @@ class TaxCategoryControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-categories')
+            ->get('/cp/simple-commerce/tax/categories')
             ->assertOk()
             ->assertSee('General');
     }
@@ -43,7 +43,7 @@ class TaxCategoryControllerTest extends TestCase
     {
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-categories/create')
+            ->get('/cp/simple-commerce/tax/categories/create')
             ->assertOk()
             ->assertSee('Create Tax Category')
             ->assertSee('Name')
@@ -55,7 +55,7 @@ class TaxCategoryControllerTest extends TestCase
     {
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-categories/create', [
+            ->post('/cp/simple-commerce/tax/categories/create', [
                 'name' => 'Special Products',
                 'description' => 'Products that are very special.',
             ])
@@ -73,7 +73,7 @@ class TaxCategoryControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-categories/hmmmm/edit')
+            ->get('/cp/simple-commerce/tax/categories/hmmmm/edit')
             ->assertOk()
             ->assertSee('Hmmmm')
             ->assertSee('Thinking about something....');
@@ -90,11 +90,11 @@ class TaxCategoryControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-categories/whoop/edit', [
+            ->post('/cp/simple-commerce/tax/categories/whoop/edit', [
                 'name' => 'Whoopsie',
                 'description' => 'Whoopsie whoopsie whoopsie!',
             ])
-            ->assertRedirect('/cp/simple-commerce/tax-categories/whoop/edit');
+            ->assertRedirect('/cp/simple-commerce/tax/categories/whoop/edit');
     }
 
     /** @test */
@@ -108,8 +108,8 @@ class TaxCategoryControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->delete('/cp/simple-commerce/tax-categories/birthday/delete')
-            ->assertRedirect('/cp/simple-commerce/tax-categories');
+            ->delete('/cp/simple-commerce/tax/categories/birthday/delete')
+            ->assertRedirect('/cp/simple-commerce/tax/categories');
     }
 
     /**
@@ -136,8 +136,8 @@ class TaxCategoryControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->delete('/cp/simple-commerce/tax-categories/birthday/delete')
-            ->assertRedirect('/cp/simple-commerce/tax-categories');
+            ->delete('/cp/simple-commerce/tax/categories/birthday/delete')
+            ->assertRedirect('/cp/simple-commerce/tax/categories');
 
         $this->assertFileDoesNotExist($taxRate->path());
     }

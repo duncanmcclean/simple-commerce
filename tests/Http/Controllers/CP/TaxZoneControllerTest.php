@@ -31,7 +31,7 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-zones')
+            ->get('/cp/simple-commerce/tax/zones')
             ->assertOk()
             ->assertSee('United Kingdom (apart from the fact')
             ->assertSee('United Kingdom');
@@ -42,7 +42,7 @@ class TaxZoneControllerTest extends TestCase
     {
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-zones/create')
+            ->get('/cp/simple-commerce/tax/zones/create')
             ->assertOk()
             ->assertSee('Create Tax Zone')
             ->assertSee('Name')
@@ -55,7 +55,7 @@ class TaxZoneControllerTest extends TestCase
     {
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-zones/create', [
+            ->post('/cp/simple-commerce/tax/zones/create', [
                 'name' => 'Special Products',
                 'country' => 'DE',
             ])
@@ -74,7 +74,7 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-zones/create', [
+            ->post('/cp/simple-commerce/tax/zones/create', [
                 'name' => 'United States',
                 'country' => 'US',
             ])
@@ -94,7 +94,7 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-zones/create', [
+            ->post('/cp/simple-commerce/tax/zones/create', [
                 'name' => 'Alaska',
                 'country' => 'US',
                 'region' => 'us-ak',
@@ -114,7 +114,7 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->get('/cp/simple-commerce/tax-zones/united-kingdom/edit')
+            ->get('/cp/simple-commerce/tax/zones/united-kingdom/edit')
             ->assertOk()
             ->assertSee('United Kingdom (apart from the fact')
             ->assertSee('United Kingdom');
@@ -131,11 +131,11 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-zones/united-kingdom/edit', [
+            ->post('/cp/simple-commerce/tax/zones/united-kingdom/edit', [
                 'name' => 'The United Kingdom of Scotland, Northern Ireland, Wales and England',
                 'country' => 'GB',
             ])
-            ->assertRedirect('/cp/simple-commerce/tax-zones/united-kingdom/edit');
+            ->assertRedirect('/cp/simple-commerce/tax/zones/united-kingdom/edit');
     }
 
     /** @test */
@@ -157,7 +157,7 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-zones/united-states/edit', [
+            ->post('/cp/simple-commerce/tax/zones/united-states/edit', [
                 'name' => 'United States',
                 'country' => 'US',
             ])
@@ -185,7 +185,7 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->post('/cp/simple-commerce/tax-zones/alaska/edit', [
+            ->post('/cp/simple-commerce/tax/zones/alaska/edit', [
                 'name' => 'Alaska',
                 'country' => 'US',
                 'region' => 'us-ak',
@@ -204,8 +204,8 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->delete('/cp/simple-commerce/tax-zones/the-states/delete')
-            ->assertRedirect('/cp/simple-commerce/tax-zones');
+            ->delete('/cp/simple-commerce/tax/zones/the-states/delete')
+            ->assertRedirect('/cp/simple-commerce/tax/zones');
     }
 
     /**
@@ -232,8 +232,8 @@ class TaxZoneControllerTest extends TestCase
 
         $this
             ->actingAs($this->user())
-            ->delete('/cp/simple-commerce/tax-zones/the-states/delete')
-            ->assertRedirect('/cp/simple-commerce/tax-zones');
+            ->delete('/cp/simple-commerce/tax/zones/the-states/delete')
+            ->assertRedirect('/cp/simple-commerce/tax/zones');
 
         $this->assertFileDoesNotExist($taxRate->path());
     }

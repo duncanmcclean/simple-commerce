@@ -1,5 +1,6 @@
 @extends('statamic::layout')
 @section('title', 'Tax Rates')
+@section('wrapper_class', 'max-w-full')
 
 @section('content')
 <div class="flex items-center justify-between mb-3">
@@ -25,6 +26,8 @@
 
 @if ($taxRates->count())
     <div class="card p-0">
+        @include('simple-commerce::cp.partials.tax-navigation')
+
         <table class="data-table">
             <thead>
                 <tr>
