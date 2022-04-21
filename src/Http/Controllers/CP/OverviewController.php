@@ -15,7 +15,7 @@ class OverviewController
     public function index(Request $request)
     {
         return view('simple-commerce::cp.overview', [
-            // 'chartOrders' => $this->getChartOrders($request),
+            'chartOrders' => $this->getChartOrders($request),
             'recentOrders' => $this->getRecentOrders($request),
             'topCustomers' => $this->getTopCustomers($request),
             'lowStockProducts' => $this->getLowStockProducts($request),
@@ -38,10 +38,15 @@ class OverviewController
             // TODO: implement Eloquent query
 
             return [
-                'date' => $date->format('d-m-Y'),
-                'total' => $query->map(fn ($order) => $order->get('grand_total'))->sum(),
-                'count' => $query->count(),
+                $query->count(),
+                $date->format('d-m-Y'),
             ];
+
+            // return [
+            //     'date' => $date->format('d-m-Y'),
+            //     'total' => $query->map(fn ($order) => $order->get('grand_total'))->sum(),
+            //     'count' => $query->count(),
+            // ];
         });
     }
 

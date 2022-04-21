@@ -11,7 +11,26 @@
 <!-- TODO: Warning about using entries driver with lots of entries -->
 
 <div class="card p-2 content mb-2">
-    <p>TODO: Orders chart</p>
+    <div class="flex flex-wrap -mx-2 mb-4">
+        <div class="px-2 w-full">
+            <p class="mb-4">Last month</p>
+            <div class="px-1">
+                @include('simple-commerce::cp.partials.line-chart', ['data' => $chartOrders])
+            </div>
+        </div>
+        {{-- <div class="w-1/3 px-2">
+            <p class="mb-4">Last week</p>
+            <div class="px-1">
+                @include('simple-commerce::cp.partials.line-chart', ['data' => $notFoundWeek])
+            </div>
+        </div>
+        <div class="w-1/3 px-2">
+            <p class="mb-4">Last day</p>
+            <div class="px-1">
+                @include('simple-commerce::cp.partials.line-chart', ['data' => $notFoundDay])
+            </div>
+        </div> --}}
+    </div>
 </div>
 
 <div class="grid grid-cols-2 gap-2">
