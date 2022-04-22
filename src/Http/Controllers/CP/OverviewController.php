@@ -3,26 +3,41 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use Carbon\CarbonPeriod;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Overview;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
+use Statamic\Facades\Site;
 
 class OverviewController
 {
     public function index(Request $request)
     {
+        if ($request->wantsJson()) {
+            $data = collect($request->get('widgets'))
+                ->mapWithKeys(function ($widgetHandle) use ($request) {
+                    $methodName = 'get' . Str::studly($widgetHandle); // TODO
+
+                    return [
+                        $widgetHandle => $this->$methodName($request),
+                    ];
+                })
+                ->toArray();
+
+            return ['data' => $data];
+        }
+
         return view('simple-commerce::cp.overview', [
-            'chartOrders' => $this->getChartOrders($request),
-            'recentOrders' => $this->getRecentOrders($request),
-            'topCustomers' => $this->getTopCustomers($request),
-            'lowStockProducts' => $this->getLowStockProducts($request),
+            'widgets' => Overview::widgets(),
         ]);
     }
 
-    protected function getChartOrders($request)
+    protected function getOrdersChart($request)
     {
         $timePeriod = CarbonPeriod::create(now()->subDays(30)->format('Y-m-d'), now()->format('Y-m-d'));
 
@@ -64,7 +79,15 @@ class OverviewController
                 })
                 ->values();
 
-            return $query;
+            return $query->map(function ($order) {
+                return [
+                    'id' => $order->id(),
+                    'order_number' => $order->orderNumber(),
+                    'edit_url' => $order->resource()->editUrl(),
+                    'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
+                    'paid_date' => $order->get('paid_date'),
+                ];
+            });
         }
 
         // TODO: implement Eloquent query
@@ -87,7 +110,14 @@ class OverviewController
                 })
                 ->values();
 
-            return $query;
+            return $query->map(function ($customer) {
+                return [
+                    'id' => $customer->id(),
+                    'email' => $customer->email(),
+                    'edit_url' => $customer->resource()->editUrl(),
+                    'orders_count' => count($customer->get('orders', [])),
+                ];
+            });
         }
 
         // TODO: implement Eloquent query
@@ -114,7 +144,14 @@ class OverviewController
                 })
                 ->values();
 
-            return $query;
+            return $query->map(function ($product) {
+                return [
+                    'id' => $product->id(),
+                    'title' => $product->get('title'),
+                    'stock' => $product->stock(),
+                    'edit_url' => $product->resource()->editUrl(),
+                ];
+            });
         }
 
         return null;
