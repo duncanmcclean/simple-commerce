@@ -6,10 +6,11 @@
       </h2>
     </div>
 
-    <ul class="px-2">
+    <ul>
       <li
         v-for="customer in data"
-        class="py-1 flex items-center justify-between"
+        :key="customer.id"
+        class="px-2 py-1 flex items-center justify-between hover:bg-grey-10"
       >
         <a :href="customer.edit_url">{{ customer.email }}</a>
         <span class="text-sm">{{ customer.orders_count }} orders</span>

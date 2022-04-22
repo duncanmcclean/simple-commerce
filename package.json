@@ -16,7 +16,8 @@
     "marked": "^4.0.12",
     "underscore": "^1.13.2",
     "uniqid": "^5.2.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-chartjs": "^4.0.6"
   },
   "devDependencies": {
     "vue-template-compiler": "^2.6.11"

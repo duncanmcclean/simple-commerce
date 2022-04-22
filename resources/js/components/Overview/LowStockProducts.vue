@@ -6,11 +6,11 @@
       </h2>
     </div>
 
-    <ul class="px-2">
+    <ul>
       <li
         v-for="product in data"
         :key="product.id"
-        class="py-1 flex items-center justify-between"
+        class="px-2 py-1 flex items-center justify-between hover:bg-grey-10"
       >
         <a :href="product.edit_url">{{ product.title }}</a>
         <span class="text-sm" :class="{ 'text-red-light': product.stock === 0 }"

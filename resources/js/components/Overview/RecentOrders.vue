@@ -6,11 +6,11 @@
       </h2>
     </div>
 
-    <ul class="px-2">
+    <ul>
       <li
         v-for="order in data"
         :key="order.id"
-        class="py-1 flex items-center justify-between"
+        class="px-2 py-1 flex items-center justify-between hover:bg-grey-10"
       >
         <a :href="order.edit_url"
           ><strong>#{{ order.order_number }}</strong> -

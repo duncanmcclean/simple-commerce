@@ -11,16 +11,23 @@
 
     <!-- TODO: Warning about using entries driver with lots of entries -->
 
-    <overview-orders-chart v-if="data" :data="data['orders-chart']" />
+    <div v-if="data">
+      <overview-orders-chart
+        v-if="
+          currentWidgets.map((widget) => widget.handle).includes('orders-chart')
+        "
+        :data="data['orders-chart']"
+      />
 
-    <div v-if="data" class="grid grid-cols-2 gap-2">
-      <template v-for="currentWidget in currentWidgets">
-        <component
-          v-if="currentWidget.handle !== 'orders-chart'"
-          v-bind:is="currentWidget.component"
-          :data="data[currentWidget.handle]"
-        ></component>
-      </template>
+      <div class="grid grid-cols-2 gap-2">
+        <template v-for="currentWidget in currentWidgets">
+          <component
+            v-if="currentWidget.handle !== 'orders-chart'"
+            :is="currentWidget.component"
+            :data="data[currentWidget.handle]"
+          ></component>
+        </template>
+      </div>
     </div>
   </div>
 </template>

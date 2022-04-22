@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -53,15 +54,10 @@ class OverviewController
             // TODO: implement Eloquent query
 
             return [
-                $query->count(),
-                $date->format('d-m-Y'),
+                'date' =>  $date->format('d-m-Y'),
+                'total' => $query->map(fn ($order) => $order->get('grand_total'))->sum(),
+                'count' => $query->count(),
             ];
-
-            // return [
-            //     'date' => $date->format('d-m-Y'),
-            //     'total' => $query->map(fn ($order) => $order->get('grand_total'))->sum(),
-            //     'count' => $query->count(),
-            // ];
         });
     }
 
@@ -85,7 +81,7 @@ class OverviewController
                     'order_number' => $order->orderNumber(),
                     'edit_url' => $order->resource()->editUrl(),
                     'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                    'paid_date' => $order->get('paid_date'),
+                    'paid_date' => Carbon::parse($order->get('paid_date'))->format(config('statamic.system.date_format')),
                 ];
             });
         }
