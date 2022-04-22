@@ -1,6 +1,6 @@
 <template>
   <div class="flex-1 card p-0 overflow-hidden h-full">
-    <div class="flex justify-between items-center p-2">
+    <div class="flex justify-between items-center p-2 pb-1">
       <h2>
         <span>{{ __("Top Customers") }}</span>
       </h2>

@@ -62,8 +62,8 @@ export default {
         labels: [],
         datasets: [
           {
-            label: "Data one",
-            backgroundColor: "#f87979",
+            label: "Paid Orders",
+            backgroundColor: "#257fcc",
             data: [],
           },
         ],
