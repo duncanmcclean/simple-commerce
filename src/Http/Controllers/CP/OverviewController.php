@@ -24,7 +24,7 @@ class OverviewController
 
     protected function getChartOrders($request)
     {
-        $timePeriod = CarbonPeriod::create('2022-04-01', '2022-05-01');
+        $timePeriod = CarbonPeriod::create(now()->subDays(30)->format('Y-m-d'), now()->format('Y-m-d'));
 
         return collect($timePeriod)->map(function ($date) {
             if (isset(SimpleCommerce::orderDriver()['collection'])) {
