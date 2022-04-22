@@ -2,10 +2,43 @@
 @section('title', 'Overview')
 
 @section('content')
-<header class="mb-3">
+<header class="mb-3 flex justify-between items-center">
     <h1>{{ __('Overview') }}</h1>
 
     <!-- Toggle widgets (will tie in with user preferences) -->
+
+    <div class="">
+        <button class="btn flex items-center">
+            Configure
+            <svg viewBox="0 0 10 6.5" class="ml-1 w-2">
+                <path
+                  fill="currentColor"
+                  d="M9.9 1.4 5 6.4l-5-5L1.4 0 5 3.5 8.5 0l1.4 1.4z"
+                ></path>
+            </svg>
+        </button>
+        <div class="popover-container dropdown-list">
+          <div
+            class="popover"
+            style="
+              position: absolute;
+              inset: auto auto 0px 0px;
+              margin: 0px;
+              transform: translate(-153.333px, -47.8889px);
+            "
+            data-popper-reference-hidden=""
+            data-popper-escaped=""
+            data-popper-placement="top-end"
+          >
+            <div class="popover-content bg-white shadow-popover rounded-md">
+              <li>
+                <a href="https://example.com">Item 1 </a>
+                <a href="https://example2.com">Item 2 </a>
+              </li>
+            </div>
+          </div>
+        </div>
+      </div>
 </header>
 
 <!-- TODO: Warning about using entries driver with lots of entries -->
