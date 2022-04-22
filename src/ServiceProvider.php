@@ -126,6 +126,8 @@ class ServiceProvider extends AddonServiceProvider
         SimpleCommerce::bootTaxEngine();
         SimpleCommerce::bootShippingMethods();
 
+        Overview::bootCoreWidgets();
+
         Statamic::booted(function () {
             $this
                 ->bootStacheStores()
