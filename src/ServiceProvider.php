@@ -91,10 +91,6 @@ class ServiceProvider extends AddonServiceProvider
         Tags\TotalIncludingTax::class,
     ];
 
-    protected $widgets = [
-        Widgets\SalesWidget::class,
-    ];
-
     protected $updateScripts = [
         UpdateScripts\v2_3\AddBlueprintFields::class,
         UpdateScripts\v2_3\MigrateConfig::class,

@@ -32,12 +32,6 @@ Statamic.$components.register('overview', Overview)
 Statamic.$components.register('overview-recent-orders', OverviewRecentOrders)
 Statamic.$components.register('overview-top-customers', OverviewTopCustomers)
 
-// Widgets
-
-import SalesWidget from './components/Widgets/SalesWidget.vue'
-
-Statamic.$components.register('sales-widget', SalesWidget)
-
 // Hide 'Collections' active state if Simple Commerce nav item is active
 
 let simpleCommerceCollectionNavItems = Object.values(document.querySelectorAll('.nav-section-simple-commerce li.current')).filter((el) => {

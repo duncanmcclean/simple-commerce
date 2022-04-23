@@ -242,6 +242,10 @@ On the 'Order Confirmation' page (the one after checking out), you'd previously 
 {{ /sc:cart }}
 ```
 
+### Medium: Removed 'Sales Widget'
+
+Simple Commerce v3.0 drops the Sales Widget which could optionally be added to your Control Panel Dashboard. It's now recommended to take advantage of the [Overview](/control-panel) page for this same (and more) functionality.
+
 ### Low: Gateway & Shipping Method fields (Automated)
 
 During the upgrade process, Simple Commerce added two new fields to your Order blueprint. A **Gateway** field and a **Shipping Method** field. These fields should hopefully be useful for your CP users to be able to see the gateway/shipping method that's being used for an order.
