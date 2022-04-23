@@ -6,7 +6,7 @@
       </h2>
     </div>
 
-    <ul>
+    <ul v-if="data.length">
       <li
         v-for="customer in data"
         :key="customer.id"
@@ -16,6 +16,8 @@
         <span class="text-sm">{{ customer.orders_count }} orders</span>
       </li>
     </ul>
+
+    <p v-else class="px-2 pt-1 pb-2" style="color: #737f8c">No results</p>
   </div>
 </template>
 
