@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+class create_orders_table extends Migration
 {
     /**
      * Run the migrations.
@@ -43,6 +43,7 @@ class CreateOrdersTable extends Migration
             $table->string('coupon')->nullable();
             $table->json('gateway')->nullable();
             $table->json('data')->nullable();
+            $table->dateTime('paid_date')->nullable();
             $table->timestamps();
         });
     }
