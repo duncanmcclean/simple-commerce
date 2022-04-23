@@ -7,6 +7,7 @@
 ### What's new
 
 - Support for storing [orders & customers in a database](https://simple-commerce.duncanmcclean.com/database-orders) #599
+- Brand new 'Overview' CP page for a top-level view of your store #620
 - Brand new Gateway fieldtype #609
 - Brand new Shipping Method fieldtype #611
 - Statamic's new-ish ['title format'](https://statamic.dev/collections#titles) feature is now used to generate titles for order/customer entries #601
