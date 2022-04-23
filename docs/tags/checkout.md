@@ -31,6 +31,8 @@ Like with the update cart tag, you can also pass information to the customer ent
 
 If you're using an off-site gateway, like Mollie, you can learn about the checkout process, [over here](/gateways#offsite-gateways).
 
+> **Hot Tip:** I'd highly recommend disabling the button after the user submits the form to prevent them from submitting it multiple times.
+
 ## Successful Redirect
 
 If you specify a `redirect` parameter on your Checkout form, Simple Commerce will retain the previous cart (eg. the one just checked out) when you use the `{{ sc:cart }}` tag.

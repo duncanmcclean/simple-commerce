@@ -32,6 +32,8 @@ Some Simple Commerce tags output `<form>` elements that submit to Simple Commerc
 {{ /sc:cart:addItem }}
 ```
 
+> **Hot Tip:** I'd highly recommend disabling the button after the user submits the form to prevent them from submitting it multiple times.
+
 ### Field Whitelisting
 
 When using Form Tags, Simple Commerce will now require you to specify any additional fields you wish to be editable via front-end forms.
