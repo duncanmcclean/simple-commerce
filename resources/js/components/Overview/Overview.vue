@@ -9,7 +9,19 @@
       />
     </header>
 
-    <!-- TODO: Warning about using entries driver with lots of entries -->
+    <div
+      v-if="showEntriesWarning"
+      class="card bg-yellow py-2 px-4 leading-loose content mb-2 text-center"
+    >
+      <strong>Your store is growing!</strong> It has over 5k order entries.
+      Consider switching to the
+      <a
+        class="text-blue"
+        href="https://simple-commerce.duncanmcclean.com/database-orders"
+        target="_blank"
+        >Eloquent/Database driver</a
+      >.
+    </div>
 
     <div v-if="data">
       <overview-orders-chart
@@ -40,6 +52,10 @@ export default {
   props: {
     widgets: {
       type: Array,
+      required: true,
+    },
+    showEntriesWarning: {
+      type: Boolean,
       required: true,
     },
   },
