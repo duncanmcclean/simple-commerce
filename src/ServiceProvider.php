@@ -126,6 +126,8 @@ class ServiceProvider extends AddonServiceProvider
         SimpleCommerce::bootTaxEngine();
         SimpleCommerce::bootShippingMethods();
 
+        Overview::bootCoreWidgets();
+
         Statamic::booted(function () {
             $this
                 ->bootStacheStores()
@@ -259,8 +261,8 @@ class ServiceProvider extends AddonServiceProvider
         Nav::extend(function ($nav) {
             $nav->create(__('Overview'))
                 ->section(__('Simple Commerce'))
-                ->url('')
-                // ->can()
+                ->route('simple-commerce.overview')
+                ->can('view simple commerce overview')
                 ->icon('charts');
 
             if (isset(SimpleCommerce::orderDriver()['collection'])) {
@@ -270,7 +272,8 @@ class ServiceProvider extends AddonServiceProvider
                     ->can('view', SimpleCommerce::orderDriver()['collection'])
                     ->icon(SimpleCommerce::svg('shop'));
             } elseif (isset(SimpleCommerce::orderDriver()['model'])) {
-                $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::orderDriver()['model']);
+                $orderModelClass = SimpleCommerce::orderDriver()['model'];
+                $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
 
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
@@ -286,7 +289,8 @@ class ServiceProvider extends AddonServiceProvider
                     ->can('view', SimpleCommerce::customerDriver()['collection'])
                     ->icon('user');
             } elseif (isset(SimpleCommerce::customerDriver()['model'])) {
-                $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(SimpleCommerce::customerDriver()['model']);
+                $customerModelClass = SimpleCommerce::customerDriver()['model'];
+                $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $customerModelClass);
 
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
@@ -324,7 +328,7 @@ class ServiceProvider extends AddonServiceProvider
                         $child->name(),
                         collect(config('simple-commerce.content'))
                             ->pluck('collection')
-                            // ->filter()
+                            ->filter()
                             ->map(function ($collectionHandle) {
                                 return __(Collection::find($collectionHandle)->title());
                             })
@@ -342,6 +346,9 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function registerPermissions()
     {
+        Permission::register('view simple commerce overview')
+            ->label('View Simple Commerce Overview');
+
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             Permission::register('view tax rates', function ($permission) {
                 $permission->children([

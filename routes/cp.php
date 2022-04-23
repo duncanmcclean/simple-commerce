@@ -1,5 +1,6 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\OverviewController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxRateController;
@@ -9,6 +10,8 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
+    Route::get('/overview', [OverviewController::class, 'index'])->name('overview');
+
     if (SimpleCommerce::isUsingStandardTaxEngine()) {
         Route::redirect('tax', 'tax/rates')->name('tax');
 

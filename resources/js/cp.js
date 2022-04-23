@@ -16,6 +16,22 @@ import RegionSelector from './components/Inputs/RegionSelector.vue'
 
 Statamic.$components.register('region-selector', RegionSelector)
 
+// Overview
+
+import OverviewConfigure from './components/Overview/Configure.vue'
+import OverviewLowStockProducts from './components/Overview/LowStockProducts.vue'
+import OverviewOrdersChart from './components/Overview/OrdersChart.vue'
+import Overview from './components/Overview/Overview.vue'
+import OverviewRecentOrders from './components/Overview/RecentOrders.vue'
+import OverviewTopCustomers from './components/Overview/TopCustomers.vue'
+
+Statamic.$components.register('overview-configure', OverviewConfigure)
+Statamic.$components.register('overview-low-stock-products', OverviewLowStockProducts)
+Statamic.$components.register('overview-orders-chart', OverviewOrdersChart)
+Statamic.$components.register('overview', Overview)
+Statamic.$components.register('overview-recent-orders', OverviewRecentOrders)
+Statamic.$components.register('overview-top-customers', OverviewTopCustomers)
+
 // Widgets
 
 import SalesWidget from './components/Widgets/SalesWidget.vue'

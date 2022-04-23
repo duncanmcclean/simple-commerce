@@ -62,6 +62,7 @@ class EloquentOrderRepository implements RepositoryContract
                 'billing_region' => $model->billing_region,
                 'billing_country' => $model->billing_country,
                 'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
+                'paid_date' => $model->paid_date,
             ]));
     }
 
@@ -81,7 +82,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->is_paid = $order->isPaid();
         $model->is_shipped = $order->isShipped();
         $model->is_refunded = $order->isRefunded();
-        $model->items = $order->lineItems();
+        $model->items = $order->lineItems()->map->toArray();
         $model->grand_total = $order->grandTotal();
         $model->items_total = $order->itemsTotal();
         $model->tax_total = $order->taxTotal();
@@ -115,8 +116,10 @@ class EloquentOrderRepository implements RepositoryContract
             'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2',
             'shipping_city', 'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name',
             'billing_address', 'billing_address_line2', 'billing_city', 'billing_postal_code', 'billing_region',
-            'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway',
+            'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway', 'paid_date',
         ]);
+
+        $model->paid_date = $order->get('paid_date');
 
         $model->save();
 
@@ -125,7 +128,7 @@ class EloquentOrderRepository implements RepositoryContract
         $order->isPaid = $model->is_paid;
         $order->isShipped = $model->is_shipped;
         $order->isRefunded = $model->is_refunded;
-        $order->lineItems = collect($model->items);
+        // $order->lineItems = collect($model->items);
         $order->grandTotal = $model->grand_total;
         $order->itemsTotal = $model->items_total;
         $order->taxTotal = $model->tax_total;
@@ -151,6 +154,7 @@ class EloquentOrderRepository implements RepositoryContract
             'billing_region' => $model->billing_region,
             'billing_country' => $model->billing_country,
             'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
+            'paid_date' => $model->paid_date,
         ]);
     }
 
