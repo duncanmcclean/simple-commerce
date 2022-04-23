@@ -6,15 +6,20 @@ title: Installation
 
 Simple Commerce has a couple pre-requisites. You'll need all of these installed before you can get started.
 
-- PHP 7.4 and above (PHP 8.1 recommended)
-- Statamic 3.2 and above (Statamic 3.3 recommended)
-- The `php-intl` extension for PHP - it's used for currency formatting
+- PHP 8.0 (and above)
+- Statamic 3.3
+- Laravel 8 (if installing in an existing site)
+- [`php-intl` PHP extension](https://www.php.net/manual/en/book.intl.php)
 
-While not strictly required, it's highly recommend you use SSL on your production site for security.
+I'd also highly recommend enabling HTTPS on your production site for security.
+
+## Quick Start
+
+If you're starting from fresh, I'd recommend using the Simple Commerce Starter Kit. It comes with Simple Commerce pre-installed, along with some boilerplate views & dummy content.
+
+You should review the starter kit's [README.md file](https://github.com/doublethreedigital/sc-starter-kit#quick-start) for install instructions.
 
 ## Standard Install
-
-While you can install Simple Commerce via the Control Panel, I'd recomend installing via Composer instead.
 
 **1.** Install Simple Commerce with Composer
 
@@ -25,7 +30,3 @@ composer require doublethreedigital/simple-commerce
 **2.** Run `php please sc:install` - it'll publish the Simple Commerce default blueprints, configuration file and will setup collections and taxonomies.
 
 **3.** That's it installed. Really simple.
-
-## Quick Start
-
-If you'd prefer to get started with some boilerplate views and Simple Commerce already installed, you should checkout our the [Simple Commerce Starter Kit](https://github.com/doublethreedigital/sc-starter-kit).

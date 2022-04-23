@@ -41,7 +41,7 @@ class Calculator extends BaseCalculator implements Contract
 }
 ```
 
-Additionally, you will need to bind your custom class to Laravel's service container, which you can do in a Service Provider.
+Additionally, you will need to bind your custom class to Laravel's service container, which you can do in a service provider (`app/Providers/AppServiceProvider.php`).
 
 ```php
 // app/Providers/AppServiceProvider.php

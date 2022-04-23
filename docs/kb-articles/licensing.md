@@ -12,7 +12,7 @@ I've recorded a [quick screencast](https://www.loom.com/share/b5a5315e0bb24f34ae
 
 TLDR of it is:
 
-1. Buy license on Statamic Marketplace
-2. Create a site on Statamic.com
+1. Buy a license on the Statamic Marketplace
+2. Create a site on [statamic.com](https://statamic.com)
 3. Go to edit the site & assign the license to the site
 4. In your project's `.env` file, set the license key to the value displayed on Statamic.com

@@ -1,5 +1,5 @@
 ---
-title: 'Storing Orders on Customer'
+title: "Storing Orders on Customer"
 ---
 
 Sometimes you may run into a situation where you'd like to keep track of a customer's orders on their customer entry, instead of just attaching the customers from the order side.
