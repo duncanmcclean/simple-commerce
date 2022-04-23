@@ -5,7 +5,7 @@
     <overview
         :widgets='@json($widgets)'
         :show-entries-warning='@json($showEntriesWarning)'
-    />
+    ></overview>
 
     @include('statamic::partials.docs-callout', [
         'topic' => 'Simple Commerce',

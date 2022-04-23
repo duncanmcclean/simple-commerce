@@ -23,6 +23,10 @@
       >.
     </div>
 
+    <div v-if="!data" class="card p-3 text-center">
+      <loading-graphic />
+    </div>
+
     <div v-if="data">
       <overview-orders-chart
         v-if="
