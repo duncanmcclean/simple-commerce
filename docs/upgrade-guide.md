@@ -4,27 +4,37 @@ title: Upgrade Guide
 
 ## Overview
 
-When upgrading, read through this guide to see if there's anything you may need to change. A few of the big common changes will be done automatically (and will be marked as 'Automated' throughout the guide) but there will likely be some manual steps you'll need to take.
+Simple Commerce v3 comes with a bunch of new features, including some big quality of life improvements, for **both developers and back-office users**. In addition, there's a number of breaking changes, especially if you're doing custom 'things' with Simple Commerce.
 
-In your `composer.json` file, update the `doublethreedigital/simple-commerce` version constraint:
+To get started with the upgrade process, follow the below steps:
+
+**1.** In your `composer.json` file, update the `doublethreedigital/simple-commerce` version constraint:
 
 ```json
 "doublethreedigital/simple-commerce": "3.0.*"
 ```
 
-Then run:
+**2.** Then run:
 
 ```
 composer update doublethreedigital/simple-commerce --with-dependencies
 ```
 
+**3.** Simple Commerce will have attempted upgrading some things for you (config changes, blueprint updates, etc). However, it's **highly likely** you will need to make some manual changes, along with some testing. **Please test before you push to production!**
+
 ## Changes
 
-### High: Changes around the Data APIs (Partially automated)
+### High: API Changes
 
-This is probably **the largest change** around how Simple Commerce works. If you've written any kind of custom code that deals with an `Order`, `Product`, etc, I'd recommend you test your code to ensure it's compatible with v3.0.
+Internally, a lot has changed in terms of how things are structured, how you access data, etc. If you've written any kind of custom code at all, you'll need to make some manual code changes.
 
-As part of the changes, a small configuration change was needed. This change should be **automated** for you. Instead of seeing `driver` keys inside of the 'content drivers' array, you should see `repository` keys.
+I've noted all of the changes below - however, this isn't by far everything - you may review the [related PR](https://github.com/doublethreedigital/simple-commerce/pull/556) for more information.
+
+#### Content Drivers
+
+SC v3 changes the way 'content drivers' work. Instead of the driver being the Order/Customer class itself, it's a repository (which is inline with how Statamic does it). Essentially, if you need to use a database or third-party to store your data, you'd create a repository which implements the required methods, instead of creating an entire Order/Customer class - hopefully that explanation makes sense.
+
+During the upgrade process, Simple Commerce should have updated your config to represent this change:
 
 ```php
 'content' => [
@@ -50,13 +60,17 @@ As part of the changes, a small configuration change was needed. This change sho
 ],
 ```
 
-You'll also find that [the 'interfaces'](https://github.com/doublethreedigital/simple-commerce/tree/3.0/src/Contracts) for each of these Data APIs have been rewritten.
+> Note: During the upgrade, SC will reset the 'repositories' to the new defaults. If you were using another content driver, you must re-configure this post-update.
 
-In addition to these changes, you should check any custom code you've written is still compatible with Simple Commerce's updated APIs. Here's a few common examples of patterns in v2.4 and what they look like now in v3.0.
+If you were implementing a custom 'content driver' previously for something, you will need to review the changes and refactor your implementation. If it helps, here's a link to view [the 'interfaces'](https://github.com/doublethreedigital/simple-commerce/tree/3.0/src/Contracts) behind SC's Data stuff.
 
-#### Creating products/customers/orders/coupons
+#### Changes to how you access data
 
-**Previously:**
+Along with content drivers working differently - how you access/save data will have also changed:
+
+**Creating Products/Customers/Orders/Coupons**
+
+Previously:
 
 ```php
 $order = Order::create([
@@ -72,7 +86,7 @@ $order = Order::create([
 ]);
 ```
 
-**Now:**
+Now:
 
 ```php
 $order = Order::make()
@@ -93,9 +107,9 @@ $order->save();
 
 A lot of 'things' on Data Models are now properties which can be modified using fluent getter/setters. Anything outside of a property can be set using `->data()`, `->set()` or `->merge()`. We're now using the same pattern for making/saving as Statamic itself.
 
-#### Getting grand total from an order
+**Getting the 'grand total' from an order**
 
-**Previously:**
+Previously:
 
 ```php
 $order = Order::find('123');
@@ -103,7 +117,7 @@ $order = Order::find('123');
 $order->get('grand_total');
 ```
 
-**Now:**
+Now:
 
 ```php
 $order = Order::find('123');
@@ -111,9 +125,9 @@ $order = Order::find('123');
 $order->grandTotal();
 ```
 
-#### Getting the original entry
+**Getting the original entry**
 
-**Previously:**
+Previously:
 
 ```php
 $order = Order::find('123');
@@ -121,7 +135,7 @@ $order = Order::find('123');
 $order->entry();
 ```
 
-**Now:**
+Now:
 
 ```php
 $order = Order::find('123');
