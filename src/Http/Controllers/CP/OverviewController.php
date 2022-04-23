@@ -27,7 +27,7 @@ class OverviewController
 
         $showEntriesWarning = $request->user()->isSuper()
             && isset(SimpleCommerce::orderDriver()['collection'])
-            && Collection::find(SimpleCommerce::orderDriver()['collection'])->entries()->count() > 5000;
+            && Collection::find(SimpleCommerce::orderDriver()['collection'])->queryEntries()->count() > 5000;
 
         return view('simple-commerce::cp.overview', [
             'widgets' => Overview::widgets(),
