@@ -262,7 +262,7 @@ class ServiceProvider extends AddonServiceProvider
             $nav->create(__('Overview'))
                 ->section(__('Simple Commerce'))
                 ->route('simple-commerce.overview')
-                // ->can()
+                ->can('view simple commerce overview')
                 ->icon('charts');
 
             if (isset(SimpleCommerce::orderDriver()['collection'])) {
@@ -346,6 +346,9 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function registerPermissions()
     {
+        Permission::register('view simple commerce overview')
+            ->label('View Simple Commerce Overview');
+
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             Permission::register('view tax rates', function ($permission) {
                 $permission->children([

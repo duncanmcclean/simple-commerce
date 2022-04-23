@@ -2,14 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\OverviewRequest;
 use DoubleThreeDigital\SimpleCommerce\Overview;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 
 class OverviewController
 {
-    public function index(Request $request)
+    public function index(OverviewRequest $request)
     {
         if ($request->wantsJson()) {
             $data = collect($request->get('widgets'))
