@@ -53,7 +53,14 @@ class Overview
                             ->get();
                     }
 
-                    // TODO: implement Eloquent query
+                    if (isset(SimpleCommerce::orderDriver()['model'])) {
+                        $orderModel = new (SimpleCommerce::orderDriver()['model']);
+
+                        $query = $orderModel::query()
+                            ->where('is_paid', true)
+                            ->whereDate('data->paid_date', $date->format('d-m-Y'))
+                            ->get();
+                    }
 
                     return [
                         'date' =>  $date->format('d-m-Y'),
@@ -94,7 +101,32 @@ class Overview
                     });
                 }
 
-                // TODO: implement Eloquent query
+                if (isset(SimpleCommerce::orderDriver()['model'])) {
+                    $orderModel = new (SimpleCommerce::orderDriver()['model']);
+
+                    $query = $orderModel::query()
+                        ->where('is_paid', true)
+                        ->orderBy('data->paid_date', 'desc')
+                        ->limit(5)
+                        ->get()
+                        ->map(function ($order) {
+                            return Order::find($order->id);
+                        })
+                        ->values();
+
+                    return $query->map(function ($order) use ($orderModel) {
+                        return [
+                            'id' => $order->id(),
+                            'order_number' => $order->orderNumber(),
+                            'edit_url' => cp_route('runway.edit', [
+                                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel($orderModel)->handle(),
+                                'record' => $order->resource()->{$orderModel->getRouteKeyName()},
+                            ]),
+                            'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
+                            'paid_date' => Carbon::parse($order->get('paid_date'))->format(config('statamic.system.date_format')),
+                        ];
+                    });
+                }
 
                 return null;
             },
@@ -130,7 +162,35 @@ class Overview
                     });
                 }
 
-                // TODO: implement Eloquent query
+                if (isset(SimpleCommerce::customerDriver()['model'])) {
+                    $customerModel = new (SimpleCommerce::customerDriver()['model']);
+
+                    $query = $customerModel::query()
+                        ->whereHas('orders', function ($query) {
+                            $query->where('is_paid', true);
+                        })
+                        ->withCount('orders')
+                        ->orderBy('orders_count', 'desc')
+                        ->limit(5)
+                        ->get()
+                        ->map(function ($customer) {
+                            return Customer::find($customer->id);
+                        })
+                        ->values();
+
+                    return $query->map(function ($customer) use ($customerModel) {
+                        return [
+                            'id' => $customer->id(),
+                            'email' => $customer->email(),
+                            'edit_url' => cp_route('runway.edit', [
+                                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel($customerModel)->handle(),
+                                'record' => $customer->resource()->{$customerModel->getRouteKeyName()},
+                            ]),
+                            'orders_count' => $customer->orders()->count(),
+                        ];
+                    });
+                }
+
                 // TODO: implement User query
 
                 return null;
