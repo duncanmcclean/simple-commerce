@@ -8,7 +8,7 @@
     ></overview>
 
     @include('statamic::partials.docs-callout', [
-        'topic' => 'Simple Commerce',
-        'url' => 'https://simple-commerce.duncanmcclean.com/?ref=cp_overview'
+        'topic' => 'Simple Commerce Overview',
+        'url' => 'https://simple-commerce.duncanmcclean.com/control-panel?ref=cp_overview'
     ])
 @endsection
