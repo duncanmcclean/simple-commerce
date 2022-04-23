@@ -147,7 +147,7 @@ $order->resource();
 
 When accessing Line Items, you'll no longer receive an array, you'll now receive an instance of the `LineItem` class.
 
-**Previously:**
+Previously:
 
 ```php
 $lineItem = $order->lineItems()->first();
@@ -157,7 +157,7 @@ $quantity = $lineItem['quantity'];
 $giftNote = $lineItem['metadata']['gift_note'];
 ```
 
-**Now:**
+Now:
 
 ```php
 $lineItem = $order->lineItems()->first();
@@ -166,6 +166,16 @@ $product = $lineItem->product();
 $quantity = $lineItem->quantity();
 $giftNote = $lineItem->metdata()->get('gift_note');
 ```
+
+#### Namespace changes
+
+If you were previously referencing any of these classes, you should update your references to their new namespaces:
+
+- `DoubleThreeDigital\SimpleCommerce\Support\Currency` -> `DoubleThreeDigital\SimpleCommerce\Currency`
+- `DoubleThreeDigital\SimpleCommerce\Support\Country` -> `DoubleThreeDigital\SimpleCommerce\Country`
+- `DoubleThreeDigital\SimpleCommerce\Support\Regions` -> `DoubleThreeDigital\SimpleCommerce\Regions`
+
+You should also note that any references to the Currency/Country/Region facades should now be updated to these new namespaces. The usage remains the same.
 
 ### High: Field Whitelisting (Partially automated)
 
@@ -179,7 +189,7 @@ Simple Commerce has **partially automated** this upgrade step for you. Upon upgr
 
 It will have pulled in any fields from your orders that aren't 'reserved' (eg. SC presumes you probably don't want the `is_paid` field to be fillable).
 
-### High: Updates to Shipping Methods
+### High: Shipping Method configs
 
 Simple Commerce now allows for passing configuration arrays for shipping methods. However, for this to work, shipping methods must be updated to extend upon the `BaseShippingMethod` class provided by Simple Commerce.
 
@@ -260,13 +270,13 @@ On the 'Order Confirmation' page (the one after checking out), you'd previously 
 
 Simple Commerce v3.0 drops the Sales Widget which could optionally be added to your Control Panel Dashboard. It's now recommended to take advantage of the [Overview](/control-panel) page for this same (and more) functionality.
 
-### Low: Gateway & Shipping Method fields (Automated)
+### Low: Gateway & Shipping Method fields
 
-During the upgrade process, Simple Commerce added two new fields to your Order blueprint. A **Gateway** field and a **Shipping Method** field. These fields should hopefully be useful for your CP users to be able to see the gateway/shipping method that's being used for an order.
+During the upgrade process, Simple Commerce should have added two new fields to your Order blueprint. A **Gateway** field and a **Shipping Method** field. These fields should hopefully be useful for your CP users to be able to see the gateway/shipping method that's being used for an order.
 
 The fields will automatically be pushed into the Sidebar of the Order blueprint, you may move it as you wish.
 
-> **Note:** When using the Stripe Gateway, past orders will show 'Unknown' as the payment ID. Future orders will show the payment ID as expected.
+> **Note:** When using the Stripe Gateway, past orders will show 'Unknown' as the payment ID. Future orders will show the payment ID as expected - this is due to some data which was missing prior to v3.
 
 ### Low: Higher System Requirements
 
@@ -280,17 +290,9 @@ However, SC v3 has taken advantage of a Statamic feature called ['title formats'
 
 Then, Simple Commerce will configure the title format to be like so: `#xxxx`.
 
-### Low: Updated namespaces for `Currency`/`Country`/`Region` classes
-
-If you were previously referencing any of these classes, you should update your references to their new namespaces:
-
-- `DoubleThreeDigital\SimpleCommerce\Support\Currency` -> `DoubleThreeDigital\SimpleCommerce\Currency`
-- `DoubleThreeDigital\SimpleCommerce\Support\Country` -> `DoubleThreeDigital\SimpleCommerce\Country`
-- `DoubleThreeDigital\SimpleCommerce\Support\Regions` -> `DoubleThreeDigital\SimpleCommerce\Regions`
-
 ## Running into an issue upgrading?
 
-Like I say, quite a lot has changed between v2.4 and v3.0 so if you're running into issues upgrading, please either [open a GitHub Issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) or [send me an email](mailto:help@doublethree.digital).
+Like I say, quite a lot has changed between v2.4 and v3.0 so if you're running into issues upgrading, please either [open a GitHub Issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) or [send me an email](mailto:help@doublethree.digital). I'll try and help as best I can.
 
 ## Previous upgrade guides
 
