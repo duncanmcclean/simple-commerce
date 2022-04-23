@@ -33,6 +33,16 @@
 
 There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
 
+## v3.0.0-beta.6 (2022-04-23)
+
+### What's new
+
+- Brand new 'Overview' CP page for a top-level view of your store #620
+
+### What's removed
+
+- Removed Dashboard 'Sales Widget'
+
 ## v3.0.0-beta.5 (2022-04-16)
 
 ### What's fixed
