@@ -58,13 +58,12 @@ class Overview
 
                         $query = $orderModel::query()
                             ->where('is_paid', true)
-                            ->whereDate('data->paid_date', $date->format('d-m-Y'))
+                            ->whereDate('paid_date', $date)
                             ->get();
                     }
 
                     return [
                         'date' =>  $date->format('d-m-Y'),
-                        'total' => $query->map(fn ($order) => $order->get('grand_total'))->sum(),
                         'count' => $query->count(),
                     ];
                 });
