@@ -137,7 +137,7 @@ class Customer implements Contract
     {
         if ($this->resource() instanceof Entry) {
             $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-                return $field['handle'] === 'value';
+                return isset($field['import']) || $field['handle'] === 'value';
             })->pluck('handle')->toArray();
 
             $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);

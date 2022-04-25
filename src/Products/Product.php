@@ -190,7 +190,7 @@ class Product implements Contract
     public function toAugmentedArray($keys = null): array
     {
         $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-            return $field['handle'] === 'value';
+            return isset($field['import']) || $field['handle'] === 'value';
         })->pluck('handle')->toArray();
 
         $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
