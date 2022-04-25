@@ -599,6 +599,75 @@ class CheckoutControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_post_checkout_with_coupon_when_checkout_request_will_reach_the_coupons_maximum_uses_value()
+    {
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        Event::fake();
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $coupon = Coupon::make()
+            ->code('full-friday')
+            ->value(100)
+            ->type('percentage')
+            ->data([
+                'title'              => 'Fifty Friday',
+                'redeemed'           => 0,
+                'minimum_cart_value' => null,
+                'maximum_uses'       => 1,
+            ]);
+
+        $coupon->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(0)->coupon($coupon->id());
+
+        $order->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+            ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert the coupon has been redeemed propery & the total has been recalculated
+        $this->assertSame($order->coupon()->id(), $coupon->id);
+
+        $this->assertSame($order->grandTotal(), 0);
+        $this->assertSame($order->couponTotal(), 5000);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
     public function cant_post_checkout_with_coupon_where_minimum_cart_value_has_not_been_reached()
     {
         $this->markTestSkipped();
