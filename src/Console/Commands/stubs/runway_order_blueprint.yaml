@@ -53,11 +53,11 @@ sections:
       - handle: items
         field:
           fields:
-            - handle: order_number
+            - handle: id
               field:
                 type: hidden
                 listable: hidden
-                display: Order Number
+                display: ID
             - handle: product
               field:
                 max_items: 1
