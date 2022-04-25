@@ -6,6 +6,8 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -130,7 +132,11 @@ class Customer implements Contract
 
     public function toResource()
     {
-        return new EntryResource($this->resource());
+        if (isset(SimpleCommerce::customerDriver()['collection'])) {
+            return new EntryResource($this->resource());
+        }
+
+        return new BaseResource($this);
     }
 
     public function toAugmentedArray($keys = null): array

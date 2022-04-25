@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderShipped as OrderShippedEvent;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -374,7 +375,11 @@ class Order implements Contract
 
     public function toResource()
     {
-        return new EntryResource($this->resource());
+        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+            return new EntryResource($this->resource());
+        }
+
+        return new BaseResource($this);
     }
 
     public function toAugmentedArray($keys = null): array
