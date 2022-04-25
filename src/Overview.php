@@ -206,8 +206,9 @@ class Overview
                     return [
                         'id' => $customer->id(),
                         'email' => $customer->email(),
-                        // 'edit_url' => $customer->resource()->editUrl(),
-                        'edit_url' => '#',
+                        'edit_url' => cp_route('users.edit', [
+                            'user' => $customer->id(),
+                        ]),
                         'orders_count' => count($customer->get('orders', [])),
                     ];
                 });
