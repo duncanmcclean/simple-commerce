@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.10 (2022-04-25)
+
+### What's fixed
+
+- Fixed an issue where checkout would fail OR a customer would get charged incorrectly when using a coupon with `maximum_uses` set #622
+
 ## v2.4.9 (2022-04-05)
 
 ### What's new
