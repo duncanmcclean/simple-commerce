@@ -39,10 +39,10 @@ class CheckoutController extends BaseActionController
                 ->preCheckout()
                 ->handleValidation()
                 ->handleCustomerDetails()
-                ->handleCoupon()
                 ->handleStock($this->cart)
                 ->handleRemainingData()
                 ->handlePayment()
+                ->handleCoupon()
                 ->postCheckout();
         } catch (CheckoutProductHasNoStockException $e) {
             $lineItem = $this->cart->lineItems()->filter(function ($lineItem) use ($e) {
@@ -147,21 +147,6 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handleCoupon()
-    {
-        if ($coupon = $this->request->get('coupon')) {
-            $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
-
-            $this->excludedKeys[] = 'coupon';
-        }
-
-        if (isset($this->cart->data['coupon'])) {
-            $this->cart->coupon()->redeem();
-        }
-
-        return $this;
-    }
-
     protected function handleRemainingData()
     {
         $data = [];
@@ -203,6 +188,21 @@ class CheckoutController extends BaseActionController
 
         foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
             $this->excludedKeys[] = $key;
+        }
+
+        return $this;
+    }
+
+    protected function handleCoupon()
+    {
+        if ($coupon = $this->request->get('coupon')) {
+            $this->cart->set('coupon', Coupon::findByCode($coupon)->id())->save();
+
+            $this->excludedKeys[] = 'coupon';
+        }
+
+        if (isset($this->cart->data['coupon'])) {
+            $this->cart->coupon()->redeem();
         }
 
         return $this;
