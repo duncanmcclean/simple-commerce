@@ -106,6 +106,7 @@ class Overview
 
                     $query = $orderModel::query()
                         ->where('is_paid', true)
+                        ->orderBy('paid_date', 'desc')
                         ->orderBy('data->paid_date', 'desc')
                         ->limit(5)
                         ->get()
