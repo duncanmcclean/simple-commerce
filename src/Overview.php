@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
+use Statamic\Facades\User;
 
 class Overview
 {
@@ -190,9 +191,26 @@ class Overview
                     });
                 }
 
-                // TODO: implement User query
+                $query = User::all()
+                    ->where('orders', '!=', null)
+                    ->sortByDesc(function ($customer) {
+                        return count($customer->get('orders', []));
+                    })
+                    ->take(5)
+                    ->map(function ($user) {
+                        return Customer::find($user->id());
+                    })
+                    ->values();
 
-                return null;
+                return $query->map(function ($customer) {
+                    return [
+                        'id' => $customer->id(),
+                        'email' => $customer->email(),
+                        // 'edit_url' => $customer->resource()->editUrl(),
+                        'edit_url' => '#',
+                        'orders_count' => count($customer->get('orders', [])),
+                    ];
+                });
             },
         );
 
