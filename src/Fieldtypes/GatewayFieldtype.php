@@ -28,6 +28,8 @@ class GatewayFieldtype extends Fieldtype
             return null;
         }
 
+        $actionUrl = null;
+
         $gateway = collect(SimpleCommerce::gateways())
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
@@ -44,6 +46,21 @@ class GatewayFieldtype extends Fieldtype
             })
             ->values();
 
+        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+            $actionUrl = cp_route(
+                'collections.entries.actions.run',
+                $this->field->parent()->collection->handle()
+            );
+        }
+
+        if (isset(SimpleCommerce::orderDriver()['model'])) {
+            $orderModel = SimpleCommerce::orderDriver()['model'];
+
+            $actionUrl = cp_route('runway.actions.run', [
+                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModel)->handle(),
+            ]);
+        }
+
         return [
             'data' => $value,
             'entry' => optional($this->field->parent())->id(),
@@ -52,10 +69,7 @@ class GatewayFieldtype extends Fieldtype
             'payment_display' => Gateway::use($gateway['class'])->paymentDisplay($value),
 
             'actions' => $actions,
-            'action_url' => cp_route(
-                'collections.entries.actions.run',
-                $this->field->parent()->collection->handle()
-            ),
+            'action_url' => $actionUrl,
         ];
     }
 
