@@ -21,7 +21,7 @@ sections:
         field:
           create: false
           mode: default
-          resource: ordermodel
+          resource: orders
           display: Orders
           type: has_many
           icon: has_many
