@@ -89,7 +89,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->shipping_total = $order->shippingTotal();
         $model->coupon_total = $order->couponTotal();
         $model->customer_id = optional($order->customer())->id();
-        $model->coupon = $order->coupon();
+        $model->coupon = optional($order->coupon())->id();
         $model->gateway = $order->gateway();
 
         $model->shipping_name = $order->get('shipping_name');
@@ -108,7 +108,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->billing_region = $order->get('billing_region');
         $model->billing_country = $order->get('billing_country');
 
-        $model->use_shipping_address_for_billing = $order->get('use_shipping_address_for_billing') ?? false;
+        $model->use_shipping_address_for_billing = $order->get('use_shipping_address_for_billing') == 'true';
 
         // We need to do this, otherwise we'll end up duplicating data unnecessarily sometimes.
         $model->data = $order->data()->except([
