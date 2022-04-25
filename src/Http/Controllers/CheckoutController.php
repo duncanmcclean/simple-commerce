@@ -155,10 +155,6 @@ class CheckoutController extends BaseActionController
             $this->excludedKeys[] = 'coupon';
         }
 
-        if (isset($this->cart->data['coupon'])) {
-            $this->cart->coupon()->redeem();
-        }
-
         return $this;
     }
 
@@ -216,6 +212,10 @@ class CheckoutController extends BaseActionController
 
         if (! $this->request->has('gateway') && $this->cart->get('is_paid') === false && $this->cart->get('grand_total') === 0) {
             $this->cart->markAsPaid();
+        }
+
+        if (isset($this->cart->data['coupon'])) {
+            $this->cart->coupon()->redeem();
         }
 
         $this->forgetCart();
