@@ -164,7 +164,7 @@ return [
         ],
 
         'customers' => [
-            'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // Change to `UserCustomer` if you'd prefer to use Users as your customers
+            'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
             'collection' => 'customers',
         ],
 
