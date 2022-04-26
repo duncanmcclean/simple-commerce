@@ -33,6 +33,23 @@
 
 There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recommended you read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guide) before upgrading.
 
+## v3.0.0-beta.7 (2022-04-26)
+
+### What's improved
+
+- Cleanup default config file
+- Database Migrator now supports migrating from Users driver, not just from Customers collection
+- Implemented 'Top Customers' overview query for Users customer driver
+
+### What's fixed
+
+- Fixed an issue when augmenting a blueprint containing fieldset imports
+- Fixed an issue saving coupons when using database orders
+- Fixed incorrect imports for Runway fields in blueprint
+- Make the Gateway fieldtype work with database orders
+- Fixed an ordering issue for 'Recent Orders' query on overview, when using database orders
+- When refunding an order via Stripe, get the Stripe Payment Intent ID from the right place..
+
 ## v3.0.0-beta.6 (2022-04-23)
 
 ### What's new
@@ -106,7 +123,6 @@ The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of
 PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md#v300-2022-xx-xx).
 
 ---
-
 
 ## v2.4.11 (2022-04-26)
 
