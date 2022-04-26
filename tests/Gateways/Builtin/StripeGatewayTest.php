@@ -275,9 +275,6 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
-                    // 'automatic_payment_methods' => [
-                    //     'enabled' => 'true',
-                    // ],
                 ])->id,
             ],
         ]);
@@ -308,6 +305,7 @@ class StripeGatewayTest extends TestCase
         // $this->assertSame($purchase->data()['card'], $paymentMethod->card);
         $this->assertSame($purchase->data()['customer'], $paymentMethod->customer);
         $this->assertSame($purchase->data()['livemode'], $paymentMethod->livemode);
+        $this->assertSame($purchase->data()['payment_intent'], $paymentIntent);
 
         $order = $order->fresh();
 
@@ -337,13 +335,41 @@ class StripeGatewayTest extends TestCase
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $order = Order::create([
+            'gateway' => [
+                'use' => StripeGateway::class,
+                'data' => [
+                    'payment_intent' => $paymentIntent = PaymentIntent::create([
+                        'amount' => 1234,
+                        'currency' => 'GBP',
+                    ])->id,
+                ],
+            ],
+            'grand_total' => 1234,
+        ]);
+
+        $charge = $this->gateway->getCharge($order);
+
+        $this->assertIsObject($charge);
+        $this->assertTrue($charge instanceof GatewayResponse);
+        $this->assertTrue($charge->success());
+
+        $this->assertSame($charge->data()['id'], $paymentIntent);
+    }
+
+    /** @test */
+    public function can_get_charge_with_payment_intent_in_temporary_gateway_data()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $order = Order::create([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
-                    // 'automatic_payment_methods' => [
-                    //     'enabled' => 'true',
-                    // ],
                 ])->id,
             ],
             'grand_total' => 1234,
@@ -368,13 +394,57 @@ class StripeGatewayTest extends TestCase
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $order = Order::create([
+            'gateway' => [
+                'use' => StripeGateway::class,
+                'data' => [
+                    'payment_intent' => $paymentIntent = PaymentIntent::create([
+                        'amount' => 1234,
+                        'currency' => 'GBP',
+                    ])->id,
+                ],
+            ],
+            'grand_total' => 1234,
+        ]);
+
+        $paymentMethod = PaymentMethod::create([
+            'type' => 'card',
+            'card' => [
+                'number' => '4242424242424242',
+                'exp_month' => 7,
+                'exp_year' => 2022,
+                'cvc' => '314',
+            ],
+        ]);
+
+        PaymentIntent::retrieve($paymentIntent)->confirm([
+            'payment_method' => $paymentMethod->id,
+        ]);
+
+        $refundCharge = $this->gateway->refundCharge($order);
+
+        $this->assertIsObject($refundCharge);
+        $this->assertTrue($refundCharge instanceof GatewayResponse);
+        $this->assertTrue($refundCharge->success());
+
+        $this->assertStringContainsString('re_', $refundCharge->data()['id']);
+        $this->assertSame($refundCharge->data()['amount'], 1234);
+        $this->assertSame($refundCharge->data()['payment_intent'], $paymentIntent);
+    }
+
+    /** @test */
+    public function can_refund_charge_with_payment_intent_in_temporary_gateway_data()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $order = Order::create([
             'stripe' => [
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
-                    // 'automatic_payment_methods' => [
-                    //     'enabled' => 'true',
-                    // ],
                 ])->id,
             ],
             'grand_total' => 1234,
