@@ -375,15 +375,13 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->grandTotal(1234)->merge([
-            'gateway' => [
-                'use' => StripeGateway::class,
-                'data' => [
-                    'intent' => $paymentIntent = PaymentIntent::create([
-                        'amount' => 1234,
-                        'currency' => 'GBP',
-                    ])->id,
-                ],
+        $order = Order::make()->grandTotal(1234)->gateway([
+            'use' => StripeGateway::class,
+            'data' => [
+                'payment_intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
             ],
         ]);
 
@@ -407,15 +405,13 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $order = Order::make()->grandTotal(1234)->merge([
-            'gateway' => [
-                'use' => StripeGateway::class,
-                'data' => [
-                    'intent' => $paymentIntent = PaymentIntent::create([
-                        'amount' => 1234,
-                        'currency' => 'GBP',
-                    ])->id,
-                ],
+        $order = Order::make()->grandTotal(1234)->gateway([
+            'use' => StripeGateway::class,
+            'data' => [
+                'payment_intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
             ],
         ]);
 
