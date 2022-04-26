@@ -115,9 +115,15 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $paymentIntent = isset($order->get('stripe')['intent'])
-            ? $order->get('stripe')['intent']
-            : null;
+        $paymentIntent = null;
+
+        if (isset($order->get('gateway')['data']['payment_intent'])) {
+            $paymentIntent = $order->get('gateway')['data']['payment_intent'];
+        }
+
+        if (isset($order->get('stripe')['intent'])) {
+            $paymentIntent = $order->get('stripe')['intent'];
+        }
 
         if (! $paymentIntent) {
             throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to fetch.');
@@ -132,9 +138,15 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $paymentIntent = isset($order->get('stripe')['intent'])
-            ? $order->get('stripe')['intent']
-            : null;
+        $paymentIntent = null;
+
+        if (isset($order->get('gateway')['data']['payment_intent'])) {
+            $paymentIntent = $order->get('gateway')['data']['payment_intent'];
+        }
+
+        if (isset($order->get('stripe')['intent'])) {
+            $paymentIntent = $order->get('stripe')['intent'];
+        }
 
         if (! $paymentIntent) {
             throw new RefundFailed('Stripe: No Payment Intent was provided to action a refund.');

@@ -314,9 +314,6 @@ class StripeGatewayTest extends TestCase
                 'intent' => $paymentIntent = PaymentIntent::create([
                     'amount' => 1234,
                     'currency' => 'GBP',
-                    // 'automatic_payment_methods' => [
-                    //     'enabled' => 'true',
-                    // ],
                 ])->id,
             ],
         ]);
@@ -349,6 +346,7 @@ class StripeGatewayTest extends TestCase
         // $this->assertSame($purchase->data()['card'], $paymentMethod->card);
         $this->assertSame($purchase->data()['customer'], $paymentMethod->customer);
         $this->assertSame($purchase->data()['livemode'], $paymentMethod->livemode);
+        $this->assertSame($purchase->data()['payment_intent'], $paymentIntent);
 
         $order = $order->fresh();
 
@@ -378,14 +376,14 @@ class StripeGatewayTest extends TestCase
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $order = Order::make()->grandTotal(1234)->merge([
-            'stripe' => [
-                'intent' => $paymentIntent = PaymentIntent::create([
-                    'amount' => 1234,
-                    'currency' => 'GBP',
-                    // 'automatic_payment_methods' => [
-                    //     'enabled' => 'true',
-                    // ],
-                ])->id,
+            'gateway' => [
+                'use' => StripeGateway::class,
+                'data' => [
+                    'intent' => $paymentIntent = PaymentIntent::create([
+                        'amount' => 1234,
+                        'currency' => 'GBP',
+                    ])->id,
+                ],
             ],
         ]);
 
@@ -410,14 +408,14 @@ class StripeGatewayTest extends TestCase
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $order = Order::make()->grandTotal(1234)->merge([
-            'stripe' => [
-                'intent' => $paymentIntent = PaymentIntent::create([
-                    'amount' => 1234,
-                    'currency' => 'GBP',
-                    // 'automatic_payment_methods' => [
-                    //     'enabled' => 'true',
-                    // ],
-                ])->id,
+            'gateway' => [
+                'use' => StripeGateway::class,
+                'data' => [
+                    'intent' => $paymentIntent = PaymentIntent::create([
+                        'amount' => 1234,
+                        'currency' => 'GBP',
+                    ])->id,
+                ],
             ],
         ]);
 
