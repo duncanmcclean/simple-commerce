@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v2.4.11 (2022-04-26)
+
+### What's fixed
+
+- Stripe: Payment Intent ID is now saved properly (meaning refunds will now work) #624 #625 by @duncanmcclean
+
 ## v2.4.10 (2022-04-25)
 
 ### What's fixed
