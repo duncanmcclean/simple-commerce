@@ -308,6 +308,7 @@ class StripeGatewayTest extends TestCase
         // $this->assertSame($purchase->data()['card'], $paymentMethod->card);
         $this->assertSame($purchase->data()['customer'], $paymentMethod->customer);
         $this->assertSame($purchase->data()['livemode'], $paymentMethod->livemode);
+        $this->assertSame($purchase->data()['payment_intent'], $paymentIntent);
 
         $order = $order->fresh();
 
