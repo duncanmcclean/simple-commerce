@@ -20,7 +20,15 @@ class SessionDriver implements CartDriver
 
     public function getCart(): Order
     {
-        return OrderAPI::find($this->getCartKey());
+        if (! $this->hasCart()) {
+            return $this->makeCart();
+        }
+
+        try {
+            return OrderAPI::find($this->getCartKey());
+        } catch (OrderNotFound $e) {
+            return $this->makeCart();
+        }
     }
 
     public function hasCart(): bool
