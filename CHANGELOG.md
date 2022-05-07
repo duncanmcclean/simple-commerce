@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v3.0.1 (2022-05-07)
+
+### What's fixed
+
+- Database orders: Fixed an issue where you'd end up with multiple orders when creating a new one #627
+- Session Cart Driver: If there's no current cart, create one.
+- Fixed an issue where you could get a 'stale' version of the cart when using the `{{ sc:cart:addItem }}` tag with AJAX.
+
 ## v3.0.0 (2022-04-28)
 
 ### What's new
@@ -121,8 +129,6 @@ There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recom
 The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
 
 PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md#v300-2022-xx-xx).
-
----
 
 ## v2.4.11 (2022-04-26)
 
