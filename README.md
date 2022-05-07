@@ -12,14 +12,16 @@ Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You hav
 
 Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
 
-### Payment gateways
+And, when your site grows, it's easy to [move your orders & customers](/database-orders) into a traditional database.
+
+### Payment Gateways
 
 Out-of-the-box, Simple Commerce ships with support for three of the big payment gateways: Stripe, PayPal and Mollie. Use whichever one you need, or if you need something else: it's easy to build one.
 
 - [Documentation: Payment Gateways](https://simple-commerce.duncanmcclean.com/gateways)
 - [Documentation: Building custom gateways](https://simple-commerce.duncanmcclean.com/extending/custom-gateways)
 
-### Flexible shipping
+### Flexible Shipping
 
 Provide your customers with different shipping options depending on their address.
 
@@ -31,7 +33,7 @@ Simple Commerce has support for discount coupons. You can limit coupons to certa
 
 - [Documentation: Coupons](https://simple-commerce.duncanmcclean.com/coupons)
 
-### Product variants
+### Product Variants
 
 Sometimes you need to sell different versions of the same product. Like a t-shirt, you might want to sell it in Small, Medium & Large - each with different prices and stock levels. That's where Product Variants come in. Create a single product and configure the variants inside it.
 
