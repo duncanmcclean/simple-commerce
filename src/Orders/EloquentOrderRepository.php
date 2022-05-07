@@ -156,6 +156,8 @@ class EloquentOrderRepository implements RepositoryContract
             'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
             'paid_date' => $model->paid_date,
         ]);
+
+        $order->resource = $model;
     }
 
     public function delete($order): void
