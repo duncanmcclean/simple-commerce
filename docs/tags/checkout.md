@@ -33,6 +33,31 @@ If you're using an off-site gateway, like Mollie, you can learn about the checko
 
 > **Hot Tip:** I'd highly recommend disabling the button after the user submits the form to prevent them from submitting it multiple times.
 
+## Using a single gateway
+
+If you're only needing to use a single gateway, instead of giving the user an option between gateways, you can force the user to use a specific gateway.
+
+You simply need to specify the handle in the `{{ sc:gateways }}` tag.
+
+```antlers
+{{ sc:checkout redirect="/thanks" }}
+  {{ if is_paid }}
+  <p>Checkout complete!</p>
+  {{ else }}
+    <input type="text" name="customer[name]" placeholder="Full Name">
+    <input type="email" name="customer[email]" placeholder="Email">
+
+    <input type="text" name="gift_note" placeholder="Gift Note">
+
+    {{ sc:gateways:stripe }}
+        <!-- deal with your gateway stuff -->
+    {{ /sc:gateways:stripe }}
+
+    <button type="submit">Checkout</button>
+  {{ /if }}
+{{ /sc:checkout }}
+```
+
 ## Successful Redirect
 
 If you specify a `redirect` parameter on your Checkout form, Simple Commerce will retain the previous cart (eg. the one just checked out) when you use the `{{ sc:cart }}` tag.
