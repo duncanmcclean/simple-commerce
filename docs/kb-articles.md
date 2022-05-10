@@ -17,3 +17,4 @@ Here's a collection of short, helpful articles you'll probably find useful at so
 ## How does X work?
 
 - [Licensing](/kb-articles/licensing)
+- [Headless](/kb-articles/headless)
