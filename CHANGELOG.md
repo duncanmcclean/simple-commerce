@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.0.2 (2022-05-12)
+
+### What's fixed
+
+- Fixed a few issues when checking out with an existing customer #629 #630
+
 ## v3.0.1 (2022-05-07)
 
 ### What's fixed
