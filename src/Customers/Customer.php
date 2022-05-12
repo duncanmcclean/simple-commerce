@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
@@ -70,8 +71,12 @@ class Customer implements Contract
         $orders = $this->get('orders', []);
 
         return collect($orders)->map(function ($orderId) {
-            return Order::find($orderId);
-        });
+            try {
+                return Order::find($orderId);
+            } catch (OrderNotFound $e) {
+                return null;
+            }
+        })->filter()->values();
     }
 
     public function routeNotificationForMail($notification = null)
