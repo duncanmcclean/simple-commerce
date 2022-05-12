@@ -258,6 +258,7 @@ class CheckoutController extends BaseActionController
         if (! isset(SimpleCommerce::customerDriver()['model']) && $this->cart->customer()) {
             $this->cart->customer()->merge([
                 'orders' => $this->cart->customer()->orders()
+                    ->pluck('id')
                     ->push($this->cart->id())
                     ->toArray(),
             ]);
