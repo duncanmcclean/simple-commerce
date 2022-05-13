@@ -2,10 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
+use Statamic\Facades\Entry;
 
 class CartCleanupCommand extends Command
 {
@@ -19,17 +19,15 @@ class CartCleanupCommand extends Command
         $this->info('Cleaning up..');
 
         if (isset(SimpleCommerce::orderDriver()['collection'])) {
-            Order::query()
-                ->reject(function ($order) {
-                    return $order->isPaid();
+            Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
+                ->where('is_paid', false)
+                ->filter(function ($entry) {
+                    return $entry->date()->isBefore(now()->subDays(14));
                 })
-                ->filter(function ($order) {
-                    return $order->date()->isBefore(now()->subDays(14));
-                })
-                ->each(function ($order) {
-                    $this->line("Deleting order: {$order->id()}");
+                ->each(function ($entry) {
+                    $this->line("Deleting order: {$entry->id()}");
 
-                    $order->delete();
+                    $entry->delete();
                 });
 
             return;
