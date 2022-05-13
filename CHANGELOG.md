@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.0.3 (2022-05-13)
+
+### What's fixed
+
+- Fixed `sc:cart:cleanup` command when storing orders as entries #631
+
 ## v3.0.2 (2022-05-12)
 
 ### What's fixed
