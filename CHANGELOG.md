@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.0.4 (2022-05-16)
+
+### What's fixed
+
+- Fixed an issue where the order number would be regenerated after every save #632
+
 ## v3.0.3 (2022-05-13)
 
 ### What's fixed
