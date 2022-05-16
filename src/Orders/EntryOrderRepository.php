@@ -106,7 +106,7 @@ class EntryOrderRepository implements RepositoryContract
             array_merge(
                 $order->data()->except(['id', 'site', 'slug'])->toArray(),
                 [
-                    'order_number' => $this->generateOrderNumber(),
+                    'order_number' => $order->has('order_number') ? $order->get('order_number') : $this->generateOrderNumber(),
                     'is_paid' => $order->isPaid(),
                     'is_shipped' => $order->isShipped(),
                     'is_refunded' => $order->isRefunded(),
