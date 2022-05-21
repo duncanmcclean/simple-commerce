@@ -38,6 +38,36 @@ php please sc:migrate-to-database
 
 One thing worth noting is that the above command will not delete the order/customer entries or the collections. That's something you should do yourself after you're satisfied with the migration.
 
+If you receive this error (You must run the `sc:switch-to-database` command before running this command.) when running the `sc:migrate-to-database` command, you should ensure your SC 'content config' looks like this:
+
+```php
+// config/simple-commerce.php
+
+'content' => [
+    'coupons' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
+        'collection' => 'coupons',
+    ],
+
+    'customers' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class,
+        'model' => \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class,
+    ],
+
+    'orders' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class,
+        'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class,
+    ],
+
+    'products' => [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class,
+        'collection' => 'products',
+    ],
+],
+```
+
+If you re-run the command, it should then run as expected.
+
 ## Control Panel interface
 
 When you make the switch, Simple Commerce will install [Runway](https://statamic.com/runway), another addon by me (Duncan McClean). Runway is the thing which lets you manage your database records/Eloquent models in the Control Panel.
