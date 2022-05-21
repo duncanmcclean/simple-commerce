@@ -3,8 +3,6 @@
 
 This email is to confirm that your order (**#{{ $order->orderNumber() }}**) has been marked as paid. An overview of your order is shown below:
 
-## Order Details
-
 @component('mail::table')
 | Items       | Quantity         | Total |
 | :--------- | :------------- | :----- |

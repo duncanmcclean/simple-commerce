@@ -3,8 +3,6 @@
 
 This email is to confirm that your recent order (**#{{ $order->orderNumber() }}**) has been marked as shipped. An overview of your order is shown below:
 
-## Order Details
-
 @component('mail::table')
 | Items       | Quantity         | Total |
 | :--------- | :------------- | :----- |
