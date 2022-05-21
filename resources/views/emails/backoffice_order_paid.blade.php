@@ -3,10 +3,7 @@
 
 This email is to confirm that a new order has been placed. An overview of the order is shown below:
 
-## Order Details
-
-* **Order Number:** #{{ $order->orderNumber() }}
-* **Payment Gateway:** {{ optional($order->gateway())['display'] ?? 'N/A' }}
+**Order Number:** #{{ $order->orderNumber() }}
 
 @component('mail::table')
 | Items       | Quantity         | Total |
