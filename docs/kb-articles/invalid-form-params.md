@@ -1,5 +1,5 @@
 ---
-title: "Fix `InvalidFormParametersException` error"
+title: "Fix InvalidFormParametersException error"
 ---
 
 You may find that this exception is thrown when submitting Simple Commerce forms but you're probably not sure **why** it's being thrown.
