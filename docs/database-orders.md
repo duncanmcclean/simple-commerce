@@ -74,9 +74,39 @@ When you make the switch, Simple Commerce will install [Runway](https://statamic
 
 Runway has it's own documentation site - you may [read it if you please](https://runway.duncanmcclean.com/control-panel).
 
-## Overriding
+## Custom Columns
 
-If you need to add a column or do something special, you can override the Eloquent Model or the Repository used by Simple Commerce.
+There are cases where you may wish to add columns to either of the provided tables: `orders`/`customers`. You may do this by simply writing a migration to add a column to the table:
+
+```
+php artisan make:migration AddPickupPointColumnToOrdersTable
+```
+
+```php
+/**
+ * Run the migrations.
+ *
+ * @return void
+ */
+public function up()
+{
+    Schema::table('orders', function (Blueprint $table) {
+        $table->string('pickup_point')->after('gateway');
+    });
+}
+```
+
+You should then run your migrations:
+
+```
+php artisan migrate
+```
+
+Once migrated, Simple Commerce will get/set any order or customer data to your custom column, rather than relying on it being saved to the `data` column.
+
+## Customization
+
+If you need to, there's way to customise/override the Eloquent model used, along with the 'repository'.
 
 ### The Model
 
