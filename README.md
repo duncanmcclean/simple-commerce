@@ -9,7 +9,7 @@
 Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You have complete control over the content structure and front-end of your site.
 
 > Simple Commerce is the perfect e-commerce companion to Statamic. It gives you all the backend goodness you need for your e-commerce site, such as product management, orders and coupons, while letting you keep control over the customer-facing experience. Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!
-
+>
 > **Ryan Mitchell, [Thought Collective](https://www.thoughtcollective.com/)**
 
 ### Everything's just an entry
