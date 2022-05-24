@@ -37,7 +37,8 @@ class SwitchToDatabase extends Command
             ->copyMigrationStubs()
             ->switchRepositories()
             ->copyBlueprintStubs()
-            ->installRunway();
+            ->installRunway()
+            ->installDbal();
 
         $this->line('');
         $this->info('Next steps:');
@@ -104,6 +105,21 @@ class SwitchToDatabase extends Command
 
         if (! Composer::create()->isInstalled('doublethreedigital/runway')) {
             Composer::create()->require('doublethreedigital/runway');
+        }
+
+        if (! File::exists(config_path('runway.php'))) {
+            File::copy($this->stubsPath . '/runway_config.php', config_path('runway.php'));
+        }
+
+        return $this;
+    }
+
+    protected function installDbal(): self
+    {
+        $this->info('Installing Doctrine DBAL...');
+
+        if (! Composer::create()->isInstalled('doctrine/dbal')) {
+            Composer::create()->require('doctrine/dbal');
         }
 
         if (! File::exists(config_path('runway.php'))) {
