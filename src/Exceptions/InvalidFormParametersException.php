@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Exceptions;
 
-class InvalidFormParameters extends \Exception
+class InvalidFormParametersException extends \Exception
 {
     //
 }
