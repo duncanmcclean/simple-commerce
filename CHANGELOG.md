@@ -6,7 +6,7 @@
 
 ### What's new
 
-- Ability to add custom database columns when using database orders #634 #637
+- Support for custom database columns on Order/Customer tables #634 #637
 
 ### What's fixed
 
