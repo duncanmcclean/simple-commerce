@@ -99,7 +99,7 @@ class EloquentOrderTest extends TestCase
             'data' => [
                 'foo' => 'bar',
             ],
-            'ordered_on_tuesday' => true,
+            'ordered_on_tuesday' => 'Yes',
         ]);
 
         $find = Order::find($order->id);
@@ -107,7 +107,7 @@ class EloquentOrderTest extends TestCase
         $this->assertSame($find->id(), $order->id);
         $this->assertSame($find->lineItems()->count(), 1);
         $this->assertSame($find->get('foo'), 'bar');
-        $this->assertSame($find->get('ordered_on_tuesday'), true);
+        $this->assertSame($find->get('ordered_on_tuesday'), 'Yes');
     }
 
     /** @test */
@@ -171,16 +171,16 @@ class EloquentOrderTest extends TestCase
 
         $order = Order::find($orderRecord->id);
 
-        $order->set('ordered_on_tuesday', true);
+        $order->set('ordered_on_tuesday', 'Yes');
 
         $order->save();
 
         $this->assertSame($order->id(), $orderRecord->id);
-        $this->assertSame($order->get('ordered_on_tuesday'), true);
+        $this->assertSame($order->get('ordered_on_tuesday'), 'Yes');
 
         $this->assertDatabaseHas('orders', [
             'id' => $orderRecord->id,
-            'ordered_on_tuesday' => true,
+            'ordered_on_tuesday' => 'Yes',
         ]);
     }
 

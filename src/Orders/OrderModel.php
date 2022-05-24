@@ -29,9 +29,6 @@ class OrderModel extends Model
         'gateway' => 'json',
         'data' => 'json',
         'paid_date' => 'datetime',
-
-        // Ignore this. Needed for SC's test suite.
-        'ordered_on_tuesday' => 'boolean',
     ];
 
     protected $appends = [

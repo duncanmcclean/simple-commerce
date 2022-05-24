@@ -46,7 +46,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('paid_date')->nullable();
 
             // Some custom stuff for testing...
-            $table->boolean('ordered_on_tuesday')->nullable();
+            $table->string('ordered_on_tuesday')->nullable();
 
             $table->timestamps();
         });
