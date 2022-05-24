@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v3.1.0 (2022-05-24)
+
+### What's new
+
+- Ability to add custom database columns when using database orders #634 #637
+
+### What's fixed
+
+- Fixed PSR-4 warnings #635 #636
+- Removed gateway name from back-office order emails
+
 ## v3.0.4 (2022-05-16)
 
 ### What's fixed
