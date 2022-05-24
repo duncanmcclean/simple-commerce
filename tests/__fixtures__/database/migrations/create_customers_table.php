@@ -18,6 +18,10 @@ class CreateCustomersTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->json('data')->nullable();
+
+            // Some custom stuff for testing...
+            $table->string('favourite_colour')->nullable();
+
             $table->timestamps();
         });
     }

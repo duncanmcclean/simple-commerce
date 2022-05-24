@@ -58,6 +58,27 @@ class EloquentCustomerTest extends TestCase
     }
 
     /** @test */
+    public function can_find_customer_with_custom_column()
+    {
+        $customer = CustomerModel::create([
+            'name' => 'CJ Cregg',
+            'email' => 'cj@whitehouse.gov',
+            'data' => [
+                'role' => 'Press Secretary',
+            ],
+            'favourite_colour' => 'Orange',
+        ]);
+
+        $find = Customer::find($customer->id);
+
+        $this->assertSame($find->id(), $customer->id);
+        $this->assertSame($find->name(), $customer->name);
+        $this->assertSame($find->email(), $customer->email);
+        $this->assertSame($find->get('role'), 'Press Secretary');
+        $this->assertSame($find->get('favourite_colour'), 'Orange');
+    }
+
+    /** @test */
     public function can_find_customer_by_email()
     {
         $customer = CustomerModel::create([
@@ -111,6 +132,27 @@ class EloquentCustomerTest extends TestCase
 
         $this->assertSame($customer->id(), $customerRecord->id);
         $this->assertSame($customer->get('is_senior_advisor'), true);
+    }
+
+    /** @test */
+    public function can_save_with_custom_column()
+    {
+        $customerRecord = CustomerModel::create([
+            'name' => 'CJ Cregg',
+            'email' => 'cj@whitehouse.gov',
+            'data' => [
+                'role' => 'Press Secretary',
+            ],
+        ]);
+
+        $customer = Customer::find($customerRecord->id);
+
+        $customer->set('favourite_colour', 'Yellow');
+
+        $customer->save();
+
+        $this->assertSame($customer->id(), $customerRecord->id);
+        $this->assertSame($customer->get('favourite_colour'), 'Yellow');
     }
 
     /** @test */
