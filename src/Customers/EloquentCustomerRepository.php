@@ -103,7 +103,17 @@ class EloquentCustomerRepository implements RepositoryContract
         $customer->id = $model->id;
         $customer->email = $model->email;
 
-        // TODO: name & data should be fed back in
+        $customer->data = collect($model->data)
+            ->merge([
+                'name' => $model->name,
+            ])
+            ->merge(
+                collect($this->getCustomColumns())
+                    ->mapWithKeys(function ($columnName) use ($model) {
+                        return [$columnName => $model->{$columnName}];
+                    })
+                    ->toArray()
+            );
 
         $customer->resource = $model;
     }
