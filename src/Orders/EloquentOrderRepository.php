@@ -2,15 +2,26 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use Doctrine\DBAL\Schema\Column;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Facades\Schema;
 
 class EloquentOrderRepository implements RepositoryContract
 {
     protected $model;
+
+    protected $knownColumns = [
+        'id', 'is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total', 'tax_total',
+        'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2',
+        'shipping_city', 'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name',
+        'billing_address', 'billing_address_line2', 'billing_city', 'billing_postal_code', 'billing_region',
+        'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway', 'paid_date',
+        'data', 'created_at', 'updated_at',
+    ];
 
     public function __construct()
     {
@@ -46,24 +57,34 @@ class EloquentOrderRepository implements RepositoryContract
             ->customer($model->customer_id)
             ->coupon($model->coupon)
             ->gateway($model->gateway)
-            ->data(collect($model->data)->merge([
-                'shipping_name' => $model->shipping_name,
-                'shipping_address' => $model->shipping_address,
-                'shipping_address_line2' => $model->shipping_address_line2,
-                'shipping_city' => $model->shipping_city,
-                'shipping_postal_code' => $model->shipping_postal_code,
-                'shipping_region' => $model->shipping_region,
-                'shipping_country' => $model->shipping_country,
-                'billing_name' => $model->billing_name,
-                'billing_address' => $model->billing_address,
-                'billing_address_line2' => $model->billing_address_line2,
-                'billing_city' => $model->billing_city,
-                'billing_postal_code' => $model->billing_postal_code,
-                'billing_region' => $model->billing_region,
-                'billing_country' => $model->billing_country,
-                'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
-                'paid_date' => $model->paid_date,
-            ]));
+            ->data(
+                collect($model->data)
+                    ->merge([
+                        'shipping_name' => $model->shipping_name,
+                        'shipping_address' => $model->shipping_address,
+                        'shipping_address_line2' => $model->shipping_address_line2,
+                        'shipping_city' => $model->shipping_city,
+                        'shipping_postal_code' => $model->shipping_postal_code,
+                        'shipping_region' => $model->shipping_region,
+                        'shipping_country' => $model->shipping_country,
+                        'billing_name' => $model->billing_name,
+                        'billing_address' => $model->billing_address,
+                        'billing_address_line2' => $model->billing_address_line2,
+                        'billing_city' => $model->billing_city,
+                        'billing_postal_code' => $model->billing_postal_code,
+                        'billing_region' => $model->billing_region,
+                        'billing_country' => $model->billing_country,
+                        'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
+                        'paid_date' => $model->paid_date,
+                    ])
+                    ->merge(
+                        collect($this->getCustomColumns())
+                            ->mapWithKeys(function ($columnName) use ($model) {
+                                return [$columnName => $model->{$columnName}];
+                            })
+                            ->toArray()
+                    )
+            );
     }
 
     public function make(): Order
@@ -110,14 +131,21 @@ class EloquentOrderRepository implements RepositoryContract
 
         $model->use_shipping_address_for_billing = $order->get('use_shipping_address_for_billing') == 'true';
 
-        // We need to do this, otherwise we'll end up duplicating data unnecessarily sometimes.
-        $model->data = $order->data()->except([
-            'is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total', 'tax_total',
-            'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2',
-            'shipping_city', 'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name',
-            'billing_address', 'billing_address_line2', 'billing_city', 'billing_postal_code', 'billing_region',
-            'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway', 'paid_date',
-        ]);
+        // If anything in the order data has it's own column, save it
+        // there, rather than in the data column.
+        collect($this->getCustomColumns())
+            ->filter(function ($columnName) use ($order) {
+                return $order->has($columnName);
+            })
+            ->each(function ($columnName) use (&$model, $order) {
+                $model->{$columnName} = $order->get($columnName);
+            });
+
+        // Set the value of the data column - we take out any 'known' columns,
+        // along with any custom columns.
+        $model->data = $order->data()
+            ->except($this->knownColumns)
+            ->except($this->getCustomColumns());
 
         $model->paid_date = $order->get('paid_date');
 
@@ -138,24 +166,32 @@ class EloquentOrderRepository implements RepositoryContract
         $order->coupon = $model->coupon;
         $order->gateway = $model->gateway;
 
-        $order->data = collect($model->data)->merge([
-            'shipping_name' => $model->shipping_name,
-            'shipping_address' => $model->shipping_address,
-            'shipping_address_line2' => $model->shipping_address_line2,
-            'shipping_city' => $model->shipping_city,
-            'shipping_postal_code' => $model->shipping_postal_code,
-            'shipping_region' => $model->shipping_region,
-            'shipping_country' => $model->shipping_country,
-            'billing_name' => $model->billing_name,
-            'billing_address' => $model->billing_address,
-            'billing_address_line2' => $model->billing_address_line2,
-            'billing_city' => $model->billing_city,
-            'billing_postal_code' => $model->billing_postal_code,
-            'billing_region' => $model->billing_region,
-            'billing_country' => $model->billing_country,
-            'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
-            'paid_date' => $model->paid_date,
-        ]);
+        $order->data = collect($model->data)
+            ->merge([
+                'shipping_name' => $model->shipping_name,
+                'shipping_address' => $model->shipping_address,
+                'shipping_address_line2' => $model->shipping_address_line2,
+                'shipping_city' => $model->shipping_city,
+                'shipping_postal_code' => $model->shipping_postal_code,
+                'shipping_region' => $model->shipping_region,
+                'shipping_country' => $model->shipping_country,
+                'billing_name' => $model->billing_name,
+                'billing_address' => $model->billing_address,
+                'billing_address_line2' => $model->billing_address_line2,
+                'billing_city' => $model->billing_city,
+                'billing_postal_code' => $model->billing_postal_code,
+                'billing_region' => $model->billing_region,
+                'billing_country' => $model->billing_country,
+                'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
+                'paid_date' => $model->paid_date,
+            ])
+            ->merge(
+                collect($this->getCustomColumns())
+                    ->mapWithKeys(function ($columnName) use ($model) {
+                        return [$columnName => $model->{$columnName}];
+                    })
+                    ->toArray()
+            );
 
         $order->resource = $model;
     }
@@ -163,6 +199,26 @@ class EloquentOrderRepository implements RepositoryContract
     public function delete($order): void
     {
         $order->resource()->delete();
+    }
+
+    /**
+     * Returns an array of custom columns the developer
+     * has added to the 'orders' table.
+     *
+     * @return array
+     */
+    protected function getCustomColumns(): array
+    {
+        $tableColumns = Schema::getConnection()
+            ->getDoctrineSchemaManager()
+            ->listTableColumns((new $this->model)->getTable());
+
+        return collect($tableColumns)
+            ->reject(function (Column $column) {
+                return in_array($column->getName(), $this->knownColumns);
+            })
+            ->map->getName()
+            ->toArray();
     }
 
     public static function bindings(): array
