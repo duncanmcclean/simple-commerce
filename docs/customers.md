@@ -42,7 +42,7 @@ This is often pretty handy if you're building some sort of membership site or if
 
 > **Hot Tip:** You'll need to enable [Statamic Pro](https://statamic.com/pricing) if you want to store your customers as users.
 
-To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\Customer::class` to `\DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer::class`
+To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class` to `\DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class`
 
 ```php
 /*
@@ -62,8 +62,8 @@ To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\Customer::class`
 	// All the other bits..
 
     'customers' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class, // [tl! --]
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomer::class, // [tl! ++]
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // [tl! --]
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class, // [tl! ++]
     ],
 ],
 ```
