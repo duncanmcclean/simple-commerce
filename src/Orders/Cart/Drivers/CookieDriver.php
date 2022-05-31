@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
+use Statamic\Facades\Blink;
 use Statamic\Facades\Site;
 use Statamic\Sites\Site as ASite;
 
@@ -16,6 +17,10 @@ class CookieDriver implements CartDriver
 {
     public function getCartKey(): string
     {
+        if (Blink::has($this->getKey())) {
+            return Blink::get($this->getKey());
+        }
+
         return Cookie::get($this->getKey());
     }
 
@@ -34,6 +39,10 @@ class CookieDriver implements CartDriver
 
     public function hasCart(): bool
     {
+        if (Blink::has($this->getKey())) {
+            return true;
+        }
+
         return Cookie::has($this->getKey());
     }
 
@@ -43,6 +52,11 @@ class CookieDriver implements CartDriver
         $cart->save();
 
         Cookie::queue($this->getKey(), $cart->id);
+
+        // Because the cookie won't be set until the end of the request,
+        // we need to set it somewhere for the remainder of the request.
+        // And that somewhere is Blink.
+        Blink::put($this->getKey(), $cart->id);
 
         return $cart;
     }
