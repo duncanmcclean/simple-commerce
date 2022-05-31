@@ -71,7 +71,7 @@ public function handle(OrderPaid $event)
 This event is fired when an order has been saved. This event will only be fired when an order is saved via Simple Commerce, not via the Control Panel.
 
 ```php
-public function handle(OrderPaid $event)
+public function handle(OrderSaved $event)
 {
 	$event->order;
 }
