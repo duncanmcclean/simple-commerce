@@ -42,7 +42,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -82,7 +82,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -125,7 +125,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 5,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 5, // We shouldn't be able to use because of this
@@ -188,7 +188,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'products'           => [$this->product->id],
@@ -229,7 +229,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 5,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 0,
@@ -282,7 +282,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Hof Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'customers'          => [$customer->id],
@@ -334,7 +334,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Halv Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'customers'          => [$customer->id],
@@ -373,7 +373,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
@@ -409,7 +409,7 @@ class CouponControllerTest extends TestCase
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'value'              => 50,
+                'coupon_value'       => 50,
                 'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
