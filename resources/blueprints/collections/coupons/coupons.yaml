@@ -28,7 +28,7 @@ sections:
           display: Type
           validate: required
           width: 50
-      - handle: value
+      - handle: coupon_value
         field:
           input_type: text
           type: text
