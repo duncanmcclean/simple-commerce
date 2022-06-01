@@ -43,7 +43,7 @@ class CustomerTags extends SubTag
         }
 
         return Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
-            ->where('customer', $this->params->customer())
+            ->where('customer', $this->params->get('customer'))
             ->map(function (EntriesEntry $entry) {
                 return $entry->toAugmentedArray();
             })
