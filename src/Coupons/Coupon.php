@@ -172,7 +172,7 @@ class Coupon implements Contract
     public function toAugmentedArray($keys = null)
     {
         $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-            return isset($field['import']) || $field['handle'] === 'value';
+            return isset($field['import']) || $field['handle'] === 'value'; // TODO 4.0: Don't need this as coupon_value is 'the way' now
         })->pluck('handle')->toArray();
 
         $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
