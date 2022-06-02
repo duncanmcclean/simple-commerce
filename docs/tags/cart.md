@@ -94,12 +94,28 @@ The tag itself requires an `item` parameter which should be the ID of the specfi
 {{ /sc:cart:updateItem }}
 ```
 
+Alternatively, if you don't have easy access to the ID of the cart item, you can pass in the product ID instead:
+
+```antlers
+{{ sc:cart:updateItem :product="id" }}
+  <input type="number" name="quantity" value="2">
+{{ /sc:cart:updateItem }}
+```
+
 ## Remove Cart Item
 
 This tag allows you to remove an item from the cart. It's a [form tag](/tags#form-tags) and the only required parameter is on the tag itself: the `item` parameter should be the ID or the specific cart item you wish to remove from the cart.
 
 ```antlers
 {{ sc:cart:removeItem :item="id" }}
+  <button type="submit">Remove item from cart</button>
+{{ /sc:cart:removeItem }}
+```
+
+Alternatively, if you don't have easy access to the ID of the cart item, you can pass in the product ID instead:
+
+```antlers
+{{ sc:cart:removeItem :product="id" }}
   <button type="submit">Remove item from cart</button>
 {{ /sc:cart:removeItem }}
 ```
