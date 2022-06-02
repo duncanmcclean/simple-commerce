@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
-use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
@@ -236,8 +235,6 @@ class PayPalGateway extends BaseGateway implements Gateway
             $order->save();
 
             $this->markOrderAsPaid($order);
-
-            event(new PostCheckout($order, $request));
         }
 
         return new HttpResponse();
