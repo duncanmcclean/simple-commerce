@@ -297,6 +297,47 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
+    public function can_output_update_item_form_with_product_parameter()
+    {
+        $cart = $this->fakeCart();
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+
+        $product->save();
+
+        $lineItem = $cart->withoutRecalculating(function () use (&$cart, $product) {
+            return $cart->addLineItem([
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
+            ]);
+        });
+
+        $this->tag->setParameters([
+            'product' => $product->id,
+        ]);
+
+        $this->tag->setContent('
+            <h2>Update Item</h2>
+
+            Product: {{ product }}
+
+            <input type="number" name="quantity">
+            <button type="submit">Update item in cart</submit>
+        ');
+
+        $usage = $this->tag->updateItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/' . $lineItem->id . '"', $usage);
+        $this->assertStringContainsString('Product: ' . $product->id, $usage);
+    }
+
+    /** @test */
     public function can_output_remove_item_form()
     {
         $this->tag->setParameters([
@@ -313,6 +354,46 @@ class CartTagTest extends TestCase
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+    }
+
+    /** @test */
+    public function can_output_remove_item_form_with_product_parameter()
+    {
+        $cart = $this->fakeCart();
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+
+        $product->save();
+
+        $lineItem = $cart->withoutRecalculating(function () use (&$cart, $product) {
+            return $cart->addLineItem([
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
+            ]);
+        });
+
+        $this->tag->setParameters([
+            'product' => $product->id,
+        ]);
+
+        $this->tag->setContent('
+            <h2>Remove item from cart?</h2>
+
+            Product: {{ product }}
+
+            <button type="submit">Update item in cart</submit>
+        ');
+
+        $usage = $this->tag->removeItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/' . $lineItem->id . '"', $usage);
+        $this->assertStringContainsString('Product: ' . $product->id, $usage);
     }
 
     /** @test */
@@ -522,5 +603,7 @@ class CartTagTest extends TestCase
         Session::shouldReceive('has')
             ->with('errors')
             ->andReturn([]);
+
+        return $cart;
     }
 }
