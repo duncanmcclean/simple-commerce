@@ -2,8 +2,6 @@
 title: PayPal Payment Gateway
 ---
 
-> ✨ PayPal's still a fairly new gateway in Simple Commerce so if you spot any issues, please [open an issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose).
-
 Simple Commerce supports accepting payments through PayPal in two forms: on-site and off-site. On-site is where the customer stays on your website for the checkout process and they see a PayPal embed where they can enter their payment information. Off-site is where you redirect the user to PayPal to complete the payment process there.
 
 ## Configuration
@@ -115,3 +113,14 @@ protected $except = [
 ```
 
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, PayPal wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
+
+## Testing
+
+PayPal themselves don't offer a set of 'test cards' like Stripe, or other common payment gateways do. Instead, you have to use fake card numbers and hope PayPal will accept them. Here's a couple we've found you can use for testing:
+
+- `4485165985805957`
+- `4485250194331820`
+- `375527918910414`
+- `375363946611620`
+- `5557514931753152`
+- `5277359932030179`
