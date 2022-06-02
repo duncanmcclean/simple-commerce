@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.2 (2022-06-22)
+
+### What's fixed
+
+- Actually add the upgrade script to the list of upgrade scripts..
+
 ## v3.2.1 (2022-06-22)
 
 ### What's fixed
