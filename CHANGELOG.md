@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## v3.2.0 (2022-06-02)
+
+**Note:** During the update process, the 'Value' field on your coupon blueprint will be renamed to `coupon_value`.
+
+### What's new
+
+- Added a `product` parameter to the `{{ sc:cart:updateItem }}` and `{{ sc:cart:removeItem }}` tags #644
+- Added a `{{ sc:gateways:count }}` tag that returns a count of available gateways
+
+### What's fixed
+
+- Renamed the 'Value' field on coupons to `coupon_value` (to avoid conflicts with Statamic) #642
+- Squashed the bug that caused 'ghost orders' to be created 👻
+- Fixed a bug with the `{{ sc:customer:orders }}` tag #641
+- Fixed a bug where the data from the PayPal Gateway wasn't being saved properly #643
+- Checking out via an off-site gateway will now redeem coupons & add the order to the customer's list of orders
+
 ## v3.1.0 (2022-05-24)
 
 ### What's new
