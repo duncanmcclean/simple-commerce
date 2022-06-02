@@ -1,7 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Checkout;
+namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
 
+use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
@@ -9,9 +10,9 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockExcept
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 
-trait HandleStock
+class HandleStock
 {
-    public function handleStock(Order $order): self
+    public function handle(Order $order, Closure $next)
     {
         $order->lineItems()
             ->each(function (LineItem $item) {
@@ -66,6 +67,6 @@ trait HandleStock
                 }
             });
 
-        return $this;
+        return $next($order);
     }
 }
