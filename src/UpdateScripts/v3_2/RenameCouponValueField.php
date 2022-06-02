@@ -13,7 +13,7 @@ class RenameCouponValueField extends UpdateScript
 {
     public function shouldUpdate($newVersion, $oldVersion)
     {
-        return $this->isUpdatingTo('3.2.0');
+        return $this->isUpdatingTo('3.2.1');
     }
 
     public function update()

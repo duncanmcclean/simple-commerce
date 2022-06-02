@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.1 (2022-06-22)
+
+### What's fixed
+
+- Actually add the upgrade script to the list of upgrade scripts..
+
 ## v3.2.0 (2022-06-02)
 
 **Note:** During the update process, the 'Value' field on your coupon blueprint will be renamed to `coupon_value`.

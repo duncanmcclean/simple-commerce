@@ -105,6 +105,8 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v3_0\ConfigureTitleFormats::class,
         UpdateScripts\v3_0\ConfigureWhitelistedFields::class,
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
+
+        UpgradeScripts\v3_2\RenameCouponValueField::class,
     ];
 
     public function boot()
