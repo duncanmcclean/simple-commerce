@@ -11,6 +11,11 @@ class GatewayTags extends SubTag
         return SimpleCommerce::gateways();
     }
 
+    public function count()
+    {
+        return count(SimpleCommerce::gateways());
+    }
+
     // {{ sc:gateways:stripe }}
     public function wildcard(string $tag)
     {

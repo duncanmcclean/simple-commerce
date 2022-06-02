@@ -22,6 +22,14 @@ This tag returns a loop of the gateways setup for your store.
 </select>
 ```
 
+### Gateways Count
+
+This tag returns the number of gateways you have setup for your store.
+
+```antlers
+We have {{ sc:gateways:count }} gateways available for payment!
+```
+
 ### Get a gateway
 
 This tag lets you get a particular gateway and its information, where `stripe` is the handle of the gateway.
