@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use Illuminate\Support\Collection;
 
-trait LineItems
+trait HasLineItems
 {
     public function lineItems($lineItems = null)
     {

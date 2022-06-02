@@ -23,7 +23,7 @@ use Statamic\Http\Resources\API\EntryResource;
 
 class Order implements Contract
 {
-    use HasData, LineItems;
+    use HasData, HasLineItems;
 
     public $id;
     public $orderNumber;
