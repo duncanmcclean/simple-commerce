@@ -56,7 +56,7 @@ trait HasLineItems
             ->args(func_get_args());
     }
 
-    public function lineItem($lineItemId): LineItem
+    public function lineItem($lineItemId): ?LineItem
     {
         return $this->lineItems()->firstWhere('id', $lineItemId);
     }

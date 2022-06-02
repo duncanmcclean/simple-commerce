@@ -82,7 +82,7 @@ interface Order
 
     public function lineItems($lineItems = null);
 
-    public function lineItem($lineItemId): LineItem;
+    public function lineItem($lineItemId): ?LineItem;
 
     public function addLineItem(array $lineItemData): LineItem;
 
