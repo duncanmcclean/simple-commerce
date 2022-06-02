@@ -555,6 +555,41 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
+    public function cant_output_if_product_does_not_already_exist_in_cart_because_there_is_no_cart()
+    {
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+
+        $product->save();
+
+        Session::shouldReceive('get')
+            ->with('simple-commerce-cart')
+            ->andReturn(null);
+
+        Session::shouldReceive('token')
+            ->andReturn('random-token');
+
+        Session::shouldReceive('has')
+            ->with('simple-commerce-cart')
+            ->andReturn(false);
+
+        Session::shouldReceive('has')
+            ->with('errors')
+            ->andReturn([]);
+
+        $this->tag->setParameters([
+            'product' => $product->id,
+        ]);
+
+        $usage = $this->tag->alreadyExists();
+
+        $this->assertFalse($usage);
+    }
+
+    /** @test */
     public function can_get_data_from_cart()
     {
         $cart = Order::make()->merge([
@@ -572,6 +607,19 @@ class CartTagTest extends TestCase
         // Statamic 3.3: From 3.3, this will return a Value instance
         $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_string($usage));
         $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 'Deliver by front door.');
+    }
+
+    /** @test */
+    public function cant_get_data_from_cart_if_there_is_no_cart()
+    {
+        $this->session(['simple-commerce-cart' => null]);
+        $this->tag->setParameters([]);
+
+        $usage = $this->tag->wildcard('note');
+
+        // Statamic 3.3: From 3.3, this will return a Value instance
+        $this->assertFalse($usage instanceof \Statamic\Fields\Value || is_string($usage));
+        $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, null);
     }
 
     protected function tag($tag)

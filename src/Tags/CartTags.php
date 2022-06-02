@@ -226,6 +226,10 @@ class CartTags extends SubTag
 
     public function alreadyExists()
     {
+        if (! $this->hasCart()) {
+            return false;
+        }
+
         return $this->getCart()->lineItems()
             ->where('product', Product::find($this->params->get('product')))
             ->where('variant', $this->params->get('variant'))
@@ -234,6 +238,10 @@ class CartTags extends SubTag
 
     public function wildcard($method)
     {
+        if (! $this->hasCart()) {
+            return null;
+        }
+
         $cart = $this->getCart();
 
         if (method_exists($this, $method)) {
