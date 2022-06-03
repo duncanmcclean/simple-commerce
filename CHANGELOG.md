@@ -2,13 +2,19 @@
 
 ## Unreleased
 
-## v3.2.2 (2022-06-22)
+## v3.2.3 (2022-06-03)
+
+### What's fixed
+
+- Fixed another cause of 'ghost orders'
+
+## v3.2.2 (2022-06-02)
 
 ### What's fixed
 
 - Actually add the upgrade script to the list of upgrade scripts..
 
-## v3.2.1 (2022-06-22)
+## v3.2.1 (2022-06-02)
 
 ### What's fixed
 
