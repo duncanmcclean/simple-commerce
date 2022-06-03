@@ -327,6 +327,9 @@ class ServiceProvider extends AddonServiceProvider
                         collect(config('simple-commerce.content'))
                             ->pluck('collection')
                             ->filter()
+                            ->reject(function ($collectionHandle) {
+                                return is_null(Collection::find($collectionHandle));
+                            })
                             ->map(function ($collectionHandle) {
                                 return __(Collection::find($collectionHandle)->title());
                             })
