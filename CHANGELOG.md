@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.4 (2022-06-03)
+
+### What's fixed
+
+- Fixed an issue post-install when using a language other than English
+
 ## v3.2.3 (2022-06-03)
 
 ### What's fixed
