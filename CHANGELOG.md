@@ -11,7 +11,7 @@
 #### What's fixed
 
 - Refactored the `{{ sc:customer:orders }}` tag to fix a couple of issues #645 #646
-- Fixed an issue where Debugbar would create orders even if you don't need it to.
+- Fixed an issue where Debugbar would create orders even if you don't need it to. #647
 
 ## v3.2.4 (2022-06-03)
 
