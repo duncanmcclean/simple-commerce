@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v3.2.5 (2022-06-03)
+
+### What's improved
+
+- Improved the layout of the default Orders blueprint
+
+#### What's fixed
+
+- Refactored the `{{ sc:customer:orders }}` tag to fix a couple of issues #645 #646
+- Fixed an issue where Debugbar would create orders even if you don't need it to.
+
 ## v3.2.4 (2022-06-03)
 
 ### What's fixed
