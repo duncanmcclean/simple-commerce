@@ -11,6 +11,12 @@ class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implem
 
     public function collect()
     {
+        if (! $this->hasCart()) {
+            return [
+                'Cart ID' => 'No cart found.',
+            ];
+        }
+
         $cart = $this->getCart();
 
         return [
