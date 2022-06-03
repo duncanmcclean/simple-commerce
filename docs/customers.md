@@ -68,6 +68,8 @@ To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRep
 ],
 ```
 
+After changing over the repository, you should also change the 'Customer' field on the Orders blueprint to be a Users field, rather than a Collections field.
+
 ## Tags
 
 The `{{ sc:customer }}` tag is documented seperatly, [see docs](https://simple-commerce.duncanmcclean.com/tags/customer).
