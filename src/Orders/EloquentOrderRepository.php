@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Schema;
@@ -165,7 +166,7 @@ class EloquentOrderRepository implements RepositoryContract
         $order->shippingTotal = $model->shipping_total;
         $order->couponTotal = $model->coupon_total;
         $order->customer = $model->customer_id ? Customer::find($model->customer_id) : null;
-        $order->coupon = $model->coupon;
+        $order->coupon = $model->coupon ? Coupon::find($model->coupon) : null;
         $order->gateway = $model->gateway;
 
         $order->data = collect($model->data)
