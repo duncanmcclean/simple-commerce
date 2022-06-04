@@ -3,6 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use Doctrine\DBAL\Schema\Column;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
@@ -109,8 +111,8 @@ class EloquentOrderRepository implements RepositoryContract
         $model->tax_total = $order->taxTotal();
         $model->shipping_total = $order->shippingTotal();
         $model->coupon_total = $order->couponTotal();
-        $model->customer_id = optional($order->customer())->id();
-        $model->coupon = optional($order->coupon())->id();
+        $model->customer_id = $order->customer() instanceof CustomerContract ? $order->customer()->id() : $order->customer();
+        $model->coupon = $order->coupon() instanceof CouponContract ? $order->coupon()->id() : $order->coupon();
         $model->gateway = $order->gateway();
 
         $model->shipping_name = $order->get('shipping_name');
