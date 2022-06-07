@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.6 (2022-06-07)
+
+### What's fixed
+
+- Database Orders: Fixed an issue where customers & coupon's weren't being saved on orders correctly #648
+
 ## v3.2.5 (2022-06-03)
 
 ### What's improved
