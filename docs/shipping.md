@@ -52,66 +52,9 @@ In these cases, you may configure a default Shipping Method which will be used w
 
 > Warning: Simple Commerce will not check if the default method is 'available' for the customer before using it.
 
-## Creating a shipping method
+## Third-party Shipping Methods
 
-Simple Commerce doesn't come with any shipping methods out of the box so you'll need to write your own. We do, however have a command you can use to generate the boilerplate for a shipping method.
-
-```
-php please make:shipping-method YourNewShippingMethod
-```
-
-That command will create a Shipping Method class in your `app\ShippingMethods` folder. It'll look something like this:
-
-```php
-<?php
-
-namespace App\ShippingMethods;
-
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
-use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
-
-class FirstClass extends BaseShippingMethod implements ShippingMethod
-{
-    public function name(): string
-    {
-        return 'Name of your shipping method';
-    }
-
-    public function description(): string
-    {
-        return 'Description of your shipping method';
-    }
-
-    public function calculateCost(Order $order): int
-    {
-        return 0;
-    }
-
-    public function checkAvailability(Order $order, Address $address): bool
-    {
-        return true;
-    }
-}
-```
-
-Here's a quick explanation of what each method does.
-
-- **name:** Should return the name of your shipping method (will be shown to customers)
-- **description:** Should return a description for your shipping method
-- **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
-- **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
-
-### Using config settings
-
-As mentioned earlier, you may let users of your shipping method specify a configuration array which is accessible inside the Shipping Method itself. If you'd like to do this, you may access the config like so:
-
-```php
-// app/ShippingMethods/FirstClass.php
-
-$this->config()->get('api_key');
-```
+* [Australian Post for Simple Commerce](https://statamic.com/addons/mity-digital/australia-post-shipping-for-simple-commerce)
 
 ## Templating
 
@@ -185,3 +128,64 @@ In the Control Panel listing table for orders, find the order you wish to mark a
 The action will only be available for order which have already been marked as paid.
 
 ![Mark as Shipped](/img/simple-commerce/mark-as-shipped.png)
+
+## Creating a shipping method
+
+Simple Commerce doesn't come with any shipping methods out of the box so you'll need to write your own. We do, however have a command you can use to generate the boilerplate for a shipping method.
+
+```
+php please make:shipping-method YourNewShippingMethod
+```
+
+That command will create a Shipping Method class in your `app\ShippingMethods` folder. It'll look something like this:
+
+```php
+<?php
+
+namespace App\ShippingMethods;
+
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
+use DoubleThreeDigital\SimpleCommerce\Data\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
+
+class FirstClass extends BaseShippingMethod implements ShippingMethod
+{
+    public function name(): string
+    {
+        return 'Name of your shipping method';
+    }
+
+    public function description(): string
+    {
+        return 'Description of your shipping method';
+    }
+
+    public function calculateCost(Order $order): int
+    {
+        return 0;
+    }
+
+    public function checkAvailability(Order $order, Address $address): bool
+    {
+        return true;
+    }
+}
+```
+
+Here's a quick explanation of what each method does.
+
+- **name:** Should return the name of your shipping method (will be shown to customers)
+- **description:** Should return a description for your shipping method
+- **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
+- **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
+
+### Using config settings
+
+As mentioned earlier, you may let users of your shipping method specify a configuration array which is accessible inside the Shipping Method itself. If you'd like to do this, you may access the config like so:
+
+```php
+// app/ShippingMethods/FirstClass.php
+
+$this->config()->get('api_key');
+```
