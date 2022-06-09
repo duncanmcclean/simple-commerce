@@ -52,7 +52,11 @@ class Coupon implements Contract
             ->fluentlyGetOrSet('value')
             ->setter(function ($value) {
                 if (is_string($value) && str_contains($value, '.')) {
-                    return (int) str_replace('.', '', $value);
+                    $value = (int) str_replace('.', '', $value);
+                }
+
+                if ($this->type === 'percentage' && $value > 100) {
+                    $value = $value / 100;
                 }
 
                 return $value;

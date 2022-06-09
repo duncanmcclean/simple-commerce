@@ -366,6 +366,53 @@ class CalculatorTest extends TestCase
         $this->assertSame($calculate['items'][0]['total'], 10000);
     }
 
+    /**
+     * @test
+     * https://github.com/doublethreedigital/simple-commerce/issues/651
+     */
+    public function ensure_percentage_coupon_is_calculated_correctly_on_items_total_when_value_is_a_decimal_number()
+    {
+        Config::set('simple-commerce.tax_engine_config.rate', 0);
+        Config::set('simple-commerce.sites.default.shipping.methods', []);
+
+        $product = Product::make()->price(5000);
+        $product->save();
+
+        $coupon = Coupon::make()
+            ->code('fifty-friday')
+            ->value('10.00')
+            ->type('percentage')
+            ->data([
+                'title'              => 'Fifty Friday',
+                'redeemed'           => 0,
+                'minimum_cart_value' => null,
+            ]);
+
+        $coupon->save();
+
+        $cart = Order::make()->isPaid(false)->lineItems([
+            [
+                'product'  => $product->id,
+                'quantity' => 2,
+                'total'    => 10000,
+            ],
+        ])->coupon($coupon->id);
+
+        $cart->save();
+
+        $calculate = (new Calculator())->calculate($cart);
+
+        $this->assertIsArray($calculate);
+
+        $this->assertSame($calculate['grand_total'], 9000);
+        $this->assertSame($calculate['items_total'], 10000);
+        $this->assertSame($calculate['shipping_total'], 0);
+        $this->assertSame($calculate['tax_total'], 0);
+        $this->assertSame($calculate['coupon_total'], 1000);
+
+        $this->assertSame($calculate['items'][0]['total'], 10000);
+    }
+
     /** @test */
     public function ensure_fixed_coupon_is_calculated_correctly_on_items_total()
     {
