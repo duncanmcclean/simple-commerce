@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v3.2.7 (2022-06-09)
+
+### What's improved
+
+- Added support for underscore cart tag parameters #650
+
+### What's fixed
+
+- Fixed some issues with coupon calculations when using float/decimal values #651 #655
+
 ## v3.2.6 (2022-06-07)
 
 ### What's fixed
