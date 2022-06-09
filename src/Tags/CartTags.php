@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use Illuminate\Support\Str;
 
 class CartTags extends SubTag
 {
