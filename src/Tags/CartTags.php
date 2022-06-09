@@ -250,6 +250,7 @@ class CartTags extends SubTag
         }
 
         $camelCaseMethod = Str::camel($method);
+
         if ($camelCaseMethod != $method && method_exists($this, $camelCaseMethod)) {
             return $this->{$camelCaseMethod}();
         }
