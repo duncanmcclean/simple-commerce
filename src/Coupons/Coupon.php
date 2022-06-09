@@ -43,6 +43,17 @@ class Coupon implements Contract
     {
         return $this
             ->fluentlyGetOrSet('value')
+            ->setter(function ($value) {
+                if (is_string($value)) {
+                    if (! str_contains($value, '.')) {
+                        $value = $value * 100;
+                    }
+
+                    return (int) str_replace('.', '', $value);
+                }
+
+                return $value;
+            })
             ->args(func_get_args());
     }
 
