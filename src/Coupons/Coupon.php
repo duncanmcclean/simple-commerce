@@ -39,6 +39,13 @@ class Coupon implements Contract
             ->args(func_get_args());
     }
 
+    public function type($type = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('type')
+            ->args(func_get_args());
+    }
+
     public function value($value = null)
     {
         return $this
@@ -54,13 +61,6 @@ class Coupon implements Contract
 
                 return $value;
             })
-            ->args(func_get_args());
-    }
-
-    public function type($type = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('type')
             ->args(func_get_args());
     }
 
