@@ -39,17 +39,28 @@ class Coupon implements Contract
             ->args(func_get_args());
     }
 
-    public function value($value = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('value')
-            ->args(func_get_args());
-    }
-
     public function type($type = null)
     {
         return $this
             ->fluentlyGetOrSet('type')
+            ->args(func_get_args());
+    }
+
+    public function value($value = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('value')
+            ->setter(function ($value) {
+                if (is_string($value) && str_contains($value, '.')) {
+                    $value = (int) str_replace('.', '', $value);
+                }
+
+                if ($this->type === 'percentage' && $value > 100) {
+                    $value = $value / 100;
+                }
+
+                return $value;
+            })
             ->args(func_get_args());
     }
 
