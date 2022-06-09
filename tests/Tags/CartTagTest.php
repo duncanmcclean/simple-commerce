@@ -609,6 +609,29 @@ class CartTagTest extends TestCase
         $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 'Deliver by front door.');
     }
 
+    /**
+     * @test
+     * https://github.com/doublethreedigital/simple-commerce/pull/650
+     */
+    public function can_get_data_from_cart_when_method_should_be_converted_to_studly_case()
+    {
+        $cart = Order::make()->merge([
+            'title' => '#0001',
+            'note'  => 'Deliver by front door.',
+        ])->grandTotal(1590);
+
+        $cart->save();
+
+        $this->session(['simple-commerce-cart' => $cart->id]);
+        $this->tag->setParameters([]);
+
+        $usage = $this->tag->wildcard('raw_grand_total');
+
+        // Statamic 3.3: From 3.3, this will return a Value instance
+        $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_int($usage));
+        $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 1590);
+    }
+
     /** @test */
     public function cant_get_data_from_cart_if_there_is_no_cart()
     {
