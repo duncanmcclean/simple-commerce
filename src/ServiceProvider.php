@@ -267,7 +267,7 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::orderDriver()['collection'])
-                    ->can('view', SimpleCommerce::orderDriver()['collection'])
+                    ->can('view', Collection::find(SimpleCommerce::orderDriver()['collection']))
                     ->icon(SimpleCommerce::svg('shop'));
             } elseif (isset(SimpleCommerce::orderDriver()['model'])) {
                 $orderModelClass = SimpleCommerce::orderDriver()['model'];
@@ -284,7 +284,7 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::customerDriver()['collection'])
-                    ->can('view', SimpleCommerce::customerDriver()['collection'])
+                    ->can('view', Collection::find(SimpleCommerce::customerDriver()['collection']))
                     ->icon('user');
             } elseif (isset(SimpleCommerce::customerDriver()['model'])) {
                 $customerModelClass = SimpleCommerce::customerDriver()['model'];
@@ -300,13 +300,13 @@ class ServiceProvider extends AddonServiceProvider
             $nav->create(__('Products'))
                 ->section(__('Simple Commerce'))
                 ->route('collections.show', SimpleCommerce::productDriver()['collection'])
-                ->can('view', SimpleCommerce::productDriver()['collection'])
+                ->can('view', Collection::find(SimpleCommerce::productDriver()['collection']))
                 ->icon('entries');
 
             $nav->create(__('Coupons'))
                 ->section(__('Simple Commerce'))
                 ->route('collections.show', SimpleCommerce::couponDriver()['collection'])
-                ->can('view', SimpleCommerce::couponDriver()['collection'])
+                ->can('view', Collection::find(SimpleCommerce::couponDriver()['collection']))
                 ->icon('tags');
 
             if (SimpleCommerce::isUsingStandardTaxEngine()) {
