@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v2.3.8 (2022-06-15)
+
+### What's fixed
+
+- Fixed permission issues on Simple Commerce's CP Nav #657 #659
+- Fixed rounding calculation issues when using coupons #651 #660
+
 ## v3.2.7 (2022-06-09)
 
 ### What's improved
