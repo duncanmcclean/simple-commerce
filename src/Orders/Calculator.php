@@ -69,6 +69,7 @@ class Calculator implements Contract
         $data = $this->calculateOrderShipping($data)['data'];
 
         $data['grand_total'] = (($data['items_total'] + $data['tax_total']) - $data['coupon_total']) + $data['shipping_total'];
+        $data['grand_total'] = (int) round($data['grand_total']);
 
         return $data;
     }
@@ -178,6 +179,8 @@ class Calculator implements Contract
             if ($coupon->type() === 'fixed') {
                 $data['coupon_total'] = (int) $baseAmount - ($baseAmount - $value);
             }
+
+            $data['coupon_total'] = (int) round($data['coupon_total']);
         }
 
         return [
