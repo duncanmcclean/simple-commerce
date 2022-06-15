@@ -398,7 +398,7 @@ class CartControllerTest extends TestCase
         ]);
 
         $customer = Customer::make()->email('jack.simpson@example.com')->data([
-             'name'  => 'Jak Simpson',
+            'name'  => 'Jak Simpson',
         ]);
 
         $customer->save();
@@ -407,12 +407,12 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-             'customer' => [
-                 'name'  => 'Jack Simpson',
-                 'email' => 'jack.simpson@example.com',
-                 'dob' => '1st January 1980',
-             ],
-         ];
+            'customer' => [
+                'name'  => 'Jack Simpson',
+                'email' => 'jack.simpson@example.com',
+                'dob' => '1st January 1980',
+            ],
+        ];
 
         $response = $this
              ->from('/cart')
