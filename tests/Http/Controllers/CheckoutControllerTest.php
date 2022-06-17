@@ -764,13 +764,13 @@ class CheckoutControllerTest extends TestCase
         $product->save();
 
         $order = Order::make()->lineItems([
-             [
-                 'id'       => Stache::generateId(),
-                 'product'  => $product->id,
-                 'quantity' => 1,
-                 'total'    => 5000,
-             ],
-         ])->grandTotal(5000);
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -809,8 +809,8 @@ class CheckoutControllerTest extends TestCase
         $this->assertSame($order->customer()->get('dob'), '01/01/2000');
 
         $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
-             $order->id,
-         ]);
+            $order->id,
+        ]);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -837,13 +837,13 @@ class CheckoutControllerTest extends TestCase
         $product->save();
 
         $order = Order::make()->lineItems([
-             [
-                 'id'       => Stache::generateId(),
-                 'product'  => $product->id,
-                 'quantity' => 1,
-                 'total'    => 5000,
-             ],
-         ])->grandTotal(5000);
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
 
         $order->save();
 
@@ -891,8 +891,8 @@ class CheckoutControllerTest extends TestCase
         $this->assertSame($order->customer()->get('dob'), '01/01/2000');
 
         $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
-             $order->id,
-         ]);
+            $order->id,
+        ]);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
