@@ -56,7 +56,7 @@ class TaxRateControllerTest extends TestCase
             ->assertSee('Name')
             ->assertSee('Rate')
             ->assertSee('Tax Zone')
-            ->assertSee('Include in price?');
+            ->assertSee('Prices include tax?');
     }
 
     /** @test */
