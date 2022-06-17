@@ -15,6 +15,7 @@ Here's a collection of short, helpful articles you'll probably find useful at so
 - [Programtically save orders without recalculating](/kb-articles/saving-orders-without-recalculating)
 - [Fix `InvalidFormParametersException` error](/kb-articles/invalid-form-params)
 - [Submit Simple Commerce's Forms via AJAX](/kb-articles/ajax)
+- [Use Simple Commerce with Static Caching](/kb-articles/static-caching)
 
 ## How does X work?
 
