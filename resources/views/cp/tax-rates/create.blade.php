@@ -23,6 +23,7 @@
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
                     <label class="block mb-1">Name <i class="required">*</i></label>
+
                     <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}">
 
                     @include('simple-commerce::cp.partials.error', ['name' => 'name'])
@@ -42,6 +43,7 @@
 
             <div class="form-group w-full">
                 <label class="block mb-1">Tax Zone <i class="required">*</i></label>
+
                 <select name="zone" class="input-text" required>
                     <option selected>Please select</option>
                     @foreach($taxZones as $taxZone)
@@ -53,7 +55,12 @@
             </div>
 
             <div class="form-group w-full md:w-1/2">
-                <label class="block mb-1">Include in price?</label>
+                <label class="block mb-1">Prices include tax?</label>
+
+                <div class="help-block -mt-1">
+                    <p>Do product prices include already include tax?</p>
+                </div>
+
                 <input type="hidden" name="include_in_price" value="{{ old('include_in_price') ?? 'false' }}">
 
                 <button
