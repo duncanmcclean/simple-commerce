@@ -32,25 +32,31 @@ class CartItemController extends BaseActionController
 
         // Handle customer stuff..
         if ($request->has('customer')) {
-            try {
-                if ($cart->customer() && $cart->customer() !== null) {
-                    $customer = $cart->customer();
-                } elseif ($request->has('email') && $request->get('email') !== null) {
-                    $customer = Customer::findByEmail($request->get('email'));
-                } else {
-                    throw new CustomerNotFound("Customer with ID [{$request->get('customer')}] could not be found.");
-                }
-            } catch (CustomerNotFound $e) {
-                if (is_array($request->get('customer'))) {
+            if (is_string($request->get('customer'))) {
+                $customer = Customer::find($request->get('customer'));
+
+                $cart->customer($customer->id());
+            }
+
+            if (is_array($request->get('customer'))) {
+                try {
+                    if ($cart->customer() && $cart->customer() !== null) {
+                        $customer = $cart->customer();
+                    } elseif (isset($request->get('customer')['email'])) {
+                        $customer = Customer::findByEmail($request->get('customer')['email']);
+
+                        $cart->customer($customer->id());
+                    }
+                } catch (CustomerNotFound $e) {
                     $customerData = [
                         'published' => true,
                     ];
 
-                    if ($request->get('customer')['name']) {
+                    if (isset($request->get('customer')['name'])) {
                         $customerData['name'] = $request->get('customer')['name'];
                     }
 
-                    if ($request->get('customer')['first_name'] && $request->get('customer')['last_name']) {
+                    if (isset($request->get('customer')['first_name']) && isset($request->get('customer')['last_name'])) {
                         $customerData['first_name'] = $request->get('customer')['first_name'];
                         $customerData['last_name'] = $request->get('customer')['last_name'];
                     }
@@ -60,12 +66,18 @@ class CartItemController extends BaseActionController
                         ->data($customerData);
 
                     $customer->save();
-                } elseif (is_string($request->get('customer'))) {
-                    $customer = Customer::find($request->get('customer'));
+
+                    $cart->customer($customer->id());
+                }
+
+                if (isset($customer) && Arr::except($request->get('customer'), ['email', 'name', 'first_name', 'last_name']) !== []) {
+                    $customer
+                        ->merge(
+                            Arr::except($request->get('customer'), ['email', 'name', 'first_name', 'last_name'])
+                        )
+                        ->save();
                 }
             }
-
-            $cart->customer($customer->id());
         } elseif ($request->has('email')) {
             try {
                 $customer = Customer::findByEmail($request->get('email'));
