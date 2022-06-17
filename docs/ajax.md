@@ -2,8 +2,6 @@
 title: "Using with AJAX"
 ---
 
-> **Note:** This documentation is out-of-date. Due to some changes made in v3.0, there's some changed needed to make everything work again. It's on the to-do list though!
-
 Normally, you can use Simple Commerce's [form tags](/tags#form-tags) to build HTML `<form>` elements to do actions, such as adding to the cart or submitting a user's payment information during checkout.
 
 However, sometimes you may want to use AJAX instead of forms as you don't need to wait for a page refresh after submitting data.
@@ -56,4 +54,22 @@ let params = {
 axios.post("/!/simple-commerce/cart-items", params).then((response) => {
   console.alert("Whoop! The product has been added to your cart");
 });
+```
+
+## Form Parameter Validation
+
+Since v3.0, Simple Commerce will expect three parameters in every request to a Simple Commerce endpoint:
+
+- `_redirect`
+- `_error_redirect`
+- `_request`
+
+Usually, if you use Simple Commerce's built-in tags to build the `<form>` elements, it would take the given value and encrypt it. However, you'll likley want to disable the encryption aspect of this when using AJAX.
+
+You can disable the behaviour by adding the following to your configuration file:
+
+```php
+// config/simple-commerce
+
+'disable_form_parameter_validation' => true,
 ```
