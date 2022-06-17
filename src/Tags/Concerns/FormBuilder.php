@@ -39,21 +39,33 @@ trait FormBuilder
     {
         $redirect = Str::start($this->params->get('redirect', request()->path()), '/');
 
-        return '<input type="hidden" name="_redirect" value="' . encrypt($redirect) . '" />';
+        $value = config('simple-commerce.disable_form_parameter_validation')
+            ? $redirect
+            : encrypt($redirect);
+
+        return '<input type="hidden" name="_redirect" value="' . $value . '" />';
     }
 
     private function errorRedirectField()
     {
         $errorRedirect = Str::start($this->params->get('error_redirect', request()->path()), '/');
 
-        return '<input type="hidden" name="_error_redirect" value="' . encrypt($errorRedirect) . '" />';
+        $value = config('simple-commerce.disable_form_parameter_validation')
+            ? $errorRedirect
+            : encrypt($errorRedirect);
+
+        return '<input type="hidden" name="_error_redirect" value="' . $value . '" />';
     }
 
     private function requestField()
     {
         $request = $this->params->get('request', 'Empty');
 
-        return '<input type="hidden" name="_request" value="' . encrypt($request) . '" />';
+        $value = config('simple-commerce.disable_form_parameter_validation')
+            ? $request
+            : encrypt($request);
+
+        return '<input type="hidden" name="_request" value="' . $value . '" />';
     }
 
     /**
