@@ -831,13 +831,13 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $data = [
-             'product'  => $product->id,
-             'quantity' => 1,
-             'customer' => [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => [
                 'name' => 'James',
                 'email' => 'james@example.com',
-             ],
-         ];
+            ],
+        ];
 
         $response = $this
              ->from('/products/' . $product->get('slug'))
@@ -880,12 +880,12 @@ class CartItemControllerTest extends TestCase
         $customer->save();
 
         $data = [
-             'product'  => $product->id,
-             'quantity' => 1,
-             'customer' => [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => [
                 'email' => 'pluto@clubhouse.disney',
-             ],
-         ];
+            ],
+        ];
 
         $response = $this
              ->from('/products/' . $product->get('slug'))
@@ -923,14 +923,14 @@ class CartItemControllerTest extends TestCase
         $product->save();
 
         $data = [
-             'product'  => $product->id,
-             'quantity' => 1,
-             'customer' => [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => [
                 'name' => 'James',
                 'email' => 'james@example.com',
                 'dob' => '01/01/2000',
-             ],
-         ];
+            ],
+        ];
 
         $response = $this
              ->from('/products/' . $product->get('slug'))
@@ -981,13 +981,13 @@ class CartItemControllerTest extends TestCase
         $customer->save();
 
         $data = [
-             'product'  => $product->id,
-             'quantity' => 1,
-             'customer' => [
+            'product'  => $product->id,
+            'quantity' => 1,
+            'customer' => [
                 'email' => 'pluto@clubhouse.disney',
                 'dob' => '01/01/2000',
-             ],
-         ];
+            ],
+        ];
 
         $response = $this
              ->from('/products/' . $product->get('slug'))
