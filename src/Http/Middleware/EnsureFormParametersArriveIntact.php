@@ -36,6 +36,16 @@ class EnsureFormParametersArriveIntact
             ]);
         }
 
+        // If the validation of form parameters is disabled, we want to take the
+        // user's input and encrypt it, so it can be used later in this middleware.
+        if (config('simple-commerce.disable_form_parameter_validation')) {
+            $request->merge([
+                '_request' => encrypt($request->get('_request') ?? $request->header('referer') ?? '/'),
+                '_error_redirect' => encrypt($request->get('_error_redirect') ?? $request->header('referer') ?? '/'),
+                '_redirect' => encrypt($request->get('_redirect') ?? 'Empty'),
+            ]);
+        }
+
         try {
             $redirectParam = decrypt($request->get('_redirect'));
             $errorRedirectParam = decrypt($request->get('_error_redirect'));

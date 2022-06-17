@@ -34,6 +34,16 @@ Some Simple Commerce tags output `<form>` elements that submit to Simple Commerc
 
 > **Hot Tip:** I'd highly recommend disabling the button after the user submits the form to prevent them from submitting it multiple times.
 
+When Simple Commerce builds the HTML for your form, any of the optional parameters you provide will be encrypted for additional protection (so you're users can't mess with redirects/requests by editing your HTML).
+
+However, if you wish to use static caching or submit SC's forms via AJAX, you'll probably want to disable this behaviour. You may do so by adding the following to your configuration file:
+
+```php
+// config/simple-commerce
+
+'disable_form_parameter_validation' => true,
+```
+
 ### Field Whitelisting
 
 When using Form Tags, Simple Commerce will now require you to specify any additional fields you wish to be editable via front-end forms.
