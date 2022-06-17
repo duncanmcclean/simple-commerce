@@ -607,6 +607,298 @@ class CheckoutControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_post_checkout_with_customer_array()
+    {
+        Event::fake();
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'customer'     => [
+                    'name' => 'Joe Doe',
+                    'email' => 'joe.doe@example.com',
+                ],
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($order->customer());
+
+        $this->assertSame($order->customer()->name(), 'Joe Doe');
+        $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
+
+        $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
+            $order->id,
+        ]);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
+    public function can_post_checkout_with_customer_array_and_existing_customer()
+    {
+        Event::fake();
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $customer = Customer::make()
+            ->email('joe.doe@example.com')
+            ->data([
+                'name' => 'Joe Doe',
+            ]);
+
+        $customer->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'customer'     => [
+                    'name' => 'Joe Doe',
+                    'email' => 'joe.doe@example.com',
+                ],
+                'gateway'      => DummyGateway::class,
+                'card_number'  => '4242424242424242',
+                'expiry_month' => '01',
+                'expiry_year'  => '2025',
+                'cvc'          => '123',
+            ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($order->customer());
+
+        $this->assertSame($order->customer()->id(), $customer->id);
+        $this->assertSame($order->customer()->name(), 'Joe Doe');
+        $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
+
+        $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
+            $order->id,
+        ]);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /**
+     * @test
+     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     */
+    public function can_post_checkout_with_customer_array_with_additional_information()
+    {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'name', 'email', 'dob',
+        ]);
+
+        Event::fake();
+
+        $product = Product::make()
+             ->price(5000)
+             ->data([
+                 'title' => 'Bacon',
+             ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $this
+             ->withSession(['simple-commerce-cart' => $order->id])
+             ->post(route('statamic.simple-commerce.checkout.store'), [
+                 'customer'     => [
+                     'name' => 'Joe Doe',
+                     'email' => 'joe.doe@example.com',
+                     'dob' => '01/01/2000',
+                 ],
+                 'gateway'      => DummyGateway::class,
+                 'card_number'  => '4242424242424242',
+                 'expiry_month' => '01',
+                 'expiry_year'  => '2025',
+                 'cvc'          => '123',
+             ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($order->customer());
+
+        $this->assertSame($order->customer()->name(), 'Joe Doe');
+        $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
+        $this->assertSame($order->customer()->get('dob'), '01/01/2000');
+
+        $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
+            $order->id,
+        ]);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /**
+     * @test
+     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     */
+    public function can_post_checkout_with_customer_array_and_existing_customer_with_additional_information()
+    {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'name', 'email', 'dob',
+        ]);
+
+        Event::fake();
+
+        $product = Product::make()
+             ->price(5000)
+             ->data([
+                 'title' => 'Bacon',
+             ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $customer = Customer::make()
+             ->email('joe.doe@example.com')
+             ->data([
+                 'name' => 'Joe Doe',
+             ]);
+
+        $customer->save();
+
+        $this
+             ->withSession(['simple-commerce-cart' => $order->id])
+             ->post(route('statamic.simple-commerce.checkout.store'), [
+                 'customer'     => [
+                     'name' => 'Joe Doe',
+                     'email' => 'joe.doe@example.com',
+                     'dob' => '01/01/2000',
+                 ],
+                 'gateway'      => DummyGateway::class,
+                 'card_number'  => '4242424242424242',
+                 'expiry_month' => '01',
+                 'expiry_year'  => '2025',
+                 'cvc'          => '123',
+             ]);
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertDispatched(PostCheckout::class);
+
+        // Assert order has been marked as paid
+        $this->assertTrue($order->get('published'));
+
+        $this->assertTrue($order->isPaid());
+        $this->assertNotNull($order->get('paid_date'));
+
+        // Assert customer has been created with provided details
+        $this->assertNotNull($order->customer());
+
+        $this->assertSame($order->customer()->id(), $customer->id);
+        $this->assertSame($order->customer()->name(), 'Joe Doe');
+        $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
+        $this->assertSame($order->customer()->get('dob'), '01/01/2000');
+
+        $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
+            $order->id,
+        ]);
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertFalse(session()->has('simple-commerce-cart'));
+    }
+
+    /** @test */
     public function can_post_checkout_with_coupon()
     {
         Config::set('simple-commerce.tax_engine_config.rate', 0);

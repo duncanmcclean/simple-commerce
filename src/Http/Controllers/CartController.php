@@ -72,7 +72,9 @@ class CartController extends BaseActionController
             }
 
             if (is_array($data['customer'])) {
-                $customer->merge($data['customer'])->save();
+                $customer
+                    ->merge(Arr::only($data['customer'], config('simple-commerce.field_whitelist.customers')))
+                    ->save();
             }
 
             $cart->customer($customer->id());
