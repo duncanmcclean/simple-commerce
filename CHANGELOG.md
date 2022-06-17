@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+## v3.2.9 (2022-06-17)
+
+### What's new
+
+- Form Parameter Validation can now be disabled, if needed #670
+
+### What's improved
+
+- Adjusted copy of 'Price includes tax' toggle on tax rates
+
+### What's fixed
+
+- Fixed issues where additional customer information would not be saved in some cases #658 #661
+- Fixed an issue with off-site gateways, where you'd see an empty order after checking out #664 #671
+- Added some code to ensure the tax rate on line items are saved as integers, rather than strings
+
 ## v3.2.8 (2022-06-15)
 
 ### What's fixed
