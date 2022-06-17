@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionParameter;
+use Statamic\View\Antlers\Parser;
 
 class SendConfiguredNotifications implements ShouldQueue
 {
@@ -73,7 +74,12 @@ class SendConfiguredNotifications implements ShouldQueue
 
         if (is_string($config['to'])) {
             return [
-                ['channel' => 'mail', 'route' => $config['to']],
+                [
+                    'channel' => 'mail',
+                    'route' => (new Parser)
+                        ->parse($config['to'], $event->order->toAugmentedArray())
+                        ->__toString(),
+                ],
             ];
         }
 
