@@ -913,6 +913,10 @@ class CartItemControllerTest extends TestCase
      */
     public function can_store_item_with_customer_array_and_additional_customer_information()
     {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'name', 'email', 'dob',
+        ]);
+
         $product = Product::make()
              ->price(1000)
              ->data([

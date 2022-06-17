@@ -743,7 +743,10 @@ class CheckoutControllerTest extends TestCase
         $this->assertFalse(session()->has('simple-commerce-cart'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     */
     public function can_post_checkout_with_customer_array_with_additional_information()
     {
         Config::set('simple-commerce.field_whitelist.customers', [
@@ -813,9 +816,16 @@ class CheckoutControllerTest extends TestCase
         $this->assertFalse(session()->has('simple-commerce-cart'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     */
     public function can_post_checkout_with_customer_array_and_existing_customer_with_additional_information()
     {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'name', 'email', 'dob',
+        ]);
+
         Event::fake();
 
         $product = Product::make()

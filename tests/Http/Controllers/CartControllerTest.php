@@ -461,6 +461,10 @@ class CartControllerTest extends TestCase
     /** @test */
     public function can_update_cart_and_create_new_customer_via_customer_array_with_first_name_and_last_name()
     {
+        Config::set('simple-commerce.field_whitelist.customers', [
+            'first_name', 'last_name',
+        ]);
+
         $cart = Order::make();
         $cart->save();
 

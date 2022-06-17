@@ -167,7 +167,11 @@ class CheckoutController extends BaseActionController
                 $customer->save();
             }
 
-            $customer->merge($customerData)->save();
+            $customer
+                ->merge(
+                    Arr::only($customerData, config('simple-commerce.field_whitelist.customers'))
+                )
+                ->save();
 
             $this->cart->customer($customer->id());
             $this->cart->save();

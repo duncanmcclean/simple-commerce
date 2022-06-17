@@ -73,7 +73,7 @@ class CartItemController extends BaseActionController
                 if (isset($customer) && Arr::except($request->get('customer'), ['email', 'name', 'first_name', 'last_name']) !== []) {
                     $customer
                         ->merge(
-                            Arr::except($request->get('customer'), ['email', 'name', 'first_name', 'last_name'])
+                            Arr::only($request->get('customer'), config('simple-commerce.field_whitelist.customers'))
                         )
                         ->save();
                 }
