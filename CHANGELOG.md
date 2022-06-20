@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.10 (2022-06-20)
+
+### What's fixed
+
+- Fixed an issue where a customer would see a 'checkout complete' message even if they cancelled checking out via Mollie. #674 #675
+
 ## v3.2.9 (2022-06-17)
 
 ### What's new
