@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v3.2.11 (2022-06-20)
+
+### What's improved
+
+- Updated default order blueprint for Eloquent database orders #678
+
+### What's fixed
+
+- Fixed issue where after removing a line item, items array would end up with keys #676 #677
+
 ## v3.2.10 (2022-06-20)
 
 ### What's fixed
