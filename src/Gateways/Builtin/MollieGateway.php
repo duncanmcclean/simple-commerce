@@ -107,6 +107,15 @@ class MollieGateway extends BaseGateway implements Gateway
         return new Response(true, []);
     }
 
+    public function callback(Request $request): bool
+    {
+        sleep(2);
+
+        $order = OrderFacade::find($request->input('_order_id'));
+
+        return $order->isPaid();
+    }
+
     public function webhook(Request $request)
     {
         $this->setupMollie();
