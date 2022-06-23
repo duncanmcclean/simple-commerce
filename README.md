@@ -16,7 +16,7 @@ Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You hav
 
 Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
 
-And, when your site grows, it's easy to [move your orders & customers](/database-orders) into a traditional database.
+And, when your site grows, it's easy to [move your orders & customers](https://simple-commerce.duncanmcclean.com/database-orders) into a traditional database.
 
 ### Payment Gateways
 
