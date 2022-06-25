@@ -81,7 +81,7 @@ Simple Commerce is a commercial addon - you **must purchase a license** via the 
 
 ## Support Policy & Versioning
 
-You may review Simple Commerce's [Support Policy & Versioning information](https://simple-commerce.duncanmcclean/kb-articles/support-versioning) on the documentation site.
+You may review Simple Commerce's [Support Policy & Versioning information](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) on the documentation site.
 
 ## Other Repositories
 
