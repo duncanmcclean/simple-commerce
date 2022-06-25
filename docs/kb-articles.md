@@ -17,6 +17,10 @@ Here's a collection of short, helpful articles you'll probably find useful at so
 - [Submit Simple Commerce's Forms via AJAX](/kb-articles/ajax)
 - [Use Simple Commerce with Static Caching](/kb-articles/static-caching)
 
+## Why...?
+
+- [Why is my information not being saved onto the Order/Customer entries?](/kb-entries/order-customer-information-not-saving)
+
 ## How does X work?
 
 - [Licensing](/kb-articles/licensing)
