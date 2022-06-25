@@ -67,4 +67,4 @@ Out-of-the-box, Simple Commerce ships with support for three of the big [payment
 
 To get started with Simple Commerce, follow the [Installation Guide](/installation). It'll walk you through the process of getting up and running!
 
-And, if you have any questions, [send me an email](mailto:help@doublethree.digital) and I'll be more than happy to help!
+If you run into any issues, please please [open an GitHub issue](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) or [send me an email](mailto:help@doublethree.digital). I'd be more than happy to help!
