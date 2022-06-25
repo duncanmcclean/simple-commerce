@@ -19,7 +19,7 @@ Here's a collection of short, helpful articles you'll probably find useful at so
 
 ## Why...?
 
-- [Why is my information not being saved onto the Order/Customer entries?](/kb-entries/order-customer-information-not-saving)
+- [Why is my information not being saved onto the Order/Customer entries?](/kb-articles/order-customer-information-not-saving)
 
 ## How does X work?
 
