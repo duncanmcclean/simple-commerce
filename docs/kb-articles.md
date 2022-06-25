@@ -25,3 +25,4 @@ Here's a collection of short, helpful articles you'll probably find useful at so
 
 - [Licensing](/kb-articles/licensing)
 - [Headless](/kb-articles/headless)
+- [Support Policy & Versioning](/kb-articles/support-versioning)

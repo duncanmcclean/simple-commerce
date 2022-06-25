@@ -79,15 +79,9 @@ There's full documentation of Simple Commerce over on it's [documentation site](
 
 Simple Commerce is a commercial addon - you **must purchase a license** via the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce) to use it in a production environment.
 
-## Security
+## Support Policy & Versioning
 
-Only the latest version of Simple Commerce (v3.x) will receive security updates if a vulnerability is found.
-
-If you discover a security vulnerability, please report it to Duncan straight away, [via email](mailto:security@doublethree.digital). Please don't report security issues through GitHub Issues.
-
-## Official Support
-
-If you're in need of some help with Simple Commerce, [send me an email](mailto:help@doublethree.digital) and I'll do my best to help! (I'll usually respond within a day)
+You may review Simple Commerce's [Support Policy & Versioning information](https://simple-commerce.duncanmcclean/kb-articles/support-versioning) on the documentation site.
 
 ## Other Repositories
 
