@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.12 (2022-07-08)
+
+### What's fixed
+
+- Fixed `Undefined variable $site` error with email notifications (sometimes) #666 #683
+
 ## v3.2.11 (2022-06-20)
 
 ### What's improved
