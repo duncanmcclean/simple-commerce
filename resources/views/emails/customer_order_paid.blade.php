@@ -7,9 +7,6 @@ This email is to confirm that your order (**#{{ $order->orderNumber() }}**) has 
 | Items       | Quantity         | Total |
 | :--------- | :------------- | :----- |
 @foreach ($order->lineItems() as $lineItem)
-@php
-$site = \Statamic\Facades\Site::current();
-@endphp
 | [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem->total(), $site) }} |
 @endforeach
 | | Subtotal: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->itemsTotal(), $site) }}

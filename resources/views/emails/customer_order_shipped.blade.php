@@ -8,7 +8,6 @@ This email is to confirm that your recent order (**#{{ $order->orderNumber() }}*
 | :--------- | :------------- | :----- |
 @foreach ($order->lineItems() as $lineItem)
 @php
-$site = \Statamic\Facades\Site::current();
 $product = \DoubleThreeDigital\SimpleCommerce\Facades\Product::find($lineItem['product']);
 @endphp
 | [{{ $product->get('title') }}]({{ optional($product->resource())->absoluteUrl() }}) | {{ $lineItem['quantity'] }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem['total'], $site) }} |
