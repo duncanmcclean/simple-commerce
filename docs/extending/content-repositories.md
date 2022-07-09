@@ -1,14 +1,12 @@
 ---
-title: Content Drivers
+title: Content Repositories
 ---
 
-Simple Commerce has a concept of 'content drivers'. They let you switch out how & where 'things' in Simple Commerce are stored.
+Content Repositories let you switch out how & where 'thing' in Simple Commerce are stored - they're pretty similar to Statamic's [Repositories](https://statamic.dev/extending/repositories) concept.
 
-A content driver consists of a 'repository' which implements a couple of methods to handle creating/finding/saving bits of content. They work in a very similar way to [Repositories](https://statamic.dev/extending/repositories) in Statamic itself.
+The [Database Orders](/database-orders) functionality is essentially two repositories which deal with getting/saving content from the database.
 
-The Database Orders feature is essentially two content drivers which deal with getting content from the database.
-
-You can configure content drivers for the following 'things':
+You can configure content repositories for the following 'things':
 
 - Products
 - Orders
@@ -41,11 +39,11 @@ You can configure content drivers for the following 'things':
 ],
 ```
 
-As you can see, each bit of 'content' has its own 'repository' attached, along with any configuration options that may be needed.
+As you can see, each bit of 'content' has its own repository set, along with any configuration options that may be needed.
 
 ## Example
 
-Here's a bare-bones example of a content driver repository to get you started:
+Here's a bare-bones example of a content repository to get you started:
 
 ```php
 <?php
@@ -89,4 +87,4 @@ class EntryProductRepository implements RepositoryContract
 }
 ```
 
-You may find it helpful to review the built-in content driver repositories while building a custom one.
+You may find it helpful to review the built-in content repositories when building a custom one.
