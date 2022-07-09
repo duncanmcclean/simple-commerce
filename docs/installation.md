@@ -4,29 +4,62 @@ title: Installation
 
 ## Requirements
 
-Simple Commerce has a couple pre-requisites. You'll need all of these installed before you can get started.
+To run Simple Commerce, your server (whether local or production) will need to meet the following requirements:
 
-- PHP 8.0 (and above)
-- Statamic 3.3
-- Laravel 8 (if installing in an existing site)
-- [`php-intl` PHP extension](https://www.php.net/manual/en/book.intl.php)
+- PHP 8.0+
+- [PHP `intl` extension](https://www.php.net/manual/en/book.intl.php)
+- [Statamic CLI](https://github.com/statamic/cli)
+- Some kind of web server (like [Laravel Valet](https://laravel.com/docs/master/valet))
 
-I'd also highly recommend enabling HTTPS on your production site for security.
+And if you're installing into an existing site, your site must be on Statamic 3.3 (or higher) and Laravel 8 (or higher).
 
-## Quick Start
+## Installing with the Starter Kit
 
-If you're starting from fresh, I'd recommend using the Simple Commerce Starter Kit. It comes with Simple Commerce pre-installed, along with some boilerplate views & dummy content.
+When you're starting afresh, I'd recommend using the Simple Commerce Starter Kit. Simple Commerce comes pre-installed, along with cart/checkout templates and some other tweaks.
 
-You should review the starter kit's [README.md file](https://github.com/doublethreedigital/sc-starter-kit#quick-start) for install instructions.
+> **Note:** If you want to use something like Peak, you'll want to install that first, then follow the steps on [installing into an existing site](#content-installing-into-an-existing-site).
 
-## Standard Install
+**1.** Create a site using the Statamic CLI (obviously replace `your-new-site-name` with you actual new site name 😅)
+
+```shell
+statamic new your-new-site-name doublethreedigital/sc-starter-kit
+```
+
+**2.** Now, if you load up the site in your browser, you should see a page like this:
+
+![Starter Kit Starting Point](/img/simple-commerce/starter-kit-starting-point.png)
+
+### What's next?
+
+Now that you're up and running with the Starter Kit, you're probably wanting to get going with development. Here's a list of resources that you might find helpful:
+
+- Documentation (you're already here)
+- [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
+- [GitHub Issues](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
+
+## Installing into an existing site
 
 **1.** Install Simple Commerce with Composer
 
-```bash
+```shell
 composer require doublethreedigital/simple-commerce
 ```
 
-**2.** Run `php please sc:install` - it'll publish the Simple Commerce default blueprints, configuration file and will setup collections and taxonomies.
+**2.** Next, run the `sc:install` command to publish Simple Commerce's config file, collections & blueprints.
 
-**3.** That's it installed. Really simple.
+```shell
+php please sc:install
+```
+
+**3.** And, that's you! 🚀
+
+If you want to confirm you've installed everything correctly, run `php please support:details` and you should see Simple Commerce in the list.
+
+### What's next?
+
+Now that you're up and running with Simple Commerce, you're probably wanting to get going with development. Here's a list of resources that you might find helpful:
+
+- Documentation (you're already here)
+- [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
+- [Starter Kit](https://github.com/doublethreedigital/sc-starter-kit) - to use as a reference when you get stuck (might be useful for cart/checkout templates)
+- [GitHub Issues](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
