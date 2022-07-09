@@ -1,9 +1,9 @@
 ---
-title: KB Articles
+title: Knowledge Base
 table_of_contents: false
 ---
 
-Here's a collection of short, helpful articles you'll probably find useful at some point.
+A collection of short, helpful articles you'll probably find useful at some point or another:
 
 ## How to...
 
