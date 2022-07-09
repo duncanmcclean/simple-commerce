@@ -100,21 +100,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Stock Running Low
-    |--------------------------------------------------------------------------
-    |
-    | Simple Commerce will emit events when stock is running low for a product.
-    | You may configure the threshold used to decide 'when' a product is
-    | running low.
-    |
-    | https://simple-commerce.duncanmcclean.com/stock
-    |
-    */
-
-    'low_stock_threshold' => 10,
-
-    /*
-    |--------------------------------------------------------------------------
     | Tax
     |--------------------------------------------------------------------------
     |
@@ -152,16 +137,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Content Drivers
+    | And some more settings, that probably don't need much describing..
     |--------------------------------------------------------------------------
-    |
-    | Normally, all products/orders/etc are stored as entries. However, as your
-    | store grows you may which to use a database instead. This is where you
-    | come to switch out the 'entry driver' for the 'database driver'.
-    |
-    | https://simple-commerce.duncanmcclean.com/extending/content-drivers
-    |
     */
+
+    // Low Stock Threshold
+
+    'low_stock_threshold' => 10,
+
+    // Content Repositories
 
     'content' => [
         'coupons' => [
