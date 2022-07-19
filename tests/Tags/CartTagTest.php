@@ -216,6 +216,17 @@ class CartTagTest extends TestCase
         $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:itemsTotal }}'));
     }
 
+     /** @test */
+     public function can_get_cart_items_total_with_cart_tax_total()
+     {
+         $cart = Order::make()->itemsTotal(2550)->taxTotal(620);
+         $cart->save();
+
+         $this->fakeCart($cart);
+
+         $this->assertSame('£31.70', (string) $this->tag('{{ sc:cart:itemsTotalWithTax }}'));
+     }
+
     /** @test */
     public function can_get_cart_shipping_total()
     {
