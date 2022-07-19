@@ -54,6 +54,7 @@ There's tags for each of the different totals in a cart.
 - `{{ sc:cart:shipping_total }}` - Returns the shipping total of the cart.
 - `{{ sc:cart:tax_total }}` - Returns the tax total of the cart.
 - `{{ sc:cart:coupon_total }}` - Returns the total amount saved from coupons.
+- `{{ sc:cart:itemsTotalWithTax }}` - Sums up both the items total & tax totals
 
 If you need the 'raw' value for any of these totals, meaning the integer, rather than the formatted currency amount, you can do this: `{{ sc:cart:raw_grand_total }}`.
 
