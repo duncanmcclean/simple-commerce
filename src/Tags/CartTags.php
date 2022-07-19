@@ -2,9 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Str;
+use Statamic\Facades\Site;
 
 class CartTags extends SubTag
 {
@@ -87,6 +89,18 @@ class CartTags extends SubTag
     {
         if ($this->hasCart()) {
             return $this->getCart()->itemsTotal();
+        }
+
+        return 0;
+    }
+
+    public function itemsTotalWithTax()
+    {
+        if ($this->hasCart()) {
+            return Currency::parse(
+                $this->getCart()->itemsTotal() + $this->getCart()->taxTotal(),
+                Site::current()
+            );
         }
 
         return 0;
