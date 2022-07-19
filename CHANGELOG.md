@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.13 (2022-07-19)
+
+### What's new
+
+- Added `{{ sc:cart:itemsTotalWithTax }}` tag to get 'items total + tax total' #687 #688
+
 ## v3.2.12 (2022-07-08)
 
 ### What's fixed
