@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.14 (2022-07-22)
+
+### What's fixed
+
+* Fixed an issue in the upgrade script if you use users for your customers
+
 ## v3.2.13 (2022-07-19)
 
 ### What's new

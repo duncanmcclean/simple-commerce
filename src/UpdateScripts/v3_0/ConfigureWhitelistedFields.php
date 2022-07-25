@@ -36,7 +36,7 @@ class ConfigureWhitelistedFields extends UpdateScript
 
         $customersFieldWhitelist = [];
 
-        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+        if (isset(SimpleCommerce::customerDriver()['collection'])) {
             $customersFieldWhitelist = Collection::findByHandle(SimpleCommerce::customerDriver()['collection'])
                 ->entryBlueprint()
                 ->fields()
