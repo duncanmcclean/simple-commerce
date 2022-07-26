@@ -1,94 +1,40 @@
-<!-- statamic:hide -->
-
-![Banner](./banner.png)
+![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/3.x/banner.png)
 
 ## Simple Commerce
 
-<!-- /statamic:hide -->
+**Build flexible e-commerce sites in Statamic:** Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You retain complete control over the content structure and front-end of your site.
 
-Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You have complete control over the content structure and front-end of your site.
-
-> "Simple Commerce is the perfect e-commerce companion to Statamic. It gives you all the backend goodness you need for your e-commerce site, such as product management, orders and coupons, while letting you keep control over the customer-facing experience. Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!"
+> "Simple Commerce is the perfect e-commerce companion to Statamic. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!"
 >
 > **Ryan Mitchell, [Thought Collective](https://www.thoughtcollective.com/)**
 
-### Everything's just an entry
+## Features
 
-Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
-
-And, when your site grows, it's easy to [move your orders & customers](https://simple-commerce.duncanmcclean.com/database-orders) into a traditional database.
-
-### Payment Gateways
-
-Out-of-the-box, Simple Commerce ships with support for three of the big payment gateways: Stripe, PayPal and Mollie. Use whichever one you need, or if you need something else: it's easy to build one.
-
-- [Documentation: Payment Gateways](https://simple-commerce.duncanmcclean.com/gateways)
-- [Documentation: Building custom gateways](https://simple-commerce.duncanmcclean.com/extending/custom-gateways)
-
-### Flexible Shipping
-
-Provide your customers with different shipping options depending on their address.
-
-- [Documentation: Shipping](https://simple-commerce.duncanmcclean.com/shipping)
-
-### Discounting
-
-Simple Commerce has support for discount coupons. You can limit coupons to certain products or to be used a max number of times. All your customer has to do is redeem the discount during checkout.
-
-- [Documentation: Coupons](https://simple-commerce.duncanmcclean.com/coupons)
-
-### Product Variants
-
-Sometimes you need to sell different versions of the same product. Like a t-shirt, you might want to sell it in Small, Medium & Large - each with different prices and stock levels. That's where Product Variants come in. Create a single product and configure the variants inside it.
-
-- [Documentation: Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
-
-### Multi-site friendly
-
-If you need to sell across different countries, you can take advantage of Statamic's multi-site feature in Simple Commerce to have a site per currency. Each site may also have its own set of shipping methods.
-
-- [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/multisite)
-
-### And lots more...
-
-Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
-
-## Installation
-
-> If you're starting a fresh site, you might be better using the Simple Commerce Starter Kit. [**→ Learn More**](https://github.com/doublethreedigital/sc-starter-kit#quick-start)
-
-First, require Simple Commerce as a Composer dependency:
-
-```
-composer require doublethreedigital/simple-commerce
-```
-
-Next, run the `sc:install` command to publish Simple Commerce's config file, setup its collections and copy over any other necessary files.
-
-```
-php please sc:install
-```
-
-And you're done!
+- Native to Statamic - everything's just an entry
+- [Integrates with Antlers](https://simple-commerce.duncanmcclean.com/tags)
+- Supports popular payment gateways ([Stripe](https://simple-commerce.duncanmcclean.com/gateways/stripe), [Mollie](https://simple-commerce.duncanmcclean.com/gateways/mollie) & [PayPal](https://simple-commerce.duncanmcclean.com/gateways/paypal))
+- [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
+- [Coupons](https://simple-commerce.duncanmcclean.com/coupons)
+- [Flexible Shipping](https://simple-commerce.duncanmcclean.com/shipping)
 
 ## Documentation
 
-There's full documentation of Simple Commerce over on it's [documentation site](https://simple-commerce.duncanmcclean.com).
+Visit the [Simple Commerce website](https://simple-commerce.duncanmcclean.com/) to read the documentation & knowledge base articles.
+
+## Support
+
+If you have any questions or need help, please let me know! Either via [GitHub Issues](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) (for bugs & feature requests) or [via email](mailto:help@doublethree.digital) for everything else!
+
+> Only version **3.0 and above** is currently supported. Review the [Support Policy](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) for more information.
 
 ## Commercial addon
 
 Simple Commerce is a commercial addon - you **must purchase a license** via the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce) to use it in a production environment.
 
-## Support Policy & Versioning
-
-You may review Simple Commerce's [Support Policy & Versioning information](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) on the documentation site.
-
 ## Other Repositories
 
 - [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
 - [**Digital Products Addon**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
-
-<!-- statamic:hide -->
 
 ---
 
@@ -96,5 +42,3 @@ You may review Simple Commerce's [Support Policy & Versioning information](https
 <a href="https://statamic.com"><img src="https://img.shields.io/badge/Statamic-3.3+-FF269E?style=for-the-badge" alt="Compatible with Statamic v3"></a>
 <a href="https://packagist.org/packages/doublethreedigital/simple-commerce/stats"><img src="https://img.shields.io/packagist/v/doublethreedigital/simple-commerce?style=for-the-badge" alt="Simple Commerce on Packagist"></a>
 </p>
-
-<!-- /statamic:hide -->
