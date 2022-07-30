@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.16 (2022-07-30)
+
+### What's fixed
+
+- Fixed issues when users rename the 'Collections' nav item in the CP #692
+
 ## v3.2.15 (2022-07-28)
 
 ### What's fixed
