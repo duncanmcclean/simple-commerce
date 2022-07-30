@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
@@ -318,10 +319,12 @@ class ServiceProvider extends AddonServiceProvider
             }
 
             // Drop any collection items from 'Collections' nav
-            $collections = $nav->content('Collections');
+            $collectionsNavItem = collect($nav->items())->first(function (NavItem $navItem) {
+                return $navItem->url() === cp_route('collections.index');
+            });
 
-            if ($collections->children()) {
-                $children = $collections->children()()
+            if ($collectionsNavItem && $collectionsNavItem->children()) {
+                $children = $collectionsNavItem->children()()
                     ->reject(function ($child) {
                         return in_array(
                             $child->name(),
@@ -338,7 +341,7 @@ class ServiceProvider extends AddonServiceProvider
                         );
                     });
 
-                $collections->children(function () use ($children) {
+                $collectionsNavItem->children(function () use ($children) {
                     return $children;
                 });
             }
