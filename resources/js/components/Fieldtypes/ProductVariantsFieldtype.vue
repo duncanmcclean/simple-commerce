@@ -8,15 +8,14 @@
                     :key="variantIndex"
                     class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
                 >
-                    <div
-                        class="grid-item-header"
-                    >
+                    <div class="grid-item-header">
                         {{ variant.name || 'Variant' }}
                         <button
                             v-if="variants.length > 1"
                             class="icon icon-cross cursor-pointer"
                             @click="deleteVariant(variantIndex)"
-                            :aria-label="__('Delete Variant')" />
+                            :aria-label="__('Delete Variant')"
+                        />
                     </div>
                     <publish-fields-container>
                         <publish-field
@@ -52,14 +51,21 @@
 
                     <publish-fields-container>
                         <publish-field
-                            v-for="(optionField, optionIndex) in meta.option_fields"
-                            :key="'option-'+ optionField.handle"
+                            v-for="(optionField,
+                            optionIndex) in meta.option_fields"
+                            :key="'option-' + optionField.handle"
                             :config="optionField"
                             :value="option[optionField.handle]"
                             :meta="meta[optionField.handle]"
                             :errors="errors(optionField.handle)"
                             class="p-2"
-                            @input="updatedOptions(index, optionField.handle, $event)"
+                            @input="
+                                updatedOptions(
+                                    index,
+                                    optionField.handle,
+                                    $event
+                                )
+                            "
                             @meta-updated="metaUpdated(option.handle, $event)"
                             @focus="$emit('focus')"
                             @blur="$emit('blur')"
@@ -80,10 +86,7 @@ import View from '../../statamic/View'
 export default {
     name: 'product-variants-fieldtype',
 
-    mixins: [
-        Fieldtype,
-        View,
-    ],
+    mixins: [Fieldtype, View],
 
     components: {
         GridHeaderCell,
@@ -109,21 +112,28 @@ export default {
 
     computed: {
         cartesian() {
-            let data = this.variants.filter((variant) => {
-                return variant.values.length != 0
-            }).flatMap((variant) => [variant.values])
+            let data = this.variants
+                .filter(variant => {
+                    return variant.values.length != 0
+                })
+                .flatMap(variant => [variant.values])
 
             if (data.length == 0) {
                 return []
             }
 
-            return data.reduce((acc, curr) => acc.flatMap(c => curr.map(n => [].concat(c, n))))
+            return data.reduce((acc, curr) =>
+                acc.flatMap(c => curr.map(n => [].concat(c, n)))
+            )
         },
 
         baseContainer() {
             let parent = this.$parent
 
-            while (parent && parent.$options._componentTag !== 'publish-container') {
+            while (
+                parent &&
+                parent.$options._componentTag !== 'publish-container'
+            ) {
                 parent = parent.$parent
             }
 
@@ -185,11 +195,12 @@ export default {
                     return
                 }
 
-                this.options = this.cartesian.map((item) => {
-                    let key = (typeof item === 'string') ? item : item.join('_')
-                    let variantName = (typeof item === 'string') ? item : item.join(', ')
+                this.options = this.cartesian.map(item => {
+                    let key = typeof item === 'string' ? item : item.join('_')
+                    let variantName =
+                        typeof item === 'string' ? item : item.join(', ')
 
-                    let existingData = this.value.options.filter((option) => {
+                    let existingData = this.value.options.filter(option => {
                         return option.key === key
                     })[0]
 
@@ -198,9 +209,11 @@ export default {
                             price: 0,
                         }
 
-                        Object.entries(this.meta.option_field_defaults).forEach(([key, value]) => {
-                            existingData[key] = value
-                        })
+                        Object.entries(this.meta.option_field_defaults).forEach(
+                            ([key, value]) => {
+                                existingData[key] = value
+                            }
+                        )
                     }
 
                     return {
