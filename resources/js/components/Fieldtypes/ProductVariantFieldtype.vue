@@ -1,31 +1,40 @@
 <template>
     <div class="bg-white">
-        <div v-if="initializing" class="flex flex-col items-center justify-center text-center p-1">
+        <div
+            v-if="initializing"
+            class="flex flex-col items-center justify-center text-center p-1"
+        >
             <loading-graphic />
         </div>
 
         <div v-else>
-            <p
-                v-if="value == null"
-                class="text-sm p-1"
-            >Product doesn't support variants.</p>
+            <p v-if="value == null" class="text-sm p-1">
+                Product doesn't support variants.
+            </p>
 
-            <p
-                v-else-if="productVariantsData == null"
-                class="text-sm p-1"
-            >No product selected.</p>
+            <p v-else-if="productVariantsData == null" class="text-sm p-1">
+                No product selected.
+            </p>
 
             <select-field
-                v-else-if="productVariantsData && productVariantsData.purchasable_type === 'VARIANT'"
+                v-else-if="
+                    productVariantsData &&
+                        productVariantsData.purchasable_type === 'VARIANT'
+                "
                 :options="productVariantOptions"
                 :disabled="readOnly"
                 v-model="variant.variant"
             ></select-field>
 
             <p
-                v-else-if="productVariantsData && productVariantsData.purchasable_type === 'PRODUCT'"
+                v-else-if="
+                    productVariantsData &&
+                        productVariantsData.purchasable_type === 'PRODUCT'
+                "
                 class="text-sm p-1"
-            >Product doesn't support variants.</p>
+            >
+                Product doesn't support variants.
+            </p>
         </div>
     </div>
 </template>
@@ -38,7 +47,7 @@ export default {
     name: 'product-variant-fieldtype',
 
     components: {
-        SelectField
+        SelectField,
     },
 
     mixins: [Fieldtype],
@@ -56,14 +65,16 @@ export default {
 
     computed: {
         product() {
-            return Statamic.$store.state.publish.base.values.items[this.namePrefix.match(/\[(.*)\]/).pop()].product[0]
+            return Statamic.$store.state.publish.base.values.items[
+                this.namePrefix.match(/\[(.*)\]/).pop()
+            ].product[0]
         },
 
         productVariantOptions() {
-            return this.productVariantsData.variants.options.map((variant) => {
+            return this.productVariantsData.variants.options.map(variant => {
                 return {
                     label: variant.variant,
-                    value: variant.key
+                    value: variant.key,
                 }
             })
         },
@@ -71,18 +82,21 @@ export default {
 
     methods: {
         getProductVariants() {
-            if (! this.product) {
+            if (!this.product) {
                 this.initializing = false
-                return;
+                return
             }
 
-            axios.post(this.meta.api, { product: this.product })
-                .then((response) => {
+            axios
+                .post(this.meta.api, { product: this.product })
+                .then(response => {
                     this.productVariantsData = response.data
                     this.initializing = false
                 })
-                .catch((error) => {
-                    console.error('There was an error fetching variants for this product.')
+                .catch(error => {
+                    console.error(
+                        'There was an error fetching variants for this product.'
+                    )
                 })
         },
     },
@@ -92,7 +106,7 @@ export default {
             this.initializing = false
         }
 
-        if (this.variant && ! this.variant.product) {
+        if (this.variant && !this.variant.product) {
             this.variant.product = this.product
         }
 
@@ -103,12 +117,12 @@ export default {
         product() {
             this.variant = {
                 variant: null,
-                product: this.product
+                product: this.product,
             }
 
             this.productVariantsData = null
             this.getProductVariants()
-        }
-    }
+        },
+    },
 }
 </script>

@@ -2,10 +2,7 @@
     <div class="form-group w-full">
         <label class="block mb-1">Region</label>
         <select v-model="region" class="input-text">
-            <option
-                value=""
-                selected
-                disabled="true">
+            <option value="" selected disabled="true">
                 Please select
             </option>
             <option
@@ -46,7 +43,7 @@ export default {
             this.region = this.value
         }
 
-        countryInput.addEventListener('change', (e) => {
+        countryInput.addEventListener('change', e => {
             this.region = null
             this.fetchRegions(countryInput.value)
         })
@@ -54,11 +51,16 @@ export default {
 
     methods: {
         fetchRegions(country) {
-            axios.get(cp_url(`/simple-commerce/fieldtype-api/regions?country=${country}`))
-                .then((response) => {
+            axios
+                .get(
+                    cp_url(
+                        `/simple-commerce/fieldtype-api/regions?country=${country}`
+                    )
+                )
+                .then(response => {
                     this.regions = response.data
                 })
-                .catch((error) => {
+                .catch(error => {
                     this.$toast.error(`There was an error fectching regions.`)
                 })
         },

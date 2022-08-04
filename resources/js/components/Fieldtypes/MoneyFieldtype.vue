@@ -6,7 +6,8 @@
             :prepend="symbol"
             :isReadOnly="config.read_only || readOnly"
             placeholder="00.00"
-            @input="update" />
+            @input="update"
+        />
     </div>
 </template>
 

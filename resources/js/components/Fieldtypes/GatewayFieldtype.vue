@@ -1,22 +1,22 @@
 <template>
     <div class="relationship-input">
-        <p
-            v-if="value == null"
-            class="text-sm py-1"
-        >No Gateway</p>
+        <p v-if="value == null" class="text-sm py-1">No Gateway</p>
 
-        <div v-else class="relationship-input-items space-y-1 outline-none" tabindex="0">
+        <div
+            v-else
+            class="relationship-input-items space-y-1 outline-none"
+            tabindex="0"
+        >
             <div class="item select-none item outline-none" tabindex="0">
                 <div class="item-inner">
-                    <a 
-                        :href="paymentDisplay.url" 
-                        target="_blank"
-                    >
+                    <a :href="paymentDisplay.url" target="_blank">
                         {{ paymentDisplay.text }}
                     </a>
                 </div>
 
-                <div class="text-4xs text-grey-60 uppercase whitespace-no-wrap mr-1">
+                <div
+                    class="text-4xs text-grey-60 uppercase whitespace-no-wrap mr-1"
+                >
                     {{ gatewayName }}
                 </div>
 
@@ -41,9 +41,9 @@
 
 export default {
     name: 'gateway-fieldtype',
-    
+
     mixins: [
-        Fieldtype, 
+        Fieldtype,
         // HasActions
     ],
 
@@ -68,7 +68,7 @@ export default {
         gatewayName() {
             const gatewayClass = this.value.gateway_class
 
-            const gateway = this.meta.gateways.find((gateway) => {
+            const gateway = this.meta.gateways.find(gateway => {
                 return gateway.class === gatewayClass
             })
 
@@ -82,10 +82,10 @@ export default {
         },
 
         actionCompleted() {
-            this.$events.$emit('clear-selections');
-            this.$events.$emit('reset-action-modals');
+            this.$events.$emit('clear-selections')
+            this.$events.$emit('reset-action-modals')
 
-            this.$toast.success(__('Action completed'));
+            this.$toast.success(__('Action completed'))
         },
     },
 }
