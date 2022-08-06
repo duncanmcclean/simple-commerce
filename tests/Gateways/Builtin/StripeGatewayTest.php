@@ -325,7 +325,7 @@ class StripeGatewayTest extends TestCase
             'card' => [
                 'number' => '4242424242424242',
                 'exp_month' => 7,
-                'exp_year' => 2022,
+                'exp_year' => 2024,
                 'cvc' => '314',
             ],
         ]);
@@ -422,7 +422,7 @@ class StripeGatewayTest extends TestCase
             'card' => [
                 'number' => '4242424242424242',
                 'exp_month' => 7,
-                'exp_year' => 2022,
+                'exp_year' => 2024,
                 'cvc' => '314',
             ],
         ]);
