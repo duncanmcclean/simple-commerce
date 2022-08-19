@@ -36,25 +36,25 @@ class EntryProductRepository implements RepositoryContract
             ->resource($entry)
             ->id($entry->id());
 
-        if ($entry->has('price')) {
-            $product->price($entry->get('price'));
+        if ($entry->has('price') || $entry->originValues()->has('price')) {
+            $product->price($entry->value('price'));
         }
 
-        if ($entry->has('product_variants')) {
-            $product->productVariants($entry->get('product_variants'));
+        if ($entry->has('product_variants') || $entry->originValues()->has('product_variants')) {
+            $product->productVariants($entry->value('product_variants'));
         }
 
-        if ($entry->has('stock')) {
-            $product->stock($entry->get('stock'));
+        if ($entry->has('stock') || $entry->originValues()->has('stock')) {
+            $product->stock($entry->value('stock'));
         }
 
-        if (SimpleCommerce::isUsingStandardTaxEngine() && $entry->has('tax_category')) {
-            $product->taxCategory($entry->get('tax_category'));
+        if (SimpleCommerce::isUsingStandardTaxEngine() && ($entry->has('tax_category') || $entry->originValues()->has('tax_category'))) {
+            $product->taxCategory($entry->value('tax_category'));
         }
 
         return $product->data(array_merge(
             Arr::except(
-                $entry->data()->toArray(),
+                $entry->values()->toArray(),
                 ['price', 'product_variants', 'stock', 'tax_category']
             ),
             [
