@@ -14,7 +14,7 @@ If you discover a security vulnerability, please report it straight away, [via e
 
 ### Customer Support
 
-If you require support with Simple Commerce, please [open an GitHub issue](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) or [send me an email](mailto:help@doublethree.digital). I'd be more than happy to help!
+If you require support with Simple Commerce, please [open an GitHub issue](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) or [send me an email](mailto:hello@doublethree.digital). I'd be more than happy to help!
 
 ## Versioning
 
