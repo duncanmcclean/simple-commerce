@@ -73,7 +73,7 @@ php artisan make:notification OrderPaidNotification
 ],
 ```
 
-3. Copy over pretty much everything from [the default notification](https://github.com/doublethreedigital/simple-commerce/blob/2.3/src/Notifications/CustomerOrderPaid.php#L15) we provide and paste it into your new notification class.
+3. Copy over pretty much everything from [the default notification](https://github.com/duncanmcclean/simple-commerce/blob/3.x/src/Notifications/CustomerOrderPaid.php#L15) we provide and paste it into your new notification class.
 
 4. Make whatever changes you need to make!
 

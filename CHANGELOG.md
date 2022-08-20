@@ -301,7 +301,7 @@ There's quite a lot of breaking changes between v2.4 and v3.0. It's highly recom
 
 The first of a few beta releases of Simple Commerce v3.0! There's quite a lot of breaking changes between v2.4 & v3.0, so I'd highly recommend you read the [upgrade guide](./docs/upgrade-guide.md) before upgrading.
 
-PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md#v300-2022-xx-xx).
+PS: A proper list of what's new/improved is available in the [draft v3.0 changelog](https://github.com/duncanmcclean/simple-commerce/blob/main/CHANGELOG.md#v300-2022-xx-xx).
 
 ## v2.4.11 (2022-04-26)
 
@@ -523,11 +523,11 @@ Simple Commerce v2.4 is on it's way - this is the very first beta release! The p
 
 -   Then run: `composer update doublethreedigital/simple-commerce --with-all-dependencies`
 
-After this, I'd recommend running through the [upgrade guide](https://github.com/doublethreedigital/simple-commerce/blob/main/docs/upgrade-guide.md) which explains any changes you may need to make.
+After this, I'd recommend running through the [upgrade guide](https://github.com/duncanmcclean/simple-commerce/blob/main/docs/upgrade-guide.md) which explains any changes you may need to make.
 
 ### Full Changelog
 
-For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/main/CHANGELOG.md).
+For more information on what's new/what's changed, review the [`CHANGELOG.md`](https://github.com/duncanmcclean/simple-commerce/blob/main/CHANGELOG.md).
 
 ---
 
@@ -1085,7 +1085,7 @@ FYI: You'll need to be running Statamic 3.1 to install the beta.
 
 ### More info
 
-For more information on what's new and any breaking changes, review the [`CHANGELOG.md`](https://github.com/doublethreedigital/simple-commerce/blob/2.3/CHANGELOG.md).
+For more information on what's new and any breaking changes, review the [`CHANGELOG.md`](https://github.com/duncanmcclean/simple-commerce/blob/2.3/CHANGELOG.md).
 
 ## v2.2.21 (2021-04-20)
 
@@ -1126,7 +1126,7 @@ For more information on what's new and any breaking changes, review the [`CHANGE
 
 ## v2.2.14 (2021-03-08)
 
--   [new] A new [`ReceiveGatewayWebhook`](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
+-   [new] A new [`ReceiveGatewayWebhook`](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/ReceiveGatewayWebhook.php) event is dispatched when a gateway webhook is received.
 -   [new] You can now specify a different redirect URL for errors. - `error_redirect`.
 -   [fix] Improved handling of Mollie webhooks, we now detect if an order has been paid and redirect correctly. #384
 -   [fix] Fixed issue where cookie cart driver wasn't forgetting cart after checkout #383
@@ -1140,7 +1140,7 @@ For more information on what's new and any breaking changes, review the [`CHANGE
 -   [new] Added [Ignition Solutions](https://flareapp.io/docs/solutions/introduction) to some exceptions to help with debugging.
 -   [fix] Fixed the ability to update an existing cart item with a negative quantity #375
 -   [fix] Fixed an incorrect method signature in the shipping method stub #380
--   Tidied up [the `README`](https://github.com/doublethreedigital/simple-commerce) (but it's not really code related)
+-   Tidied up [the `README`](https://github.com/duncanmcclean/simple-commerce) (but it's not really code related)
 
 ## v2.2.12 (2021-02-22)
 
@@ -1376,7 +1376,7 @@ A whole lot of API related changes this release...
 
 ## v2.1.4 (2020-11-12)
 
--   [fix] Fixed issue with [Woodland](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Woodland.php) when installing Simple Commerce for the first time. #313
+-   [fix] Fixed issue with [Woodland](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Woodland.php) when installing Simple Commerce for the first time. #313
 -   [fix] Fixed issue with product variants fieldtype on new product entries. #314
 -   [fix] Fixed issue when adding a new variation in product variants fieldtype
 -   [fix] Localize and use plural/signular stuff with index text for product variants fields.
@@ -1409,7 +1409,7 @@ A whole lot of API related changes this release...
 
 ## v2.0.23 (2020-10-05)
 
--   [new] Licensing statistics - so we can check how many sites are using Simple Commerce, what versions are in use and if they have valid licenses. (also introduced in [v2.1.2](https://github.com/doublethreedigital/simple-commerce/releases/tag/v2.1.2))
+-   [new] Licensing statistics - so we can check how many sites are using Simple Commerce, what versions are in use and if they have valid licenses. (also introduced in [v2.1.2](https://github.com/duncanmcclean/simple-commerce/releases/tag/v2.1.2))
 
 ## v2.0.22 (2020-10-04)
 

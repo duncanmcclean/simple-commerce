@@ -14,7 +14,7 @@ class BasicTaxEngineTest extends TestCase
 {
     /**
      * @test
-     * Inline with the fix suggested here: https://github.com/doublethreedigital/simple-commerce/pull/438#issuecomment-888498198
+     * Inline with the fix suggested here: https://github.com/duncanmcclean/simple-commerce/pull/438#issuecomment-888498198
      */
     public function can_calculate_tax_when_not_included_in_price()
     {
@@ -130,7 +130,7 @@ class BasicTaxEngineTest extends TestCase
 
     /**
      * @test
-     * Covers #430 (https://github.com/doublethreedigital/simple-commerce/pull/430)
+     * Covers #430 (https://github.com/duncanmcclean/simple-commerce/pull/430)
      */
     public function ensure_round_value_tax_is_calculated_correctly()
     {

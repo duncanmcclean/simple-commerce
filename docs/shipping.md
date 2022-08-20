@@ -60,7 +60,7 @@ In these cases, you may configure a default Shipping Method which will be used w
 
 During the cart/checkout flow, you'll want to do 2 things: first, let the customer enter their shipping address for the order and secondly, let the customer select the shipping method you want to use for the order.
 
-Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/doublethreedigital/sc-starter-kit/blob/main/resources/views/cart.antlers.html).
+Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/cart.antlers.html).
 
 ```antlers
 {{ sc:cart:update }}
@@ -83,7 +83,7 @@ When submitted, that form will fill in the appropriate address fields.
 
 > **Hot tip:** You can also do `billing_name`, `billing_address`, `billing_city` etc to allow the user to update their billing address.
 
-After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/doublethreedigital/sc-starter-kit/blob/main/resources/views/checkout/shipping.antlers.html).
+After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/checkout/shipping.antlers.html).
 
 ```antlers
 {{ sc:cart:update }}

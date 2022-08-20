@@ -622,7 +622,7 @@ class CartTagTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/pull/650
+     * https://github.com/duncanmcclean/simple-commerce/pull/650
      */
     public function can_get_data_from_cart_when_method_should_be_converted_to_studly_case()
     {

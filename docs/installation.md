@@ -35,7 +35,7 @@ Now that you're up and running with the Starter Kit, you're probably wanting to 
 
 - Documentation (you're already here)
 - [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
-- [GitHub Issues](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
+- [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
 
 ## Installing into an existing site
 
@@ -61,5 +61,5 @@ Now that you're up and running with Simple Commerce, you're probably wanting to 
 
 - Documentation (you're already here)
 - [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
-- [Starter Kit](https://github.com/doublethreedigital/sc-starter-kit) - to use as a reference when you get stuck (might be useful for cart/checkout templates)
-- [GitHub Issues](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
+- [Starter Kit](https://github.com/duncanmcclean/sc-starter-kit) - to use as a reference when you get stuck (might be useful for cart/checkout templates)
+- [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features

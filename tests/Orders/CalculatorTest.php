@@ -368,7 +368,7 @@ class CalculatorTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/651
+     * https://github.com/duncanmcclean/simple-commerce/issues/651
      */
     public function ensure_percentage_coupon_is_calculated_correctly_on_items_total_when_value_is_a_decimal_number()
     {
@@ -415,7 +415,7 @@ class CalculatorTest extends TestCase
 
     /**
      * @test
-     * Ref mentioned screencast on: https://github.com/doublethreedigital/simple-commerce/issues/651
+     * Ref mentioned screencast on: https://github.com/duncanmcclean/simple-commerce/issues/651
      */
     public function ensure_percentage_coupon_is_calculated_correctly_on_items_total_when_product_price_has_pence()
     {
@@ -506,7 +506,7 @@ class CalculatorTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/651
+     * https://github.com/duncanmcclean/simple-commerce/issues/651
      */
     public function ensure_fixed_coupon_is_calculated_correctly_on_items_total_when_value_is_a_decimal_number()
     {

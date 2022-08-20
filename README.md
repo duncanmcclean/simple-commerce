@@ -1,4 +1,4 @@
-![Banner](https://raw.githubusercontent.com/doublethreedigital/simple-commerce/3.x/banner.png)
+![Banner](./banner.png)
 
 ## Simple Commerce
 
@@ -23,7 +23,7 @@ Visit the [Simple Commerce website](https://simple-commerce.duncanmcclean.com/) 
 
 ## Support
 
-If you have any questions or need help, please let me know! Either via [GitHub Issues](https://github.com/doublethreedigital/simple-commerce/issues/new/choose) (for bugs & feature requests) or [via email](mailto:help@doublethree.digital) for everything else!
+If you have any questions or need help, please let me know! Either via [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) (for bugs & feature requests) or [via email](mailto:help@doublethree.digital) for everything else!
 
 > Only version **3.0 and above** is currently supported. Review the [Support Policy](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) for more information.
 
@@ -33,8 +33,8 @@ Simple Commerce is a commercial addon - you **must purchase a license** via the 
 
 ## Other Repositories
 
-- [**Starter Kit**](https://github.com/doublethreedigital/sc-starter-kit): Demo Templates & Boilerplate for your custom store
-- [**Digital Products Addon**](https://github.com/doublethreedigital/sc-digital-products): Sell digital products with Simple Commerce
+- [**Starter Kit**](https://github.com/duncanmcclean/sc-starter-kit): Demo Templates & Boilerplate for your custom store
+- [**Digital Products Addon**](https://github.com/duncanmcclean/sc-digital-products): Sell digital products with Simple Commerce
 
 ---
 

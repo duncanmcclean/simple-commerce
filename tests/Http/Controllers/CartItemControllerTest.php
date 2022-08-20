@@ -909,7 +909,7 @@ class CartItemControllerTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     * https://github.com/duncanmcclean/simple-commerce/issues/658
      */
     public function can_store_item_with_customer_array_and_additional_customer_information()
     {
@@ -959,7 +959,7 @@ class CartItemControllerTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     * https://github.com/duncanmcclean/simple-commerce/issues/658
      */
     public function can_store_item_with_customer_array_and_existing_customer_and_additional_customer_information()
     {

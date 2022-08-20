@@ -526,7 +526,7 @@ class CheckoutControllerTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/629
+     * https://github.com/duncanmcclean/simple-commerce/issues/629
      */
     public function can_post_checkout_with_customer_where_customer_has_invalid_orders()
     {
@@ -745,7 +745,7 @@ class CheckoutControllerTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     * https://github.com/duncanmcclean/simple-commerce/issues/658
      */
     public function can_post_checkout_with_customer_array_with_additional_information()
     {
@@ -818,7 +818,7 @@ class CheckoutControllerTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     * https://github.com/duncanmcclean/simple-commerce/issues/658
      */
     public function can_post_checkout_with_customer_array_and_existing_customer_with_additional_information()
     {

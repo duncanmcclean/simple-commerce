@@ -200,7 +200,7 @@ class CartControllerTest extends TestCase
 
     /**
      * @test
-     * https://github.com/doublethreedigital/simple-commerce/issues/658
+     * https://github.com/duncanmcclean/simple-commerce/issues/658
      */
     public function can_update_cart_with_customer_already_in_cart_with_additional_data()
     {
@@ -559,7 +559,7 @@ class CartControllerTest extends TestCase
 
     /**
      * @test
-     * PR: https://github.com/doublethreedigital/simple-commerce/pull/337
+     * PR: https://github.com/duncanmcclean/simple-commerce/pull/337
      */
     public function can_update_cart_and_ensure_customer_is_not_overwritten()
     {

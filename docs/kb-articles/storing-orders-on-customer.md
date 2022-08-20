@@ -18,4 +18,4 @@ Therefore, a `from="customer"` parameter will need to be provided when using the
 {{ /sc:customers:orders }}
 ```
 
-_This feature was implemented after a feature request, [see Discussion](https://github.com/doublethreedigital/simple-commerce/discussions/369)._
+_This feature was implemented after a feature request, [see Discussion](https://github.com/duncanmcclean/simple-commerce/discussions/369)._
