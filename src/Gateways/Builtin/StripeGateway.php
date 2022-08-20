@@ -234,7 +234,7 @@ class StripeGateway extends BaseGateway implements Gateway
         Stripe::setAppInfo(
             'Simple Commerce (Statamic)',
             SimpleCommerce::version(),
-            'https://statamic.com/addons/double-three-digital/simple-commerce',
+            'https://statamic.com/addons/duncanmcclean/simple-commerce',
             'pp_partner_Jnvy4cdwcRmxfh'
         );
 
