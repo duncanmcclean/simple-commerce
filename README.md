@@ -29,7 +29,7 @@ If you have any questions or need help, please let me know! Either via [GitHub I
 
 ## Commercial addon
 
-Simple Commerce is a commercial addon - you **must purchase a license** via the [Statamic Marketplace](https://statamic.com/addons/double-three-digital/simple-commerce) to use it in a production environment.
+Simple Commerce is a commercial addon - you **must purchase a license** via the [Statamic Marketplace](https://statamic.com/addons/duncanmcclean/simple-commerce) to use it in a production environment.
 
 ## Other Repositories
 
