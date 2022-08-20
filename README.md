@@ -23,7 +23,7 @@ Visit the [Simple Commerce website](https://simple-commerce.duncanmcclean.com/) 
 
 ## Support
 
-If you have any questions or need help, please let me know! Either via [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) (for bugs & feature requests) or [via email](mailto:help@doublethree.digital) for everything else!
+If you have any questions or need help, please let me know! Either via [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) (for bugs & feature requests) or [via email](mailto:hello@doublethree.digital) for everything else!
 
 > Only version **3.0 and above** is currently supported. Review the [Support Policy](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) for more information.
 
