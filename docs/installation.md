@@ -22,7 +22,7 @@ When you're starting afresh, I'd recommend using the Simple Commerce Starter Kit
 **1.** Create a site using the Statamic CLI (obviously replace `your-new-site-name` with you actual new site name 😅)
 
 ```shell
-statamic new your-new-site-name doublethreedigital/sc-starter-kit
+statamic new your-new-site-name duncanmcclean/sc-starter-kit
 ```
 
 **2.** Now, if you load up the site in your browser, you should see a page like this:
