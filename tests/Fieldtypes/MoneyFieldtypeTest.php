@@ -79,6 +79,16 @@ class MoneyFieldtypeTest extends TestCase
     }
 
     /** @test */
+    public function can_augment_data_when_value_is_null()
+    {
+        $value = null;
+
+        $augment = (new MoneyFieldtype())->augment($value);
+
+        $this->assertSame(null, $augment);
+    }
+
+    /** @test */
     public function can_get_pre_process_index()
     {
         $value = 2572;
