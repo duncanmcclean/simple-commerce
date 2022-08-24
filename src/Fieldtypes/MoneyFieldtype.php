@@ -62,6 +62,10 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        if (empty($value)) {
+            return null;
+        }
+
         return Currency::parse($value, Site::current());
     }
 
