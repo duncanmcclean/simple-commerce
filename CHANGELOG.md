@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v3.2.18 (2022-08-24)
+
+### What's fixed
+
+-   Fixed an issue with the Money fieldtype when no value is set #459 #700
+
 ## v3.2.17 (2022-08-19)
 
 ### What's fixed
