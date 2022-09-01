@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## v3.2.19 (2022-09-01)
+
+### What's new
+
+-   Simple Commerce will now show a 'Customers' nav item if you're using the user customer driver. #702 #703
+
+### What's fixed
+
+-   When using the user customer driver in combination with database users, there was an issue where a 'super user' check would error out. #702 #703
+
+### What's improved
+
+-   Removed usage of `parseLoop` method in Tags - it's not very performant and isn't really needed.
+
 ## v3.2.18 (2022-08-24)
 
 ### What's fixed
