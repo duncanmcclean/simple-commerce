@@ -3,9 +3,11 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\OverviewRequest;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Overview;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Collection;
+use Statamic\Facades\User;
 
 class OverviewController
 {
@@ -25,13 +27,19 @@ class OverviewController
             return ['data' => $data];
         }
 
-        $showEntriesWarning = $request->user()->isSuper()
-            && isset(SimpleCommerce::orderDriver()['collection'])
+        $showEntriesWarning = User::current()->isSuper()
+            && $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)
             && Collection::find(SimpleCommerce::orderDriver()['collection'])->queryEntries()->count() > 5000;
 
         return view('simple-commerce::cp.overview', [
             'widgets' => Overview::widgets(),
             'showEntriesWarning' => $showEntriesWarning,
         ]);
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

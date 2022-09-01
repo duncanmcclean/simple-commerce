@@ -137,7 +137,7 @@ class Customer implements Contract
 
     public function toResource()
     {
-        if (isset(SimpleCommerce::customerDriver()['collection'])) {
+        if ($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EntryCustomerRepository::class)) {
             return new EntryResource($this->resource());
         }
 
@@ -166,5 +166,11 @@ class Customer implements Contract
         }
 
         return null;
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

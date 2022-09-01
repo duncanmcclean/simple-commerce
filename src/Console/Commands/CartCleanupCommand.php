@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
+use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
@@ -18,7 +20,7 @@ class CartCleanupCommand extends Command
     {
         $this->info('Cleaning up..');
 
-        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
                 ->where('is_paid', false)
                 ->filter(function ($entry) {
@@ -33,7 +35,7 @@ class CartCleanupCommand extends Command
             return;
         }
 
-        if (isset(SimpleCommerce::orderDriver()['model'])) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
             $orderModelClass = SimpleCommerce::orderDriver()['model'];
 
             (new $orderModelClass)
@@ -50,5 +52,11 @@ class CartCleanupCommand extends Command
         }
 
         return $this->error('Unable to cleanup carts with provided cart driver.');
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -126,7 +127,7 @@ class MollieGateway extends BaseGateway implements Gateway
         if ($payment->status === PaymentStatus::STATUS_PAID) {
             $order = null;
 
-            if (isset(SimpleCommerce::orderDriver()['collection'])) {
+            if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                 // TODO: refactor this query
                 $order = collect(OrderFacade::all())
                     ->filter(function ($entry) use ($mollieId) {
@@ -198,5 +199,11 @@ class MollieGateway extends BaseGateway implements Gateway
 
             return explode('/', parse_url($profileDashboardUrl, PHP_URL_PATH))[2];
         });
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

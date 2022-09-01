@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Filters;
 
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Query\Scopes\Filter;
 
@@ -67,7 +68,7 @@ class OrderStatusFilter extends Filter
 
     public function visibleTo($key)
     {
-        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $key === 'entries'
                 && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
         }
@@ -80,5 +81,11 @@ class OrderStatusFilter extends Filter
         }
 
         return false;
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
