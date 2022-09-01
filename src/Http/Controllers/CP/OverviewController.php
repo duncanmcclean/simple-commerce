@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\OverviewRequest;
 use DoubleThreeDigital\SimpleCommerce\Overview;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Collection;
+use Statamic\Facades\User;
 
 class OverviewController
 {
@@ -25,7 +26,7 @@ class OverviewController
             return ['data' => $data];
         }
 
-        $showEntriesWarning = $request->user()->isSuper()
+        $showEntriesWarning = User::current()->isSuper()
             && isset(SimpleCommerce::orderDriver()['collection'])
             && Collection::find(SimpleCommerce::orderDriver()['collection'])->queryEntries()->count() > 5000;
 
