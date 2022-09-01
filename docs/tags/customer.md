@@ -3,6 +3,7 @@ title: Customer
 ---
 
 ## Get a customer
+
 This tag allows you to get a customer by their ID. Remember to provide the `id` parameter which should be the ID of the customer.
 
 ```antlers
@@ -12,6 +13,7 @@ This tag allows you to get a customer by their ID. Remember to provide the `id` 
 ```
 
 ### Update a customer
+
 This tag allows you to update an existing customer. Remember to provide the `id` parameter which should be the ID of the customer.
 
 ```antlers
@@ -21,6 +23,7 @@ This tag allows you to update an existing customer. Remember to provide the `id`
 ```
 
 ### Get orders by customer
+
 This tag allows you to loop through orders created by a customer. Remember to provide the `customer` parameter which should be the ID of the customer.
 
 ```antlers
@@ -30,6 +33,7 @@ This tag allows you to loop through orders created by a customer. Remember to pr
 ```
 
 ### Get order by customer
+
 This tag allows you to get an order created by a customer. This tag has two parameters. `id` for the ID of the order you want to get and `customer` is the ID of the customer you want to get.
 
 ```antlers
