@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
@@ -17,7 +18,7 @@ class RefundAction extends Action
 
     public function visibleTo($item)
     {
-        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $item instanceof Entry
                 && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
                 && $item->get('is_paid') === true
@@ -49,5 +50,11 @@ class RefundAction extends Action
                 return Gateway::use($order->currentGateway()['class'])
                     ->refundCharge($order);
             });
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Action;
 use Statamic\Fields\Fieldtype;
@@ -46,7 +47,7 @@ class GatewayFieldtype extends Fieldtype
             })
             ->values();
 
-        if (isset(SimpleCommerce::orderDriver()['collection'])) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             $actionUrl = cp_route(
                 'collections.entries.actions.run',
                 $this->field->parent()->collection->handle()
@@ -112,5 +113,11 @@ class GatewayFieldtype extends Fieldtype
         }
 
         return $gateway['name'];
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

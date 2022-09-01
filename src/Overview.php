@@ -4,9 +4,14 @@ namespace DoubleThreeDigital\SimpleCommerce;
 
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
@@ -46,7 +51,7 @@ class Overview
                 $timePeriod = CarbonPeriod::create(now()->subDays(30)->format('Y-m-d'), now()->format('Y-m-d'));
 
                 return collect($timePeriod)->map(function ($date) {
-                    if (isset(SimpleCommerce::orderDriver()['collection'])) {
+                    if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                         $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                             ->queryEntries()
                             ->where('is_paid', true)
@@ -54,7 +59,7 @@ class Overview
                             ->get();
                     }
 
-                    if (isset(SimpleCommerce::orderDriver()['model'])) {
+                    if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
                         $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                         $query = $orderModel::query()
@@ -78,7 +83,7 @@ class Overview
                 'component' => 'overview-recent-orders',
             ],
             function (Request $request) {
-                if (isset(SimpleCommerce::orderDriver()['collection'])) {
+                if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                     $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                         ->queryEntries()
                         ->where('is_paid', true)
@@ -101,7 +106,7 @@ class Overview
                     });
                 }
 
-                if (isset(SimpleCommerce::orderDriver()['model'])) {
+                if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
                     $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                     $query = $orderModel::query()
@@ -140,7 +145,7 @@ class Overview
                 'component' => 'overview-top-customers',
             ],
             function (Request $request) {
-                if (isset(SimpleCommerce::customerDriver()['collection'])) {
+                if ($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EntryCustomerRepository::class)) {
                     $query = Collection::find(SimpleCommerce::customerDriver()['collection'])
                         ->queryEntries()
                         ->get()
@@ -163,7 +168,7 @@ class Overview
                     });
                 }
 
-                if (isset(SimpleCommerce::customerDriver()['model'])) {
+                if ($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
                     $customerModel = new (SimpleCommerce::customerDriver()['model']);
 
                     $query = $customerModel::query()
@@ -223,7 +228,7 @@ class Overview
                 'component' => 'overview-low-stock-products',
             ],
             function (Request $request) {
-                if (isset(SimpleCommerce::productDriver()['collection'])) {
+                if ($this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)) {
                     $query = Collection::find(SimpleCommerce::productDriver()['collection'])
                         ->queryEntries()
                         ->where('stock', '<', config('simple-commerce.low_stock_threshold'))
@@ -252,5 +257,11 @@ class Overview
                 return null;
             },
         );
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

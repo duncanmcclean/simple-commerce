@@ -264,13 +264,18 @@ class ServiceProvider extends AddonServiceProvider
                 ->can('view simple commerce overview')
                 ->icon('charts');
 
-            if (isset(SimpleCommerce::orderDriver()['collection'])) {
+            if (
+                $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+            ) {
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::orderDriver()['collection'])
                     ->can('view', Collection::find(SimpleCommerce::orderDriver()['collection']))
                     ->icon(SimpleCommerce::svg('shop'));
-            } elseif (isset(SimpleCommerce::orderDriver()['model'])) {
+            } elseif (
+                class_exists('DoubleThreeDigital\Runway\Runway') &&
+                $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class)
+            ) {
                 $orderModelClass = SimpleCommerce::orderDriver()['model'];
                 $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
 
@@ -281,13 +286,26 @@ class ServiceProvider extends AddonServiceProvider
                     ->icon(SimpleCommerce::svg('shop'));
             }
 
-            if (isset(SimpleCommerce::customerDriver()['collection'])) {
+            if (
+                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+            ) {
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::customerDriver()['collection'])
                     ->can('view', Collection::find(SimpleCommerce::customerDriver()['collection']))
                     ->icon('user');
-            } elseif (isset(SimpleCommerce::customerDriver()['model'])) {
+            } elseif (
+                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class)
+            ) {
+                $nav->create(__('Customers'))
+                    ->section(__('Simple Commerce'))
+                    ->route('users.index')
+                    ->can('index', \Statamic\Contracts\Auth\User::class)
+                    ->icon('user');
+            } elseif (
+                class_exists('DoubleThreeDigital\Runway\Runway') &&
+                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class)
+            ) {
                 $customerModelClass = SimpleCommerce::customerDriver()['model'];
                 $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $customerModelClass);
 
@@ -385,5 +403,11 @@ class ServiceProvider extends AddonServiceProvider
         }
 
         return $this;
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
