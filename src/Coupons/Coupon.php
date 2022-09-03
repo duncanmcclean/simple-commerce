@@ -167,8 +167,7 @@ class Coupon implements Contract
         $this->code = $freshCoupon->code;
         $this->value = $freshCoupon->value;
         $this->type = $freshCoupon->type;
-        $this->data = $freshCoupon->data;
-        $this->resource = $freshCoupon->resource;
+        $this->data = $freshCoupon->data();
 
         return $this;
     }

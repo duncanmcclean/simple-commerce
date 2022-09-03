@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -24,7 +25,14 @@ class CouponControllerTest extends TestCase
     {
         parent::setUp();
 
-        File::deleteDirectory(base_path('content/collections/coupons'));
+        if (! file_exists(base_path('content/simple-commerce/coupons'))) {
+            File::makeDirectory(base_path('content/simple-commerce/coupons'));
+        }
+
+        collect(File::allFiles(base_path('content/simple-commerce/coupons')))
+            ->each(function ($file) {
+                File::delete($file);
+            });
 
         $this->useBasicTaxEngine();
     }
@@ -36,9 +44,8 @@ class CouponControllerTest extends TestCase
 
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
-            ->slug('hof-price')
+        $coupon = Coupon::make()
+            ->code('hof-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
@@ -76,9 +83,8 @@ class CouponControllerTest extends TestCase
 
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
-            ->slug('halav-price')
+        $coupon = Coupon::make()
+            ->code('halav-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
@@ -118,10 +124,9 @@ class CouponControllerTest extends TestCase
     {
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('half-price')
+            ->code('half-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 5,
@@ -181,10 +186,9 @@ class CouponControllerTest extends TestCase
 
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('half-price')
+            ->code('half-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
@@ -222,10 +226,9 @@ class CouponControllerTest extends TestCase
     {
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('half-price')
+            ->code('half-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 5,
@@ -275,10 +278,9 @@ class CouponControllerTest extends TestCase
         $this->cart->customer($customer->id());
         $this->cart->save();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('hof-price')
+            ->code('hof-price')
             ->data([
                 'title'              => 'Hof Price',
                 'redeemed'           => 0,
@@ -327,10 +329,9 @@ class CouponControllerTest extends TestCase
         $this->cart->customer(null);
         $this->cart->save();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('halv-price')
+            ->code('halv-price')
             ->data([
                 'title'              => 'Halv Price',
                 'redeemed'           => 0,
@@ -366,10 +367,9 @@ class CouponControllerTest extends TestCase
     {
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('half-price')
+            ->code('half-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
@@ -402,10 +402,9 @@ class CouponControllerTest extends TestCase
     {
         $this->buildCartWithProducts();
 
-        $coupon = Entry::make()
-            ->collection('coupons')
+        $coupon = Coupon::make()
             ->id(Stache::generateId())
-            ->slug('half-price')
+            ->code('half-price')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
