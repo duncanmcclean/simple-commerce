@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Illuminate\Contracts\Validation\Rule;
 
