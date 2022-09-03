@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
-use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
 class CouponControllerTest extends TestCase

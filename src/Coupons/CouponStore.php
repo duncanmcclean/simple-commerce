@@ -3,10 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use Illuminate\Support\Arr;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
-use Illuminate\Support\Arr;
 
 class CouponStore extends BasicStore
 {
