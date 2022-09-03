@@ -46,7 +46,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -85,7 +85,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -126,7 +126,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 5,
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 5, // We shouldn't be able to use because of this
@@ -187,7 +187,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
                 'products'           => [$this->product->id],
@@ -227,7 +227,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 5,
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 0,
@@ -279,7 +279,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Hof Price',
+                'description'        => 'Hof Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
                 'customers'          => [$customer->id],
@@ -330,7 +330,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Halv Price',
+                'description'        => 'Halv Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
                 'customers'          => [$customer->id],
@@ -367,7 +367,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -401,7 +401,7 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
