@@ -25,6 +25,8 @@ class CouponControllerTest extends TestCase
     {
         parent::setUp();
 
+        Stache::store('simple-commerce-coupons')->clear();
+
         collect(File::allFiles(base_path('content/simple-commerce/coupons')))
             ->each(function ($file) {
                 File::delete($file);
@@ -42,11 +44,11 @@ class CouponControllerTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('hof-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
 
@@ -81,11 +83,11 @@ class CouponControllerTest extends TestCase
 
         $coupon = Coupon::make()
             ->code('halav-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
 
@@ -121,13 +123,12 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $coupon = Coupon::make()
-            ->id(Stache::generateId())
             ->code('half-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 5,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 5, // We shouldn't be able to use because of this
             ]);
@@ -183,13 +184,12 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $coupon = Coupon::make()
-            ->id(Stache::generateId())
             ->code('half-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'products'           => [$this->product->id],
             ]);
@@ -225,11 +225,11 @@ class CouponControllerTest extends TestCase
         $coupon = Coupon::make()
             ->id(Stache::generateId())
             ->code('half-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 5,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 0,
                 'products'           => ['another-product-id'],
@@ -277,11 +277,11 @@ class CouponControllerTest extends TestCase
         $coupon = Coupon::make()
             ->id(Stache::generateId())
             ->code('hof-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Hof Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'customers'          => [$customer->id],
             ]);
@@ -328,11 +328,11 @@ class CouponControllerTest extends TestCase
         $coupon = Coupon::make()
             ->id(Stache::generateId())
             ->code('halv-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Halv Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
                 'customers'          => [$customer->id],
             ]);
@@ -364,13 +364,12 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $coupon = Coupon::make()
-            ->id(Stache::generateId())
             ->code('half-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
 
@@ -399,13 +398,12 @@ class CouponControllerTest extends TestCase
         $this->buildCartWithProducts();
 
         $coupon = Coupon::make()
-            ->id(Stache::generateId())
             ->code('half-price')
+            ->value(50)
+            ->type('percentage')
             ->data([
                 'title'              => 'Half Price',
                 'redeemed'           => 0,
-                'coupon_value'       => 50,
-                'type'               => 'percentage',
                 'minimum_cart_value' => null,
             ]);
 

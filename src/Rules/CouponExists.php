@@ -10,13 +10,13 @@ class CouponExists implements Rule
 {
     public function passes($attribute, $value)
     {
-        try {
-            Coupon::findByCode($value);
+        $coupon = Coupon::findByCode($value);
 
-            return true;
-        } catch (CouponNotFound $e) {
+        if (! $coupon) {
             return false;
         }
+
+        return true;
     }
 
     public function message()

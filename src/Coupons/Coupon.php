@@ -141,6 +141,10 @@ class Coupon implements Contract
 
     public function save(): self
     {
+        if (! $this->id) {
+            $this->id = app('stache')->generateId();
+        }
+
         if (method_exists($this, 'beforeSaved')) {
             $this->beforeSaved();
         }
