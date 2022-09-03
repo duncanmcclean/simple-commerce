@@ -48,6 +48,14 @@ class Coupon implements Contract
     {
         return $this
             ->fluentlyGetOrSet('type')
+            ->setter(function ($value) {
+                // If the value is already set, it's over 100 and it's a percentage, we want to divide it by 100...
+                if ($value === 'percentage' && $this->value > 100) {
+                    $this->value = $this->value / 100;
+                }
+
+                return $value;
+            })
             ->args(func_get_args());
     }
 
@@ -61,7 +69,7 @@ class Coupon implements Contract
                 }
 
                 if ($this->type === 'percentage' && $value > 100) {
-                    $value = $value / 100;
+                    return $value / 100;
                 }
 
                 return $value;
