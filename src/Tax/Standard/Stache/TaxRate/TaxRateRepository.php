@@ -29,7 +29,7 @@ class TaxRateRepository
 
     public function save($taxRate)
     {
-        $this->store->save($f$taxRateorm);
+        $this->store->save($taxRate);
     }
 
     public function delete($taxRate)

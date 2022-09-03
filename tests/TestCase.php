@@ -151,6 +151,10 @@ abstract class TestCase extends OrchestraTestCase
             mkdir(base_path('content/simple-commerce'));
         }
 
+        if (! file_exists(base_path('content/simple-commerce/coupons'))) {
+            mkdir(base_path('content/simple-commerce/coupons'));
+        }
+
         if (! file_exists(base_path('content/simple-commerce/tax-categories'))) {
             mkdir(base_path('content/simple-commerce/tax-categories'));
         }

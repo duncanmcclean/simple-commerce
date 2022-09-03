@@ -25,10 +25,6 @@ class CouponControllerTest extends TestCase
     {
         parent::setUp();
 
-        if (! file_exists(base_path('content/simple-commerce/coupons'))) {
-            File::makeDirectory(base_path('content/simple-commerce/coupons'));
-        }
-
         collect(File::allFiles(base_path('content/simple-commerce/coupons')))
             ->each(function ($file) {
                 File::delete($file);
