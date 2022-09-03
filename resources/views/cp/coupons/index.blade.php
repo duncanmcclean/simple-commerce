@@ -19,6 +19,7 @@
                     <th>Code</th>
                     <th>Description</th>
                     <th>Discount</th>
+                    <th>Redeemed</th>
                     <th class="actions-column"></th>
                 </tr>
             </thead>
@@ -40,6 +41,9 @@
                             @else
                                 {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($coupon->value(), \Statamic\Facades\Site::current()) }} off
                             @endif
+                        </td>
+                        <td>
+                            {{ $coupon->get('redeemed') ?? '0' }} times
                         </td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
