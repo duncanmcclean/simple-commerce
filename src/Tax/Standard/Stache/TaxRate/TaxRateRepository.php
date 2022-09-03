@@ -2,11 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxRate;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\TaxRateRepository as Contract;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
 
-class TaxRateRepository
+class TaxRateRepository implements Contract
 {
     protected $stache;
     protected $store;
@@ -27,17 +28,17 @@ class TaxRateRepository
         return $this->query()->where('id', $id)->first();
     }
 
-    public function save($taxRate)
+    public function save($taxRate): void
     {
         $this->store->save($taxRate);
     }
 
-    public function delete($taxRate)
+    public function delete($taxRate): void
     {
         $this->store->delete($taxRate);
     }
 
-    public function query()
+    public function query(): TaxRateQueryBuilder
     {
         return new TaxRateQueryBuilder($this->store);
     }

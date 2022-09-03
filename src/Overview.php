@@ -51,7 +51,7 @@ class Overview
                 $timePeriod = CarbonPeriod::create(now()->subDays(30)->format('Y-m-d'), now()->format('Y-m-d'));
 
                 return collect($timePeriod)->map(function ($date) {
-                    if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+                    if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                         $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                             ->queryEntries()
                             ->where('is_paid', true)
@@ -59,7 +59,7 @@ class Overview
                             ->get();
                     }
 
-                    if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+                    if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
                         $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                         $query = $orderModel::query()
@@ -83,7 +83,7 @@ class Overview
                 'component' => 'overview-recent-orders',
             ],
             function (Request $request) {
-                if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+                if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                     $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                         ->queryEntries()
                         ->where('is_paid', true)
@@ -106,7 +106,7 @@ class Overview
                     });
                 }
 
-                if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+                if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
                     $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                     $query = $orderModel::query()
@@ -145,7 +145,7 @@ class Overview
                 'component' => 'overview-top-customers',
             ],
             function (Request $request) {
-                if ($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EntryCustomerRepository::class)) {
+                if ((new self)->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EntryCustomerRepository::class)) {
                     $query = Collection::find(SimpleCommerce::customerDriver()['collection'])
                         ->queryEntries()
                         ->get()
@@ -168,7 +168,7 @@ class Overview
                     });
                 }
 
-                if ($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
+                if ((new self)->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
                     $customerModel = new (SimpleCommerce::customerDriver()['model']);
 
                     $query = $customerModel::query()
@@ -228,7 +228,7 @@ class Overview
                 'component' => 'overview-low-stock-products',
             ],
             function (Request $request) {
-                if ($this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)) {
+                if ((new self)->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)) {
                     $query = Collection::find(SimpleCommerce::productDriver()['collection'])
                         ->queryEntries()
                         ->where('stock', '<', config('simple-commerce.low_stock_threshold'))

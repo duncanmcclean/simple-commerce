@@ -2,13 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxCategory;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\TaxCategoryRepository as Contract;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
 
-class TaxCategoryRepository
+class TaxCategoryRepository implements Contract
 {
     protected $stache;
     protected $store;
@@ -33,17 +34,17 @@ class TaxCategoryRepository
         return $this->query()->where('id', $id)->first();
     }
 
-    public function save($taxCategory)
+    public function save($taxCategory): void
     {
         $this->store->save($taxCategory);
     }
 
-    public function delete($taxCategory)
+    public function delete($taxCategory): void
     {
         $this->store->delete($taxCategory);
     }
 
-    public function query()
+    public function query(): TaxCategoryQueryBuilder
     {
         return new TaxCategoryQueryBuilder($this->store);
     }

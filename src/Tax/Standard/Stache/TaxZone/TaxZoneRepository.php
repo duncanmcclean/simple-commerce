@@ -2,11 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxZone;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\TaxZoneRepository as Contract;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxZone;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
 
-class TaxZoneRepository
+class TaxZoneRepository implements Contract
 {
     protected $stache;
     protected $store;
@@ -27,17 +28,17 @@ class TaxZoneRepository
         return $this->query()->where('id', $id)->first();
     }
 
-    public function save($taxZone)
+    public function save($taxZone): void
     {
         $this->store->save($taxZone);
     }
 
-    public function delete($taxZone)
+    public function delete($taxZone): void
     {
         $this->store->delete($taxZone);
     }
 
-    public function query()
+    public function query(): TaxZoneQueryBuilder
     {
         return new TaxZoneQueryBuilder($this->store);
     }
