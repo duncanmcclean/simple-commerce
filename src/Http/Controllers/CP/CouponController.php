@@ -58,6 +58,10 @@ class CouponController
     {
         $coupon = Coupon::find($coupon);
 
+        if (! $coupon) {
+            abort(404);
+        }
+
         $blueprint = CouponBlueprint::getBlueprint();
 
         $fields = $blueprint->fields();
