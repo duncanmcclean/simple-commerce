@@ -327,11 +327,11 @@ class ServiceProvider extends AddonServiceProvider
                 ->can('view', Collection::find(SimpleCommerce::productDriver()['collection']))
                 ->icon('entries');
 
-            // $nav->create(__('Coupons'))
-            //     ->section(__('Simple Commerce'))
-            //     ->route('collections.show', SimpleCommerce::couponDriver()['collection'])
-            //     ->can('view', Collection::find(SimpleCommerce::couponDriver()['collection']))
-            //     ->icon('tags');
+            $nav->create(__('Coupons'))
+                ->section(__('Simple Commerce'))
+                ->route('simple-commerce.coupons.index')
+                ->can('view coupons')
+                ->icon('tags');
 
             if (SimpleCommerce::isUsingStandardTaxEngine()) {
                 $nav->create(__('Tax'))
@@ -377,6 +377,15 @@ class ServiceProvider extends AddonServiceProvider
     {
         Permission::register('view simple commerce overview')
             ->label('View Simple Commerce Overview');
+
+        Permission::register('view coupons', function ($permission) {
+            $permission->children([
+                Permission::make('edit coupons')->children([
+                    Permission::make('create coupons'),
+                    Permission::make('delete coupons'),
+                ]),
+            ]);
+        });
 
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             Permission::register('view tax rates', function ($permission) {

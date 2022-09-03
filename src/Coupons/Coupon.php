@@ -207,6 +207,27 @@ class Coupon implements Contract
         return $this->toArray();
     }
 
+    public function editUrl()
+    {
+        return cp_route('simple-commerce.coupons.edit', [
+            'coupon' => $this->id(),
+        ]);
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('simple-commerce.coupons.update', [
+            'coupon' => $this->id(),
+        ]);
+    }
+
+    public function deleteUrl()
+    {
+        return cp_route('simple-commerce.coupons.destroy', [
+            'coupon' => $this->id(),
+        ]);
+    }
+
     public function path()
     {
         return Stache::store('simple-commerce-coupons')->directory() . str_slug($this->code()) . '.yaml';

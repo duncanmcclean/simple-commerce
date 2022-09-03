@@ -35,7 +35,7 @@ class MigrateCouponsToStache extends UpdateScript
                             'title',
                         ])->toArray(),
                         [
-                            'name' => $entry->get('title'),
+                            'description' => $entry->get('title'),
                         ]
                     ));
 
