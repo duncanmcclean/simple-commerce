@@ -16,6 +16,7 @@
         <table class="data-table">
             <thead>
                 <tr>
+                    <th>Code</th>
                     <th>Description</th>
                     <th>Discount</th>
                     <th class="actions-column"></th>
@@ -27,8 +28,11 @@
                     <tr id="coupon_{{ $coupon->id() }}">
                         <td>
                             <div class="flex items-center">
-                                <a href="{{ $coupon->editUrl() }}">{{ $coupon->get('description') }}</a>
+                                <a class="font-mono" href="{{ $coupon->editUrl() }}">{{ $coupon->code() }}</a>
                             </div>
+                        </td>
+                        <td>
+                            {{ $coupon->get('description') ?? '-' }}
                         </td>
                         <td>
                             @if($coupon->type() === 'percentage')
@@ -43,11 +47,11 @@
                                     <dropdown-item :text="__('Edit')" redirect="{{ $coupon->editUrl() }}"></dropdown-item>
                                 @endif
 
-                                @if($coupon->id() !== 'everywhere' && auth()->user()->can('delete coupons'))
+                                @if(auth()->user()->can('delete coupons'))
                                     <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
                                         <resource-deleter
                                             ref="deleter"
-                                            resource-title="{{ $coupon->get('name') }}"
+                                            resource-title="{{ $coupon->get('code') }}"
                                             route="{{ $coupon->deleteUrl() }}"
                                             :reload="true"
                                             @deleted="document.getElementById('coupon_{{ $coupon->id() }}').remove()"

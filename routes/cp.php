@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
     Route::get('/overview', [OverviewController::class, 'index'])->name('overview');
 
-    Route::resource('coupons', CouponController::class)->except('show');
+    Route::resource('coupons', CouponController::class)->except('show', 'update');
+    Route::post('coupons/{coupon}', [CouponController::class, 'update'])->name('coupons.update');
 
     if (SimpleCommerce::isUsingStandardTaxEngine()) {
         Route::redirect('tax', 'tax/rates')->name('tax');

@@ -184,13 +184,12 @@ class Coupon implements Contract
 
     public function toArray(): array
     {
-        return [
+        return array_merge($this->data()->toArray(), [
             'id' => $this->id(),
             'code' => $this->code(),
             'value' => $this->value(),
             'type' => $this->type(),
-            'data' => $this->data()->all(),
-        ];
+        ]);
     }
 
     public function toResource()

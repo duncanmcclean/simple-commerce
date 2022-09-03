@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Statamic\Facades\Collection;
 use Statamic\UpdateScripts\UpdateScript;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
+use Illuminate\Support\Str;
 
 class MigrateCouponsToStache extends UpdateScript
 {
@@ -23,7 +24,7 @@ class MigrateCouponsToStache extends UpdateScript
             ->get()
             ->each(function ($entry) {
                 $coupon = Coupon::make()
-                    ->code($entry->slug())
+                    ->code(Str::upper($entry->slug()))
                     ->type($entry->get('type'))
                     ->value($entry->get('coupon_value') ?? $entry->get('value'))
                     ->data(array_merge(

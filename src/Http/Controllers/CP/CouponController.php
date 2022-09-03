@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
 use DoubleThreeDigital\SimpleCommerce\Countries;
+use DoubleThreeDigital\SimpleCommerce\Coupons\CouponBlueprint;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\CreateRequest;
@@ -12,6 +13,8 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\UpdateRequest;
 use Statamic\Facades\Stache;
+use Statamic\Support\Arr;
+use Statamic\Support\Str;
 
 class CouponController
 {
@@ -24,53 +27,71 @@ class CouponController
 
     public function create(CreateRequest $request)
     {
-        return view('simple-commerce::cp.coupons.create');
+        $blueprint = CouponBlueprint::getBlueprint();
+
+        $fields = $blueprint->fields();
+        $fields = $fields->preProcess();
+
+        return view('simple-commerce::cp.coupons.create', [
+            'blueprint' => $blueprint->toPublishArray(),
+            'values' => $fields->values(),
+            'meta' => $fields->meta(),
+        ]);
     }
 
     public function store(StoreRequest $request)
     {
-        // $taxZone = TaxZone::make()
-        //     ->id(Stache::generateId())
-        //     ->name($request->name)
-        //     ->country($request->country);
+        $coupon = Coupon::make()
+            ->code(Str::upper($request->code))
+            ->type($request->type)
+            ->value($request->value)
+            ->data(Arr::except($request->validated(), ['code', 'type', 'value']));
 
-        // if ($request->region) {
-        //     $taxZone->region($request->region);
-        // }
+        $coupon->save();
 
-        // $taxZone->save();
-
-        // return redirect(cp_route('simple-commerce.tax-zones.index'));
+        return [
+            'redirect' => $coupon->editUrl(),
+        ];
     }
 
-    public function edit(EditRequest $request, $taxZone)
+    public function edit(EditRequest $request, $coupon)
     {
-        // $taxZone = TaxZone::find($taxZone);
+        $coupon = Coupon::find($coupon);
 
-        // return view('simple-commerce::cp.tax-zones.edit', [
-        //     'taxZone' => $taxZone,
-        //     'countries' => Countries::sortBy('name')->all(),
-        // ]);
+        $blueprint = CouponBlueprint::getBlueprint();
+
+        $fields = $blueprint->fields();
+        $fields = $fields->addValues($coupon->toArray());
+        $fields = $fields->preProcess();
+
+        return view('simple-commerce::cp.coupons.edit', [
+            'coupon' => $coupon,
+
+            'blueprint' => $blueprint->toPublishArray(),
+            'values' => $fields->values(),
+            'meta' => $fields->meta(),
+        ]);
     }
 
-    public function update(UpdateRequest $request, $taxZone)
+    public function update(UpdateRequest $request, $coupon)
     {
-        // $taxZone = TaxZone::find($taxZone)
-        //     ->name($request->name)
-        //     ->country($request->country);
+        $coupon = Coupon::find($coupon);
 
-        // if ($request->region) {
-        //     $taxZone->region($request->region);
-        // }
+        $coupon
+            ->code(Str::upper($request->code))
+            ->type($request->type)
+            ->value($request->value)
+            ->data(Arr::except($request->validated(), ['code', 'type', 'value']))
+            ->save();
 
-        // $taxZone->save();
-
-        // return redirect($taxZone->editUrl());
+        return [
+            'coupon' => $coupon,
+        ];
     }
 
-    public function destroy(DeleteRequest $request, $taxZone)
+    public function destroy(DeleteRequest $request, $coupon)
     {
-        Coupon::find($taxZone)->delete();
+        Coupon::find($coupon)->delete();
 
         return redirect(cp_route('simple-commerce.coupons.index'));
     }

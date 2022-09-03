@@ -18,6 +18,45 @@ class StoreRequest extends FormRequest
 
     public function rules()
     {
-        return [];
+        return [
+            'code' => [
+                'required',
+                'string',
+                // TODO: a coupon should not already exist with this code
+            ],
+            'description' => [
+                'nullable',
+                'string',
+            ],
+            'type' => [
+                'required',
+                'string',
+                'in:fixed,percentage',
+            ],
+            'value' => [
+                'required',
+                'numeric',
+                'min:0',
+                // TODO: shouldn't be over 100 if type is a percentage
+            ],
+            'maximum_uses' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
+            'minimum_cart_value' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+            'products' => [
+                'nullable',
+                'array',
+            ],
+            'customers' => [
+                'nullable',
+                'array',
+            ],
+        ];
     }
 }
