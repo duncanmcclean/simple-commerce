@@ -14,13 +14,6 @@ class AddHiddenFields
         }
 
         if (
-            isset(SimpleCommerce::couponDriver()['collection'])
-            && SimpleCommerce::couponDriver()['collection'] === $event->entry->collectionHandle()
-        ) {
-            return $this->addCouponFields($event);
-        }
-
-        if (
             isset(SimpleCommerce::customerDriver()['collection'])
             && SimpleCommerce::customerDriver()['collection'] === $event->entry->collectionHandle()
         ) {
@@ -41,11 +34,6 @@ class AddHiddenFields
             return $this->addProductFields($event);
         }
 
-        return $event->blueprint;
-    }
-
-    protected function addCouponFields(EntryBlueprintFound $event)
-    {
         return $event->blueprint;
     }
 

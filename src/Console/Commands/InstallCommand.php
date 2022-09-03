@@ -53,7 +53,6 @@ class InstallCommand extends Command
         $productDriver = SimpleCommerce::productDriver();
         $customerDriver = SimpleCommerce::customerDriver();
         $orderDriver = SimpleCommerce::orderDriver();
-        $couponDriver = SimpleCommerce::couponDriver();
 
         if (! Collection::handleExists($productDriver['collection'])) {
             $this->info('Creating: Products');
@@ -107,17 +106,6 @@ class InstallCommand extends Command
                 ->save();
         } else {
             $this->warn('Skipping: Orders');
-        }
-
-        if (! Collection::handleExists($couponDriver['collection'])) {
-            $this->info('Creating: Coupons');
-
-            Collection::make($couponDriver['collection'])
-                ->title(Str::title($couponDriver['collection']))
-                ->sites($siteHandles)
-                ->save();
-        } else {
-            $this->warn('Skipping: Coupons');
         }
 
         return $this;

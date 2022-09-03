@@ -7,18 +7,23 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use Statamic\Data\ContainsData;
+use Statamic\Data\ExistsAsFile;
+use Statamic\Data\TracksQueriedColumns;
+use Statamic\Facades\Stache;
 use Statamic\Http\Resources\API\EntryResource;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Coupon implements Contract
 {
-    use HasData;
+    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
     public $id;
     public $code;
     public $value;
     public $type;
-    public $data;
-    public $resource;
+
+    protected $selectedQueryRelations = [];
 
     public function __construct()
     {
@@ -61,13 +66,6 @@ class Coupon implements Contract
 
                 return $value;
             })
-            ->args(func_get_args());
-    }
-
-    public function resource($resource = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
     }
 
@@ -175,22 +173,48 @@ class Coupon implements Contract
         return $this;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id(),
+            'code' => $this->code(),
+            'value' => $this->value(),
+            'type' => $this->type(),
+            'data' => $this->data()->all(),
+        ];
+    }
+
     public function toResource()
     {
-        return new EntryResource($this->resource());
+        // TODO
+        return $this->toArray();
     }
 
     public function toAugmentedArray($keys = null)
     {
-        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-            return isset($field['import']) || $field['handle'] === 'value'; // TODO 4.0: Don't need this as coupon_value is 'the way' now
-        })->pluck('handle')->toArray();
+        // TODO
+        return $this->toArray();
+    }
 
-        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
+    public function path()
+    {
+        return Stache::store('simple-commerce-coupons')->directory() . str_slug($this->code()) . '.yaml';
+    }
 
-        return array_merge(
-            $this->toArray(),
-            $augmentedData,
-        );
+    public function fileData()
+    {
+        return array_merge($this->data()->toArray(), [
+            'id' => $this->id(),
+            'code' => $this->code(),
+            'value' => $this->value(),
+            'type' => $this->type(),
+        ]);
+    }
+
+    public function selectedQueryRelations($relations)
+    {
+        $this->selectedQueryRelations = $relations;
+
+        return $this;
     }
 }

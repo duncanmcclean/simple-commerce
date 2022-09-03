@@ -148,11 +148,6 @@ return [
     // Content Repositories
 
     'content' => [
-        'coupons' => [
-            'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
-            'collection' => 'coupons',
-        ],
-
         'customers' => [
             'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
             'collection' => 'customers',

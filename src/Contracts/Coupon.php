@@ -12,8 +12,6 @@ interface Coupon
 
     public function type($type = null);
 
-    public function resource($resource = null);
-
     public function isValid(Order $order): bool;
 
     public function redeem(): self;
@@ -31,16 +29,6 @@ interface Coupon
     public function toResource();
 
     public function toAugmentedArray($keys = null);
-
-    public function data($data = null);
-
-    public function has(string $key): bool;
-
-    public function get(string $key, $default = null);
-
-    public function set(string $key, $value): self;
-
-    public function merge($data): self;
 
     public function toArray(): array;
 }

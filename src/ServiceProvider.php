@@ -181,10 +181,6 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Calculator::class         => Orders\Calculator::class,
         ];
 
-        if (isset(SimpleCommerce::couponDriver()['repository'])) {
-            $bindings[Contracts\CouponRepository::class] = SimpleCommerce::couponDriver()['repository'];
-        }
-
         if (isset(SimpleCommerce::customerDriver()['repository'])) {
             $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
         }
@@ -225,6 +221,15 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootStacheStores()
     {
+        $couponStore = new Coupons\CouponStore;
+        $couponStore->directory(base_path('content/simple-commerce/coupons'));
+
+        app(Stache::class)->registerStore($couponStore);
+
+        $this->app->bind(Contracts\CouponRepository::class, function () {
+            return new Coupons\CouponRepository(app('stache'));
+        });
+
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
             $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
@@ -322,11 +327,11 @@ class ServiceProvider extends AddonServiceProvider
                 ->can('view', Collection::find(SimpleCommerce::productDriver()['collection']))
                 ->icon('entries');
 
-            $nav->create(__('Coupons'))
-                ->section(__('Simple Commerce'))
-                ->route('collections.show', SimpleCommerce::couponDriver()['collection'])
-                ->can('view', Collection::find(SimpleCommerce::couponDriver()['collection']))
-                ->icon('tags');
+            // $nav->create(__('Coupons'))
+            //     ->section(__('Simple Commerce'))
+            //     ->route('collections.show', SimpleCommerce::couponDriver()['collection'])
+            //     ->can('view', Collection::find(SimpleCommerce::couponDriver()['collection']))
+            //     ->icon('tags');
 
             if (SimpleCommerce::isUsingStandardTaxEngine()) {
                 $nav->create(__('Tax'))
