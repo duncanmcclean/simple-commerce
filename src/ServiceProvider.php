@@ -106,6 +106,8 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v3_0\ConfigureTitleFormats::class,
         UpdateScripts\v3_0\ConfigureWhitelistedFields::class,
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
+
+        UpdateScripts\v4_0\MigrateCouponsToStache::class,
     ];
 
     public function boot()
