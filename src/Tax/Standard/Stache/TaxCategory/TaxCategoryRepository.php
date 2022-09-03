@@ -44,7 +44,7 @@ class TaxCategoryRepository implements Contract
         $this->store->delete($taxCategory);
     }
 
-    public function query():TaxCategoryQueryBuilder
+    public function query(): TaxCategoryQueryBuilder
     {
         return new TaxCategoryQueryBuilder($this->store);
     }
