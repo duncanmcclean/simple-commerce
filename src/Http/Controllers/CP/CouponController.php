@@ -2,17 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponBlueprint;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\CreateRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\DeleteRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\EditRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\UpdateRequest;
-use Statamic\Facades\Stache;
 use Statamic\Support\Arr;
 use Statamic\Support\Str;
 

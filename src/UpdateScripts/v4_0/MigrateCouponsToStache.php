@@ -3,10 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v4_0;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
 use Statamic\UpdateScripts\UpdateScript;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
-use Illuminate\Support\Str;
 
 class MigrateCouponsToStache extends UpdateScript
 {
