@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v3.2.20 (2022-09-03)
+
+### What's fixed
+
+-   Fix overview widgets not loading (#707)
+
+### What's improved
+
+-   Implement contracts for tax repositories
+
 ## v3.2.19 (2022-09-01)
 
 ### What's new
