@@ -27,14 +27,14 @@ class TaxRateRepository
         return $this->query()->where('id', $id)->first();
     }
 
-    public function save($form)
+    public function save($taxRate)
     {
-        $this->store->save($form);
+        $this->store->save($f$taxRateorm);
     }
 
-    public function delete($entry)
+    public function delete($taxRate)
     {
-        $this->store->delete($entry);
+        $this->store->delete($taxRate);
     }
 
     public function query()

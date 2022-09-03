@@ -27,14 +27,14 @@ class TaxZoneRepository
         return $this->query()->where('id', $id)->first();
     }
 
-    public function save($form)
+    public function save($taxZone)
     {
-        $this->store->save($form);
+        $this->store->save($taxZone);
     }
 
-    public function delete($entry)
+    public function delete($taxZone)
     {
-        $this->store->delete($entry);
+        $this->store->delete($taxZone);
     }
 
     public function query()
