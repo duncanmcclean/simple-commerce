@@ -194,14 +194,16 @@ class Coupon implements Contract
 
     public function toResource()
     {
-        // TODO
         return $this->toArray();
     }
 
     public function toAugmentedArray($keys = null)
     {
-        // TODO
-        return $this->toArray();
+        $blueprint = CouponBlueprint::getBlueprint();
+
+        return $blueprint->fields()->addValues($this->toArray())->all()->map->augment($keys)->mapWithKeys(function ($field) {
+            return [$field->handle() => $field->value()];
+        })->all();
     }
 
     public function editUrl()
@@ -232,12 +234,7 @@ class Coupon implements Contract
 
     public function fileData()
     {
-        return array_merge($this->data()->toArray(), [
-            'id' => $this->id(),
-            'code' => $this->code(),
-            'value' => $this->value(),
-            'type' => $this->type(),
-        ]);
+        return $this->toArray();
     }
 
     public function selectedQueryRelations($relations)

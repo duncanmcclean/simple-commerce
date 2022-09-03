@@ -2,10 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository as ContractsCouponRepository;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
 
-class CouponRepository
+class CouponRepository implements ContractsCouponRepository
 {
     protected $stache;
     protected $store;
@@ -31,17 +32,17 @@ class CouponRepository
         return $this->query()->where('code', $code)->first();
     }
 
-    public function save($coupon)
+    public function save($coupon): void
     {
         $this->store->save($coupon);
     }
 
-    public function delete($coupon)
+    public function delete($coupon): void
     {
         $this->store->delete($coupon);
     }
 
-    public function query()
+    public function query(): CouponQueryBuilder
     {
         return new CouponQueryBuilder($this->store);
     }
