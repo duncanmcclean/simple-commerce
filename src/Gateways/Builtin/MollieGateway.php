@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
+use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
@@ -141,7 +142,7 @@ class MollieGateway extends BaseGateway implements Gateway
                     ->first();
             }
 
-            if (isset(SimpleCommerce::orderDriver()['model'])) {
+            if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
                 $order = (new (SimpleCommerce::orderDriver()['model']))
                     ->query()
                     ->where('data->mollie->id', $mollieId)
