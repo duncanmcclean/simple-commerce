@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -17,7 +18,11 @@ class StoreRequest extends FormRequest
             'code' => [
                 'required',
                 'string',
-                // TODO: a coupon should not already exist with this code
+                function ($attribute, $value, $fail) {
+                    if (Coupon::findByCode($value)) {
+                        $fail('A coupon with this code already exists.');
+                    }
+                },
             ],
             'description' => [
                 'nullable',
@@ -32,7 +37,11 @@ class StoreRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0',
-                // TODO: shouldn't be over 100 if type is a percentage
+                function ($attribute, $value, $fail) {
+                    if ($this->type === 'percentage' && $value > 100) {
+                        $fail('Percentage value cannot be over 100.');
+                    }
+                },
             ],
             'maximum_uses' => [
                 'nullable',

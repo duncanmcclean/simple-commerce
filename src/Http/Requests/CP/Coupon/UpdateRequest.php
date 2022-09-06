@@ -17,7 +17,6 @@ class UpdateRequest extends FormRequest
             'code' => [
                 'required',
                 'string',
-                // TODO: a coupon should not already exist with this code
             ],
             'description' => [
                 'nullable',
@@ -32,7 +31,11 @@ class UpdateRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0',
-                // TODO: shouldn't be over 100 if type is a percentage
+                function ($attribute, $value, $fail) {
+                    if ($this->type === 'percentage' && $value > 100) {
+                        $fail('Percentage value cannot be over 100.');
+                    }
+                },
             ],
             'maximum_uses' => [
                 'nullable',
