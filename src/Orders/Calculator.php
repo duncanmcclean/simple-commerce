@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
@@ -172,11 +173,11 @@ class Calculator implements Contract
             $baseAmount = $data['items_total'] + $data['tax_total'];
 
             // Otherwise do all the other stuff...
-            if ($coupon->type() === 'percentage') {
+            if ($coupon->type() === CouponType::PERCENTAGE()) {
                 $data['coupon_total'] = (int) ($value * $baseAmount) / 100;
             }
 
-            if ($coupon->type() === 'fixed') {
+            if ($coupon->type() === CouponType::FIXED()) {
                 $data['coupon_total'] = (int) $baseAmount - ($baseAmount - $value);
             }
 

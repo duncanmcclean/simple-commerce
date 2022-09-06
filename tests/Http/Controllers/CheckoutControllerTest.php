@@ -919,7 +919,7 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Friday',
+                'description'        => 'Fifty Friday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -993,7 +993,7 @@ class CheckoutControllerTest extends TestCase
             ->value(100)
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Friday',
+                'description'        => 'Fifty Friday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
                 'maximum_uses'       => 1,
@@ -1064,7 +1064,7 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Thursday',
+                'description'        => 'Fifty Thursday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => 9000,
             ]);
@@ -1142,7 +1142,7 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Thursday',
+                'description'        => 'Fifty Thursday',
                 'redeemed'           => 10,
                 'maximum_uses'       => 10,
                 'minimum_cart_value' => null,
@@ -1221,7 +1221,7 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Wednesday',
+                'description'        => 'Fifty Wednesday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
                 'products'           => ['a-random-product'],

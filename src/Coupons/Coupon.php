@@ -4,21 +4,24 @@ namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
-use Statamic\Http\Resources\API\EntryResource;
+use Statamic\Data\ContainsData;
+use Statamic\Data\ExistsAsFile;
+use Statamic\Data\TracksQueriedColumns;
+use Statamic\Facades\Stache;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Coupon implements Contract
 {
-    use HasData;
+    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
     public $id;
     public $code;
     public $value;
     public $type;
-    public $data;
-    public $resource;
+
+    protected $selectedQueryRelations = [];
 
     public function __construct()
     {
@@ -43,6 +46,23 @@ class Coupon implements Contract
     {
         return $this
             ->fluentlyGetOrSet('type')
+            ->setter(function ($value) {
+                // Cast to enum
+                if ($value === 'fixed') {
+                    $value = CouponType::FIXED();
+                }
+
+                if ($value === 'percentage') {
+                    $value = CouponType::PERCENTAGE();
+                }
+
+                // If the value is already set, it's over 100 and it's a percentage, we want to divide it by 100...
+                if ($value === CouponType::PERCENTAGE() && $this->value > 100) {
+                    $this->value = $this->value / 100;
+                }
+
+                return $value;
+            })
             ->args(func_get_args());
     }
 
@@ -55,19 +75,12 @@ class Coupon implements Contract
                     $value = (int) str_replace('.', '', $value);
                 }
 
-                if ($this->type === 'percentage' && $value > 100) {
-                    $value = $value / 100;
+                if ($this->type === CouponType::PERCENTAGE() && $value > 100) {
+                    return $value / 100;
                 }
 
                 return $value;
             })
-            ->args(func_get_args());
-    }
-
-    public function resource($resource = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
     }
 
@@ -143,6 +156,10 @@ class Coupon implements Contract
 
     public function save(): self
     {
+        if (! $this->id) {
+            $this->id = app('stache')->generateId();
+        }
+
         if (method_exists($this, 'beforeSaved')) {
             $this->beforeSaved();
         }
@@ -169,28 +186,70 @@ class Coupon implements Contract
         $this->code = $freshCoupon->code;
         $this->value = $freshCoupon->value;
         $this->type = $freshCoupon->type;
-        $this->data = $freshCoupon->data;
-        $this->resource = $freshCoupon->resource;
+        $this->data = $freshCoupon->data();
 
         return $this;
     }
 
+    public function toArray(): array
+    {
+        return array_merge($this->data()->toArray(), [
+            'id' => $this->id(),
+            'code' => $this->code(),
+            'value' => $this->value(),
+            'type' => $this->type(),
+        ]);
+    }
+
     public function toResource()
     {
-        return new EntryResource($this->resource());
+        return $this->toArray();
     }
 
     public function toAugmentedArray($keys = null)
     {
-        $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-            return isset($field['import']) || $field['handle'] === 'value'; // TODO 4.0: Don't need this as coupon_value is 'the way' now
-        })->pluck('handle')->toArray();
+        $blueprint = CouponBlueprint::getBlueprint();
 
-        $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
+        return $blueprint->fields()->addValues($this->toArray())->all()->map->augment($keys)->mapWithKeys(function ($field) {
+            return [$field->handle() => $field->value()];
+        })->all();
+    }
 
-        return array_merge(
-            $this->toArray(),
-            $augmentedData,
-        );
+    public function editUrl()
+    {
+        return cp_route('simple-commerce.coupons.edit', [
+            'coupon' => $this->id(),
+        ]);
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('simple-commerce.coupons.update', [
+            'coupon' => $this->id(),
+        ]);
+    }
+
+    public function deleteUrl()
+    {
+        return cp_route('simple-commerce.coupons.destroy', [
+            'coupon' => $this->id(),
+        ]);
+    }
+
+    public function path()
+    {
+        return Stache::store('simple-commerce-coupons')->directory() . str_slug($this->code()) . '.yaml';
+    }
+
+    public function fileData()
+    {
+        return $this->toArray();
+    }
+
+    public function selectedQueryRelations($relations)
+    {
+        $this->selectedQueryRelations = $relations;
+
+        return $this;
     }
 }

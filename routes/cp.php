@@ -1,5 +1,6 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\OverviewController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
@@ -11,6 +12,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
     Route::get('/overview', [OverviewController::class, 'index'])->name('overview');
+
+    Route::prefix('coupons')->name('coupons.')->group(function () {
+        Route::get('/', [CouponController::class, 'index'])->name('index');
+        Route::get('create', [CouponController::class, 'create'])->name('create');
+        Route::post('/', [CouponController::class, 'store'])->name('store');
+        Route::get('{coupon}/edit', [CouponController::class, 'edit'])->name('edit');
+        Route::post('{coupon}', [CouponController::class, 'update'])->name('update');
+        Route::delete('{coupon}', [CouponController::class, 'destroy'])->name('destroy');
+    });
 
     if (SimpleCommerce::isUsingStandardTaxEngine()) {
         Route::redirect('tax', 'tax/rates')->name('tax');

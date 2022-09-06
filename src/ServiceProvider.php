@@ -107,7 +107,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v3_0\ConfigureWhitelistedFields::class,
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
 
-        UpdateScripts\v3_2\RenameCouponValueField::class,
+        UpdateScripts\v4_0\MigrateCouponsToStache::class,
     ];
 
     public function boot()
@@ -181,10 +181,6 @@ class ServiceProvider extends AddonServiceProvider
             Contracts\Calculator::class         => Orders\Calculator::class,
         ];
 
-        if (isset(SimpleCommerce::couponDriver()['repository'])) {
-            $bindings[Contracts\CouponRepository::class] = SimpleCommerce::couponDriver()['repository'];
-        }
-
         if (isset(SimpleCommerce::customerDriver()['repository'])) {
             $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
         }
@@ -225,6 +221,15 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootStacheStores()
     {
+        $couponStore = new Coupons\CouponStore;
+        $couponStore->directory(base_path('content/simple-commerce/coupons'));
+
+        app(Stache::class)->registerStore($couponStore);
+
+        $this->app->bind(Contracts\CouponRepository::class, function () {
+            return new Coupons\CouponRepository(app('stache'));
+        });
+
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             $taxCategoryStore = new Tax\Standard\Stache\TaxCategory\TaxCategoryStore;
             $taxCategoryStore->directory(base_path('content/simple-commerce/tax-categories'));
@@ -324,8 +329,8 @@ class ServiceProvider extends AddonServiceProvider
 
             $nav->create(__('Coupons'))
                 ->section(__('Simple Commerce'))
-                ->route('collections.show', SimpleCommerce::couponDriver()['collection'])
-                ->can('view', Collection::find(SimpleCommerce::couponDriver()['collection']))
+                ->route('simple-commerce.coupons.index')
+                ->can('view coupons')
                 ->icon('tags');
 
             if (SimpleCommerce::isUsingStandardTaxEngine()) {
@@ -372,6 +377,15 @@ class ServiceProvider extends AddonServiceProvider
     {
         Permission::register('view simple commerce overview')
             ->label('View Simple Commerce Overview');
+
+        Permission::register('view coupons', function ($permission) {
+            $permission->children([
+                Permission::make('edit coupons')->children([
+                    Permission::make('create coupons'),
+                    Permission::make('delete coupons'),
+                ]),
+            ]);
+        });
 
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             Permission::register('view tax rates', function ($permission) {

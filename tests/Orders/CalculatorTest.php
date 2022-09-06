@@ -290,7 +290,7 @@ class CalculatorTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Half Price',
+                'description'        => 'Half Price',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -336,7 +336,7 @@ class CalculatorTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Friday',
+                'description'        => 'Fifty Friday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -383,7 +383,7 @@ class CalculatorTest extends TestCase
             ->value('10.00')
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Friday',
+                'description'        => 'Fifty Friday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -430,7 +430,7 @@ class CalculatorTest extends TestCase
             ->value('10')
             ->type('percentage')
             ->data([
-                'title'              => 'Fifty Friday',
+                'description'        => 'Fifty Friday',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -474,7 +474,7 @@ class CalculatorTest extends TestCase
             ->value(100)
             ->type('fixed')
             ->data([
-                'title'              => 'One Hundred Pence Off (£1)',
+                'description'        => 'One Hundred Pence Off (£1)',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -521,7 +521,7 @@ class CalculatorTest extends TestCase
             ->value('10.00')
             ->type('fixed')
             ->data([
-                'title'              => 'One Hundred Pence Off (£1)',
+                'description'        => 'One Hundred Pence Off (£1)',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);
@@ -567,7 +567,7 @@ class CalculatorTest extends TestCase
             ->value(100)
             ->type('percentage')
             ->data([
-                'title'              => 'One Hundred Pence Off (£1)',
+                'description'        => 'One Hundred Pence Off (£1)',
                 'redeemed'           => 0,
                 'minimum_cart_value' => null,
             ]);

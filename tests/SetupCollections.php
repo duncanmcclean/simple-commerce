@@ -11,7 +11,6 @@ trait SetupCollections
         $this->setupProducts();
         $this->setupCustomers();
         $this->setupOrders();
-        $this->setupCoupons();
     }
 
     public function setupProducts()
@@ -44,14 +43,6 @@ trait SetupCollections
             ->titleFormats([
                 'default' => '#{order_number}',
             ])
-            ->save();
-    }
-
-    public function setupCoupons()
-    {
-        return Collection::make('coupons')
-            ->title('Coupons')
-            ->sites(['default'])
             ->save();
     }
 }

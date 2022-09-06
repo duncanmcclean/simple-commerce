@@ -102,7 +102,6 @@ class TaxCategory
         ]);
     }
 
-    // Statamic 3.3
     public function selectedQueryRelations($relations)
     {
         $this->selectedQueryRelations = $relations;

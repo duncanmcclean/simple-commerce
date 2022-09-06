@@ -166,11 +166,6 @@ class SimpleCommerce
         return config('simple-commerce.content.products');
     }
 
-    public static function couponDriver(): array
-    {
-        return config('simple-commerce.content.coupons');
-    }
-
     public static function customerDriver(): array
     {
         return config('simple-commerce.content.customers');
