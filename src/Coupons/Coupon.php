@@ -47,8 +47,17 @@ class Coupon implements Contract
         return $this
             ->fluentlyGetOrSet('type')
             ->setter(function ($value) {
+                // Cast to enum
+                if ($value === 'fixed') {
+                    $value = CouponType::FIXED();
+                }
+
+                if ($value === 'percentage') {
+                    $value = CouponType::PERCENTAGE();
+                }
+
                 // If the value is already set, it's over 100 and it's a percentage, we want to divide it by 100...
-                if ($value === 'percentage' && $this->value > 100) {
+                if ($value === CouponType::PERCENTAGE() && $this->value > 100) {
                     $this->value = $this->value / 100;
                 }
 
@@ -66,7 +75,7 @@ class Coupon implements Contract
                     $value = (int) str_replace('.', '', $value);
                 }
 
-                if ($this->type === 'percentage' && $value > 100) {
+                if ($this->type === CouponType::PERCENTAGE() && $value > 100) {
                     return $value / 100;
                 }
 

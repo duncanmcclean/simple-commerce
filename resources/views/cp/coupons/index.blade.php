@@ -36,7 +36,7 @@
                             {{ $coupon->get('description') ?? '-' }}
                         </td>
                         <td>
-                            @if($coupon->type() === 'percentage')
+                            @if($coupon->type() === \DoubleThreeDigital\SimpleCommerce\Coupons\CouponType::PERCENTAGE())
                                 {{ $coupon->value() }}% off
                             @else
                                 {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($coupon->value(), \Statamic\Facades\Site::current()) }} off
