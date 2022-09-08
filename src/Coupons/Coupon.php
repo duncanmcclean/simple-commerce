@@ -27,6 +27,7 @@ class Coupon implements Contract
     public function __construct()
     {
         $this->data = collect();
+        $this->enabled = true;
     }
 
     public function id($id = null)

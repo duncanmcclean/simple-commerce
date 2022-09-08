@@ -51,11 +51,18 @@ class CouponControllerTest extends TestCase
                 'type' => 'percentage',
                 'value' => 30,
                 'description' => '30% discount on a Thursday!',
+                'enabled' => true,
             ])
             ->assertJsonStructure([
                 'redirect',
             ])
             ->assertSessionHasNoErrors();
+
+        $coupon = Coupon::findByCode('thursday-thirty');
+
+        $this->assertSame($coupon->value(), 30);
+        $this->assertSame($coupon->enabled(), true);
+        $this->assertSame($coupon->get('description'), '30% discount on a Thursday!');
     }
 
     /** @test */
@@ -145,6 +152,7 @@ class CouponControllerTest extends TestCase
                 'type' => 'percentage',
                 'value' => 51,
                 'description' => 'You can actually get a 51% discount on Friday!',
+                'enabled' => false,
             ])
             ->assertJsonStructure([
                 'coupon',
@@ -153,6 +161,7 @@ class CouponControllerTest extends TestCase
         $coupon->fresh();
 
         $this->assertSame($coupon->value(), 51);
+        $this->assertSame($coupon->enabled(), false);
         $this->assertSame($coupon->get('description'), 'You can actually get a 51% discount on Friday!');
     }
 
