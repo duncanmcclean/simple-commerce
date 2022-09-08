@@ -54,7 +54,7 @@ class Product implements Contract
         return $this
             ->fluentlyGetOrSet('stock')
             ->getter(function ($value) {
-                if ($this->purchasableType() === ProductType::VARIANT()) {
+                if ($this->purchasableType() === ProductType::Variant) {
                     return null;
                 }
 
@@ -101,10 +101,10 @@ class Product implements Contract
     public function purchasableType(): ProductType
     {
         if ($this->productVariants) {
-            return ProductType::VARIANT();
+            return ProductType::Variant;
         }
 
-        return ProductType::PRODUCT();
+        return ProductType::Product;
     }
 
     public function variantOptions(): Collection
