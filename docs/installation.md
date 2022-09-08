@@ -6,10 +6,11 @@ title: Installation
 
 To run Simple Commerce, your server (whether local or production) will need to meet the following requirements:
 
-- PHP 8.0+
-- [PHP `intl` extension](https://www.php.net/manual/en/book.intl.php)
-- [Statamic CLI](https://github.com/statamic/cli)
-- Some kind of web server (like [Laravel Valet](https://laravel.com/docs/master/valet))
+-   PHP 8.1+
+-   Laravel 9 (if you're installing into an existing site)
+-   [PHP `intl` extension](https://www.php.net/manual/en/book.intl.php)
+-   [Statamic CLI](https://github.com/statamic/cli)
+-   Some kind of web server (like [Laravel Valet](https://laravel.com/docs/master/valet))
 
 And if you're installing into an existing site, your site must be on Statamic 3.3 (or higher) and Laravel 8 (or higher).
 
@@ -33,9 +34,9 @@ statamic new your-new-site-name duncanmcclean/sc-starter-kit
 
 Now that you're up and running with the Starter Kit, you're probably wanting to get going with development. Here's a list of resources that you might find helpful:
 
-- Documentation (you're already here)
-- [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
-- [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
+-   Documentation (you're already here)
+-   [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
+-   [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
 
 ## Installing into an existing site
 
@@ -59,7 +60,7 @@ If you want to confirm you've installed everything correctly, run `php please su
 
 Now that you're up and running with Simple Commerce, you're probably wanting to get going with development. Here's a list of resources that you might find helpful:
 
-- Documentation (you're already here)
-- [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
-- [Starter Kit](https://github.com/duncanmcclean/sc-starter-kit) - to use as a reference when you get stuck (might be useful for cart/checkout templates)
-- [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features
+-   Documentation (you're already here)
+-   [Knowledge Base](/kb-articles) - for any 'How tos' or explainer articles
+-   [Starter Kit](https://github.com/duncanmcclean/sc-starter-kit) - to use as a reference when you get stuck (might be useful for cart/checkout templates)
+-   [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) - for reporting any bugs or for requesting features

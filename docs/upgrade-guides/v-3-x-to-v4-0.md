@@ -29,6 +29,14 @@ php artisan view:clear
 
 ## Changes
 
+### Medium: Support for PHP 8.0 and Laravel 8 has been dropped
+
+Simple Commerce has dropped support for both PHP 8.0 and Laravel 8. Leaving PHP 8.1 and Laravel 9 the only current versions supported.
+
+These versions have been dropped to allow for Simple Commerce to take advantage of new PHP & Laravel features like proper Enums & Named Parameters.
+
+To upgrade to Laravel 9, you should follow the steps outlined in the official [Upgrade Guide](https://laravel.com/docs/9.x/upgrade) or use a service like [Laravel Shift](https://laravelshift.com/upgrade-laravel-8-to-laravel-9) to automate most of the process for you.
+
 ### Medium: Changes to how coupons are stored
 
 Previously, coupons were stored as collection entries. However, they've now been moved into their own Stache 'thing' to give Simple Commerce greater power over how they work.

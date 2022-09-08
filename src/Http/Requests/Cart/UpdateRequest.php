@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
 
 class UpdateRequest extends FormRequest
 {
