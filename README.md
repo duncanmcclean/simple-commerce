@@ -10,12 +10,12 @@
 
 ## Features
 
-- Native to Statamic - everything's just an entry
-- [Integrates with Antlers](https://simple-commerce.duncanmcclean.com/tags)
-- Supports popular payment gateways ([Stripe](https://simple-commerce.duncanmcclean.com/gateways/stripe), [Mollie](https://simple-commerce.duncanmcclean.com/gateways/mollie) & [PayPal](https://simple-commerce.duncanmcclean.com/gateways/paypal))
-- [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
-- [Coupons](https://simple-commerce.duncanmcclean.com/coupons)
-- [Flexible Shipping](https://simple-commerce.duncanmcclean.com/shipping)
+-   Native to Statamic - everything's just an entry
+-   [Integrates with Antlers](https://simple-commerce.duncanmcclean.com/tags)
+-   Supports popular payment gateways ([Stripe](https://simple-commerce.duncanmcclean.com/gateways/stripe), [Mollie](https://simple-commerce.duncanmcclean.com/gateways/mollie) & [PayPal](https://simple-commerce.duncanmcclean.com/gateways/paypal))
+-   [Product Variants](https://simple-commerce.duncanmcclean.com/product-variants)
+-   [Coupons](https://simple-commerce.duncanmcclean.com/coupons)
+-   [Flexible Shipping](https://simple-commerce.duncanmcclean.com/shipping)
 
 ## Documentation
 
@@ -25,7 +25,7 @@ Visit the [Simple Commerce website](https://simple-commerce.duncanmcclean.com/) 
 
 If you have any questions or need help, please let me know! Either via [GitHub Issues](https://github.com/duncanmcclean/simple-commerce/issues/new/choose) (for bugs & feature requests) or [via email](mailto:hello@doublethree.digital) for everything else!
 
-> Only version **3.0 and above** is currently supported. Review the [Support Policy](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) for more information.
+> Only version **4.0 and above** is currently supported. Review the [Support Policy](https://simple-commerce.duncanmcclean.com/kb-articles/support-versioning) for more information.
 
 ## Commercial addon
 
@@ -33,8 +33,8 @@ Simple Commerce is a commercial addon - you **must purchase a license** via the 
 
 ## Other Repositories
 
-- [**Starter Kit**](https://github.com/duncanmcclean/sc-starter-kit): Demo Templates & Boilerplate for your custom store
-- [**Digital Products Addon**](https://github.com/duncanmcclean/sc-digital-products): Sell digital products with Simple Commerce
+-   [**Starter Kit**](https://github.com/duncanmcclean/sc-starter-kit): Demo Templates & Boilerplate for your custom store
+-   [**Digital Products Addon**](https://github.com/duncanmcclean/sc-digital-products): Sell digital products with Simple Commerce
 
 ---
 
