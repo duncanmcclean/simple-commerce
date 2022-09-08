@@ -27,6 +27,7 @@ class MigrateCouponsToStache extends UpdateScript
                     ->code(Str::upper($entry->slug()))
                     ->type($entry->get('type'))
                     ->value($entry->get('coupon_value') ?? $entry->get('value'))
+                    ->enabled($entry->get('enabled') ?? true)
                     ->data(array_merge(
                         $entry->data()->except([
                             'updated_at',

@@ -20,12 +20,14 @@ class Coupon implements Contract
     public $code;
     public $value;
     public $type;
+    public $enabled;
 
     protected $selectedQueryRelations = [];
 
     public function __construct()
     {
         $this->data = collect();
+        $this->enabled = true;
     }
 
     public function id($id = null)
@@ -83,9 +85,20 @@ class Coupon implements Contract
             ->args(func_get_args());
     }
 
+    public function enabled($enabled = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('enabled')
+            ->args(func_get_args());
+    }
+
     public function isValid(Order $order): bool
     {
         $order = OrderFacade::find($order->id());
+
+        if (! $this->enabled()) {
+            return false;
+        }
 
         if ($this->has('minimum_cart_value') && $order->itemsTotal()) {
             if ($order->itemsTotal() < $this->get('minimum_cart_value')) {
@@ -185,6 +198,7 @@ class Coupon implements Contract
         $this->code = $freshCoupon->code;
         $this->value = $freshCoupon->value;
         $this->type = $freshCoupon->type;
+        $this->enabled = $freshCoupon->enabled;
         $this->data = $freshCoupon->data();
 
         return $this;
@@ -193,10 +207,11 @@ class Coupon implements Contract
     public function toArray(): array
     {
         return array_merge($this->data()->toArray(), [
-            'id' => $this->id(),
-            'code' => $this->code(),
-            'value' => $this->value(),
-            'type' => $this->type(),
+            'id' => $this->id,
+            'code' => $this->code,
+            'value' => $this->value,
+            'type' => optional($this->type)->value,
+            'enabled' => $this->enabled,
         ]);
     }
 

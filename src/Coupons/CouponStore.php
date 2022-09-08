@@ -28,7 +28,8 @@ class CouponStore extends BasicStore
             ->code(array_pull($data, 'code'))
             ->type(array_pull($data, 'type'))
             ->value(array_pull($data, 'value'))
-            ->data(Arr::except($data, ['code', 'type', 'value']));
+            ->enabled(array_pull($data, 'enabled') ?? true)
+            ->data(Arr::except($data, ['code', 'type', 'value', 'enabled']));
 
         if (isset($idGenerated)) {
             $coupon->save();
