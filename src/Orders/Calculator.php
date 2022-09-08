@@ -79,7 +79,7 @@ class Calculator implements Contract
     {
         $product = ProductAPI::find($lineItem['product']);
 
-        if ($product->purchasableType() === ProductType::VARIANT()) {
+        if ($product->purchasableType() === ProductType::Variant) {
             $variant = $product->variant(
                 isset($lineItem['variant']['variant']) ? $lineItem['variant']['variant'] : $lineItem['variant']
             );
@@ -173,11 +173,11 @@ class Calculator implements Contract
             $baseAmount = $data['items_total'] + $data['tax_total'];
 
             // Otherwise do all the other stuff...
-            if ($coupon->type() === CouponType::PERCENTAGE()) {
+            if ($coupon->type() === CouponType::Percentage) {
                 $data['coupon_total'] = (int) ($value * $baseAmount) / 100;
             }
 
-            if ($coupon->type() === CouponType::FIXED()) {
+            if ($coupon->type() === CouponType::Fixed) {
                 $data['coupon_total'] = (int) $baseAmount - ($baseAmount - $value);
             }
 

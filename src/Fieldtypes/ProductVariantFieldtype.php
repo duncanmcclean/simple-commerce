@@ -44,7 +44,7 @@ class ProductVariantFieldtype extends Fieldtype
 
         $product = Product::find($value['product']);
 
-        if ($product->purchasableType() === ProductType::PRODUCT()) {
+        if ($product->purchasableType() === ProductType::Product) {
             return null;
         }
 

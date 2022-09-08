@@ -28,7 +28,7 @@ class CouponTest extends TestCase
         $this->assertNotNull($create->id());
 
         $this->assertSame($create->code(), 'test');
-        $this->assertSame($create->type(), CouponType::PERCENTAGE());
+        $this->assertSame($create->type(), CouponType::Percentage);
         $this->assertSame($create->value(), 10);
         $this->assertSame($create->get('foo'), 'bar');
         $this->assertSame($create->get('baz'), 'qux');
@@ -55,7 +55,7 @@ class CouponTest extends TestCase
 
         $this->assertSame($coupon->id(), 'this-is-a-test-id');
         $this->assertSame($create->code(), 'test');
-        $this->assertSame($create->type(), CouponType::PERCENTAGE());
+        $this->assertSame($create->type(), CouponType::Percentage);
         $this->assertSame($create->value(), 10);
         $this->assertSame($create->get('foo'), 'bar');
         $this->assertSame($create->get('baz'), 'qux');
@@ -82,7 +82,7 @@ class CouponTest extends TestCase
 
         $this->assertSame($coupon->id(), 'this-is-a-test-id');
         $this->assertSame($create->code(), 'test');
-        $this->assertSame($create->type(), CouponType::PERCENTAGE());
+        $this->assertSame($create->type(), CouponType::Percentage);
         $this->assertSame($create->value(), 10);
         $this->assertSame($create->get('foo'), 'bar');
         $this->assertSame($create->get('baz'), 'qux');
@@ -113,7 +113,7 @@ class CouponTest extends TestCase
 
         $this->assertSame($create->id(), 'this-is-a-test-id');
         $this->assertSame($create->code(), 'test');
-        $this->assertSame($create->type(), CouponType::PERCENTAGE());
+        $this->assertSame($create->type(), CouponType::Percentage);
         $this->assertSame($create->value(), 20);
         $this->assertSame($create->get('foo'), 'baz');
         $this->assertSame($create->get('baz'), 'qux');

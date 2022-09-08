@@ -18,7 +18,7 @@ class HandleStock
             ->each(function (LineItem $item) {
                 $product = $item->product();
 
-                if ($product->purchasableType() === ProductType::PRODUCT()) {
+                if ($product->purchasableType() === ProductType::Product) {
                     if (is_int($product->stock())) {
                         $stock = $product->stock() - $item->quantity();
 
@@ -41,7 +41,7 @@ class HandleStock
                     }
                 }
 
-                if ($product->purchasableType() === ProductType::VARIANT()) {
+                if ($product->purchasableType() === ProductType::Variant) {
                     $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
 
                     if ($variant !== null && $variant->stock() !== null) {
