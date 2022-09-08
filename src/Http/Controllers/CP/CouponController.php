@@ -42,7 +42,8 @@ class CouponController
             ->code(Str::upper($request->code))
             ->type($request->type)
             ->value($request->value)
-            ->data(Arr::except($request->validated(), ['code', 'type', 'value']));
+            ->enabled($request->enabled ?? true)
+            ->data(Arr::except($request->validated(), ['code', 'type', 'value', 'enabled']));
 
         $coupon->save();
 
@@ -82,7 +83,8 @@ class CouponController
             ->code(Str::upper($request->code))
             ->type($request->type)
             ->value($request->value)
-            ->data(Arr::except($request->validated(), ['code', 'type', 'value']))
+            ->enabled($request->enabled ?? true)
+            ->data(Arr::except($request->validated(), ['code', 'type', 'value', 'enabled']))
             ->save();
 
         return [

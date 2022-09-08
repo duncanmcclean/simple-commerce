@@ -55,6 +55,10 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'array',
             ],
+            'enabled' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

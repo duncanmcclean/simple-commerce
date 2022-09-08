@@ -61,6 +61,10 @@ class StoreRequest extends FormRequest
                 'nullable',
                 'array',
             ],
+            'enabled' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

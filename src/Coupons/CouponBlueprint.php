@@ -99,6 +99,12 @@ class CouponBlueprint
             'sidebar' => [
                 'display' => 'Sidebar',
                 'fields' => [
+                    'enabled' => [
+                        'display' => 'Enabled?',
+                        'type' => 'toggle',
+                        'instructions' => 'When disabled, this coupon will not be redeemable.',
+                        'default' => true,
+                    ],
                     'redeemed' => [
                         'input_type' => 'number',
                         'type' => 'text',

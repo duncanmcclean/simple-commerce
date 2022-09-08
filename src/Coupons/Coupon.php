@@ -20,6 +20,7 @@ class Coupon implements Contract
     public $code;
     public $value;
     public $type;
+    public $enabled;
 
     protected $selectedQueryRelations = [];
 
@@ -83,9 +84,20 @@ class Coupon implements Contract
             ->args(func_get_args());
     }
 
+    public function enabled($enabled = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('enabled')
+            ->args(func_get_args());
+    }
+
     public function isValid(Order $order): bool
     {
         $order = OrderFacade::find($order->id());
+
+        if (! $this->enabled()) {
+            return false;
+        }
 
         if ($this->has('minimum_cart_value') && $order->itemsTotal()) {
             if ($order->itemsTotal() < $this->get('minimum_cart_value')) {
@@ -185,6 +197,7 @@ class Coupon implements Contract
         $this->code = $freshCoupon->code;
         $this->value = $freshCoupon->value;
         $this->type = $freshCoupon->type;
+        $this->enabled = $freshCoupon->enabled;
         $this->data = $freshCoupon->data();
 
         return $this;
@@ -197,6 +210,7 @@ class Coupon implements Contract
             'code' => $this->code(),
             'value' => $this->value(),
             'type' => $this->type(),
+            'enabled' => $this->enabled(),
         ]);
     }
 
