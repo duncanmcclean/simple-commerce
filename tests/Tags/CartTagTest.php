@@ -615,7 +615,6 @@ class CartTagTest extends TestCase
 
         $usage = $this->tag->wildcard('note');
 
-        // Statamic 3.3: From 3.3, this will return a Value instance
         $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_string($usage));
         $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 'Deliver by front door.');
     }
@@ -638,7 +637,6 @@ class CartTagTest extends TestCase
 
         $usage = $this->tag->wildcard('raw_grand_total');
 
-        // Statamic 3.3: From 3.3, this will return a Value instance
         $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_int($usage));
         $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 1590);
     }
@@ -651,7 +649,6 @@ class CartTagTest extends TestCase
 
         $usage = $this->tag->wildcard('note');
 
-        // Statamic 3.3: From 3.3, this will return a Value instance
         $this->assertFalse($usage instanceof \Statamic\Fields\Value || is_string($usage));
         $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, null);
     }
