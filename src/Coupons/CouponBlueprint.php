@@ -2,12 +2,47 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
+use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 
 class CouponBlueprint
 {
     public static function getBlueprint()
     {
+        $customerField = [
+            'mode' => 'default',
+            'collections' => [
+                'customers',
+            ],
+            'display' => 'Customers',
+            'type' => 'entries',
+            'icon' => 'entries',
+            'instructions' => 'If selected, this coupon will only be valid for selected customers.',
+            'width' => 50,
+        ];
+
+        if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], UserCustomerRepository::class)) {
+            $customerField = [
+                'mode' => 'default',
+                'display' => 'Customers',
+                'type' => 'users',
+                'icon' => 'users',
+                'instructions' => 'If selected, this coupon will only be valid for selected customers.',
+                'width' => 50,
+            ];
+        }
+
+        if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
+            $customerField = [
+                'type' => 'has_many',
+                'instructions' => 'If selected, this coupon will only be valid for selected customers.',
+                'display' => 'Customers',
+                'width' => 50,
+            ];
+        }
+
         return Blueprint::makeFromSections([
             'main' => [
                 'display' => 'Main',
@@ -82,17 +117,7 @@ class CouponBlueprint
                         'width' => 50,
                         'instructions' => 'If selected, this coupon will only be valid when any of the products are present.',
                     ],
-                    'customers' => [
-                        'mode' => 'default',
-                        'collections' => [
-                            'customers',
-                        ],
-                        'display' => 'Customers',
-                        'type' => 'entries',
-                        'icon' => 'entries',
-                        'instructions' => 'If selected, this coupon will only be valid for selected customers.',
-                        'width' => 50,
-                    ],
+                    'customers' => $customerField,
                 ],
             ],
 
@@ -116,5 +141,11 @@ class CouponBlueprint
                 ],
             ],
         ]);
+    }
+
+    protected static function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
