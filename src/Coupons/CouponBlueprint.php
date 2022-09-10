@@ -121,7 +121,7 @@ class CouponBlueprint
                     'expires_at' => [
                         'type' => 'date',
                         'display' => 'Expires At',
-                        'instruction' => 'If defined, this coupon will no longer be redeemable after the expiry date.',
+                        'instructions' => 'If defined, this coupon will no longer be redeemable after the expiry date.',
                         'width' => 50,
                     ],
                 ],
