@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 
+use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
@@ -98,6 +99,12 @@ class Coupon implements Contract
 
         if (! $this->enabled()) {
             return false;
+        }
+
+        if ($this->has('expires_at') && $this->get('expires_at') !== null) {
+            if (Carbon::parse($this->get('expires_at'))->isPast()) {
+                return false;
+            }
         }
 
         if ($this->has('minimum_cart_value') && $order->itemsTotal()) {
