@@ -3,8 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v4_0;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Str;
 use Statamic\Facades\Collection;
+use Statamic\Fields\Blueprint;
 use Statamic\UpdateScripts\UpdateScript;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
 
@@ -22,9 +26,10 @@ class MigrateCouponsToStache extends UpdateScript
         $this->couponCollectionHandle = config('simple-commerce.content.coupons.collection', 'coupons');
 
         $this
-            ->migrateCouponEntriesToStache()
-            ->updateConfig()
-            ->deleteCouponCollection();
+            // ->migrateCouponEntriesToStache()
+            ->updateOrderBlueprint();
+            // ->updateConfig()
+            // ->deleteCouponCollection();
     }
 
     protected function migrateCouponEntriesToStache(): self
@@ -57,6 +62,31 @@ class MigrateCouponsToStache extends UpdateScript
         return $this;
     }
 
+    protected function updateOrderBlueprint(): self
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            Collection::find(SimpleCommerce::orderDriver()['collection'])
+                ->entryBlueprints()
+                ->each(function (Blueprint $blueprint) {
+                    $blueprint->ensureFieldHasConfig('coupon', [
+                        'max_items' => 1,
+                        'mode' => 'default',
+                        'display' => 'Coupon',
+                        'type' => 'coupon',
+                        'read_only' => true,
+                    ]);
+
+                    $blueprint->save();
+                });
+        }
+
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            $this->console()->warn("Please change the Coupon field in your Order blueprint from an Entries field to a Coupons field.");
+        }
+
+        return $this;
+    }
+
     protected function updateConfig(): self
     {
         ConfigWriter::edit('simple-commerce')->replace(
@@ -76,5 +106,11 @@ class MigrateCouponsToStache extends UpdateScript
         Collection::findByHandle($this->couponCollectionHandle)->delete();
 
         return $this;
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
