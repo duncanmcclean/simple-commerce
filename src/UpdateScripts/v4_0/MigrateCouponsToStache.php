@@ -10,6 +10,8 @@ use Stillat\Proteus\Support\Facades\ConfigWriter;
 
 class MigrateCouponsToStache extends UpdateScript
 {
+    protected $couponCollectionHandle;
+
     public function shouldUpdate($newVersion, $oldVersion)
     {
         return $this->isUpdatingTo('4.0.0-beta.1');
@@ -17,9 +19,17 @@ class MigrateCouponsToStache extends UpdateScript
 
     public function update()
     {
-        $couponCollectionHandle = config('simple-commerce.content.coupons.collection', 'coupons');
+        $this->couponCollectionHandle = config('simple-commerce.content.coupons.collection', 'coupons');
 
-        Collection::findByHandle($couponCollectionHandle)
+        $this
+            ->migrateCouponEntriesToStache()
+            ->updateConfig()
+            ->deleteCouponCollection();
+    }
+
+    protected function migrateCouponEntriesToStache(): self
+    {
+        Collection::findByHandle($this->couponCollectionHandle)
             ->queryEntries()
             ->get()
             ->each(function ($entry) {
@@ -44,6 +54,11 @@ class MigrateCouponsToStache extends UpdateScript
                 $coupon->save();
             });
 
+        return $this;
+    }
+
+    protected function updateConfig(): self
+    {
         ConfigWriter::edit('simple-commerce')->replace(
             'content',
             collect(config('simple-commerce.content'))
@@ -53,6 +68,13 @@ class MigrateCouponsToStache extends UpdateScript
                 ->toArray()
         )->save();
 
-        Collection::findByHandle($couponCollectionHandle)->delete();
+        return $this;
+    }
+
+    protected function deleteCouponCollection(): self
+    {
+        Collection::findByHandle($this->couponCollectionHandle)->delete();
+
+        return $this;
     }
 }
