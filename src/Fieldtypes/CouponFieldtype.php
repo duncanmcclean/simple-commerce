@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
