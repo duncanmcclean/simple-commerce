@@ -55,6 +55,10 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'array',
             ],
+            'expires_at' => [
+                'nullable',
+                'date',
+            ],
             'enabled' => [
                 'required',
                 'boolean',
