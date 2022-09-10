@@ -396,6 +396,44 @@ class CouponControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_store_coupon_after_coupon_has_expired()
+    {
+        $this->buildCartWithProducts();
+
+        $coupon = Coupon::make()
+            ->id(Stache::generateId())
+            ->code('halv-price')
+            ->value(50)
+            ->type('percentage')
+            ->data([
+                'description'        => 'Halv Price',
+                'redeemed'           => 0,
+                'minimum_cart_value' => null,
+                'expires_at'         => '2022-01-01',
+            ]);
+
+        $coupon->save();
+        $coupon->fresh();
+
+        $data = [
+            'code' => 'halv-price',
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $this->cart->id])
+            ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+        $response->assertRedirect('/cart');
+        $response->assertSessionHasErrors();
+
+        $this->cart->fresh();
+
+        $this->assertNull($this->cart->coupon());
+        $this->assertSame($this->cart->couponTotal(), 0000);
+    }
+
+    /** @test */
     public function can_destroy_coupon()
     {
         $this->buildCartWithProducts();
