@@ -28,7 +28,7 @@ class CouponControllerTest extends TestCase
             ->get('/cp/simple-commerce/coupons')
             ->assertOk()
             ->assertSee('Fifty Friday')
-            ->assertSee('50% off');
+            ->assertSee('50%');
     }
 
     /** @test */
