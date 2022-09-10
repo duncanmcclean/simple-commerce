@@ -66,7 +66,7 @@ Previously, the `{{ sc:cart:update }}` form would validate against rules defined
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
 -   [v2.3 to v2.4](/upgrade-guides/v2-3-to-v3-4)
--   [v2.4 to v3.0](/upgrade-guides/v2-4-to-v-3-0)
+-   [v2.4 to v3.0](/upgrade-guides/v2-4-to-v3-0)
 
 ---
 
