@@ -28,7 +28,7 @@ class MigrateCouponsToStache extends UpdateScript
         $this
             // ->migrateCouponEntriesToStache()
             ->updateOrderBlueprint();
-            // ->updateConfig()
+        // ->updateConfig()
             // ->deleteCouponCollection();
     }
 
@@ -81,7 +81,7 @@ class MigrateCouponsToStache extends UpdateScript
         }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $this->console()->warn("Please change the Coupon field in your Order blueprint from an Entries field to a Coupons field.");
+            $this->console()->warn('Please change the Coupon field in your Order blueprint from an Entries field to a Coupons field.');
         }
 
         return $this;

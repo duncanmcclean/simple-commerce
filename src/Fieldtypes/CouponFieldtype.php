@@ -17,7 +17,7 @@ class CouponFieldtype extends Relationship
                 'id'   => $coupon->id(),
                 'code'  => $coupon->code(),
                 'discount' => $coupon->discountText(),
-                'redeemed' => $coupon->get('redeemed', 0) . " times",
+                'redeemed' => $coupon->get('redeemed', 0) . ' times',
             ];
         })->values();
     }
