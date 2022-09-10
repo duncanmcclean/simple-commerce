@@ -36,14 +36,10 @@
                             {{ $coupon->get('description') ?? '-' }}
                         </td>
                         <td>
-                            @if($coupon->type() === \DoubleThreeDigital\SimpleCommerce\Coupons\CouponType::Percentage)
-                                {{ $coupon->value() }}% off
-                            @else
-                                {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($coupon->value(), \Statamic\Facades\Site::current()) }} off
-                            @endif
+                            {{ $coupon->discountText() }}
                         </td>
                         <td>
-                            {{ $coupon->get('redeemed') ?? '0' }} times
+                            {{ $coupon->get('redeemed', 0) }} times
                         </td>
                         <td class="flex justify-end">
                             <dropdown-list class="mr-1">
