@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Support\Facades\Event;
 use Statamic\Facades\Stache;
 
 class CouponTest extends TestCase

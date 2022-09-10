@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Statamic\Auth\User as StatamicAuthUser;
-use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Http\Resources\API\UserResource;
 use Statamic\Statamic;
