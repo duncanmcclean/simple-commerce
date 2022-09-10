@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## v4.0.0 (2022-09-10)
+
+### What's new
+
+-   There's been a few coupon-related improvements:
+    -   You can now disable coupons #713
+    -   You can now set coupons to expire after a certain date #716
+    -   The 'Customers' field on the Coupons publish form will now change, depending on the current customer driver (eg. entries, users, database). #714
+-   Under the hood, we're now taking advantage of PHP 8.1 enums #712
+
+### What's changed
+
+-   Simple Commerce has dropped support for PHP 8.0 and Laravel 8. Leaving PHP 8.1 and Laravel 9 as the currently supported versions.
+-   Coupons have moved out of collections, into their own 'thing' in the Stache. #705
+
+You can read more about what's changed in the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v3-x-to-v4-0), along with steps on how to upgrade.
+
 ## v3.2.20 (2022-09-03)
 
 ### What's fixed
