@@ -118,6 +118,12 @@ class CouponBlueprint
                         'instructions' => 'If selected, this coupon will only be valid when any of the products are present.',
                     ],
                     'customers' => $customerField,
+                    'expires_at' => [
+                        'type' => 'date',
+                        'display' => 'Expires At',
+                        'instructions' => 'If defined, this coupon will no longer be redeemable after the expiry date.',
+                        'width' => 50,
+                    ],
                 ],
             ],
 
