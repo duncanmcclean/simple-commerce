@@ -1,12 +1,5 @@
 name: Release
 
-# This workflow tags a release, builds front-end assets and sends various notifications & webhooks when a release has been created.
-# How to use:
-# 1. Create a git tag - `git tag <version number>`
-# 2. Push tags to the origin - `git push origin --tags`
-# 3. This Github Action will do its stuff...
-# 4. Then it will pull the latest notes from CHANGELOG.md and add them to the release.
-
 on:
   push:
     tags:
