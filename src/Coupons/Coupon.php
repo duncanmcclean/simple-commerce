@@ -5,11 +5,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Coupons;
 use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;
+use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -255,6 +257,19 @@ class Coupon implements Contract
         return cp_route('simple-commerce.coupons.destroy', [
             'coupon' => $this->id(),
         ]);
+    }
+
+    public function discountText(): string
+    {
+        if ($this->type() === CouponType::Percentage) {
+            return "{$this->value()}%";
+        }
+
+        if ($this->type() === CouponType::Fixed) {
+            return Currency::parse($this->value(), Site::current());
+        }
+
+        return null;
     }
 
     public function path()

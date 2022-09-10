@@ -54,6 +54,7 @@ code: your-coupon-code
 ```
 
 6. Now, you can delete the Coupons collection & remove the `coupons` array from the `content` array inside your Simple Commerce config file.
+7. Additonally, you will need to replace the fieldtype of the 'Coupon' field on your Orders blueprint. You should change it from the Entries fieldtype to the new, Coupons fieldtype.
 
 If you're interacting with the Coupons API directly (eg. with PHP code), you shouldn't be required to make any changes. If you do end up needing to make some, please open an issue so this guide can be updated.
 

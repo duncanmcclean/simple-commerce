@@ -168,10 +168,8 @@ sections:
         handle: coupon
         field:
           max_items: 1
-          mode: select
-          collections:
-            - coupons
-          type: entries
+          mode: default
+          type: coupon
           listable: false
           display: Coupon
           width: 50
