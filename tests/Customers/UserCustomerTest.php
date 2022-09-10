@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Statamic\Auth\User as StatamicAuthUser;
+use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Http\Resources\API\UserResource;
 use Statamic\Statamic;
@@ -299,7 +300,7 @@ class UserCustomerTest extends TestCase
     /** @test */
     public function can_get_orders()
     {
-        $order = Order::make()->merge(['title' => 'Order #0001']);
+        $order = Order::make()->merge(['foo' => 'bar']);
         $order->save();
 
         $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example')->set('orders', [$order->id()]);
@@ -310,7 +311,7 @@ class UserCustomerTest extends TestCase
         $this->assertTrue($customer->orders() instanceof Collection);
         $this->assertTrue($customer->orders()->first() instanceof ContractsOrder);
 
-        $this->assertSame($customer->orders()->first()->get('title'), 'Order #0001');
+        $this->assertSame($customer->orders()->first()->get('foo'), 'bar');
     }
 
     /** @test */
