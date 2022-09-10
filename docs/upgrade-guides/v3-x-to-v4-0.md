@@ -70,4 +70,4 @@ Previously, the `{{ sc:cart:update }}` form would validate against rules defined
 
 ---
 
-[You may also view a diff of changes between v3.x and v4.0](https://github.com/duncanmcclean/simple-commerce/compare/3.x...4.x)
+[You may also view a diff of changes between v3.x and v4.0](https://github.com/duncanmcclean/simple-commerce/compare/v3.x...v4.x)
