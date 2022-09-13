@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.0.1 (2022-09-13)
+
+### What's fixed
+
+-   When re-ordering variants, the prices will no longer be shuffled about #719
+
 ## v4.0.0 (2022-09-10)
 
 ### What's new
