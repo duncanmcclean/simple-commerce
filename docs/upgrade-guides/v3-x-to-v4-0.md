@@ -58,10 +58,6 @@ code: your-coupon-code
 
 If you're interacting with the Coupons API directly (eg. with PHP code), you shouldn't be required to make any changes. If you do end up needing to make some, please open an issue so this guide can be updated.
 
-### Small: Changes to cart validation
-
-Previously, the `{{ sc:cart:update }}` form would validate against rules defined in your order blueprint. This is no longer the case. Instead, you should define any valiation rules using [Form Requests](https://simple-commerce.duncanmcclean.com/tags#content-form-tags)
-
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
