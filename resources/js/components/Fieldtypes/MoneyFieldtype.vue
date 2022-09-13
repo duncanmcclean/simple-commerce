@@ -37,5 +37,13 @@ export default {
             this.formattedValue = parseFloat(this.value).toFixed(2)
         }
     },
+
+    watch: {
+        value() {
+            if (isNaN(parseFloat(this.value)) == false) {
+                this.formattedValue = parseFloat(this.value).toFixed(2)
+            }
+        },
+    },
 }
 </script>
