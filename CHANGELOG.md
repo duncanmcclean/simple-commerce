@@ -6,7 +6,7 @@
 
 ### What's fixed
 
--   When re-ordering variants, the prices will no longer be shuffled about #719
+-   When re-ordering variants, the prices will no longer be shuffled about #719 #720
 
 ## v4.0.0 (2022-09-10)
 
