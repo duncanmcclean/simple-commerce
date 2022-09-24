@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v4.0.2 (2022-09-24)
+
+### What's fixed
+
+-   Fixed display issues when using SC's fieldtypes in listing tables #723 #724
+-   Fixed stock being decreased on localised product entries when Stock field isn't localised #721 #725
+
 ## v4.0.1 (2022-09-13)
 
 ### What's fixed
