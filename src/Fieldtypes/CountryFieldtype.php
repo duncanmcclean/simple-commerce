@@ -50,10 +50,7 @@ class CountryFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $country = Countries::firstWhere('iso', $item);
 
-            return [
-                'id' => $country['iso'],
-                'title' => $country['name'],
-            ];
-        });
+            return $country['name'];
+        })->join(', ');
     }
 }

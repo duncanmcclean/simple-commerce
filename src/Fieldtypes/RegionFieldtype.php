@@ -51,10 +51,7 @@ class RegionFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $region = Regions::find($item);
 
-            return [
-                'id' => $region['id'],
-                'title' => $region['name'],
-            ];
-        });
+            return $region['name'];
+        })->join(', ');
     }
 }
