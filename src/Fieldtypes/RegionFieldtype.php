@@ -10,6 +10,7 @@ use Statamic\Fieldtypes\Relationship;
 class RegionFieldtype extends Relationship
 {
     protected $canCreate = false;
+    protected $indexComponent = null;
 
     public function getIndexItems($request)
     {
