@@ -75,7 +75,11 @@ class TaxCategoryFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $taxCategory = TaxCategory::find($item);
 
-            return $taxCategory->name();
-        })->join(', ');
+            return [
+                'id' => $taxCategory->id(),
+                'title' => $taxCategory->name(),
+                'edit_url' => $taxCategory->editUrl(),
+            ];
+        });
     }
 }

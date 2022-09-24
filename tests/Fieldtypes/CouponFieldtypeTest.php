@@ -107,8 +107,14 @@ class CouponFieldtypeTest extends TestCase
     {
         $preProcessIndex = $this->fieldtype->preProcessIndex('foo');
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'TUPLE');
+        $this->assertTrue($preProcessIndex instanceof Collection);
+        $this->assertCount(1, $preProcessIndex);
+
+        $this->assertSame($preProcessIndex[0], [
+            'id' => 'foo',
+            'title' => 'TUPLE',
+            'edit_url' => 'http://localhost/cp/simple-commerce/coupons/foo/edit',
+        ]);
     }
 
     /** @test */
@@ -124,7 +130,19 @@ class CouponFieldtypeTest extends TestCase
     {
         $preProcessIndex = $this->fieldtype->preProcessIndex(['foo', 'rad']);
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'TUPLE, STATAMIC');
+        $this->assertTrue($preProcessIndex instanceof Collection);
+        $this->assertCount(2, $preProcessIndex);
+
+        $this->assertSame($preProcessIndex[0], [
+            'id' => 'foo',
+            'title' => 'TUPLE',
+            'edit_url' => 'http://localhost/cp/simple-commerce/coupons/foo/edit',
+        ]);
+
+        $this->assertSame($preProcessIndex[1], [
+            'id' => 'rad',
+            'title' => 'STATAMIC',
+            'edit_url' => 'http://localhost/cp/simple-commerce/coupons/rad/edit',
+        ]);
     }
 }

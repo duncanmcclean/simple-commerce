@@ -9,6 +9,7 @@ use Statamic\Fieldtypes\Relationship;
 class CountryFieldtype extends Relationship
 {
     protected $canCreate = false;
+    protected $indexComponent = null;
 
     public function getIndexItems($request)
     {
