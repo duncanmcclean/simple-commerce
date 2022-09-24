@@ -55,7 +55,11 @@ class CouponFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $coupon = Coupon::find($item);
 
-            return $coupon->code();
-        })->join(', ');
+            return [
+                'id' => $coupon->id(),
+                'title' => $coupon->code(),
+                'edit_url' => $coupon->editUrl(),
+            ];
+        });
     }
 }
