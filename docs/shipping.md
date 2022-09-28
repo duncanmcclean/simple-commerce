@@ -54,7 +54,8 @@ In these cases, you may configure a default Shipping Method which will be used w
 
 ## Third-party Shipping Methods
 
-* [Australian Post for Simple Commerce](https://statamic.com/addons/mity-digital/australia-post-shipping-for-simple-commerce)
+-   [Australian Post](https://statamic.com/addons/mity-digital/australia-post-shipping-for-simple-commerce)
+-   [Sendcloud](https://statamic.com/addons/ray-nl/sendcloud-for-simple-commerce)
 
 ## Templating
 
@@ -175,10 +176,10 @@ class FirstClass extends BaseShippingMethod implements ShippingMethod
 
 Here's a quick explanation of what each method does.
 
-- **name:** Should return the name of your shipping method (will be shown to customers)
-- **description:** Should return a description for your shipping method
-- **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
-- **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
+-   **name:** Should return the name of your shipping method (will be shown to customers)
+-   **description:** Should return a description for your shipping method
+-   **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
+-   **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
 
 ### Using config settings
 
