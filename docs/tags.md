@@ -2,51 +2,21 @@
 title: Tags
 ---
 
-## Available tags
+Simple Commerce provides a set of tags allowing you to build your e-commerce sites.
 
-To help you integrate Simple Commerce into your Antlers templates, Simple Commerce provides various tags:
-
-- [Cart](/tags/cart)
-- [Checkout](/tags/checkout)
-- [Countries](/tags/countries)
-- [Coupon](/tags/coupon)
-- [Currencies](/tags/currencies)
-- [Customer](/tags/customer)
-- [Gateways](/tags/gateways)
-- [Regions](/tags/regions)
-- [Shipping](/tags/shipping)
-
-## Form Tags
-
-Some Simple Commerce tags output `<form>` elements that submit to Simple Commerce endpoints. There's a couple of optional parameters you can add to form tags.
-
-- `redirect` - the URL where you'd like to redirect the user after a successful form submission.
-- `error_redirect` - the URL where you'd like to redirect the user after any validation errors are thrown by the form.
-- `request` - the name of the [Form Request](https://laravel.com/docs/master/validation#creating-form-requests) you wish to use for validation of the form.
-
-```antlers
-{{ sc:cart:addItem redirect="/cart" }}
-    <input type="hidden" name="product" value="{{ id }}">
-    <input type="hidden" name="quantity" value="1">
-    <button class="button-primary">Add to Cart</button>
-{{ /sc:cart:addItem }}
-```
-
-> **Hot Tip:** I'd highly recommend disabling the button after the user submits the form to prevent them from submitting it multiple times.
-
-When Simple Commerce builds the HTML for your form, any of the optional parameters you provide will be encrypted for additional protection (so you're users can't mess with redirects/requests by editing your HTML).
-
-However, if you wish to use static caching or submit SC's forms via AJAX, you'll probably want to disable this behaviour. You may do so by adding the following to your configuration file:
-
-```php
-// config/simple-commerce
-
-'disable_form_parameter_validation' => true,
-```
+-   [Cart](/tags/cart)
+-   [Checkout](/tags/checkout)
+-   [Countries](/tags/countries)
+-   [Coupon](/tags/coupon)
+-   [Currencies](/tags/currencies)
+-   [Customer](/tags/customer)
+-   [Gateways](/tags/gateways)
+-   [Regions](/tags/regions)
+-   [Shipping](/tags/shipping)
 
 ### Field Whitelisting
 
-When using Form Tags, Simple Commerce will now require you to specify any additional fields you wish to be editable via front-end forms.
+When using Form Tags, Simple Commerce requires you to specify any additional fields you wish to be editable via front-end forms.
 
 For example: you may wish for customers to fill in the `shipping_note` field via the `{{ sc:cart:update }}` form but you wouldn't want them filling the `is_paid` field.
 
@@ -76,9 +46,27 @@ With 'field whitelisting', you must specify the fields you wish to allow in the 
 ],
 ```
 
-### Validation
+## Redirects
 
-Like noted above, you can use the `request` parameter when creating form tags to specify a [Form Request](https://laravel.com/docs/master/validation#creating-form-requests) to be used for validation purposes. You can either tell it the full class name (including the namespace) or without it.
+If you're using one of Simple Commerce's "form tags", you can choose to redirect the user upon submission. If no redirect is specified, the user will be redirected back to the same page.
+
+You may use the `redirect` parameter to specify the URL you'd like to redirect the user to after the form submission has been successful.
+
+```antlers
+{{ sc:cart:addItem redirect="/cart" }}
+    <input type="hidden" name="product" value="{{ id }}">
+    <input type="hidden" name="quantity" value="1">
+    <button class="button-primary">Add to Cart</button>
+{{ /sc:cart:addItem }}
+```
+
+You may also specify an `error_redirect` parameter where the user would be taken if the form contains any validation errors.
+
+## Form Validation
+
+On "form tags", Simple Commerce allows you to specify a [Form Request](https://laravel.com/docs/master/validation#creating-form-requests) which will be used for validation.
+
+Simply specify the name of the Form Request you wish to use and it'll be picked up.
 
 ```antlers
 {{## Form Request: app\Http\Requests\CheckoutInformationRequest ##}}
@@ -88,17 +76,21 @@ Like noted above, you can use the `request` parameter when creating form tags to
 {{ /sc:cart:update }}
 ```
 
-Although you can specify the `request` parameter on any form tag, not all of them will actually use it. Here's a list of the forms that do:
+It's worth noting that although you can specify the `request` parameter on any form tag, not all of them will actually use it. Here's a list of the forms that do:
 
-- `{{ sc:cart:addItem }}`
-- `{{ sc:cart:updateItem }}`
-- `{{ sc:cart:update }}`
-- `{{ sc:customer:update }}`
-- `{{ sc:checkout }}`
+-   `{{ sc:cart:addItem }}`
+-   `{{ sc:cart:updateItem }}`
+-   `{{ sc:cart:update }}`
+-   `{{ sc:customer:update }}`
+-   `{{ sc:checkout }}`
 
-## Blade support
+## How the "form tags" work
 
-At the moment, I've not got any plans to introduce first-party support for Blade (or any similar templating languages for that metter).
+Essentially, whenever you use any of Simple Commerce's "form tags", it will wrap your HTML in a `<form>` element. If you provide any optional parameters to the form tags, they will be added onto the `<form>` element (think `class`, `id`, etc).
+
+Whenever you use the redirect/form request parameters, Simple Commerce will add some hidden inputs to the form's HTML. The values of the inputs will be encrypted to avoid them being tampered with by your users.
+
+> Note: You may disable the encryption of the hidden values if you wish by enabling the `disable_form_parameter_validation` setting in your Simple Commerce config file.
 
 ## Alias
 
