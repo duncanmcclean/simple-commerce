@@ -3,11 +3,13 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Foundation\Console\AboutCommand;
 use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
+use Statamic\Facades\Site;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Stache\Stache;
 use Statamic\Statamic;
@@ -140,6 +142,17 @@ class ServiceProvider extends AddonServiceProvider
         if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
             Debugbar::addCollector(new DebugbarDataCollector('simple-commerce'));
         }
+
+        AboutCommand::add('Simple Commerce', function () {
+            return [
+                'Repository: Customer' => SimpleCommerce::customerDriver()['repository'],
+                'Repository: Order' => SimpleCommerce::orderDriver()['repository'],
+                'Repository: Product' => SimpleCommerce::productDriver()['repository'],
+                'Gateways' => collect(SimpleCommerce::gateways())->pluck('name')->implode(', '),
+                'Shipping Methods' => SimpleCommerce::shippingMethods()->pluck('name')->implode(', '),
+                'Tax Engine' => get_class(SimpleCommerce::taxEngine()),
+            ];
+        });
     }
 
     protected function bootVendorAssets()
