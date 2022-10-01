@@ -106,6 +106,8 @@ class YourDriver implements CartDriver
 
 ### Order Numbers
 
+> Note: This only applies when storing orders as entries. If you're [storing orders in a database](/database-orders), the order number will be automaticaly generated from the order's ID in the database.
+
 When an order is created, a unique order number will be assigned. It'll often be formatted like so: `#1234`.
 
 By default, order numbers will start at `#2000` and will continue endlessly. If you wish for order numbers to start at say, `#5000`, you can configure that in your `config/simple-commerce.php` config file.
@@ -129,9 +131,3 @@ return [
     'minimum_order_number' => 2000,
 ];
 ```
-
-### Order Blueprints
-
-Like anything else, you're free to make changes to your order blueprint. Simple Commerce will use the default blueprint for the orders collection every time.
-
-When making changes however, please try to keep the field handles the same as what we use, otherwise data won't be displayed correctly in the Control Panel.
