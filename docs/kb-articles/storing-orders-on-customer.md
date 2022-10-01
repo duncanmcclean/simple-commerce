@@ -1,5 +1,5 @@
 ---
-title: "Storing Orders on Customer"
+title: 'Storing Orders on Customer'
 ---
 
 Sometimes you may run into a situation where you'd like to keep track of a customer's orders on their customer entry, instead of just attaching the customers from the order side.
@@ -17,5 +17,3 @@ Therefore, a `from="customer"` parameter will need to be provided when using the
   <!-- And all your order stuff -->
 {{ /sc:customers:orders }}
 ```
-
-_This feature was implemented after a feature request, [see Discussion](https://github.com/duncanmcclean/simple-commerce/discussions/369)._
