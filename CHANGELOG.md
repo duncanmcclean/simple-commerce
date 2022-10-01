@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v4.0.3 (2022-10-01)
+
+### What's new
+
+-   Information about your Simple Commerce configuration will now be outputted by `php please support:details` and `php artisan about` #729
+
+### What's fixed
+
+-   Product Variant not being displayed when viewing Line Items in the Control Panel #727 #728
+
 ## v4.0.2 (2022-09-24)
 
 ### What's fixed
