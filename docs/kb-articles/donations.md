@@ -4,7 +4,7 @@ title: Handling Donations
 
 "Can Simple Commerce handle donations?" is a question I get asked quite a lot. I thought I'd document my standard approach to implementing donations:
 
-> Bearing in mind, this approach only works if you're allowing customers to donate in whole amounts (eg. £5, £10 not £16.71).
+> Bear in mind that this approach only works if you're allowing customers to donate in whole amounts (eg. £5, £10 not £16.71).
 
 ## 1. Create a product
 
