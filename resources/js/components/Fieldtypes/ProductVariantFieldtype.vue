@@ -19,7 +19,7 @@
             <select-field
                 v-else-if="
                     productVariantsData &&
-                        productVariantsData.purchasable_type === 'VARIANT'
+                        productVariantsData.purchasable_type === 'variant'
                 "
                 :options="productVariantOptions"
                 :disabled="readOnly"
@@ -29,7 +29,7 @@
             <p
                 v-else-if="
                     productVariantsData &&
-                        productVariantsData.purchasable_type === 'PRODUCT'
+                        productVariantsData.purchasable_type === 'product'
                 "
                 class="text-sm p-1"
             >
