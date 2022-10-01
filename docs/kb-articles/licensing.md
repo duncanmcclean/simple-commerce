@@ -8,6 +8,8 @@ Like Statamic itself, using Simple Commerce is free during development & staging
 
 ## Assigning a license to a site
 
+<div style="position: relative; padding-bottom: 59.210526315789465%; height: 0;"><iframe src="https://www.loom.com/embed/b5a5315e0bb24f34aef1c04ac76fc1c3" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+
 I've recorded a [quick screencast](https://www.loom.com/share/b5a5315e0bb24f34aef1c04ac76fc1c3) showing how you can assign a Simple Commerce liense to a site on Statamic.com.
 
 TLDR of it is:
