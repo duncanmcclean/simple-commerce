@@ -1,5 +1,5 @@
 ---
-title: "Cart & Orders"
+title: 'Cart & Orders'
 ---
 
 Under the hood, Carts and Orders are really the same thing. They live under the same collection, use the same blueprint.
@@ -22,7 +22,7 @@ If you wish to run this command on a regular basis, maybe every night or every w
 
 ```php
 $schedule->command('sc:cart-cleanup')
-  ->daily();
+    ->daily();
 ```
 
 For more documentation on command scheduling, please [review the Laravel documentation](https://laravel.com/docs/master/scheduling#scheduling-artisan-commands).
@@ -47,8 +47,8 @@ Two cart drivers are provided as standard: the cookie driver & the session drive
  */
 
 'cart' => [
-  'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
-  'key' => 'simple-commerce-cart',
+    'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+    'key' => 'simple-commerce-cart',
 ],
 ```
 
