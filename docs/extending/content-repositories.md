@@ -8,20 +8,14 @@ The [Database Orders](/database-orders) functionality is essentially two reposit
 
 You can configure content repositories for the following 'things':
 
-- Products
-- Orders
-- Coupons
-- Customers
+-   Products
+-   Orders
+-   Customers
 
 ## Configuration
 
 ```php
 'content' => [
-    'coupons' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
-        'collection' => 'coupons',
-    ],
-
     'customers' => [
         'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
         'collection' => 'customers',
