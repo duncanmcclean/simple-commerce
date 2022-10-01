@@ -10,6 +10,8 @@ However, due to the nature of e-commerce and the way Simple Commerce is built, t
 
 ### CSRF
 
+> This may not be a 'gotcha' anymore now that the `nocache` tag exists. CSRF may already be replaced by Statamic upon page load.
+
 This isn't necessarily Simple Commerce related but it's worth saying that you'll need to find some way of pulling in CSRF tokens for Statamic/Simple Commerce forms, as they'll be different for every user of the site.
 
 Otherwise, the first user to view a form on your site, will get one token, then the same token will be given to all other users who view that form. And, then if the form is submitted, the user will receive a 419 Page Expired error from Laravel.
