@@ -9,7 +9,6 @@ use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
-use Statamic\Facades\Site;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Stache\Stache;
 use Statamic\Statamic;
