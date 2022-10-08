@@ -16,7 +16,7 @@
 ### What's fixed
 
 -   Renamed filenames of blueprint stubs to match the starter kit
--   SC will now check if the 'Stock' field exists on the product's blueprint before trying to check if it's localisable #321 #733
+-   SC will now check if the 'Stock' field exists on the product's blueprint before trying to check if it's localisable #721 #733
 
 ## v4.0.3 (2022-10-01)
 
