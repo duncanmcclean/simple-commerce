@@ -89,6 +89,12 @@ class ServiceProvider extends AddonServiceProvider
         __DIR__ . '/../resources/dist/js/cp.js',
     ];
 
+    protected $scopes = [
+        Filters\OrderContainsProduct::class,
+        Filters\OrderCustomer::class,
+        Filters\OrderStatusFilter::class,
+    ];
+
     protected $tags = [
         Tags\SimpleCommerceTag::class,
         Tags\TotalIncludingTax::class,
@@ -135,10 +141,6 @@ class ServiceProvider extends AddonServiceProvider
                 ->createNavItems()
                 ->registerPermissions();
         });
-
-        Filters\OrderContainsProduct::register();
-        Filters\OrderCustomer::register();
-        Filters\OrderStatusFilter::register();
 
         if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
             Debugbar::addCollector(new DebugbarDataCollector('simple-commerce'));
