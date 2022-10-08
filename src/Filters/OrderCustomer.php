@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Filters;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
@@ -19,13 +20,18 @@ class OrderCustomer extends Filter
             'email' => [
                 'type' => 'text',
                 'input_type' => 'email',
+                'placeholder' => 'Email',
             ],
         ];
     }
 
     public function apply($query, $values)
     {
-        $customer = Customer::findByEmail($values['email']);
+        try {
+            $customer = Customer::findByEmail($values['email']);
+        } catch (CustomerNotFound $e) {
+            return $query->where('customer', null);
+        }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             $query->where('customer', $customer->id());
@@ -40,11 +46,7 @@ class OrderCustomer extends Filter
 
     public function badge($values)
     {
-        $products = collect($values['products'])->map(function ($productId) {
-            return Product::find($productId)->get('title');
-        })->join(', ');
-
-        return "Contains Product: {$products}";
+        return "Customer: {$values['email']}";
     }
 
     public function visibleTo($key)
