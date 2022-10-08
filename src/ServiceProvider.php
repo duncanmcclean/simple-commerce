@@ -136,6 +136,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->registerPermissions();
         });
 
+        Filters\OrderContainsProduct::register();
         Filters\OrderStatusFilter::register();
 
         if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
