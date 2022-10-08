@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use Illuminate\Support\Collection;
 
 trait HasLineItems
@@ -32,11 +33,18 @@ trait HasLineItems
                         $item['total'] = 0;
                     }
 
-                    $lineItem = (new LineItem($item))
-                        ->id($item['id'])
-                        ->product($item['product'])
-                        ->quantity($item['quantity'])
-                        ->total($item['total']);
+                    try {
+                        $lineItem = (new LineItem($item))
+                            ->id($item['id'])
+                            ->product($item['product'])
+                            ->quantity($item['quantity'])
+                            ->total($item['total']);
+                    } catch (ProductNotFound $e) {
+                        // If product doesn't exist, remove it from the line items & return null.
+                        $this->removeLineItem($item['id']);
+
+                        return null;
+                    }
 
                     if (isset($item['variant'])) {
                         $lineItem->variant($item['variant']);
@@ -51,7 +59,7 @@ trait HasLineItems
                     }
 
                     return $lineItem;
-                });
+                })->filter();
             })
             ->args(func_get_args());
     }
