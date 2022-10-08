@@ -27,6 +27,7 @@ class HandleStock
                 if (
                     $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)
                     && $product->resource()->hasOrigin()
+                    && $product->resource()->blueprint()->hasField('stock')
                     && ! $product->resource()->blueprint()->field('stock')->isLocalizable()
                 ) {
                     $product = Product::find($product->resource()->origin()->id());
