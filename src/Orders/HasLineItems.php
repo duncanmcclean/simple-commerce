@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use Illuminate\Support\Collection;
 
 trait HasLineItems
