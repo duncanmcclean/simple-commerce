@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+## v4.1.0 (2022-10-08)
+
+### What's new
+
+-   You can now filter orders by customer #737
+-   You can now filter orders by products #736
+
+### What's improved
+
+-   Deleted products on orders are now handled better now #732 #734
+
+### What's fixed
+
+-   Renamed filenames of blueprint stubs to match the starter kit
+-   SC will now check if the 'Stock' field exists on the product's blueprint before trying to check if it's localisable #321 #733
+
 ## v4.0.3 (2022-10-01)
 
 ### What's new
