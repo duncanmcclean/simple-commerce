@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Filters;
+namespace DoubleThreeDigital\SimpleCommerce\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
