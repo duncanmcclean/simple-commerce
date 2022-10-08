@@ -33,18 +33,11 @@ trait HasLineItems
                         $item['total'] = 0;
                     }
 
-                    try {
-                        $lineItem = (new LineItem($item))
-                            ->id($item['id'])
-                            ->product($item['product'])
-                            ->quantity($item['quantity'])
-                            ->total($item['total']);
-                    } catch (ProductNotFound $e) {
-                        // If product doesn't exist, remove it from the line items & return null.
-                        $this->removeLineItem($item['id']);
-
-                        return null;
-                    }
+                    $lineItem = (new LineItem($item))
+                        ->id($item['id'])
+                        ->product($item['product'])
+                        ->quantity($item['quantity'])
+                        ->total($item['total']);
 
                     if (isset($item['variant'])) {
                         $lineItem->variant($item['variant']);
@@ -56,6 +49,14 @@ trait HasLineItems
 
                     if (isset($item['metadata'])) {
                         $lineItem->metadata($item['metadata']);
+                    }
+
+                    // If the line item's product has been deleted, remove
+                    // it from the cart & return null.
+                    if (! $this->isPaid() && ! $lineItem->product()) {
+                        $this->removeLineItem($item['id']);
+
+                        return null;
                     }
 
                     return $lineItem;
