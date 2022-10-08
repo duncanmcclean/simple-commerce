@@ -50,8 +50,16 @@ trait HasLineItems
                         $lineItem->metadata($item['metadata']);
                     }
 
+                    // If the line item's product has been deleted, remove
+                    // it from the cart & return null.
+                    if (! $this->isPaid() && ! $lineItem->product()) {
+                        $this->removeLineItem($item['id']);
+
+                        return null;
+                    }
+
                     return $lineItem;
-                });
+                })->filter();
             })
             ->args(func_get_args());
     }

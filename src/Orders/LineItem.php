@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -35,11 +36,15 @@ class LineItem
         return $this
             ->fluentlyGetOrSet('product')
             ->setter(function ($product) {
-                if (! $product instanceof Product) {
-                    return ProductFacade::find($product);
+                if ($product instanceof Product) {
+                    return $product;
                 }
 
-                return $product;
+                try {
+                    return ProductFacade::find($product);
+                } catch (ProductNotFound $e) {
+                    return null;
+                }
             })
             ->args(func_get_args());
     }
@@ -90,7 +95,7 @@ class LineItem
     {
         return [
             'id' => $this->id,
-            'product' => $this->product->id(),
+            'product' => optional($this->product)->id(),
             'variant' => $this->variant,
             'quantity' => $this->quantity,
             'total' => $this->total,

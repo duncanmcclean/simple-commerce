@@ -50,6 +50,60 @@ class LineItemsTest extends TestCase
     }
 
     /** @test */
+    public function can_get_line_items_when_item_has_to_be_filtered_out_to_a_deleted_product()
+    {
+        $productOne = Product::make()->price(1000);
+        $productOne->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => 'un-doone-two-three-twa',
+                'product'  => $productOne->id(),
+                'quantity' => 2,
+            ],
+            [
+                'id'       => 'nine-ten-eleven',
+                'product'  => 'blah-blah', // this product doesn't exist
+                'quantity' => 2,
+            ],
+        ]);
+
+        $order->save();
+
+        $lineItems = $order->lineItems();
+
+        $this->assertTrue($lineItems instanceof Collection);
+        $this->assertSame($lineItems->count(), 1);
+    }
+
+    /** @test */
+    public function can_get_line_items_when_item_has_null_product_due_to_a_deleted_product_and_paid_order()
+    {
+        $productOne = Product::make()->price(1000);
+        $productOne->save();
+
+        $order = Order::make()->isPaid(true)->lineItems([
+            [
+                'id'       => 'un-doone-two-three-twa',
+                'product'  => $productOne->id(),
+                'quantity' => 2,
+            ],
+            [
+                'id'       => 'nine-ten-eleven',
+                'product'  => 'blah-blah', // this product doesn't exist
+                'quantity' => 2,
+            ],
+        ]);
+
+        $order->save();
+
+        $lineItems = $order->lineItems();
+
+        $this->assertTrue($lineItems instanceof Collection);
+        $this->assertSame($lineItems->count(), 2);
+    }
+
+    /** @test */
     public function line_items_return_empty_if_order_has_no_items()
     {
         $order = Order::make();
