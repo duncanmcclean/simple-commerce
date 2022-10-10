@@ -13,21 +13,10 @@ use Illuminate\Support\Str;
 
 class BaseGateway
 {
-    protected array $config = [];
-    protected string $handle = '';
-    protected string $webhookUrl = '';
-    protected string $redirectUrl = '/';
-    protected string $errorRedirectUrl = '/';
     protected string $displayName = '';
 
-    public function __construct(array $config = [], string $handle = '', string $webhookUrl = '', string $redirectUrl = '/', string $errorRedirectUrl = '/')
+    public function __construct(protected array $config = [], protected string $handle = '', protected string $webhookUrl = '', protected string $redirectUrl = '/', protected string $errorRedirectUrl = '/')
     {
-        $this->config = $config;
-        $this->handle = $handle;
-        $this->webhookUrl = $webhookUrl;
-        $this->redirectUrl = $redirectUrl;
-        $this->errorRedirectUrl = $errorRedirectUrl;
-
         $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
     }
 

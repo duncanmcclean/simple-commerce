@@ -4,15 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Tax;
 
 class TaxCalculation
 {
-    protected $amount;
-    protected $rate;
-    protected $priceIncludesTax;
-
-    public function __construct(int $amount = 0, $rate = 0, bool $priceIncludesTax = false)
+    public function __construct(protected int $amount = 0, protected $rate = 0, protected bool $priceIncludesTax = false)
     {
-        $this->amount = $amount;
-        $this->rate = $rate;
-        $this->priceIncludesTax = $priceIncludesTax;
     }
 
     public function amount(): int

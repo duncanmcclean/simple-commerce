@@ -6,13 +6,8 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 
 class Purchase
 {
-    protected $request;
-    protected $order;
-
-    public function __construct($request, Order $order)
+    public function __construct(protected $request, protected Order $order)
     {
-        $this->request = $request;
-        $this->order = $order;
     }
 
     public function request()

@@ -7,11 +7,8 @@ use Illuminate\Support\Str;
 
 class BaseShippingMethod
 {
-    protected array $config = [];
-
-    public function __construct(array $config = [])
+    public function __construct(protected array $config = [])
     {
-        $this->config = $config;
     }
 
     public function config(): Collection
