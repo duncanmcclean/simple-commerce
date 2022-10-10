@@ -10,10 +10,7 @@ class ReceiveGatewayWebhook
     use Dispatchable;
     use InteractsWithSockets;
 
-    public array $payload;
-
-    public function __construct(array $payload)
+    public function __construct(public array $payload)
     {
-        $this->payload = $payload;
     }
 }

@@ -11,12 +11,7 @@ class PostCheckout
     use Dispatchable;
     use InteractsWithSockets;
 
-    public Order $order;
-    public $request;
-
-    public function __construct(Order $order, $request)
+    public function __construct(public Order $order, public $request)
     {
-        $this->order = $order;
-        $this->request = $request;
     }
 }

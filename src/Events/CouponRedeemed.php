@@ -11,10 +11,7 @@ class CouponRedeemed
     use Dispatchable;
     use InteractsWithSockets;
 
-    public $coupon;
-
-    public function __construct(Coupon $coupon)
+    public function __construct(public Coupon $coupon)
     {
-        $this->coupon = $coupon;
     }
 }

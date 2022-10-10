@@ -4,17 +4,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 class Response
 {
-    protected bool $success = false;
-    protected array $data = [];
-    protected string $checkoutUrl = '';
-
     protected string $error = '';
 
-    public function __construct(bool $success = false, array $data = [], string $checkoutUrl = '')
+    public function __construct(protected bool $success = false, protected array $data = [], protected string $checkoutUrl = '')
     {
-        $this->success = $success;
-        $this->data = $data;
-        $this->checkoutUrl = $checkoutUrl;
     }
 
     public function success(): bool

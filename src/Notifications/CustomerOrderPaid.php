@@ -12,16 +12,13 @@ class CustomerOrderPaid extends Notification
 {
     use Queueable;
 
-    protected $order;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(protected Order $order)
     {
-        $this->order = $order;
     }
 
     /**

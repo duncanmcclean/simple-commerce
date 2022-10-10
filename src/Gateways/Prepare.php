@@ -7,13 +7,8 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 
 class Prepare
 {
-    protected $request;
-    protected $order;
-
-    public function __construct($request, Order $order)
+    public function __construct(protected $request, protected Order $order)
     {
-        $this->request = $request;
-        $this->order = $order;
     }
 
     public function request()

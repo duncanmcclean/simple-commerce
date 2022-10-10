@@ -15,6 +15,7 @@ class Address
     protected static $country;
     protected static $zipCode;
 
+    // TODO: Move this stuff to the constructor
     public static function from(string $addressType, $data): self
     {
         static::$name = $data->get("{$addressType}_name");
