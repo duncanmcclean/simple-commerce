@@ -22,8 +22,8 @@ class CustomerTags extends SubTag
         ];
 
         return $this->createForm(
-            route('statamic.simple-commerce.customer.update'),
-            $params,
+            route('statamic.simple-commerce.customer.update', $params),
+            [],
             'POST'
         );
     }
