@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.1.1 (2022-10-17)
+
+### What's fixed
+
+-   Fixed `{{ sc:customer:update }}` tag error #739 by @cesaramirez
+
 ## v4.1.0 (2022-10-08)
 
 ### What's new
