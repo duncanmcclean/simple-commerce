@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.1.2 (2022-10-19)
+
+### What's fixed
+
+-   Fixed a bug where marking an order as shipped could override order data #741 by @cesaramirez
+
 ## v4.1.1 (2022-10-17)
 
 ### What's fixed
