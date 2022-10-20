@@ -2,16 +2,19 @@ name: '🐛 Bug Report'
 description: 'Report an issue or unexpected behavior'
 labels: [bug]
 body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to submit a bug report! Please fill out the fields with as much detail as possible, so we can get to the bottom of the issue as quickly as possible.
 - type: textarea
   attributes:
-    label: Bug Description
-    placeholder: 'What happened? What were you expecting? Feel free to add any screenshots in here.'
+    label: Description
+    description: Bonus points if you're able to share a [Loom](https://loom.com) or screenshot explaining the issue.
+    placeholder: "What's happening? What are you expecting to happen?"
   validations:
     required: true
 - type: textarea
   attributes:
     label: Steps to reproduce
-    description: "There's no way for me to fix a bug if I don't know how to reproduce the bug in the first place."
     placeholder: |
         1. Do this thing...
         2. Then do that thing...
@@ -21,6 +24,6 @@ body:
 - type: textarea
   attributes:
     label: Environment
-    description: Just copy and paste the output of the `php please support:details` command.
+    description: Copy & paste the output of `php please support:details` here.
   validations:
     required: true
