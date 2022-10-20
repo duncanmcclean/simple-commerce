@@ -2,10 +2,10 @@ blank_issues_enabled: false
 
 contact_links:
   - name: '🙏 Ask for help'
-    url: 'discussions'
+    url: https://github.com/duncanmcclean/simple-commerce/discussions/new
     about: 'Have a question about how to do something? Ask for help in a Discussion.'
   - name: '💡 Feature Requests'
-    url: https://google.com
+    url: https://github.com/duncanmcclean/simple-commerce/discussions/new
     about: 'Submit a feature request for consideration by opening a Discussion.'
   - name: 'Get in touch'
     url: mailto:help@doublethree.digital
