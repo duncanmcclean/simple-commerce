@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v4.1.3 (2022-10-20)
+
+### What's fixed
+
+* Fixed 'Order Shipped' email #743 #744
+* Fixed coupons not working when using Database Customer Driver #742 #745 by @jornwildenbeest
+
 ## v4.1.2 (2022-10-19)
 
 ### What's fixed
