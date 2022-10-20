@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: '🙏 Ask for help'
+    url: 'discussions'
+    about: 'Have a question about how to do something? Ask for help in a Discussion.'
+  - name: '💡 Feature Requests'
+    url: https://google.com
+    about: 'Submit a feature request for consideration by opening a Discussion.'
+  - name: 'Get in touch'
+    url: mailto:help@doublethree.digital
+    about: "If you'd rather talk privately, send over an email."
