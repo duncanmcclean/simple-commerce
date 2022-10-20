@@ -8,5 +8,5 @@ contact_links:
     url: https://github.com/duncanmcclean/simple-commerce/discussions/new
     about: 'Submit a feature request for consideration by opening a Discussion.'
   - name: 'Get in touch'
-    url: mailto:help@doublethree.digital
+    url: 'mailto:help@doublethree.digital'
     about: "If you'd rather talk privately, send over an email."
