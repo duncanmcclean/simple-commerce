@@ -2,9 +2,9 @@ name: '🐛 Bug Report'
 description: 'Report an issue or unexpected behavior'
 labels: [bug]
 body:
-  - type: markdown
-    attributes:
-      value: Thanks for taking the time to submit a bug report! Please fill out the fields with as much detail as possible, so we can get to the bottom of the issue as quickly as possible.
+- type: markdown
+  attributes:
+    value: Thanks for taking the time to submit a bug report! Please fill out the fields with as much detail as possible, so we can get to the bottom of the issue as quickly as possible.
 - type: textarea
   attributes:
     label: Description
