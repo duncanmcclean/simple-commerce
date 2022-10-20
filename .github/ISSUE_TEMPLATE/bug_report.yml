@@ -1,5 +1,5 @@
 name: '🐛 Bug Report'
-description: 'Found a bug? Submit a bug report.'
+description: 'Report an issue or unexpected behavior'
 labels: [bug]
 body:
 - type: textarea
