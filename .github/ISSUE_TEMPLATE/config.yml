@@ -1,12 +1,12 @@
 blank_issues_enabled: false
 
 contact_links:
-  - name: '🙏 Ask for help'
+  - name: '🙏 Help'
     url: https://github.com/duncanmcclean/simple-commerce/discussions/new
-    about: 'Start a discussion to ask for help!'
+    about: 'Have a question? Need help troubleshooting? Open a discussion.'
   - name: '💡 Feature Requests'
     url: https://github.com/duncanmcclean/simple-commerce/discussions/new
-    about: 'Start a discussion to submit your feature request.'
-  - name: 'Get in touch'
+    about: 'Have any idea for a new feature? Open a discussion.'
+  - name: 'Support'
     url: https://duncanmcclean.com/help
-    about: "Alternatively, send over an email."
+    about: "Want to discuss something privately or just prefer plain old email? Send over an email."
