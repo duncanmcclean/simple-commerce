@@ -7,10 +7,7 @@ This email is to confirm that your recent order (**#{{ $order->orderNumber() }}*
 | Items       | Quantity         | Total |
 | :--------- | :------------- | :----- |
 @foreach ($order->lineItems() as $lineItem)
-@php
-$product = \DoubleThreeDigital\SimpleCommerce\Facades\Product::find($lineItem['product']);
-@endphp
-| [{{ $product->get('title') }}]({{ optional($product->resource())->absoluteUrl() }}) | {{ $lineItem['quantity'] }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem['total'], $site) }} |
+| [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem->total(), $site) }} |
 @endforeach
 | | Subtotal: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->itemsTotal(), $site) }}
 @if($order->coupon())
