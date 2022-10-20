@@ -8,7 +8,7 @@ body:
 - type: textarea
   attributes:
     label: Description
-    description: Bonus points if you're able to share a [Loom](https://loom.com) or screenshot explaining the issue.
+    # description: Bonus points if you're able to share a [Loom](https://loom.com) or screenshot explaining the issue.
     placeholder: "What's happening? What are you expecting to happen?"
   validations:
     required: true
