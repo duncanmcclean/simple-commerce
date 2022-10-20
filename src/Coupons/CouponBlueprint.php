@@ -40,6 +40,7 @@ class CouponBlueprint
                 'instructions' => 'If selected, this coupon will only be valid for selected customers.',
                 'display' => 'Customers',
                 'width' => 50,
+                'resource' => 'customers',
             ];
         }
 
