@@ -108,7 +108,8 @@ class CartController extends BaseActionController
 
                 $customer = Customer::make()
                     ->email($data['email'])
-                    ->data($customerData);
+                    ->data($customerData)
+                    ->merge(Arr::only($data, config('simple-commerce.field_whitelist.customers')));
 
                 $customer->save();
             }
