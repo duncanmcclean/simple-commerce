@@ -2,12 +2,20 @@
 
 ## Unreleased
 
+## v4.2.0 (2022-10-22)
+
+Note: v4.2 now requires a minimum of Statamic v3.3.48.
+
+### What's new
+
+-   Added `raw_price` computed value for products
+
 ## v4.1.3 (2022-10-20)
 
 ### What's fixed
 
-* Fixed 'Order Shipped' email #743 #744
-* Fixed coupons not working when using Database Customer Driver #742 #745 by @jornwildenbeest
+-   Fixed 'Order Shipped' email #743 #744
+-   Fixed coupons not working when using Database Customer Driver #742 #745 by @jornwildenbeest
 
 ## v4.1.2 (2022-10-19)
 
