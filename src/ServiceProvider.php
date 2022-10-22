@@ -139,7 +139,8 @@ class ServiceProvider extends AddonServiceProvider
             $this
                 ->bootStacheStores()
                 ->createNavItems()
-                ->registerPermissions();
+                ->registerPermissions()
+                ->registerComputedValues();
         });
 
         if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
@@ -434,6 +435,18 @@ class ServiceProvider extends AddonServiceProvider
         }
 
         return $this;
+    }
+
+    protected function registerComputedValues()
+    {
+        if (
+            $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class)
+            && Statamic::version() >= '3.3.48'
+        ) {
+            Collection::computed(SimpleCommerce::productDriver()['collection'], 'raw_price', function ($entry, $value) {
+                return $entry->get('price');
+            });
+        }
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
