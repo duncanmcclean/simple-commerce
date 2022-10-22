@@ -8,7 +8,7 @@ Note: v4.2 now requires a minimum of Statamic v3.3.48.
 
 ### What's new
 
--   Added `raw_price` computed value for products
+-   Added `raw_price` computed value for products #749
 
 ## v4.1.3 (2022-10-20)
 
