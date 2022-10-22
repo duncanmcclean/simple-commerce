@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\UpdateScripts;
 
-use DoubleThreeDigital\SimpleCommerce\Tests\RunsUpdateScripts;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RunsUpdateScripts;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_3\MigrateLineItemMetadata;
 use Illuminate\Support\Facades\File;

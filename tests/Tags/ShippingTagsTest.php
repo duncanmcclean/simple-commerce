@@ -9,10 +9,9 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\ShippingTags;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\StaticCartDriver;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\StaticCartDriver;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Antlers;
 
 class ShippingTagsTest extends TestCase

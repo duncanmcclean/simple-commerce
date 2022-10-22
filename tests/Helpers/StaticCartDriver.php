@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;

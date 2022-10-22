@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingMethodFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost;
-use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

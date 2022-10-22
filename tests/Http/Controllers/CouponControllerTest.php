@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;

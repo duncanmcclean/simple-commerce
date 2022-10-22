@@ -3,9 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\RefreshContent;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
