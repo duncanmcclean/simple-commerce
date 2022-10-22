@@ -441,7 +441,6 @@ class ServiceProvider extends AddonServiceProvider
     {
         if (
             $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class)
-            && Statamic::version() >= '3.3.48'
         ) {
             Collection::computed(SimpleCommerce::productDriver()['collection'], 'raw_price', function ($entry, $value) {
                 return $entry->get('price');
