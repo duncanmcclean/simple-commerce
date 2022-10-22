@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
 use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use DoubleThreeDigital\SimpleCommerce\Tests\UseDatabaseContentDrivers;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 

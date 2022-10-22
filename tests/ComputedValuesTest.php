@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 
 class ComputedValuesTest extends TestCase
 {
