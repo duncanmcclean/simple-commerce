@@ -113,7 +113,7 @@ class CartItemController extends BaseActionController
         } elseif ($product->purchasableType() === ProductType::Variant) {
             $variant = $product->variant($request->get('variant'));
 
-            if ($variant !== null && $variant->stock() !== null && $variant->stock() < $request->quantity) {
+            if ($variant !== null && is_int($variant->stock()) && $variant->stock() < $request->quantity) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         }
