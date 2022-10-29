@@ -126,15 +126,15 @@ abstract class TestCase extends OrchestraTestCase
     {
         $uses = array_flip(class_uses_recursive(static::class));
 
-        if (isset($uses[RefreshContent::class])) {
+        if (isset($uses[Helpers\RefreshContent::class])) {
             $this->refreshContent();
         }
 
-        if (isset($uses[SetupCollections::class])) {
+        if (isset($uses[Helpers\SetupCollections::class])) {
             $this->setupCollections();
         }
 
-        if (isset($uses[UseDatabaseContentDrivers::class])) {
+        if (isset($uses[Helpers\UseDatabaseContentDrivers::class])) {
             $this->setUpDatabaseContentDrivers();
         }
 

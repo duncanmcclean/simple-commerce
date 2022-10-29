@@ -3,8 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\UpdateScripts;
 
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\RunsUpdateScripts;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RunsUpdateScripts;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v2_4\MigrateGatewayDataToNewFormat;
 use Illuminate\Support\Facades\File;

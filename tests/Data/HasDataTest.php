@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Support\Traits;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Data;
 
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;

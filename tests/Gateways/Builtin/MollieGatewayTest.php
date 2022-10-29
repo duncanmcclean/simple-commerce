@@ -6,7 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\MollieGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Tests\Invader;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;

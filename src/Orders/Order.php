@@ -251,7 +251,7 @@ class Order implements Contract
     {
         $this->isShipped(true);
 
-        $this->data([
+        $this->merge([
             'shipped_date'  => now()->format('Y-m-d H:i'),
         ]);
 

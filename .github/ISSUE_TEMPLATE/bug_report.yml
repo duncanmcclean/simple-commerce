@@ -1,0 +1,29 @@
+name: '🐛 Bug Report'
+description: "Found a bug or something that's not quite working like it should? Open an issue."
+labels: [bug]
+body:
+- type: markdown
+  attributes:
+    value: Thanks for taking the time to submit a bug report! Please fill out the fields with as much detail as possible, so we can get to the bottom of the issue as quickly as possible.
+- type: textarea
+  attributes:
+    label: Description
+    description: Bonus points if you're able to share a [screencast](https://zipmessage.com/nitcffb8) or screenshot explaining the issue.
+    placeholder: "What's happening? What are you expecting to happen?"
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    placeholder: |
+        1. Do this thing...
+        2. Then do that thing...
+        3. And finally, do something else...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Environment
+    description: Copy & paste the output of `php please support:details` here.
+  validations:
+    required: true

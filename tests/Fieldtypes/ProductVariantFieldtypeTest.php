@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductVariantFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 class ProductVariantFieldtypeTest extends TestCase
