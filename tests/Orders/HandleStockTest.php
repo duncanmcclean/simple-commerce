@@ -12,6 +12,10 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\File;
+use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
+use Statamic\Facades\Site;
 
 class HandleStockTest extends TestCase
 {
@@ -130,7 +134,70 @@ class HandleStockTest extends TestCase
     /** @test */
     public function can_decrease_stock_for_standard_product_with_non_localised_stock_field()
     {
-        $this->markTestIncomplete("TODO");
+        $this->markTestIncomplete("Getting an error due to how we're setting up multi-site. Need to dig into it at some point.");
+
+        File::deleteDirectory(base_path('content/collections/products'));
+
+        File::makeDirectory(base_path('content/collections/products'));
+        File::makeDirectory(base_path('content/collections/products/english'));
+        File::makeDirectory(base_path('content/collections/products/french'));
+
+        Site::setConfig(['sites' => [
+            'english' => ['url' => 'http://localhost/', 'locale' => 'en'],
+            'french' => ['url' => 'http://anotherhost.com/', 'locale' => 'fr'],
+        ], 'default' => 'english']);
+
+        Site::setCurrent('english');
+
+        Collection::findByHandle('products')->sites(['english', 'french'])->routes('{slug}')->save();
+
+        // $englishProduct = Product::make()
+        //     ->price(1200)
+        //     ->stock(10)
+        //     ->data([
+        //         'title' => 'Medium Jumper',
+        //     ]);
+
+        // $englishProduct->save();
+
+        $englishProduct = Entry::make()
+            ->locale('english')
+            ->data([
+                'title' => 'Medium Jumper',
+                'price' => 1200,
+                'stock' => 10,
+            ]);
+
+        $englishProduct->save(); //  Undefined array key 1:: vendor/statamic/cms/src/Stache/Stores/CollectionEntriesStore.php:38
+
+        dd('here');
+
+        $frenchProduct = $englishProduct->resource()->makeLocalization('french');
+        $frenchProduct->save();
+
+        $frenchProduct = Product::find($frenchProduct->id());
+
+        dd($frenchProduct);
+
+        $order = Order::make()
+            ->lineItems([
+                [
+                    'product' => $frenchProduct->id(),
+                    'quantity' => 3,
+                ],
+            ]);
+
+        $order->save();
+
+        app(Pipeline::class)
+            ->send($order)
+            ->through([HandleStock::class])
+            ->thenReturn();
+
+        $englishProduct->fresh();
+        $frenchProduct->fresh();
+
+        $this->assertSame(7, $product->stock());
     }
 
     /** @test */
