@@ -487,6 +487,89 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function cant_store_item_when_standard_product_has_no_stock()
+    {
+        $product = Product::make()
+            ->price(1500)
+            ->stock(0)
+            ->data([
+                'title' => 'Tiger Food',
+                'slug' => 'tiger-food',
+            ]);
+
+        $product->save();
+
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'product'  => $product->id,
+            'quantity' => 2,
+        ];
+
+        $this
+            ->from('/products/' . $product->get('slug'))
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertSessionHasErrors();
+
+        $cart->fresh();
+
+        $this->assertSame($cart->lineItems()->count(), 0);
+    }
+
+    /** @test */
+    public function cant_store_item_when_variant_product_has_no_stock()
+    {
+        $product = Product::make()
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
+                        ],
+                    ],
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
+                        'stock' => 0,
+                    ],
+                ],
+            ]);
+
+        $product->save();
+
+        $cart = Order::make();
+        $cart->save();
+
+        $data = [
+            'product'  => $product->id,
+            'variant' => 'Red_Small',
+            'quantity' => 2,
+        ];
+
+        $this
+            ->from('/products/' . $product->get('slug'))
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+            ->assertSessionHasErrors();
+
+        $cart->fresh();
+
+        $this->assertSame($cart->lineItems()->count(), 0);
+    }
+
+    /** @test */
     public function can_store_item_and_ensure_existing_items_are_not_overwritten()
     {
         $productOne = Product::make()
