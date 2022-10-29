@@ -59,7 +59,7 @@ class HandleStock
                 if ($product->purchasableType() === ProductType::Variant) {
                     $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
 
-                    if ($variant !== null && $variant->stock() !== null) {
+                    if ($variant !== null && is_int($variant->stock())) {
                         $stock = $variant->stock() - $item->quantity();
 
                         // Need to do this check before actually setting the stock
