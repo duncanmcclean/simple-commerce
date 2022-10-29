@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.2.1 (2022-10-29)
+
+### What's fixed
+
+-   Fixed stock not being checked at all when adding products to the cart #752 by @marcvdm
+
 ## v4.2.0 (2022-10-22)
 
 Note: v4.2 now requires a minimum of Statamic v3.3.48.
