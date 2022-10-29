@@ -90,7 +90,7 @@ class HandleStockTest extends TestCase
     /** @test */
     public function cant_decrease_stock_for_standard_product_when_quantity_is_greater_than_stock()
     {
-        $this->markTestIncomplete("TODO");
+        $this->markTestIncomplete('TODO');
     }
 
     /** @test */
@@ -303,13 +303,13 @@ class HandleStockTest extends TestCase
     /** @test */
     public function cant_decrease_stock_for_variant_product_when_quantity_is_greater_than_stock()
     {
-        $this->markTestIncomplete("TODO");
+        $this->markTestIncomplete('TODO');
     }
 
     /** @test */
     public function can_decrease_stock_for_variant_product_with_non_localised_stock_field()
     {
-        $this->markTestIncomplete("TODO");
+        $this->markTestIncomplete('TODO');
     }
 
     /** @test */
