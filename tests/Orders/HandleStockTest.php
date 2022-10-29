@@ -7,7 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockExcept
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleStock;
-use DoubleThreeDigital\SimpleCommerce\Tests\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Config;
