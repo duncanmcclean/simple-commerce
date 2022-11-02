@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v4.2.2 (2022-11-02)
+
+### What's improved
+
+-   You can now pass external URLs as the `redirect` parameter on Form Tags #756 #757
+
+### What's fixed
+
+-   Fixed offsite payments with the PayPal gateway #755 #758
+
 ## v4.2.1 (2022-10-29)
 
 ### What's fixed
