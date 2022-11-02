@@ -52,7 +52,7 @@ trait FormBuilder
 
     private function errorRedirectField()
     {
-        $errorRedirectUrl = Str::start($this->params->get('error_redirect', request()->path()), '/');
+        $errorRedirectUrl = $this->params->get('error_redirect', request()->path());
 
         if (! $this->isExternalUrl($errorRedirectUrl)) {
             $errorRedirectUrl = Str::start($errorRedirectUrl, '/');
