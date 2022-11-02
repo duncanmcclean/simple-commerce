@@ -163,7 +163,9 @@ class PayPalGateway extends BaseGateway implements Gateway
             return false;
         }
 
-        $paypalOrderId = $order->gateway()['data']['id'];
+        $paypalOrderId = isset($order->get('paypal')['result']['id'])
+            ? $order->get('paypal')['result']['id']
+            : null;
 
         if (! $paypalOrderId) {
             throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
