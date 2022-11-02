@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 use Statamic\Facades\Parse;
@@ -284,6 +285,43 @@ class CartTagTest extends TestCase
         $usage = $this->tag->addItem();
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items"', $usage);
+    }
+
+    /**
+     * @test
+     * https://github.com/duncanmcclean/simple-commerce/issues/756
+     */
+    public function can_output_add_item_form_and_ensure_external_redirect_urls_are_correct()
+    {
+        Config::set('simple-commerce.disable_form_parameter_validation', true);
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+
+        $product->save();
+
+        $this->tag->setParameters([
+            'redirect' => 'https://duncanmcclean.com',
+            'error_redirect' => 'https://statamic.dev/installing',
+        ]);
+
+        $this->tag->setContent('
+            <h2>Add Item</h2>
+
+            <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
+            <input type="number" name="quantity">
+            <button type="submit">Add to cart</submit>
+        ');
+
+        $usage = $this->tag->addItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('<input type="hidden" name="_redirect" value="https://duncanmcclean.com"', $usage);
+        $this->assertStringContainsString('<input type="hidden" name="_error_redirect" value="https://statamic.dev/installing"', $usage);
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items"', $usage);
     }
 

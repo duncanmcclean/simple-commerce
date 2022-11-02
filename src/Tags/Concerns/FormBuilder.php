@@ -37,22 +37,30 @@ trait FormBuilder
 
     private function redirectField()
     {
-        $redirect = Str::start($this->params->get('redirect', request()->path()), '/');
+        $redirectUrl = $this->params->get('redirect', request()->path());
+
+        if (! $this->isExternalUrl($redirectUrl)) {
+            $redirectUrl = Str::start($redirectUrl, '/');
+        }
 
         $value = config('simple-commerce.disable_form_parameter_validation')
-            ? $redirect
-            : encrypt($redirect);
+            ? $redirectUrl
+            : encrypt($redirectUrl);
 
         return '<input type="hidden" name="_redirect" value="' . $value . '" />';
     }
 
     private function errorRedirectField()
     {
-        $errorRedirect = Str::start($this->params->get('error_redirect', request()->path()), '/');
+        $errorRedirectUrl = $this->params->get('error_redirect', request()->path());
+
+        if (! $this->isExternalUrl($errorRedirectUrl)) {
+            $errorRedirectUrl = Str::start($errorRedirectUrl, '/');
+        }
 
         $value = config('simple-commerce.disable_form_parameter_validation')
-            ? $errorRedirect
-            : encrypt($errorRedirect);
+            ? $errorRedirectUrl
+            : encrypt($errorRedirectUrl);
 
         return '<input type="hidden" name="_error_redirect" value="' . $value . '" />';
     }
@@ -108,5 +116,10 @@ trait FormBuilder
         if ($this->hasErrors()) {
             return session('errors')->getBag('default');
         }
+    }
+
+    protected function isExternalUrl(string $url): bool
+    {
+        return Str::startsWith($url, ['http://', 'https://']);
     }
 }
