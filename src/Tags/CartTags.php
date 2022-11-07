@@ -144,7 +144,7 @@ class CartTags extends SubTag
 
     public function taxTotalSplit()
     {
-        $taxSplit = $this->rawTaxTotalSplit()->map(function($tax) {
+        $taxSplit = $this->rawTaxTotalSplit()->map(function ($tax) {
             $tax['amount'] = Currency::parse($tax['amount'], Site::current());
 
             return $tax;
@@ -156,12 +156,12 @@ class CartTags extends SubTag
     public function rawTaxTotalSplit()
     {
         $items = $this->items();
-        $taxSplit = $items->groupBy(function($item) {
+        $taxSplit = $items->groupBy(function ($item) {
             return $item['tax']->value()['rate'];
-        })->map(function($group, $groupRate) {
+        })->map(function ($group, $groupRate) {
             return [
                 'rate' => $groupRate,
-                'amount' => $group->sum(function($item) {
+                'amount' => $group->sum(function ($item) {
                     return $item['tax']->raw()['amount'];
                 }),
             ];
