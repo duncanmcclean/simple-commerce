@@ -142,6 +142,34 @@ class CartTags extends SubTag
         return 0;
     }
 
+    public function taxTotalSplit()
+    {
+        $taxSplit = $this->rawTaxTotalSplit()->map(function($tax) {
+            $tax['amount'] = Currency::parse($tax['amount'], Site::current());
+
+            return $tax;
+        });
+
+        return $taxSplit;
+    }
+
+    public function rawTaxTotalSplit()
+    {
+        $items = $this->items();
+        $taxSplit = $items->groupBy(function($item) {
+            return $item['tax']->value()['rate'];
+        })->map(function($group, $groupRate) {
+            return [
+                'rate' => $groupRate,
+                'amount' => $group->sum(function($item) {
+                    return $item['tax']->raw()['amount'];
+                }),
+            ];
+        })->values();
+
+        return $taxSplit;
+    }
+
     public function couponTotal()
     {
         if ($this->hasCart()) {
