@@ -284,7 +284,6 @@ class CartTagTest extends TestCase
             ->zone($taxZone->id());
         $taxRateDefault->save();
 
-
         // Create reduced tax
         $taxCategoryReduced = TaxCategory::make()
             ->id('reduced-vat')
@@ -298,7 +297,6 @@ class CartTagTest extends TestCase
             ->category($taxCategoryReduced->id())
             ->zone($taxZone->id());
         $taxRateReduced->save();
-
 
         // Create test products
         $product1 = Product::make()
@@ -324,7 +322,6 @@ class CartTagTest extends TestCase
                 'title' => 'Elephant Food',
             ]);
         $product3->save();
-
 
         // Create face cart
         $cart = Order::make()->lineItems([
