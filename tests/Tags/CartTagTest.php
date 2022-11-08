@@ -2,8 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Tags\CartTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -11,6 +15,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 use Statamic\Facades\Parse;
+use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 
 class CartTagTest extends TestCase
@@ -248,6 +253,122 @@ class CartTagTest extends TestCase
         $this->fakeCart($cart);
 
         $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:taxTotal }}'));
+    }
+
+    /** @test */
+    public function can_get_cart_tax_total_split()
+    {
+        Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+        Config::set('simple-commerce.tax_engine_config', [
+            'address' => 'billing',
+        ]);
+
+        $taxZone = TaxZone::make()
+            ->id('uk')
+            ->name('United Kingdom')
+            ->country('GB');
+        $taxZone->save();
+
+        // Create default tax
+        $taxCategoryDefault = TaxCategory::make()
+            ->id('default-vat')
+            ->name('Default VAT');
+        $taxCategoryDefault->save();
+
+        $taxRateDefault = TaxRate::make()
+            ->id('default-vat')
+            ->name('19% VAT')
+            ->rate(19)
+            ->category($taxCategoryDefault->id())
+            ->zone($taxZone->id());
+        $taxRateDefault->save();
+
+
+        // Create reduced tax
+        $taxCategoryReduced = TaxCategory::make()
+            ->id('reduced-vat')
+            ->name('Reduced VAT');
+        $taxCategoryReduced->save();
+
+        $taxRateReduced = TaxRate::make()
+            ->id('reduced-vat')
+            ->name('7% VAT')
+            ->rate(7)
+            ->category($taxCategoryReduced->id())
+            ->zone($taxZone->id());
+        $taxRateReduced->save();
+
+
+        // Create test products
+        $product1 = Product::make()
+            ->price(799)
+            ->taxCategory($taxCategoryDefault->id())
+            ->data([
+                'title' => 'Cat Food',
+            ]);
+        $product1->save();
+
+        $product2 = Product::make()
+            ->price(1234)
+            ->taxCategory($taxCategoryDefault->id())
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+        $product2->save();
+
+        $product3 = Product::make()
+            ->price(45699)
+            ->taxCategory($taxCategoryReduced->id())
+            ->data([
+                'title' => 'Elephant Food',
+            ]);
+        $product3->save();
+
+
+        // Create face cart
+        $cart = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product1->id,
+                'quantity' => 4,
+            ],
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product2->id,
+                'quantity' => 7,
+            ],
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product3->id,
+                'quantity' => 3,
+            ],
+        ])->merge([
+            'billing_address' => '1 Test Street',
+            'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
+        ]);
+
+        $cart->save();
+        $cart->recalculate();
+        $this->fakeCart($cart);
+
+        // Get tax sum for products with default tax rate
+        $cartProduct1 = $cart->lineItems()->slice(0, 1)->first();
+        $cartProduct2 = $cart->lineItems()->slice(1, 1)->first();
+        $taxDefault = $cartProduct1->tax()['amount'] + $cartProduct2->tax()['amount'];
+        $taxDefaultFormatted = Currency::parse($taxDefault, Site::default());
+
+        // Get tax sum for products with reduced tax rate
+        $cartProduct3 = $cart->lineItems()->slice(2, 1)->first();
+        $taxReduced = $cartProduct3->tax()['amount'];
+        $taxReducedFormatted = Currency::parse($taxReduced, Site::default());
+
+        // Expected tag output format = '7:£12.34|19:£56.78'
+        $renderedTag = $this->tag('{{ sc:cart:taxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:taxTotalSplit }}');
+
+        $this->assertStringContainsString($taxRateDefault->rate() . ':' . $taxDefaultFormatted, $renderedTag);
+        $this->assertStringContainsString($taxRateReduced->rate() . ':' . $taxReducedFormatted, $renderedTag);
     }
 
     /** @test */
