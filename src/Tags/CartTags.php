@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 
@@ -140,6 +141,32 @@ class CartTags extends SubTag
         }
 
         return 0;
+    }
+
+    public function taxTotalSplit(): Collection
+    {
+        return $this->rawTaxTotalSplit()->map(function ($tax) {
+            $tax['amount'] = Currency::parse($tax['amount'], Site::current());
+
+            return $tax;
+        });
+    }
+
+    public function rawTaxTotalSplit(): Collection
+    {
+        return $this->items()
+            ->groupBy(function ($item) {
+                return $item['tax']->value()['rate'];
+            })
+            ->map(function ($group, $groupRate) {
+                return [
+                    'rate' => $groupRate,
+                    'amount' => $group->sum(function ($item) {
+                        return $item['tax']->raw()['amount'];
+                    }),
+                ];
+            })
+            ->values();
     }
 
     public function couponTotal()
