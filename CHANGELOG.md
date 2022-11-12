@@ -6,7 +6,7 @@
 
 ### What's new
 
--   A new `{{ sc:cart:tax_total_split }}` tag which returns a cart's tax total, split by tax rates #759
+-   A new `{{ sc:cart:tax_total_split }}` tag which returns a cart's tax total, split by tax rates #759 by @Sm1lEE
 
 ## v4.2.2 (2022-11-02)
 
