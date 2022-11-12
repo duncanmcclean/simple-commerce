@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.2.3 (2022-11-12)
+
+### What's new
+
+-   A new `{{ sc:cart:tax_total_split }}` tag which returns a cart's tax total, split by tax rates #759
+
 ## v4.2.2 (2022-11-02)
 
 ### What's improved
