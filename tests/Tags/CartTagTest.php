@@ -255,7 +255,10 @@ class CartTagTest extends TestCase
         $this->assertSame('£25.50', (string) $this->tag('{{ sc:cart:taxTotal }}'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * https://github.com/duncanmcclean/simple-commerce/pull/759
+     */
     public function can_get_cart_tax_total_split()
     {
         Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
@@ -268,12 +271,14 @@ class CartTagTest extends TestCase
             ->id('uk')
             ->name('United Kingdom')
             ->country('GB');
+
         $taxZone->save();
 
         // Create default tax
         $taxCategoryDefault = TaxCategory::make()
             ->id('default-vat')
             ->name('Default VAT');
+
         $taxCategoryDefault->save();
 
         $taxRateDefault = TaxRate::make()
@@ -282,12 +287,14 @@ class CartTagTest extends TestCase
             ->rate(19)
             ->category($taxCategoryDefault->id())
             ->zone($taxZone->id());
+
         $taxRateDefault->save();
 
         // Create reduced tax
         $taxCategoryReduced = TaxCategory::make()
             ->id('reduced-vat')
             ->name('Reduced VAT');
+
         $taxCategoryReduced->save();
 
         $taxRateReduced = TaxRate::make()
@@ -296,68 +303,77 @@ class CartTagTest extends TestCase
             ->rate(7)
             ->category($taxCategoryReduced->id())
             ->zone($taxZone->id());
+
         $taxRateReduced->save();
 
         // Create test products
-        $product1 = Product::make()
+        $productOne = Product::make()
             ->price(799)
             ->taxCategory($taxCategoryDefault->id())
             ->data([
                 'title' => 'Cat Food',
             ]);
-        $product1->save();
 
-        $product2 = Product::make()
+        $productOne->save();
+
+        $productTwo = Product::make()
             ->price(1234)
             ->taxCategory($taxCategoryDefault->id())
             ->data([
                 'title' => 'Dog Food',
             ]);
-        $product2->save();
 
-        $product3 = Product::make()
+        $productTwo->save();
+
+        $productThree = Product::make()
             ->price(45699)
             ->taxCategory($taxCategoryReduced->id())
             ->data([
                 'title' => 'Elephant Food',
             ]);
-        $product3->save();
+
+        $productThree->save();
 
         // Create face cart
-        $cart = Order::make()->lineItems([
-            [
-                'id' => app('stache')->generateId(),
-                'product' => $product1->id,
-                'quantity' => 4,
-            ],
-            [
-                'id' => app('stache')->generateId(),
-                'product' => $product2->id,
-                'quantity' => 7,
-            ],
-            [
-                'id' => app('stache')->generateId(),
-                'product' => $product3->id,
-                'quantity' => 3,
-            ],
-        ])->merge([
-            'billing_address' => '1 Test Street',
-            'billing_country' => 'GB',
-            'use_shipping_address_for_billing' => false,
-        ]);
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $productOne->id,
+                    'quantity' => 4,
+                ],
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $productTwo->id,
+                    'quantity' => 7,
+                ],
+                [
+                    'id' => app('stache')->generateId(),
+                    'product' => $productThree->id,
+                    'quantity' => 3,
+                ],
+            ])
+            ->merge([
+                'billing_address' => '1 Test Street',
+                'billing_country' => 'GB',
+                'use_shipping_address_for_billing' => false,
+            ]);
 
         $cart->save();
         $cart->recalculate();
+
         $this->fakeCart($cart);
 
         // Get tax sum for products with default tax rate
         $cartProduct1 = $cart->lineItems()->slice(0, 1)->first();
         $cartProduct2 = $cart->lineItems()->slice(1, 1)->first();
+
         $taxDefault = $cartProduct1->tax()['amount'] + $cartProduct2->tax()['amount'];
         $taxDefaultFormatted = Currency::parse($taxDefault, Site::default());
 
         // Get tax sum for products with reduced tax rate
         $cartProduct3 = $cart->lineItems()->slice(2, 1)->first();
+
         $taxReduced = $cartProduct3->tax()['amount'];
         $taxReducedFormatted = Currency::parse($taxReduced, Site::default());
 
