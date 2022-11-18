@@ -2,36 +2,74 @@
 title: Use Simple Commerce with Static Caching
 ---
 
-Static Caching is one of the things you can use to really speed up your site - especially when using full static caching!
+Static Caching is a really awesome feature of Statamic - taking advantage of it can really help to speed up your site!
 
-However, due to the nature of e-commerce and the way Simple Commerce is built, there's a few gotcha and things you'll need to workaround to get it playing nice with Simple Commerce.
+Although, because e-commerce sites are dynamic (for example: the cart is different per user) you'll want to ignore those bits so they don't get cached.
 
-## Gotchas
+Thankfully, you can wrap that code in Statamic's `nocache` tag. For example: you might want to do something like this for a line items counter in your site header:
 
-### CSRF
-
-> This may not be a 'gotcha' anymore now that the `nocache` tag exists. CSRF may already be replaced by Statamic upon page load.
-
-This isn't necessarily Simple Commerce related but it's worth saying that you'll need to find some way of pulling in CSRF tokens for Statamic/Simple Commerce forms, as they'll be different for every user of the site.
-
-Otherwise, the first user to view a form on your site, will get one token, then the same token will be given to all other users who view that form. And, then if the form is submitted, the user will receive a 419 Page Expired error from Laravel.
-
-The recommended workaround for this is to create a route in which simply returns a fresh CSRF token for the current user.
-
-```php
-// routes/web.php
-
-Route::get('/csrf-token', function () {
-    return [
-        'csrf-token' => csrf_token(),
-    ];
-});
+```antlers
+{{ nocache }}
+    Cart ({{ sc:cart:count }} items)
+{{ /nocache }}
 ```
 
-Then, in the front-end of your site, wherever you have any forms, call that route, grab the CSRF token from the response and replace the value of any `_token_` inputs with the fresh token.
+Also, you'll want to do it for any other parts of your site that show cart information (like the cart/checkout pages). Just wrap the info in the tag and the job's a good 'n.
 
-### Cart/Checkout pages
+```antlers
+{{ nocache }}
+    {{ sc:cart }}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
 
-If you want to display anything specific about the cart or the customer, you'll need to load it in [via AJAX](/kb-articles/ajax). Otherwise, all users will see the same information.
+            <tbody>
+                {{ items }}
+                    <tr>
+                        <td>
+                            {{ product:title }}
+                        </td>
 
-Alternativly, you could disable static caching for those pages.
+                        <td>
+                            {{ product:price }}
+                        </td>
+
+                        <td>
+                            {{ sc:cart:updateItem :item="id" }}
+                                <select
+                                    name="quantity"
+                                    onchange="this.parentElement.submit()"
+                                >
+                                    {{ loop from="1" to="5" }}
+                                        <option
+                                            value="{{ value }}"
+                                            {{ if quantity == value }} selected {{ /if }}
+                                        >
+                                            {{ value }}
+                                        </option>
+                                    {{ /loop }}
+                                </select>
+                            {{ /sc:cart:updateItem }}
+                        </td>
+
+                        <td>{{ total }}</td>
+                    </tr>
+                {{ /items }}
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Subtotal</td>
+                    <td>{{ items_total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {{ /sc:cart }}
+{{ /nocache }}
+```
