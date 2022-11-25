@@ -38,6 +38,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\CouponFieldtype::class,
         Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\OrderStatusFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
         Fieldtypes\RegionFieldtype::class,

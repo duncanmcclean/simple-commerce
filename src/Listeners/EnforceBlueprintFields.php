@@ -80,6 +80,13 @@ class EnforceBlueprintFields
             'validate'  => 'required',
         ]);
 
+        $event->blueprint->ensureField('order_status', [
+            'type'      => 'order_status',
+            'display'   => 'Order Status',
+            'read_only' => true,
+            'validate'  => 'required',
+        ], 'sidebar');
+
         return $event->blueprint;
     }
 }
