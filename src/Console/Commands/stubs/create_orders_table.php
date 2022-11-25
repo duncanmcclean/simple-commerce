@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('order_status')->default('cart');
             $table->boolean('is_paid')->default(false);
             $table->boolean('is_shipped')->default(false);
             $table->boolean('is_refunded')->default(false);
