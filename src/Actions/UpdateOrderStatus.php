@@ -4,32 +4,42 @@ namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
-class MarkAsShipped extends Action
+class UpdateOrderStatus extends Action
 {
     public static function title()
     {
-        return __('simple-commerce::messages.actions.mark_as_shipped');
+        return __('simple-commerce::messages.actions.update_order_status');
+    }
+
+    protected function fieldItems()
+    {
+        return [
+            'order_status' => [
+                'type' => 'select',
+                'options' => collect(OrderStatus::cases())->mapWithKeys(fn ($case) => [
+                    $case->value => $case->name,
+                ])->toArray(),
+                'instructions' => __("**Note:** Changing the order status will not refund or charge the customer."),
+            ],
+        ];
     }
 
     public function visibleTo($item)
     {
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $item instanceof Entry
-                && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
-                && $item->get('is_paid') === true
-                && $item->get('is_shipped') !== true;
+                && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection'];
         }
 
         if (isset(SimpleCommerce::orderDriver()['model'])) {
             $orderModelClass = SimpleCommerce::orderDriver()['model'];
 
-            return $item instanceof $orderModelClass
-                && $item->is_paid
-                && ! $item->is_shipped;
+            return $item instanceof $orderModelClass;
         }
 
         return false;
@@ -46,11 +56,13 @@ class MarkAsShipped extends Action
 
     public function run($items, $values)
     {
+        $orderStatus = OrderStatus::from($values['order_status']);
+
         collect($items)
-            ->each(function ($entry) {
+            ->each(function ($entry) use ($orderStatus) {
                 $order = Order::find($entry->id);
 
-                return $order->markAsShipped();
+                $order->updateOrderStatus($orderStatus);
             });
     }
 

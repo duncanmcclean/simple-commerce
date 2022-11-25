@@ -3,9 +3,8 @@
 return [
 
     'actions' => [
-        'mark_as_paid' => 'Mark As Paid',
-        'mark_as_shipped' => 'Mark As Shipped',
         'refund' => 'Refund',
+        'update_order_status' => 'Update Order Status',
     ],
 
     'fieldtypes' => [

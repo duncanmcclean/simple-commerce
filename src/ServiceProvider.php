@@ -19,9 +19,8 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $actions = [
-        Actions\MarkAsPaid::class,
-        Actions\MarkAsShipped::class,
         Actions\RefundAction::class,
+        Actions\UpdateOrderStatus::class,
     ];
 
     protected $commands = [

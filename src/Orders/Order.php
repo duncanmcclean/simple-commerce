@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderShipped as OrderShippedEvent;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
@@ -81,7 +82,11 @@ class Order implements Contract
         return $this
             ->fluentlyGetOrSet('status')
             ->setter(function ($value) {
-                return OrderStatus::from($value);
+                if (is_string($value)) {
+                    return OrderStatus::from($value);
+                }
+
+                return $value;
             })
             ->args(func_get_args());
     }
@@ -241,6 +246,15 @@ class Order implements Contract
         }
 
         return false;
+    }
+
+    public function updateOrderStatus(OrderStatus $orderStatus): bool
+    {
+        $this->status($orderStatus)->save();
+
+        event(new OrderStatusUpdated($this, $orderStatus));
+
+        return true;
     }
 
     public function markAsPaid(): self
