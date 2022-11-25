@@ -48,7 +48,7 @@ class EloquentOrderRepository implements RepositoryContract
             ->resource($model)
             ->id($model->id)
             ->orderNumber($model->id)
-            ->status($model->order_status)
+            ->status($model->order_status ?? 'cart')
             ->isPaid($model->is_paid)
             ->isShipped($model->is_shipped)
             ->isRefunded($model->is_refunded)
