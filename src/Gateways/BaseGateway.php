@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -146,7 +147,7 @@ class BaseGateway
                 $order->customer()->save();
             }
 
-            $order->markAsPaid();
+            $order->updateOrderStatus(OrderStatus::Paid);
 
             if ($order->coupon()) {
                 $order->coupon()->redeem();
@@ -157,7 +158,7 @@ class BaseGateway
             return true;
         }
 
-        $order->markAsPaid();
+        $order->updateOrderStatus(OrderStatus::Paid);
 
         return true;
     }

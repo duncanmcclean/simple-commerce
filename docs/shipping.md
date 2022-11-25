@@ -111,13 +111,14 @@ Marking an order as shipped will dispatch an event which you can use to send not
 
 ### Programatically
 
-If you want to mark an order as Shipped from your own code, you may use the `markAsShipped` method available on `Order` objects.
+If you want to mark an order as Shipped from your own code, you may use the `updateOrderStatus` method available on `Order` objects.
 
 ```php
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 
 $order = Order::find(123);
-$order->markAsShipped();
+$order->updateOrderStatus(OrderStatus::Shipped);
 ```
 
 ### Via the Control Panel

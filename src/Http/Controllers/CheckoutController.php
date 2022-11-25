@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Pipeline\Pipeline;
@@ -247,7 +248,7 @@ class CheckoutController extends BaseActionController
         $this->cart = $this->cart->recalculate();
 
         if ($this->cart->grandTotal() <= 0) {
-            $this->cart->markAsPaid();
+            $this->cart->updateOrderStatus(OrderStatus::Paid);
 
             return $this;
         }
@@ -283,7 +284,7 @@ class CheckoutController extends BaseActionController
         }
 
         if (! $this->request->has('gateway') && $this->cart->isPaid() === false && $this->cart->grandTotal() === 0) {
-            $this->cart->markAsPaid();
+            $this->cart->updateOrderStatus(OrderStatus::Paid);
         }
 
         if ($this->cart->coupon()) {

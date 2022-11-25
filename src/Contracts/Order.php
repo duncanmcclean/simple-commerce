@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Support\Collection;
 
 interface Order
@@ -46,9 +47,7 @@ interface Order
 
     public function redeemCoupon(string $code): bool;
 
-    public function markAsPaid(): self;
-
-    public function markAsShipped(): self;
+    public function updateOrderStatus(OrderStatus $orderStatus): self;
 
     public function refund($refundData): self;
 

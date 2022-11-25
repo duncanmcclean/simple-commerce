@@ -248,48 +248,41 @@ class Order implements Contract
         return false;
     }
 
-    public function updateOrderStatus(OrderStatus $orderStatus): bool
+    public function updateOrderStatus(OrderStatus $orderStatus): self
     {
         $this->status($orderStatus)->save();
 
         event(new OrderStatusUpdated($this, $orderStatus));
 
-        return true;
-    }
+        if ($orderStatus->is(OrderStatus::Paid)) {
+            $this
+                ->isPaid(true)
+                ->merge([
+                    'paid_date' => now()->format('Y-m-d H:i'),
+                    'published' => true,
+                ])
+                ->save();
 
-    public function markAsPaid(): self
-    {
-        $this->isPaid(true);
+            event(new OrderPaidEvent($this));
+        }
 
-        $this->merge([
-            'paid_date' => now()->format('Y-m-d H:i'),
-            'published' => true,
-        ]);
+        if ($orderStatus->is(OrderStatus::Shipped)) {
+            $this
+                ->isShipped(true)
+                ->merge([
+                    'shipped_date'  => now()->format('Y-m-d H:i'),
+                ])
+                ->save();
 
-        $this->save();
-
-        event(new OrderPaidEvent($this));
-
-        return $this;
-    }
-
-    public function markAsShipped(): self
-    {
-        $this->isShipped(true);
-
-        $this->merge([
-            'shipped_date'  => now()->format('Y-m-d H:i'),
-        ]);
-
-        $this->save();
-
-        event(new OrderShippedEvent($this));
+            event(new OrderShippedEvent($this));
+        }
 
         return $this;
     }
 
     public function refund($refundData): self
     {
+        $this->updateOrderStatus(OrderStatus::Refunded);
         $this->isRefunded(true);
 
         if (is_string($this->gateway())) {

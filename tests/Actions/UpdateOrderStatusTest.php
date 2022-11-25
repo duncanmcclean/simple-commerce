@@ -2,9 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Actions\MarkAsPaid;
 use DoubleThreeDigital\SimpleCommerce\Actions\UpdateOrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
