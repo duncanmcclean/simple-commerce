@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Actions\MarkAsPaid;
+use DoubleThreeDigital\SimpleCommerce\Actions\UpdateOrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
@@ -11,7 +12,7 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
-class MarkAsPaidTest extends TestCase
+class UpdateOrderStatusTest extends TestCase
 {
     use SetupCollections;
 
@@ -23,29 +24,7 @@ class MarkAsPaidTest extends TestCase
 
         $this->setupCollections();
 
-        $this->action = new MarkAsPaid();
-    }
-
-    /** @test */
-    public function is_visible_to_unpaid_orders()
-    {
-        $order = Order::make()->isPaid(false);
-        $order->save();
-
-        $action = $this->action->visibleTo($order->resource());
-
-        $this->assertTrue($action);
-    }
-
-    /** @test */
-    public function is_not_visible_to_paid_order()
-    {
-        $order = Order::make()->isPaid(true);
-        $order->save();
-
-        $action = $this->action->visibleTo($order->resource());
-
-        $this->assertFalse($action);
+        $this->action = new UpdateOrderStatus();
     }
 
     /** @test */
@@ -65,24 +44,7 @@ class MarkAsPaidTest extends TestCase
     }
 
     /** @test */
-    public function is_not_able_to_be_run_in_bulk()
-    {
-        $orderOne = Order::make()->isPaid(true);
-        $orderOne->save();
-
-        $orderTwo = Order::make()->isPaid(true);
-        $orderTwo->save();
-
-        $action = $this->action->visibleToBulk(collect([
-            $orderOne->resource(),
-            $orderTwo->resource(),
-        ]));
-
-        $this->assertFalse($action);
-    }
-
-    /** @test */
-    public function order_can_be_paid()
+    public function order_can_have_its_status_updated()
     {
         Collection::make('orders')->save();
 
@@ -90,15 +52,17 @@ class MarkAsPaidTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->data([
-                'is_paid'      => false,
+                'order_status' => 'cart',
             ]);
 
         $order->save();
 
-        $this->action->run([$order], null);
+        $this->action->run([$order], [
+            'order_status' => 'placed',
+        ]);
 
         $order->fresh();
 
-        $this->assertTrue($order->data()->get('is_paid'));
+        $this->assertSame($order->data()->get('order_status'), 'placed');
     }
 }
