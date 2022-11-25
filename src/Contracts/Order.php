@@ -12,6 +12,8 @@ interface Order
 
     public function orderNumber($orderNumber = null);
 
+    public function status($status = null);
+
     public function isPaid($isPaid = null);
 
     public function isShipped($isShipped = null);

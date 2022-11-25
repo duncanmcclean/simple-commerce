@@ -27,6 +27,7 @@ class Order implements Contract
 
     public $id;
     public $orderNumber;
+    public $status;
     public $isPaid;
     public $isShipped;
     public $isRefunded;
@@ -71,6 +72,14 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('orderNumber')
+            ->args(func_get_args());
+    }
+
+    // TODO: Check enum is valid
+    public function status($status = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('status')
             ->args(func_get_args());
     }
 
