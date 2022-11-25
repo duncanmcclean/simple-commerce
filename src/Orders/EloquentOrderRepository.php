@@ -104,7 +104,7 @@ class EloquentOrderRepository implements RepositoryContract
             $model = new $this->model();
         }
 
-        $model->order_status = $order->status();
+        $model->order_status = $order->status()->value;
         $model->is_paid = $order->isPaid();
         $model->is_shipped = $order->isShipped();
         $model->is_refunded = $order->isRefunded();
@@ -158,7 +158,7 @@ class EloquentOrderRepository implements RepositoryContract
 
         $order->id = $model->id;
         $order->orderNumber = $model->id;
-        $order->status = $model->order_status;
+        $order->status = OrderStatus::from($model->order_status);
         $order->isPaid = $model->is_paid;
         $order->isShipped = $model->is_shipped;
         $order->isRefunded = $model->is_refunded;

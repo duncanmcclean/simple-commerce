@@ -108,7 +108,7 @@ class EntryOrderRepository implements RepositoryContract
                 $order->data()->except(['id', 'site', 'slug'])->toArray(),
                 [
                     'order_number' => $order->has('order_number') ? $order->get('order_number') : $this->generateOrderNumber(),
-                    'order_status' => $order->status(),
+                    'order_status' => $order->status()->value,
                     'is_paid' => $order->isPaid(),
                     'is_shipped' => $order->isShipped(),
                     'is_refunded' => $order->isRefunded(),
@@ -129,7 +129,7 @@ class EntryOrderRepository implements RepositoryContract
 
         $order->id = $entry->id();
         $order->orderNumber = $entry->get('order_number');
-        $order->status = $entry->get('order_status');
+        $order->status = OrderStatus::from($entry->get('order_status'));
         $order->isPaid = $entry->get('is_paid');
         $order->isShipped = $entry->get('is_shipped');
         $order->isRefunded = $entry->get('is_refunded');

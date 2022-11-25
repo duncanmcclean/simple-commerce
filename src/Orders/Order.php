@@ -47,6 +47,7 @@ class Order implements Contract
 
     public function __construct()
     {
+        $this->status = OrderStatus::Cart;
         $this->isPaid = false;
         $this->isShipped = false;
         $this->isRefunded = false;
@@ -75,11 +76,13 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    // TODO: Check enum is valid
     public function status($status = null)
     {
         return $this
             ->fluentlyGetOrSet('status')
+            ->setter(function ($value) {
+                return OrderStatus::from($value);
+            })
             ->args(func_get_args());
     }
 
