@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Query\Scopes\Filter;
 
@@ -16,12 +17,9 @@ class OrderStatusFilter extends Filter
         return [
             'type' => [
                 'type' => 'radio',
-                'options' => [
-                    'cart' => 'Cart',
-                    'paid' => 'Paid',
-                    'shipped' => 'Shipped',
-                    'refunded' => 'Refunded',
-                ],
+                'options' => collect(OrderStatus::cases())->mapWithKeys(fn ($case) => [
+                    $case->value => $case->name,
+                ])->toArray(),
             ],
         ];
     }
@@ -35,33 +33,12 @@ class OrderStatusFilter extends Filter
 
     public function apply($query, $values)
     {
-        if ($values['type'] === 'cart') {
-            return $query
-                ->where('is_paid', false);
-        }
-
-        if ($values['type'] === 'paid') {
-            return $query
-                ->where('is_paid', true)
-                ->where('is_shipped', false);
-        }
-
-        if ($values['type'] === 'shipped') {
-            return $query
-                ->where('is_paid', true)
-                ->where('is_shipped', true);
-        }
-
-        if ($values['type'] === 'refunded') {
-            return $query
-                ->where('is_paid', true)
-                ->where('is_refunded', true);
-        }
+        return $query->where('order_status', $values['type']);
     }
 
     public function badge($values)
     {
-        $orderStatusLabel = $this->fieldItems()['type']['options'][$values['type']];
+        $orderStatusLabel = OrderStatus::from($values['type'])->name;
 
         return "Order Status: {$orderStatusLabel}";
     }
