@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -115,7 +116,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $order = OrderFacade::find($request->input('_order_id'));
 
-        return $order->isPaid();
+        return $order->status() === OrderStatus::Paid;
     }
 
     public function webhook(Request $request)
@@ -155,7 +156,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
             }
 
-            if ($order->isPaid() === true) {
+            if ($order->status() === OrderStatus::Paid) {
                 return;
             }
 

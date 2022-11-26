@@ -122,15 +122,13 @@ class MigrateOrdersToDatabase extends Command
             })
             ->each(function (Entry $entry) {
                 $data = $entry->data()->except([
-                    'items', 'is_paid', 'is_shipped', 'is_refunded', 'grand_total', 'items_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway',
+                    'items', 'order_status', 'grand_total', 'items_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway',
                 ]);
 
                 $data['entry_id'] = $entry->id();
 
                 $order = Order::make()
-                    ->isPaid($entry->get('is_paid', false))
-                    ->isShipped($entry->get('is_shipped', false))
-                    ->isRefunded($entry->get('is_refunded', false))
+                    ->status($entry->get('order_status'))
                     ->lineItems($entry->get('items', []))
                     ->grandTotal($entry->get('grand_total', 0))
                     ->itemsTotal($entry->get('items_total', 0))

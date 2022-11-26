@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
@@ -52,7 +53,7 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->status(), OrderStatus::Paid);
 
         Event::assertDispatched(OrderPaid::class);
 
@@ -90,7 +91,7 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->status(), OrderStatus::Paid);
 
         Event::assertDispatched(OrderPaid::class);
     }

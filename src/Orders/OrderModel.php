@@ -16,9 +16,6 @@ class OrderModel extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'is_paid' => 'boolean',
-        'is_shipped' => 'boolean',
-        'is_refunded' => 'boolean',
         'items' => 'json',
         'grand_total' => 'integer',
         'items_total' => 'integer',

@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -350,7 +351,7 @@ class StripeGatewayTest extends TestCase
 
         $order = $order->fresh();
 
-        $this->assertTrue($order->isPaid());
+        $this->assertSame($order->status(), OrderStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
     }
 

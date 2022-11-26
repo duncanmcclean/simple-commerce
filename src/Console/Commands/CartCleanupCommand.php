@@ -22,7 +22,7 @@ class CartCleanupCommand extends Command
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
-                ->where('is_paid', false)
+                ->where('order_status', 'cart')
                 ->filter(function ($entry) {
                     return $entry->date()->isBefore(now()->subDays(14));
                 })
@@ -40,7 +40,7 @@ class CartCleanupCommand extends Command
 
             (new $orderModelClass)
                 ->query()
-                ->where('is_paid', false)
+                ->where('order_status', 'cart')
                 ->where('created_at', '<', now()->subDays(14))
                 ->each(function ($model) {
                     $this->line("Deleting order: {$model->id}");

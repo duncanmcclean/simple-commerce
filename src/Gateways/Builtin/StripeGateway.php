@@ -196,7 +196,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handleChargeRefunded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            if (! $order->isRefunded()) {
+            if ($order->status() !== OrderStatus::Refunded) {
                 $order->refund($payload['data']['object']);
             }
 

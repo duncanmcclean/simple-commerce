@@ -29,9 +29,6 @@ class Order implements Contract
     public $id;
     public $orderNumber;
     public $status;
-    public $isPaid;
-    public $isShipped;
-    public $isRefunded;
     public $lineItems;
     public $grandTotal;
     public $itemsTotal;
@@ -49,9 +46,6 @@ class Order implements Contract
     public function __construct()
     {
         $this->status = OrderStatus::Cart;
-        $this->isPaid = false;
-        $this->isShipped = false;
-        $this->isRefunded = false;
         $this->lineItems = collect();
 
         $this->grandTotal = 0;
@@ -88,27 +82,6 @@ class Order implements Contract
 
                 return $value;
             })
-            ->args(func_get_args());
-    }
-
-    public function isPaid($isPaid = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('isPaid')
-            ->args(func_get_args());
-    }
-
-    public function isShipped($isShipped = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('isShipped')
-            ->args(func_get_args());
-    }
-
-    public function isRefunded($isRefunded = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('isRefunded')
             ->args(func_get_args());
     }
 
@@ -256,7 +229,6 @@ class Order implements Contract
 
         if ($orderStatus->is(OrderStatus::Paid)) {
             $this
-                ->isPaid(true)
                 ->merge([
                     'paid_date' => now()->format('Y-m-d H:i'),
                     'published' => true,
@@ -268,7 +240,6 @@ class Order implements Contract
 
         if ($orderStatus->is(OrderStatus::Shipped)) {
             $this
-                ->isShipped(true)
                 ->merge([
                     'shipped_date'  => now()->format('Y-m-d H:i'),
                 ])
@@ -283,7 +254,6 @@ class Order implements Contract
     public function refund($refundData): self
     {
         $this->updateOrderStatus(OrderStatus::Refunded);
-        $this->isRefunded(true);
 
         if (is_string($this->gateway())) {
             $data = [
@@ -366,8 +336,7 @@ class Order implements Contract
         $freshOrder = OrderFacade::find($this->id());
 
         $this->id = $freshOrder->id;
-        $this->isPaid = $freshOrder->isPaid;
-        $this->isShipped = $freshOrder->isShipped;
+        $this->status = $freshOrder->status;
         $this->lineItems = $freshOrder->lineItems;
         $this->grandTotal = $freshOrder->grandTotal;
         $this->itemsTotal = $freshOrder->itemsTotal;

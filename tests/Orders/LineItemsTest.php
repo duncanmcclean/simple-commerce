@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
@@ -82,7 +83,7 @@ class LineItemsTest extends TestCase
         $productOne = Product::make()->price(1000);
         $productOne->save();
 
-        $order = Order::make()->isPaid(true)->lineItems([
+        $order = Order::make()->status(OrderStatus::Paid)->lineItems([
             [
                 'id'       => 'un-doone-two-three-twa',
                 'product'  => $productOne->id(),

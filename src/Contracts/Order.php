@@ -15,12 +15,6 @@ interface Order
 
     public function status($status = null);
 
-    public function isPaid($isPaid = null);
-
-    public function isShipped($isShipped = null);
-
-    public function isRefunded($isRefunded = null);
-
     public function grandTotal($grandTotal = null);
 
     public function itemsTotal($itemsTotal = null);
