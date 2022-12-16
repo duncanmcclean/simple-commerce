@@ -100,6 +100,8 @@ class SimpleCommerceTagTest extends TestCase
             $this->assertStringContainsString($region['name'], $usage);
             $this->assertStringContainsString($region['country_iso'], $usage);
         }
+
+        $this->assertStringNotContainsString('Westmeath (IE)', $usage);
     }
 
     /** @test */

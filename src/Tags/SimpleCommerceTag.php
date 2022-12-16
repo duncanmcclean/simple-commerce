@@ -115,7 +115,7 @@ class SimpleCommerceTag extends Tags
         $regions = collect(Regions::all());
 
         if ($country = $this->params->get('country')) {
-            $regions->where('country_iso', $country);
+            $regions = $regions->where('country_iso', $country);
         }
 
         return $regions
