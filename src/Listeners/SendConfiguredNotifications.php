@@ -25,11 +25,17 @@ class SendConfiguredNotifications implements ShouldQueue
             return;
         }
 
+        $locale = $event->order->site()
+            ? $event->order->site()->locale()
+            : config('app.locale');
+
         foreach ($notifications as $notification => $config) {
             $freshNotification = null;
 
             $notifiables = $this->getNotifiables($config, $notification, $event);
+
             $notification = new $notification(...$this->getNotificationParameters($config, $notification, $event));
+            $notification->locale($locale);
 
             if (! $notifiables) {
                 break;
