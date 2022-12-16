@@ -41,15 +41,11 @@ class CustomerOrderShipped extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($site = $this->order->site()) {
-            $this->locale($site->locale());
-        }
-
         return (new MailMessage)
             ->subject(config('app.name') . ': Order Confirmation')
             ->markdown('simple-commerce::emails.customer_order_shipped', [
                 'order' => $this->order,
-                'site' => $site,
+                'site' => $this->order->site(),
             ]);
     }
 }
