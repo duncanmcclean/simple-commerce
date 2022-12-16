@@ -42,11 +42,15 @@ class BackOfficeOrderPaid extends Notification
      */
     public function toMail($notifiable)
     {
+        if ($site = $this->order->site()) {
+            $this->locale($site->locale());
+        }
+
         return (new MailMessage)
             ->subject(config('app.name') . ': New Order')
             ->markdown('simple-commerce::emails.backoffice_order_paid', [
                 'order' => $this->order,
-                'site' => Site::current(),
+                'site' => $site,
             ]);
     }
 }
