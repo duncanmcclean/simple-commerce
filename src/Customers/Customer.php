@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
+use Statamic\Sites\Site;
 
 class Customer implements Contract
 {
@@ -42,6 +43,15 @@ class Customer implements Contract
         return $this
             ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
+    }
+
+    public function site(): ?Site
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            return $this->resource()->site();
+        }
+
+        return null;
     }
 
     public function name(): ?string
