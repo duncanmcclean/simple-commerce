@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v4.2.4 (2022-12-16)
+
+### What's new
+
+-   Allow for translating order emails #768 #769
+
+### What's fixed
+
+-   Fixed filtering by country on `{{ sc:regions }}` tag #767 by @el-schneider
+
 ## v4.2.3 (2022-11-12)
 
 ### What's new
