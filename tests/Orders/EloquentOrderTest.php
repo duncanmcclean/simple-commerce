@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -115,13 +115,13 @@ class EloquentOrderTest extends TestCase
     public function can_create()
     {
         $create = Order::make()
-            ->status(OrderStatus::Paid)
+            ->paymentStatus(PaymentStatus::Paid)
             ->grandTotal(1000);
 
         $create->save();
 
         $this->assertNotNull($create->id());
-        $this->assertSame($create->status(), OrderStatus::Paid);
+        $this->assertSame($create->paymentStatus(), PaymentStatus::Paid);
         $this->assertSame($create->grandTotal(), 1000);
     }
 
@@ -189,7 +189,7 @@ class EloquentOrderTest extends TestCase
     public function can_delete()
     {
         $orderRecord = OrderModel::create([
-            'order_status' => 'paid',
+            'payment_status' => 'paid',
             'grand_total' => 1000,
         ]);
 
@@ -199,7 +199,7 @@ class EloquentOrderTest extends TestCase
 
         $this->assertDatabaseMissing('orders', [
             'id' => $orderRecord->id,
-            'order_status' => 'paid',
+            'payment_status' => 'paid',
             'grand_total' => 1000,
         ]);
     }

@@ -21,14 +21,14 @@ class RefundAction extends Action
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $item instanceof Entry
                 && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
-                && $item->get('order_status') === 'paid';
+                && $item->get('payment_status') === 'paid';
         }
 
         if (isset(SimpleCommerce::orderDriver()['model'])) {
             $orderModelClass = SimpleCommerce::orderDriver()['model'];
 
             return $item instanceof $orderModelClass
-                && $item->order_status === 'paid';
+                && $item->payment_status === 'paid';
         }
 
         return false;

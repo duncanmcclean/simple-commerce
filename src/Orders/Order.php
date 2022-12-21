@@ -254,17 +254,6 @@ class Order implements Contract
 
         event(new OrderStatusUpdated($this, $orderStatus));
 
-        if ($orderStatus->is(OrderStatus::Paid)) {
-            $this
-                ->merge([
-                    'paid_date' => now()->format('Y-m-d H:i'),
-                    'published' => true,
-                ])
-                ->save();
-
-            event(new OrderPaidEvent($this));
-        }
-
         if ($orderStatus->is(OrderStatus::Shipped)) {
             $this
                 ->merge([
@@ -300,7 +289,7 @@ class Order implements Contract
 
     public function refund($refundData): self
     {
-        $this->updateOrderStatus(OrderStatus::Refunded);
+        $this->updatePaymentStatus(PaymentStatus::Refunded);
 
         if (is_string($this->gateway())) {
             $data = [

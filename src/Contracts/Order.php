@@ -15,6 +15,8 @@ interface Order
 
     public function status($status = null);
 
+    public function paymentStatus($paymentStatus = null);
+
     public function grandTotal($grandTotal = null);
 
     public function itemsTotal($itemsTotal = null);

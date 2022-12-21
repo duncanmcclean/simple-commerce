@@ -15,6 +15,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -176,7 +177,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            $order->updateOrderStatus(OrderStatus::Paid);
+            $order->updatePaymentStatus(PaymentStatus::Paid);
 
             return new Response('Webhook handled', 200);
         }
@@ -196,7 +197,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handleChargeRefunded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            if ($order->status() !== OrderStatus::Refunded) {
+            if ($order->paymentStatus() !== PaymentStatus::Refunded) {
                 $order->refund($payload['data']['object']);
             }
 

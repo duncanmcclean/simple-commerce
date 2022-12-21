@@ -54,7 +54,7 @@ class Overview
                     if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                         $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                             ->queryEntries()
-                            ->where('order_status', 'paid')
+                            ->where('payment_status', 'paid')
                             ->whereDate('paid_date', $date->format('d-m-Y'))
                             ->get();
                     }
@@ -63,7 +63,7 @@ class Overview
                         $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                         $query = $orderModel::query()
-                            ->where('order_status', 'paid')
+                            ->where('payment_status', 'paid')
                             ->whereDate('paid_date', $date)
                             ->get();
                     }
@@ -86,7 +86,7 @@ class Overview
                 if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                     $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                         ->queryEntries()
-                        ->where('order_status', 'paid')
+                        ->where('payment_status', 'paid')
                         ->orderBy('paid_date', 'desc')
                         ->limit(5)
                         ->get()
@@ -110,7 +110,7 @@ class Overview
                     $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                     $query = $orderModel::query()
-                        ->where('order_status', 'paid')
+                        ->where('payment_status', 'paid')
                         ->orderBy('paid_date', 'desc')
                         ->orderBy('data->paid_date', 'desc')
                         ->limit(5)
@@ -173,7 +173,7 @@ class Overview
 
                     $query = $customerModel::query()
                         ->whereHas('orders', function ($query) {
-                            $query->where('order_status', 'paid');
+                            $query->where('payment_status', 'paid');
                         })
                         ->withCount('orders')
                         ->orderBy('orders_count', 'desc')

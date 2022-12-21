@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_status')->default('cart');
+            $table->string('payment_status')->default('unpaid');
             $table->json('items')->nullable();
             $table->integer('grand_total')->default(0);
             $table->integer('items_total')->default(0);

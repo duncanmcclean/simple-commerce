@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -132,7 +133,7 @@ class CartItemController extends BaseActionController
 
             $hasPurchasedPrerequisiteProduct = $customer->orders()
                 ->filter(function ($order) {
-                    return $order->status() === OrderStatus::Paid;
+                    return $order->paymentStatus() === PaymentStatus::Paid;
                 })
                 ->filter(function ($order) use ($product) {
                     return $order->lineItems()

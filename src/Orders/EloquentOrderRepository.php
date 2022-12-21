@@ -18,7 +18,7 @@ class EloquentOrderRepository implements RepositoryContract
     protected $model;
 
     protected $knownColumns = [
-        'id', 'order_status', 'items', 'grand_total', 'items_total', 'tax_total',
+        'id', 'order_status', 'payment_status', 'items', 'grand_total', 'items_total', 'tax_total',
         'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2',
         'shipping_city', 'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name',
         'billing_address', 'billing_address_line2', 'billing_city', 'billing_postal_code', 'billing_region',
@@ -49,6 +49,7 @@ class EloquentOrderRepository implements RepositoryContract
             ->id($model->id)
             ->orderNumber($model->id)
             ->status($model->order_status ?? 'cart')
+            ->paymentStatus($model->payment_status ?? 'unpaid')
             ->lineItems($model->items)
             ->grandTotal($model->grand_total)
             ->itemsTotal($model->items_total)
@@ -102,6 +103,7 @@ class EloquentOrderRepository implements RepositoryContract
         }
 
         $model->order_status = $order->status()->value;
+        $model->payment_status = $order->paymentStatus()->value;
         $model->items = $order->lineItems()->map->toArray();
         $model->grand_total = $order->grandTotal();
         $model->items_total = $order->itemsTotal();
@@ -153,6 +155,7 @@ class EloquentOrderRepository implements RepositoryContract
         $order->id = $model->id;
         $order->orderNumber = $model->id;
         $order->status = OrderStatus::from($model->order_status);
+        $order->paymentStatus = PaymentStatus::from($model->payment_status);
         // $order->lineItems = collect($model->items);
         $order->grandTotal = $model->grand_total;
         $order->itemsTotal = $model->items_total;

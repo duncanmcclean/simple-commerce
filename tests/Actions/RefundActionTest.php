@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
@@ -30,7 +31,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()->status(OrderStatus::Paid);
+        $order = Order::make()->paymentStatus(PaymentStatus::Paid);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
@@ -43,7 +44,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()->status(OrderStatus::Paid);
+        $order = Order::make()->paymentStatus(PaymentStatus::Paid);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
@@ -56,7 +57,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()->status(OrderStatus::Refunded);
+        $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
 
         $order->save();
 
@@ -88,7 +89,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()->status(OrderStatus::Refunded);
+        $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
 
         $order->save();
 
@@ -106,7 +107,7 @@ class RefundActionTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->merge([
-                'order_status' => OrderStatus::Paid,
+                'payment_status' => PaymentStatus::Paid,
                 'gateway' => [
                     'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',
                     'data' => [
@@ -121,7 +122,7 @@ class RefundActionTest extends TestCase
 
         $order->fresh();
 
-        $this->assertSame($order->data()->get('order_status'), 'refunded');
+        $this->assertSame($order->data()->get('payment_status'), 'refunded');
         $this->assertArrayHasKey('refund', $order->data()->get('gateway'));
     }
 }
