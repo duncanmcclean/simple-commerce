@@ -95,6 +95,7 @@ class ServiceProvider extends AddonServiceProvider
         Scopes\OrderContainsProduct::class,
         Scopes\OrderCustomer::class,
         Scopes\OrderStatusFilter::class,
+        Scopes\PaymentStatusFilter::class,
     ];
 
     protected $tags = [

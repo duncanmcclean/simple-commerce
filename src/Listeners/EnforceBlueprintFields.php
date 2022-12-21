@@ -87,6 +87,13 @@ class EnforceBlueprintFields
             'validate'  => 'required',
         ], 'sidebar');
 
+        $event->blueprint->ensureField('payment_status', [
+            'type'      => 'payment_status',
+            'display'   => 'Payment Status',
+            'read_only' => true,
+            'validate'  => 'required',
+        ], 'sidebar');
+
         return $event->blueprint;
     }
 }
