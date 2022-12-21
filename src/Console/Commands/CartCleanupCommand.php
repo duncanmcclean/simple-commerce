@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
@@ -22,7 +23,7 @@ class CartCleanupCommand extends Command
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             Entry::whereCollection(SimpleCommerce::orderDriver()['collection'])
-                ->where('order_status', 'cart')
+                ->where('order_status', OrderStatus::Cart->value)
                 ->filter(function ($entry) {
                     return $entry->date()->isBefore(now()->subDays(14));
                 })
@@ -40,7 +41,7 @@ class CartCleanupCommand extends Command
 
             (new $orderModelClass)
                 ->query()
-                ->where('order_status', 'cart')
+                ->where('order_status', OrderStatus::Cart->value)
                 ->where('created_at', '<', now()->subDays(14))
                 ->each(function ($model) {
                     $this->line("Deleting order: {$model->id}");
