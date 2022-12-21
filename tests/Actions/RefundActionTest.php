@@ -31,7 +31,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()->paymentStatus(PaymentStatus::Paid);
+        $order = Order::make()->status(OrderStatus::Placed)->paymentStatus(PaymentStatus::Paid);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
@@ -44,7 +44,7 @@ class RefundActionTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $order = Order::make()->paymentStatus(PaymentStatus::Paid);
+        $order = Order::make()->status(OrderStatus::Cart)->paymentStatus(PaymentStatus::Unpaid);
         $order->save();
 
         $action = $this->action->visibleTo($order->resource());
@@ -107,6 +107,7 @@ class RefundActionTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->merge([
+                'status' => OrderStatus::Placed,
                 'payment_status' => PaymentStatus::Paid,
                 'gateway' => [
                     'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',

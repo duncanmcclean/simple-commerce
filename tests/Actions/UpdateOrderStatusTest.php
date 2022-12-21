@@ -56,11 +56,11 @@ class UpdateOrderStatusTest extends TestCase
         $order->save();
 
         $this->action->run([$order], [
-            'order_status' => 'complete',
+            'order_status' => 'shipped',
         ]);
 
         $order->fresh();
 
-        $this->assertSame($order->data()->get('order_status'), 'complete');
+        $this->assertSame($order->data()->get('order_status'), 'shipped');
     }
 }

@@ -90,6 +90,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -146,6 +147,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -198,6 +200,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -261,6 +264,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -322,6 +326,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -376,6 +381,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -440,6 +446,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -508,6 +515,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -589,6 +597,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -655,6 +664,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -727,6 +737,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -800,6 +811,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -881,6 +893,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -961,6 +974,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1030,6 +1044,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1110,6 +1125,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -1189,6 +1205,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -1268,6 +1285,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -1327,6 +1345,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1385,6 +1404,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1449,6 +1469,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -1510,6 +1531,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1592,6 +1614,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1673,6 +1696,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1760,6 +1784,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -1844,6 +1869,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1908,6 +1934,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -1972,6 +1999,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2033,6 +2061,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2085,6 +2114,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2136,6 +2166,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -2184,6 +2215,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -2233,6 +2265,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 
@@ -2290,6 +2323,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2350,6 +2384,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2415,6 +2450,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2470,6 +2506,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertTrue($order->get('published'));
 
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->get('paid_date'));
 
@@ -2528,6 +2565,7 @@ class CheckoutControllerTest extends TestCase
         // Assert order has been marked as paid
         $this->assertFalse($order->get('published'));
 
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->get('paid_date'));
 

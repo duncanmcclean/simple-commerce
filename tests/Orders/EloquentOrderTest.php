@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
@@ -115,12 +116,14 @@ class EloquentOrderTest extends TestCase
     public function can_create()
     {
         $create = Order::make()
+            ->status(OrderStatus::Placed)
             ->paymentStatus(PaymentStatus::Paid)
             ->grandTotal(1000);
 
         $create->save();
 
         $this->assertNotNull($create->id());
+        $this->assertSame($create->status(), OrderStatus::Placed);
         $this->assertSame($create->paymentStatus(), PaymentStatus::Paid);
         $this->assertSame($create->grandTotal(), 1000);
     }

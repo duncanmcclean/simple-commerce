@@ -84,7 +84,7 @@ class LineItemsTest extends TestCase
         $productOne = Product::make()->price(1000);
         $productOne->save();
 
-        $order = Order::make()->paymentStatus(PaymentStatus::Paid)->lineItems([
+        $order = Order::make()->status(OrderStatus::Placed)->paymentStatus(PaymentStatus::Paid)->lineItems([
             [
                 'id'       => 'un-doone-two-three-twa',
                 'product'  => $productOne->id(),

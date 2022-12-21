@@ -36,6 +36,7 @@ class CalculatorTest extends TestCase
         $product->save();
 
         $cart = Order::make()
+            ->status(OrderStatus::Placed)
             ->paymentStatus(PaymentStatus::Paid)
             ->lineItems([
                 [
