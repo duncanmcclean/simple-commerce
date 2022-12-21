@@ -1,43 +1,45 @@
 @component('mail::message')
-# Order Confirmation
+# {{ __('Order Confirmation') }}
 
-This email is to confirm that your order (**#{{ $order->orderNumber() }}**) has been marked as paid. An overview of your order is shown below:
+{{ __('This email is to confirm that your order (**#:orderNumber**) has been marked as paid. An overview of your order is shown below:', [
+    'orderNumber' => $order->orderNumber(),
+]) }}
 
 @component('mail::table')
-| Items       | Quantity         | Total |
+| {{ __('Items') }}       | {{ __('Quantity') }}         | {{ __('Total') }} |
 | :--------- | :------------- | :----- |
 @foreach ($order->lineItems() as $lineItem)
 | [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem->total(), $site) }} |
 @endforeach
-| | Subtotal: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->itemsTotal(), $site) }}
+| | {{ __('Subtotal') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->itemsTotal(), $site) }}
 @if($order->coupon())
-| | Coupon: | -{{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->couponTotal(), $site) }}
+| | {{ __('Coupon') }}: | -{{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->couponTotal(), $site) }}
 @endif
-| | Shipping: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->shippingTotal(), $site) }}
-| | Tax: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->taxTotal(), $site) }}
-| | **Total:** | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->grandTotal(), $site) }}
+| | {{ __('Shipping') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->shippingTotal(), $site) }}
+| | {{ __('Tax') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->taxTotal(), $site) }}
+| | **{{ __('Total') }}:** | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->grandTotal(), $site) }}
 | | |
 @endcomponent
 
-## Customer Details
+## {{ __('Customer Details') }}
 
 @if($order->customer())
-* **Name:** {{ $order->customer()->name() }}
-* **Email:** {{ $order->customer()->email() }}
+* **{{ __('Name') }}:** {{ $order->customer()->name() }}
+* **{{ __('Email') }}:** {{ $order->customer()->email() }}
 @endif
 
 @if($order->billingAddress())
-* **Billing Address:** {{ $order->billingAddress()->__toString() }}
+* **{{ __('Billing Address') }}:** {{ $order->billingAddress()->__toString() }}
 @endif
 
 @if($order->shippingAddress())
-* **Shipping Address:** {{ $order->shippingAddress()->__toString() }}
+* **{{ __('Shipping Address') }}:** {{ $order->shippingAddress()->__toString() }}
 @endif
 
 <br>
 
-If you have any questions about your order, please get in touch.
+{{ __('If you have any questions about your order, please get in touch.') }}
 
-Thanks,<br>
+{{ __('Thanks') }},<br>
 {{ config('app.name') }}
 @endcomponent

@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Statamic\Facades\Site;
 
 class BackOfficeOrderPaid extends Notification
 {
@@ -46,7 +45,7 @@ class BackOfficeOrderPaid extends Notification
             ->subject(config('app.name') . ': New Order')
             ->markdown('simple-commerce::emails.backoffice_order_paid', [
                 'order' => $this->order,
-                'site' => Site::current(),
+                'site' => $this->order->site(),
             ]);
     }
 }

@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
+use Statamic\Sites\Site;
 
 class Order implements Contract
 {
@@ -181,6 +182,15 @@ class Order implements Contract
         return $this
             ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
+    }
+
+    public function site(): ?Site
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            return $this->resource()->site();
+        }
+
+        return null;
     }
 
     public function billingAddress(): ?Address
@@ -392,5 +402,11 @@ class Order implements Contract
         }
 
         return [];
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

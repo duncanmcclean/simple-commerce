@@ -6,10 +6,12 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Http\Resources\API\EntryResource;
+use Statamic\Sites\Site;
 
 class Product implements Contract
 {
@@ -96,6 +98,15 @@ class Product implements Contract
         return $this
             ->fluentlyGetOrSet('resource')
             ->args(func_get_args());
+    }
+
+    public function site(): ?Site
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            return $this->resource()->site();
+        }
+
+        return null;
     }
 
     public function purchasableType(): ProductType
@@ -199,5 +210,11 @@ class Product implements Contract
             $this->toArray(),
             $augmentedData,
         );
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
