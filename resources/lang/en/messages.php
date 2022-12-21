@@ -5,6 +5,7 @@ return [
     'actions' => [
         'refund' => 'Refund',
         'update_order_status' => 'Update Order Status',
+        'update_payment_status' => 'Update Payment Status',
     ],
 
     'fieldtypes' => [

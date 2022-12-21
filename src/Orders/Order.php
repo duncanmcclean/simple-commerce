@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderShipped as OrderShippedEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
@@ -30,6 +31,7 @@ class Order implements Contract
     public $id;
     public $orderNumber;
     public $status;
+    public $paymentStatus;
     public $lineItems;
     public $grandTotal;
     public $itemsTotal;
@@ -47,6 +49,7 @@ class Order implements Contract
     public function __construct()
     {
         $this->status = OrderStatus::Cart;
+        $this->paymentStatus = PaymentStatus::Unpaid;
         $this->lineItems = collect();
 
         $this->grandTotal = 0;
@@ -79,6 +82,20 @@ class Order implements Contract
             ->setter(function ($value) {
                 if (is_string($value)) {
                     return OrderStatus::from($value);
+                }
+
+                return $value;
+            })
+            ->args(func_get_args());
+    }
+
+    public function paymentStatus($paymentStatus = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('paymentStatus')
+            ->setter(function ($value) {
+                if (is_string($value)) {
+                    return PaymentStatus::from($value);
                 }
 
                 return $value;
@@ -261,6 +278,26 @@ class Order implements Contract
         return $this;
     }
 
+    public function updatePaymentStatus(PaymentStatus $paymentStatus): self
+    {
+        $this->paymentStatus($paymentStatus)->save();
+
+        if ($paymentStatus->is(PaymentStatus::Paid)) {
+            $this
+                ->merge([
+                    'paid_date' => now()->format('Y-m-d H:i'),
+                    'published' => true,
+                ])
+                ->save();
+
+            event(new OrderPaidEvent($this));
+        }
+
+        event(new PaymentStatusUpdated($this, $paymentStatus));
+
+        return $this;
+    }
+
     public function refund($refundData): self
     {
         $this->updateOrderStatus(OrderStatus::Refunded);
@@ -347,6 +384,7 @@ class Order implements Contract
 
         $this->id = $freshOrder->id;
         $this->status = $freshOrder->status;
+        $this->paymentStatus = $freshOrder->paymentStatus;
         $this->lineItems = $freshOrder->lineItems;
         $this->grandTotal = $freshOrder->grandTotal;
         $this->itemsTotal = $freshOrder->itemsTotal;

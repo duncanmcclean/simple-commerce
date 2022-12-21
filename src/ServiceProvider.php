@@ -39,6 +39,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\OrderStatusFieldtype::class,
+        Fieldtypes\PaymentStatusFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
         Fieldtypes\RegionFieldtype::class,
