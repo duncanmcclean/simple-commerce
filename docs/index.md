@@ -1,5 +1,6 @@
 ---
 title: Introduction
+table_of_contents: false
 ---
 
 **Build flexible e-commerce sites in Statamic:** Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You retain complete control over the content structure and front-end of your site.
