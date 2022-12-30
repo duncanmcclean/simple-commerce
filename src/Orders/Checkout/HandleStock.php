@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Statamic\Facades\Site;
 
 class HandleStock
 {
