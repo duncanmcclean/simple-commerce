@@ -36,9 +36,10 @@ class CheckoutController extends BaseActionController
         $this->request = $request;
 
         try {
+            event(new PreCheckout($this->order, $this->request));
+
             $this
-                ->preCheckout()
-                ->handleValidation()
+                ->handleAdditionalValidation()
                 ->handleCustomerDetails()
                 ->handleCoupon()
                 ->handleStock()
@@ -67,14 +68,7 @@ class CheckoutController extends BaseActionController
         ]);
     }
 
-    protected function preCheckout()
-    {
-        event(new PreCheckout($this->order, $this->request));
-
-        return $this;
-    }
-
-    protected function handleValidation()
+    protected function handleAdditionalValidation()
     {
         $rules = array_merge(
             $this->request->get('_request')
