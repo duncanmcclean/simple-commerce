@@ -28,19 +28,20 @@ class CheckoutController extends BaseActionController
 {
     use CartDriver, AcceptsFormRequests;
 
-    public $cart;
+    public $order;
     public StoreRequest $request;
     public $excludedKeys = ['_token', '_params', '_redirect', '_request'];
 
     public function __invoke(StoreRequest $request)
     {
-        $this->cart = $this->getCart();
+        $this->order = $this->getCart();
         $this->request = $request;
 
         try {
+            event(new PreCheckout($this->order, $this->request));
+
             $this
-                ->preCheckout()
-                ->handleValidation()
+                ->handleAdditionalValidation()
                 ->handleCustomerDetails()
                 ->handleCoupon()
                 ->handleStock()
@@ -48,14 +49,14 @@ class CheckoutController extends BaseActionController
                 ->handlePayment()
                 ->postCheckout();
 
-            $this->cart->updateOrderStatus(OrderStatus::Placed);
+            $this->order->updateOrderStatus(OrderStatus::Placed);
         } catch (CheckoutProductHasNoStockException $e) {
-            $lineItem = $this->cart->lineItems()->filter(function ($lineItem) use ($e) {
+            $lineItem = $this->order->lineItems()->filter(function ($lineItem) use ($e) {
                 return $lineItem->product()->id() === $e->product->id();
             })->first();
 
-            $this->cart->removeLineItem($lineItem->id());
-            $this->cart->save();
+            $this->order->removeLineItem($lineItem->id());
+            $this->order->save();
 
             return $this->withErrors($this->request, __('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
         } catch (PreventCheckout $e) {
@@ -65,20 +66,13 @@ class CheckoutController extends BaseActionController
         return $this->withSuccess($request, [
             'message' => __('simple-commerce.messages.checkout_complete'),
             'cart'    => $request->wantsJson()
-                ? $this->cart->toResource()
-                : $this->cart->toAugmentedArray(),
+                ? $this->order->toResource()
+                : $this->order->toAugmentedArray(),
             'is_checkout_request' => true,
         ]);
     }
 
-    protected function preCheckout()
-    {
-        event(new PreCheckout($this->cart, $this->request));
-
-        return $this;
-    }
-
-    protected function handleValidation()
+    protected function handleAdditionalValidation()
     {
         $rules = array_merge(
             $this->request->get('_request')
@@ -88,7 +82,7 @@ class CheckoutController extends BaseActionController
                 ? Gateway::use($this->request->get('gateway'))->purchaseRules()
                 : [],
             [
-                'coupon' => ['nullable', new ValidCoupon($this->cart)],
+                'coupon' => ['nullable', new ValidCoupon($this->order)],
                 'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                     if (preg_match('/^\S*$/u', $value) === 0) {
                         return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
@@ -119,8 +113,8 @@ class CheckoutController extends BaseActionController
             : [];
 
         if (is_string($customerData)) {
-            $this->cart->customer($customerData);
-            $this->cart->save();
+            $this->order->customer($customerData);
+            $this->order->save();
 
             $this->excludedKeys[] = 'customer';
 
@@ -177,10 +171,10 @@ class CheckoutController extends BaseActionController
                 )
                 ->save();
 
-            $this->cart->customer($customer->id());
-            $this->cart->save();
+            $this->order->customer($customer->id());
+            $this->order->save();
 
-            $this->cart = $this->cart->fresh();
+            $this->order = $this->order->fresh();
         }
 
         $this->excludedKeys[] = 'customer';
@@ -190,8 +184,8 @@ class CheckoutController extends BaseActionController
 
     protected function handleStock()
     {
-        $this->cart = app(Pipeline::class)
-            ->send($this->cart)
+        $this->order = app(Pipeline::class)
+            ->send($this->order)
             ->through([
                 \DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleStock::class,
             ])
@@ -205,8 +199,8 @@ class CheckoutController extends BaseActionController
         if ($coupon = $this->request->get('coupon')) {
             $coupon = Coupon::findByCode($coupon);
 
-            $this->cart->coupon($coupon);
-            $this->cart->save();
+            $this->order->coupon($coupon);
+            $this->order->save();
 
             $this->excludedKeys[] = 'coupon';
         }
@@ -228,19 +222,11 @@ class CheckoutController extends BaseActionController
             $data[$key] = $value;
         }
 
-        // We don't recommend doing this BUT if you want to you can override all the line items at the
-        // last minute like this. We just need to ensure it's set correctly.
-        if (isset($data['items'])) {
-            $this->cart->lineItems($data['items']);
-
-            unset($data['items']);
-        }
-
         if ($data !== []) {
-            $this->cart->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')))->save();
-            $this->cart->save();
+            $this->order->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')))->save();
+            $this->order->save();
 
-            $this->cart = $this->cart->fresh();
+            $this->order = $this->order->fresh();
         }
 
         return $this;
@@ -248,19 +234,19 @@ class CheckoutController extends BaseActionController
 
     protected function handlePayment()
     {
-        $this->cart = $this->cart->recalculate();
+        $this->order = $this->order->recalculate();
 
-        if ($this->cart->grandTotal() <= 0) {
-            $this->cart->updatePaymentStatus(PaymentStatus::Paid);
+        if ($this->order->grandTotal() <= 0) {
+            $this->order->updatePaymentStatus(PaymentStatus::Paid);
 
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->cart->paymentStatus() !== PaymentStatus::Paid && $this->cart->grandTotal() !== 0) {
+        if (! $this->request->has('gateway') && $this->order->paymentStatus() !== PaymentStatus::Paid && $this->order->grandTotal() !== 0) {
             throw new GatewayNotProvided('No gateway provided.');
         }
 
-        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->cart);
+        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->order);
 
         $this->excludedKeys[] = 'gateway';
 
@@ -268,35 +254,35 @@ class CheckoutController extends BaseActionController
             $this->excludedKeys[] = $key;
         }
 
-        $this->cart->fresh();
+        $this->order->fresh();
 
         return $this;
     }
 
     protected function postCheckout()
     {
-        if (! isset(SimpleCommerce::customerDriver()['model']) && $this->cart->customer()) {
-            $this->cart->customer()->merge([
-                'orders' => $this->cart->customer()->orders()
+        if (! isset(SimpleCommerce::customerDriver()['model']) && $this->order->customer()) {
+            $this->order->customer()->merge([
+                'orders' => $this->order->customer()->orders()
                     ->pluck('id')
-                    ->push($this->cart->id())
+                    ->push($this->order->id())
                     ->toArray(),
             ]);
 
-            $this->cart->customer()->save();
+            $this->order->customer()->save();
         }
 
-        if (! $this->request->has('gateway') && $this->cart->status() !== PaymentStatus::Paid && $this->cart->grandTotal() === 0) {
-            $this->cart->updatePaymentStatus(PaymentStatus::Paid);
+        if (! $this->request->has('gateway') && $this->order->status() !== PaymentStatus::Paid && $this->order->grandTotal() === 0) {
+            $this->order->updatePaymentStatus(PaymentStatus::Paid);
         }
 
-        if ($this->cart->coupon()) {
-            $this->cart->coupon()->redeem();
+        if ($this->order->coupon()) {
+            $this->order->coupon()->redeem();
         }
 
         $this->forgetCart();
 
-        event(new PostCheckout($this->cart, $this->request));
+        event(new PostCheckout($this->order, $this->request));
 
         return $this;
     }

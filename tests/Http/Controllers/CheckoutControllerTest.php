@@ -2014,66 +2014,6 @@ class CheckoutControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_post_checkout_with_extra_line_item_and_ensure_order_is_recalculated()
-    {
-        Config::set('simple-commerce.tax_engine_config.rate', 0);
-        Config::set('simple-commerce.sites.default.shipping.methods', []);
-
-        Event::fake();
-
-        $product = Product::make()
-            ->price(5000)
-            ->data([
-                'title' => 'Bacon',
-            ]);
-
-        $product->save();
-
-        $order = Order::make();
-        $order->save();
-
-        $this
-            ->withSession(['simple-commerce-cart' => $order->id])
-            ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
-                'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'items'        => [
-                    [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
-                        'quantity' => 1,
-                        'total'    => 5000,
-                    ],
-                ],
-            ]);
-
-        $order = $order->fresh();
-
-        // Assert events have been dispatched
-        Event::assertDispatched(PreCheckout::class);
-        Event::assertDispatched(PostCheckout::class);
-
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
-
-        // Assert totals are calculated
-        $this->assertSame($order->itemsTotal(), 5000);
-        $this->assertSame($order->grandTotal(), 5000);
-
-        // Finally, assert order is no longer attached to the users' session
-        $this->assertFalse(session()->has('simple-commerce-cart'));
-    }
-
-    /** @test */
     public function can_post_checkout_with_no_payment_information_on_free_order()
     {
         Event::fake();

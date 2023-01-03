@@ -2,8 +2,6 @@
 title: Tax
 ---
 
-> This documentation only applies to Simple Commerce v2.4 and newer.
-
 ## Overview
 
 Simple Commerce provides two 'tax engines' out of the box. You have the [Basic Tax Engine](#basic-tax-engine) where you have a flat tax rate that's applied to all products & customers. Then, you have the [Standard Tax Engine](#standard-tax-engine) which allows you to associate different tax rates depending on the type of product and where the customer is located.
@@ -55,9 +53,9 @@ The Standard Tax Engine is enabled by default in new Simple Commerce sites. You 
 
 There's three main concepts you'll want to be familuar with before you begin:
 
-- Tax Categories - These are the 'types' of tax you may need to apply. For example: you may have one category for 'Standard Tax' and another for 'Zero Tax'. You can then apply these categories to your products.
-- Tax Zones - These are the 'areas' where you wish to apply certain tax rates to. For example: you may want to restrict a tax rate to being UK only. You're able to select a country and a region inside of it.
-- Tax Rates - These are where you define the tax rate for a Category/Zone combination. For example: you could apply 20% tax if it's a product in the 'Standard Tax' category and the customer is located inside the UK
+-   Tax Categories - These are the 'types' of tax you may need to apply. For example: you may have one category for 'Standard Tax' and another for 'Zero Tax'. You can then apply these categories to your products.
+-   Tax Zones - These are the 'areas' where you wish to apply certain tax rates to. For example: you may want to restrict a tax rate to being UK only. You're able to select a country and a region inside of it.
+-   Tax Rates - These are where you define the tax rate for a Category/Zone combination. For example: you could apply 20% tax if it's a product in the 'Standard Tax' category and the customer is located inside the UK
 
 After enabling the tax engine, you will also want to go ahead and setup your Rates, Categories and Zones. Each of these have sections in the Control Panel.
 
@@ -79,8 +77,8 @@ It's possible customers may run into issues where you don't have a Tax Rate setu
 
 There's two solutions to this problem:
 
-- Use the 'default rate' (`default_rate`) which will already exist after enabling the Standard Tax Engine.
-- Prevent the customer from checking out (`prevent_checkout`)
+-   Use the 'default rate' (`default_rate`) which will already exist after enabling the Standard Tax Engine.
+-   Prevent the customer from checking out (`prevent_checkout`)
 
 ## What's the 'Line Items Tax' fieldtype?
 

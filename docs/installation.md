@@ -2,17 +2,19 @@
 title: Installation
 ---
 
+To install Simple Commerce, there's two routes you can take. You can either [install into an existing site](#content-installing-into-an-existing-site) or create a fresh Statamic project using the Simple Commerce [starter kit](#content-installing-with-the-starter-kit).
+
 ## Requirements
 
 To run Simple Commerce, your server (whether local or production) will need to meet the following requirements:
 
 -   PHP 8.1+
--   Laravel 9 (if you're installing into an existing site)
+-   Laravel 9
 -   [PHP `intl` extension](https://www.php.net/manual/en/book.intl.php)
 -   [Statamic CLI](https://github.com/statamic/cli)
 -   Some kind of web server (like [Laravel Valet](https://laravel.com/docs/master/valet))
 
-And if you're installing into an existing site, your site must be on Statamic 3.3 (or higher) and Laravel 8 (or higher).
+And if you're installing into an existing site, your site must be on Statamic 3.3 (or higher) and Laravel 9 (or higher).
 
 ## Installing with the Starter Kit
 
