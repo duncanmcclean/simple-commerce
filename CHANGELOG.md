@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v4.3.0 (2023-01-03)
+
+### What's new
+
+-   Redesigned [documentation site](https://simple-commerce.duncanmcclean.com)!
+-   PHP 8.2 is now officially supported!
+-   An 'Orders' field will be added to Customer/User blueprints automatically, if not already present #772
+
+### What's improved
+
+-   Made some tweaks to the `CheckoutController` - no new features #773
+
 ## v4.2.4 (2022-12-16)
 
 ### What's new
