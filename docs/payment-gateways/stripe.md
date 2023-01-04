@@ -2,6 +2,8 @@
 title: Stripe Payment Gateway
 ---
 
+> **Note:** Simple Commerce currently only supports the ['Card Element' integration](https://stripe.com/docs/payments/accept-card-payments?platform=web&ui=elements) with Stripe. The new 'Payment Element' integration is on the roadmap for later this year.
+
 ## Configuration
 
 First, you'll need to add Stripe to your `simple-commerce.php` config file. You will also need to pass in a `key` and `secret` file.
