@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.3.1 (2022-01-04)
+
+### What's fixed
+
+-   Fixed `{{ sc:gateways }}` tag when specifying a gateway #774 #775
+
 ## v4.3.0 (2023-01-03)
 
 ### What's new
