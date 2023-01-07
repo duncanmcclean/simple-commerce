@@ -38,8 +38,8 @@ class ShippingMethodFieldtypeTest extends TestCase
 
         $this->assertSame($getIndexItems->last(), [
             'id' => FreeShipping::class,
-            'name' => 'Standard Post',
-            'title' => 'Standard Post',
+            'name' => 'Free Shipping',
+            'title' => 'Free Shipping',
         ]);
     }
 
@@ -64,7 +64,7 @@ class ShippingMethodFieldtypeTest extends TestCase
 
         $this->assertSame($toItemArray, [
             'id' => FreeShipping::class,
-            'title' => 'Standard Post',
+            'title' => 'Free Shipping',
         ]);
     }
 
@@ -74,7 +74,7 @@ class ShippingMethodFieldtypeTest extends TestCase
         $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
 
         $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'Standard Post');
+        $this->assertSame($preProcessIndex, 'Free Shipping');
     }
 
     /** @test */
