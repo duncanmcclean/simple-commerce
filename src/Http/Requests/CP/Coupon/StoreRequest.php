@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
