@@ -17,7 +17,7 @@ Shipping Methods can be configured on a site-by-site basis, helpful for if you h
 
         'shipping' => [
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
+                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
             ],
         ],
     ],
@@ -40,10 +40,10 @@ In these cases, you may configure a default Shipping Method which will be used w
         ...
 
         'shipping' => [
-            'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+            'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class,
 
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
+                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
             ],
         ],
     ],

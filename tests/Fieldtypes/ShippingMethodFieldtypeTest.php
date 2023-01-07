@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingMethodFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost;
+use DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class ShippingMethodFieldtypeTest extends TestCase
         $this->assertTrue($getIndexItems instanceof Collection);
 
         $this->assertSame($getIndexItems->last(), [
-            'id' => StandardPost::class,
+            'id' => FreeShipping::class,
             'name' => 'Standard Post',
             'title' => 'Standard Post',
         ]);
@@ -58,12 +58,12 @@ class ShippingMethodFieldtypeTest extends TestCase
     /** @test */
     public function can_return_as_item_array()
     {
-        $toItemArray = $this->fieldtype->toItemArray(StandardPost::class);
+        $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
 
         $this->assertIsArray($toItemArray);
 
         $this->assertSame($toItemArray, [
-            'id' => StandardPost::class,
+            'id' => FreeShipping::class,
             'title' => 'Standard Post',
         ]);
     }
@@ -71,7 +71,7 @@ class ShippingMethodFieldtypeTest extends TestCase
     /** @test */
     public function can_preprocess_index()
     {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(StandardPost::class);
+        $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
 
         $this->assertIsString($preProcessIndex);
         $this->assertSame($preProcessIndex, 'Standard Post');
