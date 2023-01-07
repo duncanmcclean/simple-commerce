@@ -36,7 +36,7 @@ class UpdateRequest extends FormRequest
                     if ($taxZoneWithCountryAlreadyExists) {
                         $country = Countries::find($value);
 
-                        $fail(__("There is already a tax zone for :country.", ['country' => $country['name']]));
+                        $fail(__('There is already a tax zone for :country.', ['country' => $country['name']]));
                     }
                 }
             }];
@@ -54,7 +54,7 @@ class UpdateRequest extends FormRequest
                     $country = Countries::find($this->country);
                     $region = Regions::find($value);
 
-                    $fail(__("There is already a tax zone for :region, :country.", [
+                    $fail(__('There is already a tax zone for :region, :country.', [
                         'region' => $region['name'],
                         'country' => $country['name'],
                     ]));

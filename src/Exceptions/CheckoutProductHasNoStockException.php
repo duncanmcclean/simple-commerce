@@ -16,7 +16,7 @@ class CheckoutProductHasNoStockException extends \Exception
         $this->variant = $variant;
 
         if ($product->purchasableType() === ProductType::Product) {
-            $message = __("Product :product does not have any available stock.", ['product' => $product->id()]);
+            $message = __('Product :product does not have any available stock.', ['product' => $product->id()]);
         }
 
         if ($product->purchasableType() === ProductType::Variant) {
