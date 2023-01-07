@@ -11,8 +11,7 @@ class StockRunOut
     use Dispatchable;
     use InteractsWithSockets;
 
-    // TODO v5.0: Switch the parameter order - product, variant, stock
-    public function __construct(public Product $product, public int $stock, public $variant = null)
+    public function __construct(public Product $product, public $variant = null, public int $stock)
     {
     }
 }
