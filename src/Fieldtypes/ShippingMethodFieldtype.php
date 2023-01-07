@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Validation\Rule;
 use Statamic\CP\Column;
 use Statamic\Facades\Site;
 use Statamic\Fieldtypes\Relationship;
@@ -95,9 +96,11 @@ class ShippingMethodFieldtype extends Relationship
     public function rules(): array
     {
         if ($this->config('max_items') === 1) {
+            $site = Site::selected();
+
             return [
                 'string',
-                'in:' . implode(',', SimpleCommerce::shippingMethods(Site::selected()->handle())->pluck('class')->toArray()),
+                Rule::in(SimpleCommerce::shippingMethods($site->handle())->pluck('class')->toArray()),
             ];
         }
 

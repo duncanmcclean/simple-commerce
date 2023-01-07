@@ -31,7 +31,7 @@ class StoreRequest extends FormRequest
             'type' => [
                 'required',
                 'string',
-                'in:fixed,percentage',
+                Rule::in(['fixed', 'percentage']),
             ],
             'value' => [
                 'required',
