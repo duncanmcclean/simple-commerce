@@ -17,7 +17,7 @@ class GatewayFieldtypeTest extends TestCase
     {
         $title = GatewayFieldtype::title();
 
-        $this->assertSame('Gateway', $title);
+        $this->assertSame('Payment Gateway', $title);
     }
 
     /** @test */

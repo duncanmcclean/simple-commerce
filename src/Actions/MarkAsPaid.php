@@ -12,7 +12,7 @@ class MarkAsPaid extends Action
 {
     public static function title()
     {
-        return __('simple-commerce::messages.actions.mark_as_paid');
+        return __('Mark as Paid');
     }
 
     public function visibleTo($item)

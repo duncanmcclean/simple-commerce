@@ -191,7 +191,7 @@ class CartItemController extends BaseActionController
         }
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce.messages.cart_item_added'),
+            'message' => __('Added to Cart'),
             'cart'    => $cart->fresh()->toResource(),
         ]);
     }
@@ -218,7 +218,7 @@ class CartItemController extends BaseActionController
         );
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce.messages.cart_item_updated'),
+            'message' => __('Cart Item Updated'),
             'cart'    => $cart->toResource(),
         ]);
     }
@@ -230,7 +230,7 @@ class CartItemController extends BaseActionController
         $cart->removeLineItem($item);
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce.messages.cart_item_deleted'),
+            'message' => __('Item Removed from Cart'),
             'cart'    => $cart->toResource(),
         ]);
     }

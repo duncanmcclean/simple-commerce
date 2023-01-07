@@ -11,7 +11,7 @@ class LineItemTax extends VariableFieldtype
 
     public static function title()
     {
-        return 'SC: Line Item Tax';
+        return __('Simple Commerce: Line Item Tax');
     }
 
     public function augment($value)

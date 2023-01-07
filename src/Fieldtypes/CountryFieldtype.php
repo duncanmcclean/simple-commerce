@@ -17,7 +17,7 @@ class CountryFieldtype extends Relationship
             return [
                 'id'   => $country['iso'],
                 'iso'  => $country['iso'],
-                'name' => $country['name'],
+                'name' => __($country['name']),
             ];
         })->values();
     }
@@ -25,10 +25,11 @@ class CountryFieldtype extends Relationship
     protected function getColumns()
     {
         return [
-            Column::make('name'),
+            Column::make('name')
+                ->label(__('Name')),
 
             Column::make('iso')
-                ->label('ISO Code'),
+                ->label(__('ISO Code')),
         ];
     }
 
@@ -38,7 +39,7 @@ class CountryFieldtype extends Relationship
 
         return [
             'id' => $country['iso'],
-            'title' => $country['name'],
+            'title' => __($country['name']),
         ];
     }
 
@@ -51,7 +52,7 @@ class CountryFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $country = Countries::firstWhere('iso', $item);
 
-            return $country['name'];
+            return __($country['name']);
         })->join(', ');
     }
 }

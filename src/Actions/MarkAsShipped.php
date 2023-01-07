@@ -12,7 +12,7 @@ class MarkAsShipped extends Action
 {
     public static function title()
     {
-        return __('simple-commerce::messages.actions.mark_as_shipped');
+        return __('Mark as Shipped');
     }
 
     public function visibleTo($item)

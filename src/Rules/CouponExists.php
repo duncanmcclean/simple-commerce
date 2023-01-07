@@ -20,6 +20,6 @@ class CouponExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.coupon_exists');
+        return __('The coupon :value does not exist.');
     }
 }

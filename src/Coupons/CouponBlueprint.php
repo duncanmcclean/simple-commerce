@@ -16,20 +16,20 @@ class CouponBlueprint
             'collections' => [
                 'customers',
             ],
-            'display' => 'Customers',
+            'display' => __('Customers'),
             'type' => 'entries',
             'icon' => 'entries',
-            'instructions' => 'If selected, this coupon will only be valid for selected customers.',
+            'instructions' => __('If selected, this coupon will only be valid for selected customers.'),
             'width' => 50,
         ];
 
         if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], UserCustomerRepository::class)) {
             $customerField = [
                 'mode' => 'default',
-                'display' => 'Customers',
+                'display' => __('Customers'),
                 'type' => 'users',
                 'icon' => 'users',
-                'instructions' => 'If selected, this coupon will only be valid for selected customers.',
+                'instructions' => __('If selected, this coupon will only be valid for selected customers.'),
                 'width' => 50,
             ];
         }
@@ -37,8 +37,8 @@ class CouponBlueprint
         if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
             $customerField = [
                 'type' => 'has_many',
-                'instructions' => 'If selected, this coupon will only be valid for selected customers.',
-                'display' => 'Customers',
+                'instructions' => __('If selected, this coupon will only be valid for selected customers.'),
+                'display' => __('Customers'),
                 'width' => 50,
                 'resource' => 'customers',
             ];
@@ -52,20 +52,20 @@ class CouponBlueprint
                         'type' => 'text',
                         'localizable' => true,
                         'generate' => true,
-                        'display' => 'Coupon Code',
+                        'display' => __('Coupon Code'),
                         'validate' => [
                             'required',
                         ],
                     ],
                     'description' => [
                         'type' => 'textarea',
-                        'instructions' => 'Give yourself a reminder of what this coupon is for.',
-                        'display' => 'Description',
+                        'instructions' => __('Give yourself a reminder of what this coupon is for.'),
+                        'display' => __('Description'),
                     ],
                     'type' => [
                         'options' => [
-                            'percentage' => 'Percentage Discount',
-                            'fixed' => 'Fixed Discount',
+                            'percentage' => __('Percentage Discount'),
+                            'fixed' => __('Fixed Discount'),
                         ],
                         'clearable' => false,
                         'multiple' => false,
@@ -83,7 +83,7 @@ class CouponBlueprint
                     'value' => [
                         'input_type' => 'text',
                         'type' => 'text',
-                        'display' => 'Value',
+                        'display' => __('Value'),
                         'width' => 50,
                         'validate' => [
                             'required',
@@ -91,38 +91,38 @@ class CouponBlueprint
                     ],
                     'optional_settings' => [
                         'type' => 'section',
-                        'display' => 'Optional Settings',
+                        'display' => __('Optional Settings'),
                     ],
                     'maximum_uses' => [
                         'input_type' => 'text',
                         'type' => 'text',
-                        'instructions' => 'If set, this coupon will only be able to be used a certain amount of times.',
+                        'instructions' => __('If set, this coupon will only be able to be used a certain amount of times.'),
                         'width' => 50,
-                        'display' => 'Maximum Uses',
+                        'display' => __('Maximum Uses'),
                     ],
                     'minimum_cart_value' => [
                         'read_only' => false,
                         'type' => 'money',
-                        'instructions' => "What's the minimum items total a cart should have before this coupon can be redeemed?",
+                        'instructions' => __("What's the minimum items total a cart should have before this coupon can be redeemed?"),
                         'width' => 50,
-                        'display' => 'Minimum Cart Value',
+                        'display' => __('Minimum Cart Value'),
                     ],
                     'products' => [
                         'mode' => 'default',
                         'collections' => [
                             config('simple-commerce.content.products.collection', 'product'),
                         ],
-                        'display' => 'Products',
+                        'display' => __('Products'),
                         'type' => 'entries',
                         'icon' => 'entries',
                         'width' => 50,
-                        'instructions' => 'If selected, this coupon will only be valid when any of the products are present.',
+                        'instructions' => __('If selected, this coupon will only be valid when any of the products are present.'),
                     ],
                     'customers' => $customerField,
                     'expires_at' => [
                         'type' => 'date',
-                        'display' => 'Expires At',
-                        'instructions' => 'If defined, this coupon will no longer be redeemable after the expiry date.',
+                        'display' => __('Expires At'),
+                        'instructions' => __('If defined, this coupon will no longer be redeemable after the expiry date.'),
                         'width' => 50,
                     ],
                 ],
@@ -132,16 +132,16 @@ class CouponBlueprint
                 'display' => 'Sidebar',
                 'fields' => [
                     'enabled' => [
-                        'display' => 'Enabled?',
+                        'display' => __('Enabled?'),
                         'type' => 'toggle',
-                        'instructions' => 'When disabled, this coupon will not be redeemable.',
+                        'instructions' => __('When disabled, this coupon will not be redeemable.'),
                         'default' => true,
                     ],
                     'redeemed' => [
                         'input_type' => 'number',
                         'type' => 'text',
-                        'instructions' => 'Amount of times this coupon has been redeemed.',
-                        'display' => 'Redeemed',
+                        'instructions' => __('Amount of times this coupon has been redeemed.'),
+                        'display' => __('Redeemed'),
                         'read_only' => true,
                         'default' => 0,
                     ],

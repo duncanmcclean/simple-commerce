@@ -2,7 +2,7 @@
     <div class="card p-2 content mb-2">
         <div class="flex flex-wrap -mx-2 mb-4">
             <div class="px-2 w-full">
-                <p class="mb-4">Number of Orders (Last 30 Days)</p>
+                <p class="mb-4">{{ __('Number of Orders (Last 30 Days)') }}</p>
                 <div class="px-1" v-if="ready">
                     <LineChartGenerator
                         :chart-options="chartOptions"

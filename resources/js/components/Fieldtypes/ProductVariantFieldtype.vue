@@ -9,11 +9,11 @@
 
         <div v-else>
             <p v-if="value == null" class="text-sm p-1">
-                Product doesn't support variants.
+                {{ __("Product doesn't support variants.") }}
             </p>
 
             <p v-else-if="productVariantsData == null" class="text-sm p-1">
-                No product selected.
+                {{ __('No product selected.') }}
             </p>
 
             <select-field
@@ -33,7 +33,7 @@
                 "
                 class="text-sm p-1"
             >
-                Product doesn't support variants.
+                {{ __("Product doesn't support variants.") }}
             </p>
         </div>
     </div>

@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', 'Create Coupon')
+@section('title', __('Create Coupon'))
 @section('wrapper_class', 'max-w-3xl')
 
 @section('content')
@@ -9,7 +9,7 @@
     ])
 
     <publish-form
-        title="Create Coupon"
+        title="{{ __('Create Coupon') }}"
         action="{{ cp_route('simple-commerce.coupons.store') }}"
         :blueprint='@json($blueprint)'
         :meta='@json($meta)'

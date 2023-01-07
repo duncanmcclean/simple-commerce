@@ -44,7 +44,7 @@ class Overview
         static::registerWidget(
             'orders-chart',
             [
-                'name' => 'Orders Chart',
+                'name' => __('Orders Chart'),
                 'component' => 'overview-orders-chart',
             ],
             function (Request $request) {
@@ -79,7 +79,7 @@ class Overview
         static::registerWidget(
             'recent-orders',
             [
-                'name' => 'Recent Orders',
+                'name' => __('Recent Orders'),
                 'component' => 'overview-recent-orders',
             ],
             function (Request $request) {
@@ -141,7 +141,7 @@ class Overview
         static::registerWidget(
             'top-customers',
             [
-                'name' => 'Top Customers',
+                'name' => __('Top Customers'),
                 'component' => 'overview-top-customers',
             ],
             function (Request $request) {
@@ -224,7 +224,7 @@ class Overview
         static::registerWidget(
             'low-stock-products',
             [
-                'name' => 'Low Stock Products',
+                'name' => __('Low Stock Products'),
                 'component' => 'overview-low-stock-products',
             ],
             function (Request $request) {
