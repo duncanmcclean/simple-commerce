@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
         ];
 
         if ($this->getCart()->grandTotal() > 0) {
-            $rules['gateway'] = ['required', 'string', new IsAGateway()];
+            $rules['gateway'] = ['required', 'string', new IsAGateway];
         }
 
         return $rules;

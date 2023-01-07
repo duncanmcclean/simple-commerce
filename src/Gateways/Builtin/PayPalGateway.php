@@ -111,7 +111,7 @@ class PayPalGateway extends BaseGateway implements Gateway
         }
 
         return [
-            'payment_id' => 'required|string',
+            'payment_id' => ['required', 'string'],
         ];
     }
 

@@ -76,10 +76,10 @@ class DummyGatewayTest extends TestCase
 
         $this->assertIsArray($rules);
         $this->assertSame([
-            'card_number'   => 'required|string',
-            'expiry_month'  => 'required',
-            'expiry_year'   => 'required',
-            'cvc'           => 'required',
+            'card_number'   => ['required', 'string'],
+            'expiry_month'  => ['required'],
+            'expiry_year'   => ['required'],
+            'cvc'           => ['required'],
         ], $rules);
     }
 
