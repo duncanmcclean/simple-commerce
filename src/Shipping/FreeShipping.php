@@ -6,21 +6,21 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 
-class StandardPost extends BaseShippingMethod implements ShippingMethod
+class FreeShipping extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return __('Standard Post');
+        return __('Free Shipping');
     }
 
     public function description(): string
     {
-        return __('Posted through the national post service. Usually delivered within 1-2 working days.');
+        return __("You don't need to pay for shipping, since it's free!");
     }
 
     public function calculateCost(Order $order): int
     {
-        return 100;
+        return 0;
     }
 
     public function checkAvailability(Order $order, Address $address): bool
