@@ -13,11 +13,15 @@
                 class="px-2 py-1 flex items-center justify-between hover:bg-grey-10"
             >
                 <a :href="customer.edit_url">{{ customer.email }}</a>
-                <span class="text-sm">{{ customer.orders_count }} orders</span>
+                <span class="text-sm"
+                    >{{ customer.orders_count }} {{ __('orders') }}</span
+                >
             </li>
         </ul>
 
-        <p v-else class="px-2 pt-1 pb-2" style="color: #737f8c">No results</p>
+        <p v-else class="px-2 pt-1 pb-2" style="color: #737f8c">
+            {{ __('No results') }}
+        </p>
     </div>
 </template>
 

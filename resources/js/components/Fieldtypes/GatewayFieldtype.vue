@@ -1,6 +1,6 @@
 <template>
     <div class="relationship-input">
-        <p v-if="value == null" class="text-sm py-1">No Gateway</p>
+        <p v-if="value == null" class="text-sm py-1">{{ __('No Gateway') }}</p>
 
         <div
             v-else

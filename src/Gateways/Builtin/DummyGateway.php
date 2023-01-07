@@ -14,7 +14,7 @@ class DummyGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
-        return 'Dummy';
+        return __('Dummy');
     }
 
     public function prepare(Prepare $data): Response

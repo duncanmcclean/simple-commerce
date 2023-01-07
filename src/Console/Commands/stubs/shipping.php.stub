@@ -11,12 +11,12 @@ class DummyClass extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return 'Name of your shipping method';
+        return __('Name of your shipping method');
     }
 
     public function description(): string
     {
-        return 'Description of your shipping method';
+        return __('Description of your shipping method');
     }
 
     public function calculateCost(Order $order): int

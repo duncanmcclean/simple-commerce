@@ -42,7 +42,7 @@ class CustomerOrderPaid extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(config('app.name') . ': Order Confirmation')
+            ->subject(__(':siteName: Order Confirmation', ['siteName' => config('app.name')]))
             ->markdown('simple-commerce::emails.customer_order_paid', [
                 'order' => $this->order,
                 'site' => $this->order->site(),

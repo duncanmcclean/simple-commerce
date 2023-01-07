@@ -45,7 +45,7 @@ class OrderCustomer extends Filter
 
     public function badge($values)
     {
-        return "Customer: {$values['email']}";
+        return __('Customer :email', ['email' => $values['email']]);
     }
 
     public function visibleTo($key)

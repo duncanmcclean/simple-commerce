@@ -34,7 +34,9 @@
                     </publish-fields-container>
                 </div>
             </div>
-            <button class="btn" @click="addVariant">Add Variant</button>
+            <button class="btn" @click="addVariant">
+                {{ __('Add Variant') }}
+            </button>
         </div>
 
         <!-- Variant Options -->
@@ -46,7 +48,7 @@
                     class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
                 >
                     <div class="grid-item-header">
-                        {{ option.variant || 'Variants' }}
+                        {{ option.variant || __('Variants') }}
                     </div>
 
                     <publish-fields-container>

@@ -18,6 +18,6 @@ class RegionExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.region_exists');
+        return __('The selected region is not recognised.');
     }
 }

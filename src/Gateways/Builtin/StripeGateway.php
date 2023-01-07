@@ -32,7 +32,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
     public function name(): string
     {
-        return 'Stripe';
+        return __('Stripe');
     }
 
     public function prepare(Prepare $data): GatewayResponse
@@ -44,7 +44,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $intentData = [
             'amount'             => $order->grandTotal(),
             'currency'           => Currency::get(Site::current())['code'],
-            'description'        => "Order: {$order->get('title')}",
+            'description'        => __('Order :orderNumber', ['order' => $order->orderNumber()]),
             'setup_future_usage' => 'off_session',
         ];
 
@@ -52,7 +52,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         if ($customer) {
             $stripeCustomerData = [
-                'name'  => $customer->name() ?? 'Unknown',
+                'name'  => $customer->name() ?? __('Unknown'),
                 'email' => $customer->email(),
             ];
 
@@ -107,7 +107,7 @@ class StripeGateway extends BaseGateway implements Gateway
     public function purchaseRules(): array
     {
         return [
-            'payment_method' => 'required|string',
+            'payment_method' => ['required', 'string'],
         ];
     }
 

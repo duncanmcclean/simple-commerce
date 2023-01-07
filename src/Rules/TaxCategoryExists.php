@@ -14,6 +14,6 @@ class TaxCategoryExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.tax_category_exists');
+        return __('Sorry, the tax category provided could not be found.');
     }
 }

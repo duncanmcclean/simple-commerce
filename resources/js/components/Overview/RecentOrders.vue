@@ -20,7 +20,9 @@
             </li>
         </ul>
 
-        <p v-else class="px-2 pt-1 pb-2" style="color: #737f8c">No results</p>
+        <p v-else class="px-2 pt-1 pb-2" style="color: #737f8c">
+            {{ __('No results') }}
+        </p>
     </div>
 </template>
 

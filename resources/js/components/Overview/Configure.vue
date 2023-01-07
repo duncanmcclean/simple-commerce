@@ -1,7 +1,7 @@
 <template>
     <div>
         <button class="btn flex items-center" @click="open = !open">
-            Configure
+            {{ __('Configure') }}
             <svg viewBox="0 0 10 6.5" class="ml-1 w-2">
                 <path
                     fill="currentColor"
@@ -19,7 +19,7 @@
                     class="popover-content bg-white shadow-popover rounded-md px-0 py-0"
                 >
                     <div class="outline-none text-left px-1 pt-2 pb-1">
-                        <h6 class="px-1 pb-1">Available Widgets</h6>
+                        <h6 class="px-1 pb-1">{{ __('Available Widgets') }}</h6>
 
                         <div
                             v-for="widget in widgets"
@@ -47,14 +47,14 @@
                             @click="reset"
                             @disabled="saving"
                         >
-                            Reset
+                            {{ __('Reset') }}
                         </button>
                         <button
                             class="p-1 hover:bg-grey-10 text-blue flex-1 rounded-br border-l text-xs text-center"
                             @click="save"
                             @disabled="saving"
                         >
-                            Save
+                            {{ __('Save') }}
                         </button>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', "Tax Category: {$taxCategory->updateUrl()}")
+@section('title', __('Edit Tax Category'))
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
@@ -20,14 +20,14 @@
 
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="form-group w-full">
-                <label class="block mb-1">Name <i class="required">*</i></label>
+                <label class="block mb-1">{{ __('Name') }} <i class="required">*</i></label>
                 <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxCategory->name() }}">
 
                 @include('simple-commerce::cp.partials.error', ['name' => 'name'])
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Description</label>
+                <label class="block mb-1">{{ __('Description') }}</label>
                 <textarea name="description" cols="30" rows="5" class="input-text">{{ $taxCategory->description() }}</textarea>
 
                 @include('simple-commerce::cp.partials.error', ['name' => 'description'])

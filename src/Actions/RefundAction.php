@@ -13,7 +13,7 @@ class RefundAction extends Action
 {
     public static function title()
     {
-        return __('simple-commerce::messages.actions.refund');
+        return __('Refund');
     }
 
     public function visibleTo($item)

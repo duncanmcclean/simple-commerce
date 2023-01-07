@@ -48,7 +48,8 @@ class ShippingMethodFieldtype extends Relationship
     protected function getColumns()
     {
         return [
-            Column::make('name'),
+            Column::make('name')
+                ->label(__('Name')),
         ];
     }
 
