@@ -100,35 +100,35 @@ class EnforceBlueprintFields
             'type'      => 'money',
             'display'   => __('Grand Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('items_total', [
             'type'      => 'money',
             'display'   => __('Items Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('shipping_total', [
             'type'      => 'money',
             'display'   => __('Shipping Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('tax_total', [
             'type'      => 'money',
             'display'   => __('Tax Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('coupon_total', [
             'type'      => 'money',
             'display'   => __('Coupon Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         return $event->blueprint;

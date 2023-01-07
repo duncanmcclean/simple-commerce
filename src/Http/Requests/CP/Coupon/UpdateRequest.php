@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class UpdateRequest extends FormRequest
             'type' => [
                 'required',
                 'string',
-                'in:fixed,percentage',
+                Rule::in(['fixed', 'percentage']),
             ],
             'value' => [
                 'required',
