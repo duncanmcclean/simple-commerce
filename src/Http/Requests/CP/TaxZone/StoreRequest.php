@@ -21,7 +21,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'string'
+                'string',
             ],
             'country' => [
                 'required',
@@ -39,7 +39,7 @@ class StoreRequest extends FormRequest
                             $fail(__('There is already a tax zone for :country.', ['country' => $country['name']]));
                         }
                     }
-                }
+                },
             ],
             'region' => [
                 'nullable',
@@ -59,7 +59,7 @@ class StoreRequest extends FormRequest
                             'country' => $country['name'],
                         ]));
                     }
-                }
+                },
             ],
         ];
     }

@@ -21,7 +21,7 @@ class UpdateRequest extends FormRequest
         $rules = [
             'name' => [
                 'required',
-                'string'
+                'string',
             ],
         ];
 
@@ -45,7 +45,7 @@ class UpdateRequest extends FormRequest
                             $fail(__('There is already a tax zone for :country.', ['country' => $country['name']]));
                         }
                     }
-                }
+                },
             ];
 
             $rules['region'] = [
@@ -69,7 +69,7 @@ class UpdateRequest extends FormRequest
                             'country' => $country['name'],
                         ]));
                     }
-                }
+                },
             ];
         }
 
