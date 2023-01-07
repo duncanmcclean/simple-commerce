@@ -18,8 +18,8 @@ class RegionFieldtype extends Relationship
             return [
                 'id'   => $region['id'],
                 'country_iso'  => $region['country_iso'],
-                'country_name' => Countries::findByRegion($region)->first()['name'],
-                'name' => $region['name'],
+                'country_name' => __(Countries::findByRegion($region)->first()['name']),
+                'name' => __($region['name']),
             ];
         })->sortBy('country_name')->values();
     }
@@ -27,9 +27,11 @@ class RegionFieldtype extends Relationship
     protected function getColumns()
     {
         return [
-            Column::make('name'),
+            Column::make('name')
+                ->label(__('Name')),
+
             Column::make('country_name')
-                ->label('Country'),
+                ->label(__('Country')),
         ];
     }
 
@@ -39,7 +41,7 @@ class RegionFieldtype extends Relationship
 
         return [
             'id' => $region['id'],
-            'title' => $region['name'],
+            'title' => __($region['name']),
         ];
     }
 
@@ -52,7 +54,7 @@ class RegionFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $region = Regions::find($item);
 
-            return $region['name'];
+            return __($region['name']);
         })->join(', ');
     }
 }

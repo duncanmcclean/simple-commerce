@@ -64,7 +64,7 @@ class OrderContainsProduct extends Filter
             return Product::find($productId)->get('title');
         })->join(', ');
 
-        return "Contains Product: {$products}";
+        return __('Contains Product: :products', ['products' => $products]);
     }
 
     public function visibleTo($key)

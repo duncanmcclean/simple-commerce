@@ -13,7 +13,7 @@ class GatewayFieldtype extends Fieldtype
 {
     public static function title()
     {
-        return 'Gateway';
+        return __('Payment Gateway');
     }
 
     public function preload()

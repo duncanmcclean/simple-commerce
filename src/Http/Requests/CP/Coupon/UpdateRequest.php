@@ -33,7 +33,7 @@ class UpdateRequest extends FormRequest
                 'min:0',
                 function ($attribute, $value, $fail) {
                     if ($this->type === 'percentage' && $value > 100) {
-                        $fail('Percentage value cannot be over 100.');
+                        $fail(__('Percentage value cannot be over 100.'));
                     }
                 },
             ],

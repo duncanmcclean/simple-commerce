@@ -21,6 +21,6 @@ class ProductExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.entry_exists');
+        return __('The product :value does not exist.');
     }
 }

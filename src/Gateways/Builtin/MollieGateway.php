@@ -26,7 +26,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
     public function name(): string
     {
-        return 'Mollie';
+        return __('Mollie');
     }
 
     public function prepare(Prepare $data): Response
@@ -40,7 +40,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 'currency' => Currency::get(Site::current())['code'],
                 'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
             ],
-            'description' => "Order {$order->get('title')}",
+            'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
             'redirectUrl' => $this->callbackUrl([
                 '_order_id' => $data->order()->id(),
             ]),

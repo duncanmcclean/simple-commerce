@@ -362,7 +362,7 @@ class StripeGatewayTest extends TestCase
         $this->assertIsArray($rules);
 
         $this->assertSame([
-            'payment_method' => 'required|string',
+            'payment_method' => ['required', 'string'],
         ], $rules);
     }
 

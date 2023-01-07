@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', 'Overview')
+@section('title', __('Overview'))
 
 @section('content')
     <overview
@@ -8,7 +8,7 @@
     ></overview>
 
     @include('statamic::partials.docs-callout', [
-        'topic' => 'Simple Commerce Overview',
+        'topic' => __('Simple Commerce Overview'),
         'url' => 'https://simple-commerce.duncanmcclean.com/control-panel?ref=cp_overview'
     ])
 @endsection

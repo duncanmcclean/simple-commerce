@@ -42,7 +42,7 @@ class BackOfficeOrderPaid extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(config('app.name') . ': New Order')
+            ->subject(__(':siteName: New Order', ['siteName' => config('app.name')]))
             ->markdown('simple-commerce::emails.backoffice_order_paid', [
                 'order' => $this->order,
                 'site' => $this->order->site(),

@@ -1,9 +1,9 @@
 <template>
     <div class="form-group w-full">
-        <label class="block mb-1">Region</label>
+        <label class="block mb-1">{{ __('Region') }}</label>
         <select v-model="region" class="input-text">
             <option value="" selected disabled="true">
-                Please select
+                {{ __('Please select') }}
             </option>
             <option
                 v-for="region in regions"

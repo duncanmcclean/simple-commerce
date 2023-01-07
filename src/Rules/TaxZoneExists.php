@@ -14,6 +14,6 @@ class TaxZoneExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.tax_zone_exists');
+        return __('Sorry, the tax zone provided could not be found.');
     }
 }

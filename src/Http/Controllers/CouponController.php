@@ -20,11 +20,11 @@ class CouponController extends BaseActionController
         $cart->recalculate();
 
         if (! $redeem) {
-            return $this->withErrors($request, __('simple-commerce::messages.invalid_coupon'));
+            return $this->withErrors($request, __('Coupon is not valid.'));
         }
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce::messages.coupon_added_to_cart'),
+            'message' => __('Coupon added to cart'),
             'cart'    => $this->getCart()->toResource(),
         ]);
     }
@@ -40,7 +40,7 @@ class CouponController extends BaseActionController
         $cart->recalculate();
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce::messages.coupon_removed_from_cart'),
+            'message' => __('Coupon removed from cart'),
             'cart'    => $this->getCart()->toResource(),
         ]);
     }

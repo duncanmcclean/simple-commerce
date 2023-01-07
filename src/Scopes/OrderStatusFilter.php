@@ -17,10 +17,10 @@ class OrderStatusFilter extends Filter
             'type' => [
                 'type' => 'radio',
                 'options' => [
-                    'cart' => 'Cart',
-                    'paid' => 'Paid',
-                    'shipped' => 'Shipped',
-                    'refunded' => 'Refunded',
+                    'cart' => __('Cart'),
+                    'paid' => __('Paid'),
+                    'shipped' => __('Shipped'),
+                    'refunded' => __('Refunded'),
                 ],
             ],
         ];
@@ -63,7 +63,7 @@ class OrderStatusFilter extends Filter
     {
         $orderStatusLabel = $this->fieldItems()['type']['options'][$values['type']];
 
-        return "Order Status: {$orderStatusLabel}";
+        return __('Order Status: :orderStatus', ['orderStatus' => $orderStatusLabel]);
     }
 
     public function visibleTo($key)

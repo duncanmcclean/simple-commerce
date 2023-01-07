@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', "Tax Rate: {$taxRate->name()}")
+@section('title', __('Edit Tax Rate'))
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
@@ -14,15 +14,15 @@
 
         <header class="mb-3">
             <div class="flex items-center justify-between">
-                <h1>{{ $taxRate->name() }} (Category: {{ $taxRate->category()->name() }})</h1>
-                <button type="submit" class="btn-primary">Save</button>
+                <h1>{{ $taxRate->name() }} ({{ __('Tax Category') }}: {{ $taxRate->category()->name() }})</h1>
+                <button type="submit" class="btn-primary">{{ __('Save') }}</button>
             </div>
         </header>
 
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Name <i class="required">*</i></label>
+                    <label class="block mb-1">{{ __('Name') }} <i class="required">*</i></label>
 
                     <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxRate->name() }}">
 
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Rate <i class="required">*</i></label>
+                    <label class="block mb-1">{{ __('Rate') }} <i class="required">*</i></label>
 
                     <div class="input-group">
                         <input type="number" name="rate" class="input-text" value="{{ $taxRate->rate() }}">
@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Tax Zone <i class="required">*</i></label>
+                <label class="block mb-1">{{ __('Tax Zone') }} <i class="required">*</i></label>
 
                 <select name="zone" class="input-text" value="{{ $taxRate->zone()->id() }}">
                     @foreach($taxZones as $taxZone)
@@ -55,10 +55,10 @@
             </div>
 
             <div class="form-group w-full md:w-1/2">
-                <label class="block mb-1">Prices include tax?</label>
+                <label class="block mb-1">{{ __('Prices include tax?') }}</label>
 
                 <div class="help-block -mt-1">
-                    <p>Do product prices include already include tax?</p>
+                    <p>{{ __('Do product prices include already include tax?') }}</p>
                 </div>
 
                 <input type="hidden" name="include_in_price" value="{{ $taxRate->includeInPrice() ? 'true' : 'false' }}">
