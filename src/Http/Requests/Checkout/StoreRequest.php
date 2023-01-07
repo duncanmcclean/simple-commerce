@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout;
 
-use DoubleThreeDigital\SimpleCommerce\Gateways\Rules\IsAGateway;
+use DoubleThreeDigital\SimpleCommerce\Rules\IsAGateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Foundation\Http\FormRequest;
 
