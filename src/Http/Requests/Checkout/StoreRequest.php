@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
     {
         $rules = [
             'name'  => ['sometimes', 'string'],
-            'name'  => ['sometimes', 'email'],
+            'email' => ['sometimes', 'email'],
         ];
 
         if ($this->getCart()->grandTotal() > 0) {
