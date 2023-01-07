@@ -38,7 +38,11 @@ class HandleStock
 
                         // Need to do this check before actually setting the stock
                         if ($stock < 0) {
-                            event(new StockRunOut($product, $stock));
+                            event(new StockRunOut(
+                                product: $product,
+                                variant: null,
+                                stock: $stock,
+                            ));
 
                             throw new CheckoutProductHasNoStockException($product);
                         }
@@ -50,7 +54,11 @@ class HandleStock
                         $product->save();
 
                         if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
-                            event(new StockRunningLow($product, $stock));
+                            event(new StockRunningLow(
+                                product: $product,
+                                variant: null,
+                                stock: $stock,
+                            ));
                         }
                     }
                 }
@@ -63,7 +71,11 @@ class HandleStock
 
                         // Need to do this check before actually setting the stock
                         if ($stock < 0) {
-                            event(new StockRunOut($product, $stock, $variant));
+                            event(new StockRunOut(
+                                product: $product,
+                                variant: $variant,
+                                stock: $stock,
+                            ));
 
                             throw new CheckoutProductHasNoStockException($product, $variant);
                         }
@@ -75,7 +87,11 @@ class HandleStock
                         $variant->save();
 
                         if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
-                            event(new StockRunningLow($product, $stock));
+                            event(new StockRunningLow(
+                                product: $product,
+                                variant: $variant,
+                                stock: $stock,
+                            ));
                         }
                     }
                 }
