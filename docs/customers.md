@@ -50,7 +50,9 @@ They live in their own `customers` collection, which you can change if you need 
 
 Storing your customers as users can often be handy if you're building some sort of membership site or if you want a way for your customers to log in, to view order history etc.
 
-> **Hot Tip:** You'll need to enable [Statamic Pro](https://statamic.com/pricing) if you want to store your customers as users.
+:::tip Hot Tip
+You'll need to enable [Statamic Pro](https://statamic.com/pricing) if you want to store your customers as users.
+:::
 
 To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class` to `\DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class`.
 
