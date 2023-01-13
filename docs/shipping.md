@@ -122,7 +122,9 @@ $order->markAsShipped();
 
 ### Via the Control Panel
 
-> **Note:** this will only show if you're using Collections & Entries for your orders. You'll need to build this yourself for custom [content drivers](/extending/content-drivers).
+:::note Note!
+This will only show if you're using Collections & Entries for your orders. You'll need to build this yourself for custom [content drivers](/extending/content-drivers).
+:::
 
 In the Control Panel listing table for orders, find the order you wish to mark as shipped, click the three dots on the right, and select the 'Mark as Shipped' option.
 

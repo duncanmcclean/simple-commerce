@@ -71,4 +71,6 @@ This means, in the Checkout Success/Thanks page, you can use the cart tags like 
 
 It's worth noting this same behavior works for off-site gateways as well.
 
-> **Note:** The cart information will only be available for 30 minutes after checking out. After which time, the page will start to use a fresh cart.
+:::note Note!
+The cart information will only be available for 30 minutes after checking out. After which time, the page will start to use a fresh cart.
+:::
