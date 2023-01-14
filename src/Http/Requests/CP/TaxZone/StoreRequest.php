@@ -19,34 +19,48 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
-            'country' => ['required', new CountryExists, function ($attribute, $value, $fail) {
-                if ($this->region === null) {
-                    $taxZoneWithCountryAlreadyExists = TaxZone::all()
-                        ->where('country', $value)
-                        ->where('region', null)
+            'name' => [
+                'required',
+                'string',
+            ],
+            'country' => [
+                'required',
+                new CountryExists,
+                function ($attribute, $value, $fail) {
+                    if ($this->region === null) {
+                        $taxZoneWithCountryAlreadyExists = TaxZone::all()
+                            ->where('country', $value)
+                            ->where('region', null)
+                            ->count() > 0;
+
+                        if ($taxZoneWithCountryAlreadyExists) {
+                            $country = Countries::find($value);
+
+                            $fail(__('There is already a tax zone for :country.', ['country' => $country['name']]));
+                        }
+                    }
+                },
+            ],
+            'region' => [
+                'nullable',
+                new RegionExists,
+                function ($attribute, $value, $fail) {
+                    $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
+                        ->where('country', $this->country)
+                        ->where('region', $value)
                         ->count() > 0;
 
-                    if ($taxZoneWithCountryAlreadyExists) {
-                        $country = Countries::find($value);
+                    if ($taxZoneWithCountryAndRegionAlreadyExists) {
+                        $country = Countries::find($this->country);
+                        $region = Regions::find($value);
 
-                        $fail("There is already a tax zone for {$country['name']}");
+                        $fail(__('There is already a tax zone for :region, :country.', [
+                            'region' => $region['name'],
+                            'country' => $country['name'],
+                        ]));
                     }
-                }
-            }],
-            'region' => ['nullable', new RegionExists, function ($attribute, $value, $fail) {
-                $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
-                    ->where('country', $this->country)
-                    ->where('region', $value)
-                    ->count() > 0;
-
-                if ($taxZoneWithCountryAndRegionAlreadyExists) {
-                    $country = Countries::find($this->country);
-                    $region = Regions::find($value);
-
-                    $fail("There is already a tax zone for {$region['name']}, {$country['name']}");
-                }
-            }],
+                },
+            ],
         ];
     }
 }

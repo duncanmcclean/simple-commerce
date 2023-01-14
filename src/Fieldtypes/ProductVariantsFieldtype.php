@@ -15,9 +15,9 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return [
             'option_fields' => [
-                'display'      => __('simple-commerce::messages.fieldtypes.product_variants.config_fields.option_fields.display'),
+                'display'      => __('Option Fields'),
                 'type'         => 'fields',
-                'instructions' => __('simple-commerce::messages.fieldtypes.product_variants.config_fields.option_fields.instructions'),
+                'instructions' => __('Configure fields that will be shown when an option is created.'),
             ],
         ];
     }
@@ -95,7 +95,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public static function title()
     {
-        return __('simple-commerce::messages.fieldtypes.product_variants.title');
+        return __('Product Variants');
     }
 
     public function component(): string
@@ -149,17 +149,17 @@ class ProductVariantsFieldtype extends Fieldtype
     public function preProcessIndex($value)
     {
         if (! $value) {
-            return __('simple-commerce::messages.product_has_no_variants');
+            return __('No variants.');
         }
 
         $optionsCount = collect($value['options'])->count();
 
         if ($optionsCount === 0) {
-            return __('simple-commerce::messages.product_has_no_variants');
+            return __('No variants.');
         } elseif ($optionsCount === 1) {
-            return $optionsCount.' '.__('simple-commerce::messages.product_variants_singular');
+            return $optionsCount.' variant';
         } else {
-            return $optionsCount.' '.__('simple-commerce::messages.product_variants_plural');
+            return $optionsCount.' variants';
         }
     }
 
@@ -200,7 +200,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'display'    => 'Name',
                     'width'      => 50,
                     'input_type' => 'text',
-                    'validate'   => 'required',
+                    'validate'   => ['required'],
                 ],
             ],
             [
@@ -210,7 +210,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'listable' => 'hidden',
                     'display'  => 'Values',
                     'width'    => 50,
-                    'validate' => 'required',
+                    'validate'   => ['required'],
                 ],
             ],
         ];
@@ -228,7 +228,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'listable'  => 'hidden',
                     'display'   => 'Key',
                     'read_only' => true,
-                    'validate'  => 'required',
+                    'validate'   => ['required'],
                 ],
             ],
             [
@@ -238,7 +238,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'listable'  => 'hidden',
                     'display'   => 'Variant',
                     'read_only' => true,
-                    'validate'  => 'required',
+                    'validate'   => ['required'],
                     'width'     => 50,
                 ],
             ],
@@ -249,7 +249,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'read_only' => false,
                     'listable'  => 'hidden',
                     'display'   => 'Price',
-                    'validate'  => 'required',
+                    'validate'   => ['required'],
                     'width'     => 50,
                 ],
             ],

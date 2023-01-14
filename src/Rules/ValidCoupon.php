@@ -27,6 +27,6 @@ class ValidCoupon implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.valid_coupon');
+        return __('Sorry, this coupon is not valid for your order.');
     }
 }

@@ -399,7 +399,7 @@ class ServiceProvider extends AddonServiceProvider
     protected function registerPermissions()
     {
         Permission::register('view simple commerce overview')
-            ->label('View Simple Commerce Overview');
+            ->label(__('View Simple Commerce Overview'));
 
         Permission::register('view coupons', function ($permission) {
             $permission->children([

@@ -2,18 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
-class RefundAction extends Action
+class MarkAsShipped extends Action
 {
     public static function title()
     {
-        return __('Refund');
+        return __('Mark as Shipped');
     }
 
     public function visibleTo($item)
@@ -21,14 +20,16 @@ class RefundAction extends Action
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $item instanceof Entry
                 && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection']
-                && $item->get('payment_status') === 'paid';
+                && $item->get('is_paid') === true
+                && $item->get('is_shipped') !== true;
         }
 
         if (isset(SimpleCommerce::orderDriver()['model'])) {
             $orderModelClass = SimpleCommerce::orderDriver()['model'];
 
             return $item instanceof $orderModelClass
-                && $item->payment_status === 'paid';
+                && $item->is_paid
+                && ! $item->is_shipped;
         }
 
         return false;
@@ -36,7 +37,11 @@ class RefundAction extends Action
 
     public function visibleToBulk($items)
     {
-        return false;
+        $allowedOnItems = $items->filter(function ($item) {
+            return $this->visibleTo($item);
+        });
+
+        return $items->count() === $allowedOnItems->count();
     }
 
     public function run($items, $values)
@@ -45,8 +50,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id);
 
-                return Gateway::use($order->currentGateway()['class'])
-                    ->refundCharge($order);
+                return $order->markAsShipped();
             });
     }
 

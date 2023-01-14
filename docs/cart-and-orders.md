@@ -106,7 +106,9 @@ class YourDriver implements CartDriver
 
 ### Order Numbers
 
-> Note: This only applies when storing orders as entries. If you're [storing orders in a database](/database-orders), the order number will be automaticaly generated from the order's ID in the database.
+:::note Note!
+This only applies when storing orders as entries. If you're [storing orders in a database](/database-orders), the order number will be automaticaly generated from the order's ID in the database.
+:::
 
 When an order is created, a unique order number will be assigned. It'll often be formatted like so: `#1234`.
 

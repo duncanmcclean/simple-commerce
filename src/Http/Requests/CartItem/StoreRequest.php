@@ -26,12 +26,12 @@ class StoreRequest extends FormRequest
 
             'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
-                    return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
+                    return $fail(__('Your email may not contain any spaces.'));
                 }
             }],
             'customer.email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
-                    return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
+                    return $fail(__('Your email may not contain any spaces.'));
                 }
             }],
         ];

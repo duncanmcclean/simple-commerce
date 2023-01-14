@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', 'Edit Coupon')
+@section('title', __('Edit Coupon'))
 @section('wrapper_class', 'max-w-3xl')
 
 @section('content')
@@ -9,7 +9,7 @@
     ])
 
     <publish-form
-        title="Edit Coupon"
+        title="{{ __('Edit Coupon') }} }}"
         action="{{ $coupon->updateUrl() }}"
         :blueprint='@json($blueprint)'
         :meta='@json($meta)'

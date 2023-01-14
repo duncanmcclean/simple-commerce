@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## v4.4.0 (2023-01-07)
+
+### What's new
+
+-   Danish translation #776 by @rabol
+
+### What's improved
+
+-   All strings in the Control Panel & front-end validation from Simple Commerce are now translatable #777
+-   Some of the form validation code has been refactored #780
+-   The order of parameters being passed into the `StockRunningLow` and `StockRunOut` events has been changed. #782
+
+## v4.3.1 (2023-01-04)
+
+### What's fixed
+
+-   Fixed `{{ sc:gateways }}` tag when specifying a gateway #774 #775
+
 ## v4.3.0 (2023-01-03)
 
 ### What's new

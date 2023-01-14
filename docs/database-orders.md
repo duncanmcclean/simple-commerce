@@ -8,9 +8,9 @@ But wait.. you say. Isn't Statamic a flat-file CMS? The answer is yes but when y
 
 ### When should I switch to a database?
 
-- You have a few hundred/thousand orders and you're starting to see performance suffer
-- You need to do some kind of complicated queries against your orders
-- You want to keep your orders out of version control
+-   You have a few hundred/thousand orders and you're starting to see performance suffer
+-   You need to do some kind of complicated queries against your orders
+-   You want to keep your orders out of version control
 
 ### How it works
 
@@ -18,7 +18,9 @@ So, instead of your orders & customers living as entries in your `content` folde
 
 ## Switching to a database
 
-> Note: The below steps assume you already have a database setup.
+:::note Note!
+The below steps assume you already have a database setup.
+:::
 
 I've written a few command to make the process of switching your site to a database as painless as possible.
 

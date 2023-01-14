@@ -31,7 +31,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     public function name(): string
     {
-        return 'PayPal';
+        return __('PayPal');
     }
 
     public function isOffsiteGateway(): bool
@@ -55,7 +55,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                         'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
                         'currency_code' => Currency::get(Site::current())['code'],
                     ],
-                    'description' => "Order {$order->get('title')}",
+                    'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
                     'custom_id'   => $order->id(),
                 ],
             ],
@@ -111,7 +111,7 @@ class PayPalGateway extends BaseGateway implements Gateway
         }
 
         return [
-            'payment_id' => 'required|string',
+            'payment_id' => ['required', 'string'],
         ];
     }
 

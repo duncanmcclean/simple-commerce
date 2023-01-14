@@ -13,7 +13,7 @@ class UpdateOrderStatus extends Action
 {
     public static function title()
     {
-        return __('simple-commerce::messages.actions.update_order_status');
+        return __('Update Order Status');
     }
 
     protected function fieldItems()

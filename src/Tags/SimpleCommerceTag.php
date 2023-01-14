@@ -100,7 +100,7 @@ class SimpleCommerceTag extends Tags
 
         return $countries->map(function ($country) {
             return array_merge($country, [
-                'name' => __($country['name']),
+                'name' => $country['name'],
             ]);
         })->toArray();
     }

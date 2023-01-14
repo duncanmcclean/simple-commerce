@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', 'Create Tax Rate')
+@section('title', __('Create Tax Rate'))
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
@@ -14,15 +14,15 @@
 
         <header class="mb-3">
             <div class="flex items-center justify-between">
-                <h1>Create Tax Rate: {{ $taxCategory->name() }}</h1>
-                <button type="submit" class="btn-primary">Save</button>
+                <h1>{{ __('Create Tax Rate') }}: {{ $taxCategory->name() }}</h1>
+                <button type="submit" class="btn-primary">{{ __('Save') }}</button>
             </div>
         </header>
 
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Name <i class="required">*</i></label>
+                    <label class="block mb-1">Na{{ __('Name') }}me <i class="required">*</i></label>
 
                     <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}">
 
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Rate <i class="required">*</i></label>
+                    <label class="block mb-1">{{ __('Rate') }} <i class="required">*</i></label>
 
                     <div class="input-group">
                         <input type="number" name="rate" class="input-text" value="{{ old('rate') }}">
@@ -42,10 +42,10 @@
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Tax Zone <i class="required">*</i></label>
+                <label class="block mb-1">{{ __('Tax Zone') }} <i class="required">*</i></label>
 
                 <select name="zone" class="input-text" required>
-                    <option selected>Please select</option>
+                    <option selected>{{ __('Please select') }}</option>
                     @foreach($taxZones as $taxZone)
                         <option value="{{ $taxZone->id() }}" @if($taxZone->id() === old('zone')) selected @endif>{{ $taxZone->name() }}</option>
                     @endforeach
@@ -55,10 +55,10 @@
             </div>
 
             <div class="form-group w-full md:w-1/2">
-                <label class="block mb-1">Prices include tax?</label>
+                <label class="block mb-1">{{ __('Prices include tax?') }}</label>
 
                 <div class="help-block -mt-1">
-                    <p>Do product prices include already include tax?</p>
+                    {{ __('Do product prices include already include tax?') }}
                 </div>
 
                 <input type="hidden" name="include_in_price" value="{{ old('include_in_price') ?? 'false' }}">

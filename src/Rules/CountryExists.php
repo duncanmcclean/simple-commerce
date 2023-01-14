@@ -18,6 +18,6 @@ class CountryExists implements Rule
 
     public function message()
     {
-        return __('simple-commerce::messages.validation.country_exists');
+        return __('The selected country is not recognised.');
     }
 }

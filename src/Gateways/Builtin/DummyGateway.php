@@ -14,7 +14,7 @@ class DummyGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
-        return 'Dummy';
+        return __('Dummy');
     }
 
     public function prepare(Prepare $data): Response
@@ -37,10 +37,10 @@ class DummyGateway extends BaseGateway implements Gateway
     public function purchaseRules(): array
     {
         return [
-            'card_number'   => 'required|string',
-            'expiry_month'  => 'required',
-            'expiry_year'   => 'required',
-            'cvc'           => 'required',
+            'card_number'   => ['required', 'string'],
+            'expiry_month'  => ['required'],
+            'expiry_year'   => ['required'],
+            'cvc'           => ['required'],
         ];
     }
 

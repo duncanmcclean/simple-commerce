@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
+use DoubleThreeDigital\SimpleCommerce\Tags\GatewayTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -21,11 +22,17 @@ class CheckoutTagTest extends TestCase
 {
     protected $tag;
 
+    protected $gatewaysTag;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->tag = resolve(CheckoutTags::class)
+            ->setParser(Antlers::parser())
+            ->setContext([]);
+
+        $this->gatewaysTag = resolve(GatewayTags::class)
             ->setParser(Antlers::parser())
             ->setContext([]);
 
@@ -59,6 +66,19 @@ class CheckoutTagTest extends TestCase
 
         $this->assertStringContainsString('Test On-site Gateway - Duncan Cool (yes) - Haggis - Tatties', $usage);
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/checkout"', $usage);
+    }
+
+    /** @test */
+    public function gateways_tag_can_get_specific_gateway()
+    {
+        $this->fakeCart();
+
+        $this->gatewaysTag->setParameters([]);
+
+        $usage = $this->gatewaysTag->wildcard('testonsitegateway');
+
+        $this->assertStringContainsString('Test On-site Gateway', $usage['name']);
+        $this->assertStringContainsString('testonsitegateway', $usage['handle']);
     }
 
     /** @test */

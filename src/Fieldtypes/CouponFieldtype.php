@@ -26,13 +26,13 @@ class CouponFieldtype extends Relationship
     {
         return [
             Column::make('code')
-                ->label('Code'),
+                ->label(__('Code')),
 
             Column::make('discount')
-                ->label('Discount'),
+                ->label(__('Discount')),
 
             Column::make('redeemed')
-                ->label('Redeemed'),
+                ->label(__('Redeemed')),
         ];
     }
 

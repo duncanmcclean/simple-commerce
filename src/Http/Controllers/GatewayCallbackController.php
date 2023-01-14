@@ -49,7 +49,7 @@ class GatewayCallbackController extends BaseActionController
         $this->forgetCart();
 
         return $this->withSuccess($request, [
-            'success' => __('simple-commerce.messages.checkout_complete'),
+            'success' => __('Checkout Complete!'),
             'cart'    => $request->wantsJson()
                 ? $order->toResource()
                 : $order->toAugmentedArray(),

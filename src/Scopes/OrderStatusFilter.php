@@ -18,7 +18,7 @@ class OrderStatusFilter extends Filter
             'type' => [
                 'type' => 'radio',
                 'options' => collect(OrderStatus::cases())->mapWithKeys(fn ($case) => [
-                    $case->value => $case->name,
+                    $case->value => __($case->name),
                 ])->toArray(),
             ],
         ];
@@ -40,7 +40,7 @@ class OrderStatusFilter extends Filter
     {
         $orderStatusLabel = OrderStatus::from($values['type'])->name;
 
-        return "Order Status: {$orderStatusLabel}";
+        return __('Order Status: :orderStatus', ['orderStatus' => $orderStatusLabel]);
     }
 
     public function visibleTo($key)

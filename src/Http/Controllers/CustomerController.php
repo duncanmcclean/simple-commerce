@@ -28,7 +28,7 @@ class CustomerController extends BaseActionController
         $customer->save();
 
         return $this->withSuccess($request, [
-            'message'  => __('simple-commerce.messages.customer_updated'),
+            'message'  => __('Customer Updated'),
             'customer' => $customer->toResource(),
         ]);
     }

@@ -1,5 +1,5 @@
 @extends('statamic::layout')
-@section('title', "Tax Zone: {$taxZone->name()}")
+@section('title', __('Edit Tax Zone'))
 @section('wrapper_class', 'max-w-xl')
 
 @section('content')
@@ -14,23 +14,23 @@
         <header class="mb-3">
             <div class="flex items-center justify-between">
                 <h1>{{ $taxZone->name() }}</h1>
-                <button type="submit" class="btn-primary">Save</button>
+                <button type="submit" class="btn-primary">{{ __('Save') }}</button>
             </div>
         </header>
 
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="form-group w-full">
-                <label class="block mb-1">Name <i class="required">*</i></label>
+                <label class="block mb-1">{{ __('Name') }} <i class="required">*</i></label>
                 <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ $taxZone->name() }}">
 
                 @include('simple-commerce::cp.partials.error', ['name' => 'name'])
             </div>
 
             <div class="form-group w-full">
-                <label class="block mb-1">Country <i class="required">*</i></label>
+                <label class="block mb-1">{{ __('Country') }} <i class="required">*</i></label>
                 <select name="country" class="input-text" @if($taxZone->country()) value="{{ $taxZone->country()['iso'] }}" @endif>
                     @if($taxZone->id() === 'everywhere')
-                        <option value="" selected disabled>Everywhere</option>
+                        <option value="" selected disabled>{{ __('Everywhere') }}</option>
                     @else
                         @foreach($countries as $country)
                             <option

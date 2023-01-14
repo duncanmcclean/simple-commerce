@@ -69,7 +69,9 @@ If the order doesn't have an address when tax is being calculated, Simple Commer
 
 In this case, you can either use a default address (`default_address`) (eg. a physical store) for tax to be calculated from OR prevent the customer from checking out (`prevent_checkout`).
 
-**Note:** If you use a default address, make sure you actually provide one or you may end up in an endless loop.
+:::note Note!
+If you use a default address, make sure you actually provide one or you may end up in an endless loop.
+:::
 
 #### No tax rate available
 

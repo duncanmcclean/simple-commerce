@@ -64,7 +64,7 @@ class CheckoutController extends BaseActionController
         }
 
         return $this->withSuccess($request, [
-            'message' => __('simple-commerce.messages.checkout_complete'),
+            'message' => __('Checkout Complete!'),
             'cart'    => $request->wantsJson()
                 ? $this->order->toResource()
                 : $this->order->toAugmentedArray(),
@@ -77,15 +77,15 @@ class CheckoutController extends BaseActionController
         $rules = array_merge(
             $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
-                : [],
-            $this->request->has('gateway')
+            : [],
+        $this->request->has('gateway')
                 ? Gateway::use($this->request->get('gateway'))->purchaseRules()
                 : [],
             [
                 'coupon' => ['nullable', new ValidCoupon($this->order)],
                 'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
                     if (preg_match('/^\S*$/u', $value) === 0) {
-                        return $fail(__('simple-commerce::validation.email_address_contains_spaces'));
+                        return $fail(__('Your email may not contain any spaces.'));
                     }
                 }],
             ],

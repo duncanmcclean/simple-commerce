@@ -78,14 +78,14 @@ class EnforceBlueprintFields
         if (! $event->blueprint->hasField('product_variants')) {
             $event->blueprint->ensureField('price', [
                 'type'    => 'money',
-                'display' => 'Price',
+                'display' => __('Price'),
             ], 'sidebar');
         }
 
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
             $event->blueprint->ensureField('tax_category', [
                 'type'      => 'tax_category',
-                'display'   => 'Tax Category',
+                'display'   => __('Tax Category'),
                 'max_items' => 1,
                 'mode'      => 'select',
             ], 'sidebar');
@@ -98,37 +98,37 @@ class EnforceBlueprintFields
     {
         $event->blueprint->ensureField('grand_total', [
             'type'      => 'money',
-            'display'   => 'Grand Total',
+            'display'   => __('Grand Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('items_total', [
             'type'      => 'money',
-            'display'   => 'Items Total',
+            'display'   => __('Items Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('shipping_total', [
             'type'      => 'money',
-            'display'   => 'Shipping Total',
+            'display'   => __('Shipping Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('tax_total', [
             'type'      => 'money',
-            'display'   => 'Tax Total',
+            'display'   => __('Tax Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('coupon_total', [
             'type'      => 'money',
-            'display'   => 'Coupon Total',
+            'display'   => __('Coupon Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('order_status', [
