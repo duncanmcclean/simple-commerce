@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
