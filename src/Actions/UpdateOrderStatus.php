@@ -24,7 +24,7 @@ class UpdateOrderStatus extends Action
                 'options' => collect(OrderStatus::cases())->mapWithKeys(fn ($case) => [
                     $case->value => $case->name,
                 ])->toArray(),
-                'instructions' => __("**Note:** Changing the order status will not refund or charge the customer."),
+                'instructions' => __('**Note:** Changing the order status will not refund or charge the customer.'),
             ],
         ];
     }

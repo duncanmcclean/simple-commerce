@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Foundation\Console\AboutCommand;
 use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;

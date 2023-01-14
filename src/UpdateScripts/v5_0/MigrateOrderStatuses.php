@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\UpdateScripts\UpdateScript;
 
