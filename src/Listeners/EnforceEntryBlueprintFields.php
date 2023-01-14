@@ -2,9 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
