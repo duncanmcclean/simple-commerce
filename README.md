@@ -71,7 +71,7 @@ If you find a bug, have some question or have a feature request, please open a [
 
 ## Commercial addon
 
-This addon is **paid software**. You must purchase a license from the [Statamic Marketplace](https://statamic.com/cookie-notice) in order to use this addon in a production environment.
+This addon is **paid software**. You must purchase a license from the [Statamic Marketplace](https://statamic.com/simple-commerce) in order to use this addon in a production environment.
 
 ## Contributing
 
