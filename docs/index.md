@@ -5,9 +5,17 @@ table_of_contents: false
 
 **Build flexible e-commerce sites in Statamic:** Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You retain complete control over the content structure and front-end of your site.
 
-> Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!
->
-> [Ryan Mitchell, Digital Director at Thought Collective](https://www.thoughtcollective.com/?ref=simple_commerce_docs)
+<div class="testimonial">
+    <div class="testimonial-body">
+        “Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!”
+    </div>
+    <div class="testimonial-person">
+        <a href="https://www.thoughtcollective.com" target="_blank">
+            <img src="/img/testimonials/ryan.jpeg">
+            <span>Ryan Mitchell, Digital Director at Thought Collective</span>
+        </a>
+    </div>
+</div>
 
 ## Native to Statamic
 
