@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.4.2 (2023-01-19)
+
+### What's new
+
+-   Added support for separate first & last name fields for order addresses #788
+
 ## v4.4.1 (2023-01-14)
 
 ### What's fixed
