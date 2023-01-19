@@ -287,7 +287,7 @@ class Order implements Contract
         $this->merge([
             'status_log' => collect($this->get('status_log', []))
                 ->merge([
-                    $status->value => now()->toDateTimeString(),
+                    $status->value => now()->format('Y-m-d H:i'),
                 ])
                 ->toArray(),
         ]);
