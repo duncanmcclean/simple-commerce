@@ -20,7 +20,7 @@ return [
 
             'shipping' => [
                 'methods' => [
-                    \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
+                    \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
                 ],
             ],
         ],
