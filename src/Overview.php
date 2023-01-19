@@ -55,7 +55,7 @@ class Overview
                         $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                             ->queryEntries()
                             ->where('payment_status', 'paid')
-                            ->whereDate('paid_date', $date->format('d-m-Y'))
+                            ->whereDate('status_log->paid', $date->format('d-m-Y'))
                             ->get();
                     }
 
@@ -64,7 +64,7 @@ class Overview
 
                         $query = $orderModel::query()
                             ->where('payment_status', 'paid')
-                            ->whereDate('paid_date', $date)
+                            ->whereDate('status_log->paid', $date)
                             ->get();
                     }
 
@@ -87,7 +87,7 @@ class Overview
                     $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                         ->queryEntries()
                         ->where('payment_status', 'paid')
-                        ->orderBy('paid_date', 'desc')
+                        ->orderBy('status_log->paid', 'desc')
                         ->limit(5)
                         ->get()
                         ->map(function ($entry) {
@@ -101,7 +101,7 @@ class Overview
                             'order_number' => $order->orderNumber(),
                             'edit_url' => $order->resource()->editUrl(),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                            'paid_date' => Carbon::parse($order->get('paid_date'))->format(config('statamic.system.date_format')),
+                            'paid_at' => Carbon::parse($order->statusLog('paid'))->format(config('statamic.system.date_format')),
                         ];
                     });
                 }
@@ -111,8 +111,7 @@ class Overview
 
                     $query = $orderModel::query()
                         ->where('payment_status', 'paid')
-                        ->orderBy('paid_date', 'desc')
-                        ->orderBy('data->paid_date', 'desc')
+                        ->orderBy('status_log->paid', 'desc')
                         ->limit(5)
                         ->get()
                         ->map(function ($order) {
@@ -129,7 +128,7 @@ class Overview
                                 'record' => $order->resource()->{$orderModel->getRouteKeyName()},
                             ]),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                            'paid_date' => Carbon::parse($order->get('paid_date'))->format(config('statamic.system.date_format')),
+                            'paid_at' => Carbon::parse($order->statusLog('paid'))->format(config('statamic.system.date_format')),
                         ];
                     });
                 }
