@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
@@ -55,7 +55,7 @@ class BaseGatewayTest extends TestCase
         $this->assertTrue($markOrderAsPaid);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
 
         // Assert stock count has been updated
         $this->assertSame($product->fresh()->stock(), 9);
@@ -93,7 +93,7 @@ class BaseGatewayTest extends TestCase
         $this->assertTrue($markOrderAsPaid);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
     }
 }
 

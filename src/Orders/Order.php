@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
@@ -259,17 +258,6 @@ class Order implements Contract
     public function updatePaymentStatus(PaymentStatus $paymentStatus): self
     {
         $this->paymentStatus($paymentStatus)->save();
-
-        if ($paymentStatus->is(PaymentStatus::Paid)) {
-            $this
-                ->merge([
-                    'paid_date' => now()->format('Y-m-d H:i'),
-                    'published' => true,
-                ])
-                ->save();
-
-            event(new OrderPaidEvent($this));
-        }
 
         event(new PaymentStatusUpdated($this, $paymentStatus));
 

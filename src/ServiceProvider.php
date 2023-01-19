@@ -60,7 +60,10 @@ class ServiceProvider extends AddonServiceProvider
         Events\PostCheckout::class => [
             Listeners\TidyTemporaryGatewayData::class,
         ],
-        Events\OrderPaid::class => [
+        Events\OrderStatusUpdated::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\PaymentStatusUpdated::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
         Events\OrderPaymentFailed::class => [
