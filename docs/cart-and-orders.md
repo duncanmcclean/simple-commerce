@@ -15,14 +15,13 @@ It can sometimes be a little frustrating to have entries for abandoned carts lyi
 Simple Commerce provides a command out-of-the-box, which can be run either manually, or on demand, which will delete orders older than 14 days.
 
 ```
-php please sc:cart-cleanup
+php please sc:purge-cart-orders
 ```
 
 If you wish to run this command on a regular basis, maybe every night or every week, you can configure that in your `app/Console/Kernel.php` method, inside the `schedule` method.
 
 ```php
-$schedule->command('sc:cart-cleanup')
-    ->daily();
+$schedule->command('sc:purge-cart-orders')->daily();
 ```
 
 For more documentation on command scheduling, please [review the Laravel documentation](https://laravel.com/docs/master/scheduling#scheduling-artisan-commands).

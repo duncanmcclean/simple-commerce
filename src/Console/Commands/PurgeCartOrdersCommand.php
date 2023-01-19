@@ -10,12 +10,12 @@ use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Entry;
 
-class CartCleanupCommand extends Command
+class PurgeCartOrdersCommand extends Command
 {
     use RunsInPlease;
 
-    protected $name = 'sc:cart-cleanup';
-    protected $description = 'Cleanup carts older than 14 days.';
+    protected $name = 'sc:purge-cart-orders';
+    protected $description = "Purge cart orders that are older than 14 days.";
 
     public function handle()
     {
@@ -28,12 +28,10 @@ class CartCleanupCommand extends Command
                     return $entry->date()->isBefore(now()->subDays(14));
                 })
                 ->each(function ($entry) {
-                    $this->line("Deleting order: {$entry->id()}");
+                    $this->line("Deleting Order: {$entry->id()}");
 
                     $entry->delete();
                 });
-
-            return;
         }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
@@ -44,15 +42,11 @@ class CartCleanupCommand extends Command
                 ->where('order_status', OrderStatus::Cart->value)
                 ->where('created_at', '<', now()->subDays(14))
                 ->each(function ($model) {
-                    $this->line("Deleting order: {$model->id}");
+                    $this->line("Deleting Order: {$model->id}");
 
                     $model->delete();
                 });
-
-            return;
         }
-
-        return $this->error('Unable to cleanup carts with provided cart driver.');
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
