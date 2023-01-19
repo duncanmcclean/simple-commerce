@@ -22,12 +22,6 @@ export default {
                 case 'placed':
                     return 'bg-orange'
 
-                case 'paid':
-                    return 'bg-green'
-
-                case 'refunded':
-                    return 'bg-grey'
-
                 case 'dispatched':
                     return 'bg-blue-300'
 
