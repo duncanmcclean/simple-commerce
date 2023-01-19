@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Actions\UpdateOrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
@@ -44,6 +45,10 @@ class UpdateOrderStatusTest extends TestCase
     /** @test */
     public function order_can_have_its_status_updated()
     {
+        TestTime::freeze();
+
+        $nowDateTimeString = TestTime::now()->toDateTimeString();
+
         Collection::make('orders')->save();
 
         $order = Entry::make()
@@ -62,5 +67,9 @@ class UpdateOrderStatusTest extends TestCase
         $order->fresh();
 
         $this->assertSame($order->data()->get('order_status'), 'dispatched');
+
+        $this->assertSame($order->data()->get('status_log'), [
+            'dispatched' => $nowDateTimeString,
+        ]);
     }
 }

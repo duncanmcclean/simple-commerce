@@ -18,6 +18,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
@@ -248,7 +249,10 @@ class Order implements Contract
 
     public function updateOrderStatus(OrderStatus $orderStatus): self
     {
-        $this->status($orderStatus)->save();
+        $this
+            ->status($orderStatus)
+            ->appendToStatusLog($orderStatus)
+            ->save();
 
         event(new OrderStatusUpdated($this, $orderStatus));
 
@@ -257,9 +261,25 @@ class Order implements Contract
 
     public function updatePaymentStatus(PaymentStatus $paymentStatus): self
     {
-        $this->paymentStatus($paymentStatus)->save();
+        $this
+            ->paymentStatus($paymentStatus)
+            ->appendToStatusLog($paymentStatus)
+            ->save();
 
         event(new PaymentStatusUpdated($this, $paymentStatus));
+
+        return $this;
+    }
+
+    public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
+    {
+        $this->merge([
+            'status_log' => collect($this->get('status_log', []))
+                ->merge([
+                    $status->value => now()->toDateTimeString(),
+                ])
+                ->toArray(),
+        ]);
 
         return $this;
     }
