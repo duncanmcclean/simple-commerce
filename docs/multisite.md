@@ -48,7 +48,9 @@ When you create an additional Statamic site, just add a new key to the `sites` a
 
 Remember that the site key will need to be the same one as used in your `sites.php` configuration file.
 
-> 🔥 Hot Tip: Also remember that if you're wanting to use multiple sites, you'll need to [purchase & enable Statamic Pro](https://statamic.dev/licensing).
+:::tip Hot Tip
+Also remember that if you're wanting to use multiple sites, you'll need to [purchase & enable Statamic Pro](https://statamic.dev/licensing).
+:::
 
 With each site you can configure the currency being used and the tax rate applied to products in the customers' cart.
 

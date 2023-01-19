@@ -5,36 +5,55 @@ table_of_contents: false
 
 **Build flexible e-commerce sites in Statamic:** Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You retain complete control over the content structure and front-end of your site.
 
-> Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!
->
-> [Ryan Mitchell, Digital Director at Thought Collective](https://www.thoughtcollective.com/?ref=simple_commerce_docs)
+<div class="testimonial">
+    <div class="testimonial-body">
+        “Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!”
+    </div>
+    <div class="testimonial-person">
+        <a href="https://www.thoughtcollective.com" target="_blank">
+            <img src="/img/testimonials/ryan.jpeg">
+            <span>Ryan Mitchell, Digital Director at Thought Collective</span>
+        </a>
+    </div>
+</div>
 
-## Native to Statamic
+### Everything's just an entry
 
-Simple Commerce feels native to Statamic. Your products, customers & orders are normal entries. There’s no intrusive front-end code, you can do everything you need to yourself using the provided Antlers Tags.
+Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
 
-[**→ Antlers Tags**](/tags)
+And, when your site grows, it's easy to [move your orders & customers](/database-orders) into a traditional database.
 
-## First-party support for Stripe, Mollie & PayPal
+### Payment Gateways
 
-Out of the box, Simple Commerce supports three of the big payment gateways: Stripe, Mollie & PayPal. If you need something else, it’s easy to build your own gateway.
+Out-of-the-box, Simple Commerce ships with support for three of the big payment gateways: Stripe, PayPal and Mollie. Use whichever one you need, or if you need something else: it's easy to build one.
 
-[**→ Payment Gateways**](/payment-gateways)
+-   [Documentation: Payment Gateways](/gateways)
+-   [Documentation: Building custom gateways](/extending/custom-gateways)
 
-## Product Variants
+### Flexible Shipping
 
-Whether it’s for different colours, t-shirt sizes or whatever, Simple Commerce lets you configure variations of products. Simply add a ‘Product Variants’ field to your Product blueprint & you’re golden!
+Provide your customers with different shipping options depending on their address.
 
-[**→ Product Variants**](/product-variants)
+-   [Documentation: Shipping](/shipping)
 
-## Discounting
+### Discounting
 
-You can create coupons to give to customers, with fixed or percentage amounts off their cart. You can also limit coupons to only be redeemed on specific products, by specific customers or a set number of times.
+Simple Commerce has support for discount coupons. You can limit coupons to certain products or to be used a max number of times. All your customer has to do is redeem the discount during checkout.
 
-[**→ Coupons**](/coupons)
+-   [Documentation: Coupons](/coupons)
 
-## Back-office overview
+### Product Variants
 
-**New:** Give your back-office staff a high-level picture of your e-commerce store, with configurable widgets showing recent orders, top customers & low stock products.
+Sometimes you need to sell different versions of the same product. Like a t-shirt, you might want to sell it in Small, Medium & Large - each with different prices and stock levels. That's where Product Variants come in. Create a single product and configure the variants inside it.
 
-[**→ Overview**](/control-panel#content-overview-page)
+-   [Documentation: Product Variants](/product-variants)
+
+### Multi-site friendly
+
+If you need to sell across different countries, you can take advantage of Statamic's multi-site feature in Simple Commerce to have a site per currency. Each site may also have its own set of shipping methods.
+
+-   [Documentation: Multi-site](/multisite)
+
+### And lots more...
+
+Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.

@@ -6,6 +6,7 @@ use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Foundation\Console\AboutCommand;
 use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
+use Statamic\Events\UserBlueprintFound;
 use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;
@@ -49,8 +50,11 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $listen = [
         EntryBlueprintFound::class  => [
-            Listeners\EnforceBlueprintFields::class,
+            Listeners\EnforceEntryBlueprintFields::class,
             Listeners\AddHiddenFields::class,
+        ],
+        UserBlueprintFound::class => [
+            Listeners\EnforceUserBlueprintFields::class,
         ],
         Events\PostCheckout::class => [
             Listeners\TidyTemporaryGatewayData::class,

@@ -23,7 +23,7 @@ You may read about configuring Statamic to use a language other than English ove
 }
 ```
 
-3. Next, find all of the [translatable strings](https://github.com/search?q=repo%3Aduncanmcclean%2Fsimple-commerce%20__(&type=code) & translate them in your `fr.json` file.
+3. Next, find all of the [translatable strings](https://github.com/search?q=repo%3Aduncanmcclean%2Fsimple-commerce%20__&type=code) & translate them in your `fr.json` file.
 4. To contribute your translations back into Simple Commerce, follow these extra steps:
     1. [Fork](https://github.com/duncanmcclean/simple-commerce/fork) the Simple Commerce repository
     2. Create a file in `resources/lang` with the same filename you used in your site (example: `fr.json`)

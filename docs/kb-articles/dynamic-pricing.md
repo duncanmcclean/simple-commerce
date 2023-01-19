@@ -37,4 +37,6 @@ SimpleCommerce::productVariantPriceHook(function (Order $order, Product $product
 });
 ```
 
-> Note: These methods will not make any change to the price displayed to customers or stored in your products. They're only used when 'calculating' line items (eg. when an item is added to the cart, quantity changed, etc).
+:::note Note!
+These methods will not make any change to the price displayed to customers or stored in your products. They're only used when 'calculating' line items (eg. when an item is added to the cart, quantity changed, etc).
+:::

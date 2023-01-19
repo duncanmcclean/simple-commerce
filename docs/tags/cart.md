@@ -132,7 +132,9 @@ This tag can be used to update any field values in the cart, kinda like [Worksho
 {{ /sc:cart:update }}
 ```
 
-> **🔥 Hot Tip:** If you want to also update the customer at the same time, something like the below should work. Remember the `email`, it's required.
+:::tip Hot Tip
+If you want to also update the customer at the same time, something like the below should work. Remember the `email`, it's required.
+:::
 
 ```antlers
 <input type="text" name="customer[name]">

@@ -2,7 +2,31 @@
 
 ## Unreleased
 
-## v4.3.1 (2022-01-04)
+## v4.4.2 (2023-01-19)
+
+### What's new
+
+-   Added support for separate first & last name fields for order addresses #788
+
+## v4.4.1 (2023-01-14)
+
+### What's fixed
+
+-   Fixed issue where orders field was being added to every blueprint #785 #786
+
+## v4.4.0 (2023-01-07)
+
+### What's new
+
+-   Danish translation #776 by @rabol
+
+### What's improved
+
+-   All strings in the Control Panel & front-end validation from Simple Commerce are now translatable #777
+-   Some of the form validation code has been refactored #780
+-   The order of parameters being passed into the `StockRunningLow` and `StockRunOut` events has been changed. #782
+
+## v4.3.1 (2023-01-04)
 
 ### What's fixed
 

@@ -2,16 +2,14 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Fields\Blueprint;
 
-class EnforceBlueprintFields
+class EnforceEntryBlueprintFields
 {
     public function handle(EntryBlueprintFound $event)
     {
@@ -19,15 +17,10 @@ class EnforceBlueprintFields
         $productDriver = SimpleCommerce::productDriver();
         $orderDriver = SimpleCommerce::orderDriver();
 
-        if ($this->isOrExtendsClass($customerDriver['repository'], EntryCustomerRepository::class)) {
-            return $this->enforceCustomerFields($event);
-        }
-
-        if ($this->isOrExtendsClass($customerDriver['repository'], UserCustomerRepository::class)) {
-            return $this->enforceCustomerFields($event);
-        }
-
-        if ($this->isOrExtendsClass($customerDriver['repository'], EloquentCustomerRepository::class)) {
+        if (
+            $this->isOrExtendsClass($customerDriver['repository'], EntryCustomerRepository::class)
+            && $event->blueprint->namespace() === "collections.{$customerDriver['collection']}"
+        ) {
             return $this->enforceCustomerFields($event);
         }
 
@@ -100,35 +93,35 @@ class EnforceBlueprintFields
             'type'      => 'money',
             'display'   => __('Grand Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('items_total', [
             'type'      => 'money',
             'display'   => __('Items Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('shipping_total', [
             'type'      => 'money',
             'display'   => __('Shipping Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('tax_total', [
             'type'      => 'money',
             'display'   => __('Tax Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         $event->blueprint->ensureField('coupon_total', [
             'type'      => 'money',
             'display'   => __('Coupon Total'),
             'read_only' => true,
-            'validate'  => 'required',
+            'validate'  => ['required'],
         ]);
 
         return $event->blueprint;

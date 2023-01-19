@@ -90,7 +90,9 @@ Essentially, whenever you use any of Simple Commerce's "form tags", it will wrap
 
 Whenever you use the redirect/form request parameters, Simple Commerce will add some hidden inputs to the form's HTML. The values of the inputs will be encrypted to avoid them being tampered with by your users.
 
-> Note: You may disable the encryption of the hidden values if you wish by enabling the `disable_form_parameter_validation` setting in your Simple Commerce config file.
+:::note Note!
+You may disable the encryption of the hidden values if you wish by enabling the `disable_form_parameter_validation` setting in your Simple Commerce config file.
+:::
 
 ## Alias
 

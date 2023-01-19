@@ -82,7 +82,9 @@ Let's start with the letting the user enter their shipping address. In our start
 
 When submitted, that form will fill in the appropriate address fields.
 
-> **Hot tip:** You can also do `billing_name`, `billing_address`, `billing_city` etc to allow the user to update their billing address.
+:::tip Hot Tip
+You can also do `billing_name`, `billing_address`, `billing_city` etc to allow the user to update their billing address.
+:::
 
 After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/checkout/shipping.antlers.html).
 
@@ -122,7 +124,9 @@ $order->markAsShipped();
 
 ### Via the Control Panel
 
-> **Note:** this will only show if you're using Collections & Entries for your orders. You'll need to build this yourself for custom [content drivers](/extending/content-drivers).
+:::note Note!
+This will only show if you're using Collections & Entries for your orders. You'll need to build this yourself for custom [content drivers](/extending/content-drivers).
+:::
 
 In the Control Panel listing table for orders, find the order you wish to mark as shipped, click the three dots on the right, and select the 'Mark as Shipped' option.
 

@@ -20,7 +20,9 @@ And if you're installing into an existing site, your site must be on Statamic 3.
 
 When you're starting afresh, I'd recommend using the Simple Commerce Starter Kit. Simple Commerce comes pre-installed, along with cart/checkout templates and some other tweaks.
 
-> **Note:** If you want to use something like Peak, you'll want to install that first, then follow the steps on [installing into an existing site](#content-installing-into-an-existing-site).
+:::note Note!
+If you want to use something like Peak, you'll want to install that first, then follow the steps on [installing into an existing site](#content-installing-into-an-existing-site).
+:::
 
 **1.** Create a site using the Statamic CLI (obviously replace `your-new-site-name` with you actual new site name 😅)
 

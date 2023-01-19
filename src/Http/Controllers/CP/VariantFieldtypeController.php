@@ -11,7 +11,10 @@ class VariantFieldtypeController
     public function __invoke(Request $request)
     {
         $request->validate([
-            'product' => ['required', new ProductExists()],
+            'product' => [
+                'required',
+                new ProductExists,
+            ],
         ], $request->all());
 
         $product = Product::find($request->product);
