@@ -255,12 +255,6 @@ class Order implements Contract
         event(new OrderStatusUpdated($this, $orderStatus));
 
         if ($orderStatus->is(OrderStatus::Dispatched)) {
-            $this
-                ->merge([
-                    'shipped_date'  => now()->format('Y-m-d H:i'),
-                ])
-                ->save();
-
             event(new OrderShippedEvent($this));
         }
 
