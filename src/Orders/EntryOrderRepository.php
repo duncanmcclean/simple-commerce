@@ -99,7 +99,7 @@ class EntryOrderRepository implements RepositoryContract
             $entry->slug($order->get('slug'));
         }
 
-        $entry->published($order->get('published', false));
+        $entry->published($order->get('published', true));
 
         $entry->data(
             array_merge(
