@@ -15,7 +15,7 @@ class PurgeCartOrdersCommand extends Command
     use RunsInPlease;
 
     protected $name = 'sc:purge-cart-orders';
-    protected $description = "Purge cart orders that are older than 14 days.";
+    protected $description = 'Purge cart orders that are older than 14 days.';
 
     public function handle()
     {
