@@ -352,7 +352,7 @@ class StripeGatewayTest extends TestCase
         $order = $order->fresh();
 
         $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
     }
 
     /** @test */

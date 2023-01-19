@@ -271,6 +271,17 @@ class Order implements Contract
         return $this;
     }
 
+    public function statusLog($key = null): Collection|string|null
+    {
+        $statusLog = collect($this->get('status_log'));
+
+        if ($key) {
+            return $statusLog->get($key);
+        }
+
+        return $statusLog;
+    }
+
     public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
     {
         $this->merge([

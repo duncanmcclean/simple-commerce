@@ -90,7 +90,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -144,7 +144,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -194,7 +194,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -255,7 +255,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -314,7 +314,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNull($order->customer());
@@ -366,7 +366,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert email has been set on the order
         $this->assertNotNull($order->customer());
@@ -428,7 +428,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been updated
         $this->assertNotNull($order->customer());
@@ -494,7 +494,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been updated
         $this->assertNotNull($order->customer());
@@ -573,7 +573,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been updated
         $this->assertNotNull($order->customer());
@@ -637,7 +637,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -707,7 +707,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -778,7 +778,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -857,7 +857,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -935,7 +935,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertSame($order->coupon()->id(), $coupon->id);
@@ -1002,7 +1002,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertSame($order->coupon()->id(), $coupon->id);
@@ -1080,7 +1080,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->coupon());
@@ -1157,7 +1157,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->coupon());
@@ -1234,7 +1234,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->coupon());
@@ -1291,7 +1291,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->stock(), 49);
@@ -1347,7 +1347,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->stock(), 8);
@@ -1409,7 +1409,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $product->fresh();
@@ -1468,7 +1468,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->stock(), 0);
@@ -1548,7 +1548,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 49);
@@ -1627,7 +1627,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 8);
@@ -1712,7 +1712,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
@@ -1794,7 +1794,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
@@ -1856,7 +1856,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert that the 'extra remaining data' has been saved to the order
         $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
@@ -1918,7 +1918,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert that the 'extra remaining data' has been saved to the order
         $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
@@ -1971,7 +1971,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -2020,7 +2020,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -2066,7 +2066,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -2113,7 +2113,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -2168,7 +2168,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -2226,7 +2226,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -2289,7 +2289,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -2342,7 +2342,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -2398,7 +2398,7 @@ class CheckoutControllerTest extends TestCase
 
         $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
