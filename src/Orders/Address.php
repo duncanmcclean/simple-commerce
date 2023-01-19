@@ -4,10 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Regions;
+use Illuminate\Support\Arr;
 
 class Address
 {
     protected static $name;
+    protected static $firstName;
+    protected static $lastName;
     protected static $addressLine1;
     protected static $addressLine2;
     protected static $city;
@@ -19,6 +22,8 @@ class Address
     public static function from(string $addressType, $data): self
     {
         static::$name = $data->get("{$addressType}_name");
+        static::$firstName = $data->get("{$addressType}_first_name");
+        static::$lastName = $data->get("{$addressType}_last_name");
         static::$addressLine1 = $data->get("{$addressType}_address") ?? $data->get("{$addressType}_address_line1");
         static::$addressLine2 = $data->get("{$addressType}_address_line2");
         static::$city = $data->get("{$addressType}_city");
@@ -29,9 +34,28 @@ class Address
         return new static;
     }
 
+    public function fullName(): ?string
+    {
+        if (static::$firstName && static::$lastName) {
+            return static::$firstName . ' ' . static::$lastName;
+        }
+
+        return static::$name;
+    }
+
     public function name(): ?string
     {
         return static::$name;
+    }
+
+    public function firstName(): ?string
+    {
+        return static::$firstName;
+    }
+
+    public function lastName(): ?string
+    {
+        return static::$lastName;
     }
 
     public function addressLine1(): ?string
@@ -88,6 +112,8 @@ class Address
     {
         return [
             'name'           => $this->name(),
+            'first_name'     => $this->firstName(),
+            'last_name'      => $this->lastName(),
             'address_line_1' => $this->addressLine1(),
             'address_line_2' => $this->addressLine2(),
             'city'           => $this->city(),
@@ -99,7 +125,10 @@ class Address
 
     public function __toString()
     {
-        return collect($this->toArray())
+        $toArray = Arr::except($this->toArray(), ['name', 'first_name', 'last_name']);
+        $toArray = collect(['name' => $this->fullName()])->merge($toArray)->toArray();
+
+        return collect($toArray)
             ->values()
             ->reject(function ($value) {
                 return empty($value);

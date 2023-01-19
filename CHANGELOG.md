@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v4.4.2 (2023-01-19)
+
+### What's new
+
+-   Added support for separate first & last name fields for order addresses #788
+
+## v4.4.1 (2023-01-14)
+
+### What's fixed
+
+-   Fixed issue where orders field was being added to every blueprint #785 #786
+
 ## v4.4.0 (2023-01-07)
 
 ### What's new
