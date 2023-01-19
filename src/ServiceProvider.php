@@ -66,9 +66,6 @@ class ServiceProvider extends AddonServiceProvider
         Events\OrderPaymentFailed::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
-        Events\OrderShipped::class => [
-            Listeners\SendConfiguredNotifications::class,
-        ],
         Events\StockRunningLow::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
