@@ -107,9 +107,9 @@ After the customer has submitted that form, Simple Commerce will use that shippi
 
 ## Marking an order as shipped
 
-As of Simple Commerce v2.4, you may now mark an order as 'Shipped'. You can either do this programatically or via the Control Panel.
+You can mark orders as 'Dispatched' (previously called 'Shipped'). You can either do this programatically or via the Control Panel.
 
-Marking an order as shipped will dispatch an event which you can use to send notifications to customers.
+Marking an order as dispatched will trigger an event which you can use to send notifications to customers.
 
 ### Programatically
 

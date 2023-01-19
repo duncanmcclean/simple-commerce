@@ -6,7 +6,7 @@ enum OrderStatus: string
 {
     case Cart = 'cart';
     case Placed = 'placed';
-    case Shipped = 'shipped'; // TODO: replace Shipped with Dispatched
+    case Dispatched = 'dispatched';
     case Cancelled = 'cancelled';
 
     public function is($orderStatus): bool

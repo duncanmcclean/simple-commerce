@@ -29,7 +29,7 @@ class MigrateOrderStatuses extends UpdateScript
                         $entry->set('payment_status', PaymentStatus::Paid->value);
 
                         if ($entry->get('is_shipped') === true) {
-                            $entry->set('order_status', OrderStatus::Shipped->value);
+                            $entry->set('order_status', OrderStatus::Dispatched->value);
                         }
 
                         if ($entry->get('is_refunded') === true) {

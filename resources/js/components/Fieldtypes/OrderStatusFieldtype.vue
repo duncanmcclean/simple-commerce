@@ -36,7 +36,7 @@ export default {
                 case 'placed':
                     return 'bg-orange'
 
-                case 'shipped':
+                case 'dispatched':
                     return 'bg-blue-300'
 
                 case 'cancelled':

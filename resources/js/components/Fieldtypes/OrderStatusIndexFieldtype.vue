@@ -28,7 +28,7 @@ export default {
                 case 'refunded':
                     return 'bg-grey'
 
-                case 'shipped':
+                case 'dispatched':
                     return 'bg-blue-300'
 
                 case 'cancelled':
