@@ -47,7 +47,7 @@ class UpdateOrderStatusTest extends TestCase
     {
         TestTime::freeze();
 
-        $nowDateTimeString = TestTime::now()->toDateTimeString();
+        $now = TestTime::now()->format('Y-m-d H:i');
 
         Collection::make('orders')->save();
 
@@ -69,7 +69,7 @@ class UpdateOrderStatusTest extends TestCase
         $this->assertSame($order->data()->get('order_status'), 'dispatched');
 
         $this->assertSame($order->data()->get('status_log'), [
-            'dispatched' => $nowDateTimeString,
+            'dispatched' => $now,
         ]);
     }
 }
