@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.1 (2023-01-28)
+
+### What's new
+
+-   Fix Money fieldtype behaving badly #791 #795 by @duncanmcclean
+
 ## v4.5.0 (2023-01-28)
 
 ### What's new
