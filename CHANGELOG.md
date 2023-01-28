@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.0 (2023-01-28)
+
+### What's new
+
+-   Statamic 3.4 Support #793
+
 ## v4.4.2 (2023-01-19)
 
 ### What's new
