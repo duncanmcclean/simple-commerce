@@ -428,7 +428,7 @@ class CartTagTest extends TestCase
      */
     public function can_output_add_item_form_and_ensure_external_redirect_urls_are_correct()
     {
-        $this->markAsRisky("This test seems to fail inconsistently with the Runtime parser.");
+        $this->markAsRisky('This test seems to fail inconsistently with the Runtime parser.');
 
         Config::set('simple-commerce.disable_form_parameter_validation', true);
 
