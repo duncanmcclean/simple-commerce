@@ -450,6 +450,7 @@ class CartTagTest extends TestCase
 
             <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
             <input type="number" name="quantity">
+            <button type="submit">Add to cart</button>
         ');
 
         $usage = $this->tag->addItem();
