@@ -6,6 +6,7 @@ package-lock.json
 .php_cs.cache
 .idea
 .antlers.json
+composer.lock
 
 resources/dist/css/*.css
 resources/dist/js/*.js
