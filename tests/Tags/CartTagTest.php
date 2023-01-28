@@ -413,7 +413,7 @@ class CartTagTest extends TestCase
 
             <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
             <input type="number" name="quantity">
-            <button type="submit">Add to cart</submit>
+            <button type="submit">Add to cart</button>
         ');
 
         $usage = $this->tag->addItem();
@@ -448,7 +448,7 @@ class CartTagTest extends TestCase
 
             <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
             <input type="number" name="quantity">
-            <button type="submit">Add to cart</submit>
+            <button type="submit">Add to cart</button>
         ');
 
         $usage = $this->tag->addItem();
@@ -470,7 +470,7 @@ class CartTagTest extends TestCase
             <h2>Update Item</h2>
 
             <input type="number" name="quantity">
-            <button type="submit">Update item in cart</submit>
+            <button type="submit">Update item in cart</button>
         ');
 
         $usage = $this->tag->updateItem();
@@ -510,7 +510,7 @@ class CartTagTest extends TestCase
             Product: {{ product }}
 
             <input type="number" name="quantity">
-            <button type="submit">Update item in cart</submit>
+            <button type="submit">Update item in cart</button>
         ');
 
         $usage = $this->tag->updateItem();
@@ -530,7 +530,7 @@ class CartTagTest extends TestCase
         $this->tag->setContent('
             <h2>Remove item from cart?</h2>
 
-            <button type="submit">Update item in cart</submit>
+            <button type="submit">Update item in cart</button>
         ');
 
         $usage = $this->tag->removeItem();
@@ -569,7 +569,7 @@ class CartTagTest extends TestCase
 
             Product: {{ product }}
 
-            <button type="submit">Update item in cart</submit>
+            <button type="submit">Update item in cart</button>
         ');
 
         $usage = $this->tag->removeItem();
@@ -596,7 +596,7 @@ class CartTagTest extends TestCase
             <input name="name">
             <input name="email">
 
-            <button type="submit">Update cart</submit>
+            <button type="submit">Update cart</button>
         ');
 
         $usage = $this->tag->update();
@@ -613,7 +613,7 @@ class CartTagTest extends TestCase
         $this->tag->setContent('
             <h2>Empty cart?</h2>
 
-            <button type="submit">Empty</submit>
+            <button type="submit">Empty</button>
         ');
 
         $usage = $this->tag->empty();
