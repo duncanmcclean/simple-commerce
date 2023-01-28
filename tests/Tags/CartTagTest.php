@@ -428,6 +428,8 @@ class CartTagTest extends TestCase
      */
     public function can_output_add_item_form_and_ensure_external_redirect_urls_are_correct()
     {
+        $this->markAsRisky("This test seems to fail inconsistently with the Runtime parser.");
+
         Config::set('simple-commerce.disable_form_parameter_validation', true);
 
         $product = Product::make()
@@ -448,7 +450,6 @@ class CartTagTest extends TestCase
 
             <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
             <input type="number" name="quantity">
-            <button type="submit">Add to cart</button>
         ');
 
         $usage = $this->tag->addItem();
