@@ -411,7 +411,7 @@ class CartTagTest extends TestCase
         $this->tag->setContent('
             <h2>Add Item</h2>
 
-            <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
+            <input type="hidden" name="product" value="' . $product->id . '">
             <input type="number" name="quantity">
             <button type="submit">Add to cart</button>
         ');
@@ -446,7 +446,7 @@ class CartTagTest extends TestCase
         $this->tag->setContent('
             <h2>Add Item</h2>
 
-            <input type="hidden" name="product" value="{{ ' . $product->id . ' }}">
+            <input type="hidden" name="product" value="' . $product->id . '">
             <input type="number" name="quantity">
             <button type="submit">Add to cart</button>
         ');

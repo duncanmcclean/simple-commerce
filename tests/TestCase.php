@@ -106,8 +106,6 @@ abstract class TestCase extends OrchestraTestCase
             ],
         ]);
 
-        $app['config']->set('statamic.antlers.version', 'regex');
-
         $app['config']->set('statamic.editions.pro', true);
 
         Statamic::booted(function () {
