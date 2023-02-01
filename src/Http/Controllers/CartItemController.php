@@ -224,7 +224,6 @@ class CartItemController extends BaseActionController
             }
         }
 
-
         $cart->updateLineItem(
             $requestItem,
             array_merge(
