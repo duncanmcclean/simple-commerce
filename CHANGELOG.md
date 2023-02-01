@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.2 (2023-02-01)
+
+### What's fixed
+
+-   Product stock is now checked when updating existing line items #797 #801 by @duncanmcclean
+
 ## v4.5.1 (2023-01-28)
 
 ### What's new
