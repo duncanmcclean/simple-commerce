@@ -17,6 +17,7 @@ use Statamic\Facades\Antlers;
 use Statamic\Facades\Parse;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Statamic;
 
 class CartTagTest extends TestCase
 {
@@ -422,6 +423,19 @@ class CartTagTest extends TestCase
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items"', $usage);
     }
 
+    /** @test */
+    public function can_fetch_add_item_form_data()
+    {
+        $form = Statamic::tag('sc:cart:addItem')->fetch();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+        $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart-items"');
+
+        $this->assertArrayHasKey('_token', $form['params']);
+        $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart-items');
+        $this->assertEquals($form['attrs']['method'], 'POST');
+    }
+
     /**
      * @test
      * https://github.com/duncanmcclean/simple-commerce/issues/756
@@ -521,6 +535,39 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
+    public function can_fetch_update_item_form_data()
+    {
+        $cart = $this->fakeCart();
+
+        $product = Product::make()
+            ->price(1000)
+            ->data([
+                'title' => 'Dog Food',
+            ]);
+
+        $product->save();
+
+        $lineItem = $cart->withoutRecalculating(function () use (&$cart, $product) {
+            return $cart->addLineItem([
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
+            ]);
+        });
+
+        $form = Statamic::tag('sc:cart:updateItem')->params([
+            'product' => $product->id,
+        ])->fetch();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+        $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"');
+
+        $this->assertArrayHasKey('_token', $form['params']);
+        $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'');
+        $this->assertEquals($form['attrs']['method'], 'POST');
+    }
+
+    /** @test */
     public function can_output_remove_item_form()
     {
         $this->tag->setParameters([
@@ -537,6 +584,23 @@ class CartTagTest extends TestCase
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+    }
+
+    /** @test */
+    public function can_fetch_remove_item_form_data()
+    {
+        $form = Statamic::tag('sc:cart:removeItem')->params([
+            'item' => 'smelly-cat',
+        ])->fetch();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+        $this->assertStringContainsString('<input type="hidden" name="_method" value="DELETE"', $form['params_html']);
+        $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"');
+
+        $this->assertArrayHasKey('_token', $form['params']);
+        $this->assertEquals($form['params']['_method'], 'DELETE');
+        $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart-items/smelly-cat');
+        $this->assertEquals($form['attrs']['method'], 'POST');
     }
 
     /** @test */
@@ -606,6 +670,19 @@ class CartTagTest extends TestCase
     }
 
     /** @test */
+    public function can_fetch_cart_update_form_data()
+    {
+        $form = Statamic::tag('sc:cart:update')->fetch();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+        $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart"');
+
+        $this->assertArrayHasKey('_token', $form['params']);
+        $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart');
+        $this->assertEquals($form['attrs']['method'], 'POST');
+    }
+
+    /** @test */
     public function can_output_cart_empty_form()
     {
         $this->tag->setParameters([]);
@@ -620,6 +697,21 @@ class CartTagTest extends TestCase
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
+    }
+
+    /** @test */
+    public function can_fetch_cart_empty_form_data()
+    {
+        $form = Statamic::tag('sc:cart:empty')->fetch();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+        $this->assertStringContainsString('<input type="hidden" name="_method" value="DELETE"', $form['params_html']);
+        $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart"');
+
+        $this->assertArrayHasKey('_token', $form['params']);
+        $this->assertEquals($form['params']['_method'], 'DELETE');
+        $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart');
+        $this->assertEquals($form['attrs']['method'], 'POST');
     }
 
     /** @test */

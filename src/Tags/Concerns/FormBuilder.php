@@ -11,20 +11,27 @@ trait FormBuilder
 
     private static $knownParams = ['redirect', 'error_redirect', 'request'];
 
-    protected function createForm(string $action, array $data = [], string $method = 'POST'): string|array
+    protected function createForm(string $action, array $data = [], string $method = 'POST', array $knownParams = []): string|array
     {
+        $knownParams = array_merge(static::$knownParams, $knownParams);
+
         if (! $this->parser) {
+            $attrs = $this->formAttrs($action, $method, $knownParams);
+            $params = $this->formParams($method, [
+                'redirect' => $this->redirectValue(),
+                'error_redirect' => $this->errorRedirectValue(),
+                'request' => $this->requestValue(),
+            ]);
+
             return array_merge([
-                'attrs' => $this->formAttrs($action, $method, static::$knownParams),
-                'params' => $this->formMetaPrefix($this->formParams($method, [
-                    'redirect' => $this->redirectValue(),
-                    'error_redirect' => $this->errorRedirectValue(),
-                    'request' => $this->requestValue(),
-                ])),
+                'attrs' => $attrs,
+                'attrs_html' => $this->renderAttributes($attrs),
+                'params' => $this->formMetaPrefix($params),
+                'params_html' => $this->formMetaFields($params),
             ], $data);
         }
 
-        $html = $this->formOpen($action, $method, static::$knownParams);
+        $html = $this->formOpen($action, $method, $knownParams);
 
         $html .= $this->redirectField();
         $html .= $this->errorRedirectField();
