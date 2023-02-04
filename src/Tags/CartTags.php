@@ -217,7 +217,8 @@ class CartTags extends SubTag
                 'item' => $lineItemId,
             ]),
             optional($lineItem)->toArray() ?? [],
-            'POST'
+            'POST',
+            ['product', 'item']
         );
     }
 
@@ -242,7 +243,8 @@ class CartTags extends SubTag
                 'item' => $lineItemId,
             ]),
             optional($lineItem)->toArray() ?? [],
-            'DELETE'
+            'DELETE',
+            ['product', 'item']
         );
     }
 
