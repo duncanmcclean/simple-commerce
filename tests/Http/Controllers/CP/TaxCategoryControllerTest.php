@@ -109,7 +109,7 @@ class TaxCategoryControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax/categories/birthday/delete')
-            ->assertRedirect('/cp/simple-commerce/tax/categories');
+            ->assertJson(['success' => true]);
     }
 
     /**
@@ -137,7 +137,7 @@ class TaxCategoryControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax/categories/birthday/delete')
-            ->assertRedirect('/cp/simple-commerce/tax/categories');
+            ->assertJson(['success' => true]);
 
         $this->assertFileDoesNotExist($taxRate->path());
     }

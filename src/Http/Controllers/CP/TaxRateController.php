@@ -75,6 +75,8 @@ class TaxRateController
     {
         TaxRate::find($taxRate)->delete();
 
-        return redirect(cp_route('simple-commerce.tax-rates.index'));
+        return [
+            'success' => true,
+        ];
     }
 }
