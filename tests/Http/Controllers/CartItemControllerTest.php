@@ -1821,6 +1821,220 @@ class CartItemControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_update_item_and_ensure_the_quantity_is_not_more_than_stock()
+    {
+        $product = Product::make()
+            ->price(1000)
+            ->stock(2)
+            ->data([
+                'title' => 'Food',
+                'slug' => 'food',
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ]);
+
+        $cart->save();
+
+        $data = [
+            'quantity' => 5,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->lineItems()->toArray()[0]->id(),
+            ]), $data)
+            ->assertSessionHasErrors();
+
+        $cart = $cart->fresh();
+
+        $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    }
+
+    /** @test */
+    public function can_update_item_with_variant_and_ensure_the_quantity_is_not_more_than_stock()
+    {
+        $product = Product::make()
+            ->data([
+                'title' => 'Food',
+                'slug' => 'food',
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
+                        ],
+                    ],
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
+                        'stock'   => 2,
+                    ],
+                ],
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'variant'  => 'Red_Small',
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ]);
+
+        $cart->save();
+
+        $data = [
+            'quantity' => 5,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->lineItems()->toArray()[0]->id(),
+            ]), $data)
+            ->assertSessionHasErrors();
+
+        $cart = $cart->fresh();
+
+        $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    }
+
+    /** @test */
+    public function cant_update_item_when_standard_product_has_no_stock()
+    {
+        $product = Product::make()
+            ->price(1000)
+            ->stock(0)
+            ->data([
+                'title' => 'Food',
+                'slug' => 'food',
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ]);
+
+        $cart->save();
+
+        $data = [
+            'quantity' => 5,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->lineItems()->toArray()[0]->id(),
+            ]), $data)
+            ->assertSessionHasErrors();
+
+        $cart = $cart->fresh();
+
+        $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    }
+
+    /** @test */
+    public function cant_update_item_when_variant_product_has_no_stock()
+    {
+        $product = Product::make()
+            ->data([
+                'title' => 'Food',
+                'slug' => 'food',
+            ])
+            ->productVariants([
+                'variants' => [
+                    [
+                        'name'   => 'Colours',
+                        'values' => [
+                            'Red',
+                        ],
+                    ],
+                    [
+                        'name'   => 'Sizes',
+                        'values' => [
+                            'Small',
+                        ],
+                    ],
+                ],
+                'options' => [
+                    [
+                        'key'     => 'Red_Small',
+                        'variant' => 'Red Small',
+                        'price'   => 1000,
+                        'stock'   => 0,
+                    ],
+                ],
+            ]);
+
+        $product->save();
+
+        $cart = Order::make()
+            ->lineItems([
+                [
+                    'id'       => Stache::generateId(),
+                    'product'  => $product->id,
+                    'variant'  => 'Red_Small',
+                    'quantity' => 1,
+                    'total'    => 1000,
+                ],
+            ]);
+
+        $cart->save();
+
+        $data = [
+            'quantity' => 5,
+        ];
+
+        $response = $this
+            ->from('/cart')
+            ->withSession(['simple-commerce-cart' => $cart->id])
+            ->post(route('statamic.simple-commerce.cart-items.update', [
+                'item' => $cart->lineItems()->toArray()[0]->id(),
+            ]), $data)
+            ->assertSessionHasErrors();
+
+        $cart = $cart->fresh();
+
+        $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    }
+
+    /** @test */
     public function can_update_item_and_request_json()
     {
         $product = Product::make()

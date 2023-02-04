@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## v4.5.2 (2023-02-01)
+
+### What's fixed
+
+-   Product stock is now checked when updating existing line items #797 #801 by @duncanmcclean
+
+## v4.5.1 (2023-01-28)
+
+### What's new
+
+-   Fix Money fieldtype behaving badly #791 #795 by @duncanmcclean
+
+## v4.5.0 (2023-01-28)
+
+### What's new
+
+-   Statamic 3.4 Support #793
+
 ## v4.4.2 (2023-01-19)
 
 ### What's new
