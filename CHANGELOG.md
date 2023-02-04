@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v4.5.3 (2023-02-04)
+
+### What's new
+
+* You can now use Simple Commerce's form tags with Blade! #792 by @jacksleight
+
+### What's fixed
+
+* Fixed an error that was shown after deleting tax categories/zones/rates when using the Standard tax engine #803 by @duncanmcclean
+
 ## v4.5.2 (2023-02-01)
 
 ### What's fixed
