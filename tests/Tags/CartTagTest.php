@@ -567,8 +567,55 @@ class CartTagTest extends TestCase
         $this->assertEquals($form['attrs']['method'], 'POST');
     }
 
+    /**
+     * @test
+     * https://github.com/duncanmcclean/simple-commerce/pull/792#issuecomment-1413598741
+     */
+    public function can_output_update_item_form_and_ensure_the_the_item_parameter_isnt_being_returned_as_an_attribute_on_the_form_tag()
+    {
+        $this->tag->setParameters([
+            'item' => 'absolute-load-of-jiberish',
+        ]);
+
+        $this->tag->setContent('
+            <h2>Update Item</h2>
+
+            <input type="number" name="quantity">
+            <button type="submit">Update item in cart</button>
+        ');
+
+        $usage = $this->tag->updateItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/absolute-load-of-jiberish"', $usage);
+
+        $this->assertStringNotContainsString('item="absolute-load-of-jiberish"', $usage);
+    }
+
     /** @test */
     public function can_output_remove_item_form()
+    {
+        $this->tag->setParameters([
+            'item' => 'smelly-cat',
+        ]);
+
+        $this->tag->setContent('
+            <h2>Remove item from cart?</h2>
+
+            <button type="submit">Update item in cart</button>
+        ');
+
+        $usage = $this->tag->removeItem();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+    }
+
+    /**
+     * @test
+     * https://github.com/duncanmcclean/simple-commerce/pull/792#issuecomment-1413598741
+     */
+    public function can_output_remove_item_form_and_ensure_the_item_parameter_isnt_being_returned_as_an_attribute_on_the_form_tag()
     {
         $this->tag->setParameters([
             'item' => 'smelly-cat',
@@ -584,6 +631,8 @@ class CartTagTest extends TestCase
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
         $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+
+        $this->assertStringNotContainsString('item="smelly-cat"', $usage);
     }
 
     /** @test */
