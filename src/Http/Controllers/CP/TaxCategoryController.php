@@ -61,6 +61,8 @@ class TaxCategoryController
     {
         TaxCategory::find($taxCategory)->delete();
 
-        return redirect(cp_route('simple-commerce.tax-categories.index'));
+        return [
+            'success' => true,
+        ];
     }
 }

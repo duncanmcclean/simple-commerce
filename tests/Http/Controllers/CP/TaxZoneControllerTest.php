@@ -205,7 +205,7 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax/zones/the-states/delete')
-            ->assertRedirect('/cp/simple-commerce/tax/zones');
+            ->assertJson(['success' => true]);
     }
 
     /**
@@ -233,7 +233,7 @@ class TaxZoneControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax/zones/the-states/delete')
-            ->assertRedirect('/cp/simple-commerce/tax/zones');
+            ->assertJson(['success' => true]);
 
         $this->assertFileDoesNotExist($taxRate->path());
     }
