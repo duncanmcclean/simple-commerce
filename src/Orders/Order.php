@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
+use Statamic\Facades\Site as FacadesSite;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
 
@@ -204,6 +205,11 @@ class Order implements Contract
     {
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $this->resource()->site();
+        }
+
+        // We don't really know what site this order belongs to. For now, we'll just return the default site.
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            return FacadesSite::current();
         }
 
         return null;
