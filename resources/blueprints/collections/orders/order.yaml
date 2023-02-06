@@ -373,3 +373,8 @@ sections:
           instructions_position: above
           listable: hidden
           always_save: false
+      -
+        handle: status_log
+        field:
+          type: sc_status_log
+          display: 'Status Log'

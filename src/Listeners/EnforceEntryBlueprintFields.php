@@ -138,6 +138,11 @@ class EnforceEntryBlueprintFields
             'validate'  => 'required',
         ], 'sidebar');
 
+        $event->blueprint->ensureField('status_log', [
+            'type'      => 'sc_status_log',
+            'display'   => 'Status Log',
+        ], 'sidebar');
+
         return $event->blueprint;
     }
 
