@@ -68,7 +68,7 @@ return [
             ],
         ],
 
-        'order_shipped' => [
+        'order_dispatched' => [
             \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
         ],
     ],
