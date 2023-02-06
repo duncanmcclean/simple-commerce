@@ -17,6 +17,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
+use Statamic\Statamic;
 
 class CheckoutTagTest extends TestCase
 {
@@ -66,6 +67,19 @@ class CheckoutTagTest extends TestCase
 
         $this->assertStringContainsString('Test On-site Gateway - Duncan Cool (yes) - Haggis - Tatties', $usage);
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/checkout"', $usage);
+    }
+
+    /** @test */
+    public function can_fetch_checkout_form_data()
+    {
+        $form = Statamic::tag('sc:checkout')->fetch();
+
+        $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+        $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/checkout"');
+
+        $this->assertArrayHasKey('_token', $form['params']);
+        $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/checkout');
+        $this->assertEquals($form['attrs']['method'], 'POST');
     }
 
     /** @test */

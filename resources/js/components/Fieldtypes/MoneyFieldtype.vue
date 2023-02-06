@@ -2,7 +2,7 @@
     <div>
         <text-input
             :type="inputType"
-            :value="formattedValue"
+            :value="value"
             :prepend="symbol"
             :isReadOnly="config.read_only || readOnly"
             placeholder="00.00"
@@ -34,16 +34,8 @@ export default {
 
     mounted() {
         if (isNaN(parseFloat(this.value)) == false) {
-            this.formattedValue = parseFloat(this.value).toFixed(2)
+            this.$emit('input', parseFloat(this.value).toFixed(2))
         }
-    },
-
-    watch: {
-        value() {
-            if (isNaN(parseFloat(this.value)) == false) {
-                this.formattedValue = parseFloat(this.value).toFixed(2)
-            }
-        },
     },
 }
 </script>
