@@ -29,6 +29,7 @@ class ServiceProvider extends AddonServiceProvider
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\InstallCommand::class,
+        Console\Commands\MigrateOrderStatuses::class,
         Console\Commands\MigrateOrdersToDatabase::class,
         Console\Commands\SwitchToDatabase::class,
     ];

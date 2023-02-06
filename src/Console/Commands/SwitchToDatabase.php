@@ -66,7 +66,7 @@ class SwitchToDatabase extends Command
     {
         $this->info('Switching content repositories...');
 
-        if (! isset(SimpleCommerce::orderDriver()['model'])) {
+        if (isset(SimpleCommerce::orderDriver()['model'])) {
             return $this;
         }
 

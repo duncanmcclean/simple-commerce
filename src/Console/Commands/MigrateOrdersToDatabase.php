@@ -4,6 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -122,13 +124,14 @@ class MigrateOrdersToDatabase extends Command
             })
             ->each(function (Entry $entry) {
                 $data = $entry->data()->except([
-                    'items', 'order_status', 'grand_total', 'items_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway',
+                    'items', 'order_status', 'payment_status', 'grand_total', 'items_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway',
                 ]);
 
                 $data['entry_id'] = $entry->id();
 
                 $order = Order::make()
-                    ->status($entry->get('order_status'))
+                    ->status($entry->get('order_status') ?? OrderStatus::Cart)
+                    ->paymentStatus($entry->get('payment_status') ?? PaymentStatus::Unpaid)
                     ->lineItems($entry->get('items', []))
                     ->grandTotal($entry->get('grand_total', 0))
                     ->itemsTotal($entry->get('items_total', 0))
