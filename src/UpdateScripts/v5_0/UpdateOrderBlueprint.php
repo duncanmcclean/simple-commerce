@@ -5,9 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v5_0;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Statamic\UpdateScripts\UpdateScript;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Blueprint;
+use Statamic\UpdateScripts\UpdateScript;
 
 class UpdateOrderBlueprint extends UpdateScript
 {
