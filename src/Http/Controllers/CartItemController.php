@@ -192,7 +192,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Added to Cart'),
-            'cart'    => $cart->fresh()->toResource(),
+            'cart'    => $cart->fresh()->toAugmentedArray(),
         ]);
     }
 
@@ -236,7 +236,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Item Updated'),
-            'cart'    => $cart->toResource(),
+            'cart'    => $cart->toAugmentedArray(),
         ]);
     }
 
@@ -248,7 +248,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Item Removed from Cart'),
-            'cart'    => $cart->toResource(),
+            'cart'    => $cart->toAugmentedArray(),
         ]);
     }
 

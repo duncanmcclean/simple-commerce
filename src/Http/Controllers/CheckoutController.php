@@ -61,9 +61,7 @@ class CheckoutController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Checkout Complete!'),
-            'cart'    => $request->wantsJson()
-                ? $this->order->toResource()
-                : $this->order->toAugmentedArray(),
+            'cart'    => $this->order->toAugmentedArray(),
             'is_checkout_request' => true,
         ]);
     }
