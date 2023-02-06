@@ -125,6 +125,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v4_0\MigrateCouponsToStache::class,
 
         UpdateScripts\v5_0\MigrateOrderStatuses::class,
+        UpdateScripts\v5_0\UpdateOrderBlueprint::class,
     ];
 
     public function boot()
