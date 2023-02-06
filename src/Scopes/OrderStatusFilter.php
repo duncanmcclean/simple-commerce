@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Query\Scopes\Filter;
 
 class OrderStatusFilter extends Filter
@@ -74,8 +75,7 @@ class OrderStatusFilter extends Filter
         }
 
         if (isset(SimpleCommerce::orderDriver()['model'])) {
-            $orderModelClass = SimpleCommerce::orderDriver()['model'];
-            $runwayResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+            $runwayResource = Runway::orderModel();
 
             return $key === "runway_{$runwayResource->handle()}";
         }

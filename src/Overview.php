@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
@@ -125,7 +126,7 @@ class Overview
                             'id' => $order->id(),
                             'order_number' => $order->orderNumber(),
                             'edit_url' => cp_route('runway.edit', [
-                                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel($orderModel)->handle(),
+                                'resourceHandle' => Runway::orderModel()->handle(),
                                 'record' => $order->resource()->{$orderModel->getRouteKeyName()},
                             ]),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
@@ -189,7 +190,7 @@ class Overview
                             'id' => $customer->id(),
                             'email' => $customer->email(),
                             'edit_url' => cp_route('runway.edit', [
-                                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel($customerModel)->handle(),
+                                'resourceHandle' => Runway::customerModel()->handle(),
                                 'record' => $customer->resource()->{$customerModel->getRouteKeyName()},
                             ]),
                             'orders_count' => $customer->orders()->count(),

@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Foundation\Console\AboutCommand;
 use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
@@ -304,12 +305,9 @@ class ServiceProvider extends AddonServiceProvider
                 class_exists('DoubleThreeDigital\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class)
             ) {
-                $orderModelClass = SimpleCommerce::orderDriver()['model'];
-                $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
-
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
-                    ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
+                    ->route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()])
                     ->can("View {$orderResource->plural()}")
                     ->icon(SimpleCommerce::svg('shop'));
             }
@@ -334,8 +332,7 @@ class ServiceProvider extends AddonServiceProvider
                 class_exists('DoubleThreeDigital\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class)
             ) {
-                $customerModelClass = SimpleCommerce::customerDriver()['model'];
-                $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $customerModelClass);
+                $customerResource = Runway::customerModel();
 
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))

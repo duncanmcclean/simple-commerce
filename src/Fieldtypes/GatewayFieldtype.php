@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Action;
 use Statamic\Fields\Fieldtype;
 
@@ -58,7 +59,7 @@ class GatewayFieldtype extends Fieldtype
             $orderModel = SimpleCommerce::orderDriver()['model'];
 
             $actionUrl = cp_route('runway.actions.run', [
-                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModel)->handle(),
+                'resourceHandle' => Runway::orderModel()->handle(),
             ]);
         }
 
