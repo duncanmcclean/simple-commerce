@@ -157,6 +157,7 @@ class ServiceProvider extends AddonServiceProvider
 
         AboutCommand::add('Simple Commerce', function () {
             return [
+                'Currencies' => collect(config('simple-commerce.sites'))->pluck('currency')->implode(', '),
                 'Repository: Customer' => SimpleCommerce::customerDriver()['repository'],
                 'Repository: Order' => SimpleCommerce::orderDriver()['repository'],
                 'Repository: Product' => SimpleCommerce::productDriver()['repository'],

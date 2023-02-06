@@ -11,9 +11,27 @@ trait FormBuilder
 
     private static $knownParams = ['redirect', 'error_redirect', 'request'];
 
-    protected function createForm(string $action, array $data = [], string $method = 'POST'): string
+    protected function createForm(string $action, array $data = [], string $method = 'POST', array $knownParams = []): string|array
     {
-        $html = $this->formOpen($action, $method, static::$knownParams);
+        $knownParams = array_merge(static::$knownParams, $knownParams);
+
+        if (! $this->parser) {
+            $attrs = $this->formAttrs($action, $method, $knownParams);
+            $params = $this->formParams($method, [
+                'redirect' => $this->redirectValue(),
+                'error_redirect' => $this->errorRedirectValue(),
+                'request' => $this->requestValue(),
+            ]);
+
+            return array_merge([
+                'attrs' => $attrs,
+                'attrs_html' => $this->renderAttributes($attrs),
+                'params' => $this->formMetaPrefix($params),
+                'params_html' => $this->formMetaFields($params),
+            ], $data);
+        }
+
+        $html = $this->formOpen($action, $method, $knownParams);
 
         $html .= $this->redirectField();
         $html .= $this->errorRedirectField();
@@ -35,7 +53,7 @@ trait FormBuilder
         return $data;
     }
 
-    private function redirectField()
+    private function redirectValue()
     {
         $redirectUrl = $this->params->get('redirect', request()->path());
 
@@ -43,14 +61,12 @@ trait FormBuilder
             $redirectUrl = Str::start($redirectUrl, '/');
         }
 
-        $value = config('simple-commerce.disable_form_parameter_validation')
+        return config('simple-commerce.disable_form_parameter_validation')
             ? $redirectUrl
             : encrypt($redirectUrl);
-
-        return '<input type="hidden" name="_redirect" value="' . $value . '" />';
     }
 
-    private function errorRedirectField()
+    private function errorRedirectValue()
     {
         $errorRedirectUrl = $this->params->get('error_redirect', request()->path());
 
@@ -58,22 +74,33 @@ trait FormBuilder
             $errorRedirectUrl = Str::start($errorRedirectUrl, '/');
         }
 
-        $value = config('simple-commerce.disable_form_parameter_validation')
+        return config('simple-commerce.disable_form_parameter_validation')
             ? $errorRedirectUrl
             : encrypt($errorRedirectUrl);
+    }
 
-        return '<input type="hidden" name="_error_redirect" value="' . $value . '" />';
+    private function requestValue()
+    {
+        $request = $this->params->get('request', 'Empty');
+
+        return config('simple-commerce.disable_form_parameter_validation')
+            ? $request
+            : encrypt($request);
+    }
+
+    private function redirectField()
+    {
+        return '<input type="hidden" name="_redirect" value="'.$this->redirectValue().'" />';
+    }
+
+    private function errorRedirectField()
+    {
+        return '<input type="hidden" name="_error_redirect" value="'.$this->errorRedirectValue().'" />';
     }
 
     private function requestField()
     {
-        $request = $this->params->get('request', 'Empty');
-
-        $value = config('simple-commerce.disable_form_parameter_validation')
-            ? $request
-            : encrypt($request);
-
-        return '<input type="hidden" name="_request" value="' . $value . '" />';
+        return '<input type="hidden" name="_request" value="'.$this->requestValue().'" />';
     }
 
     /**

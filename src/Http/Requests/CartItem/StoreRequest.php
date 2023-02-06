@@ -21,7 +21,7 @@ class StoreRequest extends FormRequest
     {
         $rules = [
             'product'  => ['required', 'string'],
-            'variant'  => ['string'],
+            'variant'  => ['nullable', 'string'],
             'quantity' => ['required', 'numeric', 'gt:0'],
 
             'email' => ['nullable', 'email', function ($attribute, $value, $fail) {

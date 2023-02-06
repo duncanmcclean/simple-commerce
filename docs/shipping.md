@@ -50,7 +50,9 @@ In these cases, you may configure a default Shipping Method which will be used w
 ],
 ```
 
-> Warning: Simple Commerce will not check if the default method is 'available' for the customer before using it.
+:::warning Warning
+Simple Commerce will not check if the default method is 'available' for the customer before using it.
+:::
 
 ## Third-party Shipping Methods
 

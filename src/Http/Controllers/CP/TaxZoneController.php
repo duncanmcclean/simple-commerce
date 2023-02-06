@@ -73,6 +73,8 @@ class TaxZoneController
     {
         TaxZone::find($taxZone)->delete();
 
-        return redirect(cp_route('simple-commerce.tax-zones.index'));
+        return [
+            'success' => true,
+        ];
     }
 }

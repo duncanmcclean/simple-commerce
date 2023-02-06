@@ -147,7 +147,7 @@ class TaxRateControllerTest extends TestCase
         $this
             ->actingAs($this->user())
             ->delete('/cp/simple-commerce/tax/rates/uk-standard-products/delete')
-            ->assertRedirect('/cp/simple-commerce/tax/rates');
+            ->assertJson(['success' => true]);
     }
 
     protected function user()
