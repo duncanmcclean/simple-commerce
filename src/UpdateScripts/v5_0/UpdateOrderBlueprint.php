@@ -49,7 +49,34 @@ class UpdateOrderBlueprint extends UpdateScript
         }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            // TODO: Implement for Runway blueprints.
+            $orderModelClass = SimpleCommerce::orderDriver()['model'];
+            $resource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+
+            $blueprint = $resource->blueprint();
+
+            $blueprint->removeField('is_paid');
+            $blueprint->removeField('paid_date');
+
+            $blueprint->ensureFieldInSection('order_status', [
+                'type'      => 'order_status',
+                'display'   => 'Order Status',
+                'read_only' => true,
+                'validate'  => 'required',
+            ], 'sidebar');
+
+            $blueprint->ensureFieldInSection('payment_status', [
+                'type'      => 'payment_status',
+                'display'   => 'Payment Status',
+                'read_only' => true,
+                'validate'  => 'required',
+            ], 'sidebar');
+
+            $blueprint->ensureFieldInSection('status_log', [
+                'type'      => 'sc_status_log',
+                'display'   => 'Status Log',
+            ], 'sidebar');
+
+            $blueprint->save();
         }
     }
 
