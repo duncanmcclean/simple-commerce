@@ -12,7 +12,7 @@ class CustomerController extends BaseActionController
     public function index(IndexRequest $request, $customer)
     {
         return [
-            'data' => Customer::find($customer)->toResource(),
+            'data' => Customer::find($customer)->toAugmentedArray(),
         ];
     }
 
@@ -29,7 +29,7 @@ class CustomerController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message'  => __('Customer Updated'),
-            'customer' => $customer->toResource(),
+            'customer' => $customer->toAugmentedArray(),
         ]);
     }
 }
