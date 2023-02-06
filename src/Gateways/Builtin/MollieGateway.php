@@ -12,11 +12,12 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Mollie\Api\MollieApiClient;
-use Mollie\Api\Types\PaymentStatus;
+use Mollie\Api\Types\PaymentStatus as MolliePaymentStatus;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
 
@@ -125,7 +126,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $payment = $this->mollie->payments->get($mollieId);
 
-        if ($payment->status === PaymentStatus::STATUS_PAID) {
+        if ($payment->status === MolliePaymentStatus::STATUS_PAID) {
             $order = null;
 
             if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
