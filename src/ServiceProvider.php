@@ -20,16 +20,16 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $actions = [
-        Actions\MarkAsPaid::class,
-        Actions\MarkAsShipped::class,
         Actions\RefundAction::class,
+        Actions\UpdateOrderStatus::class,
     ];
 
     protected $commands = [
-        Console\Commands\CartCleanupCommand::class,
+        Console\Commands\PurgeCartOrdersCommand::class,
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\InstallCommand::class,
+        Console\Commands\MigrateOrderStatuses::class,
         Console\Commands\MigrateOrdersToDatabase::class,
         Console\Commands\SwitchToDatabase::class,
     ];
@@ -39,10 +39,13 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\CouponFieldtype::class,
         Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\OrderStatusFieldtype::class,
+        Fieldtypes\PaymentStatusFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
         Fieldtypes\RegionFieldtype::class,
         Fieldtypes\ShippingMethodFieldtype::class,
+        Fieldtypes\StatusLogFieldtype::class,
         Fieldtypes\TaxCategoryFieldtype::class,
 
         Fieldtypes\Variables\LineItemTax::class,
@@ -59,13 +62,13 @@ class ServiceProvider extends AddonServiceProvider
         Events\PostCheckout::class => [
             Listeners\TidyTemporaryGatewayData::class,
         ],
-        Events\OrderPaid::class => [
+        Events\OrderStatusUpdated::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\PaymentStatusUpdated::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
         Events\OrderPaymentFailed::class => [
-            Listeners\SendConfiguredNotifications::class,
-        ],
-        Events\OrderShipped::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
         Events\StockRunningLow::class => [
@@ -97,6 +100,7 @@ class ServiceProvider extends AddonServiceProvider
         Scopes\OrderContainsProduct::class,
         Scopes\OrderCustomer::class,
         Scopes\OrderStatusFilter::class,
+        Scopes\PaymentStatusFilter::class,
     ];
 
     protected $tags = [
@@ -120,6 +124,10 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
 
         UpdateScripts\v4_0\MigrateCouponsToStache::class,
+
+        UpdateScripts\v5_0\MigrateOrderStatuses::class,
+        UpdateScripts\v5_0\UpdateNotificationsConfig::class,
+        UpdateScripts\v5_0\UpdateOrderBlueprint::class,
     ];
 
     public function boot()

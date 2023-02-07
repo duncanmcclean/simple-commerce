@@ -14,6 +14,8 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Pipeline\Pipeline;
@@ -46,6 +48,8 @@ class CheckoutController extends BaseActionController
                 ->handleRemainingData()
                 ->handlePayment()
                 ->postCheckout();
+
+            $this->order->updateOrderStatus(OrderStatus::Placed);
         } catch (CheckoutProductHasNoStockException $e) {
             $lineItem = $this->order->lineItems()->filter(function ($lineItem) use ($e) {
                 return $lineItem->product()->id() === $e->product->id();
@@ -231,12 +235,12 @@ class CheckoutController extends BaseActionController
         $this->order = $this->order->recalculate();
 
         if ($this->order->grandTotal() <= 0) {
-            $this->order->markAsPaid();
+            $this->order->updatePaymentStatus(PaymentStatus::Paid);
 
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->order->isPaid() === false && $this->order->grandTotal() !== 0) {
+        if (! $this->request->has('gateway') && $this->order->paymentStatus() !== PaymentStatus::Paid && $this->order->grandTotal() !== 0) {
             throw new GatewayNotProvided('No gateway provided.');
         }
 
@@ -266,8 +270,8 @@ class CheckoutController extends BaseActionController
             $this->order->customer()->save();
         }
 
-        if (! $this->request->has('gateway') && $this->order->isPaid() === false && $this->order->grandTotal() === 0) {
-            $this->order->markAsPaid();
+        if (! $this->request->has('gateway') && $this->order->status() !== PaymentStatus::Paid && $this->order->grandTotal() === 0) {
+            $this->order->updatePaymentStatus(PaymentStatus::Paid);
         }
 
         if ($this->order->coupon()) {

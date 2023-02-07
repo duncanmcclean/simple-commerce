@@ -18,7 +18,7 @@ Simple Commerce provides a set of tags allowing you to build your e-commerce sit
 
 When using Form Tags, Simple Commerce requires you to specify any additional fields you wish to be editable via front-end forms.
 
-For example: you may wish for customers to fill in the `shipping_note` field via the `{{ sc:cart:update }}` form but you wouldn't want them filling the `is_paid` field.
+For example: you may wish for customers to fill in the `shipping_note` field via the `{{ sc:cart:update }}` form but you wouldn't want them filling the `order_status` field.
 
 With 'field whitelisting', you must specify the fields you wish to allow in the Simple Commerce config file.
 

@@ -42,9 +42,8 @@ class EntryOrderRepository implements RepositoryContract
             ->resource($entry)
             ->id($entry->id())
             ->orderNumber($entry->get('order_number') ?? str_replace('#', '', $entry->get('title')))
-            ->isPaid($entry->get('is_paid') ?? false)
-            ->isShipped($entry->get('is_shipped') ?? false)
-            ->isRefunded($entry->get('is_refunded') ?? false)
+            ->status($entry->get('order_status') ?? 'cart')
+            ->paymentStatus($entry->get('payment_status') ?? 'unpaid')
             ->lineItems($entry->get('items') ?? [])
             ->grandTotal($entry->get('grand_total') ?? 0)
             ->itemsTotal($entry->get('items_total') ?? 0)
@@ -67,7 +66,7 @@ class EntryOrderRepository implements RepositoryContract
         return $order->data(array_merge(
             Arr::except(
                 $entry->data()->toArray(),
-                ['is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway']
+                ['order_status', 'payment_status', 'items', 'grand_total', 'items_total', 'tax_total', 'shipping_total', 'coupon_total', 'customer', 'coupon', 'gateway']
             ),
             [
                 'site' => optional($entry->site())->handle(),
@@ -100,16 +99,15 @@ class EntryOrderRepository implements RepositoryContract
             $entry->slug($order->get('slug'));
         }
 
-        $entry->published($order->get('published', false));
+        $entry->published($order->get('published', true));
 
         $entry->data(
             array_merge(
                 $order->data()->except(['id', 'site', 'slug'])->toArray(),
                 [
                     'order_number' => $order->has('order_number') ? $order->get('order_number') : $this->generateOrderNumber(),
-                    'is_paid' => $order->isPaid(),
-                    'is_shipped' => $order->isShipped(),
-                    'is_refunded' => $order->isRefunded(),
+                    'order_status' => $order->status()->value,
+                    'payment_status' => $order->paymentStatus()->value,
                     'items' => $order->lineItems()->map->toArray()->toArray(),
                     'grand_total' => $order->grandTotal(),
                     'items_total' => $order->itemsTotal(),
@@ -127,9 +125,8 @@ class EntryOrderRepository implements RepositoryContract
 
         $order->id = $entry->id();
         $order->orderNumber = $entry->get('order_number');
-        $order->isPaid = $entry->get('is_paid');
-        $order->isShipped = $entry->get('is_shipped');
-        $order->isRefunded = $entry->get('is_refunded');
+        $order->status = OrderStatus::from($entry->get('order_status'));
+        $order->paymentStatus = PaymentStatus::from($entry->get('payment_status'));
         // $order->lineItems = collect($entry->get('items'));
         $order->grandTotal = $entry->get('grand_total');
         $order->itemsTotal = $entry->get('items_total');

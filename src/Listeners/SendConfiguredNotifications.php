@@ -2,6 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
@@ -14,12 +16,8 @@ class SendConfiguredNotifications implements ShouldQueue
 {
     public function handle($event)
     {
-        $eventName = Str::of(get_class($event))
-            ->afterLast('\\')
-            ->snake()
-            ->__toString();
-
-        $notifications = collect(Config::get('simple-commerce.notifications'))->get($eventName);
+        $notifications = collect(Config::get('simple-commerce.notifications'))
+            ->get($this->getEventName($event));
 
         if (! $notifications) {
             return;
@@ -51,6 +49,32 @@ class SendConfiguredNotifications implements ShouldQueue
 
             optional($freshNotification)->notify($notification);
         }
+    }
+
+    protected function getEventName($event): string
+    {
+        // If the event is OrderStatusUpdated, then we want to use the
+        // order's status as the "event name".
+        if ($event instanceof OrderStatusUpdated) {
+            $orderStatus = $event->order->status();
+
+            return "order_{$orderStatus->value}";
+        }
+
+        // If the event is PaymentStatusUpdated, then we want to use the
+        // order's payment status as the "event name".
+        if ($event instanceof PaymentStatusUpdated) {
+            $paymentStatus = $event->order->paymentStatus();
+
+            return "order_{$paymentStatus->value}";
+        }
+
+        $eventName = Str::of(get_class($event))
+            ->afterLast('\\')
+            ->snake()
+            ->__toString();
+
+        return $eventName;
     }
 
     protected function getNotifiables(array $config, $notification, $event): ?array

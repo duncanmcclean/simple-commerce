@@ -7,6 +7,8 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
@@ -35,12 +37,14 @@ class GatewayCallbackController extends BaseActionController
         try {
             $callbackSuccess = Gateway::use($gateway['class'])->callback($request);
         } catch (GatewayCallbackMethodDoesNotExist $e) {
-            $callbackSuccess = $order->isPaid() === true;
+            $callbackSuccess = $order->paymentStatus() === PaymentStatus::Paid;
         }
 
         if (! $callbackSuccess) {
             return $this->withErrors($request, "Order [{$order->get('title')}] has not been marked as paid yet.");
         }
+
+        $order->status(OrderStatus::Placed)->save();
 
         $this->forgetCart();
 

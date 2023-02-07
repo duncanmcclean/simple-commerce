@@ -9,6 +9,8 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
@@ -34,7 +36,8 @@ class CalculatorTest extends TestCase
         $product->save();
 
         $cart = Order::make()
-            ->isPaid(true)
+            ->status(OrderStatus::Placed)
+            ->paymentStatus(PaymentStatus::Paid)
             ->lineItems([
                 [
                     'product'  => $product->id,
@@ -71,7 +74,7 @@ class CalculatorTest extends TestCase
         $product = Product::make()->price(500);
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->lineItems([
+        $cart = Order::make()->paymentStatus(PaymentStatus::Paid)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 1,
@@ -112,7 +115,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->lineItems([
+        $cart = Order::make()->paymentStatus(PaymentStatus::Paid)->lineItems([
             [
                 'product'  => $product->id,
                 'variant'  => 'Red_Large',
@@ -144,7 +147,7 @@ class CalculatorTest extends TestCase
         $product = Product::make()->price(15.50);
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->lineItems([
+        $cart = Order::make()->paymentStatus(PaymentStatus::Paid)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 1,
@@ -185,7 +188,7 @@ class CalculatorTest extends TestCase
 
         $product->save();
 
-        $cart = Order::make()->isPaid(true)->lineItems([
+        $cart = Order::make()->paymentStatus(PaymentStatus::Paid)->lineItems([
             [
                 'product'  => $product->id,
                 'variant'  => 'Red_Large',
@@ -217,7 +220,7 @@ class CalculatorTest extends TestCase
         $product = Product::make()->price(1000);
         $product->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -250,7 +253,7 @@ class CalculatorTest extends TestCase
         $product = Product::make()->price(1000);
         $product->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -297,7 +300,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -343,7 +346,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -390,7 +393,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -437,7 +440,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 1,
@@ -481,7 +484,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -528,7 +531,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -574,7 +577,7 @@ class CalculatorTest extends TestCase
 
         $coupon->save();
 
-        $cart = Order::make()->isPaid(false)->lineItems([
+        $cart = Order::make()->status(OrderStatus::Cart)->lineItems([
             [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -609,7 +612,7 @@ class CalculatorTest extends TestCase
         });
 
         $cart = Order::make()
-            ->isPaid(false)
+            ->status(OrderStatus::Cart)
             ->lineItems([
                 [
                     'product'  => $product->id,
@@ -675,7 +678,7 @@ class CalculatorTest extends TestCase
         });
 
         $cart = Order::make()
-            ->isPaid(false)
+            ->status(OrderStatus::Cart)
             ->lineItems([
                 [
                     'product'  => $product->id,

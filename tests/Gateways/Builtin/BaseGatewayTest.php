@@ -2,10 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
@@ -52,9 +53,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
 
         // Assert stock count has been updated
         $this->assertSame($product->fresh()->stock(), 9);
@@ -90,9 +91,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
     }
 }
 

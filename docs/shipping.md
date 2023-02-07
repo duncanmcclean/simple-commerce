@@ -109,19 +109,20 @@ After the customer has submitted that form, Simple Commerce will use that shippi
 
 ## Marking an order as shipped
 
-As of Simple Commerce v2.4, you may now mark an order as 'Shipped'. You can either do this programatically or via the Control Panel.
+You can mark orders as 'Dispatched' (previously called 'Shipped'). You can either do this programatically or via the Control Panel.
 
-Marking an order as shipped will dispatch an event which you can use to send notifications to customers.
+Marking an order as dispatched will trigger an event which you can use to send notifications to customers.
 
 ### Programatically
 
-If you want to mark an order as Shipped from your own code, you may use the `markAsShipped` method available on `Order` objects.
+If you want to mark an order as Shipped from your own code, you may use the `updateOrderStatus` method available on `Order` objects.
 
 ```php
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 
 $order = Order::find(123);
-$order->markAsShipped();
+$order->updateOrderStatus(OrderStatus::Shipped);
 ```
 
 ### Via the Control Panel

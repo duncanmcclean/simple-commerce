@@ -146,14 +146,11 @@ sections:
       - handle: coupon
         field:
           max_items: 1
-          mode: select
-          collections:
-            - coupons
-          type: entries
-          listable: false
+          mode: default
+          type: coupon
           display: Coupon
           width: 50
-          read_only: true
+          visibility: read_only
       - handle: shipping_method
         field:
           display: "Shipping Method"
@@ -259,35 +256,33 @@ sections:
   sidebar:
     display: Sidebar
     fields:
-      - handle: payment
+      - handle: order_status
         field:
-          display: Payment
-          type: section
-          icon: section
-          listable: hidden
-          instructions_position: above
-          read_only: false
-      - handle: is_paid
-        field:
-          type: toggle
-          display: "Is Paid?"
-          width: 25
+          type: order_status
+          display: "Order Status"
           read_only: true
-      - handle: paid_date
+          validate:
+            - required
+          visibility: read_only
+          instructions_position: above
+          listable: hidden
+          always_save: false
+      - handle: payment_status
         field:
-          mode: single
-          time_enabled: true
-          time_required: true
-          earliest_date: "1900-01-01"
-          full_width: false
-          inline: false
-          columns: 1
-          rows: 1
-          type: date
-          display: "Paid Date"
+          type: payment_status
+          display: "Payment Status"
+          read_only: true
           validate: required
+          visibility: read_only
       - handle: gateway
         field:
-          display: Gateway
+          display: Payment
           type: gateway
-          read_only: true
+          visibility: read_only
+          instructions_position: above
+          listable: hidden
+          always_save: false
+      - handle: status_log
+        field:
+          type: sc_status_log
+          display: "Status Log"
