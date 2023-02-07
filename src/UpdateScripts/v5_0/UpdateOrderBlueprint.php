@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v5_0;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Blueprint;
 use Statamic\UpdateScripts\UpdateScript;
@@ -49,8 +50,7 @@ class UpdateOrderBlueprint extends UpdateScript
         }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $orderModelClass = SimpleCommerce::orderDriver()['model'];
-            $resource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+            $resource = Runway::orderModel();
 
             $blueprint = $resource->blueprint();
 
