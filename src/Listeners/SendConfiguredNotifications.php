@@ -56,7 +56,7 @@ class SendConfiguredNotifications implements ShouldQueue
         // If the event is OrderStatusUpdated, then we want to use the
         // order's status as the "event name".
         if ($event instanceof OrderStatusUpdated) {
-            $orderStatus = $event->order->status();
+            $orderStatus = $event->orderStatus;
 
             return "order_{$orderStatus->value}";
         }
@@ -64,7 +64,7 @@ class SendConfiguredNotifications implements ShouldQueue
         // If the event is PaymentStatusUpdated, then we want to use the
         // order's payment status as the "event name".
         if ($event instanceof PaymentStatusUpdated) {
-            $paymentStatus = $event->order->paymentStatus();
+            $paymentStatus = $event->paymentStatus;
 
             return "order_{$paymentStatus->value}";
         }
@@ -87,12 +87,6 @@ class SendConfiguredNotifications implements ShouldQueue
             }
 
             if ($email = $event->order->get('email')) {
-                return [
-                    ['channel' => 'mail', 'route' => $email],
-                ];
-            }
-
-            if ($email = $event->order->customer()) {
                 return [
                     ['channel' => 'mail', 'route' => $email],
                 ];
