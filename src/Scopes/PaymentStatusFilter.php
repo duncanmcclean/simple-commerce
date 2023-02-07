@@ -3,45 +3,37 @@
 namespace DoubleThreeDigital\SimpleCommerce\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Query\Scopes\Filter;
 
-class OrderStatusFilter extends Filter
+class PaymentStatusFilter extends Filter
 {
     public $pinned = true;
-    public static $title = 'Order Status';
+    public static $title = 'Payment Status';
 
     public function fieldItems()
     {
         return [
             'type' => [
                 'type' => 'radio',
-                'options' => collect(OrderStatus::cases())->mapWithKeys(fn ($case) => [
-                    $case->value => __($case->name),
+                'options' => collect(PaymentStatus::cases())->mapWithKeys(fn ($case) => [
+                    $case->value => $case->name,
                 ])->toArray(),
             ],
         ];
     }
 
-    public function autoApply()
-    {
-        return [
-            'type' => 'placed',
-        ];
-    }
-
     public function apply($query, $values)
     {
-        return $query->where('order_status', $values['type']);
+        return $query->where('payment_status', $values['type']);
     }
 
     public function badge($values)
     {
-        $orderStatusLabel = OrderStatus::from($values['type'])->name;
+        $paymentStatusLabel = PaymentStatus::from($values['type'])->name;
 
-        return __('Order Status: :orderStatus', ['orderStatus' => $orderStatusLabel]);
+        return "Payment Status: {$paymentStatusLabel}";
     }
 
     public function visibleTo($key)
@@ -52,7 +44,8 @@ class OrderStatusFilter extends Filter
         }
 
         if (isset(SimpleCommerce::orderDriver()['model'])) {
-            $runwayResource = Runway::orderModel();
+            $orderModelClass = SimpleCommerce::orderDriver()['model'];
+            $runwayResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
 
             return $key === "runway_{$runwayResource->handle()}";
         }

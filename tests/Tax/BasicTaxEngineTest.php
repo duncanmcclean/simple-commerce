@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tax;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -24,7 +25,7 @@ class BasicTaxEngineTest extends TestCase
         $product = Product::make()->price(1000);
         $product->save();
 
-        $order = Order::make()->isPaid(false)->lineItems([
+        $order = Order::make()->status(OrderStatus::Cart)->lineItems([
             $lineItem = [
                 'product'  => $product->id,
                 'quantity' => 1,
@@ -52,7 +53,7 @@ class BasicTaxEngineTest extends TestCase
         $product = Product::make()->price(1000);
         $product->save();
 
-        $order = Order::make()->isPaid(false)->lineItems([
+        $order = Order::make()->status(OrderStatus::Cart)->lineItems([
             $lineItem = [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -82,7 +83,7 @@ class BasicTaxEngineTest extends TestCase
         $product = Product::make()->price(1000);
         $product->save();
 
-        $order = Order::make()->isPaid(false)->lineItems([
+        $order = Order::make()->status(OrderStatus::Cart)->lineItems([
             $lineItem = [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -109,7 +110,7 @@ class BasicTaxEngineTest extends TestCase
         $product = Product::make()->price(1000);
         $product->save();
 
-        $order = Order::make()->isPaid(false)->lineItems([
+        $order = Order::make()->status(OrderStatus::Cart)->lineItems([
             $lineItem = [
                 'product'  => $product->id,
                 'quantity' => 2,
@@ -140,7 +141,7 @@ class BasicTaxEngineTest extends TestCase
         $product = Product::make()->price(2600);
         $product->save();
 
-        $order = Order::make()->isPaid(false)->lineItems([
+        $order = Order::make()->status(OrderStatus::Cart)->lineItems([
             $lineItem = [
                 'product'  => $product->id,
                 'quantity' => 3,

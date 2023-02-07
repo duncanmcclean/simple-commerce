@@ -15,9 +15,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_paid')->default(false);
-            $table->boolean('is_shipped')->default(false);
-            $table->boolean('is_refunded')->default(false);
+            $table->string('order_status')->default('cart');
+            $table->string('payment_status')->default('unpaid');
             $table->json('items')->nullable();
             $table->integer('grand_total')->default(0);
             $table->integer('items_total')->default(0);
@@ -43,7 +42,6 @@ class CreateOrdersTable extends Migration
             $table->string('coupon')->nullable();
             $table->json('gateway')->nullable();
             $table->json('data')->nullable();
-            $table->dateTime('paid_date')->nullable();
             $table->timestamps();
         });
     }

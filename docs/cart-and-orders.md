@@ -1,10 +1,49 @@
 ---
-title: 'Cart & Orders'
+title: 'Orders'
 ---
 
-Under the hood, Carts and Orders are really the same thing. They live under the same collection, use the same blueprint.
+## Statuses
 
-Often, when a cart is being mentioned, it's just referring to an unpaid order (defined by the `is_paid` boolean). If `is_paid` is true, it'll be refered to as an order.
+Simple Commerce has the concept of Order & Payment statuses. They help you tell what the 'state' of an order is.
+
+When an order is initially created, it will be a **Cart** and **Unpaid**.
+
+After a customer has submitted the checkout form or redirected back from a third-party gateway, their order will be marked as **Placed**.
+
+Their order will then only be marked as **Paid** when we receive confirmation from the payment gateway that a payment has taken place & been successful.
+
+In the Control Panel, admins can then mark orders as **Dispatched** or as **Cancelled**. They may also **Refund** orders.
+
+### Available Statuses
+
+**Order Statuses:**
+
+-   Cart
+-   Placed
+-   Dispatched (renamed from Shipped)
+-   Cancelled
+
+**Payment Statuses:**
+
+-   Unpaid
+-   Paid
+-   Refunded
+
+### Status Log
+
+Simple Commerce also keeps track of any status changes on orders. If you view the order entry's markdown file or the order in the database, you'll see a `status_log` array with timestamps next to each of the order's timestamps.
+
+```yaml
+status_log:
+    paid: '2023-02-06 20:11'
+    placed: '2023-02-06 20:11'
+```
+
+## Database Orders
+
+By default, Simple Commerce stores your orders as entries in a collection. As you get more orders, for performance reasons, you may wish to move those orders into a database.
+
+We have details on what's involved and the process around it in our [Database Orders](/database-orders) page.
 
 ## Cart
 
@@ -15,14 +54,13 @@ It can sometimes be a little frustrating to have entries for abandoned carts lyi
 Simple Commerce provides a command out-of-the-box, which can be run either manually, or on demand, which will delete orders older than 14 days.
 
 ```
-php please sc:cart-cleanup
+php please sc:purge-cart-orders
 ```
 
 If you wish to run this command on a regular basis, maybe every night or every week, you can configure that in your `app/Console/Kernel.php` method, inside the `schedule` method.
 
 ```php
-$schedule->command('sc:cart-cleanup')
-    ->daily();
+$schedule->command('sc:purge-cart-orders')->daily();
 ```
 
 For more documentation on command scheduling, please [review the Laravel documentation](https://laravel.com/docs/master/scheduling#scheduling-artisan-commands).

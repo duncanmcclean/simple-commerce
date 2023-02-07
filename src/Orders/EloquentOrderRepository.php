@@ -18,12 +18,12 @@ class EloquentOrderRepository implements RepositoryContract
     protected $model;
 
     protected $knownColumns = [
-        'id', 'is_paid', 'is_shipped', 'is_refunded', 'items', 'grand_total', 'items_total', 'tax_total',
+        'id', 'order_status', 'payment_status', 'items', 'grand_total', 'items_total', 'tax_total',
         'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2',
         'shipping_city', 'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name',
         'billing_address', 'billing_address_line2', 'billing_city', 'billing_postal_code', 'billing_region',
-        'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway', 'paid_date',
-        'data', 'created_at', 'updated_at',
+        'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway', 'data',
+        'created_at', 'updated_at',
     ];
 
     public function __construct()
@@ -48,9 +48,8 @@ class EloquentOrderRepository implements RepositoryContract
             ->resource($model)
             ->id($model->id)
             ->orderNumber($model->id)
-            ->isPaid($model->is_paid)
-            ->isShipped($model->is_shipped)
-            ->isRefunded($model->is_refunded)
+            ->status($model->order_status ?? 'cart')
+            ->paymentStatus($model->payment_status ?? 'unpaid')
             ->lineItems($model->items)
             ->grandTotal($model->grand_total)
             ->itemsTotal($model->items_total)
@@ -78,7 +77,6 @@ class EloquentOrderRepository implements RepositoryContract
                         'billing_region' => $model->billing_region,
                         'billing_country' => $model->billing_country,
                         'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
-                        'paid_date' => $model->paid_date,
                     ])
                     ->merge(
                         collect($this->getCustomColumns())
@@ -103,9 +101,8 @@ class EloquentOrderRepository implements RepositoryContract
             $model = new $this->model();
         }
 
-        $model->is_paid = $order->isPaid();
-        $model->is_shipped = $order->isShipped();
-        $model->is_refunded = $order->isRefunded();
+        $model->order_status = $order->status()->value;
+        $model->payment_status = $order->paymentStatus()->value;
         $model->items = $order->lineItems()->map->toArray();
         $model->grand_total = $order->grandTotal();
         $model->items_total = $order->itemsTotal();
@@ -150,15 +147,12 @@ class EloquentOrderRepository implements RepositoryContract
             ->except($this->knownColumns)
             ->except($this->getCustomColumns());
 
-        $model->paid_date = $order->get('paid_date');
-
         $model->save();
 
         $order->id = $model->id;
         $order->orderNumber = $model->id;
-        $order->isPaid = $model->is_paid;
-        $order->isShipped = $model->is_shipped;
-        $order->isRefunded = $model->is_refunded;
+        $order->status = OrderStatus::from($model->order_status);
+        $order->paymentStatus = PaymentStatus::from($model->payment_status);
         // $order->lineItems = collect($model->items);
         $order->grandTotal = $model->grand_total;
         $order->itemsTotal = $model->items_total;
@@ -186,7 +180,6 @@ class EloquentOrderRepository implements RepositoryContract
                 'billing_region' => $model->billing_region,
                 'billing_country' => $model->billing_country,
                 'use_shipping_address_for_billing' => $model->use_shipping_address_for_billing,
-                'paid_date' => $model->paid_date,
             ])
             ->merge(
                 collect($this->getCustomColumns())

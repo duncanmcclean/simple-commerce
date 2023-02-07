@@ -45,11 +45,16 @@ You may also configure who you wish to send each notification to. If you'd like 
 
 You may listen to any of the following events:
 
-- `order_paid`
-- `order_payment_failed`
-- `order_shipped`
-- `stock_running_low`
-- `stock_run_out`
+-   `order_cart`
+-   `order_placed`
+-   `order_dispatched`
+-   `order_cancelled`
+-   `order_unpaid`
+-   `order_paid`
+-   `order_refunded`
+-   `order_payment_failed`
+-   `stock_running_low`
+-   `stock_run_out`
 
 ## Using a custom notification
 

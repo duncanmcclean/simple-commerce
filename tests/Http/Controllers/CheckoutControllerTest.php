@@ -4,7 +4,8 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
@@ -20,6 +21,8 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
@@ -85,11 +88,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -141,11 +142,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -193,11 +192,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -256,11 +253,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -317,11 +312,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertNotDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNull($order->customer());
@@ -371,11 +364,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert email has been set on the order
         $this->assertNotNull($order->customer());
@@ -435,11 +426,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been updated
         $this->assertNotNull($order->customer());
@@ -503,11 +492,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been updated
         $this->assertNotNull($order->customer());
@@ -584,11 +571,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been updated
         $this->assertNotNull($order->customer());
@@ -650,11 +635,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -722,11 +705,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -795,11 +776,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -876,11 +855,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -956,11 +933,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertSame($order->coupon()->id(), $coupon->id);
@@ -1025,11 +1000,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertSame($order->coupon()->id(), $coupon->id);
@@ -1105,11 +1078,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->coupon());
@@ -1184,11 +1155,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->coupon());
@@ -1263,11 +1232,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert the coupon has been redeemed propery & the total has been recalculated
         $this->assertNull($order->coupon());
@@ -1322,11 +1289,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->stock(), 49);
@@ -1380,11 +1345,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->stock(), 8);
@@ -1444,11 +1407,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $product->fresh();
@@ -1505,11 +1466,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->stock(), 0);
@@ -1587,11 +1546,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 49);
@@ -1668,11 +1625,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 8);
@@ -1755,11 +1710,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
@@ -1839,11 +1792,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert stock has been reduced
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
@@ -1903,11 +1854,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert that the 'extra remaining data' has been saved to the order
         $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
@@ -1967,11 +1916,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert that the 'extra remaining data' has been saved to the order
         $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
@@ -2017,15 +1964,14 @@ class CheckoutControllerTest extends TestCase
         $order = $order->fresh();
 
         // Assert events have been dispatched
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(OrderStatusUpdated::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -2072,11 +2018,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -2120,11 +2064,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertNotDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -2169,11 +2111,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertNotDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -2226,11 +2166,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -2286,11 +2224,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert customer has been created with provided details
         $this->assertNotNull($order->customer());
@@ -2351,11 +2287,9 @@ class CheckoutControllerTest extends TestCase
             BackOfficeOrderPaid::class
         );
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -2406,11 +2340,9 @@ class CheckoutControllerTest extends TestCase
 
         $order = $order->fresh();
 
-        // Assert order has been marked as paid
-        $this->assertTrue($order->get('published'));
-
-        $this->assertTrue($order->isPaid());
-        $this->assertNotNull($order->get('paid_date'));
+        $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
 
         // Assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -2464,11 +2396,9 @@ class CheckoutControllerTest extends TestCase
         Event::assertDispatched(PreCheckout::class);
         Event::assertNotDispatched(PostCheckout::class);
 
-        // Assert order has been marked as paid
-        $this->assertFalse($order->get('published'));
-
-        $this->assertFalse($order->isPaid());
-        $this->assertNull($order->get('paid_date'));
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
