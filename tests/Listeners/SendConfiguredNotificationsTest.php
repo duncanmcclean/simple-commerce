@@ -245,67 +245,67 @@ class SendConfiguredNotificationsTest extends TestCase
         );
     }
 
-     /** @test */
-     public function can_send_configured_notification_for_some_random_event()
-     {
-         NotificationFacade::fake();
+    /** @test */
+    public function can_send_configured_notification_for_some_random_event()
+    {
+        NotificationFacade::fake();
 
-         Config::set('simple-commerce.notifications', [
-             'some_random_event' => [
-                    SomeRandomEventNotification::class => [
-                     'to' => $email = 'random@email.com',
-                 ],
-             ],
-         ]);
+        Config::set('simple-commerce.notifications', [
+            'some_random_event' => [
+                SomeRandomEventNotification::class => [
+                    'to' => $email = 'random@email.com',
+                ],
+            ],
+        ]);
 
-         $customer = Customer::make();
-         $customer->save();
+        $customer = Customer::make();
+        $customer->save();
 
-         $order = Order::make()->customer($customer);
-         $order->save();
+        $order = Order::make()->customer($customer);
+        $order->save();
 
-         $event = new SomeRandomEvent(
+        $event = new SomeRandomEvent(
              $order
          );
 
-         (new SendConfiguredNotifications())->handle($event);
+        (new SendConfiguredNotifications())->handle($event);
 
-         NotificationFacade::assertSentOnDemand(
+        NotificationFacade::assertSentOnDemand(
             SomeRandomEventNotification::class,
              function (SomeRandomEventNotification $notification, array $channels, object $notifiable) use ($email) {
                  return $notifiable->routes['mail'] === $email;
              }
          );
-     }
+    }
 
-     /** @test */
-     public function can_send_configured_notification_and_ensure_all_events_defined_in_notifications_constructor_are_passed_along()
-     {
-         NotificationFacade::fake();
+    /** @test */
+    public function can_send_configured_notification_and_ensure_all_events_defined_in_notifications_constructor_are_passed_along()
+    {
+        NotificationFacade::fake();
 
-         Config::set('simple-commerce.notifications', [
-             'another_random_event' => [
-                    AnotherRandomEventNotification::class => [
-                     'to' => $email = 'random@email.com',
-                 ],
-             ],
-         ]);
+        Config::set('simple-commerce.notifications', [
+            'another_random_event' => [
+                AnotherRandomEventNotification::class => [
+                    'to' => $email = 'random@email.com',
+                ],
+            ],
+        ]);
 
-         $customer = Customer::make();
-         $customer->save();
+        $customer = Customer::make();
+        $customer->save();
 
-         $order = Order::make()->customer($customer);
-         $order->save();
+        $order = Order::make()->customer($customer);
+        $order->save();
 
-         $event = new AnotherRandomEvent(
+        $event = new AnotherRandomEvent(
              $order,
              'foo',
              true
          );
 
-         (new SendConfiguredNotifications())->handle($event);
+        (new SendConfiguredNotifications())->handle($event);
 
-         NotificationFacade::assertSentOnDemand(
+        NotificationFacade::assertSentOnDemand(
             AnotherRandomEventNotification::class,
              function (AnotherRandomEventNotification $notification, array $channels, object $notifiable) use ($email, $order) {
                  return $notifiable->routes['mail'] === $email
@@ -314,7 +314,7 @@ class SendConfiguredNotificationsTest extends TestCase
                     && ! property_exists($notification, 'someOtherProperty');
              }
          );
-     }
+    }
 }
 
 class OrderPlacedNotification extends Notification
@@ -336,7 +336,6 @@ class OrderPlacedNotification extends Notification
             ->line('Thank you for using our application!');
     }
 }
-
 
 class OrderDispatchedNotification extends Notification
 {
