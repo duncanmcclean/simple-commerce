@@ -1,0 +1,102 @@
+---
+title: 'Upgrade Guide: v4.x to v5.0'
+---
+
+## Overview
+
+To get started with the upgrade process, follow the below steps:
+
+**1.** In your `composer.json` file, update the `doublethreedigital/simple-commerce` version constraint:
+
+```json
+"doublethreedigital/simple-commerce": "^5.0"
+```
+
+**2.** Then run:
+
+```
+composer update doublethreedigital/simple-commerce --with-dependencies
+```
+
+**3.** You may also want to clear your route & view caches:
+
+```
+php artisan route:clear
+php artisan view:clear
+```
+
+**4.** Simple Commerce will have attempted upgrading some things for you (like config files, blueprints, etc). However, it's possible you'll need to make some manual changes. Please review this guide for information on changes which may effect your site.
+
+**Please test locally before deploying to production!**
+
+## Changes
+
+### High: Order & Payment Statuses
+
+Previously, orders had status fields like `is_paid` and `is_shipped` to determine the "status" of orders.
+
+In v5.0, Simple Commerce has introduced two new concepts: Order Statuses & Payment Statuses. One marks the status of the order (Cart, Placed, Dispatched, Cancelled) and the other marks the status of the payment (Unpaid, Paid, Refunded).
+
+They'll be saved in your order like so:
+
+```yaml
+order_status: placed
+payment_status: paid
+```
+
+When you run the `composer update` command to upgrade to v5.0, Simple Commerce will attempt to migrate your existing orders to the new format.
+
+In addition, it will add the new status fields to your order blueprint & remove the old ones.
+
+If you previously had notifications configured to send on the `order_shipped` event, Simple Commerce should have updated the event name to `order_dispatched`.
+
+However, it's worth noting that depending on your setup, **you may need to take some manual steps**:
+
+#### Flat-file orders
+
+:::note Note!
+Before running Simple Commerce's migration command on production, please take a backup of your Orders collection so you can rollback if needed.
+:::
+
+If you store your orders as entries AND you're Git-ignoring those entries, you will need to run the migration script manually after deploying the Simple Commerce update.
+
+```
+php please sc:migrate-order-statuses
+```
+
+It will update order entries to use the new format for statuses.
+
+#### Database orders
+
+:::note Note!
+Before running Simple Commerce's migration command on production, please take a backup of your `orders` database table so you can rollback if needed.
+:::
+
+You will need to run the migration script manually after deploying the Simple Commerce update.
+
+```
+php please sc:migrate-order-statuses
+```
+
+It will generate a migration to add two new columns to the `orders` table: `order_status` and `payment_status`. It'll then run these migrations for you.
+
+It'll then work through the orders in your database and set the status columns. After this migration has run, the 'old' status columns will be set to `null`.
+
+You may create your own migration to remove the 'old' columns after deploying if you wish (`is_paid`, `is_shipped`, `is_refunded`).
+
+### Medium: Support for Statamic 3.3 has been dropped
+
+Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 the only current version supported.
+
+To upgrade to Statamic 3.4, you should follow the steps outlined in the official [Upgrade Guide](https://statamic.dev/upgrade-guide/3-3-to-3-4).
+
+## Previous upgrade guides
+
+-   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
+-   [v2.3 to v2.4](/upgrade-guides/v2-3-to-v3-4)
+-   [v2.4 to v3.0](/upgrade-guides/v2-4-to-v3-0)
+-   [v3.x to v4.0](/upgrade-guides/v3-x-to-v4-0)
+
+---
+
+[You may also view a diff of changes between v4.x and v5.0](https://github.com/duncanmcclean/simple-commerce/compare/4.x...main)
