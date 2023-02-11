@@ -34,7 +34,7 @@ class MakeCommandsTest extends TestCase
 
         $this->assertFileExists($path);
         $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
-        $this->assertStringContainsString('purchase(Purchase $data): Response', $this->files->get($path));
+        $this->assertStringContainsString('checkout(Request $request, Order $order): array', $this->files->get($path));
         $this->assertStringNotContainsString('isOffsiteGateway(): bool', $this->files->get($path));
     }
 
@@ -49,7 +49,7 @@ class MakeCommandsTest extends TestCase
 
         $this->assertFileExists($path);
         $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
-        $this->assertStringContainsString('purchase(Purchase $data): Response', $this->files->get($path));
+        $this->assertStringContainsString('checkout(Request $request, Order $order): array', $this->files->get($path));
         $this->assertStringNotContainsString('isOffsiteGateway(): bool', $this->files->get($path));
     }
 
