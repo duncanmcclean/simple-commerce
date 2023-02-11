@@ -42,7 +42,7 @@ class DummyGateway extends BaseGateway implements Gateway
     }
 
     // TODO: the data returned here should be saved onto the order's gateway data for later use.
-    public function refund(Order $entry): array
+    public function refund(Order $order): array
     {
         return [];
     }
