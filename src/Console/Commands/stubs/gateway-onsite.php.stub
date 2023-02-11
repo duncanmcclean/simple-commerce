@@ -5,45 +5,52 @@ namespace DummyNamespace;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 
 class DummyClass extends BaseGateway implements Gateway
 {
-    public function prepare(Prepare $data): Response
+    public function name(): string
     {
-        return new Response();
+        return __('Gateway Name');
     }
 
-    public function purchase(Purchase $data): Response
-    {
-        return new Response();
-    }
-
-    public function purchaseRules(): array
+    public function prepare(Request $request, Order $order): array
     {
         return [];
     }
 
-    public function purchaseMessages(): array
+    public function checkout(Request $request, Order $order): array
+    {
+        $this->markOrderAsPaid($order);
+
+        return [];
+    }
+
+    public function checkoutRules(): array
     {
         return [];
     }
 
-    public function getCharge(Order $order): Response
+    public function checkoutMessages(): array
     {
-        return new Response();
+        return [];
     }
 
-    public function refund(Order $order): Response
+    public function refund(Order $order): array
     {
-        return new Response();
+        return [];
     }
 
     public function webhook(Request $request)
     {
         //
+    }
+
+    public function fieldtypeDisplay($value): array
+    {
+        return [
+            'text' => $value['data']['id'],
+            'url' => null,
+        ];
     }
 }

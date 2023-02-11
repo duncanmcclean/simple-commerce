@@ -5,8 +5,6 @@ namespace DummyNamespace;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 
 class DummyClass extends BaseGateway implements Gateway
@@ -16,19 +14,28 @@ class DummyClass extends BaseGateway implements Gateway
         return __('Gateway Name');
     }
 
-    public function prepare(Prepare $data): Response
+    public function isOffsiteGateway(): bool
     {
-        return new Response();
+        return true;
     }
 
-    public function getCharge(Order $order): Response
+    public function prepare(Request $request, Order $order): array
     {
-        return new Response();
+        return [];
     }
 
-    public function refund(Order $order): Response
+    public function refund(Order $order): array
     {
-        return new Response();
+        return [];
+    }
+
+    public function callback(Request $request): bool
+    {
+        sleep(2);
+
+        $order = OrderFacade::find($request->input('order_id'));
+
+        return $order->paymentStatus() === PaymentStatus::Paid;
     }
 
     public function webhook(Request $request)
@@ -36,8 +43,11 @@ class DummyClass extends BaseGateway implements Gateway
         //
     }
 
-    public function isOffsiteGateway(): bool
+    public function fieldtypeDisplay($value): array
     {
-        return true;
+        return [
+            'text' => $value['data']['id'],
+            'url' => null,
+        ];
     }
 }
