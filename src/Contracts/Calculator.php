@@ -13,6 +13,4 @@ interface Calculator
     public function calculateOrderShipping(array $data): array;
 
     public function calculateOrderCoupons(array $data): array;
-
-    public static function bindings(): array;
 }

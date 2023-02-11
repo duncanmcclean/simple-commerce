@@ -11,8 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderExce
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
@@ -39,11 +37,9 @@ class PayPalGateway extends BaseGateway implements Gateway
         return $this->config()->get('mode', 'offsite') === 'offsite';
     }
 
-    public function prepare(Prepare $data): Response
+    public function prepare(Request $request, Order $order): array
     {
         $this->setupPayPal();
-
-        $order = $data->order();
 
         $request = new OrdersCreateRequest();
         $request->prefer('return=representation');
@@ -76,15 +72,18 @@ class PayPalGateway extends BaseGateway implements Gateway
             ->where('rel', 'approve')
             ->first();
 
-        return new Response(true, [
+        return [
             'result' => [
                 'id'            => $response->result->id,
                 'currency_code' => $response->result->purchase_units[0]->amount->currency_code,
             ],
-        ], $this->isOffsiteGateway() ? $checkoutUrl->href : '');
+            'checkout_url' => $this->isOffsiteGateway()
+                ? $checkoutUrl->href
+                : null,
+        ];
     }
 
-    public function purchase(Purchase $data): Response
+    public function checkout(Request $request, Order $order): array
     {
         if ($this->isOffsiteGateway()) {
             throw new GatewayDoesNotSupportPurchase('Gateway [paypal] does not support the `purchase` method.');
@@ -93,18 +92,18 @@ class PayPalGateway extends BaseGateway implements Gateway
         $this->setupPayPal();
 
         $request = new OrdersGetRequest($data->request()->payment_id);
-        // $request->path .= 'fields=payment_source';
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
 
-        return new Response(
-            $response->result->status === 'APPROVED',
-            json_decode(json_encode($response->result), true)
-        );
+        if ($response->result->status !== 'APPROVED') {
+            // TODO: Throw exception
+        }
+
+        return json_decode(json_encode($response->result), true);
     }
 
-    public function purchaseRules(): array
+    public function checkoutRules(): array
     {
         if ($this->isOffsiteGateway()) {
             return [];
@@ -115,42 +114,24 @@ class PayPalGateway extends BaseGateway implements Gateway
         ];
     }
 
-    public function getCharge(Order $order): Response
-    {
-        $this->setupPayPal();
-
-        $paypalOrderId = $order->gateway()['data']['id'];
-
-        if (! $paypalOrderId) {
-            throw new PayPalDetailsMissingOnOrderException("Order [{$order->id()}] does not have a PayPal Order ID.");
-        }
-
-        $request = new OrdersGetRequest($paypalOrderId);
-
-        /** @var \PayPalHttp\HttpResponse $response */
-        $response = $this->paypalClient->execute($request);
-
-        return new Response(true, json_decode(json_encode($response->result), true));
-    }
-
-    public function refundCharge(Order $order): Response
+    public function refund(Order $order): array
     {
         $this->setupPayPal();
 
         // Because PayPal is sometimes an utter pain, we don't get any captures in the
         // response. So we just have to tell the user we can't process the refund.
-        if (! isset($order->gateway()['data']['purchase_units'][0]['payments']['captures'][0]['id'])) {
+        if (! isset($order->get('gateway')['data']['purchase_units'][0]['payments']['captures'][0]['id'])) {
             return new Response(false, [
                 'message' => 'Sorry, a capture ID could not be found for this order.',
             ]);
         }
 
-        $request = new CapturesRefundRequest($order->gateway()['data']['purchase_units'][0]['payments']['captures'][0]['id']);
+        $request = new CapturesRefundRequest($order->get('gateway')['data']['purchase_units'][0]['payments']['captures'][0]['id']);
 
         /** @var \PayPalHttp\HttpResponse $response */
         $response = $this->paypalClient->execute($request);
 
-        return new Response(true, json_decode(json_encode($response->result), true));
+        return json_decode(json_encode($response->result), true);
     }
 
     public function callback(Request $request): bool
@@ -242,7 +223,7 @@ class PayPalGateway extends BaseGateway implements Gateway
         return new HttpResponse();
     }
 
-    public function paymentDisplay($value): array
+    public function fieldtypeDisplay($value): array
     {
         if (! isset($value['data']['result']['id'])) {
             return ['text' => 'Unknown', 'url' => null];

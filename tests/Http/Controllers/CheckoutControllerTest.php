@@ -3,7 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
@@ -16,9 +16,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
@@ -2434,40 +2431,41 @@ class TestValidationGateway extends BaseGateway implements Gateway
         return 'Test Validation Gateway';
     }
 
-    public function prepare(Prepare $data): Response
+    public function isOffsiteGateway(): bool
     {
-        return new Response(true, [
+        return false;
+    }
+
+    public function prepare(Request $request, OrderContract $order): array
+    {
+        return [
             'bagpipes' => 'music',
-        ], 'http://backpipes.com');
+            'checkout_url' => 'http://backpipes.com',
+        ];
     }
 
-    public function purchase(Purchase $data): Response
+    public function checkout(Request $request, OrderContract $order): array
     {
-        return new Response(true);
+        return [];
     }
 
-    public function purchaseRules(): array
+    public function checkoutRules(): array
     {
         return [
             'something_mental' => ['required'],
         ];
     }
 
-    public function purchaseMessages(): array
+    public function checkoutMessages(): array
     {
         return [
             'something_mental.required' => 'You must have something mental to do.',
         ];
     }
 
-    public function getCharge(ContractsOrder $order): Response
+    public function refund(OrderContract $order): array
     {
-        return new Response(true, []);
-    }
-
-    public function refundCharge(ContractsOrder $order): Response
-    {
-        return new Response(true, []);
+        return [];
     }
 
     public function webhook(Request $request)

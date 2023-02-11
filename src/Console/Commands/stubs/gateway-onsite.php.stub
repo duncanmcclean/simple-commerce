@@ -37,7 +37,7 @@ class DummyClass extends BaseGateway implements Gateway
         return new Response();
     }
 
-    public function refundCharge(Order $order): Response
+    public function refund(Order $order): Response
     {
         return new Response();
     }

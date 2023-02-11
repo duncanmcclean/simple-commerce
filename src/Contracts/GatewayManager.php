@@ -8,29 +8,29 @@ interface GatewayManager
 {
     public function use($className): self;
 
-    public function name();
-
     public function config();
 
-    public function prepare($request, $order);
+    public function name();
 
-    public function purchase($request, $order);
+    public function isOffsiteGateway(): bool;
 
-    public function purchaseRules();
+    public function prepare(Request $request, Order $order);
 
-    public function purchaseMessages();
+    public function checkout(Request $request, Order $order);
 
-    public function getCharge($order);
+    public function checkoutRules();
 
-    public function refundCharge($order);
+    public function checkoutMessages();
 
-    public function callback(Request $request);
+    public function refund(Order $order): array;
 
-    public function callbackUrl(array $extraParamters = []);
+    public function callback(Request $request): bool;
 
     public function webhook(Request $request);
 
-    public function isOffsiteGateway(): bool;
+    public function fieldtypeDisplay($value): array;
+
+    public function callbackUrl(array $extraParamters = []): string;
 
     public function withRedirectUrl(string $redirectUrl): self;
 

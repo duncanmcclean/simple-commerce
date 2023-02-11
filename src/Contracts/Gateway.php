@@ -2,32 +2,109 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 
 interface Gateway
 {
+    /**
+     * This method should return the name of the payment gateway. This name can be
+     * overridden by sites in their config.
+     *
+     * @return string
+     */
     public function name(): string;
 
-    public function prepare(Prepare $data): Response;
-
-    public function purchase(Purchase $data): Response;
-
-    public function purchaseRules(): array;
-
-    public function purchaseMessages(): array;
-
-    public function getCharge(Order $order): Response;
-
-    public function refundCharge(Order $order): Response;
-
-    public function callback(Request $request): bool;
-
-    public function webhook(Request $request);
-
+     /**
+     * If your payment gateway is off-site (eg. your customer doesn't have to submit the
+     * {{ sc:checkout }} form to confirm the payment), then you should return true here.
+     *
+     * @return bool
+     */
     public function isOffsiteGateway(): bool;
 
-    public function paymentDisplay($value): array;
+    /**
+     * This method is called when the {{ sc:checkout }} tag is used. It should return any
+     * data you need in the front-end to handle a payment (like a Stripe Payment Intent).
+     *
+     * If you're building an off-site gateway, you should return a `checkout_url` key with the
+     * URL the user should be redirected to for checkout.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @param \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
+     * @return array
+     */
+    public function prepare(Request $request, Order $order): array;
+
+    /**
+     * This method is called when you submit the {{ sc:checkout }} form. It should return
+     * an array of payment data that'll be saved onto the order.
+     *
+     * If you need to display an error message, you should throw a TODO.
+     *
+     * If you're building an off-site gateway, you don't need to implement this method.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @param \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
+     * @return array
+     */
+    public function checkout(Request $request, Order $order): array;
+
+    /**
+     * This method should return an array of validation rules that'll be run whenever
+     * the {{ sc:checkout }} has been submitted.
+     *
+     * If you're building an off-site gateway, you don't need to implement this method.
+     *
+     * @return array
+     */
+    public function checkoutRules(): array;
+
+    /**
+     * This method should return an array of validation messages that'll be run whenever
+     * the {{ sc:checkout }} has been submitted. This method isn't mandatory.
+     *
+     * If you're building an off-site gateway, you don't need to implement this method.
+     *
+     * @return array
+     */
+    public function checkoutMessages(): array;
+
+    /**
+     * When given an order, this method should process the refund of an order. You should
+     * return an array of any data which may prove helpful in the future to track down
+     * refunds (like a Refund ID).
+     *
+     * @param \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
+     * @return array|null
+     */
+    public function refund(Order $order): array;
+
+    /**
+     * This method will be called when users are redirected back to your site after
+     * an off-site checkout. You should return true if the payment was successful.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function callback(Request $request): bool;
+
+    /**
+     * This method will be called when a webhook is received from the payment gateway.
+     * This is where you should handle any updates to order statuses.
+     *
+     * Whatever you return from this method will be sent back as the webhook's response.
+     *
+     * @param \Illuminate\Http\Request  $request
+     */
+    public function webhook(Request $request);
+
+    /**
+     * This method should return an array containing `text` and `url` keys. The `text` key
+     * should return something unique to the payment & the `url` should return a URL to
+     * the payment in the payment gateway's dashboard.
+     *
+     * @param mixed  $value
+     * @return array
+     */
+    public function fieldtypeDisplay($value): array;
 }

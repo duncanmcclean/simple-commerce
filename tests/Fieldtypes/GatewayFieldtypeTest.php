@@ -67,7 +67,7 @@ class GatewayFieldtypeTest extends TestCase
 
         $this->assertArrayHasKey('entry', $preProcess);
         $this->assertArrayHasKey('gateway_class', $preProcess);
-        $this->assertArrayHasKey('payment_display', $preProcess);
+        $this->assertArrayHasKey('display', $preProcess);
         $this->assertArrayHasKey('actions', $preProcess);
         $this->assertArrayHasKey('action_url', $preProcess);
     }
@@ -106,7 +106,7 @@ class GatewayFieldtypeTest extends TestCase
         $this->assertArrayHasKey('class', $augment);
         $this->assertArrayHasKey('formatted_class', $augment);
         $this->assertArrayHasKey('display', $augment);
-        $this->assertArrayHasKey('purchaseRules', $augment);
+        $this->assertArrayHasKey('checkoutRules', $augment);
         $this->assertArrayHasKey('gateway-config', $augment);
         $this->assertArrayHasKey('webhook_url', $augment);
         $this->assertArrayHasKey('data', $augment);

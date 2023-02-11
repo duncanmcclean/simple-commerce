@@ -9,8 +9,8 @@
         >
             <div class="item select-none item outline-none" tabindex="0">
                 <div class="item-inner">
-                    <a :href="paymentDisplay.url" target="_blank">
-                        {{ paymentDisplay.text }}
+                    <a :href="display.url" target="_blank">
+                        {{ display.text }}
                     </a>
                 </div>
 
@@ -56,13 +56,13 @@ export default {
             actions: this.value.actions,
             actionUrl: this.value.action_url,
             gatewayClass: this.value.gateway_class,
-            paymentDisplay: this.value.payment_display,
+            display: this.value.display,
         }
     },
 
     computed: {
-        paymentDisplay() {
-            return this.value.payment_display
+        display() {
+            return this.value.display
         },
 
         gatewayName() {

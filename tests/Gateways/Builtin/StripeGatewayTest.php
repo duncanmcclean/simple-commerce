@@ -7,9 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
@@ -76,21 +73,19 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(new Prepare(
+        $prepare = $this->gateway->prepare(
             new Request(),
             $order
-        ));
+        );
 
-        $this->assertIsObject($prepare);
-        $this->assertTrue($prepare instanceof GatewayResponse);
+        $this->assertIsArray($prepare);
 
-        $this->assertTrue($prepare->success());
-        $this->assertArrayHasKey('intent', $prepare->data());
-        $this->assertArrayHasKey('client_secret', $prepare->data());
+        $this->assertArrayHasKey('intent', $prepare);
+        $this->assertArrayHasKey('client_secret', $prepare);
 
-        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+        $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->id, $prepare['intent']);
         $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
@@ -128,21 +123,19 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(new Prepare(
+        $prepare = $this->gateway->prepare(
             new Request(),
             $order
-        ));
+        );
 
-        $this->assertIsObject($prepare);
-        $this->assertTrue($prepare instanceof GatewayResponse);
+        $this->assertIsArray($prepare);
 
-        $this->assertTrue($prepare->success());
-        $this->assertArrayHasKey('intent', $prepare->data());
-        $this->assertArrayHasKey('client_secret', $prepare->data());
+        $this->assertArrayHasKey('intent', $prepare);
+        $this->assertArrayHasKey('client_secret', $prepare);
 
-        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+        $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->id, $prepare['intent']);
         $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNotNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
@@ -191,21 +184,19 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(new Prepare(
+        $prepare = $this->gateway->prepare(
             new Request(),
             $order
-        ));
+        );
 
-        $this->assertIsObject($prepare);
-        $this->assertTrue($prepare instanceof GatewayResponse);
+        $this->assertIsArray($prepare);
 
-        $this->assertTrue($prepare->success());
-        $this->assertArrayHasKey('intent', $prepare->data());
-        $this->assertArrayHasKey('client_secret', $prepare->data());
+        $this->assertArrayHasKey('intent', $prepare);
+        $this->assertArrayHasKey('client_secret', $prepare);
 
-        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+        $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->id, $prepare['intent']);
         $this->assertSame($paymentIntent->amount, $order->grandTotal());
         $this->assertNotNull($paymentIntent->customer);
         $this->assertSame($paymentIntent->receipt_email, $customer->email());
@@ -258,21 +249,19 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(new Prepare(
+        $prepare = $this->gateway->prepare(
             new Request(),
             $order
-        ));
+        );
 
-        $this->assertIsObject($prepare);
-        $this->assertTrue($prepare instanceof GatewayResponse);
+        $this->assertIsArray($prepare);
 
-        $this->assertTrue($prepare->success());
-        $this->assertArrayHasKey('intent', $prepare->data());
-        $this->assertArrayHasKey('client_secret', $prepare->data());
+        $this->assertArrayHasKey('intent', $prepare);
+        $this->assertArrayHasKey('client_secret', $prepare);
 
-        $paymentIntent = PaymentIntent::retrieve($prepare->data()['intent']);
+        $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-        $this->assertSame($paymentIntent->id, $prepare->data()['intent']);
+        $this->assertSame($paymentIntent->id, $prepare['intent']);
         $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
         $this->assertSame($paymentIntent->description, 'Some custom description');
         $this->assertSame($paymentIntent->metadata->foo, 'bar');
@@ -285,7 +274,7 @@ class StripeGatewayTest extends TestCase
     }
 
     /** @test */
-    public function can_purchase()
+    public function can_checkout()
     {
         if (! env('STRIPE_SECRET')) {
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
@@ -337,17 +326,15 @@ class StripeGatewayTest extends TestCase
 
         $request = new Request(['payment_method' => $paymentMethod->id]);
 
-        $purchase = $this->gateway->purchase(new Purchase($request, $order));
+        $checkout = $this->gateway->checkout($request, $order);
 
-        $this->assertIsObject($purchase);
-        $this->assertTrue($purchase instanceof GatewayResponse);
+        $this->assertIsArray($checkout);
 
-        $this->assertSame($purchase->data()['id'], $paymentMethod->id);
-        $this->assertSame($purchase->data()['object'], $paymentMethod->object);
-        // $this->assertSame($purchase->data()['card'], $paymentMethod->card);
-        $this->assertSame($purchase->data()['customer'], $paymentMethod->customer);
-        $this->assertSame($purchase->data()['livemode'], $paymentMethod->livemode);
-        $this->assertSame($purchase->data()['payment_intent'], $paymentIntent);
+        $this->assertSame($checkout['id'], $paymentMethod->id);
+        $this->assertSame($checkout['object'], $paymentMethod->object);
+        $this->assertSame($checkout['customer'], $paymentMethod->customer);
+        $this->assertSame($checkout['livemode'], $paymentMethod->livemode);
+        $this->assertSame($checkout['payment_intent'], $paymentIntent);
 
         $order = $order->fresh();
 
@@ -356,45 +343,15 @@ class StripeGatewayTest extends TestCase
     }
 
     /** @test */
-    public function has_purchase_rules()
+    public function has_checkout_rules()
     {
-        $rules = (new StripeGateway())->purchaseRules();
+        $rules = (new StripeGateway())->checkoutRules();
 
         $this->assertIsArray($rules);
 
         $this->assertSame([
             'payment_method' => ['required', 'string'],
         ], $rules);
-    }
-
-    /** @test */
-    public function can_get_charge()
-    {
-        if (! env('STRIPE_SECRET')) {
-            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-        }
-
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        $order = Order::make()->grandTotal(1234)->gateway([
-            'use' => StripeGateway::class,
-            'data' => [
-                'payment_intent' => $paymentIntent = PaymentIntent::create([
-                    'amount' => 1234,
-                    'currency' => 'GBP',
-                ])->id,
-            ],
-        ]);
-
-        $order->save();
-
-        $charge = $this->gateway->getCharge($order);
-
-        $this->assertIsObject($charge);
-        $this->assertTrue($charge instanceof GatewayResponse);
-        $this->assertTrue($charge->success());
-
-        $this->assertSame($charge->data()['id'], $paymentIntent);
     }
 
     /** @test */
@@ -432,15 +389,13 @@ class StripeGatewayTest extends TestCase
             'payment_method' => $paymentMethod->id,
         ]);
 
-        $refundCharge = $this->gateway->refundCharge($order);
+        $refund = $this->gateway->refund($order);
 
-        $this->assertIsObject($refundCharge);
-        $this->assertTrue($refundCharge instanceof GatewayResponse);
-        $this->assertTrue($refundCharge->success());
+        $this->assertIsArray($refund);
 
-        $this->assertStringContainsString('re_', $refundCharge->data()['id']);
-        $this->assertSame($refundCharge->data()['amount'], 1234);
-        $this->assertSame($refundCharge->data()['payment_intent'], $paymentIntent);
+        $this->assertStringContainsString('re_', $refund['id']);
+        $this->assertSame($refund['amount'], 1234);
+        $this->assertSame($refund['payment_intent'], $paymentIntent);
     }
 
     /** @test */
@@ -474,7 +429,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $paymentDisplay = $this->gateway->paymentDisplay([
+        $fieldtypeDisplay = $this->gateway->fieldtypeDisplay([
             'use' => StripeGateway::class,
             'data' => [
                 'payment_intent' => $paymentIntent = PaymentIntent::create([
@@ -484,27 +439,27 @@ class StripeGatewayTest extends TestCase
             ],
         ]);
 
-        $this->assertIsArray($paymentDisplay);
+        $this->assertIsArray($fieldtypeDisplay);
 
         $this->assertSame([
             'text' => $paymentIntent,
             'url' => 'https://dashboard.stripe.com/test/payments/' . $paymentIntent,
-        ], $paymentDisplay);
+        ], $fieldtypeDisplay);
     }
 
     /** @test */
     public function does_not_return_array_from_payment_display_if_no_payment_intent_is_set()
     {
-        $paymentDisplay = $this->gateway->paymentDisplay([
+        $fieldtypeDisplay = $this->gateway->fieldtypeDisplay([
             'use' => StripeGateway::class,
             'data' => [],
         ]);
 
-        $this->assertIsArray($paymentDisplay);
+        $this->assertIsArray($fieldtypeDisplay);
 
         $this->assertSame([
             'text' => 'Unknown',
             'url' => null,
-        ], $paymentDisplay);
+        ], $fieldtypeDisplay);
     }
 }

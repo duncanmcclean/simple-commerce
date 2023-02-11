@@ -13,13 +13,33 @@ use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class BaseGateway
+abstract class BaseGateway
 {
-    protected string $displayName = '';
+    public function __construct(
+        protected array $config = [],
+        protected string $handle = '',
+        protected string $webhookUrl = '',
+        protected string $redirectUrl = '/',
+        protected string $errorRedirectUrl = '/'
+    ) {}
 
-    public function __construct(protected array $config = [], protected string $handle = '', protected string $webhookUrl = '', protected string $redirectUrl = '/', protected string $errorRedirectUrl = '/')
+    public function handle(): string
     {
-        $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
+        return $this->handle;
+    }
+
+    public function name(): string
+    {
+        return Str::title(class_basename($this));
+    }
+
+    public function displayName()
+    {
+        if ($displayName = $this->config()->get('display')) {
+            return $displayName;
+        }
+
+        return $this->name();
     }
 
     public function config(): Collection
@@ -34,12 +54,52 @@ class BaseGateway
         return $this;
     }
 
-    public function handle(): string
+    public function isOffsiteGateway(): bool
     {
-        return $this->handle;
+        return false;
     }
 
-    public function callbackUrl(array $extraParamters = [])
+    abstract public function prepare(Request $request, Order $order): array;
+
+    public function checkout(Request $request, Order $order): array
+    {
+        // TODO: Should we improve our handling of onsite/offsite methods over the board?
+        throw new GatewayDoesNotSupportPurchase("Gateway [{$this->handle}] does not support the 'purchase' method.");
+    }
+
+    public function checkoutRules(): array
+    {
+        return [];
+    }
+
+    public function checkoutMessages(): array
+    {
+        return [];
+    }
+
+    abstract public function refund(Order $order): ?array;
+
+    public function callback(Request $request): bool
+    {
+        // TODO: Not implemented...
+
+        return false;
+    }
+
+    public function webhook(Request $request)
+    {
+        // TODO: Not implemented...
+    }
+
+    public function fieldtypeDisplay($value): array
+    {
+        return [
+            'text' => isset($value['data']) ? $value['data']['id'] : $value['id'],
+            'url' => null,
+        ];
+    }
+
+    public function callbackUrl(array $extraParamters = []): string
     {
         $data = array_merge($extraParamters, [
             'gateway'         => $this->handle,
@@ -47,86 +107,26 @@ class BaseGateway
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
+        // TODO: Can I not just make the third parameter true and get rid of the app url thing??
         return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
     }
 
-    public function webhookUrl()
+    public function webhookUrl(): string
     {
         return $this->webhookUrl;
     }
 
-    public function errorRedirectUrl()
+    public function redirectUrl(): ?string
+    {
+        return $this->redirectUrl;
+    }
+
+    public function errorRedirectUrl(): ?string
     {
         return $this->errorRedirectUrl;
     }
 
-    public function displayName()
-    {
-        return $this->displayName;
-    }
-
-    public function name(): string
-    {
-        return Str::title(class_basename($this));
-    }
-
-    public function callback(Request $request): bool
-    {
-        return true;
-    }
-
-    public function isOffsiteGateway(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Method used to complete on-site purchases.
-     *
-     * @var Purchase
-     *
-     * @return Response
-     *
-     * @throws GatewayDoesNotSupportPurchase
-     */
-    public function purchase(Purchase $data): Response
-    {
-        throw new GatewayDoesNotSupportPurchase("Gateway [{$this->handle}] does not support the 'purchase' method.");
-    }
-
-    /**
-     * Should return any validation rules required for the gateway when submitting on-site purchases.
-     *
-     * @return array
-     */
-    public function purchaseRules(): array
-    {
-        return [];
-    }
-
-    /**
-     * Should return any validation messages required for the gateway when submitting on-site purchases.
-     *
-     * @return array
-     */
-    public function purchaseMessages(): array
-    {
-        return [];
-    }
-
-    /**
-     * Should return an array with text & a URL which will be displayed by the Gateway fieldtype in the CP.
-     *
-     * @return array
-     */
-    public function paymentDisplay($value): array
-    {
-        return [
-            'text' => isset($value['data']) ? $value['data']['id'] : $value['id'],
-            'url' => '#',
-        ];
-    }
-
+    // TODO: Can't this be protected?
     public function markOrderAsPaid(Order $order): bool
     {
         if ($this->isOffsiteGateway()) {

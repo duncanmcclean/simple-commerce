@@ -66,61 +66,19 @@ class MollieGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(new Prepare(
+        $prepare = $this->gateway->prepare(
             new Request(),
             $order
-        ));
+        );
 
-        $this->assertIsObject($prepare);
-        $this->assertTrue($prepare->success());
-        $this->assertStringContainsString('tr_', $prepare->data()['id']);
+        $this->assertIsArray($prepare);
+        $this->assertStringContainsString('tr_', $prepare['id']);
 
-        $molliePayment = (new Invader($this->gateway))->mollie->payments->get($prepare->data()['id']);
+        $molliePayment = (new Invader($this->gateway))->mollie->payments->get($prepare['id']);
 
         $this->assertSame('55.00', $molliePayment->amount->value);
-        $this->assertSame('Order #0001', $molliePayment->description);
+        $this->assertSame('Order ' . $order->orderNumber(), $molliePayment->description);
         $this->assertStringContainsString('/!/simple-commerce/gateways/mollie/callback?_order_id=' . $order->id(), $molliePayment->redirectUrl);
-    }
-
-    /** @test */
-    public function can_get_charge()
-    {
-        if (! env('MOLLIE_KEY')) {
-            $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
-        }
-
-        (new Invader($this->gateway))->setupMollie();
-
-        $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
-            'amount' => [
-                'currency' => 'GBP',
-                'value'    => '12.34',
-            ],
-            'description' => 'Order #12345689',
-            'redirectUrl' => 'https://example.com/redirect',
-            'webhookUrl'  => 'https://example.com/webhook',
-            'metadata'    => [
-                'order_id' => '12345689',
-            ],
-        ]);
-
-        $order = Order::make()
-            ->gateway([
-                'data' => [
-                    'id' => $molliePayment->id,
-                ],
-            ]);
-
-        $order->save();
-
-        $charge = $this->gateway->getCharge($order);
-
-        $this->assertIsObject($charge);
-        $this->assertTrue($charge->success());
-        $this->assertArrayHasKey('id', $charge->data());
-        $this->assertArrayHasKey('mode', $charge->data());
-        $this->assertArrayHasKey('amount', $charge->data());
-        $this->assertArrayHasKey('description', $charge->data());
     }
 
     /** @test */
@@ -135,10 +93,9 @@ class MollieGatewayTest extends TestCase
         $order = Order::make();
         $order->save();
 
-        $refund = $this->gateway->refundCharge($order);
+        $refund = $this->gateway->refund($order);
 
-        $this->assertIsObject($refund);
-        $this->assertTrue($refund->success());
+        $this->assertIsArray($refund);
     }
 
     /** @test */

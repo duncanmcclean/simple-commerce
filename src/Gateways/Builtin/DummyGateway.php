@@ -5,9 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use Illuminate\Http\Request;
 
 class DummyGateway extends BaseGateway implements Gateway
@@ -17,24 +14,24 @@ class DummyGateway extends BaseGateway implements Gateway
         return __('Dummy');
     }
 
-    public function prepare(Prepare $data): Response
+    public function prepare(Request $request, Order $order): array
     {
-        return new Response(true, []);
+        return [];
     }
 
-    public function purchase(Purchase $data): Response
+    public function checkout(Request $request, Order $order): array
     {
-        $this->markOrderAsPaid($data->order());
+        $this->markOrderAsPaid($order);
 
-        return new Response(true, [
+        return [
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
             'date'      => (string) now()->subDays(14),
             'refunded'  => false,
-        ]);
+        ];
     }
 
-    public function purchaseRules(): array
+    public function checkoutRules(): array
     {
         return [
             'card_number'   => ['required', 'string'],
@@ -44,27 +41,13 @@ class DummyGateway extends BaseGateway implements Gateway
         ];
     }
 
-    public function getCharge(Order $entry): Response
+    // TODO: the data returned here should be saved onto the order's gateway data for later use.
+    public function refund(Order $entry): array
     {
-        return new Response(true, [
-            'id'        => '123456789abcdefg',
-            'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
-        ]);
+        return [];
     }
 
-    public function refundCharge(Order $entry): Response
-    {
-        return new Response(true, []);
-    }
-
-    public function webhook(Request $request)
-    {
-        return null;
-    }
-
-    public function paymentDisplay($value): array
+    public function fieldtypeDisplay($value): array
     {
         return [
             'text' => $value['data']['id'],
