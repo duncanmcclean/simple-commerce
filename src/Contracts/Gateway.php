@@ -14,7 +14,7 @@ interface Gateway
      */
     public function name(): string;
 
-     /**
+    /**
      * If your payment gateway is off-site (eg. your customer doesn't have to submit the
      * {{ sc:checkout }} form to confirm the payment), then you should return true here.
      *
@@ -29,8 +29,8 @@ interface Gateway
      * If you're building an off-site gateway, you should return a `checkout_url` key with the
      * URL the user should be redirected to for checkout.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @param \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
      * @return array
      */
     public function prepare(Request $request, Order $order): array;
@@ -43,8 +43,8 @@ interface Gateway
      *
      * If you're building an off-site gateway, you don't need to implement this method.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @param \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
      * @return array
      */
     public function checkout(Request $request, Order $order): array;
@@ -74,7 +74,7 @@ interface Gateway
      * return an array of any data which may prove helpful in the future to track down
      * refunds (like a Refund ID).
      *
-     * @param \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
+     * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
      * @return array|null
      */
     public function refund(Order $order): array;
@@ -83,7 +83,7 @@ interface Gateway
      * This method will be called when users are redirected back to your site after
      * an off-site checkout. You should return true if the payment was successful.
      *
-     * @param \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function callback(Request $request): bool;
@@ -94,7 +94,7 @@ interface Gateway
      *
      * Whatever you return from this method will be sent back as the webhook's response.
      *
-     * @param \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request
      */
     public function webhook(Request $request);
 
@@ -103,7 +103,7 @@ interface Gateway
      * should return something unique to the payment & the `url` should return a URL to
      * the payment in the payment gateway's dashboard.
      *
-     * @param mixed  $value
+     * @param  mixed  $value
      * @return array
      */
     public function fieldtypeDisplay($value): array;
