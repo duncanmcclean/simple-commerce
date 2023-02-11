@@ -31,6 +31,7 @@ class UpdateOrderBlueprint extends UpdateScript
                         'display'   => 'Order Status',
                         'read_only' => true,
                         'validate'  => 'required',
+                        'listable'  => true,
                     ], 'sidebar');
 
                     $blueprint->ensureFieldInSection('payment_status', [
@@ -38,6 +39,7 @@ class UpdateOrderBlueprint extends UpdateScript
                         'display'   => 'Payment Status',
                         'read_only' => true,
                         'validate'  => 'required',
+                        'listable'  => true,
                     ], 'sidebar');
 
                     $blueprint->ensureFieldInSection('status_log', [
@@ -62,6 +64,7 @@ class UpdateOrderBlueprint extends UpdateScript
                 'display'   => 'Order Status',
                 'read_only' => true,
                 'validate'  => 'required',
+                'listable'  => true,
             ], 'sidebar');
 
             $blueprint->ensureFieldInSection('payment_status', [
@@ -69,6 +72,7 @@ class UpdateOrderBlueprint extends UpdateScript
                 'display'   => 'Payment Status',
                 'read_only' => true,
                 'validate'  => 'required',
+                'listable'  => true,
             ], 'sidebar');
 
             $blueprint->ensureFieldInSection('status_log', [
