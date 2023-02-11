@@ -21,7 +21,8 @@ abstract class BaseGateway
         protected string $webhookUrl = '',
         protected string $redirectUrl = '/',
         protected string $errorRedirectUrl = '/'
-    ) {}
+    ) {
+    }
 
     public function handle(): string
     {
