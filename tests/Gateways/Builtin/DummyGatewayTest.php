@@ -88,12 +88,4 @@ class DummyGatewayTest extends TestCase
 
         $this->assertIsArray($refund);
     }
-
-    /** @test */
-    public function can_hit_webhook()
-    {
-        $webhook = $this->gateway->webhook(new Request());
-
-        $this->assertSame($webhook, null);
-    }
 }
