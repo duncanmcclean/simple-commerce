@@ -2546,7 +2546,7 @@ class TestCheckoutErrorGateway extends BaseGateway implements Gateway
 
     public function checkout(Request $request, OrderContract $order): array
     {
-        throw new GatewayCheckoutFailed("Something went wrong with your payment. Sorry!");
+        throw new GatewayCheckoutFailed('Something went wrong with your payment. Sorry!');
     }
 
     public function checkoutRules(): array

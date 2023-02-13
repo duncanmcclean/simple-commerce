@@ -98,7 +98,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         if ($response->result->status !== 'APPROVED') {
             throw new GatewayCheckoutFailed(
-                "The payment was not approved by PayPal. Please try again.",
+                'The payment was not approved by PayPal. Please try again.',
             );
         }
 
