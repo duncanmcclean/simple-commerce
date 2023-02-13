@@ -146,14 +146,11 @@ sections:
       - handle: coupon
         field:
           max_items: 1
-          mode: select
-          collections:
-            - coupons
-          type: entries
-          listable: false
+          mode: default
+          type: coupon
           display: Coupon
           width: 50
-          read_only: true
+          visibility: read_only
       - handle: shipping_method
         field:
           display: "Shipping Method"
