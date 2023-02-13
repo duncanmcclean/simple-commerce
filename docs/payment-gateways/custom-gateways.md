@@ -4,13 +4,13 @@ title: Building a custom gateway
 
 There's a couple of cases where you might end up building a custom gateway. Either you need to extend an existing gateway and maybe send more/different information to the processor or you may need to connect with a payment processor that we don't include support for.
 
-## Gateway types
+## Different types of gateways
 
 Simple Commerce supports two types of gateways: on-site and off-site.
 
-**On-site gateways** are ones on which the customer will enter their credit card information on your site. As an example: think [Stripe Elements](https://stripe.com/en-gb/payments/elements).
+**On-site gateways** - these are gateways where the customer will enter their payment details directly on your site, using the `{{ sc:checkout }}` tag.
 
-**Off-site gateways** are ones where the customer is redirected to the payment processor in order to enter their payment information and then once entered, they will usually be redirected back to your website. [Mollie](https://www.mollie.com/) is a good example of this.
+**Off-site gateways** - these are gateways where the customer is redirected to the payment gateway's website in order to enter their payment details. Once entered, they'll usually be redirected back onto your website. [Mollie](https://www.mollie.com/) is a good example of this.
 
 ## Creating your gateway
 
@@ -22,39 +22,144 @@ php please make:gateway PayMate onsite
 
 Once created, you'll find the newly generated gateway in your `app/Gateways` folder.
 
-## Explaining the methods
+## Handling on-site payments
 
-The boilerplate gateway has quite a few methods. Here's a quick overview of what each gateway method does and what you should return.
+On-site gateways will have a number of checkout-related methods:
 
-- `name()` - should return the name of your gateway
-- `prepare()` - should be used to either: generate tokens used later on for displaying the payment form or generating an off-site checkout link.
-- `purchase()` - should be used to do the actual purchase (aka. taking the money from the customer)
-- `purchaseRules` - should return an array of [Laravel Validation Rules](https://laravel.com/docs/master/validation#available-validation-rules) for the checkout request.
-- `purchaseMessages` (optional) - should return an array of validation messages for the checkout request, just like in a [Laravel Validation Request](https://laravel.com/docs/master/validation#using-rule-objects).
-- `getCharge()` - should get information about a specific order's charge/transaction.
-- `refundCharge()` - should refund an order
-- `webhook()` - should accept incoming webhook payloads, used for off-site payment gateways.
-- `paymentDisplay()` - should return an array with `text` and a `url` which will be returned by the 'Gateway Fieldtype'
+### `checkout`
 
-## DTOs
+This method is called when you submit the `{{ sc:checkout }}` form. It should return an array of payment data that'll be saved onto the order.
 
-DTOs (also known as Data Transfer Objects) are used to return information back from your gateway to Simple Commerce so it can process it. There's a couple gateway related ones you'll need to know about:
+If you need to display an error message, you should throw a GatewayCheckoutFailed exception.
 
-- [`Prepare`](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Gateways/Prepare.php)
-- [`Purchase`](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Gateways/Purchase.php)
-- [`Response`](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Gateways/Response.php)
+### `checkoutRules`
 
-Each of these DTOs will have slightly different uses. You can view some examples of usage on some of the [built-in gateways](https://github.com/duncanmcclean/simple-commerce/tree/main/src/Gateways/Builtin).
+This method should return an array of validation rules that'll be run whenever the `{{ sc:checkout }}` has been submitted.
 
-## Off-site gateways
+### `checkoutMessages`
 
-### Callback
+This method should return an array of validation messages that'll be used whenever the `{{ sc:checkout }}` has been submitted. This method isn't mandatory.
 
-Recently, a new `callback` method has been introduced for off-site gateways. It will be called by Simple Commerce whenever a user is redirected back to your site from the payment gateway.
+### Example
 
-The method is the deciding factor towards whether the payment was successful or not, this triggers error handling if the payment was not successful.
+Taken directly from Simple Commerce's Stripe implementation, here's an example on how to implement these methods for an on-site gateway:
 
-An example of where this is being used is in the `PayPalGateway`, see below:
+```php
+public function checkout(Request $request, OrderContract $order): array
+{
+    $paymentIntent = PaymentIntent::retrieve($order->get('stripe')['intent']);
+    $paymentMethod = PaymentMethod::retrieve($request->payment_method);
+
+    if ($paymentIntent->status === 'succeeded') {
+        $this->markOrderAsPaid($order);
+    }
+
+    return [
+        'id'       => $paymentMethod->id,
+        'object'   => $paymentMethod->object,
+        'card'     => $paymentMethod->card->toArray(),
+        'customer' => $paymentMethod->customer,
+        'livemode' => $paymentMethod->livemode,
+        'payment_intent' => $paymentIntent->id,
+    ];
+}
+
+public function checkoutRules(): array
+{
+    return [
+        'payment_method' => ['required', 'string'],
+    ];
+}
+
+public function checkoutMessages(): array
+{
+    return [
+        'payment_method.required' => 'The Stripe Payment Method is required when submitting the checkout form.',
+    ];
+}
+```
+
+## Handling off-site payments
+
+### Off-site payment flow
+
+1. After the customer has filled their information/shipping address, they're redirected to the payment gateway's website
+2. The customer enters their payment information on the payment gateway's site.
+3. The payment gateway sends a request back to Simple Commerce using a _webhook_, letting it know the payment is complete (or if it's not, that it's failed)!
+4. The customer is then redirected back to the _callback URL_ and presented with a "Thanks for your order" page.
+
+### Redirecting to payment gateway's website
+
+To redirect a customer to the payment gateway, you can use the `{{ sc:checkout }}` tag, just include the name of the off-site gateway you wish to use. Like so:
+
+```antlers
+{{ sc:checkout:mollie redirect="/thanks" error_redirect="/payment-error" }}
+```
+
+In the above example, `mollie` is the off-site gateway.
+
+However, bear in mind that where-ever you use that tag, the customer will be redirected away from your site. So it's probably best to have it sitting on it's own page.
+
+### Webhooks
+
+When anything changes payment-wise on the order, the off-site gateway will send a request to the configured webhook URL letting it know the status of the payment.
+
+Webhook URLs look a little something like this: `/!/simple-commerce/gateways/YOUR_GATEWAY_NAME/webhook`
+
+And for each webhook, you'll need to add an exception to the CSRF middleware, found in `app/Http/Middleware/VerifyCsrfToken.php`.
+
+```php
+protected $except = [
+  '/!/simple-commerce/gateways/mollie/webhook',
+];
+```
+
+:::note Note!
+When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, Mollie wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
+:::
+
+Now, in your gateway, you can do whatever you need to do to check the status of the payment & update the order's status if necessary.
+
+```php
+public function webhook(Request $request)
+{
+    $mollieId = $request->get('id');
+
+    $payment = $this->mollie->payments->get($mollieId);
+
+    if ($payment->status === MolliePaymentStatus::STATUS_PAID) {
+        $order = collect(OrderFacade::all())
+            ->filter(function ($entry) use ($mollieId) {
+                return isset($entry->data()->get('mollie')['id'])
+                    && $entry->data()->get('mollie')['id']
+                    === $mollieId;
+            })
+            ->map(function ($entry) {
+                return OrderFacade::find($entry->id());
+            })
+            ->first();
+        }
+
+        if (! $order) {
+            throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
+        }
+
+        if ($order->paymentStatus() === PaymentStatus::Paid) {
+            return;
+        }
+
+        $this->markOrderAsPaid($order);
+    }
+}
+```
+
+### Callback URL
+
+The Callback URL is where your customers will hit when being redirected back from your payment gateway.
+
+It's the code that'll decide if your customer is redirected to the `redirect` URL you specified earlier (as a parameter on the `{{ sc:checkout:NAME }}` tag) or the `error_redirect` tag.
+
+An example is provided below of how we handle this in the `PayPalGateway`:
 
 ```php
 public function callback(Request $request): bool
@@ -77,4 +182,16 @@ public function callback(Request $request): bool
 }
 ```
 
-This method may be useful if the status of a payment has not been made clear at the time the user comes back to the server (eg. webhook has not been received yet). You can instead do an API request, or whatever is required, to figure it the status.
+Depending on your gateway, it's possible that your customer may reach your callback URL **before** the webhook request has been processed. You may wish to check-in with your gateway's API directly in the `callback` method.
+
+## Fieldtype Display
+
+`fieldtypeDisplay` might be a bit of a confusing method name. However, this method is responsible for what's displayed when the payment for an order is viewed within the Control Panel.
+
+It's recommended that `text` returns the payment's ID (or something else that's unique to the payment) and the `url` be the URL to view the payment in the payment gateway's dashboard.
+
+If your payment gateway doesn't have a dashboard, `url` can be `null`.
+
+## Digging deeper
+
+If you need more information about a specific method or what parameters should be passed in/out, please review [the `Gateway` contract](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Contracts/Gateway.php) which includes some helpful docblocks.

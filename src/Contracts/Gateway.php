@@ -39,7 +39,7 @@ interface Gateway
      * This method is called when you submit the {{ sc:checkout }} form. It should return
      * an array of payment data that'll be saved onto the order.
      *
-     * If you need to display an error message, you should throw a TODO.
+     * If you need to display an error message, you should throw a GatewayCheckoutFailed exception.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
      *
@@ -60,7 +60,7 @@ interface Gateway
     public function checkoutRules(): array;
 
     /**
-     * This method should return an array of validation messages that'll be run whenever
+     * This method should return an array of validation messages that'll be used whenever
      * the {{ sc:checkout }} has been submitted. This method isn't mandatory.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
