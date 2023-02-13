@@ -107,14 +107,14 @@ class CheckoutTags extends SubTag
             )
         );
 
-        $cart->set($gateway['handle'], $prepare->data());
+        $cart->set($gateway['handle'], $prepare);
 
         $cart->save();
 
-        if (! $prepare->checkoutUrl()) {
+        if (! isset($prepare['checkout_url'])) {
             throw new Exception('This gateway is not an off-site gateway. Please use the normal checkout tag.');
         }
 
-        abort(redirect($prepare->checkoutUrl(), 302));
+        abort(redirect($prepare['checkout_url'], 302));
     }
 }

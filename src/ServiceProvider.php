@@ -207,12 +207,6 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bindContracts()
     {
-        $bindings = [
-            Contracts\GatewayManager::class     => Gateways\Manager::class,
-            Contracts\ShippingManager::class    => Shipping\Manager::class,
-            Contracts\Calculator::class         => Orders\Calculator::class,
-        ];
-
         if (isset(SimpleCommerce::customerDriver()['repository'])) {
             $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
         }
@@ -225,11 +219,15 @@ class ServiceProvider extends AddonServiceProvider
             $bindings[Contracts\ProductRepository::class] = SimpleCommerce::productDriver()['repository'];
         }
 
-        collect($bindings)->each(function ($concrete, $abstract) {
-            if (! $this->app->bound($abstract)) {
-                Statamic::repository($abstract, $concrete);
-            }
-        });
+        foreach ($bindings as $contract => $implementation) {
+            $this->app->booted(function () use ($contract, $implementation) {
+                Statamic::repository($contract, $implementation);
+            });
+        }
+
+        $this->app->bind(Contracts\GatewayManager::class, Gateways\Manager::class);
+        $this->app->bind(Contracts\ShippingManager::class, Shipping\Manager::class);
+        $this->app->bind(Contracts\Calculator::class, Orders\Calculator::class);
 
         $this->app->bind(Contracts\Order::class, Orders\Order::class);
         $this->app->bind(Contracts\Coupon::class, Coupons\Coupon::class);

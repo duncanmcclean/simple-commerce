@@ -46,7 +46,7 @@ class RefundAction extends Action
                 $order = Order::find($entry->id);
 
                 return Gateway::use($order->currentGateway()['class'])
-                    ->refundCharge($order);
+                    ->refund($order);
             });
     }
 

@@ -2,7 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Exceptions;
 
-class StripePaymentIntentNotProvided extends \Exception
+use Exception;
+
+class GatewayCheckoutFailed extends Exception
 {
     //
 }

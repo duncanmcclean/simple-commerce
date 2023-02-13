@@ -77,7 +77,7 @@ class CheckoutController extends BaseActionController
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
             : [],
         $this->request->has('gateway')
-                ? Gateway::use($this->request->get('gateway'))->purchaseRules()
+                ? Gateway::use($this->request->get('gateway'))->checkoutRules()
                 : [],
             [
                 'coupon' => ['nullable', new ValidCoupon($this->order)],
@@ -94,7 +94,7 @@ class CheckoutController extends BaseActionController
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
                 : [],
             $this->request->has('gateway')
-                ? Gateway::use($this->request->get('gateway'))->purchaseMessages()
+                ? Gateway::use($this->request->get('gateway'))->checkoutMessages()
                 : [],
             [],
         );
@@ -244,11 +244,11 @@ class CheckoutController extends BaseActionController
             throw new GatewayNotProvided('No gateway provided.');
         }
 
-        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->order);
+        Gateway::use($this->request->gateway)->checkout($this->request, $this->order);
 
         $this->excludedKeys[] = 'gateway';
 
-        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
+        foreach (Gateway::use($this->request->gateway)->checkoutRules() as $key => $rule) {
             $this->excludedKeys[] = $key;
         }
 

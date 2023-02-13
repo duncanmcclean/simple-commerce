@@ -3,7 +3,9 @@
 namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -24,59 +26,61 @@ class Manager implements Contract
         return $this;
     }
 
-    public function name()
-    {
-        return $this->resolve()->name();
-    }
-
     public function config()
     {
         return $this->resolve()->config();
     }
 
+    public function name()
+    {
+        return $this->resolve()->name();
+    }
+
+    public function isOffsiteGateway(): bool
+    {
+        return $this->resolve()->isOffsiteGateway();
+    }
+
     public function prepare($request, $order)
     {
-        return $this->resolve()->prepare(new Prepare($request, $order));
+        return $this->resolve()->prepare($request, $order);
     }
 
-    public function purchase($request, $order)
+    public function checkout($request, $order)
     {
-        $purchase = $this->resolve()->purchase(new Purchase($request, $order));
-
-        if ($purchase->success()) {
-            $order = Order::find($order->id());
-
-            $order->gateway([
-                'use' => $this->className,
-                'data' => $purchase->data(),
+        try {
+            $checkout = $this->resolve()->checkout($request, $order);
+        } catch (GatewayCheckoutFailed $e) {
+            throw ValidationException::withMessages([
+                'gateway' => $e->getMessage(),
             ]);
-
-            $order->save();
-        } else {
-            throw ValidationException::withMessages([$purchase->error()]);
         }
 
-        return $purchase;
+        $order = Order::find($order->id());
+
+        $order->gateway([
+            'use' => $this->className,
+            'data' => $checkout,
+        ]);
+
+        $order->save();
+
+        return $checkout;
     }
 
-    public function purchaseRules()
+    public function checkoutRules()
     {
-        return $this->resolve()->purchaseRules();
+        return $this->resolve()->checkoutRules();
     }
 
-    public function purchaseMessages()
+    public function checkoutMessages()
     {
-        return $this->resolve()->purchaseMessages();
+        return $this->resolve()->checkoutMessages();
     }
 
-    public function getCharge($order)
+    public function refund(OrderContract $order): array
     {
-        return $this->resolve()->getCharge($order);
-    }
-
-    public function refundCharge($order)
-    {
-        $refund = $this->resolve()->refundCharge($order);
+        $refund = $this->resolve()->refund($order);
 
         $order->fresh()->refund($refund);
         $order->save();
@@ -84,7 +88,7 @@ class Manager implements Contract
         return $refund;
     }
 
-    public function callback(Request $request)
+    public function callback(Request $request): bool
     {
         if (method_exists($this->resolve(), 'callback')) {
             return $this->resolve()->callback($request);
@@ -93,24 +97,19 @@ class Manager implements Contract
         return new GatewayCallbackMethodDoesNotExist("Gateway [{$this->className}] does not have a `callback` method.");
     }
 
-    public function callbackUrl(array $extraParamters = [])
-    {
-        return $this->resolve()->callbackUrl($extraParamters);
-    }
-
     public function webhook(Request $request)
     {
         return $this->resolve()->webhook($request);
     }
 
-    public function isOffsiteGateway(): bool
+    public function fieldtypeDisplay($value): array
     {
-        return $this->resolve()->isOffsiteGateway();
+        return $this->resolve()->fieldtypeDisplay($value);
     }
 
-    public function paymentDisplay($value)
+    public function callbackUrl(array $extraParamters = []): string
     {
-        return $this->resolve()->paymentDisplay($value);
+        return $this->resolve()->callbackUrl($extraParamters);
     }
 
     public function withRedirectUrl(string $redirectUrl): self
@@ -159,10 +158,5 @@ class Manager implements Contract
         }
 
         return resolve($this->className, $data);
-    }
-
-    public static function bindings(): array
-    {
-        return [];
     }
 }

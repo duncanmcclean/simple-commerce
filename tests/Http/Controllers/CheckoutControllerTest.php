@@ -3,22 +3,20 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
@@ -2403,6 +2401,55 @@ class CheckoutControllerTest extends TestCase
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
     }
+
+    /** @test */
+    public function can_post_checkout_and_ensure_gateway_errors_are_handled_correctly()
+    {
+        Event::fake();
+
+        SimpleCommerce::registerGateway(TestCheckoutErrorGateway::class);
+
+        $product = Product::make()
+            ->price(5000)
+            ->data([
+                'title' => 'Bacon',
+            ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id'       => Stache::generateId(),
+                'product'  => $product->id,
+                'quantity' => 1,
+                'total'    => 5000,
+            ],
+        ])->grandTotal(5000);
+
+        $order->save();
+
+        $this
+            ->withSession(['simple-commerce-cart' => $order->id])
+            ->post(route('statamic.simple-commerce.checkout.store'), [
+                'name'         => 'Smelly Joe',
+                'email'        => 'smelly.joe@example.com',
+                'gateway'      => TestCheckoutErrorGateway::class,
+            ])
+            ->assertSessionHasErrors('gateway');
+
+        $order = $order->fresh();
+
+        // Assert events have been dispatched
+        Event::assertDispatched(PreCheckout::class);
+        Event::assertNotDispatched(PostCheckout::class);
+
+        $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
+        $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNull($order->statusLog('paid'));
+
+        // Finally, assert order is no longer attached to the users' session
+        $this->assertTrue(session()->has('simple-commerce-cart'));
+    }
 }
 
 class CheckoutFormRequest extends FormRequest
@@ -2434,40 +2481,87 @@ class TestValidationGateway extends BaseGateway implements Gateway
         return 'Test Validation Gateway';
     }
 
-    public function prepare(Prepare $data): Response
+    public function isOffsiteGateway(): bool
     {
-        return new Response(true, [
+        return false;
+    }
+
+    public function prepare(Request $request, OrderContract $order): array
+    {
+        return [
             'bagpipes' => 'music',
-        ], 'http://backpipes.com');
+            'checkout_url' => 'http://backpipes.com',
+        ];
     }
 
-    public function purchase(Purchase $data): Response
+    public function checkout(Request $request, OrderContract $order): array
     {
-        return new Response(true);
+        return [];
     }
 
-    public function purchaseRules(): array
+    public function checkoutRules(): array
     {
         return [
             'something_mental' => ['required'],
         ];
     }
 
-    public function purchaseMessages(): array
+    public function checkoutMessages(): array
     {
         return [
             'something_mental.required' => 'You must have something mental to do.',
         ];
     }
 
-    public function getCharge(ContractsOrder $order): Response
+    public function refund(OrderContract $order): array
     {
-        return new Response(true, []);
+        return [];
     }
 
-    public function refundCharge(ContractsOrder $order): Response
+    public function webhook(Request $request)
     {
-        return new Response(true, []);
+        return 'Success.';
+    }
+}
+
+class TestCheckoutErrorGateway extends BaseGateway implements Gateway
+{
+    public function name(): string
+    {
+        return 'Test Checkout Error Gateway';
+    }
+
+    public function isOffsiteGateway(): bool
+    {
+        return false;
+    }
+
+    public function prepare(Request $request, OrderContract $order): array
+    {
+        return [
+            'bagpipes' => 'music',
+            'checkout_url' => 'http://backpipes.com',
+        ];
+    }
+
+    public function checkout(Request $request, OrderContract $order): array
+    {
+        throw new GatewayCheckoutFailed('Something went wrong with your payment. Sorry!');
+    }
+
+    public function checkoutRules(): array
+    {
+        return [];
+    }
+
+    public function checkoutMessages(): array
+    {
+        return [];
+    }
+
+    public function refund(OrderContract $order): array
+    {
+        return [];
     }
 
     public function webhook(Request $request)

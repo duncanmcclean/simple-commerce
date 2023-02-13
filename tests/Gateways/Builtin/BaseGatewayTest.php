@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -9,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
 class BaseGatewayTest extends TestCase
@@ -108,6 +110,16 @@ class FakeOnsiteGateway extends BaseGateway
     {
         return false;
     }
+
+    public function prepare(Request $request, ContractsOrder $order): array
+    {
+        return [];
+    }
+
+    public function refund(ContractsOrder $order): ?array
+    {
+        return [];
+    }
 }
 
 class FakeOffsiteGateway extends BaseGateway
@@ -120,5 +132,15 @@ class FakeOffsiteGateway extends BaseGateway
     public function isOffsiteGateway(): bool
     {
         return true;
+    }
+
+    public function prepare(Request $request, ContractsOrder $order): array
+    {
+        return [];
+    }
+
+    public function refund(ContractsOrder $order): ?array
+    {
+        return [];
     }
 }

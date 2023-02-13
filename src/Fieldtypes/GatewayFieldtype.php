@@ -68,7 +68,7 @@ class GatewayFieldtype extends Fieldtype
             'entry' => optional($this->field->parent())->id(),
 
             'gateway_class' => $gateway['class'],
-            'payment_display' => Gateway::use($gateway['class'])->paymentDisplay($value),
+            'display' => Gateway::use($gateway['class'])->fieldtypeDisplay($value),
 
             'actions' => $actions,
             'action_url' => $actionUrl,
