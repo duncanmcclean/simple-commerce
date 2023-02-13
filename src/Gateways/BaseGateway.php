@@ -105,8 +105,7 @@ abstract class BaseGateway
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
-        // TODO: Can I not just make the third parameter true and get rid of the app url thing??
-        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
+        return route('statamic.simple-commerce.gateways.callback', $data);
     }
 
     public function webhookUrl(): string
