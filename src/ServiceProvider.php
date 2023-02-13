@@ -311,9 +311,11 @@ class ServiceProvider extends AddonServiceProvider
                 class_exists('DoubleThreeDigital\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class)
             ) {
+                $orderResource = Runway::orderModel();
+
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
-                    ->route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()])
+                    ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
                     ->can("View {$orderResource->plural()}")
                     ->icon(SimpleCommerce::svg('shop'));
             }
