@@ -90,6 +90,45 @@ Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 
 
 To upgrade to Statamic 3.4, you should follow the steps outlined in the official [Upgrade Guide](https://statamic.dev/upgrade-guide/3-3-to-3-4).
 
+### Medium: Changes to Gateway API
+
+As part of improving the developer experience in Simple Commerce, there has been some changes to the Gateways API. If you're using a custom gateway in your project, you will need to make some manual changes, as detailed below.
+
+If you're using a built-in gateway, you don't need to worry about these changes.
+
+#### `prepare`
+
+-   The parameters for this method have changed. It now accepts `$request` and `$order` parameters, instead of a `Prepare` object.
+-   This method no longer returns a `Response`, instead it simply returns an array.
+
+#### `purchase`
+
+-   This method has been renamed `checkout`
+-   The parameters for this method have changed. It now accepts `$request` and `$order` parameters, instead of a `Prepare` object.
+-   This method no longer returns a `Response`, instead it simply returns an array.
+
+#### `purchaseRules`
+
+-   This method has been renamed `checkoutRules`
+
+#### `purchaseMessages`
+
+-   This method has been renamed `checkoutMessages`
+
+#### `getCharge`
+
+-   This method has been removed. It wasn't used by Simple Commerce anywhere so it didn't make sense to keep it.
+-   If you use it inside your gateway's class, you can keep it.
+
+#### `refundCharge`
+
+-   This method has been renamed `refund`
+-   This method now returns an `array`. The contents of which will be saved to the order's gateway data for future reference.
+
+#### `paymentDisplay`
+
+-   This method has been renamed `fieldtypeDisplay`
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
