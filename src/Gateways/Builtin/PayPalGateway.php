@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
@@ -96,7 +97,9 @@ class PayPalGateway extends BaseGateway implements Gateway
         $response = $this->paypalClient->execute($request);
 
         if ($response->result->status !== 'APPROVED') {
-            // TODO: Throw exception
+            throw new GatewayCheckoutFailed(
+                "The payment was not approved by PayPal. Please try again.",
+            );
         }
 
         return json_decode(json_encode($response->result), true);

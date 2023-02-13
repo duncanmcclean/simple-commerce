@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -47,7 +48,13 @@ class Manager implements Contract
 
     public function checkout($request, $order)
     {
-        $checkout = $this->resolve()->checkout($request, $order);
+        try {
+            $checkout = $this->resolve()->checkout($request, $order);
+        } catch (GatewayCheckoutFailed $e) {
+            throw ValidationException::withMessages([
+                'gateway' => $e->getMessage(),
+            ]);
+        }
 
         $order = Order::find($order->id());
 
@@ -57,11 +64,6 @@ class Manager implements Contract
         ]);
 
         $order->save();
-
-        // TODO: Catch any exception that's thrown...
-        // throw ValidationException::withMessages([
-        //     $checkout->error(),
-        // ]);
 
         return $checkout;
     }
