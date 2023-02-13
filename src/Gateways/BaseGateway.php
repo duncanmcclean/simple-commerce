@@ -127,7 +127,7 @@ abstract class BaseGateway
      * Once you've confirmed that the payment has been made, you can mark the order as paid
      * using this method. For off-site gateways, it'll handle updating stock & redeeming any coupons.
      *
-     * @param Order $order
+     * @param  Order  $order
      * @return bool
      */
     public function markOrderAsPaid(Order $order): bool
