@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -64,8 +64,7 @@ abstract class BaseGateway
 
     public function checkout(Request $request, Order $order): array
     {
-        // TODO: Should we improve our handling of onsite/offsite methods over the board?
-        throw new GatewayDoesNotSupportPurchase("Gateway [{$this->handle}] does not support the 'purchase' method.");
+        throw new GatewayHasNotImplementedMethod('checkout');
     }
 
     public function checkoutRules(): array
@@ -82,14 +81,12 @@ abstract class BaseGateway
 
     public function callback(Request $request): bool
     {
-        // TODO: Not implemented...
-
-        return false;
+        throw new GatewayHasNotImplementedMethod('callback');
     }
 
     public function webhook(Request $request)
     {
-        // TODO: Not implemented...
+        throw new GatewayHasNotImplementedMethod('webhook');
     }
 
     public function fieldtypeDisplay($value): array

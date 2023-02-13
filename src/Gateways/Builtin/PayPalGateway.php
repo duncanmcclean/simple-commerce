@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
@@ -86,7 +85,7 @@ class PayPalGateway extends BaseGateway implements Gateway
     public function checkout(Request $request, Order $order): array
     {
         if ($this->isOffsiteGateway()) {
-            throw new GatewayDoesNotSupportPurchase('Gateway [paypal] does not support the `purchase` method.');
+            throw new \Exception('The PayPal gateway does not support the [checkout] method when in off-site mode.');
         }
 
         $this->setupPayPal();
