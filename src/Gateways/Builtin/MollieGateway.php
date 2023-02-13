@@ -54,7 +54,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
         return [
             'id' => $payment->id,
-            'checkout_url' => $payment->getCheckoutUrl(), // TODO: Make sure this is covered...
+            'checkout_url' => $payment->getCheckoutUrl(),
         ];
     }
 
