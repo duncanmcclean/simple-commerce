@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
@@ -85,30 +86,7 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === MolliePaymentStatus::STATUS_PAID) {
-            $order = null;
-
-            if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-                // TODO: refactor this query
-                $order = collect(OrderFacade::all())
-                    ->filter(function ($entry) use ($mollieId) {
-                        return isset($entry->data()->get('mollie')['id'])
-                            && $entry->data()->get('mollie')['id']
-                            === $mollieId;
-                    })
-                    ->map(function ($entry) {
-                        return OrderFacade::find($entry->id());
-                    })
-                    ->first();
-            }
-
-            if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-                $order = (new (SimpleCommerce::orderDriver()['model']))
-                    ->query()
-                    ->where('data->mollie->id', $mollieId)
-                    ->first();
-
-                $order = OrderFacade::find($order->id);
-            }
+            $order = $this->getOrderFromWebhookRequest($request);
 
             if (! $order) {
                 throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
@@ -119,6 +97,16 @@ class MollieGateway extends BaseGateway implements Gateway
             }
 
             $this->markOrderAsPaid($order);
+        }
+
+        if ($payment->status === MolliePaymentStatus::STATUS_FAILED) {
+            $order = $this->getOrderFromWebhookRequest($request);
+
+            if (! $order) {
+                throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
+            }
+
+            event(new OrderPaymentFailed($order));
         }
     }
 
@@ -160,5 +148,33 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         return is_subclass_of($class, $classToCheckAgainst)
             || $class === $classToCheckAgainst;
+    }
+
+    protected function getOrderFromWebhookRequest(Request $request): ?Order
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            // TODO: refactor this query
+            return collect(OrderFacade::all())
+                ->filter(function ($entry) use ($mollieId) {
+                    return isset($entry->data()->get('mollie')['id'])
+                        && $entry->data()->get('mollie')['id']
+                        === $mollieId;
+                })
+                ->map(function ($entry) {
+                    return OrderFacade::find($entry->id());
+                })
+                ->first();
+        }
+
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            $order = (new (SimpleCommerce::orderDriver()['model']))
+                ->query()
+                ->where('data->mollie->id', $mollieId)
+                ->first();
+
+            return OrderFacade::find($order->id);
+        }
+
+        return null;
     }
 }
