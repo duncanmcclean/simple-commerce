@@ -44,5 +44,5 @@ jobs:
         env:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
-          # MOLLIE_KEY: ${{ secrets.MOLLIE_KEY }}
-          # MOLLIE_PROFILE: ${{ secrets.MOLLIE_PROFILE }}
+          MOLLIE_KEY: ${{ secrets.MOLLIE_KEY }}
+          MOLLIE_PROFILE: ${{ secrets.MOLLIE_PROFILE }}
