@@ -93,7 +93,7 @@ class BaseGatewayTest extends TestCase
         $this->assertTrue($markOrderAsPaid);
         $this->assertTrue($order->fresh()->isPaid());
 
-        Event::assertDispatched(function (OrderPaid $event) use ($fakeGateway) {
+        Event::assertDispatched(function (OrderPaid $event) {
             return $event->order->gateway['use'] instanceof FakeOffsiteGateway;
         });
 
@@ -168,7 +168,7 @@ class BaseGatewayTest extends TestCase
         $this->assertTrue($markOrderAsPaid);
         $this->assertTrue($order->fresh()->isPaid());
 
-        Event::assertDispatched(function (OrderPaid $event) use ($fakeGateway) {
+        Event::assertDispatched(function (OrderPaid $event) {
             return $event->order->gateway['use'] instanceof FakeOnsiteGateway;
         });
     }
