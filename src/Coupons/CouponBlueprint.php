@@ -6,10 +6,11 @@ use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
+use Statamic\Fields\Blueprint as FieldsBlueprint;
 
 class CouponBlueprint
 {
-    public static function getBlueprint()
+    public static function getBlueprint(): FieldsBlueprint
     {
         $customerField = [
             'mode' => 'default',
