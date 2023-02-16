@@ -127,6 +127,13 @@ class BaseGateway
 
     public function markOrderAsPaid(Order $order): bool
     {
+        // We need to ensure that the gateway is available in the
+        // order when the OrderPaid event is dispatched.
+        $order->gateway([
+            'use' => $this,
+            'data' => [],
+        ]);
+
         if ($this->isOffsiteGateway()) {
             $order = app(Pipeline::class)
                 ->send($order)
