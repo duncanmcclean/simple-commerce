@@ -38,12 +38,18 @@ class CouponController
 
     public function store(StoreRequest $request)
     {
+        $fields = CouponBlueprint::getBlueprint()
+            ->fields()
+            ->addValues($request->validated())
+            ->process()
+            ->values();
+
         $coupon = Coupon::make()
-            ->code(Str::upper($request->code))
-            ->type($request->type)
-            ->value($request->value)
-            ->enabled($request->enabled ?? true)
-            ->data(Arr::except($request->validated(), ['code', 'type', 'value', 'enabled']));
+            ->code(Str::upper($fields->get('code')))
+            ->type($fields->get('type'))
+            ->value($fields->get('value'))
+            ->enabled($fields->get('enabled'))
+            ->data(Arr::except($fields, ['code', 'type', 'value', 'enabled']));
 
         $coupon->save();
 
@@ -79,12 +85,18 @@ class CouponController
     {
         $coupon = Coupon::find($coupon);
 
+        $fields = CouponBlueprint::getBlueprint()
+            ->fields()
+            ->addValues($request->validated())
+            ->process()
+            ->values();
+
         $coupon
-            ->code(Str::upper($request->code))
-            ->type($request->type)
-            ->value($request->value)
-            ->enabled($request->enabled ?? true)
-            ->data(Arr::except($request->validated(), ['code', 'type', 'value', 'enabled']))
+            ->code(Str::upper($fields->get('code')))
+            ->type($fields->get('type'))
+            ->value($fields->get('value'))
+            ->enabled($fields->get('enabled'))
+            ->data(Arr::except($fields, ['code', 'type', 'value', 'enabled']))
             ->save();
 
         return [
