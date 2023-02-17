@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v4.5.5 (2023-02-17)
+
+### What's fixed
+
+-   Handle £0 orders when redirecting to off-site gateways #822 by @duncanmcclean
+-   When gateway was included in the `OrderPaid` event, it was an instance of the gateway, not the class name like it should have been by @duncanmcclean
+
 ## v4.5.4 (2023-02-16)
 
 ### What's fixed
