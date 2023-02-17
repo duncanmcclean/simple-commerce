@@ -125,9 +125,9 @@ class CheckoutTagTest extends TestCase
         $this->tag->wildcard('testoffsitegateway');
     }
 
-     /** @test */
-     public function can_redirect_user_to_confirmation_page_instead_of_offsite_gateway_when_order_total_is_0()
-     {
+    /** @test */
+    public function can_redirect_user_to_confirmation_page_instead_of_offsite_gateway_when_order_total_is_0()
+    {
         $product = Product::make()->price(1500);
         $product->save();
 
@@ -161,7 +161,7 @@ class CheckoutTagTest extends TestCase
         $usage = $this->tag->wildcard('testoffsitegateway');
 
         $this->assertTrue($cart->fresh()->isPaid());
-     }
+    }
 
     protected function fakeCart($cart = null)
     {
