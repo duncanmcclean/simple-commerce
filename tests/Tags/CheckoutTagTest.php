@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
@@ -123,6 +124,44 @@ class CheckoutTagTest extends TestCase
 
         $this->tag->wildcard('testoffsitegateway');
     }
+
+     /** @test */
+     public function can_redirect_user_to_confirmation_page_instead_of_offsite_gateway_when_order_total_is_0()
+     {
+        $product = Product::make()->price(1500);
+        $product->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 1500,
+            ],
+        ]);
+        $cart->save();
+
+        $coupon = Coupon::make()->code('FREEBIE')->value(100)->type('percentage')->enabled(true);
+        $coupon->save();
+
+        $cart->coupon($coupon);
+        $cart->recalculate();
+        $cart->save();
+
+        $this->fakeCart($cart);
+
+        Session::shouldReceive('forget');
+        Session::shouldReceive('put');
+
+        $this->assertFalse($cart->isPaid());
+
+        $this->tag->setParameters([
+            'redirect' => 'http://localhost/order-confirmation',
+        ]);
+
+        $usage = $this->tag->wildcard('testoffsitegateway');
+
+        $this->assertTrue($cart->fresh()->isPaid());
+     }
 
     protected function fakeCart($cart = null)
     {
