@@ -94,7 +94,7 @@ class BaseGatewayTest extends TestCase
         $this->assertTrue($order->fresh()->isPaid());
 
         Event::assertDispatched(function (OrderPaid $event) {
-            return $event->order->gateway['use'] instanceof FakeOffsiteGateway;
+            return $event->order->gateway['use'] === FakeOffsiteGateway::class;
         });
 
         // Assert stock count has been updated
@@ -169,7 +169,7 @@ class BaseGatewayTest extends TestCase
         $this->assertTrue($order->fresh()->isPaid());
 
         Event::assertDispatched(function (OrderPaid $event) {
-            return $event->order->gateway['use'] instanceof FakeOnsiteGateway;
+            return $event->order->gateway['use'] === FakeOnsiteGateway::class;
         });
     }
 }
