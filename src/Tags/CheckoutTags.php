@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
 {
@@ -84,6 +85,30 @@ class CheckoutTags extends SubTag
 
         if (! $gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);
+        }
+
+        // If the cart total is 0, don't redirect to the payment gateway,
+        // mark the order as paid here and redirect to the success page
+        if ($cart->grandTotal() === 0) {
+            $cart->markAsPaid();
+
+            $this->forgetCart();
+
+            Session::put('simple-commerce.checkout.success', [
+                'order_id' => $cart->id(),
+                'expiry' => now()->addMinutes(30),
+                'url' => $this->params->get('redirect'),
+            ]);
+
+            $data = [
+                'success' => __('Checkout Complete!'),
+                'cart'    => $cart->toAugmentedArray(),
+                'is_checkout_request' => true,
+            ];
+
+            return $this->params->get('redirect') ?
+                redirect($this->params->get('redirect'))->with($data)
+                : back()->with($data);
         }
 
         $prepare = Gateway::use($gateway['class']);
