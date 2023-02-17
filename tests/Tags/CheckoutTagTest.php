@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
@@ -28,6 +29,8 @@ class CheckoutTagTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->useBasicTaxEngine();
 
         $this->tag = resolve(CheckoutTags::class)
             ->setParser(Antlers::parser())
@@ -124,7 +127,17 @@ class CheckoutTagTest extends TestCase
     protected function fakeCart($cart = null)
     {
         if (is_null($cart)) {
-            $cart = Order::make();
+            $product = Product::make()->price(1500);
+            $product->save();
+
+            $cart = Order::make()->lineItems([
+                [
+                    'product' => $product->id(),
+                    'quantity' => 1,
+                    'total' => 1500,
+                ],
+            ]);
+            $cart->recalculate();
             $cart->save();
         }
 
