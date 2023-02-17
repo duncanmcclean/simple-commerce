@@ -48,7 +48,7 @@ class CheckoutTags extends SubTag
                         $config = Gateway::use($gateway['class'])->config();
 
                         $callbackUrl = Gateway::use($gateway['class'])
-                            ->withRedirectUrl($this->params->get('redirect'))
+                            ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
                             ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
                             ->callbackUrl();
 
