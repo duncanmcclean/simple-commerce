@@ -220,4 +220,14 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $this->isUsingTestMode = str_contains($this->config()->get('secret'), 'sk_test_');
     }
+
+    protected function inCardElementsMode(): bool
+    {
+        return $this->config()->get('mode', 'payment_elements') === 'card_elements';
+    }
+
+    protected function inPaymentElementsMode(): bool
+    {
+        return $this->config()->get('mode', 'payment_elements') === 'payment_elements';
+    }
 }
