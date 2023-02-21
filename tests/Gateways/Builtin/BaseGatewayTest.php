@@ -94,9 +94,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(function (OrderPaid $event) {
+        Event::assertDispatched(function (PaymentStatusUpdated $event) {
             return $event->order->gateway['use'] === FakeOffsiteGateway::class;
         });
 
@@ -169,9 +169,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(function (OrderPaid $event) {
+        Event::assertDispatched(function (PaymentStatusUpdated $event) {
             return $event->order->gateway['use'] === FakeOnsiteGateway::class;
         });
     }

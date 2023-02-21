@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
 use DoubleThreeDigital\SimpleCommerce\Tags\GatewayTags;
@@ -150,7 +151,7 @@ class CheckoutTagTest extends TestCase
         Session::shouldReceive('forget');
         Session::shouldReceive('put');
 
-        $this->assertFalse($cart->isPaid());
+        $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Unpaid);
 
         $this->tag->setParameters([
             'redirect' => 'http://localhost/order-confirmation',
@@ -158,7 +159,7 @@ class CheckoutTagTest extends TestCase
 
         $usage = $this->tag->wildcard('testoffsitegateway');
 
-        $this->assertTrue($cart->fresh()->isPaid());
+        $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Paid);
     }
 
     protected function fakeCart($cart = null)
