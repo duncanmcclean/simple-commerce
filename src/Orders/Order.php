@@ -149,7 +149,7 @@ class Order implements Contract
                 }
 
                 if ($value instanceof CustomerContract) {
-                    return $value->id();
+                    return $value;
                 }
 
                 return Customer::find($value);
@@ -167,7 +167,7 @@ class Order implements Contract
                 }
 
                 if ($value instanceof CouponContract) {
-                    return $value->id();
+                    return $value;
                 }
 
                 return Coupon::find($value);

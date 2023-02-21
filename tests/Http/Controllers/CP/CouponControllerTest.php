@@ -51,6 +51,7 @@ class CouponControllerTest extends TestCase
                 'type' => 'percentage',
                 'value' => 30,
                 'description' => '30% discount on a Thursday!',
+                'minimum_cart_value' => '65.00',
                 'enabled' => true,
             ])
             ->assertJsonStructure([
@@ -63,6 +64,7 @@ class CouponControllerTest extends TestCase
         $this->assertSame($coupon->value(), 30);
         $this->assertSame($coupon->enabled(), true);
         $this->assertSame($coupon->get('description'), '30% discount on a Thursday!');
+        $this->assertSame($coupon->get('minimum_cart_value'), 6500);
     }
 
     /** @test */
@@ -153,6 +155,7 @@ class CouponControllerTest extends TestCase
                 'value' => 51,
                 'description' => 'You can actually get a 51% discount on Friday!',
                 'enabled' => false,
+                'minimum_cart_value' => '76.00',
             ])
             ->assertJsonStructure([
                 'coupon',
@@ -163,6 +166,7 @@ class CouponControllerTest extends TestCase
         $this->assertSame($coupon->value(), 51);
         $this->assertSame($coupon->enabled(), false);
         $this->assertSame($coupon->get('description'), 'You can actually get a 51% discount on Friday!');
+        $this->assertSame($coupon->get('minimum_cart_value'), 7600);
     }
 
     /** @test */

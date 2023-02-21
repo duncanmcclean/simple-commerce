@@ -9,7 +9,7 @@
     ])
 
     <publish-form
-        title="{{ __('Edit Coupon') }} }}"
+        title="{{ __('Edit Coupon') }}"
         action="{{ $coupon->updateUrl() }}"
         :blueprint='@json($blueprint)'
         :meta='@json($meta)'

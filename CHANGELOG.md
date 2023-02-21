@@ -2,15 +2,32 @@
 
 ## Unreleased
 
+## v4.5.5 (2023-02-17)
+
+### What's fixed
+
+-   Handle £0 orders when redirecting to off-site gateways #821 #822 by @duncanmcclean
+-   When gateway was included in the `OrderPaid` event, it was an instance of the gateway, not the class name like it should have been by @duncanmcclean
+
+## v4.5.4 (2023-02-16)
+
+### What's fixed
+
+-   Fix gateway not included in order when listening to `OrderPaid` event #817 by @duncanmcclean
+-   Ensure coupon fields are processed when creating/updating coupons #819
+-   Fixed an issue with title of Edit Coupon page
+-   Update coupon field in order blueprint stub for database orders
+-   Fix issue with `sc:switch-to-database` where it would incorrectly think the command had already been run
+
 ## v4.5.3 (2023-02-04)
 
 ### What's new
 
-* You can now use Simple Commerce's form tags with Blade! #792 by @jacksleight
+-   You can now use Simple Commerce's form tags with Blade! #792 by @jacksleight
 
 ### What's fixed
 
-* Fixed an error that was shown after deleting tax categories/zones/rates when using the Standard tax engine #803 by @duncanmcclean
+-   Fixed an error that was shown after deleting tax categories/zones/rates when using the Standard tax engine #803 by @duncanmcclean
 
 ## v4.5.2 (2023-02-01)
 
