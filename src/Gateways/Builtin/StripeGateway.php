@@ -32,6 +32,11 @@ class StripeGateway extends BaseGateway implements Gateway
         return __('Stripe');
     }
 
+    public function isOffsiteGateway(): bool
+    {
+        return $this->inPaymentElementsMode();
+    }
+
     public function prepare(Request $request, OrderContract $order): array
     {
         $this->setUpWithStripe();
@@ -80,6 +85,10 @@ class StripeGateway extends BaseGateway implements Gateway
 
     public function checkout(Request $request, OrderContract $order): array
     {
+        if ($this->inPaymentElementsMode()) {
+            return parent::checkout($request, $order);
+        }
+
         $this->setUpWithStripe();
 
         $paymentIntent = PaymentIntent::retrieve($order->get('stripe')['intent']);

@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -23,6 +24,7 @@ class StripeGatewayTest extends TestCase
     use SetupCollections, RefreshContent;
 
     public StripeGateway $cardElementsGateway;
+    public StripeGateway $paymentElementsGateway;
 
     public function setUp(): void
     {
@@ -33,6 +35,11 @@ class StripeGatewayTest extends TestCase
         $this->cardElementsGateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
             'mode' => 'card_elements',
+        ]);
+
+        $this->paymentElementsGateway = new StripeGateway([
+            'secret' => env('STRIPE_SECRET'),
+            'mode' => 'payment_elements',
         ]);
     }
 
@@ -275,7 +282,7 @@ class StripeGatewayTest extends TestCase
     }
 
     /** @test */
-    public function can_checkout()
+    public function can_checkout_when_in_card_elements_mode()
     {
         if (! env('STRIPE_SECRET')) {
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
@@ -342,6 +349,69 @@ class StripeGatewayTest extends TestCase
         $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
         $this->assertNotNull($order->statusLog('paid'));
     }
+
+     /** @test */
+     public function cant_checkout_when_in_payment_elements_mode()
+     {
+         if (! env('STRIPE_SECRET')) {
+             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+         }
+
+         Stripe::setApiKey(env('STRIPE_SECRET'));
+
+         $product = Product::make()
+             ->price(1234)
+             ->data([
+                 'title' => 'Zoo Ticket',
+             ]);
+
+         $product->save();
+
+         $order = Order::make()->lineItems([
+             [
+                 'id' => app('stache')->generateId(),
+                 'product' => $product->id,
+                 'quantity' => 1,
+                 'total' => 1234,
+                 'metadata' => [],
+             ],
+         ])->grandTotal(1234)->merge([
+             'title' => '#0004',
+             'stripe' => [
+                 'intent' => $paymentIntent = PaymentIntent::create([
+                     'amount' => 1234,
+                     'currency' => 'GBP',
+                 ])->id,
+             ],
+         ]);
+
+         $order->save();
+
+         $paymentMethod = PaymentMethod::create([
+             'type' => 'card',
+             'card' => [
+                 'number' => '4242424242424242',
+                 'exp_month' => 7,
+                 'exp_year' => 2024,
+                 'cvc' => '314',
+             ],
+         ]);
+
+         PaymentIntent::retrieve($paymentIntent)->confirm([
+             'payment_method' => $paymentMethod->id,
+         ]);
+
+         $request = new Request(['payment_method' => $paymentMethod->id]);
+
+         $this->expectException(GatewayHasNotImplementedMethod::class);
+
+         $checkout = $this->paymentElementsGateway->checkout($request, $order);
+
+         $order = $order->fresh();
+
+         $this->assertSame($order->paymentStatus(), PaymentStatus::Unpaid);
+         $this->assertNotNull($order->statusLog('paid'));
+     }
 
     /** @test */
     public function has_checkout_rules()
