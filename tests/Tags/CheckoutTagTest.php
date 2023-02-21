@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
