@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
@@ -486,9 +487,14 @@ class StripeGatewayTest extends TestCase
             ],
         ];
 
-        $webhook = $this->cardElementsGateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
+        $webhook = $this->paymentElementsGateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
 
         $this->assertTrue($webhook instanceof Response);
+
+        $order->fresh();
+
+        $this->assertSame($order->status(), OrderStatus::Placed);
+        $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
     }
 
     /** @test */
