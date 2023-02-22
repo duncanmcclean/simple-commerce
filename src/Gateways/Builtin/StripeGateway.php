@@ -71,6 +71,12 @@ class StripeGateway extends BaseGateway implements Gateway
             );
         }
 
+        if ($this->inPaymentElementsMode()) {
+            $intentData['automatic_payment_methods'] = [
+                'enabled' => true,
+            ];
+        }
+
         // We're setting this after the rest of the payment intent data,
         // in case the developer adds their own stuff to 'metadata'.
         $intentData['metadata']['order_id'] = $order->id;
@@ -146,6 +152,23 @@ class StripeGateway extends BaseGateway implements Gateway
             'amount' => $refund->amount,
             'payment_intent' => $refund->payment_intent,
         ];
+    }
+
+    public function callback(Request $request): bool
+    {
+        if ($this->inCardElementsMode()) {
+            return parent::callback($request);
+        }
+
+        $this->setUpWithStripe();
+
+        $paymentIntent = PaymentIntent::retrieve($request->payment_intent);
+
+        if (! $paymentIntent) {
+            return false;
+        }
+
+        return $paymentIntent->status === 'succeeded';
     }
 
     public function webhook(Request $request)
