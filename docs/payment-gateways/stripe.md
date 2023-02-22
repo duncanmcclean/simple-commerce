@@ -42,7 +42,7 @@ A rough example of a Stripe Elements implementation is provided below.
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    var stripe = Stripe('{{ gateway-config:key }}')
+    var stripe = Stripe('{{ stripe:config:key }}')
     var elements = stripe.elements()
 
     const card = elements.create('card')
@@ -53,7 +53,7 @@ A rough example of a Stripe Elements implementation is provided below.
     })
 
     function confirmPayment() {
-        stripe.confirmCardPayment('{{ client_secret }}', {
+        stripe.confirmCardPayment('{{ stripe:client_secret }}', {
             payment_method: { card: card },
         }).then(function (result) {
           	if (result.paymentIntent.status === 'succeeded') {
