@@ -62,7 +62,7 @@ class SimpleCommerce
                     'formatted_class' => addslashes($gateway[0]),
                     'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'checkoutRules'   => $instance->checkoutRules(),
-                    'gateway-config'  => $gateway[1],
+                    'config'  => $gateway[1],
                     'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
                 ];
             })

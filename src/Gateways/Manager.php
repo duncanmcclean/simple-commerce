@@ -141,7 +141,7 @@ class Manager implements Contract
             ->first();
 
         $data = [
-            'config' => $gateway['gateway-config'],
+            'config' => $gateway['config'],
             'handle' => $gateway['handle'],
         ];
 
