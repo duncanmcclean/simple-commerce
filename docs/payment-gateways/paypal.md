@@ -78,7 +78,7 @@ A rough example of a PayPal implementation is provided below.
 <div id="paypal-button"></div>
 <input id="paypal-payment-id" type="hidden" name="payment_id">
 <input type="hidden" name="gateway" value="DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\PayPalGateway">
-<script src="https://www.paypal.com/sdk/js?client-id={{ gateway-config:client_id }}&currency={{ result.currency_code }}"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal:config:client_id }}&currency={{ result.currency_code }}"></script>
 <script>
     paypal.Buttons({
         createOrder: () => {

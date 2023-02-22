@@ -107,7 +107,7 @@ class GatewayFieldtypeTest extends TestCase
         $this->assertArrayHasKey('formatted_class', $augment);
         $this->assertArrayHasKey('display', $augment);
         $this->assertArrayHasKey('checkoutRules', $augment);
-        $this->assertArrayHasKey('gateway-config', $augment);
+        $this->assertArrayHasKey('config', $augment);
         $this->assertArrayHasKey('webhook_url', $augment);
         $this->assertArrayHasKey('data', $augment);
     }

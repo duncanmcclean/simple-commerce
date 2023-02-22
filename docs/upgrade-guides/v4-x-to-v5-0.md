@@ -84,6 +84,21 @@ It'll then work through the orders in your database and set the status columns. 
 
 You may create your own migration to remove the 'old' columns after deploying if you wish (`is_paid`, `is_shipped`, `is_refunded`).
 
+### High: Variables are passed differently into the `{{ sc:checkout }}` form
+
+Sometimes, you could run into issues with the `{{ sc:checkout }}` form where variables for one gateway would leak over into the other because they were sharing the same "space" for their variables.
+
+In v5, we've slightly changed the format variables are passed into the `{{ sc:checkout }}` form to prevent this from happening.
+
+Due to the format changing, you may need to update code in your checkout form.
+
+1. If you're getting any variables that come from gateways, you should get it from that gateway's array:
+    - `{{ client_secret }}` -> `{{ stripe:client_secret }}`
+2. If you're getting config values for a gateway, you should get it from that gateway's config array:
+    - `{{ gateway-config:key }}` -> `{{ stripe:config:key }}`
+3. If you're getting the callback URL for a gateway, you should get it from that gateway's array:
+    - `{{ callback_url }}` -> `{{ stripe:callback_url }}`
+
 ### Medium: Support for Statamic 3.3 has been dropped
 
 Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 the only current version supported.
