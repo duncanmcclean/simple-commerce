@@ -185,11 +185,11 @@ class Order implements Contract
     public function currentGateway(): ?array
     {
         if (is_string($this->gateway())) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway());
+            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway());
         }
 
         if (is_array($this->gateway())) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway()['use']);
+            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway()['use']);
         }
 
         return null;

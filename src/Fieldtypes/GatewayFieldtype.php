@@ -20,7 +20,7 @@ class GatewayFieldtype extends Fieldtype
     public function preload()
     {
         return [
-            'gateways' => SimpleCommerce::gateways(),
+            'gateways' => SimpleCommerce::gateways()->toArray(),
         ];
     }
 
@@ -32,7 +32,7 @@ class GatewayFieldtype extends Fieldtype
 
         $actionUrl = null;
 
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
 
@@ -86,7 +86,7 @@ class GatewayFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
 
@@ -105,7 +105,7 @@ class GatewayFieldtype extends Fieldtype
             return;
         }
 
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
 

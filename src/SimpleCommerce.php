@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Addon;
@@ -48,7 +49,7 @@ class SimpleCommerce
         });
     }
 
-    public static function gateways(): array
+    public static function gateways(): Collection
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
@@ -65,8 +66,7 @@ class SimpleCommerce
                     'config'  => $gateway[1],
                     'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
                 ];
-            })
-            ->toArray();
+            });
     }
 
     public static function registerGateway(string $gateway, array $config = [])
