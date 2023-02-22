@@ -60,7 +60,7 @@ class CheckoutTagTest extends TestCase
 
             {{ sc:gateways }}
                 ---
-                {{ name }} - Duncan Cool ({{ gateway-config:is-duncan-cool }}) - Haggis - Tatties
+                {{ name }} - Duncan Cool ({{ config:is-duncan-cool }}) - Haggis - Tatties
                 ---
             {{ /sc:gateways }}
         ');
