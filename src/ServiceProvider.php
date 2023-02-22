@@ -166,7 +166,7 @@ class ServiceProvider extends AddonServiceProvider
                 'Repository: Customer' => SimpleCommerce::customerDriver()['repository'],
                 'Repository: Order' => SimpleCommerce::orderDriver()['repository'],
                 'Repository: Product' => SimpleCommerce::productDriver()['repository'],
-                'Gateways' => collect(SimpleCommerce::gateways())->pluck('name')->implode(', '),
+                'Gateways' => SimpleCommerce::gateways()->pluck('name')->implode(', '),
                 'Shipping Methods' => SimpleCommerce::shippingMethods()->pluck('name')->implode(', '),
                 'Tax Engine' => get_class(SimpleCommerce::taxEngine()),
             ];

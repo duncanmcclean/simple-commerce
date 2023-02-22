@@ -26,7 +26,7 @@ class GatewayCallbackController extends BaseActionController
 
         $gatewayName = $gateway;
 
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('handle', $gateway)
             ->first();
 

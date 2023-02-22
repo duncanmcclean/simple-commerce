@@ -22,7 +22,7 @@ class CheckoutTags extends SubTag
         $data = $cart->data()->toArray();
 
         if ($cart->grandTotal() > 0) {
-            collect(SimpleCommerce::gateways())
+            SimpleCommerce::gateways()
                 ->filter(function ($gateway) {
                     if ($specifiedGateway = $this->params->get('gateway')) {
                         return $gateway['handle'] === $specifiedGateway;
@@ -65,7 +65,7 @@ class CheckoutTags extends SubTag
         $cart = $this->getCart();
         $gatewayHandle = last(explode(':', $tag));
 
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('handle', $gatewayHandle)
             ->first();
 
