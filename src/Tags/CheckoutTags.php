@@ -20,7 +20,7 @@ class CheckoutTags extends SubTag
     public function index()
     {
         $cart = $this->getCart();
-        $data = $cart->data;
+        $data = $cart->data()->toArray();
 
         if ($cart->grandTotal() > 0) {
             collect(SimpleCommerce::gateways())
@@ -31,42 +31,27 @@ class CheckoutTags extends SubTag
 
                     return true;
                 })
-                ->filter(function ($gateway) {
-                    return ! Gateway::use($gateway['class'])->isOffsiteGateway();
-                })
                 ->each(function ($gateway) use (&$cart, &$data) {
-                    try {
-                        $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
+                    $config = Gateway::use($gateway['class'])->config();
+                    $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
 
-                        $cart->set($gateway['handle'], $prepare);
-                        $cart->save();
+                    $callbackUrl = Gateway::use($gateway['class'])
+                        ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
+                        ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
+                        ->callbackUrl();
 
-                        $data = $data->merge($prepare);
-                    } catch (\Exception $e) {
-                        throw new GatewayException($e->getMessage());
-                    }
+                    $data[$gateway['handle']] = array_merge($prepare, [
+                        'config' => $config,
+                        'callback_url' => $callbackUrl,
+                    ]);
 
-                    try {
-                        $config = Gateway::use($gateway['class'])->config();
-
-                        $callbackUrl = Gateway::use($gateway['class'])
-                            ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
-                            ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
-                            ->callbackUrl();
-
-                        $data = $data->merge([
-                            'gateway-config' => $config,
-                            'callback_url' => $callbackUrl,
-                        ]);
-                    } catch (\Exception $e) {
-                        throw new GatewayException($e->getMessage());
-                    }
+                    $cart->set($gateway['handle'], $prepare)->save();
                 });
         }
 
         return $this->createForm(
             route('statamic.simple-commerce.checkout.store'),
-            $data->toArray(),
+            $data,
             'POST'
         );
     }
