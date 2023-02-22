@@ -351,68 +351,68 @@ class StripeGatewayTest extends TestCase
         $this->assertNotNull($order->statusLog('paid'));
     }
 
-     /** @test */
-     public function cant_checkout_when_in_payment_elements_mode()
-     {
-         if (! env('STRIPE_SECRET')) {
-             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-         }
+    /** @test */
+    public function cant_checkout_when_in_payment_elements_mode()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
 
-         Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-         $product = Product::make()
+        $product = Product::make()
              ->price(1234)
              ->data([
                  'title' => 'Zoo Ticket',
              ]);
 
-         $product->save();
+        $product->save();
 
-         $order = Order::make()->lineItems([
-             [
-                 'id' => app('stache')->generateId(),
-                 'product' => $product->id,
-                 'quantity' => 1,
-                 'total' => 1234,
-                 'metadata' => [],
-             ],
-         ])->grandTotal(1234)->merge([
-             'title' => '#0004',
-             'stripe' => [
-                 'intent' => $paymentIntent = PaymentIntent::create([
-                     'amount' => 1234,
-                     'currency' => 'GBP',
-                 ])->id,
-             ],
-         ]);
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1234,
+                'metadata' => [],
+            ],
+        ])->grandTotal(1234)->merge([
+            'title' => '#0004',
+            'stripe' => [
+                'intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
+            ],
+        ]);
 
-         $order->save();
+        $order->save();
 
-         $paymentMethod = PaymentMethod::create([
-             'type' => 'card',
-             'card' => [
-                 'number' => '4242424242424242',
-                 'exp_month' => 7,
-                 'exp_year' => 2024,
-                 'cvc' => '314',
-             ],
-         ]);
+        $paymentMethod = PaymentMethod::create([
+            'type' => 'card',
+            'card' => [
+                'number' => '4242424242424242',
+                'exp_month' => 7,
+                'exp_year' => 2024,
+                'cvc' => '314',
+            ],
+        ]);
 
-         PaymentIntent::retrieve($paymentIntent)->confirm([
-             'payment_method' => $paymentMethod->id,
-         ]);
+        PaymentIntent::retrieve($paymentIntent)->confirm([
+            'payment_method' => $paymentMethod->id,
+        ]);
 
-         $request = new Request(['payment_method' => $paymentMethod->id]);
+        $request = new Request(['payment_method' => $paymentMethod->id]);
 
-         $this->expectException(GatewayHasNotImplementedMethod::class);
+        $this->expectException(GatewayHasNotImplementedMethod::class);
 
-         $checkout = $this->paymentElementsGateway->checkout($request, $order);
+        $checkout = $this->paymentElementsGateway->checkout($request, $order);
 
-         $order = $order->fresh();
+        $order = $order->fresh();
 
-         $this->assertSame($order->paymentStatus(), PaymentStatus::Unpaid);
-         $this->assertNotNull($order->statusLog('paid'));
-     }
+        $this->assertSame($order->paymentStatus(), PaymentStatus::Unpaid);
+        $this->assertNotNull($order->statusLog('paid'));
+    }
 
     /** @test */
     public function has_checkout_rules()
