@@ -32,6 +32,11 @@ class StripeGateway extends BaseGateway implements Gateway
         return __('Stripe');
     }
 
+    public function isOffsiteGateway(): bool
+    {
+        return $this->inPaymentElementsMode();
+    }
+
     public function prepare(Request $request, OrderContract $order): array
     {
         $this->setUpWithStripe();
@@ -66,6 +71,12 @@ class StripeGateway extends BaseGateway implements Gateway
             );
         }
 
+        if ($this->inPaymentElementsMode()) {
+            $intentData['automatic_payment_methods'] = [
+                'enabled' => true,
+            ];
+        }
+
         // We're setting this after the rest of the payment intent data,
         // in case the developer adds their own stuff to 'metadata'.
         $intentData['metadata']['order_id'] = $order->id;
@@ -80,6 +91,10 @@ class StripeGateway extends BaseGateway implements Gateway
 
     public function checkout(Request $request, OrderContract $order): array
     {
+        if ($this->inPaymentElementsMode()) {
+            return parent::checkout($request, $order);
+        }
+
         $this->setUpWithStripe();
 
         $paymentIntent = PaymentIntent::retrieve($order->get('stripe')['intent']);
@@ -139,6 +154,23 @@ class StripeGateway extends BaseGateway implements Gateway
         ];
     }
 
+    public function callback(Request $request): bool
+    {
+        if ($this->inCardElementsMode()) {
+            return parent::callback($request);
+        }
+
+        $this->setUpWithStripe();
+
+        $paymentIntent = PaymentIntent::retrieve($request->payment_intent);
+
+        if (! $paymentIntent) {
+            return false;
+        }
+
+        return $paymentIntent->status === 'succeeded';
+    }
+
     public function webhook(Request $request)
     {
         $this->setUpWithStripe();
@@ -151,7 +183,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            $order->updatePaymentStatus(PaymentStatus::Paid);
+            $this->markOrderAsPaid($order);
 
             return new Response('Webhook handled', 200);
         }
@@ -219,5 +251,15 @@ class StripeGateway extends BaseGateway implements Gateway
         }
 
         $this->isUsingTestMode = str_contains($this->config()->get('secret'), 'sk_test_');
+    }
+
+    protected function inCardElementsMode(): bool
+    {
+        return $this->config()->get('mode', 'payment_elements') === 'card_elements';
+    }
+
+    protected function inPaymentElementsMode(): bool
+    {
+        return $this->config()->get('mode', 'payment_elements') === 'payment_elements';
     }
 }

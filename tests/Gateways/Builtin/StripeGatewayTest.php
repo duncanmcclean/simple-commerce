@@ -3,10 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
@@ -22,7 +24,8 @@ class StripeGatewayTest extends TestCase
 {
     use SetupCollections, RefreshContent;
 
-    public StripeGateway $gateway;
+    public StripeGateway $cardElementsGateway;
+    public StripeGateway $paymentElementsGateway;
 
     public function setUp(): void
     {
@@ -30,15 +33,21 @@ class StripeGatewayTest extends TestCase
 
         $this->setupCollections();
 
-        $this->gateway = new StripeGateway([
+        $this->cardElementsGateway = new StripeGateway([
             'secret' => env('STRIPE_SECRET'),
+            'mode' => 'card_elements',
+        ]);
+
+        $this->paymentElementsGateway = new StripeGateway([
+            'secret' => env('STRIPE_SECRET'),
+            'mode' => 'payment_elements',
         ]);
     }
 
     /** @test */
     public function has_a_name()
     {
-        $name = $this->gateway->name();
+        $name = $this->cardElementsGateway->name();
 
         $this->assertIsString($name);
         $this->assertSame('Stripe', $name);
@@ -73,7 +82,7 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(
+        $prepare = $this->cardElementsGateway->prepare(
             new Request(),
             $order
         );
@@ -123,7 +132,7 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(
+        $prepare = $this->cardElementsGateway->prepare(
             new Request(),
             $order
         );
@@ -165,7 +174,7 @@ class StripeGatewayTest extends TestCase
         $customer = Customer::make()->email('george@example.com')->data(['name' => 'George']);
         $customer->save();
 
-        $this->gateway->setConfig([
+        $this->cardElementsGateway->setConfig([
             'secret' => env('STRIPE_SECRET'),
             'receipt_email' => true,
         ]);
@@ -184,7 +193,7 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(
+        $prepare = $this->cardElementsGateway->prepare(
             new Request(),
             $order
         );
@@ -215,7 +224,7 @@ class StripeGatewayTest extends TestCase
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
         }
 
-        $this->gateway->setConfig([
+        $this->cardElementsGateway->setConfig([
             'secret' => env('STRIPE_SECRET'),
             'payment_intent_data' => function (ContractsOrder $order) {
                 return [
@@ -249,7 +258,7 @@ class StripeGatewayTest extends TestCase
 
         $order->save();
 
-        $prepare = $this->gateway->prepare(
+        $prepare = $this->cardElementsGateway->prepare(
             new Request(),
             $order
         );
@@ -268,13 +277,13 @@ class StripeGatewayTest extends TestCase
         $this->assertNull($paymentIntent->customer);
         $this->assertNull($paymentIntent->receipt_email);
 
-        $this->gateway->setConfig([
+        $this->cardElementsGateway->setConfig([
             'secret' => env('STRIPE_SECRET'),
         ]);
     }
 
     /** @test */
-    public function can_checkout()
+    public function can_checkout_when_in_card_elements_mode()
     {
         if (! env('STRIPE_SECRET')) {
             $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
@@ -326,7 +335,7 @@ class StripeGatewayTest extends TestCase
 
         $request = new Request(['payment_method' => $paymentMethod->id]);
 
-        $checkout = $this->gateway->checkout($request, $order);
+        $checkout = $this->cardElementsGateway->checkout($request, $order);
 
         $this->assertIsArray($checkout);
 
@@ -339,6 +348,69 @@ class StripeGatewayTest extends TestCase
         $order = $order->fresh();
 
         $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
+        $this->assertNotNull($order->statusLog('paid'));
+    }
+
+    /** @test */
+    public function cant_checkout_when_in_payment_elements_mode()
+    {
+        if (! env('STRIPE_SECRET')) {
+            $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
+        }
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $product = Product::make()
+             ->price(1234)
+             ->data([
+                 'title' => 'Zoo Ticket',
+             ]);
+
+        $product->save();
+
+        $order = Order::make()->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1234,
+                'metadata' => [],
+            ],
+        ])->grandTotal(1234)->merge([
+            'title' => '#0004',
+            'stripe' => [
+                'intent' => $paymentIntent = PaymentIntent::create([
+                    'amount' => 1234,
+                    'currency' => 'GBP',
+                ])->id,
+            ],
+        ]);
+
+        $order->save();
+
+        $paymentMethod = PaymentMethod::create([
+            'type' => 'card',
+            'card' => [
+                'number' => '4242424242424242',
+                'exp_month' => 7,
+                'exp_year' => 2024,
+                'cvc' => '314',
+            ],
+        ]);
+
+        PaymentIntent::retrieve($paymentIntent)->confirm([
+            'payment_method' => $paymentMethod->id,
+        ]);
+
+        $request = new Request(['payment_method' => $paymentMethod->id]);
+
+        $this->expectException(GatewayHasNotImplementedMethod::class);
+
+        $checkout = $this->paymentElementsGateway->checkout($request, $order);
+
+        $order = $order->fresh();
+
+        $this->assertSame($order->paymentStatus(), PaymentStatus::Unpaid);
         $this->assertNotNull($order->statusLog('paid'));
     }
 
@@ -389,7 +461,7 @@ class StripeGatewayTest extends TestCase
             'payment_method' => $paymentMethod->id,
         ]);
 
-        $refund = $this->gateway->refund($order);
+        $refund = $this->cardElementsGateway->refund($order);
 
         $this->assertIsArray($refund);
 
@@ -415,9 +487,14 @@ class StripeGatewayTest extends TestCase
             ],
         ];
 
-        $webhook = $this->gateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
+        $webhook = $this->paymentElementsGateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
 
         $this->assertTrue($webhook instanceof Response);
+
+        $order->fresh();
+
+        $this->assertSame($order->status(), OrderStatus::Placed);
+        $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
     }
 
     /** @test */
@@ -429,7 +506,7 @@ class StripeGatewayTest extends TestCase
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $fieldtypeDisplay = $this->gateway->fieldtypeDisplay([
+        $fieldtypeDisplay = $this->cardElementsGateway->fieldtypeDisplay([
             'use' => StripeGateway::class,
             'data' => [
                 'payment_intent' => $paymentIntent = PaymentIntent::create([
@@ -450,7 +527,7 @@ class StripeGatewayTest extends TestCase
     /** @test */
     public function does_not_return_array_from_payment_display_if_no_payment_intent_is_set()
     {
-        $fieldtypeDisplay = $this->gateway->fieldtypeDisplay([
+        $fieldtypeDisplay = $this->cardElementsGateway->fieldtypeDisplay([
             'use' => StripeGateway::class,
             'data' => [],
         ]);

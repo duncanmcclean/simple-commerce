@@ -99,6 +99,40 @@ Due to the format changing, you may need to update code in your checkout form.
 3. If you're getting the callback URL for a gateway, you should get it from that gateway's array:
     - `{{ callback_url }}` -> `{{ stripe:callback_url }}`
 
+### High: Stripe Gateway now defaults to Payment Elements integration
+
+By default, Simple Commerce now takes advantage of Stripe's Payment Elements integration. This allows for customers to pick the payment methods that work for them - the payment methods are localised based on the user's location.
+
+Any existing sites though will be using Card Elements, which just gives you a basic card payment form. To continue using in Card Elements, you'll need to specify a `mode` in your Gateways config.
+
+```php
+// config/simple-commerce.php
+
+/*
+|--------------------------------------------------------------------------
+| Payment Gateways
+|--------------------------------------------------------------------------
+|
+| This is where you configure the payment gateways you wish to use across
+| your site. You may configure as many as you like.
+|
+| https://simple-commerce.duncanmcclean.com/gateways
+|
+*/
+
+'gateways' => [
+    \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [ // [tl! focus]
+        'key' => env('STRIPE_KEY'), // [tl! focus]
+        'secret' => env('STRIPE_SECRET'), // [tl! focus]
+        'mode' => 'card_elements',  // [tl! add] [tl! focus]
+    ], // [tl! focus]
+
+    \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
+        'display' => 'Card',
+    ],
+],
+```
+
 ### Medium: Support for Statamic 3.3 has been dropped
 
 Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 the only current version supported.
