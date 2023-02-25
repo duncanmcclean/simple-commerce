@@ -5,11 +5,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
+use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -140,23 +139,7 @@ abstract class BaseGateway
         ]);
 
         if ($this->isOffsiteGateway()) {
-            $order = app(Pipeline::class)
-                ->send($order)
-                ->through([
-                    \DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleStock::class,
-                ])
-                ->thenReturn();
-
-            if (! isset(SimpleCommerce::customerDriver()['model']) && $order->customer()) {
-                $order->customer()->merge([
-                    'orders' => $order->customer()->orders()
-                        ->pluck('id')
-                        ->push($order->id())
-                        ->toArray(),
-                ]);
-
-                $order->customer()->save();
-            }
+            $order = CheckoutPipeline::run($order, true);
 
             $order->updateOrderStatus(OrderStatus::Placed);
             $order->updatePaymentStatus(PaymentStatus::Paid);
