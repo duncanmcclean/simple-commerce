@@ -89,14 +89,6 @@ class ServiceProvider extends AddonServiceProvider
         'cp'      => __DIR__ . '/../routes/cp.php',
     ];
 
-    protected $stylesheets = [
-        __DIR__ . '/../resources/dist/css/cp.css',
-    ];
-
-    protected $scripts = [
-        __DIR__ . '/../resources/dist/js/cp.js',
-    ];
-
     protected $scopes = [
         Scopes\OrderContainsProduct::class,
         Scopes\OrderCustomer::class,
@@ -129,6 +121,11 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v5_0\MigrateOrderStatuses::class,
         UpdateScripts\v5_0\UpdateNotificationsConfig::class,
         UpdateScripts\v5_0\UpdateOrderBlueprint::class,
+    ];
+
+    protected $vite = [
+        'resources/js/cp.js',
+        'resources/css/cp.css',
     ];
 
     public function boot()
