@@ -64,6 +64,8 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::resolveApplicationConfiguration($app);
 
+        $this->withoutVite();
+
         $configs = [
             'assets',
             'cp',
