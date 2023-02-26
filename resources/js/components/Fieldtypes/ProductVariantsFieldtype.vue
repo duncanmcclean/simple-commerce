@@ -53,8 +53,9 @@
 
                     <publish-fields-container>
                         <publish-field
-                            v-for="(optionField,
-                            optionIndex) in meta.option_fields"
+                            v-for="(
+                                optionField, optionIndex
+                            ) in meta.option_fields"
                             :key="'option-' + optionField.handle"
                             :config="optionField"
                             :value="option[optionField.handle]"
@@ -80,10 +81,10 @@
 </template>
 
 <script>
-import GridRow from '../../statamic/Row'
-import SortableList from '../../../../vendor/statamic/cms/resources/js/components/sortable/SortableList'
-import GridHeaderCell from '../../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell'
-import View from '../../statamic/View'
+import GridRow from '../../statamic/Row.vue'
+import SortableList from '../../../../vendor/statamic/cms/resources/js/components/sortable/SortableList.vue'
+import GridHeaderCell from '../../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell.vue'
+import View from '../../statamic/View.vue'
 
 export default {
     name: 'product-variants-fieldtype',
@@ -115,17 +116,17 @@ export default {
     computed: {
         cartesian() {
             let data = this.variants
-                .filter(variant => {
+                .filter((variant) => {
                     return variant.values.length != 0
                 })
-                .flatMap(variant => [variant.values])
+                .flatMap((variant) => [variant.values])
 
             if (data.length == 0) {
                 return []
             }
 
             return data.reduce((acc, curr) =>
-                acc.flatMap(c => curr.map(n => [].concat(c, n)))
+                acc.flatMap((c) => curr.map((n) => [].concat(c, n)))
             )
         },
 
@@ -197,12 +198,12 @@ export default {
                     return
                 }
 
-                this.options = this.cartesian.map(item => {
+                this.options = this.cartesian.map((item) => {
                     let key = typeof item === 'string' ? item : item.join('_')
                     let variantName =
                         typeof item === 'string' ? item : item.join(', ')
 
-                    let existingData = this.value.options.filter(option => {
+                    let existingData = this.value.options.filter((option) => {
                         return option.key === key
                     })[0]
 

@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences'
+import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences.js'
 
 export default {
     props: {
@@ -100,7 +100,7 @@ export default {
 
             let selectedWidgets = {}
 
-            this.widgets.forEach(widget => {
+            this.widgets.forEach((widget) => {
                 selectedWidgets[`${widget.handle}`] = true
             })
 

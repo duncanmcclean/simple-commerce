@@ -31,7 +31,7 @@
             <overview-orders-chart
                 v-if="
                     currentWidgets
-                        .map(widget => widget.handle)
+                        .map((widget) => widget.handle)
                         .includes('orders-chart')
                 "
                 :data="data['orders-chart']"
@@ -52,7 +52,7 @@
 
 <script>
 import axios from 'axios'
-import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences'
+import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences.js'
 
 export default {
     props: {
@@ -88,15 +88,15 @@ export default {
                 this.currentWidgets = Object.keys(
                     this.getPreference('overview_widgets')
                 )
-                    .filter(handle => {
+                    .filter((handle) => {
                         return (
                             this.getPreference('overview_widgets')[handle] ===
                             true
                         )
                     })
-                    .map(handle => {
+                    .map((handle) => {
                         return this.widgets.find(
-                            widget => widget.handle === handle
+                            (widget) => widget.handle === handle
                         )
                     })
 
@@ -112,9 +112,11 @@ export default {
 
         updateCurrentWidgets(currentWidgets) {
             this.currentWidgets = Object.keys(currentWidgets)
-                .filter(handle => currentWidgets[handle] === true)
-                .map(handle => {
-                    return this.widgets.find(widget => widget.handle === handle)
+                .filter((handle) => currentWidgets[handle] === true)
+                .map((handle) => {
+                    return this.widgets.find(
+                        (widget) => widget.handle === handle
+                    )
                 })
 
             this.refreshData()
@@ -125,11 +127,11 @@ export default {
                 .get(cp_url('/simple-commerce/overview'), {
                     params: {
                         widgets: this.currentWidgets.map(
-                            widget => widget.handle
+                            (widget) => widget.handle
                         ),
                     },
                 })
-                .then(response => {
+                .then((response) => {
                     this.data = response.data.data
                 })
         },
