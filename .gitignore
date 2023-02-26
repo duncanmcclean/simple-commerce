@@ -8,9 +8,9 @@ package-lock.json
 .antlers.json
 composer.lock
 
-resources/dist/css/*.css
-resources/dist/js/*.js
-resources/dist/js/*.LICENSE.txt
-resources/dist/mix-manifest.json
-
 tests/__fixtures__/users/*.yaml
+
+dist
+!dist/.gitkeep
+vite.hot
+.env

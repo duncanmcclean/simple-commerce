@@ -37,7 +37,7 @@
 </template>
 
 <script>
-// import HasActions from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasActions';
+// import HasActions from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasActions.vue';
 
 export default {
     name: 'gateway-fieldtype',
@@ -68,7 +68,7 @@ export default {
         gatewayName() {
             const gatewayClass = this.value.gateway_class
 
-            const gateway = this.meta.gateways.find(gateway => {
+            const gateway = this.meta.gateways.find((gateway) => {
                 return gateway.class === gatewayClass
             })
 
