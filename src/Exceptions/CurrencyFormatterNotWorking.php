@@ -15,7 +15,7 @@ class CurrencyFormatterNotWorking extends Exception implements ProvidesSolution
             ->setSolutionDescription('Please install `php-intl` to use Simple Commerce.')
             ->setDocumentationLinks([
                 'Simple Commerce Requirements' => 'https://simple-commerce.duncanmcclean.com/installation#requirements',
-                'PHP-intl Documentation'       => 'https://www.php.net/manual/en/book.intl.php',
+                'PHP-intl Documentation' => 'https://www.php.net/manual/en/book.intl.php',
             ]);
     }
 }

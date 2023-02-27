@@ -17,6 +17,7 @@ class CouponControllerTest extends TestCase
     use SetupCollections;
 
     public $product;
+
     public $cart;
 
     public function setUp(): void
@@ -45,8 +46,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 0,
+                'description' => 'Half Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -84,8 +85,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 0,
+                'description' => 'Half Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -125,10 +126,10 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 5,
+                'description' => 'Half Price',
+                'redeemed' => 5,
                 'minimum_cart_value' => null,
-                'maximum_uses'       => 5, // We shouldn't be able to use because of this
+                'maximum_uses' => 5, // We shouldn't be able to use because of this
             ]);
 
         $coupon->save();
@@ -184,8 +185,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 0,
+                'description' => 'Half Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -218,8 +219,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 0,
+                'description' => 'Half Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -259,10 +260,10 @@ class CouponControllerTest extends TestCase
         $this->cart = Order::make()
             ->lineItems([
                 [
-                    'id'       => Stache::generateId(),
-                    'product'  => $this->product->id,
+                    'id' => Stache::generateId(),
+                    'product' => $this->product->id,
                     'quantity' => 1,
-                    'total'    => 1000,
+                    'total' => 1000,
                 ],
             ]);
 

@@ -12,6 +12,7 @@ use Statamic\Stache\Stache;
 class TaxCategoryRepository implements Contract
 {
     protected $stache;
+
     protected $store;
 
     public function __construct(Stache $stache)

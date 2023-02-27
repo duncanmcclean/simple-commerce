@@ -16,7 +16,9 @@ use Illuminate\Validation\ValidationException;
 class Manager implements Contract
 {
     protected $className;
+
     protected $redirectUrl;
+
     protected $errorRedirectUrl;
 
     public function use($className): self

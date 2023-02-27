@@ -31,10 +31,10 @@ class MigrateLineItemMetadataTest extends TestCase
             ->data([
                 'items' => [
                     [
-                        'id'          => 'idee-of-item',
-                        'product'     => 'idee-of-product',
-                        'total'       => 5,
-                        'quantity'    => 1,
+                        'id' => 'idee-of-item',
+                        'product' => 'idee-of-product',
+                        'total' => 5,
+                        'quantity' => 1,
                         'product_key' => 'a-b-c',
                     ],
                 ],

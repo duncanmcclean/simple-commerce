@@ -14,6 +14,7 @@ class InstallCommand extends Command
     use RunsInPlease;
 
     protected $name = 'sc:install';
+
     protected $description = 'Install Simple Commerce';
 
     public function handle()

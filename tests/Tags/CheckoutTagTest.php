@@ -210,7 +210,7 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
     public function prepare(Request $request, OrderContract $order): array
     {
         return [
-            'haggis'  => true,
+            'haggis' => true,
             'tatties' => true,
         ];
     }

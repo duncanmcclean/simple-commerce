@@ -50,7 +50,7 @@ class GatewayCallbackController extends BaseActionController
 
         return $this->withSuccess($request, [
             'success' => __('Checkout Complete!'),
-            'cart'    => $order->toAugmentedArray(),
+            'cart' => $order->toAugmentedArray(),
             'is_checkout_request' => true,
         ]);
     }

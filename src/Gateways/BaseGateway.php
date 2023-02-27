@@ -99,8 +99,8 @@ abstract class BaseGateway
     public function callbackUrl(array $extraParamters = []): string
     {
         $data = array_merge($extraParamters, [
-            'gateway'         => $this->handle,
-            '_redirect'       => $this->redirectUrl,
+            'gateway' => $this->handle,
+            '_redirect' => $this->redirectUrl,
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
@@ -125,9 +125,6 @@ abstract class BaseGateway
     /**
      * Once you've confirmed that the payment has been made, you can mark the order as paid
      * using this method. For off-site gateways, it'll handle updating stock & redeeming any coupons.
-     *
-     * @param  Order  $order
-     * @return bool
      */
     public function markOrderAsPaid(Order $order): bool
     {

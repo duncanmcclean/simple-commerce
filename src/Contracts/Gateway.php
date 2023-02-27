@@ -9,16 +9,12 @@ interface Gateway
     /**
      * This method should return the name of the payment gateway. This name can be
      * overridden by sites in their config.
-     *
-     * @return string
      */
     public function name(): string;
 
     /**
      * If your payment gateway is off-site (eg. your customer doesn't have to submit the
      * {{ sc:checkout }} form to confirm the payment), then you should return true here.
-     *
-     * @return bool
      */
     public function isOffsiteGateway(): bool;
 
@@ -29,9 +25,7 @@ interface Gateway
      * If you're building an off-site gateway, you should return a `checkout_url` key with the
      * URL the user should be redirected to for checkout.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
-     * @return array
      */
     public function prepare(Request $request, Order $order): array;
 
@@ -43,9 +37,7 @@ interface Gateway
      *
      * If you're building an off-site gateway, you don't need to implement this method.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
-     * @return array
      */
     public function checkout(Request $request, Order $order): array;
 
@@ -54,8 +46,6 @@ interface Gateway
      * the {{ sc:checkout }} has been submitted.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
-     *
-     * @return array
      */
     public function checkoutRules(): array;
 
@@ -64,8 +54,6 @@ interface Gateway
      * the {{ sc:checkout }} has been submitted. This method isn't mandatory.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
-     *
-     * @return array
      */
     public function checkoutMessages(): array;
 
@@ -82,9 +70,6 @@ interface Gateway
     /**
      * This method will be called when users are redirected back to your site after
      * an off-site checkout. You should return true if the payment was successful.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
     public function callback(Request $request): bool;
 
@@ -93,8 +78,6 @@ interface Gateway
      * This is where you should handle any updates to order statuses.
      *
      * Whatever you return from this method will be sent back as the webhook's response.
-     *
-     * @param  \Illuminate\Http\Request  $request
      */
     public function webhook(Request $request);
 
@@ -104,7 +87,6 @@ interface Gateway
      * the payment in the payment gateway's dashboard.
      *
      * @param  mixed  $value
-     * @return array
      */
     public function fieldtypeDisplay($value): array;
 }

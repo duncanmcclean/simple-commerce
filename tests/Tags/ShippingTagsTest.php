@@ -144,7 +144,7 @@ class StorePickup extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return 'Store Pickup - ' . $this->config()->get('location');
+        return 'Store Pickup - '.$this->config()->get('location');
     }
 
     public function description(): string

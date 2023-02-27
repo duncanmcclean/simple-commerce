@@ -9,13 +9,21 @@ use Illuminate\Support\Arr;
 class Address
 {
     protected static $name;
+
     protected static $firstName;
+
     protected static $lastName;
+
     protected static $addressLine1;
+
     protected static $addressLine2;
+
     protected static $city;
+
     protected static $region;
+
     protected static $country;
+
     protected static $zipCode;
 
     public static function from(string $addressType, $data): self
@@ -36,7 +44,7 @@ class Address
     public function fullName(): ?string
     {
         if (static::$firstName && static::$lastName) {
-            return static::$firstName . ' ' . static::$lastName;
+            return static::$firstName.' '.static::$lastName;
         }
 
         return static::$name;
@@ -110,15 +118,15 @@ class Address
     public function toArray(): array
     {
         return [
-            'name'           => $this->name(),
-            'first_name'     => $this->firstName(),
-            'last_name'      => $this->lastName(),
+            'name' => $this->name(),
+            'first_name' => $this->firstName(),
+            'last_name' => $this->lastName(),
             'address_line_1' => $this->addressLine1(),
             'address_line_2' => $this->addressLine2(),
-            'city'           => $this->city(),
-            'region'         => $this->region(),
-            'country'        => $this->country(),
-            'zip_code'       => $this->zipCode(),
+            'city' => $this->city(),
+            'region' => $this->region(),
+            'country' => $this->country(),
+            'zip_code' => $this->zipCode(),
         ];
     }
 
@@ -139,6 +147,6 @@ class Address
 
                 return $value;
             })
-            ->join(',' . PHP_EOL);
+            ->join(','.PHP_EOL);
     }
 }

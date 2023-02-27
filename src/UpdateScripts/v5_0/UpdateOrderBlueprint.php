@@ -27,24 +27,24 @@ class UpdateOrderBlueprint extends UpdateScript
                     $blueprint->removeField('paid_date');
 
                     $blueprint->ensureFieldInSection('order_status', [
-                        'type'      => 'order_status',
-                        'display'   => 'Order Status',
+                        'type' => 'order_status',
+                        'display' => 'Order Status',
                         'read_only' => true,
-                        'validate'  => 'required',
-                        'listable'  => true,
+                        'validate' => 'required',
+                        'listable' => true,
                     ], 'sidebar');
 
                     $blueprint->ensureFieldInSection('payment_status', [
-                        'type'      => 'payment_status',
-                        'display'   => 'Payment Status',
+                        'type' => 'payment_status',
+                        'display' => 'Payment Status',
                         'read_only' => true,
-                        'validate'  => 'required',
-                        'listable'  => true,
+                        'validate' => 'required',
+                        'listable' => true,
                     ], 'sidebar');
 
                     $blueprint->ensureFieldInSection('status_log', [
-                        'type'      => 'sc_status_log',
-                        'display'   => 'Status Log',
+                        'type' => 'sc_status_log',
+                        'display' => 'Status Log',
                     ], 'sidebar');
 
                     $blueprint->save();
@@ -60,24 +60,24 @@ class UpdateOrderBlueprint extends UpdateScript
             $blueprint->removeField('paid_date');
 
             $blueprint->ensureFieldInSection('order_status', [
-                'type'      => 'order_status',
-                'display'   => 'Order Status',
+                'type' => 'order_status',
+                'display' => 'Order Status',
                 'read_only' => true,
-                'validate'  => 'required',
-                'listable'  => true,
+                'validate' => 'required',
+                'listable' => true,
             ], 'sidebar');
 
             $blueprint->ensureFieldInSection('payment_status', [
-                'type'      => 'payment_status',
-                'display'   => 'Payment Status',
+                'type' => 'payment_status',
+                'display' => 'Payment Status',
                 'read_only' => true,
-                'validate'  => 'required',
-                'listable'  => true,
+                'validate' => 'required',
+                'listable' => true,
             ], 'sidebar');
 
             $blueprint->ensureFieldInSection('status_log', [
-                'type'      => 'sc_status_log',
-                'display'   => 'Status Log',
+                'type' => 'sc_status_log',
+                'display' => 'Status Log',
             ], 'sidebar');
 
             $blueprint->save();

@@ -59,10 +59,10 @@ class DummyGatewayTest extends TestCase
         $this->assertIsArray($checkout);
 
         $this->assertSame([
-            'id'        => '123456789abcdefg',
+            'id' => '123456789abcdefg',
             'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
+            'date' => (string) now()->subDays(14),
+            'refunded' => false,
         ], $checkout);
     }
 
@@ -74,10 +74,10 @@ class DummyGatewayTest extends TestCase
         $this->assertIsArray($rules);
 
         $this->assertSame([
-            'card_number'   => ['required', 'string'],
-            'expiry_month'  => ['required'],
-            'expiry_year'   => ['required'],
-            'cvc'           => ['required'],
+            'card_number' => ['required', 'string'],
+            'expiry_month' => ['required'],
+            'expiry_year' => ['required'],
+            'cvc' => ['required'],
         ], $rules);
     }
 

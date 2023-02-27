@@ -169,9 +169,9 @@ class CartItemController extends BaseActionController
             ]);
         } else {
             $item = [
-                'product'  => $request->product,
+                'product' => $request->product,
                 'quantity' => (int) $request->quantity,
-                'total'    => 0000,
+                'total' => 0000,
             ];
 
             if ($request->has('variant')) {
@@ -193,7 +193,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Added to Cart'),
-            'cart'    => $cart->fresh()->toAugmentedArray(),
+            'cart' => $cart->fresh()->toAugmentedArray(),
         ]);
     }
 
@@ -237,7 +237,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Item Updated'),
-            'cart'    => $cart->toAugmentedArray(),
+            'cart' => $cart->toAugmentedArray(),
         ]);
     }
 
@@ -249,7 +249,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Item Removed from Cart'),
-            'cart'    => $cart->toAugmentedArray(),
+            'cart' => $cart->toAugmentedArray(),
         ]);
     }
 

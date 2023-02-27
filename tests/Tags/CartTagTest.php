@@ -72,10 +72,10 @@ class CartTagTest extends TestCase
 
         $cart = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 5,
-                'total'    => 1000,
+                'total' => 1000,
             ],
         ]);
 
@@ -107,16 +107,16 @@ class CartTagTest extends TestCase
 
         $cart = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $productOne->id,
+                'id' => Stache::generateId(),
+                'product' => $productOne->id,
                 'quantity' => 5,
-                'total'    => 1000,
+                'total' => 1000,
             ],
             [
-                'id'       => Stache::generateId(),
-                'product'  => $productTwo->id,
+                'id' => Stache::generateId(),
+                'product' => $productTwo->id,
                 'quantity' => 5,
-                'total'    => 1200,
+                'total' => 1200,
             ],
         ]);
 
@@ -148,16 +148,16 @@ class CartTagTest extends TestCase
 
         $cart = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $productOne->id,
+                'id' => Stache::generateId(),
+                'product' => $productOne->id,
                 'quantity' => 7,
-                'total'    => 1000,
+                'total' => 1000,
             ],
             [
-                'id'       => Stache::generateId(),
-                'product'  => $productTwo->id,
+                'id' => Stache::generateId(),
+                'product' => $productTwo->id,
                 'quantity' => 4,
-                'total'    => 1200,
+                'total' => 1200,
             ],
         ]);
 
@@ -381,8 +381,8 @@ class CartTagTest extends TestCase
         // Expected tag output format = '7:£12.34|19:£56.78'
         $renderedTag = $this->tag('{{ sc:cart:taxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:taxTotalSplit }}');
 
-        $this->assertStringContainsString($taxRateDefault->rate() . ':' . $taxDefaultFormatted, $renderedTag);
-        $this->assertStringContainsString($taxRateReduced->rate() . ':' . $taxReducedFormatted, $renderedTag);
+        $this->assertStringContainsString($taxRateDefault->rate().':'.$taxDefaultFormatted, $renderedTag);
+        $this->assertStringContainsString($taxRateReduced->rate().':'.$taxReducedFormatted, $renderedTag);
     }
 
     /** @test */
@@ -412,7 +412,7 @@ class CartTagTest extends TestCase
         $this->tag->setContent('
             <h2>Add Item</h2>
 
-            <input type="hidden" name="product" value="' . $product->id . '">
+            <input type="hidden" name="product" value="'.$product->id.'">
             <input type="number" name="quantity">
             <button type="submit">Add to cart</button>
         ');
@@ -460,7 +460,7 @@ class CartTagTest extends TestCase
         $this->tag->setContent('
             <h2>Add Item</h2>
 
-            <input type="hidden" name="product" value="' . $product->id . '">
+            <input type="hidden" name="product" value="'.$product->id.'">
             <input type="number" name="quantity">
             <button type="submit">Add to cart</button>
         ');
@@ -530,8 +530,8 @@ class CartTagTest extends TestCase
         $usage = $this->tag->updateItem();
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/' . $lineItem->id . '"', $usage);
-        $this->assertStringContainsString('Product: ' . $product->id, $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"', $usage);
+        $this->assertStringContainsString('Product: '.$product->id, $usage);
     }
 
     /** @test */
@@ -688,8 +688,8 @@ class CartTagTest extends TestCase
         $usage = $this->tag->removeItem();
 
         $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/' . $lineItem->id . '"', $usage);
-        $this->assertStringContainsString('Product: ' . $product->id, $usage);
+        $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"', $usage);
+        $this->assertStringContainsString('Product: '.$product->id, $usage);
     }
 
     /** @test */
@@ -806,13 +806,13 @@ class CartTagTest extends TestCase
             ->productVariants([
                 'variants' => [
                     [
-                        'name'   => 'Colours',
+                        'name' => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name'   => 'Sizes',
+                        'name' => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -820,9 +820,9 @@ class CartTagTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'     => 'Red_Small',
+                        'key' => 'Red_Small',
                         'variant' => 'Red Small',
-                        'price'   => 5000,
+                        'price' => 5000,
                     ],
                 ],
             ]);
@@ -918,7 +918,7 @@ class CartTagTest extends TestCase
     {
         $cart = Order::make()->merge([
             'title' => '#0001',
-            'note'  => 'Deliver by front door.',
+            'note' => 'Deliver by front door.',
         ]);
 
         $cart->save();
@@ -940,7 +940,7 @@ class CartTagTest extends TestCase
     {
         $cart = Order::make()->merge([
             'title' => '#0001',
-            'note'  => 'Deliver by front door.',
+            'note' => 'Deliver by front door.',
         ])->grandTotal(1590);
 
         $cart->save();

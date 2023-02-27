@@ -25,7 +25,7 @@ class CouponController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Coupon added to cart'),
-            'cart'    => $this->getCart()->toAugmentedArray(),
+            'cart' => $this->getCart()->toAugmentedArray(),
         ]);
     }
 
@@ -41,7 +41,7 @@ class CouponController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Coupon removed from cart'),
-            'cart'    => $this->getCart()->toAugmentedArray(),
+            'cart' => $this->getCart()->toAugmentedArray(),
         ]);
     }
 }

@@ -12,11 +12,17 @@ class LineItem
     use FluentlyGetsAndSets;
 
     public $id;
+
     public $product;
+
     public $variant;
+
     public $quantity;
+
     public $total;
+
     public $tax;
+
     public $metadata;
 
     public function __construct()

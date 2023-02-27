@@ -17,8 +17,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ])
             ->save();
@@ -76,8 +76,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ])
          ->save();
@@ -116,8 +116,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -140,8 +140,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -178,8 +178,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -210,8 +210,8 @@ class CouponControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ])
             ->save();

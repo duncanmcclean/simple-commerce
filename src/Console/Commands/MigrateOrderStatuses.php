@@ -21,6 +21,7 @@ class MigrateOrderStatuses extends Command
     use RunsInPlease, ConfirmableTrait;
 
     protected $name = 'sc:migrate-order-statuses';
+
     protected $description = 'Migrate your orders to use the new order & payment statuses. (Part of the v5.0 update)';
 
     protected $stubsPath;
@@ -29,7 +30,7 @@ class MigrateOrderStatuses extends Command
     {
         parent::__construct();
 
-        $this->stubsPath = __DIR__ . '/stubs';
+        $this->stubsPath = __DIR__.'/stubs';
     }
 
     public function handle()
@@ -98,8 +99,8 @@ class MigrateOrderStatuses extends Command
 
     protected function migrateForDatabaseOrders(): void
     {
-        if (count(File::glob(database_path('migrations') . '/*_add_status_columns_to_orders_table.php')) < 1) {
-            File::copy($this->stubsPath . '/add_status_columns_to_orders_table.php', database_path('migrations/' . date('Y_m_d_His') . '_add_status_columns_to_orders_table.php'));
+        if (count(File::glob(database_path('migrations').'/*_add_status_columns_to_orders_table.php')) < 1) {
+            File::copy($this->stubsPath.'/add_status_columns_to_orders_table.php', database_path('migrations/'.date('Y_m_d_His').'_add_status_columns_to_orders_table.php'));
         }
 
         Artisan::call('migrate');

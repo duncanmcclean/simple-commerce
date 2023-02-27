@@ -30,19 +30,33 @@ class Order implements Contract
     use HasData, HasLineItems;
 
     public $id;
+
     public $orderNumber;
+
     public $status;
+
     public $paymentStatus;
+
     public $lineItems;
+
     public $grandTotal;
+
     public $itemsTotal;
+
     public $taxTotal;
+
     public $shippingTotal;
+
     public $couponTotal;
+
     public $customer;
+
     public $coupon;
+
     public $gateway;
+
     public $data;
+
     public $resource;
 
     protected $withoutRecalculating = false;

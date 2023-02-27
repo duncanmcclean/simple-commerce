@@ -16,10 +16,15 @@ class TaxRate
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
     public $id;
+
     public $name;
+
     public $rate;
+
     public $category;
+
     public $zone;
+
     public $includeInPrice = false;
 
     protected $selectedQueryRelations = [];
@@ -98,7 +103,7 @@ class TaxRate
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-rates')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-rates')->directory().$this->id().'.yaml';
     }
 
     public function fileData()
