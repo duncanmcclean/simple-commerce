@@ -12,7 +12,8 @@ permissions:
   contents: write
 
 jobs:
-  php-cs-fixer:
+  pint:
+    name: Pint
     runs-on: ubuntu-latest
 
     steps:
