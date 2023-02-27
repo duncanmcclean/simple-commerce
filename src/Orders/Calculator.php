@@ -32,11 +32,11 @@ class Calculator implements Contract
         $this->order = $order;
 
         $data = [
-            'grand_total'    => 0,
-            'items_total'    => 0,
+            'grand_total' => 0,
+            'items_total' => 0,
             'shipping_total' => 0,
-            'tax_total'      => 0,
-            'coupon_total'   => 0,
+            'tax_total' => 0,
+            'coupon_total' => 0,
         ];
 
         $data['items'] = $order
@@ -97,7 +97,7 @@ class Calculator implements Contract
 
             return [
                 'data' => $data,
-                'lineItem'  => $lineItem,
+                'lineItem' => $lineItem,
             ];
         }
 
@@ -114,7 +114,7 @@ class Calculator implements Contract
 
         return [
             'data' => $data,
-            'lineItem'  => $lineItem,
+            'lineItem' => $lineItem,
         ];
     }
 
@@ -134,14 +134,14 @@ class Calculator implements Contract
 
         return [
             'data' => $data,
-            'lineItem'  => $lineItem,
+            'lineItem' => $lineItem,
         ];
     }
 
     public function calculateOrderShipping(array $data): array
     {
         $shippingMethod = $this->order->get('shipping_method');
-        $defaultShippingMethod = config('simple-commerce.sites.' . Site::current()->handle() . '.shipping.default_method');
+        $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
 
         if (! $shippingMethod && ! $defaultShippingMethod) {
             return [

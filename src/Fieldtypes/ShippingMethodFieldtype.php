@@ -11,6 +11,7 @@ use Statamic\Fieldtypes\Relationship;
 class ShippingMethodFieldtype extends Relationship
 {
     protected $canCreate = false;
+
     protected $indexComponent = null;
 
     protected function configFieldItems(): array

@@ -11,7 +11,7 @@ class BaseActionController extends Controller
     {
         if ($request->wantsJson()) {
             $data = array_merge($data, [
-                'status'  => 'success',
+                'status' => 'success',
                 'message' => null,
             ]);
 
@@ -35,7 +35,7 @@ class BaseActionController extends Controller
     {
         if ($request->wantsJson()) {
             return response()->json([
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => $errorMessage,
             ]);
         }

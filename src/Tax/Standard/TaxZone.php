@@ -17,8 +17,11 @@ class TaxZone
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
     public $id;
+
     public $name;
+
     public $country;
+
     public $region;
 
     protected $selectedQueryRelations = [];
@@ -85,7 +88,7 @@ class TaxZone
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-zones')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-zones')->directory().$this->id().'.yaml';
     }
 
     public function fileData()

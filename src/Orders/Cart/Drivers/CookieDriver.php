@@ -106,7 +106,7 @@ class CookieDriver implements CartDriver
         $site = $this->guessSiteFromRequest();
 
         if (Site::hasMultiple() && ! Config::get('simple-commerce.cart.single_cart')) {
-            return $key . '-' . $site->handle();
+            return $key.'-'.$site->handle();
         }
 
         return $key;

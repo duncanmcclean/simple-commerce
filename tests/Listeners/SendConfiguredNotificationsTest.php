@@ -265,17 +265,17 @@ class SendConfiguredNotificationsTest extends TestCase
         $order->save();
 
         $event = new SomeRandomEvent(
-             $order
-         );
+            $order
+        );
 
         (new SendConfiguredNotifications())->handle($event);
 
         NotificationFacade::assertSentOnDemand(
             SomeRandomEventNotification::class,
-             function (SomeRandomEventNotification $notification, array $channels, object $notifiable) use ($email) {
-                 return $notifiable->routes['mail'] === $email;
-             }
-         );
+            function (SomeRandomEventNotification $notification, array $channels, object $notifiable) use ($email) {
+                return $notifiable->routes['mail'] === $email;
+            }
+        );
     }
 
     /** @test */
@@ -298,22 +298,22 @@ class SendConfiguredNotificationsTest extends TestCase
         $order->save();
 
         $event = new AnotherRandomEvent(
-             $order,
-             'foo',
-             true
-         );
+            $order,
+            'foo',
+            true
+        );
 
         (new SendConfiguredNotifications())->handle($event);
 
         NotificationFacade::assertSentOnDemand(
             AnotherRandomEventNotification::class,
-             function (AnotherRandomEventNotification $notification, array $channels, object $notifiable) use ($email, $order) {
-                 return $notifiable->routes['mail'] === $email
-                    && $notification->order === $order
-                    && $notification->somethingElseThatIsAProperty === true
-                    && ! property_exists($notification, 'someOtherProperty');
-             }
-         );
+            function (AnotherRandomEventNotification $notification, array $channels, object $notifiable) use ($email, $order) {
+                return $notifiable->routes['mail'] === $email
+                   && $notification->order === $order
+                   && $notification->somethingElseThatIsAProperty === true
+                   && ! property_exists($notification, 'someOtherProperty');
+            }
+        );
     }
 }
 

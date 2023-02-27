@@ -8,7 +8,7 @@ class Countries
 {
     public static function __callStatic($method, $parameters)
     {
-        return collect(json_decode(File::get(__DIR__ . '/../resources/json/countries.json'), true))
+        return collect(json_decode(File::get(__DIR__.'/../resources/json/countries.json'), true))
             ->{$method}(...$parameters);
     }
 

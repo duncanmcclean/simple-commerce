@@ -173,7 +173,7 @@ class CartControllerTest extends TestCase
         $customer = Customer::make()
             ->email('dan.smith@example.com')
             ->data([
-                'name'  => 'Dan Smith',
+                'name' => 'Dan Smith',
             ]);
 
         $customer->save();
@@ -213,7 +213,7 @@ class CartControllerTest extends TestCase
         $customer = Customer::make()
             ->email('dan.smith@example.com')
             ->data([
-                'name'  => 'Dan Smith',
+                'name' => 'Dan Smith',
             ]);
 
         $customer->save();
@@ -249,7 +249,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            'name'  => 'Joe Doe',
+            'name' => 'Joe Doe',
             'email' => 'joedoe@gmail.com',
         ];
 
@@ -304,7 +304,7 @@ class CartControllerTest extends TestCase
         $cart->save();
 
         $data = [
-            'name'  => 'Joe Mo',
+            'name' => 'Joe Mo',
             'email' => 'joe mo@gmail.com',
         ];
 
@@ -329,7 +329,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_existing_customer_by_id()
     {
         $customer = Customer::make()->email('jordan.smith@example.com')->data([
-            'name'  => 'Jordan Smith',
+            'name' => 'Jordan Smith',
         ]);
 
         $customer->save();
@@ -360,7 +360,7 @@ class CartControllerTest extends TestCase
     public function can_update_cart_and_existing_customer_by_email()
     {
         $customer = Customer::make()->email('jack.simpson@example.com')->data([
-            'name'  => 'Jak Simpson',
+            'name' => 'Jak Simpson',
         ]);
 
         $customer->save();
@@ -370,7 +370,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name'  => 'Jack Simpson',
+                'name' => 'Jack Simpson',
                 'email' => 'jack.simpson@example.com',
             ],
         ];
@@ -398,7 +398,7 @@ class CartControllerTest extends TestCase
         ]);
 
         $customer = Customer::make()->email('jack.simpson@example.com')->data([
-            'name'  => 'Jak Simpson',
+            'name' => 'Jak Simpson',
         ]);
 
         $customer->save();
@@ -408,7 +408,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name'  => 'Jack Simpson',
+                'name' => 'Jack Simpson',
                 'email' => 'jack.simpson@example.com',
                 'dob' => '1st January 1980',
             ],
@@ -438,7 +438,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name'  => 'Rebecca Logan',
+                'name' => 'Rebecca Logan',
                 'email' => 'rebecca.logan@example.com',
             ],
         ];
@@ -470,8 +470,8 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'first_name'  => 'Rebecca',
-                'last_name'   => 'Logan',
+                'first_name' => 'Rebecca',
+                'last_name' => 'Logan',
                 'email' => 'rebecca.logan@example.com',
             ],
         ];
@@ -503,7 +503,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name'  => 'Rebecca Logan',
+                'name' => 'Rebecca Logan',
                 'email' => 'rebecca.logan@example.com',
                 'dob' => '1st January 1980',
             ],
@@ -533,7 +533,7 @@ class CartControllerTest extends TestCase
 
         $data = [
             'customer' => [
-                'name'  => 'CJ Cregg',
+                'name' => 'CJ Cregg',
                 'email' => 'cj cregg@example.com',
             ],
         ];
@@ -566,7 +566,7 @@ class CartControllerTest extends TestCase
         $this->markTestSkipped();
 
         $customer = Customer::make()->email('duncan@test.com')->data([
-            'name'  => 'Duncan',
+            'name' => 'Duncan',
         ]);
 
         $customer->save();
@@ -623,10 +623,10 @@ class CartControllerTest extends TestCase
                 'items',
                 [
                     [
-                        'id'       => Stache::generateId(),
-                        'product'  => $product->id,
+                        'id' => Stache::generateId(),
+                        'product' => $product->id,
                         'quantity' => 1,
-                        'total'    => 1000,
+                        'total' => 1000,
                     ],
                 ],
             );
@@ -652,10 +652,10 @@ class CartControllerTest extends TestCase
 
         $cart = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 1000,
+                'total' => 1000,
             ],
         ]);
 

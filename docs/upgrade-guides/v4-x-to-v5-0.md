@@ -4,6 +4,10 @@ title: 'Upgrade Guide: v4.x to v5.0'
 
 ## Overview
 
+:::warning Warning
+Please don't upgrade multiple versions at once (eg. from v3 to v5). Please upgrade one step at a time.
+:::
+
 To get started with the upgrade process, follow the below steps:
 
 **1.** In your `composer.json` file, update the `doublethreedigital/simple-commerce` version constraint:

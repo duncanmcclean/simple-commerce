@@ -158,10 +158,10 @@ class CouponTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 0,
+                'description' => 'Half Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
-                'products'           => [$product->id],
+                'products' => [$product->id],
             ]);
 
         $coupon->save();
@@ -182,11 +182,11 @@ class CouponTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 5,
+                'description' => 'Half Price',
+                'redeemed' => 5,
                 'minimum_cart_value' => null,
-                'maximum_uses'       => 0,
-                'products'           => ['another-product-id'],
+                'maximum_uses' => 0,
+                'products' => ['another-product-id'],
             ]);
 
         $coupon->save();
@@ -218,10 +218,10 @@ class CouponTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Hof Price',
-                'redeemed'           => 0,
+                'description' => 'Hof Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
-                'customers'          => [$customer->id],
+                'customers' => [$customer->id],
             ]);
 
         $coupon->save();
@@ -253,10 +253,10 @@ class CouponTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Hof Price',
-                'redeemed'           => 0,
+                'description' => 'Hof Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
-                'customers'          => [$customer->id],
+                'customers' => [$customer->id],
             ]);
 
         $coupon->save();
@@ -278,8 +278,8 @@ class CouponTest extends TestCase
             ->type('percentage')
             ->enabled(false)
             ->data([
-                'description'        => 'Halv Price',
-                'redeemed'           => 0,
+                'description' => 'Halv Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -301,10 +301,10 @@ class CouponTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Halv Price',
-                'redeemed'           => 0,
+                'description' => 'Halv Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
-                'expires_at'         => '2022-01-01',
+                'expires_at' => '2022-01-01',
             ]);
 
         $coupon->save();
@@ -327,10 +327,10 @@ class CouponTest extends TestCase
         $order = Order::make()
             ->lineItems([
                 [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
                     'quantity' => 1,
-                    'total'    => 1000,
+                    'total' => 1000,
                 ],
             ]);
 

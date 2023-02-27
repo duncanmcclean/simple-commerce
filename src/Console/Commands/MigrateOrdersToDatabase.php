@@ -20,6 +20,7 @@ class MigrateOrdersToDatabase extends Command
     use RunsInPlease, ConfirmableTrait;
 
     protected $name = 'sc:migrate-to-database';
+
     protected $description = 'Migrates orders & customers to the database.';
 
     public function handle()

@@ -15,8 +15,8 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return [
             'option_fields' => [
-                'display'      => __('Option Fields'),
-                'type'         => 'fields',
+                'display' => __('Option Fields'),
+                'type' => 'fields',
                 'instructions' => __('Configure fields that will be shown when an option is created.'),
             ],
         ];
@@ -42,7 +42,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     ->toArray(),
 
                 'variant' => resolve(Textarea::class)->preload(),
-                'price'   => resolve(MoneyFieldtype::class)->preload(),
+                'price' => resolve(MoneyFieldtype::class)->preload(),
             ],
             collect($this->config('option_fields'))
                 ->mapWithKeys(function ($field) {
@@ -111,7 +111,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
         return [
             'variants' => $this->processInsideFields(isset($value['variants']) ? $value['variants'] : [], $this->preload()['variant_fields'], 'augment'),
-            'options'  => $this->processInsideFields(isset($value['options']) ? $value['options'] : [], $this->preload()['option_fields'], 'augment'),
+            'options' => $this->processInsideFields(isset($value['options']) ? $value['options'] : [], $this->preload()['option_fields'], 'augment'),
         ];
     }
 
@@ -195,22 +195,22 @@ class ProductVariantsFieldtype extends Fieldtype
             [
                 'handle' => 'name',
                 'field' => [
-                    'type'       => 'text',
-                    'listable'   => 'hidden',
-                    'display'    => 'Name',
-                    'width'      => 50,
+                    'type' => 'text',
+                    'listable' => 'hidden',
+                    'display' => 'Name',
+                    'width' => 50,
                     'input_type' => 'text',
-                    'validate'   => ['required'],
+                    'validate' => ['required'],
                 ],
             ],
             [
                 'handle' => 'values',
                 'field' => [
-                    'type'     => 'taggable',
+                    'type' => 'taggable',
                     'listable' => 'hidden',
-                    'display'  => 'Values',
-                    'width'    => 50,
-                    'validate'   => ['required'],
+                    'display' => 'Values',
+                    'width' => 50,
+                    'validate' => ['required'],
                 ],
             ],
         ];
@@ -224,33 +224,33 @@ class ProductVariantsFieldtype extends Fieldtype
             [
                 'handle' => 'key',
                 'field' => [
-                    'type'      => 'hidden',
-                    'listable'  => 'hidden',
-                    'display'   => 'Key',
+                    'type' => 'hidden',
+                    'listable' => 'hidden',
+                    'display' => 'Key',
                     'read_only' => true,
-                    'validate'   => ['required'],
+                    'validate' => ['required'],
                 ],
             ],
             [
                 'handle' => 'variant',
                 'field' => [
-                    'type'      => 'textarea',
-                    'listable'  => 'hidden',
-                    'display'   => 'Variant',
+                    'type' => 'textarea',
+                    'listable' => 'hidden',
+                    'display' => 'Variant',
                     'read_only' => true,
-                    'validate'   => ['required'],
-                    'width'     => 50,
+                    'validate' => ['required'],
+                    'width' => 50,
                 ],
             ],
             [
                 'handle' => 'price',
                 'field' => [
-                    'type'      => 'money',
+                    'type' => 'money',
                     'read_only' => false,
-                    'listable'  => 'hidden',
-                    'display'   => 'Price',
-                    'validate'   => ['required'],
-                    'width'     => 50,
+                    'listable' => 'hidden',
+                    'display' => 'Price',
+                    'validate' => ['required'],
+                    'width' => 50,
                 ],
             ],
         ], $this->config('option_fields', []));

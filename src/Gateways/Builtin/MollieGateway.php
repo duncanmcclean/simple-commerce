@@ -41,14 +41,14 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->create([
             'amount' => [
                 'currency' => Currency::get(Site::current())['code'],
-                'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
+                'value' => (string) substr_replace($order->grandTotal(), '.', -2, 0),
             ],
             'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
             'redirectUrl' => $this->callbackUrl([
                 '_order_id' => $order->id(),
             ]),
-            'webhookUrl'  => $this->webhookUrl(),
-            'metadata'    => [
+            'webhookUrl' => $this->webhookUrl(),
+            'metadata' => [
                 'order_id' => $order->id,
             ],
         ]);
@@ -132,8 +132,8 @@ class MollieGateway extends BaseGateway implements Gateway
         $this->mollie = new MollieApiClient();
         $this->mollie->setApiKey($this->config()->get('key'));
 
-        $this->mollie->addVersionString('Statamic/' . Statamic::version());
-        $this->mollie->addVersionString('SimpleCommerce/' . SimpleCommerce::version());
+        $this->mollie->addVersionString('Statamic/'.Statamic::version());
+        $this->mollie->addVersionString('SimpleCommerce/'.SimpleCommerce::version());
 
         Cache::rememberForever('SimpleCommerce::MollieGateway::OrganisationId', function () {
             $currentProfile = $this->mollie->profiles->getCurrent();
