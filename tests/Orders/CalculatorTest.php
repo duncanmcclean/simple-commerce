@@ -37,9 +37,9 @@ class CalculatorTest extends TestCase
             ->isPaid(true)
             ->lineItems([
                 [
-                    'product'  => $product->id,
+                    'product' => $product->id,
                     'quantity' => 2,
-                    'total'    => 123,
+                    'total' => 123,
                 ],
             ])
             ->grandTotal(123)
@@ -73,9 +73,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(true)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 500,
+                'total' => 500,
             ],
         ])->grandTotal(500)->itemsTotal(500)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
@@ -103,9 +103,9 @@ class CalculatorTest extends TestCase
             ->productVariants([
                 'options' => [
                     [
-                        'key'     => 'Red_Large',
+                        'key' => 'Red_Large',
                         'variant' => 'Red, Large',
-                        'price'   => 250,
+                        'price' => 250,
                     ],
                 ],
             ]);
@@ -114,10 +114,10 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(true)->lineItems([
             [
-                'product'  => $product->id,
-                'variant'  => 'Red_Large',
+                'product' => $product->id,
+                'variant' => 'Red_Large',
                 'quantity' => 1,
-                'total'    => 250,
+                'total' => 250,
             ],
         ])->grandTotal(250)->itemsTotal(250)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
@@ -146,9 +146,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(true)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 1550,
+                'total' => 1550,
             ],
         ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
@@ -176,9 +176,9 @@ class CalculatorTest extends TestCase
             ->productVariants([
                 'options' => [
                     [
-                        'key'     => 'Red_Large',
+                        'key' => 'Red_Large',
                         'variant' => 'Red, Large',
-                        'price'   => 15.50,
+                        'price' => 15.50,
                     ],
                 ],
             ]);
@@ -187,10 +187,10 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(true)->lineItems([
             [
-                'product'  => $product->id,
-                'variant'  => 'Red_Large',
+                'product' => $product->id,
+                'variant' => 'Red_Large',
                 'quantity' => 1,
-                'total'    => 1550,
+                'total' => 1550,
             ],
         ])->grandTotal(1550)->itemsTotal(1550)->taxTotal(0)->shippingTotal(0)->couponTotal(0);
 
@@ -219,9 +219,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 2000,
+                'total' => 2000,
             ],
         ]);
 
@@ -252,9 +252,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 2000,
+                'total' => 2000,
             ],
         ])->merge([
             'shipping_method' => Postage::class,
@@ -290,8 +290,8 @@ class CalculatorTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Half Price',
-                'redeemed'           => 0,
+                'description' => 'Half Price',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -299,9 +299,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 2000,
+                'total' => 2000,
             ],
         ])->coupon($coupon->id)->merge([
             'shipping_method' => Postage::class,
@@ -336,8 +336,8 @@ class CalculatorTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -345,9 +345,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 10000,
+                'total' => 10000,
             ],
         ])->coupon($coupon->id);
 
@@ -383,8 +383,8 @@ class CalculatorTest extends TestCase
             ->value('10.00')
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -392,9 +392,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 10000,
+                'total' => 10000,
             ],
         ])->coupon($coupon->id);
 
@@ -430,8 +430,8 @@ class CalculatorTest extends TestCase
             ->value('10')
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -439,9 +439,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 2499,
+                'total' => 2499,
             ],
         ])->coupon($coupon->id);
 
@@ -474,8 +474,8 @@ class CalculatorTest extends TestCase
             ->value(100)
             ->type('fixed')
             ->data([
-                'description'        => 'One Hundred Pence Off (£1)',
-                'redeemed'           => 0,
+                'description' => 'One Hundred Pence Off (£1)',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -483,9 +483,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 10000,
+                'total' => 10000,
             ],
         ])->coupon($coupon->id);
 
@@ -521,8 +521,8 @@ class CalculatorTest extends TestCase
             ->value('10.00')
             ->type('fixed')
             ->data([
-                'description'        => 'One Hundred Pence Off (£1)',
-                'redeemed'           => 0,
+                'description' => 'One Hundred Pence Off (£1)',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -530,9 +530,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 10000,
+                'total' => 10000,
             ],
         ])->coupon($coupon->id);
 
@@ -567,8 +567,8 @@ class CalculatorTest extends TestCase
             ->value(100)
             ->type('percentage')
             ->data([
-                'description'        => 'One Hundred Pence Off (£1)',
-                'redeemed'           => 0,
+                'description' => 'One Hundred Pence Off (£1)',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -576,9 +576,9 @@ class CalculatorTest extends TestCase
 
         $cart = Order::make()->isPaid(false)->lineItems([
             [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 10000,
+                'total' => 10000,
             ],
         ])->coupon($coupon->id);
 
@@ -612,9 +612,9 @@ class CalculatorTest extends TestCase
             ->isPaid(false)
             ->lineItems([
                 [
-                    'product'  => $product->id,
+                    'product' => $product->id,
                     'quantity' => 1,
-                    'total'    => 0,
+                    'total' => 0,
                 ],
             ])
             ->grandTotal(0)
@@ -647,13 +647,13 @@ class CalculatorTest extends TestCase
             ->productVariants([
                 'variants' => [
                     [
-                        'name'   => 'Colours',
+                        'name' => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name'   => 'Sizes',
+                        'name' => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -661,9 +661,9 @@ class CalculatorTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'     => 'Red_Small',
+                        'key' => 'Red_Small',
                         'variant' => 'Red Small',
-                        'price'   => 100,
+                        'price' => 100,
                     ],
                 ],
             ]);
@@ -678,10 +678,10 @@ class CalculatorTest extends TestCase
             ->isPaid(false)
             ->lineItems([
                 [
-                    'product'  => $product->id,
-                    'variant'  => 'Red_Small',
+                    'product' => $product->id,
+                    'variant' => 'Red_Small',
                     'quantity' => 1,
-                    'total'    => 0,
+                    'total' => 0,
                 ],
             ])
             ->grandTotal(0)

@@ -51,7 +51,7 @@ class MigrateConfig extends UpdateScript
         ConfigWriter::edit('simple-commerce')
             ->replace('notifications', [
                 'order_paid' => [
-                    \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class   => ['to' => 'customer'],
+                    \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => ['to' => 'customer'],
                     \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => ['to' => 'duncan@example.com'],
                 ],
             ])

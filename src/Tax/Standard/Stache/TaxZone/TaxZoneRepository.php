@@ -10,6 +10,7 @@ use Statamic\Stache\Stache;
 class TaxZoneRepository implements Contract
 {
     protected $stache;
+
     protected $store;
 
     public function __construct(Stache $stache)

@@ -18,7 +18,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name'  => ['sometimes', 'string'],
+            'name' => ['sometimes', 'string'],
             'email' => ['sometimes', 'email'],
         ];
 

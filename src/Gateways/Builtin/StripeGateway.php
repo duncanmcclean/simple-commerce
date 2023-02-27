@@ -42,9 +42,9 @@ class StripeGateway extends BaseGateway implements Gateway
         $order = $data->order();
 
         $intentData = [
-            'amount'             => $order->grandTotal(),
-            'currency'           => Currency::get(Site::current())['code'],
-            'description'        => __('Order :orderNumber', ['order' => $order->orderNumber()]),
+            'amount' => $order->grandTotal(),
+            'currency' => Currency::get(Site::current())['code'],
+            'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
             'setup_future_usage' => 'off_session',
         ];
 
@@ -52,7 +52,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         if ($customer) {
             $stripeCustomerData = [
-                'name'  => $customer->name() ?? __('Unknown'),
+                'name' => $customer->name() ?? __('Unknown'),
                 'email' => $customer->email(),
             ];
 
@@ -78,8 +78,8 @@ class StripeGateway extends BaseGateway implements Gateway
         $intent = PaymentIntent::create($intentData);
 
         return new GatewayResponse(true, [
-            'intent'         => $intent->id,
-            'client_secret'  => $intent->client_secret,
+            'intent' => $intent->id,
+            'client_secret' => $intent->client_secret,
         ]);
     }
 
@@ -95,9 +95,9 @@ class StripeGateway extends BaseGateway implements Gateway
         }
 
         return new GatewayResponse(true, [
-            'id'       => $paymentMethod->id,
-            'object'   => $paymentMethod->object,
-            'card'     => $paymentMethod->card->toArray(),
+            'id' => $paymentMethod->id,
+            'object' => $paymentMethod->object,
+            'card' => $paymentMethod->card->toArray(),
             'customer' => $paymentMethod->customer,
             'livemode' => $paymentMethod->livemode,
             'payment_intent' => $paymentIntent->id,
@@ -168,7 +168,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $this->setUpWithStripe();
 
         $payload = json_decode($request->getContent(), true);
-        $method = 'handle' . Str::studly(str_replace('.', '_', $payload['type']));
+        $method = 'handle'.Str::studly(str_replace('.', '_', $payload['type']));
 
         $data = $payload['data']['object'];
 

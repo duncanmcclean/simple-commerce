@@ -20,9 +20,13 @@ class Coupon implements Contract
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
     public $id;
+
     public $code;
+
     public $value;
+
     public $type;
+
     public $enabled;
 
     protected $selectedQueryRelations = [];
@@ -274,7 +278,7 @@ class Coupon implements Contract
 
     public function path()
     {
-        return Stache::store('simple-commerce-coupons')->directory() . str_slug($this->code()) . '.yaml';
+        return Stache::store('simple-commerce-coupons')->directory().str_slug($this->code()).'.yaml';
     }
 
     public function fileData()

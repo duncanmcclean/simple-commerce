@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 class CheckoutProductHasNoStockException extends \Exception
 {
     public $product;
+
     public $variant;
 
     public function __construct(Product $product, $variant = null)

@@ -14,10 +14,10 @@ class CouponFieldtype extends Relationship
     {
         return Coupon::all()->map(function ($coupon) {
             return [
-                'id'   => $coupon->id(),
-                'code'  => $coupon->code(),
+                'id' => $coupon->id(),
+                'code' => $coupon->code(),
                 'discount' => $coupon->discountText(),
-                'redeemed' => $coupon->get('redeemed', 0) . ' times',
+                'redeemed' => $coupon->get('redeemed', 0).' times',
             ];
         })->values();
     }

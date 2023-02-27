@@ -487,7 +487,7 @@ class StripeGatewayTest extends TestCase
 
         $this->assertSame([
             'text' => $paymentIntent,
-            'url' => 'https://dashboard.stripe.com/test/payments/' . $paymentIntent,
+            'url' => 'https://dashboard.stripe.com/test/payments/'.$paymentIntent,
         ], $paymentDisplay);
     }
 

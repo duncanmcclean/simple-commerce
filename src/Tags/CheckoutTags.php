@@ -102,7 +102,7 @@ class CheckoutTags extends SubTag
 
             $data = [
                 'success' => __('Checkout Complete!'),
-                'cart'    => $cart->toAugmentedArray(),
+                'cart' => $cart->toAugmentedArray(),
                 'is_checkout_request' => true,
             ];
 

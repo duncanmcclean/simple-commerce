@@ -118,8 +118,8 @@ class MarkAsShippedTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->data([
-                'is_paid'      => true,
-                'is_shipped'   => false,
+                'is_paid' => true,
+                'is_shipped' => false,
             ]);
 
         $order->save();

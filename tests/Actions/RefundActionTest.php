@@ -109,8 +109,8 @@ class RefundActionTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->merge([
-                'is_paid'      => true,
-                'is_refunded'  => false,
+                'is_paid' => true,
+                'is_refunded' => false,
                 'gateway' => [
                     'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',
                     'data' => [

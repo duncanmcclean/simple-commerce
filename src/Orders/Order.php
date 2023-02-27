@@ -27,20 +27,35 @@ class Order implements Contract
     use HasData, HasLineItems;
 
     public $id;
+
     public $orderNumber;
+
     public $isPaid;
+
     public $isShipped;
+
     public $isRefunded;
+
     public $lineItems;
+
     public $grandTotal;
+
     public $itemsTotal;
+
     public $taxTotal;
+
     public $shippingTotal;
+
     public $couponTotal;
+
     public $customer;
+
     public $coupon;
+
     public $gateway;
+
     public $data;
+
     public $resource;
 
     protected $withoutRecalculating = false;
@@ -262,7 +277,7 @@ class Order implements Contract
         $this->isShipped(true);
 
         $this->merge([
-            'shipped_date'  => now()->format('Y-m-d H:i'),
+            'shipped_date' => now()->format('Y-m-d H:i'),
         ]);
 
         $this->save();

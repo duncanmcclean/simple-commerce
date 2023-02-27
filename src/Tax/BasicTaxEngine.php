@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 class BasicTaxEngine implements TaxEngine
 {
     protected $taxRate;
+
     protected $includedInPrices;
 
     public function __construct()

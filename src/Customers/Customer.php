@@ -21,7 +21,9 @@ class Customer implements Contract
     use HasData, Notifiable;
 
     public $id;
+
     public $email;
+
     public $data;
 
     public $resource;

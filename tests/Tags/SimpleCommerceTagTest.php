@@ -137,7 +137,7 @@ class SimpleCommerceTagTest extends TestCase
 class SimpleCommerceTag extends Tag
 {
     protected $tagClasses = [
-        'test'     => TestTag::class,
+        'test' => TestTag::class,
     ];
 }
 

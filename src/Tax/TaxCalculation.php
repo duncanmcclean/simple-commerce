@@ -26,8 +26,8 @@ class TaxCalculation
     public function toArray(): array
     {
         return [
-            'amount'             => (int) $this->amount,
-            'rate'               => (int) $this->rate,
+            'amount' => (int) $this->amount,
+            'rate' => (int) $this->rate,
             'price_includes_tax' => $this->priceIncludesTax,
         ];
     }

@@ -15,7 +15,9 @@ class TaxCategory
     use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
 
     public $id;
+
     public $name;
+
     public $description;
 
     protected $selectedQueryRelations = [];
@@ -69,7 +71,7 @@ class TaxCategory
 
     public function path()
     {
-        return Stache::store('simple-commerce-tax-categories')->directory() . $this->id() . '.yaml';
+        return Stache::store('simple-commerce-tax-categories')->directory().$this->id().'.yaml';
     }
 
     public function fileData()

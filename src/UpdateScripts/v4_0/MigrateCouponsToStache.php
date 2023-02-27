@@ -29,7 +29,7 @@ class MigrateCouponsToStache extends UpdateScript
             // ->migrateCouponEntriesToStache()
             ->updateOrderBlueprint();
         // ->updateConfig()
-            // ->deleteCouponCollection();
+        // ->deleteCouponCollection();
     }
 
     protected function migrateCouponEntriesToStache(): self

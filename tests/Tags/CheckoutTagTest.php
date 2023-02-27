@@ -207,7 +207,7 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
     public function prepare(Prepare $data): Response
     {
         return new Response(true, [
-            'haggis'  => true,
+            'haggis' => true,
             'tatties' => true,
         ]);
     }
