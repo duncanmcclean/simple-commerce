@@ -137,9 +137,13 @@ Any existing sites though will be using Card Elements, which just gives you a ba
 ],
 ```
 
+### Medium: Support for PHP 8.1 has been dropped
+
+Simple Commerce has dropped support for PHP 8.1, leaving only PHP 8.2 supported.
+
 ### Medium: Support for Statamic 3.3 has been dropped
 
-Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 the only current version supported.
+Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 supported.
 
 To upgrade to Statamic 3.4, you should follow the steps outlined in the official [Upgrade Guide](https://statamic.dev/upgrade-guide/3-3-to-3-4).
 
