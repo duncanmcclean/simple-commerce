@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   pint:
+    name: Pint
     runs-on: ubuntu-latest
 
     steps:
