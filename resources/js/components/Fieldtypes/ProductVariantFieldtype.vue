@@ -19,7 +19,7 @@
             <select-field
                 v-else-if="
                     productVariantsData &&
-                        productVariantsData.purchasable_type === 'variant'
+                    productVariantsData.purchasable_type === 'variant'
                 "
                 :options="productVariantOptions"
                 :disabled="readOnly"
@@ -29,7 +29,7 @@
             <p
                 v-else-if="
                     productVariantsData &&
-                        productVariantsData.purchasable_type === 'product'
+                    productVariantsData.purchasable_type === 'product'
                 "
                 class="text-sm p-1"
             >
@@ -41,7 +41,7 @@
 
 <script>
 import axios from 'axios'
-import SelectField from '../../../../vendor/statamic/cms/resources/js/components/inputs/Select'
+import SelectField from '../../../../vendor/statamic/cms/resources/js/components/inputs/Select.vue'
 
 export default {
     name: 'product-variant-fieldtype',
@@ -71,7 +71,7 @@ export default {
         },
 
         productVariantOptions() {
-            return this.productVariantsData.variants.options.map(variant => {
+            return this.productVariantsData.variants.options.map((variant) => {
                 return {
                     label: variant.variant,
                     value: variant.key,
@@ -89,11 +89,11 @@ export default {
 
             axios
                 .post(this.meta.api, { product: this.product })
-                .then(response => {
+                .then((response) => {
                     this.productVariantsData = response.data
                     this.initializing = false
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(
                         'There was an error fetching variants for this product.'
                     )

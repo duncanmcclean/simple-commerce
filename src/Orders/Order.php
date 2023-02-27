@@ -8,17 +8,20 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid as OrderPaidEvent;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderShipped as OrderShippedEvent;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
+use Statamic\Facades\Site as FacadesSite;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
 
@@ -28,9 +31,8 @@ class Order implements Contract
 
     public $id;
     public $orderNumber;
-    public $isPaid;
-    public $isShipped;
-    public $isRefunded;
+    public $status;
+    public $paymentStatus;
     public $lineItems;
     public $grandTotal;
     public $itemsTotal;
@@ -47,9 +49,8 @@ class Order implements Contract
 
     public function __construct()
     {
-        $this->isPaid = false;
-        $this->isShipped = false;
-        $this->isRefunded = false;
+        $this->status = OrderStatus::Cart;
+        $this->paymentStatus = PaymentStatus::Unpaid;
         $this->lineItems = collect();
 
         $this->grandTotal = 0;
@@ -75,24 +76,31 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function isPaid($isPaid = null)
+    public function status($status = null)
     {
         return $this
-            ->fluentlyGetOrSet('isPaid')
+            ->fluentlyGetOrSet('status')
+            ->setter(function ($value) {
+                if (is_string($value)) {
+                    return OrderStatus::from($value);
+                }
+
+                return $value;
+            })
             ->args(func_get_args());
     }
 
-    public function isShipped($isShipped = null)
+    public function paymentStatus($paymentStatus = null)
     {
         return $this
-            ->fluentlyGetOrSet('isShipped')
-            ->args(func_get_args());
-    }
+            ->fluentlyGetOrSet('paymentStatus')
+            ->setter(function ($value) {
+                if (is_string($value)) {
+                    return PaymentStatus::from($value);
+                }
 
-    public function isRefunded($isRefunded = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('isRefunded')
+                return $value;
+            })
             ->args(func_get_args());
     }
 
@@ -177,11 +185,11 @@ class Order implements Contract
     public function currentGateway(): ?array
     {
         if (is_string($this->gateway())) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway());
+            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway());
         }
 
         if (is_array($this->gateway())) {
-            return collect(SimpleCommerce::gateways())->firstWhere('class', $this->gateway()['use']);
+            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway()['use']);
         }
 
         return null;
@@ -198,6 +206,11 @@ class Order implements Contract
     {
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $this->resource()->site();
+        }
+
+        // We don't really know what site this order belongs to. For now, we'll just return the default site.
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            return FacadesSite::current();
         }
 
         return null;
@@ -241,40 +254,57 @@ class Order implements Contract
         return false;
     }
 
-    public function markAsPaid(): self
+    public function updateOrderStatus(OrderStatus $orderStatus): self
     {
-        $this->isPaid(true);
+        $this
+            ->status($orderStatus)
+            ->appendToStatusLog($orderStatus)
+            ->save();
 
-        $this->merge([
-            'paid_date' => now()->format('Y-m-d H:i'),
-            'published' => true,
-        ]);
-
-        $this->save();
-
-        event(new OrderPaidEvent($this));
+        event(new OrderStatusUpdated($this, $orderStatus));
 
         return $this;
     }
 
-    public function markAsShipped(): self
+    public function updatePaymentStatus(PaymentStatus $paymentStatus): self
     {
-        $this->isShipped(true);
+        $this
+            ->paymentStatus($paymentStatus)
+            ->appendToStatusLog($paymentStatus)
+            ->save();
 
+        event(new PaymentStatusUpdated($this, $paymentStatus));
+
+        return $this;
+    }
+
+    public function statusLog($key = null): Collection|string|null
+    {
+        $statusLog = collect($this->get('status_log'));
+
+        if ($key) {
+            return $statusLog->get($key);
+        }
+
+        return $statusLog;
+    }
+
+    public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
+    {
         $this->merge([
-            'shipped_date'  => now()->format('Y-m-d H:i'),
+            'status_log' => collect($this->get('status_log', []))
+                ->merge([
+                    $status->value => now()->format('Y-m-d H:i'),
+                ])
+                ->toArray(),
         ]);
-
-        $this->save();
-
-        event(new OrderShippedEvent($this));
 
         return $this;
     }
 
     public function refund($refundData): self
     {
-        $this->isRefunded(true);
+        $this->updatePaymentStatus(PaymentStatus::Refunded);
 
         if (is_string($this->gateway())) {
             $data = [
@@ -357,8 +387,8 @@ class Order implements Contract
         $freshOrder = OrderFacade::find($this->id());
 
         $this->id = $freshOrder->id;
-        $this->isPaid = $freshOrder->isPaid;
-        $this->isShipped = $freshOrder->isShipped;
+        $this->status = $freshOrder->status;
+        $this->paymentStatus = $freshOrder->paymentStatus;
         $this->lineItems = $freshOrder->lineItems;
         $this->grandTotal = $freshOrder->grandTotal;
         $this->itemsTotal = $freshOrder->itemsTotal;
@@ -408,9 +438,7 @@ class Order implements Contract
         }
 
         if ($this->resource() instanceof Model) {
-            $resource = \DoubleThreeDigital\Runway\Runway::findResourceByModel($this->resource());
-
-            return $resource->augment($this->resource());
+            return Runway::orderModel()->augment($this->resource());
         }
 
         return [];

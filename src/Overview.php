@@ -11,7 +11,9 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
@@ -54,8 +56,8 @@ class Overview
                     if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                         $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                             ->queryEntries()
-                            ->where('is_paid', true)
-                            ->whereDate('paid_date', $date->format('d-m-Y'))
+                            ->where('payment_status', PaymentStatus::Paid->value)
+                            ->whereDate('status_log->paid', $date->format('d-m-Y'))
                             ->get();
                     }
 
@@ -63,8 +65,8 @@ class Overview
                         $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                         $query = $orderModel::query()
-                            ->where('is_paid', true)
-                            ->whereDate('paid_date', $date)
+                            ->where('payment_status', PaymentStatus::Paid->value)
+                            ->whereDate('status_log->paid', $date)
                             ->get();
                     }
 
@@ -86,8 +88,8 @@ class Overview
                 if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                     $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
                         ->queryEntries()
-                        ->where('is_paid', true)
-                        ->orderBy('paid_date', 'desc')
+                        ->where('payment_status', PaymentStatus::Paid->value)
+                        ->orderBy('status_log->paid', 'desc')
                         ->limit(5)
                         ->get()
                         ->map(function ($entry) {
@@ -101,7 +103,7 @@ class Overview
                             'order_number' => $order->orderNumber(),
                             'edit_url' => $order->resource()->editUrl(),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                            'paid_date' => Carbon::parse($order->get('paid_date'))->format(config('statamic.system.date_format')),
+                            'paid_at' => Carbon::parse($order->statusLog(PaymentStatus::Paid->value))->format(config('statamic.system.date_format')),
                         ];
                     });
                 }
@@ -110,9 +112,8 @@ class Overview
                     $orderModel = new (SimpleCommerce::orderDriver()['model']);
 
                     $query = $orderModel::query()
-                        ->where('is_paid', true)
-                        ->orderBy('paid_date', 'desc')
-                        ->orderBy('data->paid_date', 'desc')
+                        ->where('payment_status', PaymentStatus::Paid->value)
+                        ->orderBy('status_log->paid', 'desc')
                         ->limit(5)
                         ->get()
                         ->map(function ($order) {
@@ -125,11 +126,11 @@ class Overview
                             'id' => $order->id(),
                             'order_number' => $order->orderNumber(),
                             'edit_url' => cp_route('runway.edit', [
-                                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel($orderModel)->handle(),
+                                'resourceHandle' => Runway::orderModel()->handle(),
                                 'record' => $order->resource()->{$orderModel->getRouteKeyName()},
                             ]),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                            'paid_date' => Carbon::parse($order->get('paid_date'))->format(config('statamic.system.date_format')),
+                            'paid_at' => Carbon::parse($order->statusLog(PaymentStatus::Paid->value))->format(config('statamic.system.date_format')),
                         ];
                     });
                 }
@@ -173,7 +174,7 @@ class Overview
 
                     $query = $customerModel::query()
                         ->whereHas('orders', function ($query) {
-                            $query->where('is_paid', true);
+                            $query->where('payment_status', 'paid');
                         })
                         ->withCount('orders')
                         ->orderBy('orders_count', 'desc')
@@ -189,7 +190,7 @@ class Overview
                             'id' => $customer->id(),
                             'email' => $customer->email(),
                             'edit_url' => cp_route('runway.edit', [
-                                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel($customerModel)->handle(),
+                                'resourceHandle' => Runway::customerModel()->handle(),
                                 'record' => $customer->resource()->{$customerModel->getRouteKeyName()},
                             ]),
                             'orders_count' => $customer->orders()->count(),

@@ -25,6 +25,8 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
+        $this->withoutVite();
+
         if ($this->shouldFakeVersion) {
             Version::shouldReceive('get')
                 ->andReturn(Composer::create(__DIR__ . '/../')->installedVersion(Statamic::PACKAGE));

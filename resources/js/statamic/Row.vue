@@ -1,5 +1,4 @@
 <template>
-
     <tr :class="[sortableItemClass, { 'opacity-50': isExcessive }]">
         <!-- <td class="drag-handle" :class="sortableHandleClass"></td> -->
         <grid-cell
@@ -26,22 +25,20 @@
             </dropdown-list>
         </td> -->
     </tr>
-
 </template>
 
 <style scoped>
-    .draggable-mirror {
-        display: none;
-    }
+.draggable-mirror {
+    display: none;
+}
 </style>
 
 <script>
-// import GridCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Cell';
-import GridCell from './Cell'
-import { ValidatesFieldConditions } from '../../../vendor/statamic/cms/resources/js/components/field-conditions/FieldConditions.js';
+// import GridCell from '../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/Cell.vue';
+import GridCell from './Cell.vue'
+import { ValidatesFieldConditions } from '../../../vendor/statamic/cms/resources/js/components/field-conditions/FieldConditions.js'
 
 export default {
-
     components: { GridCell },
 
     mixins: [ValidatesFieldConditions],
@@ -49,30 +46,30 @@ export default {
     props: {
         index: {
             type: Number,
-            required: true
+            required: true,
         },
         fields: {
             type: Array,
-            required: true
+            required: true,
         },
         values: {
             type: Object,
-            required: true
+            required: true,
         },
         meta: {
             type: Object,
-            required: true
+            required: true,
         },
         name: {
             type: String,
-            required: true
+            required: true,
         },
         errorKeyPrefix: {
-            type: String
+            type: String,
         },
         canDelete: {
             type: Boolean,
-            default: true
+            default: true,
         },
     },
 
@@ -87,9 +84,9 @@ export default {
         isExcessive() {
             // const max = this.grid.config.max_rows;
             const max = 10
-            if (! max) return false;
-            return this.index >= max;
-        }
+            if (!max) return false
+            return this.index >= max
+        },
     },
 
     methods: {
@@ -99,21 +96,20 @@ export default {
         },
 
         metaUpdated(handle, value) {
-            let meta = clone(this.meta);
-            meta[handle] = value;
-            this.$emit('meta-updated', meta);
+            let meta = clone(this.meta)
+            meta[handle] = value
+            this.$emit('meta-updated', meta)
         },
 
         errorKey(handle) {
-            return `${this.errorKeyPrefix}.${this.index}.${handle}`;
+            return `${this.errorKeyPrefix}.${this.index}.${handle}`
         },
 
         errors(handle) {
-            const state = this.$store.state.publish[this.storeName];
-            if (! state) return [];
-            return state.errors[this.errorKey(handle)] || [];
-        }
+            const state = this.$store.state.publish[this.storeName]
+            if (!state) return []
+            return state.errors[this.errorKey(handle)] || []
+        },
     },
-
 }
 </script>

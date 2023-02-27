@@ -51,14 +51,14 @@ public function handle(CouponRedeemed $event)
 }
 ```
 
-### OrderPaid
+### OrderPaymentFailed
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderPaid`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderPaid.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderPaymentFailed.php)
 
-This event is fired when an order has been marked as paid.
+This event is fired whenever a payment fails to go through.
 
 ```php
-public function handle(OrderPaid $event)
+public function handle(OrderPaymentFailed $event)
 {
 	$event->order;
 }
@@ -77,16 +77,31 @@ public function handle(OrderSaved $event)
 }
 ```
 
-### OrderShipped
+### OrderStatusUpdated
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderShipped`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderShipped.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderStatusUpdated.php)
 
-This event is fired when an order has been marked as shipped.
+This event is fired whenever the status of an order changes.
 
 ```php
-public function handle(OrderShipped $event)
+public function handle(OrderStatusUpdated $event)
 {
 	$event->order;
+    $event->orderStatus;
+}
+```
+
+### PaymentStatusUpdated
+
+[**`DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PaymentStatusUpdated.php)
+
+This event is fired whenever the payment status of an order changes.
+
+```php
+public function handle(PaymentStatusUpdated $event)
+{
+	$event->order;
+    $event->paymentStatus;
 }
 ```
 
@@ -131,21 +146,6 @@ public function handle(ReceiveGatewayWebhook $event)
 }
 ```
 
-### StockRunOut
-
-[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunOut`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunOut.php)
-
-This event is fired when the [stock](/stock) for a product has ran out.
-
-```php
-public function handle(StockRunOut $event)
-{
-	$event->product;
-    $event->stock;
-    $event->variant; // If variant holds the stock
-}
-```
-
 ### StockRunningLow
 
 [**`DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunningLow.php)
@@ -154,6 +154,21 @@ This event is fired when the [stock](/stock) for a product is running low.
 
 ```php
 public function handle(StockRunningLow $event)
+{
+	$event->product;
+    $event->stock;
+    $event->variant; // If variant holds the stock
+}
+```
+
+### StockRunOut
+
+[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunOut`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunOut.php)
+
+This event is fired when the [stock](/stock) for a product has ran out.
+
+```php
+public function handle(StockRunOut $event)
 {
 	$event->product;
     $event->stock;

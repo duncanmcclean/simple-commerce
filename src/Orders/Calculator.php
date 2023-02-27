@@ -18,7 +18,7 @@ class Calculator implements Contract
 
     public function calculate(OrderContract $order): array
     {
-        if ($order->isPaid()) {
+        if ($order->paymentStatus()->is(PaymentStatus::Paid)) {
             return $order->data()->merge([
                 'items' => $order->lineItems()->toArray(),
                 'grand_total' => $order->grandTotal(),
@@ -187,10 +187,5 @@ class Calculator implements Contract
         return [
             'data' => $data,
         ];
-    }
-
-    public static function bindings(): array
-    {
-        return [];
     }
 }

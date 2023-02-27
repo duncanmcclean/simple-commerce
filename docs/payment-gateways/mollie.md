@@ -46,13 +46,15 @@ The Mollie gateway has a webhook which is hit by Mollie whenever a payment is ma
 
 Simple Commerce will configure the webhook on Mollie's end. However, you'll need to add the webhook URL to your list of CSRF exceptions, found in `app/Http/Middleware/VerifyCsrfToken.php`.
 
-```
+```php
 protected $except = [
   '/!/simple-commerce/gateways/mollie/webhook',
 ];
 ```
 
+:::note Note!
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, Mollie wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
+:::
 
 ### Handling the redirect back to your site
 

@@ -2,12 +2,15 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaid;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
 class BaseGatewayTest extends TestCase
@@ -52,9 +55,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
 
         // Assert stock count has been updated
         $this->assertSame($product->fresh()->stock(), 9);
@@ -91,9 +94,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(function (OrderPaid $event) {
+        Event::assertDispatched(function (PaymentStatusUpdated $event) {
             return $event->order->gateway['use'] === FakeOffsiteGateway::class;
         });
 
@@ -131,9 +134,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(OrderPaid::class);
+        Event::assertDispatched(PaymentStatusUpdated::class);
     }
 
     /** @test */
@@ -166,9 +169,9 @@ class BaseGatewayTest extends TestCase
 
         // Assert order has been marked as paid
         $this->assertTrue($markOrderAsPaid);
-        $this->assertTrue($order->fresh()->isPaid());
+        $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
 
-        Event::assertDispatched(function (OrderPaid $event) {
+        Event::assertDispatched(function (PaymentStatusUpdated $event) {
             return $event->order->gateway['use'] === FakeOnsiteGateway::class;
         });
     }
@@ -185,6 +188,16 @@ class FakeOnsiteGateway extends BaseGateway
     {
         return false;
     }
+
+    public function prepare(Request $request, ContractsOrder $order): array
+    {
+        return [];
+    }
+
+    public function refund(ContractsOrder $order): ?array
+    {
+        return [];
+    }
 }
 
 class FakeOffsiteGateway extends BaseGateway
@@ -197,5 +210,15 @@ class FakeOffsiteGateway extends BaseGateway
     public function isOffsiteGateway(): bool
     {
         return true;
+    }
+
+    public function prepare(Request $request, ContractsOrder $order): array
+    {
+        return [];
+    }
+
+    public function refund(ContractsOrder $order): ?array
+    {
+        return [];
     }
 }

@@ -55,7 +55,7 @@ class ShippingTagsTest extends TestCase
         $this->assertIsArray($usage);
         $this->assertCount(2, $usage);
 
-        $this->assertSame($usage[0]['name'], 'Standard Post');
+        $this->assertSame($usage[0]['name'], 'Free Shipping');
         $this->assertSame($usage[1]['name'], 'Royal Mail');
     }
 
@@ -88,7 +88,7 @@ class ShippingTagsTest extends TestCase
         $this->assertIsArray($usage);
         $this->assertCount(3, $usage);
 
-        $this->assertSame($usage[0]['name'], 'Standard Post');
+        $this->assertSame($usage[0]['name'], 'Free Shipping');
         $this->assertSame($usage[1]['name'], 'Royal Mail');
         $this->assertSame($usage[2]['name'], 'Store Pickup - Glasgow');
     }

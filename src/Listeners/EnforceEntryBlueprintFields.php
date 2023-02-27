@@ -124,6 +124,25 @@ class EnforceEntryBlueprintFields
             'validate'  => ['required'],
         ]);
 
+        $event->blueprint->ensureField('order_status', [
+            'type'      => 'order_status',
+            'display'   => 'Order Status',
+            'read_only' => true,
+            'validate'  => 'required',
+        ], 'sidebar');
+
+        $event->blueprint->ensureField('payment_status', [
+            'type'      => 'payment_status',
+            'display'   => 'Payment Status',
+            'read_only' => true,
+            'validate'  => 'required',
+        ], 'sidebar');
+
+        $event->blueprint->ensureField('status_log', [
+            'type'      => 'sc_status_log',
+            'display'   => 'Status Log',
+        ], 'sidebar');
+
         return $event->blueprint;
     }
 

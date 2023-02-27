@@ -3,14 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
 use DoubleThreeDigital\SimpleCommerce\Tags\GatewayTags;
@@ -62,7 +60,7 @@ class CheckoutTagTest extends TestCase
 
             {{ sc:gateways }}
                 ---
-                {{ name }} - Duncan Cool ({{ gateway-config:is-duncan-cool }}) - Haggis - Tatties
+                {{ name }} - Duncan Cool ({{ config:is-duncan-cool }}) - Haggis - Tatties
                 ---
             {{ /sc:gateways }}
         ');
@@ -152,7 +150,7 @@ class CheckoutTagTest extends TestCase
         Session::shouldReceive('forget');
         Session::shouldReceive('put');
 
-        $this->assertFalse($cart->isPaid());
+        $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Unpaid);
 
         $this->tag->setParameters([
             'redirect' => 'http://localhost/order-confirmation',
@@ -160,7 +158,7 @@ class CheckoutTagTest extends TestCase
 
         $usage = $this->tag->wildcard('testoffsitegateway');
 
-        $this->assertTrue($cart->fresh()->isPaid());
+        $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Paid);
     }
 
     protected function fakeCart($cart = null)
@@ -204,37 +202,27 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
         return 'Test On-site Gateway';
     }
 
-    public function prepare(Prepare $data): Response
+    public function isOffsiteGateway(): bool
     {
-        return new Response(true, [
+        return false;
+    }
+
+    public function prepare(Request $request, OrderContract $order): array
+    {
+        return [
             'haggis'  => true,
             'tatties' => true,
-        ]);
+        ];
     }
 
-    public function purchase(Purchase $data): Response
-    {
-        return new Response(true);
-    }
-
-    public function purchaseRules(): array
+    public function checkout(Request $request, OrderContract $order): array
     {
         return [];
     }
 
-    public function getCharge(ContractsOrder $order): Response
+    public function refund(OrderContract $order): array
     {
-        return new Response(true, []);
-    }
-
-    public function refundCharge(ContractsOrder $order): Response
-    {
-        return new Response(true, []);
-    }
-
-    public function webhook(Request $request)
-    {
-        return null;
+        return [];
     }
 }
 
@@ -245,31 +233,27 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
         return 'Test Off-site Gateway';
     }
 
-    public function prepare(Prepare $data): Response
+    public function isOffsiteGateway(): bool
     {
-        return new Response(true, [
+        return true;
+    }
+
+    public function prepare(Request $request, OrderContract $order): array
+    {
+        return [
             'bagpipes' => 'music',
-        ], 'http://backpipes.com');
+            'checkout_url' => 'http://backpipes.com',
+        ];
     }
 
-    public function purchase(Purchase $data): Response
-    {
-        return new Response(true);
-    }
-
-    public function purchaseRules(): array
+    public function checkout(Request $request, OrderContract $order): array
     {
         return [];
     }
 
-    public function getCharge(ContractsOrder $order): Response
+    public function refund(OrderContract $order): array
     {
-        return new Response(true, []);
-    }
-
-    public function refundCharge(ContractsOrder $order): Response
-    {
-        return new Response(true, []);
+        return [];
     }
 
     public function webhook(Request $request)

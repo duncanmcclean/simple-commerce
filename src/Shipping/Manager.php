@@ -64,9 +64,4 @@ class Manager implements Contract
             'config' => $shippingMethod['config'],
         ]);
     }
-
-    public static function bindings(): array
-    {
-        return [];
-    }
 }

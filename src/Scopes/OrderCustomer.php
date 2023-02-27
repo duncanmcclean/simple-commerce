@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Query\Scopes\Filter;
 
 class OrderCustomer extends Filter
@@ -56,8 +57,7 @@ class OrderCustomer extends Filter
         }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $orderModelClass = SimpleCommerce::orderDriver()['model'];
-            $runwayResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+            $runwayResource = Runway::orderModel();
 
             return $key === "runway_{$runwayResource->handle()}";
         }

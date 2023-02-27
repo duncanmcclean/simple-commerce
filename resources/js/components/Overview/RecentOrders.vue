@@ -16,7 +16,7 @@
                     ><strong>#{{ order.order_number }}</strong> -
                     {{ order.grand_total }}</a
                 >
-                <span class="text-sm">{{ order.paid_date }}</span>
+                <span class="text-sm">{{ order.paid_at }}</span>
             </li>
         </ul>
 

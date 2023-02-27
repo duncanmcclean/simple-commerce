@@ -30,7 +30,7 @@ Each Statamic site you have setup in your `config/statamic/sites.php` config sho
 
         'shipping' => [
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class,
+                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class,
             ],
         ],
     ],

@@ -7,13 +7,10 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\RefundFailed;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\StripePaymentIntentNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response as GatewayResponse;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -35,11 +32,14 @@ class StripeGateway extends BaseGateway implements Gateway
         return __('Stripe');
     }
 
-    public function prepare(Prepare $data): GatewayResponse
+    public function isOffsiteGateway(): bool
+    {
+        return $this->inPaymentElementsMode();
+    }
+
+    public function prepare(Request $request, OrderContract $order): array
     {
         $this->setUpWithStripe();
-
-        $order = $data->order();
 
         $intentData = [
             'amount'             => $order->grandTotal(),
@@ -71,70 +71,57 @@ class StripeGateway extends BaseGateway implements Gateway
             );
         }
 
+        if ($this->inPaymentElementsMode()) {
+            $intentData['automatic_payment_methods'] = [
+                'enabled' => true,
+            ];
+        }
+
         // We're setting this after the rest of the payment intent data,
         // in case the developer adds their own stuff to 'metadata'.
         $intentData['metadata']['order_id'] = $order->id;
 
         $intent = PaymentIntent::create($intentData);
 
-        return new GatewayResponse(true, [
+        return [
             'intent'         => $intent->id,
             'client_secret'  => $intent->client_secret,
-        ]);
+        ];
     }
 
-    public function purchase(Purchase $data): GatewayResponse
+    public function checkout(Request $request, OrderContract $order): array
     {
-        $this->setUpWithStripe();
-
-        $paymentIntent = PaymentIntent::retrieve($data->stripe()['intent']);
-        $paymentMethod = PaymentMethod::retrieve($data->request()->payment_method);
-
-        if ($paymentIntent->status === 'succeeded') {
-            $this->markOrderAsPaid($data->order());
+        if ($this->inPaymentElementsMode()) {
+            return parent::checkout($request, $order);
         }
 
-        return new GatewayResponse(true, [
+        $this->setUpWithStripe();
+
+        $paymentIntent = PaymentIntent::retrieve($order->get('stripe')['intent']);
+        $paymentMethod = PaymentMethod::retrieve($request->payment_method);
+
+        if ($paymentIntent->status === 'succeeded') {
+            $this->markOrderAsPaid($order);
+        }
+
+        return [
             'id'       => $paymentMethod->id,
             'object'   => $paymentMethod->object,
             'card'     => $paymentMethod->card->toArray(),
             'customer' => $paymentMethod->customer,
             'livemode' => $paymentMethod->livemode,
             'payment_intent' => $paymentIntent->id,
-        ]);
+        ];
     }
 
-    public function purchaseRules(): array
+    public function checkoutRules(): array
     {
         return [
             'payment_method' => ['required', 'string'],
         ];
     }
 
-    public function getCharge(OrderContract $order): GatewayResponse
-    {
-        $this->setUpWithStripe();
-
-        $paymentIntent = null;
-
-        if (isset($order->gateway()['data']['payment_intent'])) {
-            $paymentIntent = $order->gateway()['data']['payment_intent'];
-        }
-
-        if (isset($order->get('stripe')['intent'])) {
-            $paymentIntent = $order->get('stripe')['intent'];
-        }
-
-        if (! $paymentIntent) {
-            throw new StripePaymentIntentNotProvided('Stripe: No Payment Intent was provided to fetch.');
-        }
-
-        $charge = PaymentIntent::retrieve($paymentIntent);
-
-        return new GatewayResponse(true, $charge->toArray());
-    }
-
-    public function refundCharge(OrderContract $order): GatewayResponse
+    public function refund(OrderContract $order): array
     {
         $this->setUpWithStripe();
 
@@ -160,7 +147,28 @@ class StripeGateway extends BaseGateway implements Gateway
             throw new RefundFailed($e->getMessage());
         }
 
-        return new GatewayResponse(true, $refund->toArray());
+        return [
+            'id' => $refund->id,
+            'amount' => $refund->amount,
+            'payment_intent' => $refund->payment_intent,
+        ];
+    }
+
+    public function callback(Request $request): bool
+    {
+        if ($this->inCardElementsMode()) {
+            return parent::callback($request);
+        }
+
+        $this->setUpWithStripe();
+
+        $paymentIntent = PaymentIntent::retrieve($request->payment_intent);
+
+        if (! $paymentIntent) {
+            return false;
+        }
+
+        return $paymentIntent->status === 'succeeded';
     }
 
     public function webhook(Request $request)
@@ -175,7 +183,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            $order->markAsPaid();
+            $this->markOrderAsPaid($order);
 
             return new Response('Webhook handled', 200);
         }
@@ -195,7 +203,7 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handleChargeRefunded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            if (! $order->isRefunded()) {
+            if ($order->paymentStatus() !== PaymentStatus::Refunded) {
                 $order->refund($payload['data']['object']);
             }
 
@@ -205,7 +213,7 @@ class StripeGateway extends BaseGateway implements Gateway
         return new Response();
     }
 
-    public function paymentDisplay($value): array
+    public function fieldtypeDisplay($value): array
     {
         if (! isset($value['data']['payment_intent'])) {
             return ['text' => 'Unknown', 'url' => null];
@@ -243,5 +251,15 @@ class StripeGateway extends BaseGateway implements Gateway
         }
 
         $this->isUsingTestMode = str_contains($this->config()->get('secret'), 'sk_test_');
+    }
+
+    protected function inCardElementsMode(): bool
+    {
+        return $this->config()->get('mode', 'payment_elements') === 'card_elements';
+    }
+
+    protected function inPaymentElementsMode(): bool
+    {
+        return $this->config()->get('mode', 'payment_elements') === 'payment_elements';
     }
 }

@@ -16,9 +16,6 @@ class OrderModel extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'is_paid' => 'boolean',
-        'is_shipped' => 'boolean',
-        'is_refunded' => 'boolean',
         'items' => 'json',
         'grand_total' => 'integer',
         'items_total' => 'integer',
@@ -28,7 +25,6 @@ class OrderModel extends Model
         'use_shipping_address_for_billing' => 'boolean',
         'gateway' => 'json',
         'data' => 'json',
-        'paid_date' => 'datetime',
     ];
 
     protected $appends = [
@@ -42,7 +38,7 @@ class OrderModel extends Model
 
     public function getOrderNumberAttribute()
     {
-        if (array_key_exists('title', $this->data)) {
+        if (array_key_exists('title', $this->data ?? [])) {
             return $this->data['title'];
         }
 

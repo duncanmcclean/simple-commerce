@@ -14,8 +14,10 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -46,6 +48,8 @@ class CheckoutController extends BaseActionController
                 ->handleRemainingData()
                 ->handlePayment()
                 ->postCheckout();
+
+            $this->order->updateOrderStatus(OrderStatus::Placed);
         } catch (CheckoutProductHasNoStockException $e) {
             $lineItem = $this->order->lineItems()->filter(function ($lineItem) use ($e) {
                 return $lineItem->product()->id() === $e->product->id();
@@ -61,21 +65,19 @@ class CheckoutController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Checkout Complete!'),
-            'cart'    => $request->wantsJson()
-                ? $this->order->toResource()
-                : $this->order->toAugmentedArray(),
+            'cart'    => $this->order->toAugmentedArray(),
             'is_checkout_request' => true,
         ]);
     }
 
-    protected function handleAdditionalValidation()
+    protected function handleAdditionalValidation(): self
     {
         $rules = array_merge(
             $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
             : [],
         $this->request->has('gateway')
-                ? Gateway::use($this->request->get('gateway'))->purchaseRules()
+                ? Gateway::use($this->request->get('gateway'))->checkoutRules()
                 : [],
             [
                 'coupon' => ['nullable', new ValidCoupon($this->order)],
@@ -92,7 +94,7 @@ class CheckoutController extends BaseActionController
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
                 : [],
             $this->request->has('gateway')
-                ? Gateway::use($this->request->get('gateway'))->purchaseMessages()
+                ? Gateway::use($this->request->get('gateway'))->checkoutMessages()
                 : [],
             [],
         );
@@ -102,7 +104,7 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handleCustomerDetails()
+    protected function handleCustomerDetails(): self
     {
         $customerData = $this->request->has('customer')
             ? $this->request->get('customer')
@@ -178,7 +180,13 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handleStock()
+    /**
+     * We need to handle the stock here, before we handle the payment. This is in
+     * case we don't have any stock left for a product in the customer's cart, we can
+     * throw an error and not worry about the customer being charged for a product that
+     * they can't get.
+     */
+    protected function handleStock(): self
     {
         $this->order = app(Pipeline::class)
             ->send($this->order)
@@ -190,7 +198,7 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handleCoupon()
+    protected function handleCoupon(): self
     {
         if ($coupon = $this->request->get('coupon')) {
             $coupon = Coupon::findByCode($coupon);
@@ -204,7 +212,7 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handleRemainingData()
+    protected function handleRemainingData(): self
     {
         $data = [];
 
@@ -228,25 +236,25 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handlePayment()
+    protected function handlePayment(): self
     {
         $this->order = $this->order->recalculate();
 
         if ($this->order->grandTotal() <= 0) {
-            $this->order->markAsPaid();
+            $this->order->updatePaymentStatus(PaymentStatus::Paid);
 
             return $this;
         }
 
-        if (! $this->request->has('gateway') && $this->order->isPaid() === false && $this->order->grandTotal() !== 0) {
+        if (! $this->request->has('gateway') && $this->order->paymentStatus() !== PaymentStatus::Paid && $this->order->grandTotal() !== 0) {
             throw new GatewayNotProvided('No gateway provided.');
         }
 
-        $purchase = Gateway::use($this->request->gateway)->purchase($this->request, $this->order);
+        Gateway::use($this->request->gateway)->checkout($this->request, $this->order);
 
         $this->excludedKeys[] = 'gateway';
 
-        foreach (Gateway::use($this->request->gateway)->purchaseRules() as $key => $rule) {
+        foreach (Gateway::use($this->request->gateway)->checkoutRules() as $key => $rule) {
             $this->excludedKeys[] = $key;
         }
 
@@ -255,25 +263,16 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function postCheckout()
+    protected function postCheckout(): self
     {
-        if (! isset(SimpleCommerce::customerDriver()['model']) && $this->order->customer()) {
-            $this->order->customer()->merge([
-                'orders' => $this->order->customer()->orders()
-                    ->pluck('id')
-                    ->push($this->order->id())
-                    ->toArray(),
-            ]);
+        $this->order = CheckoutPipeline::run($this->order);
 
-            $this->order->customer()->save();
-        }
-
-        if (! $this->request->has('gateway') && $this->order->isPaid() === false && $this->order->grandTotal() === 0) {
-            $this->order->markAsPaid();
-        }
-
-        if ($this->order->coupon()) {
-            $this->order->coupon()->redeem();
+        if (
+            ! $this->request->has('gateway')
+            && $this->order->status() !== PaymentStatus::Paid
+            && $this->order->grandTotal() === 0
+        ) {
+            $this->order->updatePaymentStatus(PaymentStatus::Paid);
         }
 
         $this->forgetCart();

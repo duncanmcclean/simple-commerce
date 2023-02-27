@@ -20,7 +20,7 @@ return [
 
             'shipping' => [
                 'methods' => [
-                    \DoubleThreeDigital\SimpleCommerce\Shipping\StandardPost::class => [],
+                    \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
                 ],
             ],
         ],
@@ -68,7 +68,7 @@ return [
             ],
         ],
 
-        'order_shipped' => [
+        'order_dispatched' => [
             \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
         ],
     ],

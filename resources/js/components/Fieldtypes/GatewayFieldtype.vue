@@ -9,8 +9,8 @@
         >
             <div class="item select-none item outline-none" tabindex="0">
                 <div class="item-inner">
-                    <a :href="paymentDisplay.url" target="_blank">
-                        {{ paymentDisplay.text }}
+                    <a :href="display.url" target="_blank">
+                        {{ display.text }}
                     </a>
                 </div>
 
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-// import HasActions from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasActions';
+// import HasActions from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasActions.vue';
 
 export default {
     name: 'gateway-fieldtype',
@@ -56,19 +56,19 @@ export default {
             actions: this.value.actions,
             actionUrl: this.value.action_url,
             gatewayClass: this.value.gateway_class,
-            paymentDisplay: this.value.payment_display,
+            display: this.value.display,
         }
     },
 
     computed: {
-        paymentDisplay() {
-            return this.value.payment_display
+        display() {
+            return this.value.display
         },
 
         gatewayName() {
             const gatewayClass = this.value.gateway_class
 
-            const gateway = this.meta.gateways.find(gateway => {
+            const gateway = this.meta.gateways.find((gateway) => {
                 return gateway.class === gatewayClass
             })
 

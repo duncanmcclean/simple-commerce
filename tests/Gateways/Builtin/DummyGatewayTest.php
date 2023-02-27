@@ -4,8 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Purchase;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -37,44 +35,44 @@ class DummyGatewayTest extends TestCase
     /** @test */
     public function can_prepare()
     {
-        $prepare = $this->gateway->prepare(new Prepare(
+        $prepare = $this->gateway->prepare(
             new Request(),
             Order::make()
-        ));
+        );
 
-        $this->assertIsObject($prepare);
-        $this->assertTrue($prepare->success());
-        $this->assertSame($prepare->data(), []);
+        $this->assertIsArray($prepare);
+        $this->assertSame($prepare, []);
     }
 
     /** @test */
-    public function can_purchase()
+    public function can_checkout()
     {
         Notification::fake();
 
         TestTime::freeze();
 
-        $purchase = $this->gateway->purchase(new Purchase(
+        $checkout = $this->gateway->checkout(
             new Request(),
             Order::make()
-        ));
+        );
 
-        $this->assertIsObject($purchase);
-        $this->assertTrue($purchase->success());
+        $this->assertIsArray($checkout);
+
         $this->assertSame([
             'id'        => '123456789abcdefg',
             'last_four' => '4242',
             'date'      => (string) now()->subDays(14),
             'refunded'  => false,
-        ], $purchase->data());
+        ], $checkout);
     }
 
     /** @test */
-    public function has_purchase_rules()
+    public function has_checkout_rules()
     {
-        $rules = $this->gateway->purchaseRules();
+        $rules = $this->gateway->checkoutRules();
 
         $this->assertIsArray($rules);
+
         $this->assertSame([
             'card_number'   => ['required', 'string'],
             'expiry_month'  => ['required'],
@@ -84,37 +82,10 @@ class DummyGatewayTest extends TestCase
     }
 
     /** @test */
-    public function can_get_charge()
-    {
-        TestTime::freeze();
-
-        $charge = $this->gateway->getCharge(
-            Order::make()
-        );
-
-        $this->assertIsObject($charge);
-        $this->assertSame([
-            'id'        => '123456789abcdefg',
-            'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
-        ], $charge->data());
-    }
-
-    /** @test */
     public function can_refund_charge()
     {
-        $refund = $this->gateway->refundCharge(Order::make());
+        $refund = $this->gateway->refund(Order::make());
 
-        $this->assertIsObject($refund);
-        $this->assertTrue($refund->success());
-    }
-
-    /** @test */
-    public function can_hit_webhook()
-    {
-        $webhook = $this->gateway->webhook(new Request());
-
-        $this->assertSame($webhook, null);
+        $this->assertIsArray($refund);
     }
 }

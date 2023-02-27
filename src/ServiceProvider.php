@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Foundation\Console\AboutCommand;
 use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
@@ -20,16 +21,16 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $actions = [
-        Actions\MarkAsPaid::class,
-        Actions\MarkAsShipped::class,
         Actions\RefundAction::class,
+        Actions\UpdateOrderStatus::class,
     ];
 
     protected $commands = [
-        Console\Commands\CartCleanupCommand::class,
+        Console\Commands\PurgeCartOrdersCommand::class,
         Console\Commands\MakeGateway::class,
         Console\Commands\MakeShippingMethod::class,
         Console\Commands\InstallCommand::class,
+        Console\Commands\MigrateOrderStatuses::class,
         Console\Commands\MigrateOrdersToDatabase::class,
         Console\Commands\SwitchToDatabase::class,
     ];
@@ -39,10 +40,13 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\CouponFieldtype::class,
         Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\OrderStatusFieldtype::class,
+        Fieldtypes\PaymentStatusFieldtype::class,
         Fieldtypes\ProductVariantFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
         Fieldtypes\RegionFieldtype::class,
         Fieldtypes\ShippingMethodFieldtype::class,
+        Fieldtypes\StatusLogFieldtype::class,
         Fieldtypes\TaxCategoryFieldtype::class,
 
         Fieldtypes\Variables\LineItemTax::class,
@@ -59,13 +63,13 @@ class ServiceProvider extends AddonServiceProvider
         Events\PostCheckout::class => [
             Listeners\TidyTemporaryGatewayData::class,
         ],
-        Events\OrderPaid::class => [
+        Events\OrderStatusUpdated::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
+        Events\PaymentStatusUpdated::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
         Events\OrderPaymentFailed::class => [
-            Listeners\SendConfiguredNotifications::class,
-        ],
-        Events\OrderShipped::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
         Events\StockRunningLow::class => [
@@ -85,18 +89,11 @@ class ServiceProvider extends AddonServiceProvider
         'cp'      => __DIR__ . '/../routes/cp.php',
     ];
 
-    protected $stylesheets = [
-        __DIR__ . '/../resources/dist/css/cp.css',
-    ];
-
-    protected $scripts = [
-        __DIR__ . '/../resources/dist/js/cp.js',
-    ];
-
     protected $scopes = [
         Scopes\OrderContainsProduct::class,
         Scopes\OrderCustomer::class,
         Scopes\OrderStatusFilter::class,
+        Scopes\PaymentStatusFilter::class,
     ];
 
     protected $tags = [
@@ -120,6 +117,15 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
 
         UpdateScripts\v4_0\MigrateCouponsToStache::class,
+
+        UpdateScripts\v5_0\MigrateOrderStatuses::class,
+        UpdateScripts\v5_0\UpdateNotificationsConfig::class,
+        UpdateScripts\v5_0\UpdateOrderBlueprint::class,
+    ];
+
+    protected $vite = [
+        'resources/js/cp.js',
+        'resources/css/cp.css',
     ];
 
     public function boot()
@@ -157,7 +163,7 @@ class ServiceProvider extends AddonServiceProvider
                 'Repository: Customer' => SimpleCommerce::customerDriver()['repository'],
                 'Repository: Order' => SimpleCommerce::orderDriver()['repository'],
                 'Repository: Product' => SimpleCommerce::productDriver()['repository'],
-                'Gateways' => collect(SimpleCommerce::gateways())->pluck('name')->implode(', '),
+                'Gateways' => SimpleCommerce::gateways()->pluck('name')->implode(', '),
                 'Shipping Methods' => SimpleCommerce::shippingMethods()->pluck('name')->implode(', '),
                 'Tax Engine' => get_class(SimpleCommerce::taxEngine()),
             ];
@@ -167,7 +173,7 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootVendorAssets()
     {
         $this->publishes([
-            __DIR__ . '/../resources/dist' => public_path('vendor/simple-commerce'),
+            __DIR__ . '/../dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce');
 
         $this->publishes([
@@ -198,12 +204,6 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bindContracts()
     {
-        $bindings = [
-            Contracts\GatewayManager::class     => Gateways\Manager::class,
-            Contracts\ShippingManager::class    => Shipping\Manager::class,
-            Contracts\Calculator::class         => Orders\Calculator::class,
-        ];
-
         if (isset(SimpleCommerce::customerDriver()['repository'])) {
             $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
         }
@@ -216,11 +216,15 @@ class ServiceProvider extends AddonServiceProvider
             $bindings[Contracts\ProductRepository::class] = SimpleCommerce::productDriver()['repository'];
         }
 
-        collect($bindings)->each(function ($concrete, $abstract) {
-            if (! $this->app->bound($abstract)) {
-                Statamic::repository($abstract, $concrete);
-            }
-        });
+        foreach ($bindings as $contract => $implementation) {
+            $this->app->booted(function () use ($contract, $implementation) {
+                Statamic::repository($contract, $implementation);
+            });
+        }
+
+        $this->app->bind(Contracts\GatewayManager::class, Gateways\Manager::class);
+        $this->app->bind(Contracts\ShippingManager::class, Shipping\Manager::class);
+        $this->app->bind(Contracts\Calculator::class, Orders\Calculator::class);
 
         $this->app->bind(Contracts\Order::class, Orders\Order::class);
         $this->app->bind(Contracts\Coupon::class, Coupons\Coupon::class);
@@ -304,8 +308,7 @@ class ServiceProvider extends AddonServiceProvider
                 class_exists('DoubleThreeDigital\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class)
             ) {
-                $orderModelClass = SimpleCommerce::orderDriver()['model'];
-                $orderResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+                $orderResource = Runway::orderModel();
 
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
@@ -334,8 +337,7 @@ class ServiceProvider extends AddonServiceProvider
                 class_exists('DoubleThreeDigital\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class)
             ) {
-                $customerModelClass = SimpleCommerce::customerDriver()['model'];
-                $customerResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $customerModelClass);
+                $customerResource = Runway::customerModel();
 
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))

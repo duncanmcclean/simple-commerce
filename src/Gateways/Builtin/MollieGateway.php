@@ -5,18 +5,18 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
+use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Prepare;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Response;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Mollie\Api\MollieApiClient;
-use Mollie\Api\Types\PaymentStatus;
+use Mollie\Api\Types\PaymentStatus as MolliePaymentStatus;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
 
@@ -29,20 +29,23 @@ class MollieGateway extends BaseGateway implements Gateway
         return __('Mollie');
     }
 
-    public function prepare(Prepare $data): Response
+    public function isOffsiteGateway(): bool
+    {
+        return true;
+    }
+
+    public function prepare(Request $request, Order $order): array
     {
         $this->setupMollie();
-
-        $order = $data->order();
 
         $payment = $this->mollie->payments->create([
             'amount' => [
                 'currency' => Currency::get(Site::current())['code'],
                 'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
             ],
-            'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
+            'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
             'redirectUrl' => $this->callbackUrl([
-                '_order_id' => $data->order()->id(),
+                '_order_id' => $order->id(),
             ]),
             'webhookUrl'  => $this->webhookUrl(),
             'metadata'    => [
@@ -50,63 +53,20 @@ class MollieGateway extends BaseGateway implements Gateway
             ],
         ]);
 
-        return new Response(true, [
+        return [
             'id' => $payment->id,
-        ], $payment->getCheckoutUrl());
+            'checkout_url' => $payment->getCheckoutUrl(),
+        ];
     }
 
-    public function getCharge(Order $order): Response
+    public function refund(Order $order): array
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->gateway()['data']['id']);
-
-        return new Response(true, [
-            'id'                              => $payment->id,
-            'mode'                            => $payment->mode,
-            'amount'                          => $payment->amount,
-            'settlementAmount'                => $payment->settlementAmount,
-            'amountRefunded'                  => $payment->amountRefunded,
-            'amountRemaining'                 => $payment->amountRemaining,
-            'description'                     => $payment->description,
-            'method'                          => $payment->method,
-            'status'                          => $payment->status,
-            'createdAt'                       => $payment->createdAt,
-            'paidAt'                          => $payment->paidAt,
-            'canceledAt'                      => $payment->canceledAt,
-            'expiresAt'                       => $payment->expiresAt,
-            'failedAt'                        => $payment->failedAt,
-            'profileId'                       => $payment->profileId,
-            'sequenceType'                    => $payment->sequenceType,
-            'redirectUrl'                     => $payment->redirectUrl,
-            'webhookUrl'                      => $payment->webhookUrl,
-            'mandateId'                       => $payment->mandateId,
-            'subscriptionId'                  => $payment->subscriptionId,
-            'orderId'                         => $payment->orderId,
-            'settlementId'                    => $payment->settlementId,
-            'locale'                          => $payment->locale,
-            'metadata'                        => $payment->metadata,
-            'details'                         => $payment->details,
-            'restrictPaymentMethodsToCountry' => $payment->restrictPaymentMethodsToCountry,
-            '_links'                          => $payment->_links,
-            '_embedded'                       => $payment->_embedded,
-            'isCancelable'                    => $payment->isCancelable,
-            'amountCaptured'                  => $payment->amountCaptured,
-            'authorizedAt'                    => $payment->authorizedAt,
-            'expiredAt'                       => $payment->expiredAt,
-            'customerId'                      => $payment->customerId,
-            'countryCode'                     => $payment->countryCode,
-        ]);
-    }
-
-    public function refundCharge(Order $order): Response
-    {
-        $this->setupMollie();
-
-        $payment = $this->mollie->payments->get($order->gateway()['data']['id']);
+        $payment = $this->mollie->payments->get($order->get('gateway')['data']['id']);
         $payment->refund([]);
 
-        return new Response(true, []);
+        return [];
     }
 
     public function callback(Request $request): bool
@@ -115,7 +75,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $order = OrderFacade::find($request->input('_order_id'));
 
-        return $order->isPaid();
+        return $order->paymentStatus() === PaymentStatus::Paid;
     }
 
     public function webhook(Request $request)
@@ -125,50 +85,32 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $payment = $this->mollie->payments->get($mollieId);
 
-        if ($payment->status === PaymentStatus::STATUS_PAID) {
-            $order = null;
-
-            if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-                // TODO: refactor this query
-                $order = collect(OrderFacade::all())
-                    ->filter(function ($entry) use ($mollieId) {
-                        return isset($entry->data()->get('mollie')['id'])
-                            && $entry->data()->get('mollie')['id']
-                            === $mollieId;
-                    })
-                    ->map(function ($entry) {
-                        return OrderFacade::find($entry->id());
-                    })
-                    ->first();
-            }
-
-            if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-                $order = (new (SimpleCommerce::orderDriver()['model']))
-                    ->query()
-                    ->where('data->mollie->id', $mollieId)
-                    ->first();
-
-                $order = OrderFacade::find($order->id);
-            }
+        if ($payment->status === MolliePaymentStatus::STATUS_PAID) {
+            $order = $this->getOrderFromWebhookRequest($request);
 
             if (! $order) {
                 throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
             }
 
-            if ($order->isPaid() === true) {
+            if ($order->paymentStatus() === PaymentStatus::Paid) {
                 return;
             }
 
             $this->markOrderAsPaid($order);
         }
+
+        if ($payment->status === MolliePaymentStatus::STATUS_FAILED) {
+            $order = $this->getOrderFromWebhookRequest($request);
+
+            if (! $order) {
+                throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
+            }
+
+            event(new OrderPaymentFailed($order));
+        }
     }
 
-    public function isOffsiteGateway(): bool
-    {
-        return true;
-    }
-
-    public function paymentDisplay($value): array
+    public function fieldtypeDisplay($value): array
     {
         if (! isset($value['data']['id'])) {
             return ['text' => 'Unknown', 'url' => null];
@@ -206,5 +148,33 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         return is_subclass_of($class, $classToCheckAgainst)
             || $class === $classToCheckAgainst;
+    }
+
+    protected function getOrderFromWebhookRequest(Request $request): ?Order
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            // TODO: refactor this query
+            return collect(OrderFacade::all())
+                ->filter(function ($entry) use ($mollieId) {
+                    return isset($entry->data()->get('mollie')['id'])
+                        && $entry->data()->get('mollie')['id']
+                        === $mollieId;
+                })
+                ->map(function ($entry) {
+                    return OrderFacade::find($entry->id());
+                })
+                ->first();
+        }
+
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            $order = (new (SimpleCommerce::orderDriver()['model']))
+                ->query()
+                ->where('data->mollie->id', $mollieId)
+                ->first();
+
+            return OrderFacade::find($order->id);
+        }
+
+        return null;
     }
 }

@@ -78,7 +78,7 @@ A rough example of a PayPal implementation is provided below.
 <div id="paypal-button"></div>
 <input id="paypal-payment-id" type="hidden" name="payment_id">
 <input type="hidden" name="gateway" value="DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\PayPalGateway">
-<script src="https://www.paypal.com/sdk/js?client-id={{ gateway-config:client_id }}&currency={{ result.currency_code }}"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal:config:client_id }}&currency={{ result.currency_code }}"></script>
 <script>
     paypal.Buttons({
         createOrder: () => {
@@ -112,15 +112,17 @@ protected $except = [
 ];
 ```
 
-When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, PayPal wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
+:::note Note!
+When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, Mollie wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
+:::
 
 ## Testing
 
 PayPal themselves don't offer a set of 'test cards' like Stripe, or other common payment gateways do. Instead, you have to use fake card numbers and hope PayPal will accept them. Here's a couple we've found you can use for testing:
 
-- `4485165985805957`
-- `4485250194331820`
-- `375527918910414`
-- `375363946611620`
-- `5557514931753152`
-- `5277359932030179`
+-   `4485165985805957`
+-   `4485250194331820`
+-   `375527918910414`
+-   `375363946611620`
+-   `5557514931753152`
+-   `5277359932030179`

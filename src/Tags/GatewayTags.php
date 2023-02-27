@@ -8,18 +8,18 @@ class GatewayTags extends SubTag
 {
     public function index()
     {
-        return SimpleCommerce::gateways();
+        return SimpleCommerce::gateways()->toArray();
     }
 
     public function count()
     {
-        return count(SimpleCommerce::gateways());
+        return SimpleCommerce::gateways()->count();
     }
 
     // {{ sc:gateways:stripe }}
     public function wildcard(string $tag)
     {
-        return collect(SimpleCommerce::gateways())
+        return SimpleCommerce::gateways()
             ->where('handle', $tag)
             ->first();
     }

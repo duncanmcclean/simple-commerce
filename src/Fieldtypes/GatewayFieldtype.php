@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Action;
 use Statamic\Fields\Fieldtype;
 
@@ -19,7 +20,7 @@ class GatewayFieldtype extends Fieldtype
     public function preload()
     {
         return [
-            'gateways' => SimpleCommerce::gateways(),
+            'gateways' => SimpleCommerce::gateways()->toArray(),
         ];
     }
 
@@ -31,7 +32,7 @@ class GatewayFieldtype extends Fieldtype
 
         $actionUrl = null;
 
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
 
@@ -58,7 +59,7 @@ class GatewayFieldtype extends Fieldtype
             $orderModel = SimpleCommerce::orderDriver()['model'];
 
             $actionUrl = cp_route('runway.actions.run', [
-                'resourceHandle' => \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModel)->handle(),
+                'resourceHandle' => Runway::orderModel()->handle(),
             ]);
         }
 
@@ -67,7 +68,7 @@ class GatewayFieldtype extends Fieldtype
             'entry' => optional($this->field->parent())->id(),
 
             'gateway_class' => $gateway['class'],
-            'payment_display' => Gateway::use($gateway['class'])->paymentDisplay($value),
+            'display' => Gateway::use($gateway['class'])->fieldtypeDisplay($value),
 
             'actions' => $actions,
             'action_url' => $actionUrl,
@@ -85,7 +86,7 @@ class GatewayFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
 
@@ -104,7 +105,7 @@ class GatewayFieldtype extends Fieldtype
             return;
         }
 
-        $gateway = collect(SimpleCommerce::gateways())
+        $gateway = SimpleCommerce::gateways()
             ->where('class', isset($value['use']) ? $value['use'] : $value)
             ->first();
 

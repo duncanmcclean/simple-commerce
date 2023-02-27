@@ -2,11 +2,28 @@
 
 import GatewayFieldtype from './components/Fieldtypes/GatewayFieldtype.vue'
 import MoneyFieldtype from './components/Fieldtypes/MoneyFieldtype.vue'
+import OrderStatusFieldtype from './components/Fieldtypes/OrderStatusFieldtype.vue'
+import OrderStatusIndexFieldtype from './components/Fieldtypes/OrderStatusIndexFieldtype.vue'
+import PaymentStatusFieldtype from './components/Fieldtypes/PaymentStatusFieldtype.vue'
+import PaymentStatusIndexFieldtype from './components/Fieldtypes/PaymentStatusIndexFieldtype.vue'
 import ProductVariantFieldtype from './components/Fieldtypes/ProductVariantFieldtype.vue'
 import ProductVariantsFildtype from './components/Fieldtypes/ProductVariantsFieldtype.vue'
 
 Statamic.$components.register('gateway-fieldtype', GatewayFieldtype)
 Statamic.$components.register('money-fieldtype', MoneyFieldtype)
+Statamic.$components.register('order-status-fieldtype', OrderStatusFieldtype)
+Statamic.$components.register(
+    'order_status-fieldtype-index',
+    OrderStatusIndexFieldtype
+)
+Statamic.$components.register(
+    'payment-status-fieldtype',
+    PaymentStatusFieldtype
+)
+Statamic.$components.register(
+    'payment_status-fieldtype-index',
+    PaymentStatusIndexFieldtype
+)
 Statamic.$components.register(
     'product-variant-fieldtype',
     ProductVariantFieldtype

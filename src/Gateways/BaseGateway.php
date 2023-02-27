@@ -4,20 +4,42 @@ namespace DoubleThreeDigital\SimpleCommerce\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotSupportPurchase;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
+use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Http\Request;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class BaseGateway
+abstract class BaseGateway
 {
-    protected string $displayName = '';
+    public function __construct(
+        protected array $config = [],
+        protected string $handle = '',
+        protected string $webhookUrl = '',
+        protected string $redirectUrl = '/',
+        protected string $errorRedirectUrl = '/'
+    ) {
+    }
 
-    public function __construct(protected array $config = [], protected string $handle = '', protected string $webhookUrl = '', protected string $redirectUrl = '/', protected string $errorRedirectUrl = '/')
+    public function handle(): string
     {
-        $this->displayName = isset($config['display']) ? $config['display'] : $this->name();
+        return $this->handle;
+    }
+
+    public function name(): string
+    {
+        return Str::title(class_basename($this));
+    }
+
+    public function displayName()
+    {
+        if ($displayName = $this->config()->get('display')) {
+            return $displayName;
+        }
+
+        return $this->name();
     }
 
     public function config(): Collection
@@ -32,12 +54,49 @@ class BaseGateway
         return $this;
     }
 
-    public function handle(): string
+    public function isOffsiteGateway(): bool
     {
-        return $this->handle;
+        return false;
     }
 
-    public function callbackUrl(array $extraParamters = [])
+    abstract public function prepare(Request $request, Order $order): array;
+
+    public function checkout(Request $request, Order $order): array
+    {
+        throw new GatewayHasNotImplementedMethod('checkout');
+    }
+
+    public function checkoutRules(): array
+    {
+        return [];
+    }
+
+    public function checkoutMessages(): array
+    {
+        return [];
+    }
+
+    abstract public function refund(Order $order): ?array;
+
+    public function callback(Request $request): bool
+    {
+        throw new GatewayHasNotImplementedMethod('callback');
+    }
+
+    public function webhook(Request $request)
+    {
+        throw new GatewayHasNotImplementedMethod('webhook');
+    }
+
+    public function fieldtypeDisplay($value): array
+    {
+        return [
+            'text' => isset($value['data']) ? $value['data']['id'] : $value['id'],
+            'url' => null,
+        ];
+    }
+
+    public function callbackUrl(array $extraParamters = []): string
     {
         $data = array_merge($extraParamters, [
             'gateway'         => $this->handle,
@@ -45,86 +104,31 @@ class BaseGateway
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
-        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
+        return route('statamic.simple-commerce.gateways.callback', $data);
     }
 
-    public function webhookUrl()
+    public function webhookUrl(): string
     {
         return $this->webhookUrl;
     }
 
-    public function errorRedirectUrl()
+    public function redirectUrl(): ?string
+    {
+        return $this->redirectUrl;
+    }
+
+    public function errorRedirectUrl(): ?string
     {
         return $this->errorRedirectUrl;
     }
 
-    public function displayName()
-    {
-        return $this->displayName;
-    }
-
-    public function name(): string
-    {
-        return Str::title(class_basename($this));
-    }
-
-    public function callback(Request $request): bool
-    {
-        return true;
-    }
-
-    public function isOffsiteGateway(): bool
-    {
-        return false;
-    }
-
     /**
-     * Method used to complete on-site purchases.
+     * Once you've confirmed that the payment has been made, you can mark the order as paid
+     * using this method. For off-site gateways, it'll handle updating stock & redeeming any coupons.
      *
-     * @var Purchase
-     *
-     * @return Response
-     *
-     * @throws GatewayDoesNotSupportPurchase
+     * @param  Order  $order
+     * @return bool
      */
-    public function purchase(Purchase $data): Response
-    {
-        throw new GatewayDoesNotSupportPurchase("Gateway [{$this->handle}] does not support the 'purchase' method.");
-    }
-
-    /**
-     * Should return any validation rules required for the gateway when submitting on-site purchases.
-     *
-     * @return array
-     */
-    public function purchaseRules(): array
-    {
-        return [];
-    }
-
-    /**
-     * Should return any validation messages required for the gateway when submitting on-site purchases.
-     *
-     * @return array
-     */
-    public function purchaseMessages(): array
-    {
-        return [];
-    }
-
-    /**
-     * Should return an array with text & a URL which will be displayed by the Gateway fieldtype in the CP.
-     *
-     * @return array
-     */
-    public function paymentDisplay($value): array
-    {
-        return [
-            'text' => isset($value['data']) ? $value['data']['id'] : $value['id'],
-            'url' => '#',
-        ];
-    }
-
     public function markOrderAsPaid(Order $order): bool
     {
         // We need to ensure that the gateway is available in the
@@ -135,25 +139,10 @@ class BaseGateway
         ]);
 
         if ($this->isOffsiteGateway()) {
-            $order = app(Pipeline::class)
-                ->send($order)
-                ->through([
-                    \DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleStock::class,
-                ])
-                ->thenReturn();
+            $order = CheckoutPipeline::run($order, true);
 
-            if (! isset(SimpleCommerce::customerDriver()['model']) && $order->customer()) {
-                $order->customer()->merge([
-                    'orders' => $order->customer()->orders()
-                        ->pluck('id')
-                        ->push($order->id())
-                        ->toArray(),
-                ]);
-
-                $order->customer()->save();
-            }
-
-            $order->markAsPaid();
+            $order->updateOrderStatus(OrderStatus::Placed);
+            $order->updatePaymentStatus(PaymentStatus::Paid);
 
             if ($order->coupon()) {
                 $order->coupon()->redeem();
@@ -164,7 +153,7 @@ class BaseGateway
             return true;
         }
 
-        $order->markAsPaid();
+        $order->updatePaymentStatus(PaymentStatus::Paid);
 
         return true;
     }
