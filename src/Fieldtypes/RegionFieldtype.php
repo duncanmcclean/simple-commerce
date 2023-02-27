@@ -10,14 +10,15 @@ use Statamic\Fieldtypes\Relationship;
 class RegionFieldtype extends Relationship
 {
     protected $canCreate = false;
+
     protected $indexComponent = null;
 
     public function getIndexItems($request)
     {
         return Regions::map(function ($region) {
             return [
-                'id'   => $region['id'],
-                'country_iso'  => $region['country_iso'],
+                'id' => $region['id'],
+                'country_iso' => $region['country_iso'],
                 'country_name' => __(Countries::findByRegion($region)->first()['name']),
                 'name' => __($region['name']),
             ];

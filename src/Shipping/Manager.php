@@ -12,6 +12,7 @@ use Statamic\Facades\Site;
 class Manager implements Contract
 {
     protected $siteHandle;
+
     protected $className;
 
     public function site($siteHandle): self

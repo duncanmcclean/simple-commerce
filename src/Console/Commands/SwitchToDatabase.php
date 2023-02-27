@@ -14,6 +14,7 @@ class SwitchToDatabase extends Command
     use RunsInPlease;
 
     protected $name = 'sc:switch-to-database';
+
     protected $description = 'Switch your site to using a database for orders & customers.';
 
     protected $stubsPath;
@@ -22,7 +23,7 @@ class SwitchToDatabase extends Command
     {
         parent::__construct();
 
-        $this->stubsPath = __DIR__ . '/stubs';
+        $this->stubsPath = __DIR__.'/stubs';
     }
 
     public function handle()
@@ -51,12 +52,12 @@ class SwitchToDatabase extends Command
     {
         $this->info('Copying migration stubs...');
 
-        if (count(File::glob(database_path('migrations') . '/*_create_customers_table.php')) < 1) {
-            File::copy($this->stubsPath . '/create_customers_table.php', database_path('migrations/' . date('Y_m_d_His') . '_create_customers_table.php'));
+        if (count(File::glob(database_path('migrations').'/*_create_customers_table.php')) < 1) {
+            File::copy($this->stubsPath.'/create_customers_table.php', database_path('migrations/'.date('Y_m_d_His').'_create_customers_table.php'));
         }
 
-        if (count(File::glob(database_path('migrations') . '/*_create_orders_table.php')) < 1) {
-            File::copy($this->stubsPath . '/create_orders_table.php', database_path('migrations/' . date('Y_m_d_His') . '_create_orders_table.php'));
+        if (count(File::glob(database_path('migrations').'/*_create_orders_table.php')) < 1) {
+            File::copy($this->stubsPath.'/create_orders_table.php', database_path('migrations/'.date('Y_m_d_His').'_create_orders_table.php'));
         }
 
         return $this;
@@ -89,11 +90,11 @@ class SwitchToDatabase extends Command
         $this->info('Copying blueprint stubs...');
 
         if (! File::exists(resource_path('blueprints/customer.yaml'))) {
-            File::copy($this->stubsPath . '/runway_customer_blueprint.yaml', resource_path('blueprints/customer.yaml'));
+            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/customer.yaml'));
         }
 
         if (! File::exists(resource_path('blueprints/order.yaml'))) {
-            File::copy($this->stubsPath . '/runway_order_blueprint.yaml', resource_path('blueprints/order.yaml'));
+            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/order.yaml'));
         }
 
         return $this;
@@ -108,7 +109,7 @@ class SwitchToDatabase extends Command
         }
 
         if (! File::exists(config_path('runway.php'))) {
-            File::copy($this->stubsPath . '/runway_config.php', config_path('runway.php'));
+            File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
         }
 
         return $this;
@@ -123,7 +124,7 @@ class SwitchToDatabase extends Command
         }
 
         if (! File::exists(config_path('runway.php'))) {
-            File::copy($this->stubsPath . '/runway_config.php', config_path('runway.php'));
+            File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
         }
 
         return $this;

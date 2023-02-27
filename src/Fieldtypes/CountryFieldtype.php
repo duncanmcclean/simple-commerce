@@ -9,14 +9,15 @@ use Statamic\Fieldtypes\Relationship;
 class CountryFieldtype extends Relationship
 {
     protected $canCreate = false;
+
     protected $indexComponent = null;
 
     public function getIndexItems($request)
     {
         return Countries::map(function ($country) {
             return [
-                'id'   => $country['iso'],
-                'iso'  => $country['iso'],
+                'id' => $country['iso'],
+                'iso' => $country['iso'],
                 'name' => __($country['name']),
             ];
         })->values();

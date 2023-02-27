@@ -12,10 +12,15 @@ class ProductVariant
     use HasData, FluentlyGetsAndSets;
 
     protected $key;
+
     protected $product;
+
     protected $name;
+
     protected $price;
+
     protected $stock;
+
     protected $data;
 
     public function key($key = null)

@@ -9,6 +9,7 @@ use Statamic\Stache\Stache;
 class CouponRepository implements ContractsCouponRepository
 {
     protected $stache;
+
     protected $store;
 
     public function __construct(Stache $stache)

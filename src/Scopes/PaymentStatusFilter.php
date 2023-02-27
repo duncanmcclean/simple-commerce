@@ -11,6 +11,7 @@ use Statamic\Query\Scopes\Filter;
 class PaymentStatusFilter extends Filter
 {
     public $pinned = true;
+
     public static $title = 'Payment Status';
 
     public function fieldItems()

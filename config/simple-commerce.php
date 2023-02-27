@@ -114,7 +114,7 @@ return [
 
     'tax_engine_config' => [
         // Basic Engine
-        'rate'               => 20,
+        'rate' => 20,
         'included_in_prices' => false,
 
         // Standard Tax Engine

@@ -11,6 +11,7 @@ use Statamic\Query\Scopes\Filter;
 class OrderStatusFilter extends Filter
 {
     public $pinned = true;
+
     public static $title = 'Order Status';
 
     public function fieldItems()

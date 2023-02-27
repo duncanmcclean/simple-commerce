@@ -14,9 +14,9 @@ class MoneyFieldtype extends Fieldtype
     {
         return [
             'read_only' => [
-                'type'         => 'toggle',
+                'type' => 'toggle',
                 'instructions' => __('Should this field be read only?'),
-                'width'        => 50,
+                'width' => 50,
             ],
         ];
     }

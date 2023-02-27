@@ -12,7 +12,6 @@ class EnsureFormParametersArriveIntact
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return \Illuminate\Http\Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException

@@ -25,6 +25,7 @@ class StripeGatewayTest extends TestCase
     use SetupCollections, RefreshContent;
 
     public StripeGateway $cardElementsGateway;
+
     public StripeGateway $paymentElementsGateway;
 
     public function setUp(): void
@@ -520,7 +521,7 @@ class StripeGatewayTest extends TestCase
 
         $this->assertSame([
             'text' => $paymentIntent,
-            'url' => 'https://dashboard.stripe.com/test/payments/' . $paymentIntent,
+            'url' => 'https://dashboard.stripe.com/test/payments/'.$paymentIntent,
         ], $fieldtypeDisplay);
     }
 

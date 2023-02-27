@@ -32,13 +32,13 @@ class LineItemsTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => 'un-doone-two-three-twa',
-                'product'  => $productOne->id(),
+                'id' => 'un-doone-two-three-twa',
+                'product' => $productOne->id(),
                 'quantity' => 2,
             ],
             [
-                'id'       => 'nine-ten-eleven',
-                'product'  => $productTwo->id(),
+                'id' => 'nine-ten-eleven',
+                'product' => $productTwo->id(),
                 'quantity' => 2,
             ],
         ]);
@@ -59,13 +59,13 @@ class LineItemsTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => 'un-doone-two-three-twa',
-                'product'  => $productOne->id(),
+                'id' => 'un-doone-two-three-twa',
+                'product' => $productOne->id(),
                 'quantity' => 2,
             ],
             [
-                'id'       => 'nine-ten-eleven',
-                'product'  => 'blah-blah', // this product doesn't exist
+                'id' => 'nine-ten-eleven',
+                'product' => 'blah-blah', // this product doesn't exist
                 'quantity' => 2,
             ],
         ]);
@@ -86,13 +86,13 @@ class LineItemsTest extends TestCase
 
         $order = Order::make()->status(OrderStatus::Placed)->paymentStatus(PaymentStatus::Paid)->lineItems([
             [
-                'id'       => 'un-doone-two-three-twa',
-                'product'  => $productOne->id(),
+                'id' => 'un-doone-two-three-twa',
+                'product' => $productOne->id(),
                 'quantity' => 2,
             ],
             [
-                'id'       => 'nine-ten-eleven',
-                'product'  => 'blah-blah', // this product doesn't exist
+                'id' => 'nine-ten-eleven',
+                'product' => 'blah-blah', // this product doesn't exist
                 'quantity' => 2,
             ],
         ]);
@@ -130,8 +130,8 @@ class LineItemsTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => 'ideeeeee-of-item',
-                'product'  => $product->id,
+                'id' => 'ideeeeee-of-item',
+                'product' => $product->id,
                 'quantity' => 2,
             ],
         ]);
@@ -164,8 +164,8 @@ class LineItemsTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => 'ideeeeee-of-item',
-                'product'  => $product->id,
+                'id' => 'ideeeeee-of-item',
+                'product' => $product->id,
                 'quantity' => 2,
             ],
         ]);

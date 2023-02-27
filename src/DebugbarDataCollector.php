@@ -34,7 +34,7 @@ class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implem
             'Shipping Total' => Currency::parse($cart->shippingTotal(), Site::current()),
             'Coupon Total' => Currency::parse($cart->couponTotal(), Site::current()),
             'Grand Total' => Currency::parse($cart->grandTotal(), Site::current()),
-            'Site Currency' => Currency::get(Site::current())['symbol'] . ' ' . Currency::get(Site::current())['name'],
+            'Site Currency' => Currency::get(Site::current())['symbol'].' '.Currency::get(Site::current())['name'],
             'Enabled Gateways' => SimpleCommerce::gateways()->pluck('name')->join(', '),
         ];
     }

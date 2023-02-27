@@ -18,11 +18,17 @@ class Product implements Contract
     use HasData;
 
     public $id;
+
     public $price;
+
     public $productVariants;
+
     public $stock;
+
     public $taxCategory;
+
     public $data;
+
     public $resource;
 
     public function __construct()

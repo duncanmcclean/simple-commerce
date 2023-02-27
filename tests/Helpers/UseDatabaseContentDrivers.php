@@ -8,14 +8,14 @@ trait UseDatabaseContentDrivers
 {
     public function setUpDatabaseContentDrivers()
     {
-        $this->stubsPath = __DIR__ . '/../__fixtures__/database/migrations';
+        $this->stubsPath = __DIR__.'/../__fixtures__/database/migrations';
 
-        if (count(File::glob(database_path('migrations') . '/*_create_customers_table.php')) < 1) {
-            File::copy($this->stubsPath . '/create_customers_table.php', database_path('migrations/' . date('Y_m_d_His') . '_create_customers_table.php'));
+        if (count(File::glob(database_path('migrations').'/*_create_customers_table.php')) < 1) {
+            File::copy($this->stubsPath.'/create_customers_table.php', database_path('migrations/'.date('Y_m_d_His').'_create_customers_table.php'));
         }
 
-        if (count(File::glob(database_path('migrations') . '/*_create_orders_table.php')) < 1) {
-            File::copy($this->stubsPath . '/create_orders_table.php', database_path('migrations/' . date('Y_m_d_His') . '_create_orders_table.php'));
+        if (count(File::glob(database_path('migrations').'/*_create_orders_table.php')) < 1) {
+            File::copy($this->stubsPath.'/create_orders_table.php', database_path('migrations/'.date('Y_m_d_His').'_create_orders_table.php'));
         }
 
         $this->runLaravelMigrations();

@@ -48,11 +48,11 @@ class PayPalGateway extends BaseGateway implements Gateway
             'purchase_units' => [
                 [
                     'amount' => [
-                        'value'    => (string) substr_replace($order->grandTotal(), '.', -2, 0),
+                        'value' => (string) substr_replace($order->grandTotal(), '.', -2, 0),
                         'currency_code' => Currency::get(Site::current())['code'],
                     ],
                     'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
-                    'custom_id'   => $order->id(),
+                    'custom_id' => $order->id(),
                 ],
             ],
             'application_context' => [
@@ -74,7 +74,7 @@ class PayPalGateway extends BaseGateway implements Gateway
 
         return [
             'result' => [
-                'id'            => $response->result->id,
+                'id' => $response->result->id,
                 'currency_code' => $response->result->purchase_units[0]->amount->currency_code,
             ],
             'checkout_url' => $this->isOffsiteGateway()
@@ -184,7 +184,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                     $customer = Customer::make()
                         ->email($responseBody['payer']['email_address'])
                         ->data([
-                            'name' => $responseBody['payer']['name']['given_name'] . ' ' . $responseBody['payer']['name']['surname'],
+                            'name' => $responseBody['payer']['name']['given_name'].' '.$responseBody['payer']['name']['surname'],
                         ]);
 
                     $customer->save();
