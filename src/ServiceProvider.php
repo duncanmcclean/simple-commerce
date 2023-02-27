@@ -103,20 +103,6 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
-        UpdateScripts\v2_3\AddBlueprintFields::class,
-        UpdateScripts\v2_3\MigrateConfig::class,
-        UpdateScripts\v2_3\MigrateLineItemMetadata::class,
-
-        UpdateScripts\v2_4\AddTaxFieldToOrderLineItems::class,
-        // UpdateScripts\v2_4\MigrateGatewayDataToNewFormat::class,
-        UpdateScripts\v2_4\MigrateSingleCartConfig::class,
-        UpdateScripts\v2_4\MigrateTaxConfiguration::class,
-
-        UpdateScripts\v3_0\AddNewFieldsToOrderBlueprint::class,
-        UpdateScripts\v3_0\ConfigureTitleFormats::class,
-        UpdateScripts\v3_0\ConfigureWhitelistedFields::class,
-        UpdateScripts\v3_0\UpdateContentRepositoryReferences::class,
-
         UpdateScripts\v4_0\MigrateCouponsToStache::class,
 
         UpdateScripts\v5_0\MigrateOrderStatuses::class,
