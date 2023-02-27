@@ -80,7 +80,6 @@ Contributions are welcome, and are accepted via pull requests. You should follow
 1. Fork the repository
 2. Make your code change
 3. Open a pull request, detailing the changes you've made.
-4. Ensure StyleCI isn't reporting any code-style errors. If it is, you should resolve those.
 
 If your pull request is a Work in Progress, please mark your pull request as a draft.
 
