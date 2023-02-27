@@ -14,6 +14,7 @@ class CartCleanupCommand extends Command
     use RunsInPlease;
 
     protected $name = 'sc:cart-cleanup';
+
     protected $description = 'Cleanup carts older than 14 days.';
 
     public function handle()

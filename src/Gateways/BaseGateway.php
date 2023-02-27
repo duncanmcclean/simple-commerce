@@ -40,12 +40,12 @@ class BaseGateway
     public function callbackUrl(array $extraParamters = [])
     {
         $data = array_merge($extraParamters, [
-            'gateway'         => $this->handle,
-            '_redirect'       => $this->redirectUrl,
+            'gateway' => $this->handle,
+            '_redirect' => $this->redirectUrl,
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
 
-        return config('app.url') . route('statamic.simple-commerce.gateways.callback', $data, false);
+        return config('app.url').route('statamic.simple-commerce.gateways.callback', $data, false);
     }
 
     public function webhookUrl()
@@ -83,8 +83,6 @@ class BaseGateway
      *
      * @var Purchase
      *
-     * @return Response
-     *
      * @throws GatewayDoesNotSupportPurchase
      */
     public function purchase(Purchase $data): Response
@@ -94,8 +92,6 @@ class BaseGateway
 
     /**
      * Should return any validation rules required for the gateway when submitting on-site purchases.
-     *
-     * @return array
      */
     public function purchaseRules(): array
     {
@@ -104,8 +100,6 @@ class BaseGateway
 
     /**
      * Should return any validation messages required for the gateway when submitting on-site purchases.
-     *
-     * @return array
      */
     public function purchaseMessages(): array
     {
@@ -114,8 +108,6 @@ class BaseGateway
 
     /**
      * Should return an array with text & a URL which will be displayed by the Gateway fieldtype in the CP.
-     *
-     * @return array
      */
     public function paymentDisplay($value): array
     {

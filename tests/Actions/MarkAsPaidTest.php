@@ -90,7 +90,7 @@ class MarkAsPaidTest extends TestCase
             ->collection('orders')
             ->id(Stache::generateId())
             ->data([
-                'is_paid'      => false,
+                'is_paid' => false,
             ]);
 
         $order->save();

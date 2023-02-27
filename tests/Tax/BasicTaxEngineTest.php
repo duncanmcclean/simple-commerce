@@ -26,9 +26,9 @@ class BasicTaxEngineTest extends TestCase
 
         $order = Order::make()->isPaid(false)->lineItems([
             $lineItem = [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 1000,
+                'total' => 1000,
             ],
         ]);
 
@@ -54,9 +54,9 @@ class BasicTaxEngineTest extends TestCase
 
         $order = Order::make()->isPaid(false)->lineItems([
             $lineItem = [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 2000,
+                'total' => 2000,
             ],
         ]);
 
@@ -84,9 +84,9 @@ class BasicTaxEngineTest extends TestCase
 
         $order = Order::make()->isPaid(false)->lineItems([
             $lineItem = [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 2000,
+                'total' => 2000,
             ],
         ]);
 
@@ -111,9 +111,9 @@ class BasicTaxEngineTest extends TestCase
 
         $order = Order::make()->isPaid(false)->lineItems([
             $lineItem = [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 2,
-                'total'    => 2000,
+                'total' => 2000,
             ],
         ]);
 
@@ -142,9 +142,9 @@ class BasicTaxEngineTest extends TestCase
 
         $order = Order::make()->isPaid(false)->lineItems([
             $lineItem = [
-                'product'  => $product->id,
+                'product' => $product->id,
                 'quantity' => 3,
-                'total'    => 7800,
+                'total' => 7800,
             ],
         ]);
 

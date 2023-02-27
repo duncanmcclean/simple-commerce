@@ -79,7 +79,7 @@ class MollieGatewayTest extends TestCase
 
         $this->assertSame('55.00', $molliePayment->amount->value);
         $this->assertSame('Order #0001', $molliePayment->description);
-        $this->assertStringContainsString('/!/simple-commerce/gateways/mollie/callback?_order_id=' . $order->id(), $molliePayment->redirectUrl);
+        $this->assertStringContainsString('/!/simple-commerce/gateways/mollie/callback?_order_id='.$order->id(), $molliePayment->redirectUrl);
     }
 
     /** @test */
@@ -94,12 +94,12 @@ class MollieGatewayTest extends TestCase
         $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
             'amount' => [
                 'currency' => 'GBP',
-                'value'    => '12.34',
+                'value' => '12.34',
             ],
             'description' => 'Order #12345689',
             'redirectUrl' => 'https://example.com/redirect',
-            'webhookUrl'  => 'https://example.com/webhook',
-            'metadata'    => [
+            'webhookUrl' => 'https://example.com/webhook',
+            'metadata' => [
                 'order_id' => '12345689',
             ],
         ]);
@@ -153,12 +153,12 @@ class MollieGatewayTest extends TestCase
         $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
             'amount' => [
                 'currency' => 'GBP',
-                'value'    => '12.34',
+                'value' => '12.34',
             ],
             'description' => 'Order #12345689',
             'redirectUrl' => 'https://example.com/redirect',
-            'webhookUrl'  => 'https://example.com/webhook',
-            'metadata'    => [
+            'webhookUrl' => 'https://example.com/webhook',
+            'metadata' => [
                 'order_id' => '12345689',
             ],
         ]);

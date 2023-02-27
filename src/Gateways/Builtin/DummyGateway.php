@@ -27,30 +27,30 @@ class DummyGateway extends BaseGateway implements Gateway
         $this->markOrderAsPaid($data->order());
 
         return new Response(true, [
-            'id'        => '123456789abcdefg',
+            'id' => '123456789abcdefg',
             'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
+            'date' => (string) now()->subDays(14),
+            'refunded' => false,
         ]);
     }
 
     public function purchaseRules(): array
     {
         return [
-            'card_number'   => ['required', 'string'],
-            'expiry_month'  => ['required'],
-            'expiry_year'   => ['required'],
-            'cvc'           => ['required'],
+            'card_number' => ['required', 'string'],
+            'expiry_month' => ['required'],
+            'expiry_year' => ['required'],
+            'cvc' => ['required'],
         ];
     }
 
     public function getCharge(Order $entry): Response
     {
         return new Response(true, [
-            'id'        => '123456789abcdefg',
+            'id' => '123456789abcdefg',
             'last_four' => '4242',
-            'date'      => (string) now()->subDays(14),
-            'refunded'  => false,
+            'date' => (string) now()->subDays(14),
+            'refunded' => false,
         ]);
     }
 

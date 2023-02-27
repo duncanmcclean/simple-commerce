@@ -133,7 +133,7 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Updated'),
-            'cart'    => $cart->toResource(),
+            'cart' => $cart->toResource(),
         ]);
     }
 
@@ -147,7 +147,7 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Deleted'),
-            'cart'    => null,
+            'cart' => null,
         ]);
     }
 

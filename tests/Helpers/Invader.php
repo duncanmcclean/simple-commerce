@@ -7,6 +7,7 @@ use ReflectionClass;
 class Invader
 {
     public object $obj;
+
     public ReflectionClass $reflected;
 
     public function __construct(object $obj)

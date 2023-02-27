@@ -207,8 +207,6 @@ class EloquentOrderRepository implements RepositoryContract
     /**
      * Returns an array of custom columns the developer
      * has added to the 'orders' table.
-     *
-     * @return array
      */
     protected function getCustomColumns(): array
     {

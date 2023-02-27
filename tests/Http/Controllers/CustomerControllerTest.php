@@ -20,7 +20,7 @@ class CustomerControllerTest extends TestCase
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name'  => 'Duncan McClean',
+                'name' => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
             ]);
 
@@ -52,7 +52,7 @@ class CustomerControllerTest extends TestCase
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name'  => 'Duncan McClean',
+                'name' => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
             ]);
 
@@ -88,7 +88,7 @@ class CustomerControllerTest extends TestCase
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name'  => 'Duncan McClean',
+                'name' => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
             ]);
 
@@ -124,7 +124,7 @@ class CustomerControllerTest extends TestCase
             ->slug('duncan_double_three_digital')
             ->data([
                 'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name'  => 'Duncan McClean',
+                'name' => 'Duncan McClean',
                 'email' => 'duncan@doublethree.digital',
             ]);
 

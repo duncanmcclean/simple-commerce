@@ -58,10 +58,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -70,13 +70,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -110,10 +110,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -122,14 +122,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                '_request'     => encrypt(CheckoutFormRequest::class),
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                '_request' => encrypt(CheckoutFormRequest::class),
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ])
             ->assertSessionHasErrors('accept_terms');
 
@@ -166,10 +166,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -178,13 +178,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Mike Scott',
-                'email'        => 'mike.scott@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Mike Scott',
+                'email' => 'mike.scott@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -228,10 +228,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -240,14 +240,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'first_name'   => 'Mike',
-                'last_name'    => 'Scott',
-                'email'        => 'mike.scott@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'first_name' => 'Mike',
+                'last_name' => 'Scott',
+                'email' => 'mike.scott@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -289,10 +289,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -301,13 +301,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Mike Scott',
-                'email'        => 'mike dot scott@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Mike Scott',
+                'email' => 'mike dot scott@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ])
             ->assertSessionHasErrors('email');
 
@@ -345,10 +345,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -357,12 +357,12 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'email'        => 'jim@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'email' => 'jim@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -408,13 +408,13 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000)->merge([
-            'customer'    => $customer->id,
+            'customer' => $customer->id,
         ]);
 
         $order->save();
@@ -422,11 +422,11 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -477,10 +477,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -489,12 +489,12 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'customer'     => $customer->id,
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'customer' => $customer->id,
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -558,10 +558,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -570,12 +570,12 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'customer'     => $customer->id,
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'customer' => $customer->id,
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -621,10 +621,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -633,15 +633,15 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'customer'     => [
+                'customer' => [
                     'name' => 'Joe Doe',
                     'email' => 'joe.doe@example.com',
                 ],
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -685,10 +685,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -705,15 +705,15 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'customer'     => [
+                'customer' => [
                     'name' => 'Joe Doe',
                     'email' => 'joe.doe@example.com',
                 ],
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -765,10 +765,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -777,16 +777,16 @@ class CheckoutControllerTest extends TestCase
         $this
              ->withSession(['simple-commerce-cart' => $order->id])
              ->post(route('statamic.simple-commerce.checkout.store'), [
-                 'customer'     => [
+                 'customer' => [
                      'name' => 'Joe Doe',
                      'email' => 'joe.doe@example.com',
                      'dob' => '01/01/2000',
                  ],
-                 'gateway'      => DummyGateway::class,
-                 'card_number'  => '4242424242424242',
+                 'gateway' => DummyGateway::class,
+                 'card_number' => '4242424242424242',
                  'expiry_month' => '01',
-                 'expiry_year'  => '2025',
-                 'cvc'          => '123',
+                 'expiry_year' => '2025',
+                 'cvc' => '123',
              ]);
 
         $order = $order->fresh();
@@ -838,10 +838,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -858,16 +858,16 @@ class CheckoutControllerTest extends TestCase
         $this
              ->withSession(['simple-commerce-cart' => $order->id])
              ->post(route('statamic.simple-commerce.checkout.store'), [
-                 'customer'     => [
+                 'customer' => [
                      'name' => 'Joe Doe',
                      'email' => 'joe.doe@example.com',
                      'dob' => '01/01/2000',
                  ],
-                 'gateway'      => DummyGateway::class,
-                 'card_number'  => '4242424242424242',
+                 'gateway' => DummyGateway::class,
+                 'card_number' => '4242424242424242',
                  'expiry_month' => '01',
-                 'expiry_year'  => '2025',
-                 'cvc'          => '123',
+                 'expiry_year' => '2025',
+                 'cvc' => '123',
              ]);
 
         $order = $order->fresh();
@@ -919,8 +919,8 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
             ]);
 
@@ -928,10 +928,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -940,14 +940,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'coupon'       => 'fifty-friday',
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                'coupon' => 'fifty-friday',
             ]);
 
         $order = $order->fresh();
@@ -993,20 +993,20 @@ class CheckoutControllerTest extends TestCase
             ->value(100)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Friday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Friday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
-                'maximum_uses'       => 1,
+                'maximum_uses' => 1,
             ]);
 
         $coupon->save();
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(0)->coupon($coupon->id());
 
@@ -1015,8 +1015,8 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
             ]);
 
         $order = $order->fresh();
@@ -1064,8 +1064,8 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Thursday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Thursday',
+                'redeemed' => 0,
                 'minimum_cart_value' => 9000,
             ]);
 
@@ -1074,10 +1074,10 @@ class CheckoutControllerTest extends TestCase
         $order = Order::make()
             ->lineItems([
                 [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
                     'quantity' => 1,
-                    'total'    => 5000,
+                    'total' => 5000,
                 ],
             ])
             ->grandTotal(5000)
@@ -1088,14 +1088,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'coupon'       => $coupon->code(),
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                'coupon' => $coupon->code(),
             ])
             ->assertSessionHasErrors('coupon');
 
@@ -1142,9 +1142,9 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Thursday',
-                'redeemed'           => 10,
-                'maximum_uses'       => 10,
+                'description' => 'Fifty Thursday',
+                'redeemed' => 10,
+                'maximum_uses' => 10,
                 'minimum_cart_value' => null,
             ]);
 
@@ -1153,10 +1153,10 @@ class CheckoutControllerTest extends TestCase
         $order = Order::make()
             ->lineItems([
                 [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
                     'quantity' => 1,
-                    'total'    => 5000,
+                    'total' => 5000,
                 ],
             ])
             ->grandTotal(5000)
@@ -1167,14 +1167,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'coupon'       => $coupon->code(),
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                'coupon' => $coupon->code(),
             ])
             ->assertSessionHasErrors('coupon');
 
@@ -1221,10 +1221,10 @@ class CheckoutControllerTest extends TestCase
             ->value(50)
             ->type('percentage')
             ->data([
-                'description'        => 'Fifty Wednesday',
-                'redeemed'           => 0,
+                'description' => 'Fifty Wednesday',
+                'redeemed' => 0,
                 'minimum_cart_value' => null,
-                'products'           => ['a-random-product'],
+                'products' => ['a-random-product'],
             ]);
 
         $coupon->save();
@@ -1232,10 +1232,10 @@ class CheckoutControllerTest extends TestCase
         $order = Order::make()
             ->lineItems([
                 [
-                    'id'       => Stache::generateId(),
-                    'product'  => $product->id,
+                    'id' => Stache::generateId(),
+                    'product' => $product->id,
                     'quantity' => 1,
-                    'total'    => 5000,
+                    'total' => 5000,
                 ],
             ])
             ->grandTotal(5000)
@@ -1246,14 +1246,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'coupon'       => $coupon->code(),
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                'coupon' => $coupon->code(),
             ])
             ->assertSessionHasErrors('coupon');
 
@@ -1295,10 +1295,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1307,13 +1307,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -1353,10 +1353,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1365,13 +1365,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -1411,10 +1411,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1423,13 +1423,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ])
             ->assertRedirect()
             ->assertSessionHasErrors();
@@ -1477,10 +1477,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1489,13 +1489,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ])
             ->assertRedirect();
 
@@ -1533,13 +1533,13 @@ class CheckoutControllerTest extends TestCase
             ->productVariants([
                 'variants' => [
                     [
-                        'name'   => 'Colours',
+                        'name' => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name'   => 'Sizes',
+                        'name' => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -1547,10 +1547,10 @@ class CheckoutControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'     => 'Red_Small',
+                        'key' => 'Red_Small',
                         'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 50,
+                        'price' => 5000,
+                        'stock' => 50,
                     ],
                 ],
             ]);
@@ -1559,11 +1559,11 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'variant'  => 'Red_Small',
+                'id' => Stache::generateId(),
+                'product' => $product->id,
+                'variant' => 'Red_Small',
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1572,13 +1572,13 @@ class CheckoutControllerTest extends TestCase
         $r = $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -1614,13 +1614,13 @@ class CheckoutControllerTest extends TestCase
             ->productVariants([
                 'variants' => [
                     [
-                        'name'   => 'Colours',
+                        'name' => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name'   => 'Sizes',
+                        'name' => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -1628,10 +1628,10 @@ class CheckoutControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'     => 'Red_Small',
+                        'key' => 'Red_Small',
                         'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 9,
+                        'price' => 5000,
+                        'stock' => 9,
                     ],
                 ],
             ]);
@@ -1640,11 +1640,11 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'variant'  => 'Red_Small',
+                'id' => Stache::generateId(),
+                'product' => $product->id,
+                'variant' => 'Red_Small',
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1653,13 +1653,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -1695,13 +1695,13 @@ class CheckoutControllerTest extends TestCase
             ->productVariants([
                 'variants' => [
                     [
-                        'name'   => 'Colours',
+                        'name' => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name'   => 'Sizes',
+                        'name' => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -1709,10 +1709,10 @@ class CheckoutControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'     => 'Red_Small',
+                        'key' => 'Red_Small',
                         'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 0,
+                        'price' => 5000,
+                        'stock' => 0,
                     ],
                 ],
             ]);
@@ -1721,11 +1721,11 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'variant'  => 'Red_Small',
+                'id' => Stache::generateId(),
+                'product' => $product->id,
+                'variant' => 'Red_Small',
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1734,13 +1734,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ])
             ->assertRedirect()
             ->assertSessionHasErrors();
@@ -1785,13 +1785,13 @@ class CheckoutControllerTest extends TestCase
             ->productVariants([
                 'variants' => [
                     [
-                        'name'   => 'Colours',
+                        'name' => 'Colours',
                         'values' => [
                             'Red',
                         ],
                     ],
                     [
-                        'name'   => 'Sizes',
+                        'name' => 'Sizes',
                         'values' => [
                             'Small',
                         ],
@@ -1799,10 +1799,10 @@ class CheckoutControllerTest extends TestCase
                 ],
                 'options' => [
                     [
-                        'key'     => 'Red_Small',
+                        'key' => 'Red_Small',
                         'variant' => 'Red Small',
-                        'price'   => 5000,
-                        'stock'   => 1,
+                        'price' => 5000,
+                        'stock' => 1,
                     ],
                 ],
             ]);
@@ -1811,11 +1811,11 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
-                'variant'  => 'Red_Small',
+                'id' => Stache::generateId(),
+                'product' => $product->id,
+                'variant' => 'Red_Small',
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -1824,13 +1824,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -1872,10 +1872,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000)->merge([
             'gift_note' => 'I like jam on toast!',
@@ -1887,14 +1887,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'the_extra'    => 'bit_of_data',
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                'the_extra' => 'bit_of_data',
             ]);
 
         $order = $order->fresh();
@@ -1936,10 +1936,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000)->merge([
             'gift_note' => 'I like jam on toast!',
@@ -1951,14 +1951,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                'the_extra'    => 'bit_of_data',
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                'the_extra' => 'bit_of_data',
             ]);
 
         $order = $order->fresh();
@@ -1998,10 +1998,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 0,
+                'total' => 0,
             ],
         ])->grandTotal(0);
 
@@ -2010,8 +2010,8 @@ class CheckoutControllerTest extends TestCase
         $response = $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
             ]);
 
         $order = $order->fresh();
@@ -2048,10 +2048,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -2060,9 +2060,9 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
             ])
             ->assertSessionHasErrors(['card_number', 'expiry_month', 'expiry_year', 'cvc']);
 
@@ -2097,10 +2097,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -2109,8 +2109,8 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
             ])
             ->assertSessionHasErrors('gateway');
 
@@ -2145,10 +2145,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -2157,9 +2157,9 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => 'TripleFourDigital\\ComplexCommerce\\SmellyGatewayHaha',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => 'TripleFourDigital\\ComplexCommerce\\SmellyGatewayHaha',
             ])
             ->assertSessionHasErrors('gateway');
 
@@ -2194,10 +2194,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -2206,13 +2206,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->postJson(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ])
             ->assertJsonStructure([
                 'message',
@@ -2257,10 +2257,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -2269,14 +2269,14 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
-                '_redirect'    => encrypt('/order-confirmation'),
+                'expiry_year' => '2025',
+                'cvc' => '123',
+                '_redirect' => encrypt('/order-confirmation'),
             ])
             ->assertRedirect('/order-confirmation');
 
@@ -2317,10 +2317,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 
@@ -2329,13 +2329,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Guvna B',
-                'email'        => 'guvna.b@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Guvna B',
+                'email' => 'guvna.b@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -2376,10 +2376,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000)->merge([
             'dummy' => [
@@ -2395,13 +2395,13 @@ class CheckoutControllerTest extends TestCase
         $this
             ->withSession(['simple-commerce-cart' => $order->id])
             ->post(route('statamic.simple-commerce.checkout.store'), [
-                'name'         => 'Smelly Joe',
-                'email'        => 'smelly.joe@example.com',
-                'gateway'      => DummyGateway::class,
-                'card_number'  => '4242424242424242',
+                'name' => 'Smelly Joe',
+                'email' => 'smelly.joe@example.com',
+                'gateway' => DummyGateway::class,
+                'card_number' => '4242424242424242',
                 'expiry_month' => '01',
-                'expiry_year'  => '2025',
-                'cvc'          => '123',
+                'expiry_year' => '2025',
+                'cvc' => '123',
             ]);
 
         $order = $order->fresh();
@@ -2436,10 +2436,10 @@ class CheckoutControllerTest extends TestCase
 
         $order = Order::make()->lineItems([
             [
-                'id'       => Stache::generateId(),
-                'product'  => $product->id,
+                'id' => Stache::generateId(),
+                'product' => $product->id,
                 'quantity' => 1,
-                'total'    => 5000,
+                'total' => 5000,
             ],
         ])->grandTotal(5000);
 

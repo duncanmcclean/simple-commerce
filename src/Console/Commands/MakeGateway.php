@@ -10,8 +10,11 @@ class MakeGateway extends GeneratorCommand
     use RunsInPlease;
 
     protected $name = 'statamic:make:gateway';
+
     protected $description = 'Create a new gateway';
+
     protected $type = 'Gateway';
+
     protected $stub = 'gateway-onsite.php.stub';
 
     public function handle()

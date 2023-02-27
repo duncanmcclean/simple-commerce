@@ -126,8 +126,6 @@ class EloquentCustomerRepository implements RepositoryContract
     /**
      * Returns an array of custom columns the developer
      * has added to the 'customers' table.
-     *
-     * @return array
      */
     protected function getCustomColumns(): array
     {

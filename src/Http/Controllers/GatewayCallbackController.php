@@ -46,7 +46,7 @@ class GatewayCallbackController extends BaseActionController
 
         return $this->withSuccess($request, [
             'success' => __('Checkout Complete!'),
-            'cart'    => $request->wantsJson()
+            'cart' => $request->wantsJson()
                 ? $order->toResource()
                 : $order->toAugmentedArray(),
             'is_checkout_request' => true,

@@ -17,6 +17,7 @@ use Statamic\Statamic;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $config = false;
+
     protected $translations = false;
 
     protected $actions = [
@@ -49,7 +50,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $listen = [
-        EntryBlueprintFound::class  => [
+        EntryBlueprintFound::class => [
             Listeners\EnforceEntryBlueprintFields::class,
             Listeners\AddHiddenFields::class,
         ],
@@ -81,16 +82,16 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $routes = [
-        'actions' => __DIR__ . '/../routes/actions.php',
-        'cp'      => __DIR__ . '/../routes/cp.php',
+        'actions' => __DIR__.'/../routes/actions.php',
+        'cp' => __DIR__.'/../routes/cp.php',
     ];
 
     protected $stylesheets = [
-        __DIR__ . '/../resources/dist/css/cp.css',
+        __DIR__.'/../resources/dist/css/cp.css',
     ];
 
     protected $scripts = [
-        __DIR__ . '/../resources/dist/js/cp.js',
+        __DIR__.'/../resources/dist/js/cp.js',
     ];
 
     protected $scopes = [
@@ -167,31 +168,31 @@ class ServiceProvider extends AddonServiceProvider
     protected function bootVendorAssets()
     {
         $this->publishes([
-            __DIR__ . '/../resources/dist' => public_path('vendor/simple-commerce'),
+            __DIR__.'/../resources/dist' => public_path('vendor/simple-commerce'),
         ], 'simple-commerce');
 
         $this->publishes([
-            __DIR__ . '/../config/simple-commerce.php' => config_path('simple-commerce.php'),
+            __DIR__.'/../config/simple-commerce.php' => config_path('simple-commerce.php'),
         ], 'simple-commerce-config');
 
         $this->publishes([
-            __DIR__ . '/../resources/blueprints' => resource_path('blueprints'),
+            __DIR__.'/../resources/blueprints' => resource_path('blueprints'),
         ], 'simple-commerce-blueprints');
 
         $this->publishes([
-            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/simple-commerce'),
         ], 'simple-commerce-translations');
 
         $this->publishes([
-            __DIR__ . '/../resources/views' => resource_path('views/vendor/simple-commerce'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/simple-commerce'),
         ], 'simple-commerce-views');
 
         if (app()->environment() !== 'testing') {
-            $this->mergeConfigFrom(__DIR__ . '/../config/simple-commerce.php', 'simple-commerce');
+            $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'simple-commerce');
         }
 
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'simple-commerce');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'simple-commerce');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'simple-commerce');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-commerce');
 
         return $this;
     }
@@ -199,9 +200,9 @@ class ServiceProvider extends AddonServiceProvider
     protected function bindContracts()
     {
         $bindings = [
-            Contracts\GatewayManager::class     => Gateways\Manager::class,
-            Contracts\ShippingManager::class    => Shipping\Manager::class,
-            Contracts\Calculator::class         => Orders\Calculator::class,
+            Contracts\GatewayManager::class => Gateways\Manager::class,
+            Contracts\ShippingManager::class => Shipping\Manager::class,
+            Contracts\Calculator::class => Orders\Calculator::class,
         ];
 
         if (isset(SimpleCommerce::customerDriver()['repository'])) {

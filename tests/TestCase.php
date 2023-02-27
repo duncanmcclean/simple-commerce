@@ -27,7 +27,7 @@ abstract class TestCase extends OrchestraTestCase
 
         if ($this->shouldFakeVersion) {
             Version::shouldReceive('get')
-                ->andReturn(Composer::create(__DIR__ . '/../')->installedVersion(Statamic::PACKAGE));
+                ->andReturn(Composer::create(__DIR__.'/../')->installedVersion(Statamic::PACKAGE));
 
             $this->addToAssertionCount(-1);
         }
@@ -54,7 +54,7 @@ abstract class TestCase extends OrchestraTestCase
 
         $app->make(Manifest::class)->manifest = [
             'doublethreedigital/simple-commerce' => [
-                'id'        => 'doublethreedigital/simple-commerce',
+                'id' => 'doublethreedigital/simple-commerce',
                 'namespace' => 'DoubleThreeDigital\\SimpleCommerce',
             ],
         ];
@@ -78,31 +78,31 @@ abstract class TestCase extends OrchestraTestCase
         foreach ($configs as $config) {
             $app['config']->set(
                 "statamic.$config",
-                require(__DIR__ . "/../vendor/statamic/cms/config/{$config}.php")
+                require(__DIR__."/../vendor/statamic/cms/config/{$config}.php")
             );
         }
 
-        $app['config']->set('app.key', 'base64:' . base64_encode(
+        $app['config']->set('app.key', 'base64:'.base64_encode(
             Encrypter::generateKey($app['config']['app.cipher'])
         ));
 
         $app['config']->set('statamic.users.repository', 'file');
 
         $app['config']->set('statamic.stache.stores.users', [
-            'class'     => UsersStore::class,
-            'directory' => __DIR__ . '/__fixtures__/users',
+            'class' => UsersStore::class,
+            'directory' => __DIR__.'/__fixtures__/users',
         ]);
 
-        $app['config']->set('simple-commerce', require(__DIR__ . '/../config/simple-commerce.php'));
+        $app['config']->set('simple-commerce', require(__DIR__.'/../config/simple-commerce.php'));
         $app['config']->set('simple-commerce.cart.driver', SessionDriver::class);
 
         $app['config']->set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
         $app['config']->set('statamic.sites.sites', [
             'default' => [
-                'name'   => config('app.name'),
+                'name' => config('app.name'),
                 'locale' => 'en_GB',
-                'url'    => '/',
+                'url' => '/',
             ],
         ]);
 
@@ -111,7 +111,7 @@ abstract class TestCase extends OrchestraTestCase
         Statamic::booted(function () {
             Site::setCurrent('default');
 
-            Blueprint::setDirectory(__DIR__ . '/../resources/blueprints');
+            Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
         });
 
         $this->ensureContentDirectoriesExist();

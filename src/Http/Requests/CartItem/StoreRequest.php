@@ -20,8 +20,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'product'  => ['required', 'string'],
-            'variant'  => ['nullable', 'string'],
+            'product' => ['required', 'string'],
+            'variant' => ['nullable', 'string'],
             'quantity' => ['required', 'numeric', 'gt:0'],
 
             'email' => ['nullable', 'email', function ($attribute, $value, $fail) {

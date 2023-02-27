@@ -27,7 +27,9 @@ class CheckoutController extends BaseActionController
     use CartDriver, AcceptsFormRequests;
 
     public $order;
+
     public StoreRequest $request;
+
     public $excludedKeys = ['_token', '_params', '_redirect', '_request'];
 
     public function __invoke(StoreRequest $request)
@@ -61,7 +63,7 @@ class CheckoutController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Checkout Complete!'),
-            'cart'    => $request->wantsJson()
+            'cart' => $request->wantsJson()
                 ? $this->order->toResource()
                 : $this->order->toAugmentedArray(),
             'is_checkout_request' => true,
@@ -74,9 +76,9 @@ class CheckoutController extends BaseActionController
             $this->request->get('_request')
                 ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
             : [],
-        $this->request->has('gateway')
-                ? Gateway::use($this->request->get('gateway'))->purchaseRules()
-                : [],
+            $this->request->has('gateway')
+                    ? Gateway::use($this->request->get('gateway'))->purchaseRules()
+                    : [],
             [
                 'coupon' => ['nullable', new ValidCoupon($this->order)],
                 'email' => ['nullable', 'email', function ($attribute, $value, $fail) {

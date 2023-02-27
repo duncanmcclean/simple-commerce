@@ -69,7 +69,7 @@ class Overview
                     }
 
                     return [
-                        'date' =>  $date->format('d-m-Y'),
+                        'date' => $date->format('d-m-Y'),
                         'count' => $query->count(),
                     ];
                 });

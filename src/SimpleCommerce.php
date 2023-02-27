@@ -13,12 +13,14 @@ class SimpleCommerce
 {
     /** @var array */
     protected static $gateways = [];
+
     protected static $shippingMethods = [];
 
     /** @var Contracts\TaxEngine */
     protected static $taxEngine;
 
     public static $productPriceHook;
+
     public static $productVariantPriceHook;
 
     public static function version(): string
@@ -56,14 +58,14 @@ class SimpleCommerce
                 $instance = new $gateway[0]();
 
                 return [
-                    'name'            => $instance->name(),
-                    'handle'          => $handle = Str::of($instance->name())->camel()->lower()->__toString(),
-                    'class'           => $gateway[0],
+                    'name' => $instance->name(),
+                    'handle' => $handle = Str::of($instance->name())->camel()->lower()->__toString(),
+                    'class' => $gateway[0],
                     'formatted_class' => addslashes($gateway[0]),
-                    'display'         => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
-                    'purchaseRules'   => $instance->purchaseRules(),
-                    'gateway-config'  => $gateway[1],
-                    'webhook_url'     => Str::finish(config('app.url'), '/') . config('statamic.routes.action') . '/simple-commerce/gateways/' . $handle . '/webhook',
+                    'display' => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
+                    'purchaseRules' => $instance->purchaseRules(),
+                    'gateway-config' => $gateway[1],
+                    'webhook_url' => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook',
                 ];
             })
             ->toArray();
@@ -176,8 +178,8 @@ class SimpleCommerce
      */
     public static function svg($name)
     {
-        if (File::exists(__DIR__ . '/../resources/svg/' . $name . '.svg')) {
-            return File::get(__DIR__ . '/../resources/svg/' . $name . '.svg');
+        if (File::exists(__DIR__.'/../resources/svg/'.$name.'.svg')) {
+            return File::get(__DIR__.'/../resources/svg/'.$name.'.svg');
         }
 
         return Statamic::svg($name);

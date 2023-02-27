@@ -11,12 +11,13 @@ use Statamic\Tags\Tags;
 class SimpleCommerceTag extends Tags
 {
     protected static $handle = 'sc';
+
     protected static $aliases = ['simple-commerce'];
 
     protected $tagClasses = [
-        'cart'     => CartTags::class,
+        'cart' => CartTags::class,
         'checkout' => CheckoutTags::class,
-        'coupon'   => CouponTags::class,
+        'coupon' => CouponTags::class,
         'customer' => CustomerTags::class,
         'gateways' => GatewayTags::class,
         'shipping' => ShippingTags::class,
@@ -29,7 +30,7 @@ class SimpleCommerceTag extends Tags
         $class = collect($this->tagClasses)
             ->map(function ($value, $key) {
                 return [
-                    'key'   => $key,
+                    'key' => $key,
                     'value' => $value,
                 ];
             })
