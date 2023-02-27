@@ -57,6 +57,6 @@ class SetDefaultNavPreferences extends UpdateScript
 
         File::put($path, YAML::dump($defaultPreferences));
 
-        $this->console()->info("Simple Commerce has updated your default CP Nav preferences.");
+        $this->console()->info('Simple Commerce has updated your default CP Nav preferences.');
     }
 }

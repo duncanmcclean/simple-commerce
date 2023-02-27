@@ -127,7 +127,7 @@ class InstallCommand extends Command
 
         // If the user has already set their own preferences, we don't want to override them.
         if (isset($defaultPreferences['nav'])) {
-            $this->warn("You already have default CP Nav preferences set. Skipping.");
+            $this->warn('You already have default CP Nav preferences set. Skipping.');
 
             return $this;
         }
