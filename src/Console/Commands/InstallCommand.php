@@ -4,10 +4,12 @@ namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
+use Statamic\Facades\YAML;
 
 class InstallCommand extends Command
 {
@@ -22,7 +24,8 @@ class InstallCommand extends Command
         $this
             ->publishBlueprints()
             ->publishConfigurationFile()
-            ->setupCollections();
+            ->setupCollections()
+            ->setDefaultPreferences();
     }
 
     protected function publishBlueprints(): self
@@ -47,7 +50,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function setupCollections()
+    protected function setupCollections(): self
     {
         $siteHandles = Site::all()->map->handle()->toArray();
 
@@ -108,6 +111,56 @@ class InstallCommand extends Command
         } else {
             $this->warn('Skipping: Orders');
         }
+
+        return $this;
+    }
+
+    protected function setDefaultPreferences(): self
+    {
+        $this->info('Setting default CP Nav preferences');
+
+        $path = resource_path('preferences.yaml');
+
+        $defaultPreferences = File::exists($path)
+            ? YAML::file($path)->parse()
+            : [];
+
+        // If the user has already set their own preferences, we don't want to override them.
+        if (isset($defaultPreferences['nav'])) {
+            $this->warn('You already have default CP Nav preferences set. Skipping.');
+
+            return $this;
+        }
+
+        $customerCollection = isset(SimpleCommerce::customerDriver()['collection'])
+            ? SimpleCommerce::customerDriver()['collection']
+            : 'customers';
+
+        $orderCollection = isset(SimpleCommerce::orderDriver()['collection'])
+            ? SimpleCommerce::orderDriver()['collection']
+            : 'orders';
+
+        $defaultPreferences['nav'] = [
+            'reorder' => true,
+            'sections' => [
+                'top_level' => '@inherit',
+                'content' => [
+                    'content::collections' => [
+                        'action' => '@modify',
+                        'children' => [
+                            "content::collections::{$customerCollection}" => '@hide',
+                            "content::collections::{$orderCollection}" => '@hide',
+                        ],
+                    ],
+                ],
+                'simple_commerce' => '@inherit',
+                'fields' => '@inherit',
+                'tools' => '@inherit',
+                'users' => '@inherit',
+            ],
+        ];
+
+        File::put($path, YAML::dump($defaultPreferences));
 
         return $this;
     }

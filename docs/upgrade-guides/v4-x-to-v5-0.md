@@ -182,6 +182,14 @@ If you're using a built-in gateway, you don't need to worry about these changes.
 
 -   This method has been renamed `fieldtypeDisplay`
 
+### Low: Control Panel Nav
+
+Previously, Simple Commerce would use custom JavaScript to re-order your Control Panel navigation to place the 'Simple Commerce' section under 'Content'.
+
+However, after the introduction of the [CP Nav Customiser](https://statamic.dev/customizing-the-cp-nav#accessing-cp-nav-preferences) in Statamic 3.4, you may now customise the order of the Control Panel Nav as you'd like.
+
+For continuity, we've set your 'default preferences' for the CP Nav to how it was before. However, you're free to change this.
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
