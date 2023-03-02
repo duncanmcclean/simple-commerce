@@ -110,6 +110,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v5_0\UpdateNotificationsConfig::class,
         UpdateScripts\v5_0\UpdateOrderBlueprint::class,
     ];
+
     protected $vite = [
         'publicDirectory' => 'dist',
         'input' => [
