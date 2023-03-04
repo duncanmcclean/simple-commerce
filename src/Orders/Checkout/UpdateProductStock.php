@@ -17,8 +17,8 @@ class UpdateProductStock
     public function handle(Order $order, Closure $next)
     {
         $order->lineItems()
-            ->each(function (LineItem $item) {
-                $product = $item->product();
+            ->each(function (LineItem $lineItem) {
+                $product = $lineItem->product();
 
                 // Multi-site: Is the Stock field not localised? If so, we want the origin
                 // version of the product for stock purposes.
@@ -33,10 +33,10 @@ class UpdateProductStock
 
                 if ($product->purchasableType() === ProductType::Product) {
                     if (is_int($product->stock())) {
-                        $stock = $product->stock() - $item->quantity();
+                        $stock = $product->stock() - $lineItem->quantity();
 
                         $product->stock(
-                            $stock = $product->stock() - $item->quantity()
+                            $stock = $product->stock() - $lineItem->quantity()
                         );
 
                         $product->save();
@@ -60,13 +60,13 @@ class UpdateProductStock
                 }
 
                 if ($product->purchasableType() === ProductType::Variant) {
-                    $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
+                    $variant = $product->variant($lineItem->variant()['variant'] ?? $lineItem->variant());
 
                     if ($variant !== null && is_int($variant->stock())) {
-                        $stock = $variant->stock() - $item->quantity();
+                        $stock = $variant->stock() - $lineItem->quantity();
 
                         $variant->stock(
-                            $stock = $variant->stock() - $item->quantity()
+                            $stock = $variant->stock() - $lineItem->quantity()
                         );
 
                         $variant->save();

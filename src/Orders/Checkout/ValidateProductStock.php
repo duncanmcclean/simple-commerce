@@ -16,8 +16,8 @@ class ValidateProductStock
     public function handle(Order $order, Closure $next)
     {
         $order->lineItems()
-            ->each(function (LineItem $item) use (&$order) {
-                $product = $item->product();
+            ->each(function (LineItem $lineItem) use (&$order) {
+                $product = $lineItem->product();
 
                 // Multi-site: Is the Stock field not localised? If so, we want the origin
                 // version of the product for stock purposes.
@@ -32,10 +32,10 @@ class ValidateProductStock
 
                 if ($product->purchasableType() === ProductType::Product) {
                     if (is_int($product->stock())) {
-                        $stock = $product->stock() - $item->quantity();
+                        $stock = $product->stock() - $lineItem->quantity();
 
                         if ($stock < 0) {
-                            $order->removeLineItem($item->id());
+                            $order->removeLineItem($lineItem->id());
                             $order->save();
 
                             throw new CheckoutProductHasNoStockException(
@@ -47,13 +47,13 @@ class ValidateProductStock
                 }
 
                 if ($product->purchasableType() === ProductType::Variant) {
-                    $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
+                    $variant = $product->variant($lineItem->variant()['variant'] ?? $lineItem->variant());
 
                     if ($variant !== null && is_int($variant->stock())) {
-                        $stock = $variant->stock() - $item->quantity();
+                        $stock = $variant->stock() - $lineItem->quantity();
 
                         if ($stock < 0) {
-                            $order->removeLineItem($item->id());
+                            $order->removeLineItem($lineItem->id());
                             $order->save();
 
                             throw new CheckoutProductHasNoStockException(
