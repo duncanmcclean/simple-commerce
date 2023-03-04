@@ -8,7 +8,7 @@ class Runway
 {
     public static function customerModel()
     {
-        $orderModel = SimpleCommerce::orderDriver()['model'];
+        $orderModel = SimpleCommerce::customerDriver()['model'];
 
         return \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModel);
     }
