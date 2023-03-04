@@ -1,12 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders\Checkout;
 
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleStock;
+use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\UpdateProductStock;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Pipeline\Pipeline;
@@ -17,7 +16,7 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 
-class HandleStockTest extends TestCase
+class UpdateProductStockTest extends TestCase
 {
     use SetupCollections;
 
@@ -45,52 +44,12 @@ class HandleStockTest extends TestCase
 
         app(Pipeline::class)
             ->send($order)
-            ->through([HandleStock::class])
+            ->through([UpdateProductStock::class])
             ->thenReturn();
 
         $product->fresh();
 
         $this->assertSame(7, $product->stock());
-    }
-
-    /** @test */
-    public function cant_decrease_stock_for_standard_product_when_product_has_no_stock()
-    {
-        $product = Product::make()
-            ->price(1200)
-            ->stock(0)
-            ->data([
-                'title' => 'Medium Jumper',
-            ]);
-
-        $product->save();
-
-        $order = Order::make()
-            ->lineItems([
-                [
-                    'product' => $product->id(),
-                    'quantity' => 1,
-                ],
-            ]);
-
-        $order->save();
-
-        $this->expectException(CheckoutProductHasNoStockException::class);
-
-        app(Pipeline::class)
-            ->send($order)
-            ->through([HandleStock::class])
-            ->thenReturn();
-
-        $product->fresh();
-
-        $this->assertSame(0, $product->stock());
-    }
-
-    /** @test */
-    public function cant_decrease_stock_for_standard_product_when_quantity_is_greater_than_stock()
-    {
-        $this->markTestIncomplete('TODO');
     }
 
     /** @test */
@@ -121,7 +80,7 @@ class HandleStockTest extends TestCase
 
         app(Pipeline::class)
             ->send($order)
-            ->through([HandleStock::class])
+            ->through([UpdateProductStock::class])
             ->thenReturn();
 
         $product->fresh();
@@ -191,7 +150,7 @@ class HandleStockTest extends TestCase
 
         app(Pipeline::class)
             ->send($order)
-            ->through([HandleStock::class])
+            ->through([UpdateProductStock::class])
             ->thenReturn();
 
         $englishProduct->fresh();
@@ -240,70 +199,13 @@ class HandleStockTest extends TestCase
 
         app(Pipeline::class)
             ->send($order)
-            ->through([HandleStock::class])
+            ->through([UpdateProductStock::class])
             ->thenReturn();
 
         $product->fresh();
 
         $this->assertNull($product->stock());
         $this->assertSame(7, $product->variant('Yellow_Large')->stock());
-    }
-
-    /** @test */
-    public function cant_decrease_stock_for_variant_product_when_product_has_no_stock()
-    {
-        $product = Product::make()
-            ->productVariants([
-                'variants' => [
-                    [
-                        'name' => 'Colour',
-                        'values' => ['Yellow'],
-                    ],
-                    [
-                        'name' => 'Size',
-                        'values' => ['Large'],
-                    ],
-                ],
-                'options' => [
-                    [
-                        'key' => 'Yellow_Large',
-                        'variant' => 'Yellow, Large',
-                        'price' => 1500,
-                        'stock' => 0,
-                    ],
-                ],
-            ]);
-
-        $product->save();
-
-        $order = Order::make()
-            ->lineItems([
-                [
-                    'product' => $product->id(),
-                    'variant' => 'Yellow_Large',
-                    'quantity' => 3,
-                ],
-            ]);
-
-        $order->save();
-
-        $this->expectException(CheckoutProductHasNoStockException::class);
-
-        app(Pipeline::class)
-            ->send($order)
-            ->through([HandleStock::class])
-            ->thenReturn();
-
-        $product->fresh();
-
-        $this->assertNull($product->stock());
-        $this->assertSame(0, $product->variant('Yellow_Large')->stock());
-    }
-
-    /** @test */
-    public function cant_decrease_stock_for_variant_product_when_quantity_is_greater_than_stock()
-    {
-        $this->markTestIncomplete('TODO');
     }
 
     /** @test */
@@ -356,7 +258,7 @@ class HandleStockTest extends TestCase
 
         app(Pipeline::class)
             ->send($order)
-            ->through([HandleStock::class])
+            ->through([UpdateProductStock::class])
             ->thenReturn();
 
         $product->fresh();
