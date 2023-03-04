@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('order_number')->unique();
             $table->string('order_status')->default('cart');
             $table->string('payment_status')->default('unpaid');
             $table->json('items')->nullable();
