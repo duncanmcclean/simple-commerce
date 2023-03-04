@@ -11,7 +11,7 @@ use Statamic\UpdateScripts\UpdateScript;
 
 class MigrateDatabaseOrderNumbers extends UpdateScript
 {
-    protected $stubsPath = __DIR__ . '/stubs';
+    protected $stubsPath = __DIR__.'/stubs';
 
     public function shouldUpdate($newVersion, $oldVersion)
     {
