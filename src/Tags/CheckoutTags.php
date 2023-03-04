@@ -100,38 +100,38 @@ class CheckoutTags extends SubTag
             $cart->lineItems()->each(function (LineItem $item) {
                 $product = $item->product();
 
-                    // Multi-site: Is the Stock field not localised? If so, we want the origin
-                    // version of the product for stock purposes.
-                    if (
-                        $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)
-                        && $product->resource()->hasOrigin()
-                        && $product->resource()->blueprint()->hasField('stock')
-                        && ! $product->resource()->blueprint()->field('stock')->isLocalizable()
-                    ) {
-                        $product = Product::find($product->resource()->origin()->id());
-                    }
+                // Multi-site: Is the Stock field not localised? If so, we want the origin
+                // version of the product for stock purposes.
+                if (
+                    $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)
+                    && $product->resource()->hasOrigin()
+                    && $product->resource()->blueprint()->hasField('stock')
+                    && ! $product->resource()->blueprint()->field('stock')->isLocalizable()
+                ) {
+                    $product = Product::find($product->resource()->origin()->id());
+                }
 
-                    if ($product->purchasableType() === ProductType::Product) {
-                        if (is_int($product->stock())) {
-                            $stock = $product->stock() - $item->quantity();
+                if ($product->purchasableType() === ProductType::Product) {
+                    if (is_int($product->stock())) {
+                        $stock = $product->stock() - $item->quantity();
 
-                            if ($stock < 0) {
-                                throw new CheckoutProductHasNoStockException($product);
-                            }
+                        if ($stock < 0) {
+                            throw new CheckoutProductHasNoStockException($product);
                         }
                     }
+                }
 
-                    if ($product->purchasableType() === ProductType::Variant) {
-                        $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
+                if ($product->purchasableType() === ProductType::Variant) {
+                    $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
 
-                        if ($variant !== null && is_int($variant->stock())) {
-                            $stock = $variant->stock() - $item->quantity();
+                    if ($variant !== null && is_int($variant->stock())) {
+                        $stock = $variant->stock() - $item->quantity();
 
-                            if ($stock < 0) {
-                                throw new CheckoutProductHasNoStockException($product, $variant);
-                            }
+                        if ($stock < 0) {
+                            throw new CheckoutProductHasNoStockException($product, $variant);
                         }
                     }
+                }
             });
         } catch (CheckoutProductHasNoStockException $e) {
             $lineItem = $cart->lineItems()->filter(function ($lineItem) use ($e) {
