@@ -105,6 +105,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $updateScripts = [
         UpdateScripts\v4_0\MigrateCouponsToStache::class,
 
+        UpdateScripts\v5_0\MigrateDatabaseOrderNumbers::class,
         UpdateScripts\v5_0\MigrateOrderStatuses::class,
         UpdateScripts\v5_0\SetDefaultNavPreferences::class,
         UpdateScripts\v5_0\UpdateNotificationsConfig::class,
