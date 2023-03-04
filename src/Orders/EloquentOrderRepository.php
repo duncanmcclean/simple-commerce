@@ -226,6 +226,10 @@ class EloquentOrderRepository implements RepositoryContract
             ->orderBy('order_number', 'DESC')
             ->value('order_number');
 
+        if (! $lastOrderNumber) {
+            return config('simple-commerce.minimum_order_number', 1000);
+        }
+
         return $lastOrderNumber + 1;
     }
 
