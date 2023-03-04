@@ -144,10 +144,6 @@ class YourDriver implements CartDriver
 
 ### Order Numbers
 
-:::note Note!
-This only applies when storing orders as entries. If you're [storing orders in a database](/database-orders), the order number will be automaticaly generated from the order's ID in the database.
-:::
-
 When an order is created, a unique order number will be assigned. It'll often be formatted like so: `#1234`.
 
 By default, order numbers will start at `#2000` and will continue endlessly. If you wish for order numbers to start at say, `#5000`, you can configure that in your `config/simple-commerce.php` config file.
