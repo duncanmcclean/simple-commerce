@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v4.5.6 (2023-03-04)
+
+### What's fixed
+
+-   Fixed an error when updating line items with variant product #844 #846
+-   Stock will now be checked before redirecting customers to off-site gateways #842 #847
+-   Fix issue with translations on payment descriptions #848
+
 ## v4.5.5 (2023-02-17)
 
 ### What's fixed
