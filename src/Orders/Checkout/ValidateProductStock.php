@@ -4,8 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
 
 use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
-use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
@@ -18,7 +16,7 @@ class ValidateProductStock
     public function handle(Order $order, Closure $next)
     {
         $order->lineItems()
-            ->each(function (LineItem $item) {
+            ->each(function (LineItem $item) use (&$order) {
                 $product = $item->product();
 
                 // Multi-site: Is the Stock field not localised? If so, we want the origin
@@ -37,7 +35,13 @@ class ValidateProductStock
                         $stock = $product->stock() - $item->quantity();
 
                         if ($stock < 0) {
-                            throw new CheckoutProductHasNoStockException($product);
+                            $order->removeLineItem($item->id());
+                            $order->save();
+
+                            throw new CheckoutProductHasNoStockException(
+                                __("Checkout failed. One or more products in your cart don't have enough stock to complete your order. The product(s) have been removed from your cart."),
+                                $product
+                            );
                         }
                     }
                 }
@@ -49,7 +53,14 @@ class ValidateProductStock
                         $stock = $variant->stock() - $item->quantity();
 
                         if ($stock < 0) {
-                            throw new CheckoutProductHasNoStockException($product, $variant);
+                            $order->removeLineItem($item->id());
+                            $order->save();
+
+                            throw new CheckoutProductHasNoStockException(
+                                __("Checkout failed. One or more products in your cart don't have enough stock to complete your order. The product(s) have been removed from your cart."),
+                                $product,
+                                $variant
+                            );
                         }
                     }
                 }

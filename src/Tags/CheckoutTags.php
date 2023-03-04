@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
@@ -83,16 +82,6 @@ class CheckoutTags extends SubTag
             $cart = app(CheckoutValidationPipeline::class)
                 ->send($cart)
                 ->thenReturn();
-        } catch (CheckoutProductHasNoStockException $e) {
-            // TODO: Refactor this code & the exception to just use the PreventCheckout exception
-            $lineItem = $cart->lineItems()->filter(function ($lineItem) use ($e) {
-                return $lineItem->product()->id() === $e->product->id();
-            })->first();
-
-            $cart->removeLineItem($lineItem->id());
-            $cart->save();
-
-            return Redirect::back()->withErrors(__('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
         } catch (PreventCheckout $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

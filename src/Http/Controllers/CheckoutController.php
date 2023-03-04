@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
@@ -50,15 +49,6 @@ class CheckoutController extends BaseActionController
                 ->handleCheckoutValidation()
                 ->handlePayment()
                 ->postCheckout();
-        } catch (CheckoutProductHasNoStockException $e) {
-            $lineItem = $this->order->lineItems()->filter(function ($lineItem) use ($e) {
-                return $lineItem->product()->id() === $e->product->id();
-            })->first();
-
-            $this->order->removeLineItem($lineItem->id());
-            $this->order->save();
-
-            return $this->withErrors($this->request, __('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
         } catch (PreventCheckout $e) {
             return $this->withErrors($this->request, $e->getMessage());
         }

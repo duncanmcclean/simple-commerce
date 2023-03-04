@@ -79,7 +79,7 @@ class ValidateProductStockTest extends TestCase
 
             $this->fail('Validation passed when it should have failed.');
         } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($e->getMessage() === "Product {$product->id()} does not have any available stock.");
+            $this->assertTrue($order->lineItems()->count() === 0);
         }
     }
 
@@ -113,7 +113,7 @@ class ValidateProductStockTest extends TestCase
 
             $this->fail('Validation passed when it should have failed.');
         } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($e->getMessage() === "Product {$product->id()} does not have any available stock.");
+            $this->assertTrue($order->lineItems()->count() === 0);
         }
     }
 
@@ -214,7 +214,7 @@ class ValidateProductStockTest extends TestCase
 
             $this->fail('Validation passed when it should have failed.');
         } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($e->getMessage() === "Variant Yellow_Large on {$product->id()} does not have any available stock.");
+            $this->assertTrue($order->lineItems()->count() === 0);
         }
     }
 
@@ -264,7 +264,7 @@ class ValidateProductStockTest extends TestCase
 
             $this->fail('Validation passed when it should have failed.');
         } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($e->getMessage() === "Variant Yellow_Large on {$product->id()} does not have any available stock.");
+            $this->assertTrue($order->lineItems()->count() === 0);
         }
     }
 }
