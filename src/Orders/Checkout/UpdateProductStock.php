@@ -6,20 +6,19 @@ use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
-class HandleStock
+class UpdateProductStock
 {
     public function handle(Order $order, Closure $next)
     {
         $order->lineItems()
-            ->each(function (LineItem $item) {
-                $product = $item->product();
+            ->each(function (LineItem $lineItem) {
+                $product = $lineItem->product();
 
                 // Multi-site: Is the Stock field not localised? If so, we want the origin
                 // version of the product for stock purposes.
@@ -34,24 +33,21 @@ class HandleStock
 
                 if ($product->purchasableType() === ProductType::Product) {
                     if (is_int($product->stock())) {
-                        $stock = $product->stock() - $item->quantity();
+                        $stock = $product->stock() - $lineItem->quantity();
 
-                        // Need to do this check before actually setting the stock
-                        if ($stock < 0) {
+                        $product->stock(
+                            $stock = $product->stock() - $lineItem->quantity()
+                        );
+
+                        $product->save();
+
+                        if ($stock <= 0) {
                             event(new StockRunOut(
                                 product: $product,
                                 variant: null,
                                 stock: $stock,
                             ));
-
-                            throw new CheckoutProductHasNoStockException($product);
                         }
-
-                        $product->stock(
-                            $stock = $product->stock() - $item->quantity()
-                        );
-
-                        $product->save();
 
                         if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
                             event(new StockRunningLow(
@@ -64,27 +60,24 @@ class HandleStock
                 }
 
                 if ($product->purchasableType() === ProductType::Variant) {
-                    $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
+                    $variant = $product->variant($lineItem->variant()['variant'] ?? $lineItem->variant());
 
                     if ($variant !== null && is_int($variant->stock())) {
-                        $stock = $variant->stock() - $item->quantity();
+                        $stock = $variant->stock() - $lineItem->quantity();
 
-                        // Need to do this check before actually setting the stock
-                        if ($stock < 0) {
+                        $variant->stock(
+                            $stock = $variant->stock() - $lineItem->quantity()
+                        );
+
+                        $variant->save();
+
+                        if ($stock <= 0) {
                             event(new StockRunOut(
                                 product: $product,
                                 variant: $variant,
                                 stock: $stock,
                             ));
-
-                            throw new CheckoutProductHasNoStockException($product, $variant);
                         }
-
-                        $variant->stock(
-                            $stock = $variant->stock() - $item->quantity()
-                        );
-
-                        $variant->save();
 
                         if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
                             event(new StockRunningLow(

@@ -136,7 +136,9 @@ abstract class BaseGateway
         ]);
 
         if ($this->isOffsiteGateway()) {
-            $order = CheckoutPipeline::run($order, true);
+            $order = app(CheckoutPipeline::class)
+                ->send($order)
+                ->thenReturn();
 
             $order->updateOrderStatus(OrderStatus::Placed);
             $order->updatePaymentStatus(PaymentStatus::Paid);

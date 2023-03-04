@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
@@ -15,10 +14,10 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
+use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -46,21 +45,10 @@ class CheckoutController extends BaseActionController
                 ->handleAdditionalValidation()
                 ->handleCustomerDetails()
                 ->handleCoupon()
-                ->handleStock()
                 ->handleRemainingData()
+                ->handleCheckoutValidation()
                 ->handlePayment()
                 ->postCheckout();
-
-            $this->order->updateOrderStatus(OrderStatus::Placed);
-        } catch (CheckoutProductHasNoStockException $e) {
-            $lineItem = $this->order->lineItems()->filter(function ($lineItem) use ($e) {
-                return $lineItem->product()->id() === $e->product->id();
-            })->first();
-
-            $this->order->removeLineItem($lineItem->id());
-            $this->order->save();
-
-            return $this->withErrors($this->request, __('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
         } catch (PreventCheckout $e) {
             return $this->withErrors($this->request, $e->getMessage());
         }
@@ -182,24 +170,6 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    /**
-     * We need to handle the stock here, before we handle the payment. This is in
-     * case we don't have any stock left for a product in the customer's cart, we can
-     * throw an error and not worry about the customer being charged for a product that
-     * they can't get.
-     */
-    protected function handleStock(): self
-    {
-        $this->order = app(Pipeline::class)
-            ->send($this->order)
-            ->through([
-                \DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleStock::class,
-            ])
-            ->thenReturn();
-
-        return $this;
-    }
-
     protected function handleCoupon(): self
     {
         if ($coupon = $this->request->get('coupon')) {
@@ -238,6 +208,15 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
+    protected function handleCheckoutValidation(): self
+    {
+        $this->order = app(CheckoutValidationPipeline::class)
+            ->send($this->order)
+            ->thenReturn();
+
+        return $this;
+    }
+
     protected function handlePayment(): self
     {
         $this->order = $this->order->recalculate();
@@ -267,7 +246,9 @@ class CheckoutController extends BaseActionController
 
     protected function postCheckout(): self
     {
-        $this->order = CheckoutPipeline::run($this->order);
+        $this->order = app(CheckoutPipeline::class)
+            ->send($this->order)
+            ->thenReturn();
 
         if (
             ! $this->request->has('gateway')
@@ -276,6 +257,8 @@ class CheckoutController extends BaseActionController
         ) {
             $this->order->updatePaymentStatus(PaymentStatus::Paid);
         }
+
+        $this->order->updateOrderStatus(OrderStatus::Placed);
 
         $this->forgetCart();
 
