@@ -1409,12 +1409,11 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->statusLog('paid'));
 
-        // Assert stock has been reduced
+        // Asset the stock is the same (it hasn't been reduced yet because the
+        // checkout failed at the validation stage)
         $product->fresh();
-        $this->assertSame($product->stock(), 0);
 
-        Event::assertNotDispatched(StockRunningLow::class);
-        Event::assertDispatched(StockRunOut::class);
+        $this->assertSame($product->stock(), 0);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -1472,7 +1471,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertSame($product->fresh()->stock(), 0);
 
         Event::assertDispatched(StockRunningLow::class);
-        Event::assertNotDispatched(StockRunOut::class);
+        Event::assertDispatched(StockRunOut::class);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
@@ -1712,11 +1711,9 @@ class CheckoutControllerTest extends TestCase
         $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
         $this->assertNull($order->statusLog('paid'));
 
-        // Assert stock has been reduced
+        // Asset the stock is the same (it hasn't been reduced yet because the
+        // checkout failed at the validation stage)
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
-
-        Event::assertNotDispatched(StockRunningLow::class);
-        Event::assertDispatched(StockRunOut::class);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertTrue(session()->has('simple-commerce-cart'));
@@ -1798,7 +1795,7 @@ class CheckoutControllerTest extends TestCase
         $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
 
         Event::assertDispatched(StockRunningLow::class);
-        Event::assertNotDispatched(StockRunOut::class);
+        Event::assertDispatched(StockRunOut::class);
 
         // Finally, assert order is no longer attached to the users' session
         $this->assertFalse(session()->has('simple-commerce-cart'));
