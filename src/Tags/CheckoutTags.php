@@ -2,12 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
+use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
@@ -87,6 +92,58 @@ class CheckoutTags extends SubTag
             throw new GatewayDoesNotExist($gatewayHandle);
         }
 
+        // v4.0 Hotfix: Ensure there's enough stock for the line items in the order.
+        // If not, redirect to the previous page with an error.
+        //
+        // Most of this code has been copied from the HandleStock class - this code will no longer be needed in v5.0.
+        try {
+            $cart->lineItems()->each(function (LineItem $item) {
+                $product = $item->product();
+
+                // Multi-site: Is the Stock field not localised? If so, we want the origin
+                // version of the product for stock purposes.
+                if (
+                    $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)
+                    && $product->resource()->hasOrigin()
+                    && $product->resource()->blueprint()->hasField('stock')
+                    && ! $product->resource()->blueprint()->field('stock')->isLocalizable()
+                ) {
+                    $product = Product::find($product->resource()->origin()->id());
+                }
+
+                if ($product->purchasableType() === ProductType::Product) {
+                    if (is_int($product->stock())) {
+                        $stock = $product->stock() - $item->quantity();
+
+                        if ($stock < 0) {
+                            throw new CheckoutProductHasNoStockException($product);
+                        }
+                    }
+                }
+
+                if ($product->purchasableType() === ProductType::Variant) {
+                    $variant = $product->variant($item->variant()['variant'] ?? $item->variant());
+
+                    if ($variant !== null && is_int($variant->stock())) {
+                        $stock = $variant->stock() - $item->quantity();
+
+                        if ($stock < 0) {
+                            throw new CheckoutProductHasNoStockException($product, $variant);
+                        }
+                    }
+                }
+            });
+        } catch (CheckoutProductHasNoStockException $e) {
+            $lineItem = $cart->lineItems()->filter(function ($lineItem) use ($e) {
+                return $lineItem->product()->id() === $e->product->id();
+            })->first();
+
+            $cart->removeLineItem($lineItem->id());
+            $cart->save();
+
+            return Redirect::back()->withErrors(__('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
+        }
+
         // If the cart total is 0, don't redirect to the payment gateway,
         // mark the order as paid here and redirect to the success page
         if ($cart->grandTotal() === 0) {
@@ -141,5 +198,11 @@ class CheckoutTags extends SubTag
         }
 
         abort(redirect($prepare->checkoutUrl(), 302));
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
