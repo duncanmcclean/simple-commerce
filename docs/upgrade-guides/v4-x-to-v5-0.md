@@ -147,6 +147,12 @@ Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 
 
 To upgrade to Statamic 3.4, you should follow the steps outlined in the official [Upgrade Guide](https://statamic.dev/upgrade-guide/3-3-to-3-4).
 
+### Medium: New `order_number` column for database orders
+
+Previously, when storing orders in the database, Simple Commerce has used the `id` column as order numbers. This meant order numbers started in the single digits and it wasn't possible to set a minimum order number (eg. 1000) like you can with entry orders.
+
+In v5, Simple Commerce has introduced a separate `order_number` column. During the update process, a migration will be published & your existing orders will be updated.
+
 ### Medium: Changes to Gateway API
 
 As part of improving the developer experience in Simple Commerce, there has been some changes to the Gateways API. If you're using a custom gateway in your project, you will need to make some manual changes, as detailed below.
