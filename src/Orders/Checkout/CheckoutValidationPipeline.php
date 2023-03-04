@@ -4,11 +4,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
 
 use Illuminate\Pipeline\Pipeline;
 
-class CheckoutPipeline extends Pipeline
+class CheckoutValidationPipeline extends Pipeline
 {
     protected $pipes = [
-        StoreCustomerOrders::class,
-        RedeemCoupon::class,
-        UpdateProductStock::class,
+        ValidateProductStock::class,
     ];
 }

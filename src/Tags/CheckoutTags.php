@@ -2,13 +2,17 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tags;
 
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Exception;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
@@ -71,6 +75,26 @@ class CheckoutTags extends SubTag
 
         if (! $gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);
+        }
+
+        // Run the checkout validation pipeline to ensure the order is valid
+        // (eg. ensure there's enough stock to fulfil the customer's order)
+        try {
+            $cart = app(CheckoutValidationPipeline::class)
+                ->send($cart)
+                ->thenReturn();
+        } catch (CheckoutProductHasNoStockException $e) {
+            // TODO: Refactor this code & the exception to just use the PreventCheckout exception
+            $lineItem = $cart->lineItems()->filter(function ($lineItem) use ($e) {
+                return $lineItem->product()->id() === $e->product->id();
+            })->first();
+
+            $cart->removeLineItem($lineItem->id());
+            $cart->save();
+
+            return Redirect::back()->withErrors(__('Checkout failed. A product in your cart has no stock left. The product has been removed from your cart.'));
+        } catch (PreventCheckout $e) {
+            return Redirect::back()->withErrors($e->getMessage());
         }
 
         // If the cart total is 0, don't redirect to the payment gateway,

@@ -13,7 +13,7 @@ use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
-class HandleStock
+class ValidateProductStock
 {
     public function handle(Order $order, Closure $next)
     {
@@ -36,29 +36,8 @@ class HandleStock
                     if (is_int($product->stock())) {
                         $stock = $product->stock() - $item->quantity();
 
-                        // Need to do this check before actually setting the stock
                         if ($stock < 0) {
-                            event(new StockRunOut(
-                                product: $product,
-                                variant: null,
-                                stock: $stock,
-                            ));
-
                             throw new CheckoutProductHasNoStockException($product);
-                        }
-
-                        $product->stock(
-                            $stock = $product->stock() - $item->quantity()
-                        );
-
-                        $product->save();
-
-                        if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
-                            event(new StockRunningLow(
-                                product: $product,
-                                variant: null,
-                                stock: $stock,
-                            ));
                         }
                     }
                 }
@@ -69,29 +48,8 @@ class HandleStock
                     if ($variant !== null && is_int($variant->stock())) {
                         $stock = $variant->stock() - $item->quantity();
 
-                        // Need to do this check before actually setting the stock
                         if ($stock < 0) {
-                            event(new StockRunOut(
-                                product: $product,
-                                variant: $variant,
-                                stock: $stock,
-                            ));
-
                             throw new CheckoutProductHasNoStockException($product, $variant);
-                        }
-
-                        $variant->stock(
-                            $stock = $variant->stock() - $item->quantity()
-                        );
-
-                        $variant->save();
-
-                        if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
-                            event(new StockRunningLow(
-                                product: $product,
-                                variant: $variant,
-                                stock: $stock,
-                            ));
                         }
                     }
                 }
