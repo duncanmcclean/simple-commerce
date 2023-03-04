@@ -46,8 +46,8 @@ class CheckoutController extends BaseActionController
                 ->handleAdditionalValidation()
                 ->handleCustomerDetails()
                 ->handleCoupon()
-                ->handleCheckoutValidation()
                 ->handleRemainingData()
+                ->handleCheckoutValidation()
                 ->handlePayment()
                 ->postCheckout();
         } catch (CheckoutProductHasNoStockException $e) {
@@ -194,15 +194,6 @@ class CheckoutController extends BaseActionController
         return $this;
     }
 
-    protected function handleCheckoutValidation(): self
-    {
-        $this->order = app(CheckoutValidationPipeline::class)
-            ->send($this->order)
-            ->thenReturn();
-
-        return $this;
-    }
-
     protected function handleRemainingData(): self
     {
         $data = [];
@@ -223,6 +214,15 @@ class CheckoutController extends BaseActionController
 
             $this->order = $this->order->fresh();
         }
+
+        return $this;
+    }
+
+    protected function handleCheckoutValidation(): self
+    {
+        $this->order = app(CheckoutValidationPipeline::class)
+            ->send($this->order)
+            ->thenReturn();
 
         return $this;
     }
