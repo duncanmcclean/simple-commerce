@@ -44,7 +44,7 @@ class StripeGateway extends BaseGateway implements Gateway
         $intentData = [
             'amount' => $order->grandTotal(),
             'currency' => Currency::get(Site::current())['code'],
-            'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
+            'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
             'setup_future_usage' => 'off_session',
         ];
 
