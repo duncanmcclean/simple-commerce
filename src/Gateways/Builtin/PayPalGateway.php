@@ -55,7 +55,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                         'value' => (string) substr_replace($order->grandTotal(), '.', -2, 0),
                         'currency_code' => Currency::get(Site::current())['code'],
                     ],
-                    'description' => __('Order :orderNumber', ['order' => $order->orderNumber()]),
+                    'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
                     'custom_id' => $order->id(),
                 ],
             ],
