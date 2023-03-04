@@ -6,7 +6,6 @@ use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
