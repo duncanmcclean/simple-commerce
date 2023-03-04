@@ -13,7 +13,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 
-class EloquentOrderTest extends TestCase
+class EloquentOrderRepositoryTest extends TestCase
 {
     use SetupCollections, RefreshDatabase, UseDatabaseContentDrivers;
 

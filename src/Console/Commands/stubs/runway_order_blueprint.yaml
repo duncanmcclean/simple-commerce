@@ -14,6 +14,7 @@ sections:
           antlers: false
           read_only: true
           width: 50
+          listable: true
       - handle: customer_id
         field:
           max_items: 1
@@ -22,7 +23,7 @@ sections:
           display: Customer
           type: belongs_to
           icon: belongs_to
-          listable: hidden
+          listable: true
           instructions_position: above
           width: 50
           read_only: true

@@ -18,12 +18,11 @@ class EloquentOrderRepository implements RepositoryContract
     protected $model;
 
     protected $knownColumns = [
-        'id', 'order_status', 'payment_status', 'items', 'grand_total', 'items_total', 'tax_total',
-        'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2',
-        'shipping_city', 'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name',
-        'billing_address', 'billing_address_line2', 'billing_city', 'billing_postal_code', 'billing_region',
-        'billing_country', 'use_shipping_address_for_billing', 'customer_id', 'coupon', 'gateway', 'data',
-        'created_at', 'updated_at',
+        'id', 'order_number', 'order_status', 'payment_status', 'items', 'grand_total', 'items_total', 'tax_total',
+        'shipping_total', 'coupon_total', 'shipping_name', 'shipping_address', 'shipping_address_line2', 'shipping_city',
+        'shipping_postal_code', 'shipping_region', 'shipping_country', 'billing_name', 'billing_address', 'billing_address_line2',
+        'billing_city', 'billing_postal_code', 'billing_region', 'billing_country', 'use_shipping_address_for_billing', 'customer_id',
+        'coupon', 'gateway', 'data', 'created_at', 'updated_at',
     ];
 
     public function __construct()
@@ -47,7 +46,7 @@ class EloquentOrderRepository implements RepositoryContract
         return app(Order::class)
             ->resource($model)
             ->id($model->id)
-            ->orderNumber($model->id)
+            ->orderNumber($model->order_number)
             ->status($model->order_status ?? 'cart')
             ->paymentStatus($model->payment_status ?? 'unpaid')
             ->lineItems($model->items)
@@ -101,6 +100,7 @@ class EloquentOrderRepository implements RepositoryContract
             $model = new $this->model();
         }
 
+        $model->order_number = $order->orderNumber() ?? $this->generateOrderNumber();
         $model->order_status = $order->status()->value;
         $model->payment_status = $order->paymentStatus()->value;
         $model->items = $order->lineItems()->map->toArray();
@@ -150,7 +150,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->save();
 
         $order->id = $model->id;
-        $order->orderNumber = $model->id;
+        $order->orderNumber = $model->order_number;
         $order->status = OrderStatus::from($model->order_status);
         $order->paymentStatus = PaymentStatus::from($model->payment_status);
         // $order->lineItems = collect($model->items);
@@ -213,6 +213,24 @@ class EloquentOrderRepository implements RepositoryContract
             })
             ->map->getName()
             ->toArray();
+    }
+
+    /**
+     * Returns the next order number, based on the highest order number.
+     */
+    protected function generateOrderNumber(): int
+    {
+        $model = (new $this->model);
+
+        $lastOrderNumber = $model->query()
+            ->orderBy('order_number', 'DESC')
+            ->value('order_number');
+
+        if (! $lastOrderNumber) {
+            return config('simple-commerce.minimum_order_number', 1000);
+        }
+
+        return $lastOrderNumber + 1;
     }
 
     public static function bindings(): array

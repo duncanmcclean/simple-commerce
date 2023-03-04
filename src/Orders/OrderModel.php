@@ -16,6 +16,7 @@ class OrderModel extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'order_number' => 'integer',
         'items' => 'json',
         'grand_total' => 'integer',
         'items_total' => 'integer',
@@ -27,21 +28,8 @@ class OrderModel extends Model
         'data' => 'json',
     ];
 
-    protected $appends = [
-        'order_number',
-    ];
-
     public function customer(): BelongsTo
     {
         return $this->belongsTo(CustomerModel::class);
-    }
-
-    public function getOrderNumberAttribute()
-    {
-        if (array_key_exists('title', $this->data ?? [])) {
-            return $this->data['title'];
-        }
-
-        return "#{$this->id}";
     }
 }

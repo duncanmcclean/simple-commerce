@@ -9,7 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 
-class EloquentCustomerTest extends TestCase
+class EloquentCustomerRepositoryTest extends TestCase
 {
     use RefreshDatabase, UseDatabaseContentDrivers;
 
