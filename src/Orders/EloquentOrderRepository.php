@@ -46,7 +46,7 @@ class EloquentOrderRepository implements RepositoryContract
         return app(Order::class)
             ->resource($model)
             ->id($model->id)
-            ->orderNumber($model->id)
+            ->orderNumber($model->order_number)
             ->status($model->order_status ?? 'cart')
             ->paymentStatus($model->payment_status ?? 'unpaid')
             ->lineItems($model->items)
@@ -100,6 +100,7 @@ class EloquentOrderRepository implements RepositoryContract
             $model = new $this->model();
         }
 
+        $model->order_number = $order->orderNumber() ?? $this->generateOrderNumber();
         $model->order_status = $order->status()->value;
         $model->payment_status = $order->paymentStatus()->value;
         $model->items = $order->lineItems()->map->toArray();
@@ -149,7 +150,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->save();
 
         $order->id = $model->id;
-        $order->orderNumber = $model->id;
+        $order->orderNumber = $model->order_number;
         $order->status = OrderStatus::from($model->order_status);
         $order->paymentStatus = PaymentStatus::from($model->payment_status);
         // $order->lineItems = collect($model->items);
@@ -212,6 +213,20 @@ class EloquentOrderRepository implements RepositoryContract
             })
             ->map->getName()
             ->toArray();
+    }
+
+    /**
+     * Returns the next order number, based on the highest order number.
+     */
+    protected function generateOrderNumber(): int
+    {
+        $model = (new $this->model);
+
+        $lastOrderNumber = $model->query()
+            ->orderBy('order_number', 'DESC')
+            ->value('order_number');
+
+        return $lastOrderNumber + 1;
     }
 
     public static function bindings(): array
