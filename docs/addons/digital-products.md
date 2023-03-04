@@ -12,9 +12,15 @@ To install, require this addon as a Composer dependency:
 composer require doublethreedigital/sc-digital-products
 ```
 
-If you wish, you may also publish the configuration file for this addon by running the following command: `php artisan vendor:publish --tag="sc-digital-products-config"`. The config file will exist as `config/sc-digital-products.php`.
+You may optionally publish the config file by running:
 
-**That's it!** You're ready to start selling digital products! 🎉
+```
+php artisan vendor:publish --tag="sc-digital-products-config"
+```
+
+The config file wil be published to `config/sc-digital-products.php`
+
+**That's it!** You're ready to start selling Digital Products with Simple Commerce! 🎉
 
 ## Adding downloadable assets to products
 
