@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
@@ -136,6 +137,7 @@ class CheckoutTagTest extends TestCase
                 'total' => 1500,
             ],
         ]);
+
         $cart->save();
 
         $coupon = Coupon::make()->code('FREEBIE')->value(100)->type('percentage')->enabled(true);
@@ -159,6 +161,40 @@ class CheckoutTagTest extends TestCase
         $usage = $this->tag->wildcard('testoffsitegateway');
 
         $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Paid);
+    }
+
+    /**
+     * @test
+     * https://github.com/duncanmcclean/simple-commerce/issues/842
+     */
+    public function cant_redirect_user_to_offsite_gateway_when_product_in_cart_does_not_have_enough_stock()
+    {
+        $product = Product::make()->price(1500);
+        $product->save();
+
+        $cart = Order::make()->lineItems([
+            [
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 1500,
+            ],
+        ]);
+
+        $cart->recalculate();
+        $cart->save();
+
+        $this->fakeCart($cart);
+
+        $this->tag->setParameters([
+            'redirect' => 'http://localhost/order-confirmation',
+        ]);
+
+        $this->expectException(HttpResponseException::class);
+
+        $usage = $this->tag->wildcard('testoffsitegateway');
+
+        $this->assertSame($cart->fresh()->status(), OrderStatus::Cart);
+        $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Unpaid);
     }
 
     protected function fakeCart($cart = null)
