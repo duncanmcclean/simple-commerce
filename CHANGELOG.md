@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.7 (2023-03-06)
+
+### What's new
+
+-   Ability to customise currency formatting symbols #849 #850
+
 ## v4.5.6 (2023-03-04)
 
 ### What's fixed
