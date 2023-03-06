@@ -6,7 +6,7 @@
 
 ### What's new
 
--   Ability to customise currency formatting symbols #849 #850
+-   Ability to customise currency formatting symbols #850
 
 ## v4.5.6 (2023-03-04)
 
