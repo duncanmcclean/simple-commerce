@@ -42,7 +42,7 @@ class OrderModel extends Model
 
     public function getOrderNumberAttribute()
     {
-        if (array_key_exists('title', $this->data)) {
+        if (is_array($this->data) && array_key_exists('title', $this->data)) {
             return $this->data['title'];
         }
 
