@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.8 (2023-03-09)
+
+### What's fixed
+
+-   Fixed an issue with Order Number accessor when using database orders #851
+
 ## v4.5.7 (2023-03-06)
 
 ### What's new
