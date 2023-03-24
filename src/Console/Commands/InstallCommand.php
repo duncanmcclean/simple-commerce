@@ -160,6 +160,10 @@ class InstallCommand extends Command
             ],
         ];
 
+        $defaultPreferences['collctions'][$orderCollection]['columns'] = [
+            'title', 'order_status', 'payment_status', 'grand_total', 'customer',
+        ];
+
         File::put($path, YAML::dump($defaultPreferences));
 
         return $this;
