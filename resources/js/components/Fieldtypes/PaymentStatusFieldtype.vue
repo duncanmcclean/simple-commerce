@@ -7,7 +7,7 @@
             <div class="item item outline-none" tabindex="0">
                 <div class="item-inner">
                     <span
-                        class="little-dot mr-1"
+                        class="little-dot mr-2"
                         :class="littleDotColour"
                     ></span>
                     <span>
@@ -34,7 +34,7 @@ export default {
                     return 'bg-grey-40'
 
                 case 'paid':
-                    return 'bg-green'
+                    return 'bg-green-600'
 
                 case 'refunded':
                     return 'bg-grey'
