@@ -45,7 +45,7 @@ class CouponBlueprint
             ];
         }
 
-        return Blueprint::makeFromSections([
+        return Blueprint::makeFromTabs([
             'main' => [
                 'display' => 'Main',
                 'fields' => [
