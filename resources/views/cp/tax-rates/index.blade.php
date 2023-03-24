@@ -3,7 +3,7 @@
 @section('wrapper_class', 'max-w-full')
 
 @section('content')
-    <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center justify-between mb-6">
         <h1 class="flex-1">{{ __('Tax Rates') }}</h1>
 
         @if(auth()->user()->can('create tax rates'))
