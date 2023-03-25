@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="mb-3 flex justify-between items-center">
+        <header class="mb-6 flex justify-between items-center">
             <h1>{{ __('Overview') }}</h1>
 
             <overview-configure
@@ -37,7 +37,13 @@
                 :data="data['orders-chart']"
             />
 
-            <div class="grid grid-cols-2 gap-2">
+            <div
+                class="grid"
+                style="
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 1rem;
+                "
+            >
                 <template v-for="currentWidget in currentWidgets">
                     <component
                         v-if="currentWidget.handle !== 'orders-chart'"
