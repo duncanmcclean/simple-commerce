@@ -29,12 +29,12 @@
     },
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^9.49.0",
+        "laravel/framework": "^10.0",
         "mollie/mollie-api-php": "^2.30.0",
         "moneyphp/money": "^4.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "pixelfear/composer-dist-plugin": "^0.1.0",
-        "statamic/cms": "3.4.*",
+        "statamic/cms": "^4.0",
         "stillat/proteus": "^1.0",
         "stripe/stripe-php": "^7.7"
     },
