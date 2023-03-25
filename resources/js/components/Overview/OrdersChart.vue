@@ -1,8 +1,13 @@
 <template>
     <div class="card p-2 content mb-2">
+        <div class="flex justify-between items-center p-2">
+            <h2 class="font-semibold text-base">
+                {{ __('Number of Orders (Last 30 Days)') }}
+            </h2>
+        </div>
+
         <div class="flex flex-wrap -mx-2 mb-4">
             <div class="px-2 w-full">
-                <p class="mb-4">{{ __('Number of Orders (Last 30 Days)') }}</p>
                 <div class="px-1" v-if="ready">
                     <LineChartGenerator
                         :chart-options="chartOptions"
@@ -77,7 +82,7 @@ export default {
     },
 
     mounted() {
-        this.data.forEach(item => {
+        this.data.forEach((item) => {
             this.chartData.labels.push(item.date)
             this.chartData.datasets[0].data.push(item.count)
         })

@@ -1,8 +1,8 @@
 <template>
-    <div class="flex-1 card p-0 overflow-hidden h-full">
-        <div class="flex justify-between items-center p-2 pb-1">
-            <h2>
-                <span>{{ __('Recent Orders') }}</span>
+    <div class="flex-1 card p-2 overflow-hidden h-full">
+        <div class="flex justify-between items-center p-2">
+            <h2 class="font-semibold text-base">
+                {{ __('Recent Orders') }}
             </h2>
         </div>
 
@@ -10,11 +10,13 @@
             <li
                 v-for="order in data"
                 :key="order.id"
-                class="px-2 py-1 flex items-center justify-between hover:bg-grey-10"
+                class="px-2 py-1.5 flex items-center justify-between hover:bg-grey-10"
             >
                 <a :href="order.edit_url"
-                    ><strong>#{{ order.order_number }}</strong> -
-                    {{ order.grand_total }}</a
+                    ><strong class="font-medium"
+                        >#{{ order.order_number }}</strong
+                    >
+                    - {{ order.grand_total }}</a
                 >
                 <span class="text-sm">{{ order.paid_at }}</span>
             </li>

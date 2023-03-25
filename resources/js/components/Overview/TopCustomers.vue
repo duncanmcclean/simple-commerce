@@ -1,8 +1,8 @@
 <template>
-    <div class="flex-1 card p-0 overflow-hidden h-full">
-        <div class="flex justify-between items-center p-2 pb-1">
-            <h2>
-                <span>{{ __('Top Customers') }}</span>
+    <div class="flex-1 card p-2 overflow-hidden h-full">
+        <div class="flex justify-between items-center p-2">
+            <h2 class="font-semibold text-base">
+                {{ __('Top Customers') }}
             </h2>
         </div>
 
@@ -10,12 +10,19 @@
             <li
                 v-for="customer in data"
                 :key="customer.id"
-                class="px-2 py-1 flex items-center justify-between hover:bg-grey-10"
+                class="px-2 py-1.5 flex items-center justify-between hover:bg-grey-10"
             >
                 <a :href="customer.edit_url">{{ customer.email }}</a>
                 <span class="text-sm"
-                    >{{ customer.orders_count }} {{ __('orders') }}</span
-                >
+                    >{{ customer.orders_count }}
+                    <span
+                        v-text="
+                            customer.orders_count === 1
+                                ? __('order')
+                                : __('orders')
+                        "
+                    ></span>
+                </span>
             </li>
         </ul>
 
