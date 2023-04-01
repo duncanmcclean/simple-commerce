@@ -141,11 +141,11 @@ Any existing sites though will be using Card Elements, which just gives you a ba
 
 Simple Commerce has dropped support for PHP 8.1, leaving only PHP 8.2 supported.
 
-### Medium: Support for Statamic 3.3 has been dropped
+### Medium: Support for Statamic 3.3 & 3.4 has been dropped
 
-Simple Commerce has dropped support for Statamic 3.3, leaving only Statamic 3.4 supported.
+Simple Commerce has dropped support for Statamic 3.3 and 3.4, leaving only Statamic 4.0 and above supported.
 
-To upgrade to Statamic 3.4, you should follow the steps outlined in the official [Upgrade Guide](https://statamic.dev/upgrade-guide/3-3-to-3-4).
+To upgrade to Statamic 4.0, you should follow the steps outlined in the official [Upgrade Guide](https://statamic.dev/upgrade-guide/3-4-to-4-0).
 
 ### Medium: New `order_number` column for database orders
 
@@ -199,6 +199,10 @@ Previously, Simple Commerce would use custom JavaScript to re-order your Control
 However, after the introduction of the [CP Nav Customiser](https://statamic.dev/customizing-the-cp-nav#accessing-cp-nav-preferences) in Statamic 3.4, you may now customise the order of the Control Panel Nav as you'd like.
 
 For continuity, we've set your 'default preferences' for the CP Nav to how it was before. However, you're free to change this.
+
+### Low: `ReceiveGatewayWebhook` event has been renamed
+
+If you are listening to the `ReceiveGatewayWebhook` anywhere in your site, you should instead listen for `GatewayWebhookReceived`. The event has been renamed
 
 ## Previous upgrade guides
 
