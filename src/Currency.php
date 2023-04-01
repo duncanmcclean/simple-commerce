@@ -45,6 +45,17 @@ class Currency
             $money = new Money(str_replace('.', '', (int) $amount), new MoneyCurrency(self::get($site)['code']));
 
             $numberFormatter = new NumberFormatter($site->locale(), \NumberFormatter::CURRENCY);
+
+            $currencyFormattingConfig = Config::get("simple-commerce.sites.{$site->handle()}.currency_formatting");
+
+            if (isset($currencyFormattingConfig['decimal_separator'])) {
+                $numberFormatter->setSymbol(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, $currencyFormattingConfig['decimal_separator']);
+            }
+
+            if (isset($currencyFormattingConfig['thousand_separator'])) {
+                $numberFormatter->setSymbol(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, $currencyFormattingConfig['thousand_separator']);
+            }
+
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
             return $moneyFormatter->format($money);
