@@ -4,15 +4,20 @@ title: Tax
 
 ## Overview
 
-Simple Commerce provides two 'tax engines' out of the box. You have the [Basic Tax Engine](#basic-tax-engine) where you have a flat tax rate that's applied to all products & customers. Then, you have the [Standard Tax Engine](#standard-tax-engine) which allows you to associate different tax rates depending on the type of product and where the customer is located.
+Simple Commerce includes two *tax engines* out of the box:
 
-Tax is calculated per line item on your order. There's no way to get the 'tax price' for a product without it being in the cart.
+* **Basic Tax Engine:** This allows you to have a flat tax rate that's applied to all products & customers.
+* **Standard Tax Engine:** This allows you to associate different tax rates to different products & based on where the customer is located.
+
+Simple Commerce then calculates the tax amount for each line item on an order.
 
 ## Basic Tax Engine
 
 To enable the Basic Tax Engine, your config should look like this:
 
 ```php
+// config/simple-commerce.php
+
 'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class,
 
 'tax_engine_config' => [
@@ -30,6 +35,8 @@ If you have a product which is exempt from tax, you may add a Toggle field to yo
 The Standard Tax Engine is enabled by default in new Simple Commerce sites. You may enable it if you're on an older site like so:
 
 ```php
+// config/simple-commerce.php
+
 'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class,
 
 'tax_engine_config' => [
@@ -81,15 +88,3 @@ There's two solutions to this problem:
 
 -   Use the 'default rate' (`default_rate`) which will already exist after enabling the Standard Tax Engine.
 -   Prevent the customer from checking out (`prevent_checkout`)
-
-## What's the 'Line Items Tax' fieldtype?
-
-When checking over your Orders blueprint, you may see a 'Line Items Tax' field and wonder what on earth it's there for. Great question!
-
-Essentially, in order for you to be able to display the tax information for a specific line item (like the example below), we need to add a fieldtype which will let you access that data. Without it, the data is inaccessible from Antlers.
-
-```antlers
-{{ sc:cart:items }}
-  Tax Amount: {{ tax:amount }}
-{{ /sc:cart:items }}
-```

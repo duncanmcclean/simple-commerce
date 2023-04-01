@@ -2,21 +2,21 @@
 title: Database Orders
 ---
 
-After a couple thousand (or maybe a couple hundred) of orders, your site can start to feel slow when storing orders as entries. However, there is a solution! Using a database.
+After a couple thousand orders, your site might start to feel slow when storing orders as entries. However, there is a solution... switching a database.
 
 But wait.. you say. Isn't Statamic a flat-file CMS? The answer is yes but when your site starts to scale, you can run into bottlenecks. Databases have proven to be able to scale well and are easy for querying.
 
-### When should I switch to a database?
+# When should I switch to a database?
 
 -   You have a few hundred/thousand orders and you're starting to see performance suffer
 -   You need to do some kind of complicated queries against your orders
 -   You want to keep your orders out of version control
 
-### How it works
+# How it works
 
 So, instead of your orders & customers living as entries in your `content` folder, they will live in your database. Simple Commerce uses [Eloquent](https://laravel.com/docs/master/eloquent) in order to talk with the database (Eloquent is a Laravel thing).
 
-## Switching to a database
+# Switching to a database
 
 :::note Note!
 The below steps assume you already have a database setup.
@@ -70,13 +70,13 @@ If you receive this error (You must run the `sc:switch-to-database` command befo
 
 If you re-run the command, it should then run as expected.
 
-## Control Panel interface
+# Control Panel
 
 When you make the switch, Simple Commerce will install [Runway](https://statamic.com/runway), another addon by me (Duncan McClean). Runway is the thing which lets you manage your database records/Eloquent models in the Control Panel.
 
 Runway has it's own documentation site - you may [read it if you please](https://runway.duncanmcclean.com/control-panel).
 
-## Custom Columns
+# Custom Columns
 
 There are cases where you may wish to add columns to either of the provided tables: `orders`/`customers`. You may do this by simply writing a migration to add a column to the table:
 
@@ -106,11 +106,11 @@ php artisan migrate
 
 Once migrated, Simple Commerce will get/set any order or customer data to your custom column, rather than relying on it being saved to the `data` column.
 
-## Customization
+# Customisation
 
 If you need to, there's way to customise/override the Eloquent model used, along with the 'repository'.
 
-### The Model
+## The Model
 
 First, in order to customise the Eloquent model, you'll need to create your own version of the Model in your app, then tell Simple Commerce to use that version instead of the default.
 
@@ -124,9 +124,7 @@ First, in order to customise the Eloquent model, you'll need to create your own 
 
 And there you go... that's you using a custom version of the Eloquent model.
 
-### The 'Repository'
-
-> **Note:** Customising the repository could lead to some bug fixes not being passed down into your app in the future.
+## The 'Repository'
 
 1. Create a repository class which extends the default one provided by Simple Commerce
 2. In your `simple-commerce.php` config file, with a reference to your new repository:

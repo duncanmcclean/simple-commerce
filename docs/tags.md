@@ -23,6 +23,8 @@ For example: you may wish for customers to fill in the `shipping_note` field via
 With 'field whitelisting', you must specify the fields you wish to allow in the Simple Commerce config file.
 
 ```php
+// config/simple-commerce.php
+
 /*
 |--------------------------------------------------------------------------
 | Field Whitelist
@@ -93,28 +95,6 @@ Whenever you use the redirect/form request parameters, Simple Commerce will add 
 :::note Note!
 You may disable the encryption of the hidden values if you wish by enabling the `disable_form_parameter_validation` setting in your Simple Commerce config file.
 :::
-
-### Using the "form tags" in Blade
-
-Simple Commerce's "form tags" work slightly differently in Blade. Instead, you need to construct the HTML of the `<form>` yourself as well as adding some hidden parameters. Thankfully, this is an easy peasy process:
-
-```blade
-@php
-$form = Statamic::tag('sc:cart:addItem')->params([
-    'redirect' => '/cart',
-])->fetch();
-@endphp
-
-<form {!! $form['attrs_html'] !!}>
-    {!! $form['params_html'] !!}
-
-    <input type="hidden" name="product" value="{{ $id }}" />
-    <input type="text" name="quantity" value="1" />
-    <button>Add to Cart</button>
-</form>
-```
-
-The above example is using the `{{ sc:cart:addItem }}` form. You simply use the `{!! $form['attrs_html'] !!}` in the `<form>` tag (this adds the `action` and `method` attributes). Then, somewhere inside the form, add the hidden parameters with `{!! $form['params_html'] !!}`.
 
 ## Alias
 

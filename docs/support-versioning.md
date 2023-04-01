@@ -6,7 +6,7 @@ title: Support Policy & Versioning
 
 Only the latest Simple Commerce release will receive bug fixes, feature additions and official support. In addition, security fixes will only be issued to the latest release.
 
-After a major release (like 4.x), on request, we may copy over any fixes to the previous major release for a week or two post-release.
+After a major release (like 5.x), on request, we may copy over any fixes to the previous major release for a week or two post-release.
 
 ### Security
 
