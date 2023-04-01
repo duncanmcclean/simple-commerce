@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Events\ReceiveGatewayWebhook;
+use DoubleThreeDigital\SimpleCommerce\Events\GatewayWebhookReceived;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -22,7 +22,7 @@ class GatewayWebhookController extends BaseActionController
             throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
         }
 
-        event(new ReceiveGatewayWebhook($request->all()));
+        event(new GatewayWebhookReceived($request->all()));
 
         return Gateway::use($gateway['class'])->webhook($request);
     }
