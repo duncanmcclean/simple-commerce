@@ -2,6 +2,34 @@
 
 ## Unreleased
 
+### What's new
+
+-   Statamic 4 support #857
+-   Order & Payment Statuses replace the _Is Paid/Is Refunded_ toggles on orders #783
+-   Stripe Payment Elements are now supported! 🎉 #830
+-   Re-written & re-structured documentation #858
+
+### What's improved
+
+-   Updated default order blueprint
+-   The developer experience (DX) around custom gateways has been improved #811
+-   Order Numbers for Database Orders are now different from Eloquent model IDs #845
+-   Simple Commerce now uses CP Nav Preferences to re-order Simple Commerce nav items, rather than custom JavaScript #834
+-   Simple Commerce's JavaScript assets are now built with Vite #833
+-   Behind the scenes, the Checkout Pipeline has been improved so more code can be shared between on-site & off-site checkouts #832 #843
+-   Internally, the way Simple Commerce calls Runway has been simplified #810
+
+### What's changed
+
+-   Replaced the _Standard Post_ shipping method with a _Free Shipping_ method. #779
+-   The way variables are passed into the `{{ sc:checkout }}` form has been changed to avoid collisions #827
+-   `SimpleCommerce::gateways()` now returns a `Collection` instead of an array #828
+-   Augmented orders are now returned from Action routes #806
+-   Old upgrade scripts have been removed #837
+-   The `ReceiveGatewayWebhook` event has been renamed `GatewayWebhookReceived` #859
+
+You can read more about what's changed in the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v4-x-to-v5-0), along with steps on how to upgrade.
+
 ## v4.5.8 (2023-03-09)
 
 ### What's fixed
