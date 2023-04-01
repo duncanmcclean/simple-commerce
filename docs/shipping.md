@@ -2,18 +2,20 @@
 title: Shipping
 ---
 
-If you're selling physical products on your store, you'll need a way to ship those products to your customers. Thankfully, Simple Commerce has an easy way to create custom shipping methods for your store.
+When selling physical products, you'll need a way to ship those products to your customers. Sometimes you may want to offer multiple shipping options & the prices may vary on the customer's location.
 
-Every store can have any number of shipping methods. For example, you could use one shipping method for 1st Class mail and others for 2nd and 3rd class mail.
+Simple Commerce includes the concept of **Shipping Methods**. Allowing you to create shipping methods for different shipping options (eg. one for Next Day Delivery, another for Standard delivery or in-store pickup). 
 
 ## Configuration
 
-Shipping Methods can be configured on a site-by-site basis, helpful for if you have different version of your store for different countries.
+Shipping Methods can be configured on a site-by-site basis which is helpful if you have different sites for different countries or regions you serve.
 
 ```php
+// config/simple-commerce.php
+
 'sites' => [
     'default' => [
-        ...
+        // ...
 
         'shipping' => [
             'methods' => [
@@ -26,44 +28,22 @@ Shipping Methods can be configured on a site-by-site basis, helpful for if you h
 
 The `methods` array should contain an array of Shipping Method classes, with the `::class` syntax. You may also specify a configuration array as the second parameter.
 
-### Default shipping method
-
-Normally, a shipping total isn't calculated until you've added a Shipping Method to the order. This is usually done after the customer has entered their shipping address and they're then offered an option as to which Shipping Method to use.
-
-However, there are some cases where you may need to calculate Shipping costs before a Shipping Method has been selected on an order. You may also want it for stores where there's only one shipping method available.
-
-In these cases, you may configure a default Shipping Method which will be used when calculating order totals if no Shipping Method has already been set.
-
-```php
-'sites' => [
-    'default' => [
-        ...
-
-        'shipping' => [
-            'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class,
-
-            'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
-            ],
-        ],
-    ],
-],
-```
-
-:::warning Warning
-Simple Commerce will not check if the default method is 'available' for the customer before using it.
-:::
-
 ## Third-party Shipping Methods
+
+There's a few third-party shipping methods on the Statamic Marketplace that you can pull into your project:
 
 -   [Australian Post](https://statamic.com/addons/mity-digital/australia-post-shipping-for-simple-commerce)
 -   [Sendcloud](https://statamic.com/addons/ray-nl/sendcloud-for-simple-commerce)
 
 ## Templating
 
-During the cart/checkout flow, you'll want to do 2 things: first, let the customer enter their shipping address for the order and secondly, let the customer select the shipping method you want to use for the order.
+During the checkout process, you'll want to let the customer enter their shipping address and then select the shipping method they wish to use for the order.
 
-Let's start with the letting the user enter their shipping address. In our starter kit, we have this on the [initial cart page](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/cart.antlers.html).
+### 1. Prompting the customer for their shipping address
+
+Fields for shipping & billing addresses are included in the default order blueprint.
+
+To let your customer enter their details, simply update those fields using the `{{ sc:cart:update }}` tag.
 
 ```antlers
 {{ sc:cart:update }}
@@ -82,13 +62,19 @@ Let's start with the letting the user enter their shipping address. In our start
 {{ /sc:cart:update }}
 ```
 
-When submitted, that form will fill in the appropriate address fields.
+If you're using the Starter Kit, customers will be asked to enter their shipping details at the [first step of the checkout process](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/cart.antlers.html). 
 
 :::tip Hot Tip
-You can also do `billing_name`, `billing_address`, `billing_city` etc to allow the user to update their billing address.
+As mentioned, the default order blueprint also has Billing Address fields. You may do the same thing to allow customers update them - the field names are just `billing_` instead of `shipping_`.
 :::
 
-After the customer has entered their address we can find available shipping methods for them and allow them to select which one they'd like to use. Again, we can use the `{{ sc:cart:update }}` tag to manage this. We also do this on [our starter kit](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/checkout/shipping.antlers.html).
+### 2. Allowing the customer to select a shipping method
+
+You should also use the `{{ sc:cart:update }}` tag to allow customers to select the shipping method they wish to use.
+
+You can use the `{{ sc:shipping:methods }}` tag to loop through the available shipping methods for the order. 
+
+It'll provide you with variables like name & cost for each of the available shipping methods.
 
 ```antlers
 {{ sc:cart:update }}
@@ -105,47 +91,46 @@ After the customer has entered their address we can find available shipping meth
 {{ /sc:cart:update }}
 ```
 
-After the customer has submitted that form, Simple Commerce will use that shipping method and update the order totals.
+Once the customer has submitted the form, Simple Commerce will update the order totals using the chosen shipping method.
 
-## Marking an order as shipped
+### Default Shipping Method
 
-You can mark orders as 'Dispatched' (previously called 'Shipped'). You can either do this programatically or via the Control Panel.
+Normally, Simple Commerce won't calculate the Shipping Total for an order until the customer's entered their shipping address & selected the shipping method they'd like to use.
 
-Marking an order as dispatched will trigger an event which you can use to send notifications to customers.
+However, there are some use cases (like for those with only one available shipping method) where you may want to set a default shipping method.
 
-### Programatically
-
-If you want to mark an order as Shipped from your own code, you may use the `updateOrderStatus` method available on `Order` objects.
+The default shipping method will be used when calculating the Shipping Total for an order if no other Shipping Method has been selected.
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+'sites' => [
+    'default' => [
+        ...
 
-$order = Order::find(123);
-$order->updateOrderStatus(OrderStatus::Shipped);
+        'shipping' => [
+            'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class,
+
+            'methods' => [
+                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
+            ],
+        ],
+    ],
+],
 ```
 
-### Via the Control Panel
-
-:::note Note!
-This will only show if you're using Collections & Entries for your orders. You'll need to build this yourself for custom [content drivers](/extending/content-drivers).
+:::warning Warning
+Simple Commerce won't check if the Default Shipping Method is 'available' before using it for orders.
 :::
 
-In the Control Panel listing table for orders, find the order you wish to mark as shipped, click the three dots on the right, and select the 'Mark as Shipped' option.
 
-The action will only be available for order which have already been marked as paid.
+## Building Custom Shipping Methods
 
-![Mark as Shipped](/img/simple-commerce/mark-as-shipped.png)
-
-## Creating a shipping method
-
-Simple Commerce doesn't come with any shipping methods out of the box so you'll need to write your own. We do, however have a command you can use to generate the boilerplate for a shipping method.
+To get you up & running quickly, Simple Commerce includes a command to generate the relevant boilerplate for a new shipping method.
 
 ```
 php please make:shipping-method YourNewShippingMethod
 ```
 
-That command will create a Shipping Method class in your `app\ShippingMethods` folder. It'll look something like this:
+That command will create a Shipping Method class in your `app\ShippingMethods` folder. It'll look a little something like this:
 
 ```php
 <?php
@@ -181,19 +166,37 @@ class FirstClass extends BaseShippingMethod implements ShippingMethod
 }
 ```
 
-Here's a quick explanation of what each method does.
+Here's a quick rundown of what each method does.
 
 -   **name:** Should return the name of your shipping method (will be shown to customers)
 -   **description:** Should return a description for your shipping method
 -   **calculateCost:** This method should be where you return the cost of the shipping, based on the order's entry data.
 -   **checkAvailability:** This method is where an Address object is passed in and you should return a boolean of whether or not you ship to that location.
 
-### Using config settings
-
-As mentioned earlier, you may let users of your shipping method specify a configuration array which is accessible inside the Shipping Method itself. If you'd like to do this, you may access the config like so:
+Inside your shipping method, if you need to accept configuration options (for example: an API Key), you can do so by using the available `config` method.
 
 ```php
 // app/ShippingMethods/FirstClass.php
 
 $this->config()->get('api_key');
+```
+
+Then, inside your config file, setting configuration values looks like this:
+
+```php
+// config/simple-commerce.php
+
+'sites' => [
+    'default' => [
+        // ...
+
+        'shipping' => [
+            'methods' => [
+                \App\ ShippingMethods\ FirstClass::class => [
+	                'api_key' => 'blahblahblah',
+                ],
+            ],
+        ],
+    ],
+],
 ```

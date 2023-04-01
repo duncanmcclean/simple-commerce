@@ -1,14 +1,16 @@
 ---
-title: Notifications
+title: Email Notifications
 ---
 
-Notifications are a must for any e-commerce store, especially email notifications. Simple Commerce hooks into Laravel's [Notification's feature](https://laravel.com/docs/master/notifications) to send notifications.
+Email notifications are essential for keeping customers updated in the progress of their orders.
 
-With this, you can send notifications via email, via SMS or even in real time if you use the `broadcast` driver.
+Simple Commerce uses [Laravel Notifications](https://laravel.com/docs/master/notifications) to power email notifications sent to your customers.
 
 ## Configuration
 
 ```php
+// config/simple-commerce.php
+
 /*
 |--------------------------------------------------------------------------
 | Notifications
@@ -29,7 +31,7 @@ With this, you can send notifications via email, via SMS or even in real time if
             'to' => 'customer',
         ],
         \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
-            'to' => 'duncan@example.com',
+            'to' => 'cj.cregg@whitehouse.gov',
         ],
     ],
 
@@ -37,9 +39,13 @@ With this, you can send notifications via email, via SMS or even in real time if
 ],
 ```
 
-Inside the `notifications` array, you can list the event you would like to send notifications on, then you can provide another array with each of the notifications you'd like to send when that event happens.
+Inside the `notifications` array, you can listen to events dispatched by Simple Commerce.
 
-You may also configure who you wish to send each notification to. If you'd like to send the notification to a customer, send it to the `customer`. Otherwise, you can simply send it to an email address.
+Then, for each event you're listening to, you may have one or more notifications you wish to be triggered when the event is dispatched.
+
+As part of configuring notification classes, you should also configure where the notifications should be sent (the `to` parameter).
+
+You can either provide `customer`, for the email to be sent to the associated customer, Antlers code to evaluate a field from the order data or just hard-code a specific email address.
 
 ### Available events
 
@@ -56,11 +62,11 @@ You may listen to any of the following events:
 -   `stock_running_low`
 -   `stock_run_out`
 
-## Using a custom notification
+## Custom Notifications
 
-If you want to change the text used in the notification or maybe provide more information about the order, using a custom notification is the best way to do that.
+If you need to make changes to the built-in email notifications, the best way to do that is by providing a custom notification class.
 
-Here's a quick rundown of how to generate your own notification and configure it to be used by Simple Commerce.
+Here's a real quick rundown of how to generate your own notification class and set it up with Simple Commerce.
 
 1. Generate a notification
 
@@ -82,18 +88,26 @@ php artisan make:notification OrderPaidNotification
 
 4. Make whatever changes you need to make!
 
-## Customising the email views
+## Customising email templates
 
-Simple Commerce uses the default email views provided by Laravel. You may publish these views to your `resources/views/vendor` directory using the following command:
+Simple Commerce doesn't make any changes to the email template that ships with Laravel.
+
+It's pretty generic but you may wish to switch it up a bit when working on a bespoke e-commerce site. 
+
+All you need to do is publish Laravel's notification views:
 
 ```bash
 php artisan vendor:publish --tag=laravel-notifications
 ```
 
+Then, the email views will be published into the `resources/views/vendor` directory.
+
 ## Testing emails
 
-While you're in development, you may need to test your emails without faffing around with _real_ emails.
+While you're in development, you'll probably want to test out your emails without faffing around with _real_ email.
 
-For this, I'd recommend using a tool like [HELO](https://a.paddle.com/v2/click/103161/130785?link=2990) or [Mailtrap](https://mailtrap.io/) which let you view emails during development.
+Tools like [HELO](https://a.paddle.com/v2/click/103161/130785?link=2990) and [Mailtrap](https://mailtrap.io/) let you catch all emails coming out of your site during development.
 
-Disclaimer: The HELO link is a 30% affiliate link.
+![HELO Screenshot](/img/simple-commerce/helo-screenshot.png) 
+
+*Disclaimer:* The HELO link above is an affiliate link.

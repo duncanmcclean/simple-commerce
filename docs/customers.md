@@ -2,10 +2,6 @@
 title: Customers
 ---
 
-## Tags
-
-There's a `{{ sc:customer }}` tag which lets you loop through customers & loop through a specific customers' orders. You may [review it's documentation seperatly](https://simple-commerce.duncanmcclean.com/tags/customer).
-
 ## Drivers
 
 Simple Commerce supports three different customer drivers:
@@ -48,7 +44,7 @@ They live in their own `customers` collection, which you can change if you need 
 
 ### Users Driver
 
-Storing your customers as users can often be handy if you're building some sort of membership site or if you want a way for your customers to log in, to view order history etc.
+Storing your customers as users can often be handy if you're building some sort of membership site or if you want a way for your customers to log in, view order history etc.
 
 :::tip Hot Tip
 You'll need to enable [Statamic Pro](https://statamic.com/pricing) if you want to store your customers as users.
@@ -84,4 +80,22 @@ You'll then want to change the fieldtype of the 'Customer' field on the Orders b
 
 ### Database Driver
 
-There's separate documentation on [Database Orders (& Customers)](/database-orders).
+This is where you store your customers in the database. Simple Commerce supports this when using the [Database Orders](/database-orders) feature.
+
+## Templating
+
+### Get orders made by a customer
+
+You can loop through orders made by a specific customer using the Antlers Tag. All you need to do is provide the ID of the customer. 
+
+If you're using the [#entries] driver, that'll be the entry ID of your customer or if you're storing customers as users, that might be the ID of the currently logged in user.
+
+```antlers
+{{ sc:customer:orders customer="customer-id-goes-here" }}
+  {{ title }} - {{ grand_total }}
+{{ /sc:customer:orders }}
+```
+
+### More information
+
+For more information about the available Customer tags, please review the [`{{ sc:customer }}` tag documentation](/tags/customer).

@@ -1,5 +1,5 @@
 ---
-title: Multi-site
+title: 'Using with multi-site'
 ---
 
 Simple Commerce has first-party support for being used with Statamic's multi-site functionality.

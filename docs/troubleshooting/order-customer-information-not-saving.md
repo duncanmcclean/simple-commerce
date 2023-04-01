@@ -1,18 +1,18 @@
 ---
-title: "Information not being saved on Order/Customer entries"
+title: 'Information not being saved onto orders/customers'
 ---
 
-After updating to v3.0, a common issue folks run into is that information submitted in your cart-related forms aren't being saved onto the order/customer entries as you'd expect.
+A common issue folks run into is that information submitted in your cart-related forms aren't being saved onto the order/customer entries as you'd expect.
 
-The reason for this is due to the new [Field Whitelisting](/tags#content-field-whitelisting) feature in Simple Commerce. Essentially, field whitelisting is a 'whitelist' of fields that are allowed to be updated via Simple Commerce's forms.
+The reason for this is due to [Field Whitelisting](/tags#content-field-whitelisting) feature in Simple Commerce. Essentially, field whitelisting is a 'whitelist' of fields that are allowed to be updated via Simple Commerce's forms.
 
 Field Whitelisting was added to prevent your users from adding their own `<input>` fields to Simple Commerce forms which would let them save whatever they want onto your orders/customers.
 
 There's a few different 'whitelists':
 
-- Orders
-- Line Items
-- Customer
+-   Orders
+-   Line Items
+-   Customer
 
 The **Orders** whitelist is for any kind of data you want saved directly on the Order entry.
 

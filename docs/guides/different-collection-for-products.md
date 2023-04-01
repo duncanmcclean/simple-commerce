@@ -1,5 +1,5 @@
 ---
-title: "Using an existing collection for Simple Commerce Products"
+title: 'Using a different collection for Simple Commerce Products'
 ---
 
 There's some cases where you'll need to bring in Simple Commerce to allow charging for events or tickets.
