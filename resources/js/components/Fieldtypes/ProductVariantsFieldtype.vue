@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Variants -->
-        <div class="grid-fieldtype-container mb-4">
+        <div class="grid-fieldtype-container mb-16">
             <div class="grid-stacked">
                 <div
                     v-for="(variant, variantIndex) in variants"
@@ -40,7 +40,7 @@
         </div>
 
         <!-- Variant Options -->
-        <div class="grid-fieldtype-container mb-4">
+        <div class="grid-fieldtype-container">
             <div class="grid-stacked">
                 <div
                     v-for="(option, index) in options"
