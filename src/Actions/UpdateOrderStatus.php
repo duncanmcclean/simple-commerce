@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use Illuminate\Support\Facades\Config;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -31,6 +32,10 @@ class UpdateOrderStatus extends Action
 
     public function visibleTo($item)
     {
+        if (Config::get('simple-commerce.disable_order_status_actions')) {
+            return false;
+        }
+
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             return $item instanceof Entry
                 && $item->collectionHandle() === SimpleCommerce::orderDriver()['collection'];
