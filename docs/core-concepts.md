@@ -1,10 +1,10 @@
 ---
-title: Overview
+title: 'Core Concepts'
 ---
 
 ## Everything's just an entry
 
-With Simple Commerce, all of your products, orders & customers are normal entries in Statamic. 
+With Simple Commerce, all of your products, orders & customers are normal entries in Statamic.
 
 This means you can take advantage of everything entries have to offer: front-end routing, multi-site localisations, fast search capabilities & more.
 
@@ -45,5 +45,4 @@ If you'd rather [use Blade instead](/blade), you can also take advantage of our 
 
 Simple Commerce has grown to support tones of features over the years.
 
-However, to its core, Simple Commerce is still *simple*. There's no bloat that'll slow you down, features to workaround, you can use what you need and nothing more.
-
+However, to its core, Simple Commerce is still _simple_. There's no bloat that'll slow you down, features to workaround, you can use what you need and nothing more.

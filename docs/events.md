@@ -133,14 +133,14 @@ public function handle(PreCheckout $event)
 }
 ```
 
-### ReceiveGatewayWebhook
+### GatewayWebhookReceived
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\ReceiveGatewayWebhook`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/ReceiveGatewayWebhook.php)
+[**`DoubleThreeDigital\SimpleCommerce\Events\GatewayWebhookReceived`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/GatewayWebhookReceived.php)
 
 This event is fired whenever a webhook request from a gateway is received.
 
 ```php
-public function handle(ReceiveGatewayWebhook $event)
+public function handle(GatewayWebhookReceived $event)
 {
 	$event->payload;
 }

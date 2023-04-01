@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class ReceiveGatewayWebhook
+class GatewayWebhookReceived
 {
     use Dispatchable;
     use InteractsWithSockets;
