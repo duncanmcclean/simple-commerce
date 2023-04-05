@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Schema;
 use Statamic\Facades\User;
 
 class UserCustomerRepository implements RepositoryContract
