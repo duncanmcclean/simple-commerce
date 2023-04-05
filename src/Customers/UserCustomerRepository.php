@@ -60,8 +60,14 @@ class UserCustomerRepository implements RepositoryContract
             $user->email($customer->email());
         }
 
+        $ignoredKeys = ['id', 'email', 'roles', 'groups'];
+
+        if ($user instanceof \Statamic\Auth\Eloquent\User) {
+            $ignoredKeys = array_merge($ignoredKeys, $user->model()->getAppends());
+        }
+
         $user->data(
-            Arr::except($customer->data(), ['id', 'email'])
+            Arr::except($customer->data(), $ignoredKeys)
         );
 
         $user->save();
