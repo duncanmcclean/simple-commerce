@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v4.5.9 (2023-04-06)
+
+### What's new
+
+### What's fixed
+
+-   Ignore appended attributes when saving database users #860
+
 ## v4.5.8 (2023-03-09)
 
 ### What's fixed
