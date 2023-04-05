@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
 use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Schema;
 use Statamic\Facades\User;
 
 class UserCustomerRepository implements RepositoryContract
@@ -60,8 +61,14 @@ class UserCustomerRepository implements RepositoryContract
             $user->email($customer->email());
         }
 
+        $ignoredKeys = ['id', 'email', 'roles', 'groups'];
+
+        if ($user instanceof \Statamic\Auth\Eloquent\User) {
+            $ignoredKeys = array_merge($ignoredKeys, $user->model()->getAppends());
+        }
+
         $user->data(
-            Arr::except($customer->data(), ['id', 'email'])
+            Arr::except($customer->data(), $ignoredKeys)
         );
 
         $user->save();
