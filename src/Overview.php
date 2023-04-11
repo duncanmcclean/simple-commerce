@@ -197,16 +197,32 @@ class Overview
                     });
                 }
 
-                $query = User::all()
-                    ->where('orders', '!=', null)
-                    ->sortByDesc(function ($customer) {
-                        return count($customer->get('orders', []));
-                    })
-                    ->take(5)
-                    ->map(function ($user) {
-                        return Customer::find($user->id());
-                    })
-                    ->values();
+                if (config('statamic.users.repository') === 'eloquent') {
+                    $userModelClass = config('auth.providers.users.model');
+                    $userModel = new $userModelClass;
+
+                    $query = $userModel::query()
+                        ->where('orders', '!=', null)
+                        ->orderBy(function ($query) {
+                            $query->selectRaw('JSON_ARRAY_LENGTH(orders)');
+                        }, 'desc')
+                        ->limit(5)
+                        ->get()
+                        ->map(function ($model) {
+                            return User::fromUser($model);
+                        });
+                } else {
+                    $query = User::all()
+                        ->where('orders', '!=', null)
+                        ->sortByDesc(function ($customer) {
+                            return count($customer->get('orders', []));
+                        })
+                        ->take(5)
+                        ->map(function ($user) {
+                            return Customer::find($user->id());
+                        })
+                        ->values();
+                }
 
                 return $query->map(function ($customer) {
                     return [
