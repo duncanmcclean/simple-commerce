@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.10 (2023-04-11)
+
+### What's improved
+
+-   The "Top Customers" widget on the Overview page should now be much quicker when using the Eloquent User repository #861
+
 ## v4.5.9 (2023-04-06)
 
 ### What's fixed
