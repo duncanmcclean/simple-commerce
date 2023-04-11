@@ -203,7 +203,7 @@ class Overview
 
                     $query = $userModel::query()
                         ->where('orders', '!=', null)
-                        ->orderBy(function($query) {
+                        ->orderBy(function ($query) {
                             $query->selectRaw('JSON_ARRAY_LENGTH(orders)');
                         }, 'desc')
                         ->limit(5)
