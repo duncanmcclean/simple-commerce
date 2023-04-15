@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v4.5.10 (2023-04-15)
+
+### What's improved
+
+-   Added pagination to Control Panel listing tables #861
+
 ## v4.5.9 (2023-04-06)
 
 ### What's fixed
