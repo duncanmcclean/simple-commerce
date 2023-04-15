@@ -13,13 +13,10 @@ jobs:
     strategy:
       matrix:
         php: [8.2]
-        laravel: [9.*]
-        statamic: [3.4.*]
+        laravel: [10.*]
+        statamic: [^4.0]
+        testbench: [8.*]
         os: [ubuntu-latest]
-        include:
-          - laravel: 9.*
-            framework: ^9.1.0
-            testbench: 7.*
 
     name: ${{ matrix.php }} - ${{ matrix.statamic }} - ${{ matrix.laravel }}
 
