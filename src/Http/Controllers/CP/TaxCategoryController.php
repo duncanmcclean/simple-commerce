@@ -16,7 +16,7 @@ class TaxCategoryController
     public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.tax-categories.index', [
-            'taxCategories' => TaxCategory::all(),
+            'taxCategories' => TaxCategory::query()->paginate(config('statamic.cp.pagination_size', 50)),
         ]);
     }
 

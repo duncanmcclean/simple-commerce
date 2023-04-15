@@ -78,6 +78,10 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="my-2">
+            {{ $taxRates->links('simple-commerce::cp.partials.pagination') }}
+        </div>
     @else
         @include('statamic::partials.create-first', [
             'resource' => __('Tax Rate'),

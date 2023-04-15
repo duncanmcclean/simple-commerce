@@ -17,7 +17,7 @@ class TaxZoneController
     public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.tax-zones.index', [
-            'taxZones' => TaxZone::all(),
+            'taxZones' => TaxZone::query()->paginate(config('statamic.cp.pagination_size', 50)),
         ]);
     }
 

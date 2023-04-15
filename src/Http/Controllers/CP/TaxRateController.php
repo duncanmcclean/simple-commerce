@@ -18,7 +18,7 @@ class TaxRateController
     public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.tax-rates.index', [
-            'taxRates' => TaxRate::all(),
+            'taxRates' => TaxRate::query()->paginate(config('statamic.cp.pagination_size', 50)),
             'taxCategories' => TaxCategory::all(),
         ]);
     }
