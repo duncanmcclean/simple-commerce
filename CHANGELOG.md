@@ -30,6 +30,12 @@
 
 You can read more about what's changed in the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v4-x-to-v5-0), along with steps on how to upgrade.
 
+## v4.5.9 (2023-04-06)
+
+### What's fixed
+
+-   Ignore appended attributes when saving database users #860
+
 ## v4.5.8 (2023-03-09)
 
 ### What's fixed
