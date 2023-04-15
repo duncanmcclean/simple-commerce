@@ -18,7 +18,7 @@ class CouponController
     public function index(IndexRequest $request)
     {
         return view('simple-commerce::cp.coupons.index', [
-            'coupons' => Coupon::all(),
+            'coupons' => Coupon::query()->paginate(50),
         ]);
     }
 
