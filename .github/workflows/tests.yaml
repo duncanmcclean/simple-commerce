@@ -15,6 +15,7 @@ jobs:
         php: [8.2]
         laravel: [10.*]
         statamic: [^4.0]
+        testbench: [8.*]
         os: [ubuntu-latest]
 
     name: ${{ matrix.php }} - ${{ matrix.statamic }} - ${{ matrix.laravel }}
