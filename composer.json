@@ -62,7 +62,8 @@
         "process-timeout": 0,
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "pixelfear/composer-dist-plugin": true
+            "pixelfear/composer-dist-plugin": true,
+            "pestphp/pest-plugin": true
         }
     },
     "minimum-stability": "alpha"
