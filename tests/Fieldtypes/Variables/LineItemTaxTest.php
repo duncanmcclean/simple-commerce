@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\Variables\LineItemTax;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
-uses(TestCase::class);
 
 test('can augment line item tax', function () {
     $value = [

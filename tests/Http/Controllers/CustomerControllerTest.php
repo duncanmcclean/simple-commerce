@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 
 test('can get customer', function () {

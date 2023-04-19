@@ -11,7 +11,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 uses(RefreshContent::class);
 beforeEach(function () {

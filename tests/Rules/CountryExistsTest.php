@@ -4,7 +4,6 @@ use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 
-uses(TestCase::class);
 
 it('passes for matching iso code', function () {
     $data = [

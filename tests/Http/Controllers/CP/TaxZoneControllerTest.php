@@ -7,7 +7,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\User;
 
-uses(TestCase::class);
 beforeEach(function () {
     collect(File::allFiles(base_path('content/simple-commerce/tax-zones')))
         ->each(function ($file) {

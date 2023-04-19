@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;
 
-uses(TestCase::class);
 
 test('can get title', function () {
     $title = GatewayFieldtype::title();

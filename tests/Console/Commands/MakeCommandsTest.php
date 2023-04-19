@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Filesystem\Filesystem;
 
-uses(TestCase::class);
 beforeEach(function () {
     $this->files = app(Filesystem::class);
 });

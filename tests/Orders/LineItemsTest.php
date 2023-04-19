@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     $this->useBasicTaxEngine();

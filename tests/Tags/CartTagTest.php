@@ -17,7 +17,6 @@ use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Statamic;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     $this->setupCollections();

@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     try {

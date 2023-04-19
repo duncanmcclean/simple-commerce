@@ -5,7 +5,6 @@ use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductVariantFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 
 test('can preload and return api route', function () {

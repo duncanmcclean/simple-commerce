@@ -14,7 +14,6 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 
 test('can decrease stock for standard product', function () {

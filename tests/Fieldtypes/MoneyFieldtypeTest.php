@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Field;
 
-uses(TestCase::class);
 
 test('can preload currency with no field', function () {
     $preload = (new MoneyFieldtype())->preload();

@@ -9,7 +9,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Collection;
 
-uses(TestCase::class);
 
 /**
  * Inline with the fix suggested here: https://github.com/duncanmcclean/simple-commerce/pull/438#issuecomment-888498198

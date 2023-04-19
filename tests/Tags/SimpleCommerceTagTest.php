@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Tags\SubTag;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Parse;
 
-uses(TestCase::class);
 beforeEach(function () {
     SimpleCommerceTag::register();
 });

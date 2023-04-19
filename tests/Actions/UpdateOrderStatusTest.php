@@ -9,8 +9,6 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
-uses(TestCase::class);
-uses(SetupCollections::class);
 beforeEach(function () {
     $this->setupCollections();
 

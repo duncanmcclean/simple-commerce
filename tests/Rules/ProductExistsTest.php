@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Validator;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
-uses(TestCase::class);
 
 it('passes if entry exists', function () {
     Collection::make('products')->save();

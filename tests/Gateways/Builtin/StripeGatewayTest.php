@@ -18,7 +18,6 @@ use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Stripe;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 uses(RefreshContent::class);
 beforeEach(function () {

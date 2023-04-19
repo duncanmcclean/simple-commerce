@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Data\HasData;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
-uses(TestCase::class);
 beforeEach(function () {
     $this->trait = new TraitAccess();
 });

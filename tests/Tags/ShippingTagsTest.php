@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\StaticCartDriver;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Antlers;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     $this->tag = resolve(ShippingTags::class)

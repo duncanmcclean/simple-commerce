@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Modifiers\Currency as CurrencyModifier;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
-uses(TestCase::class);
 beforeEach(function () {
     $this->modifier = new CurrencyModifier;
 });

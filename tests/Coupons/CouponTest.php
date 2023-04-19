@@ -10,8 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Stache;
 
-uses(TestCase::class);
-uses(SetupCollections::class);
 
 test('can create', function () {
     $create = Coupon::make()

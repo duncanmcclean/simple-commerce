@@ -4,7 +4,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\User;
 
-uses(TestCase::class);
 
 test('can get index', function () {
     Coupon::make()

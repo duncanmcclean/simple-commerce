@@ -13,7 +13,6 @@ use Statamic\Facades\User;
 use Statamic\Http\Resources\API\UserResource;
 use Statamic\Statamic;
 
-uses(TestCase::class);
 beforeEach(function () {
     Statamic::repository(
         \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,

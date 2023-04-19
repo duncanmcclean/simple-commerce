@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Notification;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 
-uses(TestCase::class);
 beforeEach(function () {
     $this->gateway = new DummyGateway();
 

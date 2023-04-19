@@ -6,7 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
-uses(TestCase::class);
 
 test('can create', function () {
     $create = Customer::make()

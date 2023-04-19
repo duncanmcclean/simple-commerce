@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 uses(RefreshContent::class);
 beforeEach(function () {

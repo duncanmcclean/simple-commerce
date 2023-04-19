@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     $this->setupCollections();

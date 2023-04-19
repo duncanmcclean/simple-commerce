@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Stache;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     Stache::store('simple-commerce-coupons')->clear();

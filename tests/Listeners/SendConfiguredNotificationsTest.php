@@ -14,8 +14,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
 
-uses(TestCase::class);
-uses(SetupCollections::class);
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 test('can send configured notification to customer', function () {

@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\Stache;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 uses(RefreshContent::class);
 beforeEach(function () {

@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Pipeline\Pipeline;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 
 test('can pass validation for standard product with enough stock', function () {

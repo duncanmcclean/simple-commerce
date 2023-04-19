@@ -8,7 +8,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 
-uses(TestCase::class);
 beforeEach(function () {
     $config = [
         'key' => env('MOLLIE_KEY'),

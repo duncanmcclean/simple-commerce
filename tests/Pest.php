@@ -1,5 +1,8 @@
 <?php
 
+uses(\DoubleThreeDigital\SimpleCommerce\Tests\TestCase::class)->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Rules', 'Tags', 'Tax');
+uses(\DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections::class)->in('Actions', 'Coupons', 'Listeners');
+
 /*
 |--------------------------------------------------------------------------
 | Test Case

@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 use Statamic\Statamic;
 
-uses(TestCase::class);
 beforeEach(function () {
     $this->useBasicTaxEngine();
 

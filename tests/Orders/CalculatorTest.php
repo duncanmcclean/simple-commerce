@@ -16,7 +16,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 beforeEach(function () {
     $this->useBasicTaxEngine();

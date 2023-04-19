@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-uses(TestCase::class);
 beforeEach(function () {
     $this->fieldtype = new ShippingMethodFieldtype;
 });

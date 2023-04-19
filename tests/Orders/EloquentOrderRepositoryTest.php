@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 
-uses(TestCase::class);
 uses(SetupCollections::class);
 uses(RefreshDatabase::class);
 uses(UseDatabaseContentDrivers::class);
