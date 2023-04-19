@@ -21,7 +21,7 @@ abstract class TestCase extends OrchestraTestCase
 {
     protected $shouldFakeVersion = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
