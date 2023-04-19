@@ -11,8 +11,8 @@ uses(SetupCollections::class);
 test('can preload and return api route', function () {
     $preload = (new ProductVariantFieldtype())->preload();
 
-    $this->assertIsArray($preload);
-    $this->assertStringContainsString('simple-commerce/fieldtype-api/product-variant', $preload['api']);
+    expect($preload)->toBeArray();
+    expect($preload['api'])->toContain('simple-commerce/fieldtype-api/product-variant');
 });
 
 test('can preprocess value with new format', function () {
@@ -50,7 +50,7 @@ test('that augmentation returns null if purcaseable type is product', function (
         'variant' => 'One',
     ]);
 
-    $this->assertNull($augment);
+    expect($augment)->toBeNull();
 });
 
 test('that augmentation returns null if variant does not exist', function () {
@@ -78,7 +78,7 @@ test('that augmentation returns null if variant does not exist', function () {
         'variant' => 'Yellow_Small',
     ]);
 
-    $this->assertNull($augment);
+    expect($augment)->toBeNull();
 });
 
 test('that augmentation returns variant data', function () {
@@ -106,7 +106,7 @@ test('that augmentation returns variant data', function () {
         'variant' => 'Yellow_Large',
     ]);
 
-    $this->assertIsArray($augment);
+    expect($augment)->toBeArray();
 
     $this->assertArrayHasKey('key', $augment);
     $this->assertArrayHasKey('variant', $augment);

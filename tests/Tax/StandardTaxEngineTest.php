@@ -100,7 +100,7 @@ test('can correctly calculate tax rate based on country', function () {
     ]);
 
     // Ensure global order tax is right
-    $this->assertSame($recalculate->get('tax_total'), 167);
+    expect(167)->toBe($recalculate->get('tax_total'));
 });
 
 test('can correctly calculate tax rate based on region', function () {
@@ -169,7 +169,7 @@ test('can correctly calculate tax rate based on region', function () {
     ]);
 
     // Ensure global order tax is right
-    $this->assertSame($recalculate->get('tax_total'), 130);
+    expect(130)->toBe($recalculate->get('tax_total'));
 });
 
 test('can calculate tax rate when included in price', function () {
@@ -236,7 +236,7 @@ test('can calculate tax rate when included in price', function () {
     ]);
 
     // Ensure global order tax is right
-    $this->assertSame($recalculate->get('tax_total'), 167);
+    expect(167)->toBe($recalculate->get('tax_total'));
 });
 
 test('can use default tax rate if no rate available', function () {
@@ -287,10 +287,10 @@ test('can use default tax rate if no rate available', function () {
     $recalculate = $order->recalculate();
 
     // Ensure the tax rate is correct on the line item
-    $this->assertSame($recalculate->lineItems()->first()->tax()['rate'], 12);
+    expect(12)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    $this->assertSame($recalculate->get('tax_total'), 107);
+    expect(107)->toBe($recalculate->get('tax_total'));
 });
 
 test('throws prevent checkout exception if no rate available', function () {
@@ -398,10 +398,10 @@ test('uses default address if no address provided', function () {
     $recalculate = $order->recalculate();
 
     // Ensure the tax rate is correct on the line item
-    $this->assertSame($recalculate->lineItems()->first()->tax()['rate'], 99);
+    expect(99)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    $this->assertSame($recalculate->get('tax_total'), 497);
+    expect(497)->toBe($recalculate->get('tax_total'));
 });
 
 test('throws prevent checkout exception if no address provided', function () {
@@ -453,8 +453,8 @@ test('throws prevent checkout exception if no address provided', function () {
     $recalculate = $order->recalculate();
 
     // Ensure the tax rate is correct on the line item
-    $this->assertSame($recalculate->lineItems()->first()->tax()['rate'], 99);
+    expect(99)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    $this->assertSame($recalculate->get('tax_total'), 497);
+    expect(497)->toBe($recalculate->get('tax_total'));
 });

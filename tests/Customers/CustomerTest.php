@@ -17,13 +17,13 @@ test('can create', function () {
 
     $create->save();
 
-    $this->assertTrue($create instanceof CustomersCustomer);
+    expect($create instanceof CustomersCustomer)->toBeTrue();
 
     $this->assertNotNull($create->id());
 
-    $this->assertSame($create->name(), 'Joe Smith');
-    $this->assertSame($create->email(), 'joe.smith@example.com');
-    $this->assertSame($create->get('slug'), 'joesmith-at-examplecom');
+    expect('Joe Smith')->toBe($create->name());
+    expect('joe.smith@example.com')->toBe($create->email());
+    expect('joesmith-at-examplecom')->toBe($create->get('slug'));
 });
 
 test('can create and ensure customer entry is published', function () {
@@ -36,13 +36,13 @@ test('can create and ensure customer entry is published', function () {
 
     $create->save();
 
-    $this->assertTrue($create instanceof CustomersCustomer);
+    expect($create instanceof CustomersCustomer)->toBeTrue();
 
     $this->assertNotNull($create->id());
-    $this->assertSame($create->name(), 'Joe Smith');
-    $this->assertSame($create->email(), 'joe.smith@example.com');
+    expect('Joe Smith')->toBe($create->name());
+    expect('joe.smith@example.com')->toBe($create->email());
 
-    $this->assertTrue($create->get('published'));
+    expect($create->get('published'))->toBeTrue();
 });
 
 test('can find by id', function () {
@@ -58,11 +58,11 @@ test('can find by id', function () {
 
     $findByEmail = Customer::find($id);
 
-    $this->assertTrue($findByEmail instanceof CustomersCustomer);
+    expect($findByEmail instanceof CustomersCustomer)->toBeTrue();
 
-    $this->assertSame($findByEmail->name(), 'Smoke Fire');
-    $this->assertSame($findByEmail->email(), 'smoke@fire.com');
-    $this->assertSame($findByEmail->get('slug'), 'smoke-at-firecom');
+    expect('Smoke Fire')->toBe($findByEmail->name());
+    expect('smoke@fire.com')->toBe($findByEmail->email());
+    expect('smoke-at-firecom')->toBe($findByEmail->get('slug'));
 });
 
 test('can find by email', function () {
@@ -78,9 +78,9 @@ test('can find by email', function () {
 
     $findByEmail = Customer::findByEmail('sam@whitehouse.gov');
 
-    $this->assertTrue($findByEmail instanceof CustomersCustomer);
+    expect($findByEmail instanceof CustomersCustomer)->toBeTrue();
 
-    $this->assertSame($findByEmail->name(), 'Sam Seaboarn');
-    $this->assertSame($findByEmail->email(), 'sam@whitehouse.gov');
-    $this->assertSame($findByEmail->get('slug'), 'sam-at-whitehousegov');
+    expect('Sam Seaboarn')->toBe($findByEmail->name());
+    expect('sam@whitehouse.gov')->toBe($findByEmail->email());
+    expect('sam-at-whitehousegov')->toBe($findByEmail->get('slug'));
 });

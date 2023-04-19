@@ -79,12 +79,12 @@ test('can post checkout', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout and ensure custom form request is used', function () {
@@ -123,7 +123,7 @@ test('cant post checkout and ensure custom form request is used', function () {
         ])
         ->assertSessionHasErrors('accept_terms');
 
-    $this->assertEquals(session('errors')->default->first('accept_terms'), 'Please accept the terms & conditions.');
+    expect('Please accept the terms & conditions.')->toEqual(session('errors')->default->first('accept_terms'));
 
     $order->fresh();
 
@@ -133,10 +133,10 @@ test('cant post checkout and ensure custom form request is used', function () {
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('can post checkout with name and email', function () {
@@ -179,22 +179,22 @@ test('can post checkout with name and email', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Mike Scott');
-    $this->assertSame($order->customer()->email(), 'mike.scott@example.com');
+    expect('Mike Scott')->toBe($order->customer()->name());
+    expect('mike.scott@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with first name and last name and email', function () {
@@ -238,22 +238,22 @@ test('can post checkout with first name and last name and email', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Mike Scott');
-    $this->assertSame($order->customer()->email(), 'mike.scott@example.com');
+    expect('Mike Scott')->toBe($order->customer()->name());
+    expect('mike.scott@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout with name and email when email address contains spaces', function () {
@@ -297,13 +297,13 @@ test('cant post checkout with name and email when email address contains spaces'
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Assert customer has been created with provided details
-    $this->assertNull($order->customer());
+    expect($order->customer())->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('can post checkout with only email', function () {
@@ -345,16 +345,16 @@ test('can post checkout with only email', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert email has been set on the order
     $this->assertNotNull($order->customer());
-    $this->assertNull($order->get('email'));
+    expect($order->get('email'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with customer already present in order', function () {
@@ -405,23 +405,23 @@ test('can post checkout with customer already present in order', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been updated
     $this->assertNotNull($order->customer());
-    $this->assertSame($order->customer(), $customer->id);
+    expect($customer->id)->toBe($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Dwight Schrute');
-    $this->assertSame($order->customer()->email(), 'dwight.schrute@example.com');
+    expect('Dwight Schrute')->toBe($order->customer()->name());
+    expect('dwight.schrute@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with customer present in request', function () {
@@ -469,23 +469,23 @@ test('can post checkout with customer present in request', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been updated
     $this->assertNotNull($order->customer());
-    $this->assertSame($order->customer()->id(), $customer->id);
+    expect($customer->id)->toBe($order->customer()->id());
 
-    $this->assertSame($order->customer()->name(), 'Stanley Hudson');
-    $this->assertSame($order->customer()->email(), 'stanley.hudson@example.com');
+    expect('Stanley Hudson')->toBe($order->customer()->name());
+    expect('stanley.hudson@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 /**
@@ -546,16 +546,16 @@ test('can post checkout with customer where customer has invalid orders', functi
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been updated
     $this->assertNotNull($order->customer());
-    $this->assertSame($order->customer()->id(), $customer->id);
+    expect($customer->id)->toBe($order->customer()->id());
 
-    $this->assertSame($order->customer()->name(), 'Stanley Hudson');
-    $this->assertSame($order->customer()->email(), 'stanley.hudson@example.com');
+    expect('Stanley Hudson')->toBe($order->customer()->name());
+    expect('stanley.hudson@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $previousOrder->id(),
@@ -563,7 +563,7 @@ test('can post checkout with customer where customer has invalid orders', functi
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with customer array', function () {
@@ -608,22 +608,22 @@ test('can post checkout with customer array', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Joe Doe');
-    $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
+    expect('Joe Doe')->toBe($order->customer()->name());
+    expect('joe.doe@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with customer array and existing customer', function () {
@@ -676,23 +676,23 @@ test('can post checkout with customer array and existing customer', function () 
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->id(), $customer->id);
-    $this->assertSame($order->customer()->name(), 'Joe Doe');
-    $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
+    expect($customer->id)->toBe($order->customer()->id());
+    expect('Joe Doe')->toBe($order->customer()->name());
+    expect('joe.doe@example.com')->toBe($order->customer()->email());
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 /**
@@ -745,23 +745,23 @@ test('can post checkout with customer array with additional information', functi
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Joe Doe');
-    $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
-    $this->assertSame($order->customer()->get('dob'), '01/01/2000');
+    expect('Joe Doe')->toBe($order->customer()->name());
+    expect('joe.doe@example.com')->toBe($order->customer()->email());
+    expect('01/01/2000')->toBe($order->customer()->get('dob'));
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 /**
@@ -822,24 +822,24 @@ test('can post checkout with customer array and existing customer with additiona
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->id(), $customer->id);
-    $this->assertSame($order->customer()->name(), 'Joe Doe');
-    $this->assertSame($order->customer()->email(), 'joe.doe@example.com');
-    $this->assertSame($order->customer()->get('dob'), '01/01/2000');
+    expect($customer->id)->toBe($order->customer()->id());
+    expect('Joe Doe')->toBe($order->customer()->name());
+    expect('joe.doe@example.com')->toBe($order->customer()->email());
+    expect('01/01/2000')->toBe($order->customer()->get('dob'));
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,
     ]);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with coupon', function () {
@@ -898,18 +898,18 @@ test('can post checkout with coupon', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert the coupon has been redeemed propery & the total has been recalculated
-    $this->assertSame($order->coupon()->id(), $coupon->id);
+    expect($coupon->id)->toBe($order->coupon()->id());
 
-    $this->assertSame($order->grandTotal(), 2500);
-    $this->assertSame($order->couponTotal(), 2500);
+    expect(2500)->toBe($order->grandTotal());
+    expect(2500)->toBe($order->couponTotal());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with coupon when checkout request will reach the coupons maximum uses value', function () {
@@ -963,18 +963,18 @@ test('can post checkout with coupon when checkout request will reach the coupons
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert the coupon has been redeemed propery & the total has been recalculated
-    $this->assertSame($order->coupon()->id(), $coupon->id);
+    expect($coupon->id)->toBe($order->coupon()->id());
 
-    $this->assertSame($order->grandTotal(), 0);
-    $this->assertSame($order->couponTotal(), 5000);
+    expect(0)->toBe($order->grandTotal());
+    expect(5000)->toBe($order->couponTotal());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout with coupon where minimum cart value has not been reached', function () {
@@ -1041,16 +1041,16 @@ test('cant post checkout with coupon where minimum cart value has not been reach
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Assert the coupon has been redeemed propery & the total has been recalculated
-    $this->assertNull($order->coupon());
+    expect($order->coupon())->toBeNull();
 
-    $this->assertSame($order->grandTotal(), 5000);
-    $this->assertSame($order->couponTotal(), 0);
+    expect(5000)->toBe($order->grandTotal());
+    expect(0)->toBe($order->couponTotal());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('cant post checkout with coupon when coupon has been redeemed for maxium uses', function () {
@@ -1116,16 +1116,16 @@ test('cant post checkout with coupon when coupon has been redeemed for maxium us
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Assert the coupon has been redeemed propery & the total has been recalculated
-    $this->assertNull($order->coupon());
+    expect($order->coupon())->toBeNull();
 
-    $this->assertSame($order->grandTotal(), 5000);
-    $this->assertSame($order->couponTotal(), 0);
+    expect(5000)->toBe($order->grandTotal());
+    expect(0)->toBe($order->couponTotal());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('cant post checkout with coupon where coupon is only valid for products not in cart', function () {
@@ -1191,16 +1191,16 @@ test('cant post checkout with coupon where coupon is only valid for products not
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Assert the coupon has been redeemed propery & the total has been recalculated
-    $this->assertNull($order->coupon());
+    expect($order->coupon())->toBeNull();
 
-    $this->assertSame($order->grandTotal(), 5000);
-    $this->assertSame($order->couponTotal(), 0);
+    expect(5000)->toBe($order->grandTotal());
+    expect(0)->toBe($order->couponTotal());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('can post checkout with product with stock counter', function () {
@@ -1244,15 +1244,15 @@ test('can post checkout with product with stock counter', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert stock has been reduced
-    $this->assertSame($product->fresh()->stock(), 49);
+    expect(49)->toBe($product->fresh()->stock());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout when product is running low on stock', function () {
@@ -1298,17 +1298,17 @@ test('can post checkout when product is running low on stock', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert stock has been reduced
-    $this->assertSame($product->fresh()->stock(), 8);
+    expect(8)->toBe($product->fresh()->stock());
 
     Event::assertDispatched(StockRunningLow::class);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout when product has no stock', function () {
@@ -1351,8 +1351,8 @@ test('cant post checkout when product has no stock', function () {
     $order = $order->fresh();
 
     // Assert the line item has been wiped out
-    $this->assertSame($order->lineItems()->count(), 0);
-    $this->assertSame($order->grandTotal(), 0);
+    expect(0)->toBe($order->lineItems()->count());
+    expect(0)->toBe($order->grandTotal());
 
     // Assert events have been dispatched
     Event::assertDispatched(PreCheckout::class);
@@ -1360,16 +1360,16 @@ test('cant post checkout when product has no stock', function () {
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Asset the stock is the same (it hasn't been reduced yet because the
     // checkout failed at the validation stage)
     $product->fresh();
 
-    $this->assertSame($product->stock(), 0);
+    expect(0)->toBe($product->stock());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('cant post checkout when product has a single item left in stock and single quantity in cart', function () {
@@ -1414,18 +1414,18 @@ test('cant post checkout when product has a single item left in stock and single
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert stock has been reduced
-    $this->assertSame($product->fresh()->stock(), 0);
+    expect(0)->toBe($product->fresh()->stock());
 
     Event::assertDispatched(StockRunningLow::class);
     Event::assertDispatched(StockRunOut::class);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with variant product with stock counter', function () {
@@ -1492,15 +1492,15 @@ test('can post checkout with variant product with stock counter', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert stock has been reduced
-    $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 49);
+    expect(49)->toBe($product->fresh()->variant('Red_Small')->stock());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout when variant product is running low on stock', function () {
@@ -1569,17 +1569,17 @@ test('can post checkout when variant product is running low on stock', function 
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert stock has been reduced
-    $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 8);
+    expect(8)->toBe($product->fresh()->variant('Red_Small')->stock());
 
     Event::assertDispatched(StockRunningLow::class);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout when variant product has no stock', function () {
@@ -1645,8 +1645,8 @@ test('cant post checkout when variant product has no stock', function () {
     $order = $order->fresh();
 
     // Assert the line item has been wiped out
-    $this->assertSame($order->lineItems()->count(), 0);
-    $this->assertSame($order->grandTotal(), 0);
+    expect(0)->toBe($order->lineItems()->count());
+    expect(0)->toBe($order->grandTotal());
 
     // Assert events have been dispatched
     Event::assertDispatched(PreCheckout::class);
@@ -1654,14 +1654,14 @@ test('cant post checkout when variant product has no stock', function () {
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Asset the stock is the same (it hasn't been reduced yet because the
     // checkout failed at the validation stage)
-    $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
+    expect(0)->toBe($product->fresh()->variant('Red_Small')->stock());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('can post checkout when variant product has a single item left in stock and single quantity in cart', function () {
@@ -1730,18 +1730,18 @@ test('can post checkout when variant product has a single item left in stock and
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert stock has been reduced
-    $this->assertSame($product->fresh()->variant('Red_Small')->stock(), 0);
+    expect(0)->toBe($product->fresh()->variant('Red_Small')->stock());
 
     Event::assertDispatched(StockRunningLow::class);
     Event::assertDispatched(StockRunOut::class);
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout and ensure remaining request data is saved to order', function () {
@@ -1790,18 +1790,18 @@ test('can post checkout and ensure remaining request data is saved to order', fu
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert that the 'extra remaining data' has been saved to the order
-    $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
-    $this->assertSame($order->get('delivery_note'), 'We live at the red house at the top of the hill.');
+    expect('I like jam on toast!')->toBe($order->get('gift_note'));
+    expect('We live at the red house at the top of the hill.')->toBe($order->get('delivery_note'));
 
-    $this->assertSame($order->get('the_extra'), 'bit_of_data');
+    expect('bit_of_data')->toBe($order->get('the_extra'));
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout and ensure remaining request data is saved to order if fields not whitelisted in config', function () {
@@ -1850,18 +1850,18 @@ test('cant post checkout and ensure remaining request data is saved to order if 
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert that the 'extra remaining data' has been saved to the order
-    $this->assertSame($order->get('gift_note'), 'I like jam on toast!');
-    $this->assertSame($order->get('delivery_note'), 'We live at the red house at the top of the hill.');
+    expect('I like jam on toast!')->toBe($order->get('gift_note'));
+    expect('We live at the red house at the top of the hill.')->toBe($order->get('delivery_note'));
 
-    $this->assertNull($order->get('the_extra'));
+    expect($order->get('the_extra'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout with no payment information on free order', function () {
@@ -1901,12 +1901,12 @@ test('can post checkout with no payment information on free order', function () 
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('cant post checkout with no payment information on paid order', function () {
@@ -1950,10 +1950,10 @@ test('cant post checkout with no payment information on paid order', function ()
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('cant post checkout with no gateway in request', function () {
@@ -1994,10 +1994,10 @@ test('cant post checkout with no gateway in request', function () {
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('cant post checkout with invalid gateway in request', function () {
@@ -2039,10 +2039,10 @@ test('cant post checkout with invalid gateway in request', function () {
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('can post checkout requesting json and ensure json is returned', function () {
@@ -2090,18 +2090,18 @@ test('can post checkout requesting json and ensure json is returned', function (
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Smelly Joe');
-    $this->assertSame($order->customer()->email(), 'smelly.joe@example.com');
+    expect('Smelly Joe')->toBe($order->customer()->name());
+    expect('smelly.joe@example.com')->toBe($order->customer()->email());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout and ensure user is redirected', function () {
@@ -2146,18 +2146,18 @@ test('can post checkout and ensure user is redirected', function () {
     Event::assertDispatched(PreCheckout::class);
     Event::assertDispatched(PostCheckout::class);
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert customer has been created with provided details
     $this->assertNotNull($order->customer());
 
-    $this->assertSame($order->customer()->name(), 'Smelly Joe');
-    $this->assertSame($order->customer()->email(), 'smelly.joe@example.com');
+    expect('Smelly Joe')->toBe($order->customer()->name());
+    expect('smelly.joe@example.com')->toBe($order->customer()->email());
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout and ensure order paid notifications are sent', function () {
@@ -2207,12 +2207,12 @@ test('can post checkout and ensure order paid notifications are sent', function 
         BackOfficeOrderPaid::class
     );
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 });
 
 test('can post checkout and ensure temp gateway data is tidied up', function () {
@@ -2242,7 +2242,7 @@ test('can post checkout and ensure temp gateway data is tidied up', function () 
     $order->save();
 
     // Double check 'dummy' temp data is actually present
-    $this->assertIsArray($order->get('dummy'));
+    expect($order->get('dummy'))->toBeArray();
 
     $this
         ->withSession(['simple-commerce-cart' => $order->id])
@@ -2258,15 +2258,15 @@ test('can post checkout and ensure temp gateway data is tidied up', function () 
 
     $order = $order->fresh();
 
-    $this->assertSame($order->fresh()->status(), OrderStatus::Placed);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 
     // Assert order is no longer attached to the users' session
-    $this->assertFalse(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
 
     // Finally, assert 'dummy' gateway temp data has been tiedied up
-    $this->assertNull($order->get('dummy'));
+    expect($order->get('dummy'))->toBeNull();
 });
 
 test('can post checkout and ensure gateway validation rules are used', function () {
@@ -2314,10 +2314,10 @@ test('can post checkout and ensure gateway validation rules are used', function 
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 test('can post checkout and ensure gateway errors are handled correctly', function () {
@@ -2361,10 +2361,10 @@ test('can post checkout and ensure gateway errors are handled correctly', functi
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
     $this->assertNotSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
-    $this->assertNull($order->statusLog('paid'));
+    expect($order->statusLog('paid'))->toBeNull();
 
     // Finally, assert order is no longer attached to the users' session
-    $this->assertTrue(session()->has('simple-commerce-cart'));
+    expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
 // Helpers

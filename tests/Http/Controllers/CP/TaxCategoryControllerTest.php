@@ -113,7 +113,7 @@ test('can destroy tax category and delete assosiated rates', function () {
     $taxRate = TaxRate::make()->id('123')->name('UK Birthday')->category('birthday')->zone('abc');
     $taxRate->save();
 
-    $this->assertFileExists($taxRate->path());
+    expect($taxRate->path())->toBeFile();
 
     $this
         ->actingAs(user())

@@ -46,13 +46,13 @@ test('can mark order as paid with offsite gateway', function () {
     $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
     // Assert order has been marked as paid
-    $this->assertTrue($markOrderAsPaid);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect($markOrderAsPaid)->toBeTrue();
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 
     Event::assertDispatched(PaymentStatusUpdated::class);
 
     // Assert stock count has been updated
-    $this->assertSame($product->fresh()->stock(), 9);
+    expect(9)->toBe($product->fresh()->stock());
 });
 
 test('can mark order as paid with offsite gateway and ensure gateway is set in order paid event', function () {
@@ -83,15 +83,15 @@ test('can mark order as paid with offsite gateway and ensure gateway is set in o
     $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
     // Assert order has been marked as paid
-    $this->assertTrue($markOrderAsPaid);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect($markOrderAsPaid)->toBeTrue();
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 
     Event::assertDispatched(function (PaymentStatusUpdated $event) {
         return $event->order->gateway['use'] === FakeOffsiteGateway::class;
     });
 
     // Assert stock count has been updated
-    $this->assertSame($product->fresh()->stock(), 9);
+    expect(9)->toBe($product->fresh()->stock());
 });
 
 test('can mark order as paid with onsite gateway', function () {
@@ -121,8 +121,8 @@ test('can mark order as paid with onsite gateway', function () {
     $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
     // Assert order has been marked as paid
-    $this->assertTrue($markOrderAsPaid);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect($markOrderAsPaid)->toBeTrue();
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 
     Event::assertDispatched(PaymentStatusUpdated::class);
 });
@@ -154,8 +154,8 @@ test('can mark order as paid with onsite gateway and ensure gateway is set in or
     $markOrderAsPaid = $fakeGateway->markOrderAsPaid($order);
 
     // Assert order has been marked as paid
-    $this->assertTrue($markOrderAsPaid);
-    $this->assertSame($order->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect($markOrderAsPaid)->toBeTrue();
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 
     Event::assertDispatched(function (PaymentStatusUpdated $event) {
         return $event->order->gateway['use'] === FakeOnsiteGateway::class;

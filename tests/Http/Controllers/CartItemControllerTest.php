@@ -43,9 +43,9 @@ test('can store item', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 });
 
 test('can store item and request json', function () {
@@ -77,9 +77,9 @@ test('can store item and request json', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 });
 
 test('can store item with extra data', function () {
@@ -109,9 +109,9 @@ test('can store item with extra data', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     $this->assertArrayHasKey('foo', $cart->lineItems()->first()->metadata()->toArray());
 });
@@ -143,9 +143,9 @@ test('cant store item with extra data if fields not whitelisted in config', func
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     $this->assertArrayNotHasKey('foo', $cart->lineItems()->first()->metadata());
 });
@@ -221,9 +221,9 @@ test('can store item with variant', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 });
 
 test('can store item with metadata where metadata is unique', function () {
@@ -274,16 +274,16 @@ test('can store item with metadata where metadata is unique', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(2000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(2000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
-    $this->assertSame(1, $cart->lineItems()->first()->quantity());
+    expect($cart->lineItems()->first()->quantity())->toBe(1);
     $this->assertArrayHasKey('foo', $cart->lineItems()->first()->metadata()->toArray());
     $this->assertArrayHasKey('bar', $cart->lineItems()->first()->metadata()->toArray());
     $this->assertArrayNotHasKey('barz', $cart->lineItems()->first()->metadata()->toArray());
 
-    $this->assertSame(1, $cart->lineItems()->first()->quantity());
+    expect($cart->lineItems()->first()->quantity())->toBe(1);
     $this->assertArrayHasKey('foo', $cart->lineItems()->last()->metadata()->toArray());
     $this->assertArrayNotHasKey('bar', $cart->lineItems()->last()->metadata()->toArray());
     $this->assertArrayHasKey('barz', $cart->lineItems()->last()->metadata()->toArray());
@@ -339,11 +339,11 @@ test('can store item with metadata where metadata is not unique', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(2000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(2000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
-    $this->assertSame(2, $cart->lineItems()->first()->quantity());
+    expect($cart->lineItems()->first()->quantity())->toBe(2);
 
     $this->assertArrayHasKey('foo', $cart->lineItems()->first()->metadata()->toArray());
     $this->assertArrayHasKey('bar', $cart->lineItems()->first()->metadata()->toArray());
@@ -379,9 +379,9 @@ test('can store item with existing cart', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1000, $cart->itemsTotal());
-    $this->assertSame(session()->get('simple-commerce-cart'), $cart->id);
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect($cart->itemsTotal())->toBe(1000);
+    expect($cart->id)->toBe(session()->get('simple-commerce-cart'));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 });
 
 test('can store item and ensure the quantity is not more than stock', function () {
@@ -486,7 +486,7 @@ test('cant store item when standard product has no stock', function () {
 
     $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->count(), 0);
+    expect(0)->toBe($cart->lineItems()->count());
 });
 
 test('cant store item when variant product has no stock', function () {
@@ -535,7 +535,7 @@ test('cant store item when variant product has no stock', function () {
 
     $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->count(), 0);
+    expect(0)->toBe($cart->lineItems()->count());
 });
 
 test('can store item and ensure existing items are not overwritten', function () {
@@ -584,11 +584,11 @@ test('can store item and ensure existing items are not overwritten', function ()
 
     $cart->fresh();
 
-    $this->assertSame(session()->get('simple-commerce-cart'), $cart->id);
+    expect($cart->id)->toBe(session()->get('simple-commerce-cart'));
     // $this->assertSame(3300, $cart->itemsTotal());
 
-    $this->assertStringContainsString($productOne->id, json_encode($cart->lineItems()->toArray()));
-    $this->assertStringContainsString($productTwo->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($productOne->id);
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($productTwo->id);
 });
 
 test('can store item with custom redirect url', function () {
@@ -616,9 +616,9 @@ test('can store item with custom redirect url', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 });
 
 test('can store item with name and email', function () {
@@ -647,15 +647,15 @@ test('can store item with name and email', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'Michael Scott');
-    $this->assertSame($cart->customer()->email(), 'michael@scott.net');
+    expect('Michael Scott')->toBe($cart->customer()->name());
+    expect('michael@scott.net')->toBe($cart->customer()->email());
 });
 
 test('can store item with first name and last name and email', function () {
@@ -685,15 +685,15 @@ test('can store item with first name and last name and email', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'Michael Scott');
-    $this->assertSame($cart->customer()->email(), 'michael@scott.net');
+    expect('Michael Scott')->toBe($cart->customer()->name());
+    expect('michael@scott.net')->toBe($cart->customer()->email());
 });
 
 test('cant store item with email that contains spaces', function () {
@@ -721,9 +721,9 @@ test('cant store item with email that contains spaces', function () {
     try {
         Customer::findByEmail('spud man@potato.net');
 
-        $this->assertTrue(false);
+        expect(false)->toBeTrue();
     } catch (CustomerNotFound $e) {
-        $this->assertTrue(true);
+        expect(true)->toBeTrue();
     }
 });
 
@@ -752,15 +752,15 @@ test('can store item with only email', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), null);
-    $this->assertSame($cart->customer()->email(), 'donald@duck.disney');
+    expect(null)->toBe($cart->customer()->name());
+    expect('donald@duck.disney')->toBe($cart->customer()->email());
 });
 
 test('can store item with customer already in present in order', function () {
@@ -799,15 +799,15 @@ test('can store item with customer already in present in order', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'Goofy');
-    $this->assertSame($cart->customer()->email(), 'goofy@clubhouse.disney');
+    expect('Goofy')->toBe($cart->customer()->name());
+    expect('goofy@clubhouse.disney')->toBe($cart->customer()->email());
 });
 
 test('can store item with customer present in request', function () {
@@ -843,15 +843,15 @@ test('can store item with customer present in request', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'Pluto');
-    $this->assertSame($cart->customer()->email(), 'pluto@clubhouse.disney');
+    expect('Pluto')->toBe($cart->customer()->name());
+    expect('pluto@clubhouse.disney')->toBe($cart->customer()->email());
 });
 
 test('can store item with customer array', function () {
@@ -882,15 +882,15 @@ test('can store item with customer array', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'James');
-    $this->assertSame($cart->customer()->email(), 'james@example.com');
+    expect('James')->toBe($cart->customer()->name());
+    expect('james@example.com')->toBe($cart->customer()->email());
 });
 
 test('can store item with customer array and existing customer', function () {
@@ -928,15 +928,15 @@ test('can store item with customer array and existing customer', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'Pluto');
-    $this->assertSame($cart->customer()->email(), 'pluto@clubhouse.disney');
+    expect('Pluto')->toBe($cart->customer()->name());
+    expect('pluto@clubhouse.disney')->toBe($cart->customer()->email());
 });
 
 /**
@@ -975,16 +975,16 @@ test('can store item with customer array and additional customer information', f
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'James');
-    $this->assertSame($cart->customer()->email(), 'james@example.com');
-    $this->assertSame($cart->customer()->get('dob'), '01/01/2000');
+    expect('James')->toBe($cart->customer()->name());
+    expect('james@example.com')->toBe($cart->customer()->email());
+    expect('01/01/2000')->toBe($cart->customer()->get('dob'));
 });
 
 /**
@@ -1030,16 +1030,16 @@ test('can store item with customer array and existing customer and additional cu
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1000);
 
-    $this->assertStringContainsString($product->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
     // Assert customer has been created with provided details
     $this->assertNotNull($cart->customer());
 
-    $this->assertSame($cart->customer()->name(), 'Pluto');
-    $this->assertSame($cart->customer()->email(), 'pluto@clubhouse.disney');
-    $this->assertSame($cart->customer()->get('dob'), '01/01/2000');
+    expect('Pluto')->toBe($cart->customer()->name());
+    expect('pluto@clubhouse.disney')->toBe($cart->customer()->email());
+    expect('01/01/2000')->toBe($cart->customer()->get('dob'));
 });
 
 test('can store item where product requires prerequisite product and customer has purchased prerequisite product', function () {
@@ -1100,9 +1100,9 @@ test('can store item where product requires prerequisite product and customer ha
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(1599, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(1599);
 
-    $this->assertStringContainsString($product->id(), json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id());
 });
 
 test('cant store item where product requires prerequisite product and no customer available', function () {
@@ -1224,7 +1224,7 @@ test('can add second item to a cart with an existing item', function () {
 
     $cart->save();
 
-    $this->assertCount(1, $cart->lineItems()->toArray());
+    expect($cart->lineItems()->toArray())->toHaveCount(1);
 
     $data = [
         'product' => $productTwo->id,
@@ -1241,9 +1241,9 @@ test('can add second item to a cart with an existing item', function () {
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
 
-    $this->assertSame(2000, $cart->itemsTotal());
+    expect($cart->itemsTotal())->toBe(2000);
 
-    $this->assertStringContainsString($productTwo->id, json_encode($cart->lineItems()->toArray()));
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($productTwo->id);
 });
 
 test('can store a product that is already in the cart', function () {
@@ -1280,8 +1280,8 @@ test('can store a product that is already in the cart', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->count());
-    $this->assertSame(2, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->count())->toBe(1);
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(2);
 });
 
 test('can store a variant that is already in the cart', function () {
@@ -1345,8 +1345,8 @@ test('can store a variant that is already in the cart', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->count());
-    $this->assertSame(5, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->count())->toBe(1);
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(5);
 });
 
 test('can store variant of a product that has another variant that is in the cart', function () {
@@ -1417,7 +1417,7 @@ test('can store variant of a product that has another variant that is in the car
 
     $cart = $cart->fresh();
 
-    $this->assertSame(2, $cart->lineItems()->count());
+    expect($cart->lineItems()->count())->toBe(2);
 });
 
 test('cant store item with negative quantity', function () {
@@ -1480,7 +1480,7 @@ test('can update item', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(2, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(2);
 });
 
 test('can update item and ensure custom form request is used', function () {
@@ -1557,7 +1557,7 @@ test('cant update item with zero item quantity', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
 
 test('can update item with extra data', function () {
@@ -1598,8 +1598,8 @@ test('can update item with extra data', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->count(), 1);
-    $this->assertTrue($cart->lineItems()->first()->metadata()->has('gift_note'));
+    expect(1)->toBe($cart->lineItems()->count());
+    expect($cart->lineItems()->first()->metadata()->has('gift_note'))->toBeTrue();
 });
 
 test('cant update item with extra data if fields not whitelisted in config', function () {
@@ -1640,8 +1640,8 @@ test('cant update item with extra data if fields not whitelisted in config', fun
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->count(), 1);
-    $this->assertFalse($cart->lineItems()->first()->metadata()->has('gift_note'));
+    expect(1)->toBe($cart->lineItems()->count());
+    expect($cart->lineItems()->first()->metadata()->has('gift_note'))->toBeFalse();
 });
 
 test('can update item with extra data and ensure existing metadata isnt overwritten', function () {
@@ -1685,14 +1685,14 @@ test('can update item with extra data and ensure existing metadata isnt overwrit
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->count(), 1);
+    expect(1)->toBe($cart->lineItems()->count());
     $this->assertArrayHasKey('metadata', $cart->lineItems()->first());
 
     $this->assertArrayNotHasKey('foo', $cart->lineItems()->first());
     $this->assertArrayNotHasKey('bar', $cart->lineItems()->first());
 
-    $this->assertSame($cart->lineItems()->toArray()[0]->metadata()->toArray()['foo'], 'bar');
-    $this->assertSame($cart->lineItems()->toArray()[0]->metadata()->toArray()['bar'], 'baz');
+    expect('bar')->toBe($cart->lineItems()->toArray()[0]->metadata()->toArray()['foo']);
+    expect('baz')->toBe($cart->lineItems()->toArray()[0]->metadata()->toArray()['bar']);
 });
 
 test('can update item with string quantity and ensure quantity is saved as integer', function () {
@@ -1731,8 +1731,8 @@ test('can update item with string quantity and ensure quantity is saved as integ
 
     $cart = $cart->fresh();
 
-    $this->assertSame(3, $cart->lineItems()->toArray()[0]->quantity());
-    $this->assertIsInt($cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(3);
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBeInt();
 });
 
 test('can update item and ensure the quantity is not more than stock', function () {
@@ -1772,7 +1772,7 @@ test('can update item and ensure the quantity is not more than stock', function 
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
 
 test('can update item with variant and ensure the quantity is not more than stock', function () {
@@ -1838,7 +1838,7 @@ test('can update item with variant and ensure the quantity is not more than stoc
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
 
 test('cant update item when standard product has no stock', function () {
@@ -1878,7 +1878,7 @@ test('cant update item when standard product has no stock', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
 
 test('cant update item when variant product has no stock', function () {
@@ -1944,7 +1944,7 @@ test('cant update item when variant product has no stock', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(1, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
 
 test('can update item and request json', function () {
@@ -1987,7 +1987,7 @@ test('can update item and request json', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame(2, $cart->lineItems()->toArray()[0]->quantity());
+    expect($cart->lineItems()->toArray()[0]->quantity())->toBe(2);
 });
 
 test('can destroy item', function () {
@@ -2026,7 +2026,7 @@ test('can destroy item', function () {
         'cart',
     ]);
 
-    $this->assertEmpty($cart->lineItems()->toArray());
+    expect($cart->lineItems()->toArray())->toBeEmpty();
 });
 
 // Helpers

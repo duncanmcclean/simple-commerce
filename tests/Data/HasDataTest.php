@@ -17,10 +17,10 @@ test('can get all data', function () {
 
     $data = $this->trait->data();
 
-    $this->assertIsObject($data);
+    expect($data)->toBeObject();
 
-    $this->assertTrue($data->has('foo'));
-    $this->assertTrue($data->has('fiz'));
+    expect($data->has('foo'))->toBeTrue();
+    expect($data->has('fiz'))->toBeTrue();
 });
 
 test('can set data', function () {
@@ -29,7 +29,7 @@ test('can set data', function () {
         'dru' => 'pal',
     ]);
 
-    $this->assertIsObject($data);
+    expect($data)->toBeObject();
 
     $this->assertArrayHasKey('joo', $this->trait->data->toArray());
     $this->assertArrayHasKey('dru', $this->trait->data->toArray());
@@ -46,7 +46,7 @@ test('can set data and ensure existing data has been overwritten', function () {
         'dru' => 'pal',
     ]);
 
-    $this->assertIsObject($data);
+    expect($data)->toBeObject();
 
     $this->assertArrayNotHasKey('foo', $this->trait->data->toArray());
     $this->assertArrayNotHasKey('fiz', $this->trait->data->toArray());
@@ -61,7 +61,7 @@ test('returns true if has data', function () {
 
     $has = $this->trait->has('foo');
 
-    $this->assertTrue($has);
+    expect($has)->toBeTrue();
 });
 
 test('returns false if does not have data', function () {
@@ -71,7 +71,7 @@ test('returns false if does not have data', function () {
 
     $has = $this->trait->has('bar');
 
-    $this->assertFalse($has);
+    expect($has)->toBeFalse();
 });
 
 test('can get data', function () {
@@ -81,8 +81,8 @@ test('can get data', function () {
 
     $get = $this->trait->get('foo');
 
-    $this->assertIsString($get);
-    $this->assertSame($get, 'bar');
+    expect($get)->toBeString();
+    expect('bar')->toBe($get);
 });
 
 test('returns null if data does not exist', function () {
@@ -92,7 +92,7 @@ test('returns null if data does not exist', function () {
 
     $get = $this->trait->get('bar');
 
-    $this->assertNull($get);
+    expect($get)->toBeNull();
 });
 
 test('can set new data', function () {
@@ -103,7 +103,7 @@ test('can set new data', function () {
     $set = $this->trait->set('bar', 'foo');
 
     $this->assertArrayHasKey('bar', $this->trait->data->toArray());
-    $this->assertSame($this->trait->get('bar'), 'foo');
+    expect('foo')->toBe($this->trait->get('bar'));
 });
 
 test('can set existing data', function () {
@@ -114,7 +114,7 @@ test('can set existing data', function () {
     $set = $this->trait->set('foo', 'barz');
 
     $this->assertArrayHasKey('foo', $this->trait->data->toArray());
-    $this->assertSame($this->trait->data->get('foo'), 'barz');
+    expect('barz')->toBe($this->trait->data->get('foo'));
 });
 
 test('can merge data', function () {
@@ -129,8 +129,8 @@ test('can merge data', function () {
     $this->assertArrayHasKey('foo', $this->trait->data->toArray());
     $this->assertArrayHasKey('fiz', $this->trait->data->toArray());
 
-    $this->assertSame($this->trait->data->get('foo'), 'barz');
-    $this->assertSame($this->trait->data->get('fiz'), 'baa');
+    expect('barz')->toBe($this->trait->data->get('foo'));
+    expect('baa')->toBe($this->trait->data->get('fiz'));
 });
 
 test('can get data as array', function () {
@@ -140,7 +140,7 @@ test('can get data as array', function () {
 
     $toArray = $this->trait->toArray();
 
-    $this->assertIsArray($toArray);
+    expect($toArray)->toBeArray();
 
     $this->assertSame($toArray, [
         'foo' => 'bar',

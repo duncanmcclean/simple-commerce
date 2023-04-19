@@ -16,7 +16,7 @@ beforeEach(function () {
 test('can get index items', function () {
     $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-    $this->assertTrue($getIndexItems instanceof Collection);
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
     $this->assertSame($getIndexItems->last(), [
         'id' => 'ZW',
@@ -28,21 +28,21 @@ test('can get index items', function () {
 test('can get columns', function () {
     $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-    $this->assertIsArray($getColumns);
+    expect($getColumns)->toBeArray();
 
-    $this->assertTrue($getColumns[0] instanceof Column);
-    $this->assertSame($getColumns[0]->field(), 'name');
-    $this->assertSame($getColumns[0]->label(), 'Name');
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('name')->toBe($getColumns[0]->field());
+    expect('Name')->toBe($getColumns[0]->label());
 
-    $this->assertTrue($getColumns[1] instanceof Column);
-    $this->assertSame($getColumns[1]->field(), 'iso');
-    $this->assertSame($getColumns[1]->label(), 'ISO Code');
+    expect($getColumns[1] instanceof Column)->toBeTrue();
+    expect('iso')->toBe($getColumns[1]->field());
+    expect('ISO Code')->toBe($getColumns[1]->label());
 });
 
 test('can return as item array', function () {
     $toItemArray = $this->fieldtype->toItemArray('GB');
 
-    $this->assertIsArray($toItemArray);
+    expect($toItemArray)->toBeArray();
 
     $this->assertSame($toItemArray, [
         'id' => 'GB',
@@ -53,19 +53,19 @@ test('can return as item array', function () {
 test('can preprocess index', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex('GB');
 
-    $this->assertIsString($preProcessIndex);
-    $this->assertSame($preProcessIndex, 'United Kingdom');
+    expect($preProcessIndex)->toBeString();
+    expect('United Kingdom')->toBe($preProcessIndex);
 });
 
 test('can preprocess index with no country', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-    $this->assertNull($preProcessIndex);
+    expect($preProcessIndex)->toBeNull();
 });
 
 test('can preprocess with multiple countries', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex(['GB', 'US']);
 
-    $this->assertIsString($preProcessIndex);
-    $this->assertSame($preProcessIndex, 'United Kingdom, United States');
+    expect($preProcessIndex)->toBeString();
+    expect('United Kingdom, United States')->toBe($preProcessIndex);
 });

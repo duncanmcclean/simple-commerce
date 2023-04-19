@@ -53,10 +53,10 @@ test('can store coupon', function () {
 
     $coupon = Coupon::findByCode('thursday-thirty');
 
-    $this->assertSame($coupon->value(), 30);
-    $this->assertSame($coupon->enabled(), true);
-    $this->assertSame($coupon->get('description'), '30% discount on a Thursday!');
-    $this->assertSame($coupon->get('minimum_cart_value'), 6500);
+    expect(30)->toBe($coupon->value());
+    expect(true)->toBe($coupon->enabled());
+    expect('30% discount on a Thursday!')->toBe($coupon->get('description'));
+    expect(6500)->toBe($coupon->get('minimum_cart_value'));
 });
 
 test('cant store coupon where a coupon already exists with the provided code', function () {
@@ -147,10 +147,10 @@ test('can update coupon', function () {
 
     $coupon->fresh();
 
-    $this->assertSame($coupon->value(), 51);
-    $this->assertSame($coupon->enabled(), false);
-    $this->assertSame($coupon->get('description'), 'You can actually get a 51% discount on Friday!');
-    $this->assertSame($coupon->get('minimum_cart_value'), 7600);
+    expect(51)->toBe($coupon->value());
+    expect(false)->toBe($coupon->enabled());
+    expect('You can actually get a 51% discount on Friday!')->toBe($coupon->get('description'));
+    expect(7600)->toBe($coupon->get('minimum_cart_value'));
 });
 
 test('cant update coupon if type is percentage and value is greater than 100', function () {
@@ -179,8 +179,8 @@ test('cant update coupon if type is percentage and value is greater than 100', f
 
     $coupon->fresh();
 
-    $this->assertSame($coupon->value(), 50);
-    $this->assertSame($coupon->get('description'), 'Fifty Friday');
+    expect(50)->toBe($coupon->value());
+    expect('Fifty Friday')->toBe($coupon->get('description'));
 });
 
 test('can destroy coupon', function () {

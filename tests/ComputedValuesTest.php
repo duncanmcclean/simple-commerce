@@ -10,5 +10,5 @@ test('product returns with raw price value', function () {
     $product = Product::make()->price(1500);
     $product->save();
 
-    $this->assertSame(1500, $product->resource()->raw_price);
+    expect($product->resource()->raw_price)->toBe(1500);
 });

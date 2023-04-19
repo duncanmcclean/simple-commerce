@@ -42,11 +42,11 @@ test('can get available shipping method', function () {
 
     $usage = $this->tag->methods();
 
-    $this->assertIsArray($usage);
-    $this->assertCount(2, $usage);
+    expect($usage)->toBeArray();
+    expect($usage)->toHaveCount(2);
 
-    $this->assertSame($usage[0]['name'], 'Free Shipping');
-    $this->assertSame($usage[1]['name'], 'Royal Mail');
+    expect('Free Shipping')->toBe($usage[0]['name']);
+    expect('Royal Mail')->toBe($usage[1]['name']);
 });
 
 test('can get available shipping method when shipping method has config', function () {
@@ -73,12 +73,12 @@ test('can get available shipping method when shipping method has config', functi
 
     $usage = $this->tag->methods();
 
-    $this->assertIsArray($usage);
-    $this->assertCount(3, $usage);
+    expect($usage)->toBeArray();
+    expect($usage)->toHaveCount(3);
 
-    $this->assertSame($usage[0]['name'], 'Free Shipping');
-    $this->assertSame($usage[1]['name'], 'Royal Mail');
-    $this->assertSame($usage[2]['name'], 'Store Pickup - Glasgow');
+    expect('Free Shipping')->toBe($usage[0]['name']);
+    expect('Royal Mail')->toBe($usage[1]['name']);
+    expect('Store Pickup - Glasgow')->toBe($usage[2]['name']);
 });
 
 // Helpers

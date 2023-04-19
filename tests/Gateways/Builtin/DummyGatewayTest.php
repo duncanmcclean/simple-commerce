@@ -19,8 +19,8 @@ beforeEach(function () {
 test('has a name', function () {
     $name = $this->gateway->name();
 
-    $this->assertIsString($name);
-    $this->assertSame('Dummy', $name);
+    expect($name)->toBeString();
+    expect($name)->toBe('Dummy');
 });
 
 test('can prepare', function () {
@@ -29,8 +29,8 @@ test('can prepare', function () {
         Order::make()
     );
 
-    $this->assertIsArray($prepare);
-    $this->assertSame($prepare, []);
+    expect($prepare)->toBeArray();
+    expect([])->toBe($prepare);
 });
 
 test('can checkout', function () {
@@ -43,7 +43,7 @@ test('can checkout', function () {
         Order::make()
     );
 
-    $this->assertIsArray($checkout);
+    expect($checkout)->toBeArray();
 
     $this->assertSame([
         'id' => '123456789abcdefg',
@@ -56,7 +56,7 @@ test('can checkout', function () {
 test('has checkout rules', function () {
     $rules = $this->gateway->checkoutRules();
 
-    $this->assertIsArray($rules);
+    expect($rules)->toBeArray();
 
     $this->assertSame([
         'card_number' => ['required', 'string'],
@@ -69,5 +69,5 @@ test('has checkout rules', function () {
 test('can refund charge', function () {
     $refund = $this->gateway->refund(Order::make());
 
-    $this->assertIsArray($refund);
+    expect($refund)->toBeArray();
 });

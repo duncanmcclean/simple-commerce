@@ -44,7 +44,7 @@ test('can decrease stock for standard product', function () {
 
     $product->fresh();
 
-    $this->assertSame(7, $product->stock());
+    expect($product->stock())->toBe(7);
 });
 
 test('ensure low stock event is fired when product stock is below threshold', function () {
@@ -78,7 +78,7 @@ test('ensure low stock event is fired when product stock is below threshold', fu
 
     $product->fresh();
 
-    $this->assertSame(7, $product->stock());
+    expect($product->stock())->toBe(7);
 
     Event::assertDispatched(StockRunningLow::class);
 });
@@ -147,7 +147,7 @@ test('can decrease stock for standard product with non localised stock field', f
     $englishProduct->fresh();
     $frenchProduct->fresh();
 
-    $this->assertSame(7, $product->stock());
+    expect($product->stock())->toBe(7);
 });
 
 test('can decrease stock for variant product', function () {
@@ -193,8 +193,8 @@ test('can decrease stock for variant product', function () {
 
     $product->fresh();
 
-    $this->assertNull($product->stock());
-    $this->assertSame(7, $product->variant('Yellow_Large')->stock());
+    expect($product->stock())->toBeNull();
+    expect($product->variant('Yellow_Large')->stock())->toBe(7);
 });
 
 test('can decrease stock for variant product with non localised stock field', function () {
@@ -248,8 +248,8 @@ test('ensure low stock event is fired when variant stock is below threshold', fu
 
     $product->fresh();
 
-    $this->assertNull($product->stock());
-    $this->assertSame(7, $product->variant('Yellow_Large')->stock());
+    expect($product->stock())->toBeNull();
+    expect($product->variant('Yellow_Large')->stock())->toBe(7);
 
     Event::assertDispatched(StockRunningLow::class);
 });

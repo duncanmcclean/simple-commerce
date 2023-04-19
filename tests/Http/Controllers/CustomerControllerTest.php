@@ -66,7 +66,7 @@ test('can update customer', function () {
 
     $customer->fresh();
 
-    $this->assertSame($customer->data()->get('vip'), true);
+    expect(true)->toBe($customer->data()->get('vip'));
 });
 
 test('can update customer and request json', function () {
@@ -104,7 +104,7 @@ test('can update customer and request json', function () {
 
     $customer->fresh();
 
-    $this->assertSame($customer->data()->get('vip'), true);
+    expect(true)->toBe($customer->data()->get('vip'));
 });
 
 test('can update customer and ensure custom form request is used', function () {
@@ -132,7 +132,7 @@ test('can update customer and ensure custom form request is used', function () {
         ]), $data)
         ->assertSessionHasErrors('business_name');
 
-    $this->assertEquals(session('errors')->default->first('business_name'), "You can't have a business without a name. Silly sausage!");
+    expect("You can't have a business without a name. Silly sausage!")->toEqual(session('errors')->default->first('business_name'));
 
     $response->assertRedirect('/account');
 

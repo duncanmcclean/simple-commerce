@@ -44,8 +44,8 @@ test('can get all users', function () {
 
     $all = Customer::all();
 
-    $this->assertTrue($all instanceof Collection);
-    $this->assertSame($all->count(), 2);
+    expect($all instanceof Collection)->toBeTrue();
+    expect(2)->toBe($all->count());
 });
 
 test('can query users', function () {
@@ -59,8 +59,8 @@ test('can query users', function () {
 
     $query = Customer::all();
 
-    $this->assertTrue($query instanceof Collection);
-    $this->assertSame($query->count(), 2);
+    expect($query instanceof Collection)->toBeTrue();
+    expect(2)->toBe($query->count());
 });
 
 test('can find user', function () {
@@ -71,9 +71,9 @@ test('can find user', function () {
 
     // $this->assertTrue($find instanceof UserCustomer);
 
-    $this->assertSame($find->id(), $user->id());
-    $this->assertSame($find->name(), $user->get('name'));
-    $this->assertSame($find->email(), $user->email());
+    expect($user->id())->toBe($find->id());
+    expect($user->get('name'))->toBe($find->name());
+    expect($user->email())->toBe($find->email());
 });
 
 test('can find user by email', function () {
@@ -84,9 +84,9 @@ test('can find user by email', function () {
 
     // $this->assertTrue($findByEmail instanceof UserCustomer);
 
-    $this->assertSame($findByEmail->id(), $user->id());
-    $this->assertSame($findByEmail->name(), $user->get('name'));
-    $this->assertSame($findByEmail->email(), $user->email());
+    expect($user->id())->toBe($findByEmail->id());
+    expect($user->get('name'))->toBe($findByEmail->name());
+    expect($user->email())->toBe($findByEmail->email());
 });
 
 test('can create', function () {
@@ -101,8 +101,8 @@ test('can create', function () {
     // $this->assertTrue($create instanceof UserCustomer);
 
     $this->assertNotNull($create->id());
-    $this->assertSame($create->name(), 'Joe Smith');
-    $this->assertSame($create->email(), 'joe.smith@example.com');
+    expect('Joe Smith')->toBe($create->name());
+    expect('joe.smith@example.com')->toBe($create->email());
 });
 
 test('can save', function () {
@@ -116,8 +116,8 @@ test('can save', function () {
 
     $customer->save();
 
-    $this->assertSame($user->id(), 'sarah');
-    $this->assertSame($customer->name(), 'Sarah Test');
+    expect('sarah')->toBe($user->id());
+    expect('Sarah Test')->toBe($customer->name());
 });
 
 test('can delete', function () {
@@ -128,7 +128,7 @@ test('can delete', function () {
 
     $customer->delete();
 
-    $this->assertNull(User::find('sam'));
+    expect(User::find('sam'))->toBeNull();
 });
 
 test('can get user', function () {
@@ -137,7 +137,7 @@ test('can get user', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertTrue($customer->resource() instanceof StatamicAuthUser);
+    expect($customer->resource() instanceof StatamicAuthUser)->toBeTrue();
 });
 
 test('can get customer to resource', function () {
@@ -149,7 +149,7 @@ test('can get customer to resource', function () {
     $customer = Customer::find('sam');
     $toResource = $customer->toResource();
 
-    $this->assertTrue($toResource instanceof UserResource);
+    expect($toResource instanceof UserResource)->toBeTrue();
 });
 
 test('can get customer to augmented array', function () {
@@ -161,7 +161,7 @@ test('can get customer to augmented array', function () {
     $customer = Customer::find('sam');
     $toAugmentedArray = $customer->toAugmentedArray();
 
-    $this->assertIsArray($toAugmentedArray);
+    expect($toAugmentedArray)->toBeArray();
 });
 
 test('can get customer to array', function () {
@@ -171,7 +171,7 @@ test('can get customer to array', function () {
     $customer = Customer::find('sam');
     $toArray = $customer->toArray();
 
-    $this->assertIsArray($toArray);
+    expect($toArray)->toBeArray();
 });
 
 test('can get id', function () {
@@ -180,7 +180,7 @@ test('can get id', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->id(), 'sam');
+    expect('sam')->toBe($customer->id());
 });
 
 test('can get title', function () {
@@ -191,7 +191,7 @@ test('can get title', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->title(), 'Sam Example <sam@example.com>');
+    expect('Sam Example <sam@example.com>')->toBe($customer->title());
 });
 
 test('can get slug', function () {
@@ -202,7 +202,7 @@ test('can get slug', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->slug(), 'sam');
+    expect('sam')->toBe($customer->slug());
 });
 
 test('can get site', function () {
@@ -213,7 +213,7 @@ test('can get site', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertNull($customer->site());
+    expect($customer->site())->toBeNull();
 });
 
 test('can get fresh', function () {
@@ -224,14 +224,14 @@ test('can get fresh', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->name(), 'Sam Example');
+    expect('Sam Example')->toBe($customer->name());
 
     $user->set('name', 'Sam Test')->save();
 
     $fresh = $customer->fresh();
 
     $this->assertNotSame($customer->name(), 'Sam Example');
-    $this->assertSame($customer->name(), 'Sam Test');
+    expect('Sam Test')->toBe($customer->name());
 });
 
 test('can get name', function () {
@@ -240,7 +240,7 @@ test('can get name', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->name(), 'Sam Example');
+    expect('Sam Example')->toBe($customer->name());
 });
 
 test('can get email', function () {
@@ -249,7 +249,7 @@ test('can get email', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->email(), 'sam@example.com');
+    expect('sam@example.com')->toBe($customer->email());
 });
 
 test('can get orders', function () {
@@ -261,10 +261,10 @@ test('can get orders', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertTrue($customer->orders() instanceof Collection);
-    $this->assertTrue($customer->orders()->first() instanceof ContractsOrder);
+    expect($customer->orders() instanceof Collection)->toBeTrue();
+    expect($customer->orders()->first() instanceof ContractsOrder)->toBeTrue();
 
-    $this->assertSame($customer->orders()->first()->get('foo'), 'bar');
+    expect('bar')->toBe($customer->orders()->first()->get('foo'));
 });
 
 test('can get mail notification route', function () {
@@ -273,7 +273,7 @@ test('can get mail notification route', function () {
 
     $customer = Customer::find('sam');
 
-    $this->assertSame($customer->routeNotificationForMail(), 'sam@example.com');
+    expect('sam@example.com')->toBe($customer->routeNotificationForMail());
 });
 
 test('can get blueprint default fields', function () {
@@ -283,5 +283,5 @@ test('can get blueprint default fields', function () {
 
     $defaultFieldsInBlueprint = (new Invader($customerInstance))->defaultFieldsInBlueprint();
 
-    $this->assertIsArray($defaultFieldsInBlueprint);
+    expect($defaultFieldsInBlueprint)->toBeArray();
 });

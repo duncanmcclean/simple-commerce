@@ -17,13 +17,13 @@ beforeEach(function () {
 test('can get config field items', function () {
     $configFieldItems = (new Invader($this->fieldtype))->configFieldItems();
 
-    $this->assertIsArray($configFieldItems);
+    expect($configFieldItems)->toBeArray();
 });
 
 test('can get index items', function () {
     $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-    $this->assertTrue($getIndexItems instanceof Collection);
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
     $this->assertSame($getIndexItems->last(), [
         'id' => FreeShipping::class,
@@ -35,17 +35,17 @@ test('can get index items', function () {
 test('can get columns', function () {
     $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-    $this->assertIsArray($getColumns);
+    expect($getColumns)->toBeArray();
 
-    $this->assertTrue($getColumns[0] instanceof Column);
-    $this->assertSame($getColumns[0]->field(), 'name');
-    $this->assertSame($getColumns[0]->label(), 'Name');
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('name')->toBe($getColumns[0]->field());
+    expect('Name')->toBe($getColumns[0]->label());
 });
 
 test('can return as item array', function () {
     $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
 
-    $this->assertIsArray($toItemArray);
+    expect($toItemArray)->toBeArray();
 
     $this->assertSame($toItemArray, [
         'id' => FreeShipping::class,
@@ -56,12 +56,12 @@ test('can return as item array', function () {
 test('can preprocess index', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
 
-    $this->assertIsString($preProcessIndex);
-    $this->assertSame($preProcessIndex, 'Free Shipping');
+    expect($preProcessIndex)->toBeString();
+    expect('Free Shipping')->toBe($preProcessIndex);
 });
 
 test('can preprocess index with no shipping method', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-    $this->assertNull($preProcessIndex);
+    expect($preProcessIndex)->toBeNull();
 });

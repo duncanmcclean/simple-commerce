@@ -39,8 +39,8 @@ beforeEach(function () {
 test('has a name', function () {
     $name = $this->cardElementsGateway->name();
 
-    $this->assertIsString($name);
-    $this->assertSame('Stripe', $name);
+    expect($name)->toBeString();
+    expect($name)->toBe('Stripe');
 });
 
 test('can prepare', function () {
@@ -75,17 +75,17 @@ test('can prepare', function () {
         $order
     );
 
-    $this->assertIsArray($prepare);
+    expect($prepare)->toBeArray();
 
     $this->assertArrayHasKey('intent', $prepare);
     $this->assertArrayHasKey('client_secret', $prepare);
 
     $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-    $this->assertSame($paymentIntent->id, $prepare['intent']);
-    $this->assertSame($paymentIntent->amount, $order->grandTotal());
-    $this->assertNull($paymentIntent->customer);
-    $this->assertNull($paymentIntent->receipt_email);
+    expect($prepare['intent'])->toBe($paymentIntent->id);
+    expect($order->grandTotal())->toBe($paymentIntent->amount);
+    expect($paymentIntent->customer)->toBeNull();
+    expect($paymentIntent->receipt_email)->toBeNull();
 });
 
 test('can prepare with customer', function () {
@@ -123,23 +123,23 @@ test('can prepare with customer', function () {
         $order
     );
 
-    $this->assertIsArray($prepare);
+    expect($prepare)->toBeArray();
 
     $this->assertArrayHasKey('intent', $prepare);
     $this->assertArrayHasKey('client_secret', $prepare);
 
     $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-    $this->assertSame($paymentIntent->id, $prepare['intent']);
-    $this->assertSame($paymentIntent->amount, $order->grandTotal());
+    expect($prepare['intent'])->toBe($paymentIntent->id);
+    expect($order->grandTotal())->toBe($paymentIntent->amount);
     $this->assertNotNull($paymentIntent->customer);
-    $this->assertNull($paymentIntent->receipt_email);
+    expect($paymentIntent->receipt_email)->toBeNull();
 
     $stripeCustomer = StripeCustomer::retrieve($paymentIntent->customer);
 
-    $this->assertSame($stripeCustomer->id, $paymentIntent->customer);
-    $this->assertSame($stripeCustomer->name, 'George');
-    $this->assertSame($stripeCustomer->email, 'george@example.com');
+    expect($paymentIntent->customer)->toBe($stripeCustomer->id);
+    expect('George')->toBe($stripeCustomer->name);
+    expect('george@example.com')->toBe($stripeCustomer->email);
 });
 
 test('can prepare with receipt email', function () {
@@ -182,23 +182,23 @@ test('can prepare with receipt email', function () {
         $order
     );
 
-    $this->assertIsArray($prepare);
+    expect($prepare)->toBeArray();
 
     $this->assertArrayHasKey('intent', $prepare);
     $this->assertArrayHasKey('client_secret', $prepare);
 
     $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-    $this->assertSame($paymentIntent->id, $prepare['intent']);
-    $this->assertSame($paymentIntent->amount, $order->grandTotal());
+    expect($prepare['intent'])->toBe($paymentIntent->id);
+    expect($order->grandTotal())->toBe($paymentIntent->amount);
     $this->assertNotNull($paymentIntent->customer);
-    $this->assertSame($paymentIntent->receipt_email, $customer->email());
+    expect($customer->email())->toBe($paymentIntent->receipt_email);
 
     $stripeCustomer = StripeCustomer::retrieve($paymentIntent->customer);
 
-    $this->assertSame($stripeCustomer->id, $paymentIntent->customer);
-    $this->assertSame($stripeCustomer->name, 'George');
-    $this->assertSame($stripeCustomer->email, 'george@example.com');
+    expect($paymentIntent->customer)->toBe($stripeCustomer->id);
+    expect('George')->toBe($stripeCustomer->name);
+    expect('george@example.com')->toBe($stripeCustomer->email);
 });
 
 test('can prepare with payment intent data closure', function () {
@@ -245,19 +245,19 @@ test('can prepare with payment intent data closure', function () {
         $order
     );
 
-    $this->assertIsArray($prepare);
+    expect($prepare)->toBeArray();
 
     $this->assertArrayHasKey('intent', $prepare);
     $this->assertArrayHasKey('client_secret', $prepare);
 
     $paymentIntent = PaymentIntent::retrieve($prepare['intent']);
 
-    $this->assertSame($paymentIntent->id, $prepare['intent']);
-    $this->assertSame($paymentIntent->amount, $order->get('grand_total'));
-    $this->assertSame($paymentIntent->description, 'Some custom description');
-    $this->assertSame($paymentIntent->metadata->foo, 'bar');
-    $this->assertNull($paymentIntent->customer);
-    $this->assertNull($paymentIntent->receipt_email);
+    expect($prepare['intent'])->toBe($paymentIntent->id);
+    expect($order->get('grand_total'))->toBe($paymentIntent->amount);
+    expect('Some custom description')->toBe($paymentIntent->description);
+    expect('bar')->toBe($paymentIntent->metadata->foo);
+    expect($paymentIntent->customer)->toBeNull();
+    expect($paymentIntent->receipt_email)->toBeNull();
 
     $this->cardElementsGateway->setConfig([
         'secret' => env('STRIPE_SECRET'),
@@ -317,17 +317,17 @@ test('can checkout when in card elements mode', function () {
 
     $checkout = $this->cardElementsGateway->checkout($request, $order);
 
-    $this->assertIsArray($checkout);
+    expect($checkout)->toBeArray();
 
-    $this->assertSame($checkout['id'], $paymentMethod->id);
-    $this->assertSame($checkout['object'], $paymentMethod->object);
-    $this->assertSame($checkout['customer'], $paymentMethod->customer);
-    $this->assertSame($checkout['livemode'], $paymentMethod->livemode);
-    $this->assertSame($checkout['payment_intent'], $paymentIntent);
+    expect($paymentMethod->id)->toBe($checkout['id']);
+    expect($paymentMethod->object)->toBe($checkout['object']);
+    expect($paymentMethod->customer)->toBe($checkout['customer']);
+    expect($paymentMethod->livemode)->toBe($checkout['livemode']);
+    expect($paymentIntent)->toBe($checkout['payment_intent']);
 
     $order = $order->fresh();
 
-    $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
+    expect(PaymentStatus::Paid)->toBe($order->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 });
 
@@ -388,14 +388,14 @@ test('cant checkout when in payment elements mode', function () {
 
     $order = $order->fresh();
 
-    $this->assertSame($order->paymentStatus(), PaymentStatus::Unpaid);
+    expect(PaymentStatus::Unpaid)->toBe($order->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
 });
 
 test('has checkout rules', function () {
     $rules = (new StripeGateway())->checkoutRules();
 
-    $this->assertIsArray($rules);
+    expect($rules)->toBeArray();
 
     $this->assertSame([
         'payment_method' => ['required', 'string'],
@@ -437,11 +437,11 @@ test('can refund charge', function () {
 
     $refund = $this->cardElementsGateway->refund($order);
 
-    $this->assertIsArray($refund);
+    expect($refund)->toBeArray();
 
-    $this->assertStringContainsString('re_', $refund['id']);
-    $this->assertSame($refund['amount'], 1234);
-    $this->assertSame($refund['payment_intent'], $paymentIntent);
+    expect($refund['id'])->toContain('re_');
+    expect(1234)->toBe($refund['amount']);
+    expect($paymentIntent)->toBe($refund['payment_intent']);
 });
 
 test('can hit webhook with payment intent succeeded event', function () {
@@ -461,12 +461,12 @@ test('can hit webhook with payment intent succeeded event', function () {
 
     $webhook = $this->paymentElementsGateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
 
-    $this->assertTrue($webhook instanceof Response);
+    expect($webhook instanceof Response)->toBeTrue();
 
     $order->fresh();
 
-    $this->assertSame($order->status(), OrderStatus::Placed);
-    $this->assertSame($order->paymentStatus(), PaymentStatus::Paid);
+    expect(OrderStatus::Placed)->toBe($order->status());
+    expect(PaymentStatus::Paid)->toBe($order->paymentStatus());
 });
 
 test('returns array from payment display', function () {
@@ -486,7 +486,7 @@ test('returns array from payment display', function () {
         ],
     ]);
 
-    $this->assertIsArray($fieldtypeDisplay);
+    expect($fieldtypeDisplay)->toBeArray();
 
     $this->assertSame([
         'text' => $paymentIntent,
@@ -500,7 +500,7 @@ test('does not return array from payment display if no payment intent is set', f
         'data' => [],
     ]);
 
-    $this->assertIsArray($fieldtypeDisplay);
+    expect($fieldtypeDisplay)->toBeArray();
 
     $this->assertSame([
         'text' => 'Unknown',

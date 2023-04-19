@@ -13,13 +13,13 @@ uses(TestCase::class);
 test('can get title', function () {
     $title = GatewayFieldtype::title();
 
-    $this->assertSame('Payment Gateway', $title);
+    expect($title)->toBe('Payment Gateway');
 });
 
 test('can preload', function () {
     $preload = (new GatewayFieldtype)->preload();
 
-    $this->assertIsArray($preload);
+    expect($preload)->toBeArray();
     $this->assertArrayHasKey('gateways', $preload);
 });
 
@@ -46,7 +46,7 @@ test('can preprocess', function () {
         ],
     ]);
 
-    $this->assertIsArray($preProcess);
+    expect($preProcess)->toBeArray();
 
     $this->assertArrayHasKey('data', $preProcess);
     $this->assertSame([
@@ -73,7 +73,7 @@ test('can process', function () {
         'actions' => [],
     ]);
 
-    $this->assertIsArray($process);
+    expect($process)->toBeArray();
 
     $this->assertSame([
         'use' => DummyGateway::class,
@@ -87,7 +87,7 @@ test('can augment', function () {
         'data' => ['smth' => 'cool'],
     ]);
 
-    $this->assertIsArray($augment);
+    expect($augment)->toBeArray();
 
     $this->assertArrayHasKey('name', $augment);
     $this->assertArrayHasKey('handle', $augment);
@@ -106,5 +106,5 @@ test('can preprocess index', function () {
         'data' => ['smth' => 'cool'],
     ]);
 
-    $this->assertSame('Dummy', $preProcessIndex);
+    expect($preProcessIndex)->toBe('Dummy');
 });

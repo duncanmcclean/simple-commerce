@@ -33,11 +33,11 @@ test('can calculate tax when not included in price', function () {
 
     $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
-    $this->assertTrue($taxCalculation instanceof TaxCalculation);
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    $this->assertSame($taxCalculation->amount(), 200);
-    $this->assertSame($taxCalculation->priceIncludesTax(), false);
-    $this->assertSame($taxCalculation->rate(), 20);
+    expect(200)->toBe($taxCalculation->amount());
+    expect(false)->toBe($taxCalculation->priceIncludesTax());
+    expect(20)->toBe($taxCalculation->rate());
 });
 
 test('can calculate tax when included in price', function () {
@@ -59,11 +59,11 @@ test('can calculate tax when included in price', function () {
 
     $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
-    $this->assertTrue($taxCalculation instanceof TaxCalculation);
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    $this->assertSame($taxCalculation->amount(), 333);
-    $this->assertSame($taxCalculation->priceIncludesTax(), true);
-    $this->assertSame($taxCalculation->rate(), 20);
+    expect(333)->toBe($taxCalculation->amount());
+    expect(true)->toBe($taxCalculation->priceIncludesTax());
+    expect(20)->toBe($taxCalculation->rate());
 });
 
 test('can calculate tax when tax rate is decimal number', function () {
@@ -87,11 +87,11 @@ test('can calculate tax when tax rate is decimal number', function () {
 
     $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
-    $this->assertTrue($taxCalculation instanceof TaxCalculation);
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    $this->assertSame($taxCalculation->amount(), 210);
-    $this->assertSame($taxCalculation->priceIncludesTax(), false);
-    $this->assertSame($taxCalculation->rate(), 10.5);
+    expect(210)->toBe($taxCalculation->amount());
+    expect(false)->toBe($taxCalculation->priceIncludesTax());
+    expect(10.5)->toBe($taxCalculation->rate());
 });
 
 test('can calculate tax when it is nothing', function () {
@@ -112,11 +112,11 @@ test('can calculate tax when it is nothing', function () {
 
     $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
-    $this->assertTrue($taxCalculation instanceof TaxCalculation);
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    $this->assertSame($taxCalculation->amount(), 0);
-    $this->assertSame($taxCalculation->priceIncludesTax(), false);
-    $this->assertSame($taxCalculation->rate(), 0);
+    expect(0)->toBe($taxCalculation->amount());
+    expect(false)->toBe($taxCalculation->priceIncludesTax());
+    expect(0)->toBe($taxCalculation->rate());
 });
 
 /**
@@ -141,9 +141,9 @@ test('ensure round value tax is calculated correctly', function () {
 
     $taxCalculation = (new BasicTaxEngine)->calculate($order, $lineItem);
 
-    $this->assertTrue($taxCalculation instanceof TaxCalculation);
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    $this->assertSame($taxCalculation->amount(), 1300);
-    $this->assertSame($taxCalculation->priceIncludesTax(), true);
-    $this->assertSame($taxCalculation->rate(), 20);
+    expect(1300)->toBe($taxCalculation->amount());
+    expect(true)->toBe($taxCalculation->priceIncludesTax());
+    expect(20)->toBe($taxCalculation->rate());
 });

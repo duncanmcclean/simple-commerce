@@ -51,8 +51,8 @@ test('can get all orders', function () {
 
     $all = Order::all();
 
-    $this->assertTrue($all instanceof Collection);
-    $this->assertSame($all->count(), 2);
+    expect($all instanceof Collection)->toBeTrue();
+    expect(2)->toBe($all->count());
 });
 
 test('can find order', function () {
@@ -74,9 +74,9 @@ test('can find order', function () {
 
     $find = Order::find($order->id);
 
-    $this->assertSame($find->id(), $order->id);
-    $this->assertSame($find->lineItems()->count(), 1);
-    $this->assertSame($find->get('foo'), 'bar');
+    expect($order->id)->toBe($find->id());
+    expect(1)->toBe($find->lineItems()->count());
+    expect('bar')->toBe($find->get('foo'));
 });
 
 test('can find order with custom column', function () {
@@ -99,10 +99,10 @@ test('can find order with custom column', function () {
 
     $find = Order::find($order->id);
 
-    $this->assertSame($find->id(), $order->id);
-    $this->assertSame($find->lineItems()->count(), 1);
-    $this->assertSame($find->get('foo'), 'bar');
-    $this->assertSame($find->get('ordered_on_tuesday'), 'Yes');
+    expect($order->id)->toBe($find->id());
+    expect(1)->toBe($find->lineItems()->count());
+    expect('bar')->toBe($find->get('foo'));
+    expect('Yes')->toBe($find->get('ordered_on_tuesday'));
 });
 
 test('can create', function () {
@@ -114,9 +114,9 @@ test('can create', function () {
     $create->save();
 
     $this->assertNotNull($create->id());
-    $this->assertSame($create->status(), OrderStatus::Placed);
-    $this->assertSame($create->paymentStatus(), PaymentStatus::Paid);
-    $this->assertSame($create->grandTotal(), 1000);
+    expect(OrderStatus::Placed)->toBe($create->status());
+    expect(PaymentStatus::Paid)->toBe($create->paymentStatus());
+    expect(1000)->toBe($create->grandTotal());
 });
 
 test('can save', function () {
@@ -142,8 +142,8 @@ test('can save', function () {
 
     $order->save();
 
-    $this->assertSame($order->id(), $orderRecord->id);
-    $this->assertSame($order->get('is_special_order'), true);
+    expect($orderRecord->id)->toBe($order->id());
+    expect(true)->toBe($order->get('is_special_order'));
 });
 
 test('can save when bit of data has its own column', function () {
@@ -166,8 +166,8 @@ test('can save when bit of data has its own column', function () {
 
     $order->save();
 
-    $this->assertSame($order->id(), $orderRecord->id);
-    $this->assertSame($order->get('ordered_on_tuesday'), 'Yes');
+    expect($orderRecord->id)->toBe($order->id());
+    expect('Yes')->toBe($order->get('ordered_on_tuesday'));
 
     $this->assertDatabaseHas('orders', [
         'id' => $orderRecord->id,

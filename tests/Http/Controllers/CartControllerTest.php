@@ -52,7 +52,7 @@ test('can update cart', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
+    expect('Be careful pls.')->toBe($cart->get('shipping_note'));
 });
 
 test('can update cart and request json response', function () {
@@ -78,7 +78,7 @@ test('can update cart and request json response', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
+    expect('Be careful pls.')->toBe($cart->get('shipping_note'));
 });
 
 test('cant update cart if fields not whitelisted in config', function () {
@@ -100,7 +100,7 @@ test('cant update cart if fields not whitelisted in config', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertNull($cart->get('shipping_note'));
+    expect($cart->get('shipping_note'))->toBeNull();
 });
 
 test('can update cart and ensure custom form request is used', function () {
@@ -120,7 +120,7 @@ test('can update cart and ensure custom form request is used', function () {
         ->post(route('statamic.simple-commerce.cart.update'), $data)
         ->assertSessionHasErrors('shipping_special');
 
-    $this->assertEquals(session('errors')->default->first('shipping_special'), 'Coolzies. An error message.');
+    expect('Coolzies. An error message.')->toEqual(session('errors')->default->first('shipping_special'));
 
     $response->assertRedirect('/cart');
 
@@ -175,8 +175,8 @@ test('can update cart with customer already in cart', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->get('shipping_note'), 'Be careful pls.');
-    $this->assertSame($cart->customer()->id(), $customer->id);
+    expect('Be careful pls.')->toBe($cart->get('shipping_note'));
+    expect($customer->id)->toBe($cart->customer()->id());
 });
 
 /**
@@ -215,8 +215,8 @@ test('can update cart with customer already in cart with additional data', funct
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->customer()->id(), $customer->id);
-    $this->assertSame($cart->customer()->get('dob'), '1st January 1980');
+    expect($customer->id)->toBe($cart->customer()->id());
+    expect('1st January 1980')->toBe($cart->customer()->get('dob'));
 });
 
 test('can update cart and create new customer', function () {
@@ -240,9 +240,9 @@ test('can update cart and create new customer', function () {
     $cart = $cart->fresh();
     $customer = Customer::findByEmail($data['email']);
 
-    $this->assertSame($cart->customer()->id, $customer->id);
-    $this->assertSame($customer->name(), 'Joe Doe');
-    $this->assertSame($customer->email(), 'joedoe@gmail.com');
+    expect($customer->id)->toBe($cart->customer()->id);
+    expect('Joe Doe')->toBe($customer->name());
+    expect('joedoe@gmail.com')->toBe($customer->email());
 });
 
 test('can update cart and create new customer with first name and last name', function () {
@@ -267,9 +267,9 @@ test('can update cart and create new customer with first name and last name', fu
     $cart = $cart->fresh();
     $customer = Customer::findByEmail($data['email']);
 
-    $this->assertSame($cart->customer()->id, $customer->id);
-    $this->assertSame($customer->name(), 'Joe Doe');
-    $this->assertSame($customer->email(), 'joedoe@gmail.com');
+    expect($customer->id)->toBe($cart->customer()->id);
+    expect('Joe Doe')->toBe($customer->name());
+    expect('joedoe@gmail.com')->toBe($customer->email());
 });
 
 test('cant update cart and create new customer if email contains spaces', function () {
@@ -292,9 +292,9 @@ test('cant update cart and create new customer if email contains spaces', functi
     try {
         Customer::findByEmail($data['email']);
 
-        $this->assertTrue(false);
+        expect(false)->toBeTrue();
     } catch (CustomerNotFound $e) {
-        $this->assertTrue(true);
+        expect(true)->toBeTrue();
     }
 });
 
@@ -323,8 +323,8 @@ test('can update cart and existing customer by id', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->customer()->id(), $customer->id);
-    $this->assertSame($customer->get('name'), 'Jordan Smith');
+    expect($customer->id)->toBe($cart->customer()->id());
+    expect('Jordan Smith')->toBe($customer->get('name'));
 });
 
 test('can update cart and existing customer by email', function () {
@@ -355,8 +355,8 @@ test('can update cart and existing customer by email', function () {
 
     $customer = Customer::findByEmail('jack.simpson@example.com');
 
-    $this->assertSame($cart->customer()->id(), $customer->id);
-    $this->assertSame($customer->get('name'), 'Jack Simpson');
+    expect($customer->id)->toBe($cart->customer()->id());
+    expect('Jack Simpson')->toBe($customer->get('name'));
 });
 
 test('can update cart and existing customer by email with additional data', function () {
@@ -392,9 +392,9 @@ test('can update cart and existing customer by email with additional data', func
 
     $customer = Customer::findByEmail('jack.simpson@example.com');
 
-    $this->assertSame($cart->customer()->id(), $customer->id);
-    $this->assertSame($customer->get('name'), 'Jack Simpson');
-    $this->assertSame($cart->customer()->get('dob'), '1st January 1980');
+    expect($customer->id)->toBe($cart->customer()->id());
+    expect('Jack Simpson')->toBe($customer->get('name'));
+    expect('1st January 1980')->toBe($cart->customer()->get('dob'));
 });
 
 test('can update cart and create new customer via customer array', function () {
@@ -418,9 +418,9 @@ test('can update cart and create new customer via customer array', function () {
     $cart = $cart->fresh();
     $customer = Customer::findByEmail('rebecca.logan@example.com');
 
-    $this->assertSame($cart->customer()->id, $customer->id);
-    $this->assertSame($customer->name(), 'Rebecca Logan');
-    $this->assertSame($customer->email(), 'rebecca.logan@example.com');
+    expect($customer->id)->toBe($cart->customer()->id);
+    expect('Rebecca Logan')->toBe($customer->name());
+    expect('rebecca.logan@example.com')->toBe($customer->email());
 });
 
 test('can update cart and create new customer via customer array with first name and last name', function () {
@@ -449,9 +449,9 @@ test('can update cart and create new customer via customer array with first name
     $cart = $cart->fresh();
     $customer = Customer::findByEmail('rebecca.logan@example.com');
 
-    $this->assertSame($cart->customer()->id, $customer->id);
-    $this->assertSame($customer->name(), 'Rebecca Logan');
-    $this->assertSame($customer->email(), 'rebecca.logan@example.com');
+    expect($customer->id)->toBe($cart->customer()->id);
+    expect('Rebecca Logan')->toBe($customer->name());
+    expect('rebecca.logan@example.com')->toBe($customer->email());
 });
 
 test('can update cart and create new customer via customer array with additional data', function () {
@@ -480,10 +480,10 @@ test('can update cart and create new customer via customer array with additional
     $cart = $cart->fresh();
     $customer = Customer::findByEmail('rebecca.logan@example.com');
 
-    $this->assertSame($cart->customer()->id, $customer->id);
-    $this->assertSame($customer->name(), 'Rebecca Logan');
-    $this->assertSame($customer->email(), 'rebecca.logan@example.com');
-    $this->assertSame($cart->customer()->get('dob'), '1st January 1980');
+    expect($customer->id)->toBe($cart->customer()->id);
+    expect('Rebecca Logan')->toBe($customer->name());
+    expect('rebecca.logan@example.com')->toBe($customer->email());
+    expect('1st January 1980')->toBe($cart->customer()->get('dob'));
 });
 
 test('cant update cart and create new customer via customer array if email contains spaces', function () {
@@ -505,14 +505,14 @@ test('cant update cart and create new customer via customer array if email conta
 
     $cart->fresh();
 
-    $this->assertNull($cart->customer());
+    expect($cart->customer())->toBeNull();
 
     try {
         Customer::findByEmail('cj cregg@example.com');
 
-        $this->assertTrue(false);
+        expect(false)->toBeTrue();
     } catch (CustomerNotFound $e) {
-        $this->assertTrue(true);
+        expect(true)->toBeTrue();
     }
 });
 
@@ -531,8 +531,8 @@ test('can update cart and ensure customer is not overwritten', function () {
     $order = Order::make()->customer($customer->id);
     $order->save();
 
-    $this->assertSame($customer->get('name'), 'Duncan');
-    $this->assertSame($customer->id, $order->customer());
+    expect('Duncan')->toBe($customer->get('name'));
+    expect($order->customer())->toBe($customer->id);
 
     $cart = Order::make();
     $cart->save();
@@ -547,8 +547,8 @@ test('can update cart and ensure customer is not overwritten', function () {
 
     $cartCustomer = Customer::find($cart->resource()->customer());
 
-    $this->assertSame($customer->id, $cartCustomer->id);
-    $this->assertSame($customer->get('name'), $cartCustomer->get('name'));
+    expect($cartCustomer->id)->toBe($customer->id);
+    expect($cartCustomer->get('name'))->toBe($customer->get('name'));
 });
 
 test('can update cart with custom redirect page', function () {
@@ -594,7 +594,7 @@ test('can destroy cart', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->toArray(), []);
+    expect([])->toBe($cart->lineItems()->toArray());
 });
 
 test('can destroy cart and request json response', function () {
@@ -624,7 +624,7 @@ test('can destroy cart and request json response', function () {
 
     $cart = $cart->fresh();
 
-    $this->assertSame($cart->lineItems()->toArray(), []);
+    expect([])->toBe($cart->lineItems()->toArray());
 });
 
 // Helpers

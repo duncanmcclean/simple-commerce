@@ -57,19 +57,19 @@ test('can output checkout form', function () {
 
     $usage = $this->tag->index();
 
-    $this->assertStringContainsString('Test On-site Gateway - Duncan Cool (yes) - Haggis - Tatties', $usage);
-    $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/checkout"', $usage);
+    expect($usage)->toContain('Test On-site Gateway - Duncan Cool (yes) - Haggis - Tatties');
+    expect($usage)->toContain('<form method="POST" action="http://localhost/!/simple-commerce/checkout"');
 });
 
 test('can fetch checkout form data', function () {
     $form = Statamic::tag('sc:checkout')->fetch();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
-    $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/checkout"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_token"');
+    expect('method="POST" action="http://localhost/!/simple-commerce/checkout"')->toEqual($form['attrs_html']);
 
     $this->assertArrayHasKey('_token', $form['params']);
-    $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/checkout');
-    $this->assertEquals($form['attrs']['method'], 'POST');
+    expect('http://localhost/!/simple-commerce/checkout')->toEqual($form['attrs']['action']);
+    expect('POST')->toEqual($form['attrs']['method']);
 });
 
 test('gateways tag can get specific gateway', function () {
@@ -79,8 +79,8 @@ test('gateways tag can get specific gateway', function () {
 
     $usage = $this->gatewaysTag->wildcard('testonsitegateway');
 
-    $this->assertStringContainsString('Test On-site Gateway', $usage['name']);
-    $this->assertStringContainsString('testonsitegateway', $usage['handle']);
+    expect($usage['name'])->toContain('Test On-site Gateway');
+    expect($usage['handle'])->toContain('testonsitegateway');
 });
 
 test('can redirect user to offsite gateway', function () {
@@ -131,7 +131,7 @@ test('can redirect user to confirmation page instead of offsite gateway when ord
     Session::shouldReceive('forget');
     Session::shouldReceive('put');
 
-    $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Unpaid);
+    expect(PaymentStatus::Unpaid)->toBe($cart->fresh()->paymentStatus());
 
     $this->tag->setParameters([
         'redirect' => 'http://localhost/order-confirmation',
@@ -139,7 +139,7 @@ test('can redirect user to confirmation page instead of offsite gateway when ord
 
     $usage = $this->tag->wildcard('testoffsitegateway');
 
-    $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Paid);
+    expect(PaymentStatus::Paid)->toBe($cart->fresh()->paymentStatus());
 });
 
 /**
@@ -170,8 +170,8 @@ test('cant redirect user to offsite gateway when product in cart does not have e
 
     $usage = $this->tag->wildcard('testoffsitegateway');
 
-    $this->assertSame($cart->fresh()->status(), OrderStatus::Cart);
-    $this->assertSame($cart->fresh()->paymentStatus(), PaymentStatus::Unpaid);
+    expect(OrderStatus::Cart)->toBe($cart->fresh()->status());
+    expect(PaymentStatus::Unpaid)->toBe($cart->fresh()->paymentStatus());
 });
 
 // Helpers

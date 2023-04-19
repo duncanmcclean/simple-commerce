@@ -11,7 +11,7 @@ uses(TestCase::class);
 test('can preload currency with no field', function () {
     $preload = (new MoneyFieldtype())->preload();
 
-    $this->assertIsArray($preload);
+    expect($preload)->toBeArray();
     $this->assertArrayHasKey('code', $preload);
     $this->assertArrayHasKey('name', $preload);
     $this->assertArrayHasKey('symbol', $preload);
@@ -20,7 +20,7 @@ test('can preload currency with no field', function () {
 test('can preload currency with field', function () {
     $preload = (new MoneyFieldtypeWithMockedField())->preload();
 
-    $this->assertIsArray($preload);
+    expect($preload)->toBeArray();
     $this->assertArrayHasKey('code', $preload);
     $this->assertArrayHasKey('name', $preload);
     $this->assertArrayHasKey('symbol', $preload);
@@ -31,7 +31,7 @@ test('can pre process data', function () {
 
     $process = (new MoneyFieldtype())->preProcess($value);
 
-    $this->assertSame('25.50', $process);
+    expect($process)->toBe('25.50');
 });
 
 test('can process data', function () {
@@ -39,19 +39,19 @@ test('can process data', function () {
 
     $process = (new MoneyFieldtype())->process($value);
 
-    $this->assertSame(1265, $process);
+    expect($process)->toBe(1265);
 });
 
 test('has a title', function () {
     $title = (new MoneyFieldtype())->title();
 
-    $this->assertSame('Money', $title);
+    expect($title)->toBe('Money');
 });
 
 test('has a component', function () {
     $title = (new MoneyFieldtype())->component();
 
-    $this->assertSame('money', $title);
+    expect($title)->toBe('money');
 });
 
 test('can augment data', function () {
@@ -59,7 +59,7 @@ test('can augment data', function () {
 
     $augment = (new MoneyFieldtype())->augment($value);
 
-    $this->assertSame('£19.45', $augment);
+    expect($augment)->toBe('£19.45');
 });
 
 test('can augment data when value is null', function () {
@@ -67,7 +67,7 @@ test('can augment data when value is null', function () {
 
     $augment = (new MoneyFieldtype())->augment($value);
 
-    $this->assertSame(null, $augment);
+    expect($augment)->toBe(null);
 });
 
 test('can get pre process index', function () {
@@ -75,7 +75,7 @@ test('can get pre process index', function () {
 
     $augment = (new MoneyFieldtype())->preProcessIndex($value);
 
-    $this->assertSame('£25.72', $augment);
+    expect($augment)->toBe('£25.72');
 });
 
 // Helpers

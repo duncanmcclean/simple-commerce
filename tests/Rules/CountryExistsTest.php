@@ -15,7 +15,7 @@ it('passes for matching iso code', function () {
         'country' => [new CountryExists()],
     ]);
 
-    $this->assertFalse($validate->fails());
+    expect($validate->fails())->toBeFalse();
 });
 
 it('fails for made up country', function () {
@@ -27,5 +27,5 @@ it('fails for made up country', function () {
         'country' => [new CountryExists()],
     ]);
 
-    $this->assertTrue($validate->fails());
+    expect($validate->fails())->toBeTrue();
 });

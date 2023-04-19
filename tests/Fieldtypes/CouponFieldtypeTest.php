@@ -43,7 +43,7 @@ beforeEach(function () {
 test('can get index items', function () {
     $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-    $this->assertTrue($getIndexItems instanceof Collection);
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
     $this->assertSame($getIndexItems->first(), [
         'id' => 'blah',
@@ -63,25 +63,25 @@ test('can get index items', function () {
 test('can get columns', function () {
     $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-    $this->assertIsArray($getColumns);
+    expect($getColumns)->toBeArray();
 
-    $this->assertTrue($getColumns[0] instanceof Column);
-    $this->assertSame($getColumns[0]->field(), 'code');
-    $this->assertSame($getColumns[0]->label(), 'Code');
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('code')->toBe($getColumns[0]->field());
+    expect('Code')->toBe($getColumns[0]->label());
 
-    $this->assertTrue($getColumns[1] instanceof Column);
-    $this->assertSame($getColumns[1]->field(), 'discount');
-    $this->assertSame($getColumns[1]->label(), 'Discount');
+    expect($getColumns[1] instanceof Column)->toBeTrue();
+    expect('discount')->toBe($getColumns[1]->field());
+    expect('Discount')->toBe($getColumns[1]->label());
 
-    $this->assertTrue($getColumns[2] instanceof Column);
-    $this->assertSame($getColumns[2]->field(), 'redeemed');
-    $this->assertSame($getColumns[2]->label(), 'Redeemed');
+    expect($getColumns[2] instanceof Column)->toBeTrue();
+    expect('redeemed')->toBe($getColumns[2]->field());
+    expect('Redeemed')->toBe($getColumns[2]->label());
 });
 
 test('can return as item array', function () {
     $toItemArray = $this->fieldtype->toItemArray('foo');
 
-    $this->assertIsArray($toItemArray);
+    expect($toItemArray)->toBeArray();
 
     $this->assertSame($toItemArray, [
         'id' => 'foo',
@@ -92,8 +92,8 @@ test('can return as item array', function () {
 test('can preprocess index', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex('foo');
 
-    $this->assertTrue($preProcessIndex instanceof Collection);
-    $this->assertCount(1, $preProcessIndex);
+    expect($preProcessIndex instanceof Collection)->toBeTrue();
+    expect($preProcessIndex)->toHaveCount(1);
 
     $this->assertSame($preProcessIndex[0], [
         'id' => 'foo',
@@ -105,14 +105,14 @@ test('can preprocess index', function () {
 test('can preprocess index with no country', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-    $this->assertNull($preProcessIndex);
+    expect($preProcessIndex)->toBeNull();
 });
 
 test('can preprocess with multiple countries', function () {
     $preProcessIndex = $this->fieldtype->preProcessIndex(['foo', 'rad']);
 
-    $this->assertTrue($preProcessIndex instanceof Collection);
-    $this->assertCount(2, $preProcessIndex);
+    expect($preProcessIndex instanceof Collection)->toBeTrue();
+    expect($preProcessIndex)->toHaveCount(2);
 
     $this->assertSame($preProcessIndex[0], [
         'id' => 'foo',

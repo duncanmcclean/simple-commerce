@@ -26,7 +26,7 @@ test('is visible to paid and non refunded order', function () {
 
     $action = $this->action->visibleTo($order->resource());
 
-    $this->assertTrue($action);
+    expect($action)->toBeTrue();
 });
 
 test('is not visible to unpaid orders', function () {
@@ -37,7 +37,7 @@ test('is not visible to unpaid orders', function () {
 
     $action = $this->action->visibleTo($order->resource());
 
-    $this->assertFalse($action);
+    expect($action)->toBeFalse();
 });
 
 test('is not visible to already refunded orders', function () {
@@ -49,7 +49,7 @@ test('is not visible to already refunded orders', function () {
 
     $action = $this->action->visibleTo($order->resource());
 
-    $this->assertFalse($action);
+    expect($action)->toBeFalse();
 });
 
 test('is not visible to products', function () {
@@ -65,7 +65,7 @@ test('is not visible to products', function () {
 
     $action = $this->action->visibleTo($product->resource());
 
-    $this->assertFalse($action);
+    expect($action)->toBeFalse();
 });
 
 test('is not able to be run in bulk', function () {
@@ -77,7 +77,7 @@ test('is not able to be run in bulk', function () {
 
     $action = $this->action->visibleToBulk([$order->resource()]);
 
-    $this->assertFalse($action);
+    expect($action)->toBeFalse();
 });
 
 test('order can be refunded', function () {
@@ -103,6 +103,6 @@ test('order can be refunded', function () {
 
     $order->fresh();
 
-    $this->assertSame($order->data()->get('payment_status'), 'refunded');
+    expect('refunded')->toBe($order->data()->get('payment_status'));
     $this->assertArrayHasKey('refund', $order->data()->get('gateway'));
 });

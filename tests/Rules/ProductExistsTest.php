@@ -22,7 +22,7 @@ it('passes if entry exists', function () {
         'entry' => [new ProductExists()],
     ]);
 
-    $this->assertFalse($validate->fails());
+    expect($validate->fails())->toBeFalse();
 });
 
 it('fails if entry does not exist', function () {
@@ -32,5 +32,5 @@ it('fails if entry does not exist', function () {
         'entry' => [new ProductExists()],
     ]);
 
-    $this->assertTrue($validate->fails());
+    expect($validate->fails())->toBeTrue();
 });

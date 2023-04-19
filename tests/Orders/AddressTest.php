@@ -20,7 +20,7 @@ test('can get address as array', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsArray($address->toArray());
+    expect($address->toArray())->toBeArray();
 
     $this->assertSame($address->toArray(), [
         'name' => 'John Smith',
@@ -49,7 +49,7 @@ test('can get address as array with first name and last name', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsArray($address->toArray());
+    expect($address->toArray())->toBeArray();
 
     $this->assertSame($address->toArray(), [
         'name' => null,
@@ -77,14 +77,14 @@ test('can get address as string', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString((string) $address);
+    expect((string) $address)->toBeString();
 
-    $this->assertSame((string) $address, 'John Smith,
+    expect('John Smith,
 11 Test Street,
 Glasgow,
 Scotland,
 United Kingdom,
-G11 222');
+G11 222')->toBe((string) $address);
 });
 
 test('can get address as string with first name and last name', function () {
@@ -101,14 +101,14 @@ test('can get address as string with first name and last name', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString((string) $address);
+    expect((string) $address)->toBeString();
 
-    $this->assertSame((string) $address, 'John Doe,
+    expect('John Doe,
 11 Test Street,
 Glasgow,
 Scotland,
 United Kingdom,
-G11 222');
+G11 222')->toBe((string) $address);
 });
 
 test('can get name', function () {
@@ -126,8 +126,8 @@ test('can get name', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->name());
-    $this->assertSame($address->name(), 'John Smith');
+    expect($address->name())->toBeString();
+    expect('John Smith')->toBe($address->name());
 });
 
 test('can get first name', function () {
@@ -145,8 +145,8 @@ test('can get first name', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->firstName());
-    $this->assertSame($address->firstName(), 'Joseph');
+    expect($address->firstName())->toBeString();
+    expect('Joseph')->toBe($address->firstName());
 });
 
 test('can get last name', function () {
@@ -164,8 +164,8 @@ test('can get last name', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->lastName());
-    $this->assertSame($address->lastName(), 'Samuel');
+    expect($address->lastName())->toBeString();
+    expect('Samuel')->toBe($address->lastName());
 });
 
 test('can get full name when name is one string', function () {
@@ -183,8 +183,8 @@ test('can get full name when name is one string', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->fullName());
-    $this->assertSame($address->fullName(), 'Joseph Samuel');
+    expect($address->fullName())->toBeString();
+    expect('Joseph Samuel')->toBe($address->fullName());
 });
 
 test('can get full name when name is separate first and last names', function () {
@@ -202,8 +202,8 @@ test('can get full name when name is separate first and last names', function ()
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->fullName());
-    $this->assertSame($address->fullName(), 'Joseph Matthews');
+    expect($address->fullName())->toBeString();
+    expect('Joseph Matthews')->toBe($address->fullName());
 });
 
 test('can get address line 1', function () {
@@ -219,8 +219,8 @@ test('can get address line 1', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->addressLine1());
-    $this->assertSame($address->addressLine1(), '11 Test Street');
+    expect($address->addressLine1())->toBeString();
+    expect('11 Test Street')->toBe($address->addressLine1());
 });
 
 test('can get address line 2', function () {
@@ -239,8 +239,8 @@ test('can get address line 2', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->addressLine2());
-    $this->assertSame($address->addressLine2(), 'Cardonald');
+    expect($address->addressLine2())->toBeString();
+    expect('Cardonald')->toBe($address->addressLine2());
 });
 
 test('can get city', function () {
@@ -256,8 +256,8 @@ test('can get city', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->city());
-    $this->assertSame($address->city(), 'Glasgow');
+    expect($address->city())->toBeString();
+    expect('Glasgow')->toBe($address->city());
 });
 
 test('can get region', function () {
@@ -273,7 +273,7 @@ test('can get region', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsArray($address->region());
+    expect($address->region())->toBeArray();
 
     $this->assertSame($address->region(), [
         'id' => 'gb-sct',
@@ -295,7 +295,7 @@ test('can get country', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsArray($address->country());
+    expect($address->country())->toBeArray();
 
     $this->assertSame($address->country(), [
         'iso' => 'GB',
@@ -316,6 +316,6 @@ test('can get zip code', function () {
 
     $address = $order->billingAddress();
 
-    $this->assertIsString($address->zipCode());
-    $this->assertSame($address->zipCode(), 'G11 222');
+    expect($address->zipCode())->toBeString();
+    expect('G11 222')->toBe($address->zipCode());
 });

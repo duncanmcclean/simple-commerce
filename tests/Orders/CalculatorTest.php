@@ -47,15 +47,15 @@ test('does not calculate totals if order is paid', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 123);
-    $this->assertSame($calculate['items_total'], 123);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(123)->toBe($calculate['grand_total']);
+    expect(123)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]->total(), 123);
+    expect(123)->toBe($calculate['items'][0]->total());
 });
 
 test('standard product price is calculated correctly', function () {
@@ -76,15 +76,15 @@ test('standard product price is calculated correctly', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 500);
-    $this->assertSame($calculate['items_total'], 500);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(500)->toBe($calculate['grand_total']);
+    expect(500)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]->total(), 500);
+    expect(500)->toBe($calculate['items'][0]->total());
 });
 
 test('variant product price is calculated correctly', function () {
@@ -116,15 +116,15 @@ test('variant product price is calculated correctly', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 250);
-    $this->assertSame($calculate['items_total'], 250);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(250)->toBe($calculate['grand_total']);
+    expect(250)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]->total(), 250);
+    expect(250)->toBe($calculate['items'][0]->total());
 });
 
 test('ensure decimals in standard product prices are stripped out', function () {
@@ -145,15 +145,15 @@ test('ensure decimals in standard product prices are stripped out', function () 
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 1550);
-    $this->assertSame($calculate['items_total'], 1550);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(1550)->toBe($calculate['grand_total']);
+    expect(1550)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]->total(), 1550);
+    expect(1550)->toBe($calculate['items'][0]->total());
 });
 
 test('ensure decimals in variant product prices are stripped out', function () {
@@ -185,15 +185,15 @@ test('ensure decimals in variant product prices are stripped out', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 1550);
-    $this->assertSame($calculate['items_total'], 1550);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(1550)->toBe($calculate['grand_total']);
+    expect(1550)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]->total(), 1550);
+    expect(1550)->toBe($calculate['items'][0]->total());
 });
 
 test('can calculate correct tax amount', function () {
@@ -214,15 +214,15 @@ test('can calculate correct tax amount', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 2400);
-    $this->assertSame($calculate['items_total'], 2000);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 400);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(2400)->toBe($calculate['grand_total']);
+    expect(2000)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(400)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 2000);
+    expect(2000)->toBe($calculate['items'][0]['total']);
 });
 
 test('ensure shipping price is applied correctly', function () {
@@ -247,15 +247,15 @@ test('ensure shipping price is applied correctly', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 2650);
-    $this->assertSame($calculate['items_total'], 2000);
-    $this->assertSame($calculate['shipping_total'], 250);
-    $this->assertSame($calculate['tax_total'], 400);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(2650)->toBe($calculate['grand_total']);
+    expect(2000)->toBe($calculate['items_total']);
+    expect(250)->toBe($calculate['shipping_total']);
+    expect(400)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 2000);
+    expect(2000)->toBe($calculate['items'][0]['total']);
 });
 
 test('ensure grand total is calculated correctly', function () {
@@ -292,15 +292,15 @@ test('ensure grand total is calculated correctly', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 1450);
-    $this->assertSame($calculate['items_total'], 2000);
-    $this->assertSame($calculate['shipping_total'], 250);
-    $this->assertSame($calculate['tax_total'], 400);
-    $this->assertSame($calculate['coupon_total'], 1200);
+    expect(1450)->toBe($calculate['grand_total']);
+    expect(2000)->toBe($calculate['items_total']);
+    expect(250)->toBe($calculate['shipping_total']);
+    expect(400)->toBe($calculate['tax_total']);
+    expect(1200)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 2000);
+    expect(2000)->toBe($calculate['items'][0]['total']);
 });
 
 test('ensure percentage coupon is calculated correctly on items total', function () {
@@ -334,15 +334,15 @@ test('ensure percentage coupon is calculated correctly on items total', function
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 5000);
-    $this->assertSame($calculate['items_total'], 10000);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 5000);
+    expect(5000)->toBe($calculate['grand_total']);
+    expect(10000)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(5000)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 10000);
+    expect(10000)->toBe($calculate['items'][0]['total']);
 });
 
 /**
@@ -379,15 +379,15 @@ test('ensure percentage coupon is calculated correctly on items total when value
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 9000);
-    $this->assertSame($calculate['items_total'], 10000);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 1000);
+    expect(9000)->toBe($calculate['grand_total']);
+    expect(10000)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(1000)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 10000);
+    expect(10000)->toBe($calculate['items'][0]['total']);
 });
 
 /**
@@ -424,15 +424,15 @@ test('ensure percentage coupon is calculated correctly on items total when produ
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 2249);
-    $this->assertSame($calculate['items_total'], 2499);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 250);
+    expect(2249)->toBe($calculate['grand_total']);
+    expect(2499)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(250)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 2499);
+    expect(2499)->toBe($calculate['items'][0]['total']);
 });
 
 test('ensure fixed coupon is calculated correctly on items total', function () {
@@ -466,15 +466,15 @@ test('ensure fixed coupon is calculated correctly on items total', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 9900);
-    $this->assertSame($calculate['items_total'], 10000);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 100);
+    expect(9900)->toBe($calculate['grand_total']);
+    expect(10000)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(100)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 10000);
+    expect(10000)->toBe($calculate['items'][0]['total']);
 });
 
 /**
@@ -511,17 +511,17 @@ test('ensure fixed coupon is calculated correctly on items total when value is a
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 9000);
-    $this->assertSame($calculate['items_total'], 10000);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 0);
-    $this->assertSame($calculate['coupon_total'], 1000);
+    expect(9000)->toBe($calculate['grand_total']);
+    expect(10000)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(0)->toBe($calculate['tax_total']);
+    expect(1000)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 10000);
+    expect(10000)->toBe($calculate['items'][0]['total']);
 
-    $this->assertSame($coupon->value(), 1000);
+    expect(1000)->toBe($coupon->value());
 });
 
 test('ensure tax is included when using coupon', function () {
@@ -556,15 +556,15 @@ test('ensure tax is included when using coupon', function () {
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 0);
-    $this->assertSame($calculate['items_total'], 10000);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 2000);
-    $this->assertSame($calculate['coupon_total'], 12000);
+    expect(0)->toBe($calculate['grand_total']);
+    expect(10000)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(2000)->toBe($calculate['tax_total']);
+    expect(12000)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 10000);
+    expect(10000)->toBe($calculate['items'][0]['total']);
 });
 
 test('ensure product price hook is used to determine price of product', function () {
@@ -591,15 +591,15 @@ test('ensure product price hook is used to determine price of product', function
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 240);
-    $this->assertSame($calculate['items_total'], 200);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 40);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(240)->toBe($calculate['grand_total']);
+    expect(200)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(40)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 200);
+    expect(200)->toBe($calculate['items'][0]['total']);
 
     // Revert hook
     SimpleCommerce::productPriceHook(function ($order, $product) {
@@ -656,15 +656,15 @@ test('ensure product variant price hook is used to determine price of product va
 
     $calculate = (new Calculator())->calculate($cart);
 
-    $this->assertIsArray($calculate);
+    expect($calculate)->toBeArray();
 
-    $this->assertSame($calculate['grand_total'], 240);
-    $this->assertSame($calculate['items_total'], 200);
-    $this->assertSame($calculate['shipping_total'], 0);
-    $this->assertSame($calculate['tax_total'], 40);
-    $this->assertSame($calculate['coupon_total'], 0);
+    expect(240)->toBe($calculate['grand_total']);
+    expect(200)->toBe($calculate['items_total']);
+    expect(0)->toBe($calculate['shipping_total']);
+    expect(40)->toBe($calculate['tax_total']);
+    expect(0)->toBe($calculate['coupon_total']);
 
-    $this->assertSame($calculate['items'][0]['total'], 200);
+    expect(200)->toBe($calculate['items'][0]['total']);
 
     // Revert hook
     SimpleCommerce::productVariantPriceHook(function ($order, $product, $variant) {

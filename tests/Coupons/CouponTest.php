@@ -25,15 +25,15 @@ test('can create', function () {
 
     $create->save();
 
-    $this->assertTrue($create instanceof CouponsCoupon);
+    expect($create instanceof CouponsCoupon)->toBeTrue();
 
     $this->assertNotNull($create->id());
 
-    $this->assertSame($create->code(), 'test');
-    $this->assertSame($create->type(), CouponType::Percentage);
-    $this->assertSame($create->value(), 10);
-    $this->assertSame($create->get('foo'), 'bar');
-    $this->assertSame($create->get('baz'), 'qux');
+    expect('test')->toBe($create->code());
+    expect(CouponType::Percentage)->toBe($create->type());
+    expect(10)->toBe($create->value());
+    expect('bar')->toBe($create->get('foo'));
+    expect('qux')->toBe($create->get('baz'));
 });
 
 test('can find by id', function () {
@@ -51,14 +51,14 @@ test('can find by id', function () {
 
     $coupon = Coupon::find('this-is-a-test-id');
 
-    $this->assertTrue($create instanceof CouponsCoupon);
+    expect($create instanceof CouponsCoupon)->toBeTrue();
 
-    $this->assertSame($coupon->id(), 'this-is-a-test-id');
-    $this->assertSame($create->code(), 'test');
-    $this->assertSame($create->type(), CouponType::Percentage);
-    $this->assertSame($create->value(), 10);
-    $this->assertSame($create->get('foo'), 'bar');
-    $this->assertSame($create->get('baz'), 'qux');
+    expect('this-is-a-test-id')->toBe($coupon->id());
+    expect('test')->toBe($create->code());
+    expect(CouponType::Percentage)->toBe($create->type());
+    expect(10)->toBe($create->value());
+    expect('bar')->toBe($create->get('foo'));
+    expect('qux')->toBe($create->get('baz'));
 });
 
 test('can find by code', function () {
@@ -76,14 +76,14 @@ test('can find by code', function () {
 
     $coupon = Coupon::findByCode('test');
 
-    $this->assertTrue($create instanceof CouponsCoupon);
+    expect($create instanceof CouponsCoupon)->toBeTrue();
 
-    $this->assertSame($coupon->id(), 'this-is-a-test-id');
-    $this->assertSame($create->code(), 'test');
-    $this->assertSame($create->type(), CouponType::Percentage);
-    $this->assertSame($create->value(), 10);
-    $this->assertSame($create->get('foo'), 'bar');
-    $this->assertSame($create->get('baz'), 'qux');
+    expect('this-is-a-test-id')->toBe($coupon->id());
+    expect('test')->toBe($create->code());
+    expect(CouponType::Percentage)->toBe($create->type());
+    expect(10)->toBe($create->value());
+    expect('bar')->toBe($create->get('foo'));
+    expect('qux')->toBe($create->get('baz'));
 });
 
 test('can update', function () {
@@ -99,20 +99,20 @@ test('can update', function () {
 
     $create->save();
 
-    $this->assertSame($create->value(), 10);
-    $this->assertSame($create->get('foo'), 'bar');
+    expect(10)->toBe($create->value());
+    expect('bar')->toBe($create->get('foo'));
 
     $create->value(20);
     $create->set('foo', 'baz');
 
     $create->save();
 
-    $this->assertSame($create->id(), 'this-is-a-test-id');
-    $this->assertSame($create->code(), 'test');
-    $this->assertSame($create->type(), CouponType::Percentage);
-    $this->assertSame($create->value(), 20);
-    $this->assertSame($create->get('foo'), 'baz');
-    $this->assertSame($create->get('baz'), 'qux');
+    expect('this-is-a-test-id')->toBe($create->id());
+    expect('test')->toBe($create->code());
+    expect(CouponType::Percentage)->toBe($create->type());
+    expect(20)->toBe($create->value());
+    expect('baz')->toBe($create->get('foo'));
+    expect('qux')->toBe($create->get('baz'));
 });
 
 test('can delete', function () {
@@ -128,7 +128,7 @@ test('can delete', function () {
 
     $create->save();
 
-    $this->assertFileExists($create->path());
+    expect($create->path())->toBeFile();
 
     $create->delete();
 
@@ -153,7 +153,7 @@ test('is valid when limited to certain products when product is in cart', functi
 
     $isValid = $coupon->isValid($order);
 
-    $this->assertTrue($isValid);
+    expect($isValid)->toBeTrue();
 });
 
 test('is not valid when limited to certain products when products are not in the cart', function () {
@@ -176,7 +176,7 @@ test('is not valid when limited to certain products when products are not in the
 
     $isValid = $coupon->isValid($order);
 
-    $this->assertFalse($isValid);
+    expect($isValid)->toBeFalse();
 });
 
 test('is valid when limited to certain customers and current customer is in allow list', function () {
@@ -209,7 +209,7 @@ test('is valid when limited to certain customers and current customer is in allo
 
     $isValid = $coupon->isValid($order);
 
-    $this->assertTrue($isValid);
+    expect($isValid)->toBeTrue();
 });
 
 test('is not valid when limited to customers and current customer is not in allow list', function () {
@@ -242,7 +242,7 @@ test('is not valid when limited to customers and current customer is not in allo
 
     $isValid = $coupon->isValid($order);
 
-    $this->assertFalse($isValid);
+    expect($isValid)->toBeFalse();
 });
 
 test('is not valid when coupon is disabled', function () {
@@ -264,7 +264,7 @@ test('is not valid when coupon is disabled', function () {
 
     $isValid = $coupon->isValid($order);
 
-    $this->assertFalse($isValid);
+    expect($isValid)->toBeFalse();
 });
 
 test('is not valid after coupon has expired', function () {
@@ -286,7 +286,7 @@ test('is not valid after coupon has expired', function () {
 
     $isValid = $coupon->isValid($order);
 
-    $this->assertFalse($isValid);
+    expect($isValid)->toBeFalse();
 });
 
 // Helpers

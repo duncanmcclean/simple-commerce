@@ -38,7 +38,7 @@ test('can pass validation for standard product with enough stock', function () {
             ->thenReturn();
 
         // No exception was thrown, so we're good.
-        $this->assertTrue(true);
+        expect(true)->toBeTrue();
     } catch (CheckoutProductHasNoStockException $e) {
         $this->fail('Validation failed when it should have passed.');
     }
@@ -72,7 +72,7 @@ test('cant pass validation for standard product without enough stock to fulfill 
 
         $this->fail('Validation passed when it should have failed.');
     } catch (CheckoutProductHasNoStockException $e) {
-        $this->assertTrue($order->lineItems()->count() === 0);
+        expect($order->lineItems()->count() === 0)->toBeTrue();
     }
 });
 
@@ -104,7 +104,7 @@ test('cant pass validation for standard product with no stock', function () {
 
         $this->fail('Validation passed when it should have failed.');
     } catch (CheckoutProductHasNoStockException $e) {
-        $this->assertTrue($order->lineItems()->count() === 0);
+        expect($order->lineItems()->count() === 0)->toBeTrue();
     }
 });
 
@@ -151,7 +151,7 @@ test('can pass validation for variant product with enough stock', function () {
             ->thenReturn();
 
         // No exception was thrown, so we're good.
-        $this->assertTrue(true);
+        expect(true)->toBeTrue();
     } catch (CheckoutProductHasNoStockException $e) {
         $this->fail('Validation failed when it should have passed.');
     }
@@ -201,7 +201,7 @@ test('cant pass validation for variant product without enough stock to fulfill o
 
         $this->fail('Validation passed when it should have failed.');
     } catch (CheckoutProductHasNoStockException $e) {
-        $this->assertTrue($order->lineItems()->count() === 0);
+        expect($order->lineItems()->count() === 0)->toBeTrue();
     }
 });
 
@@ -249,6 +249,6 @@ test('cant pass validation for variant product with no stock', function () {
 
         $this->fail('Validation passed when it should have failed.');
     } catch (CheckoutProductHasNoStockException $e) {
-        $this->assertTrue($order->lineItems()->count() === 0);
+        expect($order->lineItems()->count() === 0)->toBeTrue();
     }
 });

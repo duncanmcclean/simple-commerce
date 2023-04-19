@@ -25,8 +25,8 @@ beforeEach(function () {
 test('has a name', function () {
     $name = $this->gateway->name();
 
-    $this->assertIsString($name);
-    $this->assertSame('Mollie', $name);
+    expect($name)->toBeString();
+    expect($name)->toBe('Mollie');
 });
 
 test('can prepare', function () {
@@ -59,14 +59,14 @@ test('can prepare', function () {
         $order
     );
 
-    $this->assertIsArray($prepare);
-    $this->assertStringContainsString('tr_', $prepare['id']);
+    expect($prepare)->toBeArray();
+    expect($prepare['id'])->toContain('tr_');
 
     $molliePayment = (new Invader($this->gateway))->mollie->payments->get($prepare['id']);
 
-    $this->assertSame('55.00', $molliePayment->amount->value);
-    $this->assertSame('Order '.$order->orderNumber(), $molliePayment->description);
-    $this->assertStringContainsString('/!/simple-commerce/gateways/mollie/callback?_order_id='.$order->id(), $molliePayment->redirectUrl);
+    expect($molliePayment->amount->value)->toBe('55.00');
+    expect($molliePayment->description)->toBe('Order '.$order->orderNumber());
+    expect($molliePayment->redirectUrl)->toContain('/!/simple-commerce/gateways/mollie/callback?_order_id='.$order->id());
 });
 
 test('can refund charge', function () {
@@ -81,7 +81,7 @@ test('can refund charge', function () {
 
     $refund = $this->gateway->refund($order);
 
-    $this->assertIsArray($refund);
+    expect($refund)->toBeArray();
 });
 
 test('can hit webhook', function () {
@@ -110,5 +110,5 @@ test('can hit webhook', function () {
 
     $webhook = $this->gateway->webhook(new Request([], $payload));
 
-    $this->assertSame($webhook, null);
+    expect(null)->toBe($webhook);
 });

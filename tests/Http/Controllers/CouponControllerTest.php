@@ -55,7 +55,7 @@ test('can store coupon', function () {
 
     $this->cart = $this->cart->fresh();
 
-    $this->assertSame($this->cart->coupon()->id(), $coupon->id());
+    expect($coupon->id())->toBe($this->cart->coupon()->id());
     $this->assertNotSame($this->cart->couponTotal(), 0);
 
     Event::assertDispatched(CouponRedeemed::class);
@@ -96,7 +96,7 @@ test('can store coupon and request json response', function () {
 
     $this->cart = $this->cart->fresh();
 
-    $this->assertSame($this->cart->coupon()->id(), $coupon->id());
+    expect($coupon->id())->toBe($this->cart->coupon()->id());
     $this->assertNotSame($this->cart->couponTotal(), 0000);
 
     Event::assertDispatched(CouponRedeemed::class);
@@ -133,8 +133,8 @@ test('cant store invalid coupon', function () {
 
     $this->cart = $this->cart->fresh();
 
-    $this->assertNull($this->cart->coupon());
-    $this->assertSame($this->cart->couponTotal(), 0000);
+    expect($this->cart->coupon())->toBeNull();
+    expect(00)->toBe($this->cart->couponTotal()00);
 });
 
 test('cant store coupon that does not exist', function () {
@@ -185,8 +185,8 @@ test('can destroy coupon', function () {
 
     $this->cart = $this->cart->fresh();
 
-    $this->assertNull($this->cart->coupon());
-    $this->assertSame($this->cart->couponTotal(), 0000);
+    expect($this->cart->coupon())->toBeNull();
+    expect(00)->toBe($this->cart->couponTotal()00);
 });
 
 test('can destroy coupon and request json', function () {
@@ -221,8 +221,8 @@ test('can destroy coupon and request json', function () {
 
     $this->cart = $this->cart->fresh();
 
-    $this->assertNull($this->cart->coupon());
-    $this->assertSame($this->cart->couponTotal(), 0000);
+    expect($this->cart->coupon())->toBeNull();
+    expect(00)->toBe($this->cart->couponTotal()00);
 });
 
 // Helpers

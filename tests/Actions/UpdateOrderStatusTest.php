@@ -29,7 +29,7 @@ test('is not visible to products', function () {
 
     $action = $this->action->visibleTo($product->resource());
 
-    $this->assertFalse($action);
+    expect($action)->toBeFalse();
 });
 
 test('order can have its status updated', function () {
@@ -54,7 +54,7 @@ test('order can have its status updated', function () {
 
     $order->fresh();
 
-    $this->assertSame($order->data()->get('order_status'), 'dispatched');
+    expect('dispatched')->toBe($order->data()->get('order_status'));
 
     $this->assertSame($order->data()->get('status_log'), [
         'dispatched' => $now,

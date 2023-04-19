@@ -12,5 +12,5 @@ beforeEach(function () {
 test('can convert value into currency string', function () {
     $modifier = $this->modifier->index(1557, [], []);
 
-    $this->assertSame($modifier, '£15.57');
+    expect('£15.57')->toBe($modifier);
 });

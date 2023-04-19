@@ -20,9 +20,9 @@ it('can make an onsite gateway using argument fallback', function () {
 
     $this->artisan('statamic:make:gateway', ['name' => 'StriPal']);
 
-    $this->assertFileExists($path);
-    $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
-    $this->assertStringContainsString('checkout(Request $request, Order $order): array', $this->files->get($path));
+    expect($path)->toBeFile();
+    expect($this->files->get($path))->toContain('namespace App\Gateways;');
+    expect($this->files->get($path))->toContain('checkout(Request $request, Order $order): array');
     $this->assertStringNotContainsString('isOffsiteGateway(): bool', $this->files->get($path));
 });
 
@@ -33,9 +33,9 @@ it('can make an onsite gateway by specifying argument', function () {
 
     $this->artisan('statamic:make:gateway', ['name' => 'StriPal', 'type' => 'onsite']);
 
-    $this->assertFileExists($path);
-    $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
-    $this->assertStringContainsString('checkout(Request $request, Order $order): array', $this->files->get($path));
+    expect($path)->toBeFile();
+    expect($this->files->get($path))->toContain('namespace App\Gateways;');
+    expect($this->files->get($path))->toContain('checkout(Request $request, Order $order): array');
     $this->assertStringNotContainsString('isOffsiteGateway(): bool', $this->files->get($path));
 });
 
@@ -46,10 +46,10 @@ it('can make an offsite gateway by specifying argument', function () {
 
     $this->artisan('statamic:make:gateway', ['name' => 'Molipe', 'type' => 'offsite']);
 
-    $this->assertFileExists($path);
-    $this->assertStringContainsString('namespace App\Gateways;', $this->files->get($path));
+    expect($path)->toBeFile();
+    expect($this->files->get($path))->toContain('namespace App\Gateways;');
     $this->assertStringNotContainsString('purchase(Purchase $data): Response', $this->files->get($path));
-    $this->assertStringContainsString('isOffsiteGateway(): bool', $this->files->get($path));
+    expect($this->files->get($path))->toContain('isOffsiteGateway(): bool');
 });
 
 it('can make a shipping method', function () {
@@ -59,8 +59,8 @@ it('can make a shipping method', function () {
 
     $this->artisan('statamic:make:shipping-method', ['name' => 'FirstClass']);
 
-    $this->assertFileExists($path);
-    $this->assertStringContainsString('namespace App\ShippingMethods;', $this->files->get($path));
+    expect($path)->toBeFile();
+    expect($this->files->get($path))->toContain('namespace App\ShippingMethods;');
 });
 
 // Helpers

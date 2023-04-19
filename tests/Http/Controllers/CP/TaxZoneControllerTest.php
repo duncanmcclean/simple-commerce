@@ -201,7 +201,7 @@ test('can destroy tax zone and delete assosiated rates', function () {
     $taxRate = TaxRate::make()->id('123')->name('US General products')->category('abc')->zone('the-states');
     $taxRate->save();
 
-    $this->assertFileExists($taxRate->path());
+    expect($taxRate->path())->toBeFile();
 
     $this
         ->actingAs(user())

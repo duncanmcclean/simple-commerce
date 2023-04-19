@@ -39,8 +39,8 @@ test('can get line items', function () {
 
     $lineItems = $order->lineItems();
 
-    $this->assertTrue($lineItems instanceof Collection);
-    $this->assertSame($lineItems->count(), 2);
+    expect($lineItems instanceof Collection)->toBeTrue();
+    expect(2)->toBe($lineItems->count());
 });
 
 test('can get line items when item has to be filtered out to a deleted product', function () {
@@ -64,8 +64,8 @@ test('can get line items when item has to be filtered out to a deleted product',
 
     $lineItems = $order->lineItems();
 
-    $this->assertTrue($lineItems instanceof Collection);
-    $this->assertSame($lineItems->count(), 1);
+    expect($lineItems instanceof Collection)->toBeTrue();
+    expect(1)->toBe($lineItems->count());
 });
 
 test('can get line items when item has null product due to a deleted product and paid order', function () {
@@ -89,8 +89,8 @@ test('can get line items when item has null product due to a deleted product and
 
     $lineItems = $order->lineItems();
 
-    $this->assertTrue($lineItems instanceof Collection);
-    $this->assertSame($lineItems->count(), 2);
+    expect($lineItems instanceof Collection)->toBeTrue();
+    expect(2)->toBe($lineItems->count());
 });
 
 test('line items return empty if order has no items', function () {
@@ -99,8 +99,8 @@ test('line items return empty if order has no items', function () {
 
     $lineItems = $order->lineItems();
 
-    $this->assertTrue($lineItems instanceof Collection);
-    $this->assertSame($lineItems->count(), 0);
+    expect($lineItems instanceof Collection)->toBeTrue();
+    expect(0)->toBe($lineItems->count());
 });
 
 test('can update line item', function () {
@@ -129,10 +129,10 @@ test('can update line item', function () {
         ],
     ]);
 
-    $this->assertSame($order->lineItems()->count(), 1);
+    expect(1)->toBe($order->lineItems()->count());
 
-    $this->assertSame($order->lineItems()->first()->quantity(), 3);
-    $this->assertTrue($order->lineItems()->first()->metadata()->has('product_key'));
+    expect(3)->toBe($order->lineItems()->first()->quantity());
+    expect($order->lineItems()->first()->metadata()->has('product_key'))->toBeTrue();
 });
 
 test('can clear line items', function () {
@@ -156,6 +156,6 @@ test('can clear line items', function () {
 
     $lineItems = $order->clearlineItems();
 
-    $this->assertTrue($lineItems instanceof Collection);
-    $this->assertSame($lineItems->count(), 0);
+    expect($lineItems instanceof Collection)->toBeTrue();
+    expect(0)->toBe($lineItems->count());
 });

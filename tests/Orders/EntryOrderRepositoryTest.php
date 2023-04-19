@@ -21,7 +21,7 @@ test('can generate order number from minimum order number', function () {
 
     $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
 
-    $this->assertSame($generateOrderNumber, 1000);
+    expect(1000)->toBe($generateOrderNumber);
 });
 
 test('can generate order number from previous order titles', function () {
@@ -44,7 +44,7 @@ test('can generate order number from previous order titles', function () {
 
     $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
 
-    $this->assertSame($generateOrderNumber, 1237);
+    expect(1237)->toBe($generateOrderNumber);
 });
 
 test('can generate order number from previous order number', function () {
@@ -69,5 +69,5 @@ test('can generate order number from previous order number', function () {
 
     $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
 
-    $this->assertSame($generateOrderNumber, 6004);
+    expect(6004)->toBe($generateOrderNumber);
 });

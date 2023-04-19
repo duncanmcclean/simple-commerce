@@ -31,18 +31,18 @@ beforeEach(function () {
 test('can get index', function () {
     fakeCart();
 
-    $this->assertSame('Special note.', (string) tag('{{ sc:cart }}{{ note }}{{ /sc:cart }}'));
-    $this->assertSame('false', (string) tag('{{ sc:cart }}{{ if {is_paid} }}true{{ else }}false{{ /if }}{{ /sc:cart }}'));
+    expect((string) tag('{{ sc:cart }}{{ note }}{{ /sc:cart }}'))->toBe('Special note.');
+    expect((string) tag('{{ sc:cart }}{{ if {is_paid} }}true{{ else }}false{{ /if }}{{ /sc:cart }}'))->toBe('false');
 });
 
 test('user has a cart if cart does not exist', function () {
-    $this->assertSame('No cart', (string) tag('{{ if sc:cart:has }}Has cart{{ else }}No cart{{ /if }}'));
+    expect((string) tag('{{ if sc:cart:has }}Has cart{{ else }}No cart{{ /if }}'))->toBe('No cart');
 });
 
 test('user has a cart if cart exists', function () {
     fakeCart();
 
-    $this->assertSame('Has cart', (string) tag('{{ if {sc:cart:has} === true }}Has cart{{ else }}No cart{{ /if }}'));
+    expect((string) tag('{{ if {sc:cart:has} === true }}Has cart{{ else }}No cart{{ /if }}'))->toBe('Has cart');
 });
 
 test('can get cart items', function () {
@@ -67,7 +67,7 @@ test('can get cart items', function () {
 
     fakeCart($cart);
 
-    $this->assertStringContainsString('5', tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'));
+    expect(tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'))->toContain('5');
 });
 
 test('can get cart items count', function () {
@@ -106,7 +106,7 @@ test('can get cart items count', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('2', (string) tag('{{ sc:cart:count }}'));
+    expect((string) tag('{{ sc:cart:count }}'))->toBe('2');
 });
 
 test('can get cart items quantity total', function () {
@@ -145,7 +145,7 @@ test('can get cart items quantity total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('11', (string) tag('{{ sc:cart:quantityTotal }}'));
+    expect((string) tag('{{ sc:cart:quantityTotal }}'))->toBe('11');
 });
 
 test('can get cart total', function () {
@@ -154,7 +154,7 @@ test('can get cart total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£25.50', (string) tag('{{ sc:cart:total }}'));
+    expect((string) tag('{{ sc:cart:total }}'))->toBe('£25.50');
 });
 
 test('can get cart free status if order is free', function () {
@@ -163,7 +163,7 @@ test('can get cart free status if order is free', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('Yes', (string) tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'));
+    expect((string) tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'))->toBe('Yes');
 });
 
 test('can get cart free status if order is paid', function () {
@@ -172,7 +172,7 @@ test('can get cart free status if order is paid', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('No', (string) tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'));
+    expect((string) tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'))->toBe('No');
 });
 
 test('can get cart grand total', function () {
@@ -181,7 +181,7 @@ test('can get cart grand total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£25.50', (string) tag('{{ sc:cart:grandTotal }}'));
+    expect((string) tag('{{ sc:cart:grandTotal }}'))->toBe('£25.50');
 });
 
 test('can get cart items total', function () {
@@ -190,7 +190,7 @@ test('can get cart items total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£25.50', (string) tag('{{ sc:cart:itemsTotal }}'));
+    expect((string) tag('{{ sc:cart:itemsTotal }}'))->toBe('£25.50');
 });
 
 test('can get cart items total with cart tax total', function () {
@@ -199,7 +199,7 @@ test('can get cart items total with cart tax total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£31.70', (string) tag('{{ sc:cart:itemsTotalWithTax }}'));
+    expect((string) tag('{{ sc:cart:itemsTotalWithTax }}'))->toBe('£31.70');
 });
 
 test('can get cart shipping total', function () {
@@ -208,7 +208,7 @@ test('can get cart shipping total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£25.50', (string) tag('{{ sc:cart:shippingTotal }}'));
+    expect((string) tag('{{ sc:cart:shippingTotal }}'))->toBe('£25.50');
 });
 
 test('can get cart tax total', function () {
@@ -217,7 +217,7 @@ test('can get cart tax total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£25.50', (string) tag('{{ sc:cart:taxTotal }}'));
+    expect((string) tag('{{ sc:cart:taxTotal }}'))->toBe('£25.50');
 });
 
 /**
@@ -343,8 +343,8 @@ test('can get cart tax total split', function () {
     // Expected tag output format = '7:£12.34|19:£56.78'
     $renderedTag = tag('{{ sc:cart:taxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:taxTotalSplit }}');
 
-    $this->assertStringContainsString($taxRateDefault->rate().':'.$taxDefaultFormatted, $renderedTag);
-    $this->assertStringContainsString($taxRateReduced->rate().':'.$taxReducedFormatted, $renderedTag);
+    expect($renderedTag)->toContain($taxRateDefault->rate().':'.$taxDefaultFormatted);
+    expect($renderedTag)->toContain($taxRateReduced->rate().':'.$taxReducedFormatted);
 });
 
 test('can get cart coupon total', function () {
@@ -353,7 +353,7 @@ test('can get cart coupon total', function () {
 
     fakeCart($cart);
 
-    $this->assertSame('£25.50', (string) tag('{{ sc:cart:couponTotal }}'));
+    expect((string) tag('{{ sc:cart:couponTotal }}'))->toBe('£25.50');
 });
 
 test('can output add item form', function () {
@@ -377,19 +377,19 @@ test('can output add item form', function () {
 
     $usage = $this->tag->addItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items"');
 });
 
 test('can fetch add item form data', function () {
     $form = Statamic::tag('sc:cart:addItem')->fetch();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
-    $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart-items"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_token"');
+    expect('method="POST" action="http://localhost/!/simple-commerce/cart-items"')->toEqual($form['attrs_html']);
 
     $this->assertArrayHasKey('_token', $form['params']);
-    $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart-items');
-    $this->assertEquals($form['attrs']['method'], 'POST');
+    expect('http://localhost/!/simple-commerce/cart-items')->toEqual($form['attrs']['action']);
+    expect('POST')->toEqual($form['attrs']['method']);
 });
 
 /**
@@ -421,10 +421,10 @@ test('can output add item form and ensure external redirect urls are correct', f
 
     $usage = $this->tag->addItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('<input type="hidden" name="_redirect" value="https://duncanmcclean.com"', $usage);
-    $this->assertStringContainsString('<input type="hidden" name="_error_redirect" value="https://statamic.dev/installing"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('<input type="hidden" name="_redirect" value="https://duncanmcclean.com"');
+    expect($usage)->toContain('<input type="hidden" name="_error_redirect" value="https://statamic.dev/installing"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items"');
 });
 
 test('can output update item form', function () {
@@ -441,8 +441,8 @@ test('can output update item form', function () {
 
     $usage = $this->tag->updateItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/absolute-load-of-jiberish"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items/absolute-load-of-jiberish"');
 });
 
 test('can output update item form with product parameter', function () {
@@ -479,9 +479,9 @@ test('can output update item form with product parameter', function () {
 
     $usage = $this->tag->updateItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"', $usage);
-    $this->assertStringContainsString('Product: '.$product->id, $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"');
+    expect($usage)->toContain('Product: '.$product->id);
 });
 
 test('can fetch update item form data', function () {
@@ -507,12 +507,12 @@ test('can fetch update item form data', function () {
         'product' => $product->id,
     ])->fetch();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
+    expect($form['params_html'])->toContain('<input type="hidden" name="_token"');
     $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"');
 
     $this->assertArrayHasKey('_token', $form['params']);
     $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'');
-    $this->assertEquals($form['attrs']['method'], 'POST');
+    expect('POST')->toEqual($form['attrs']['method']);
 });
 
 /**
@@ -532,8 +532,8 @@ test('can output update item form and ensure the the item parameter isnt being r
 
     $usage = $this->tag->updateItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/absolute-load-of-jiberish"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items/absolute-load-of-jiberish"');
 
     $this->assertStringNotContainsString('item="absolute-load-of-jiberish"', $usage);
 });
@@ -551,8 +551,8 @@ test('can output remove item form', function () {
 
     $usage = $this->tag->removeItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"');
 });
 
 /**
@@ -571,8 +571,8 @@ test('can output remove item form and ensure the item parameter isnt being retur
 
     $usage = $this->tag->removeItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"');
 
     $this->assertStringNotContainsString('item="smelly-cat"', $usage);
 });
@@ -582,14 +582,14 @@ test('can fetch remove item form data', function () {
         'item' => 'smelly-cat',
     ])->fetch();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
-    $this->assertStringContainsString('<input type="hidden" name="_method" value="DELETE"', $form['params_html']);
-    $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_token"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_method" value="DELETE"');
+    expect('method="POST" action="http://localhost/!/simple-commerce/cart-items/smelly-cat"')->toEqual($form['attrs_html']);
 
     $this->assertArrayHasKey('_token', $form['params']);
-    $this->assertEquals($form['params']['_method'], 'DELETE');
-    $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart-items/smelly-cat');
-    $this->assertEquals($form['attrs']['method'], 'POST');
+    expect('DELETE')->toEqual($form['params']['_method']);
+    expect('http://localhost/!/simple-commerce/cart-items/smelly-cat')->toEqual($form['attrs']['action']);
+    expect('POST')->toEqual($form['attrs']['method']);
 });
 
 test('can output remove item form with product parameter', function () {
@@ -625,9 +625,9 @@ test('can output remove item form with product parameter', function () {
 
     $usage = $this->tag->removeItem();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"', $usage);
-    $this->assertStringContainsString('Product: '.$product->id, $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart-items/'.$lineItem->id.'"');
+    expect($usage)->toContain('Product: '.$product->id);
 });
 
 test('can output cart update form', function () {
@@ -650,19 +650,19 @@ test('can output cart update form', function () {
 
     $usage = $this->tag->update();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart"');
 });
 
 test('can fetch cart update form data', function () {
     $form = Statamic::tag('sc:cart:update')->fetch();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
-    $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_token"');
+    expect('method="POST" action="http://localhost/!/simple-commerce/cart"')->toEqual($form['attrs_html']);
 
     $this->assertArrayHasKey('_token', $form['params']);
-    $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart');
-    $this->assertEquals($form['attrs']['method'], 'POST');
+    expect('http://localhost/!/simple-commerce/cart')->toEqual($form['attrs']['action']);
+    expect('POST')->toEqual($form['attrs']['method']);
 });
 
 test('can output cart empty form', function () {
@@ -676,21 +676,21 @@ test('can output cart empty form', function () {
 
     $usage = $this->tag->empty();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $usage);
-    $this->assertStringContainsString('method="POST" action="http://localhost/!/simple-commerce/cart"', $usage);
+    expect($usage)->toContain('<input type="hidden" name="_token"');
+    expect($usage)->toContain('method="POST" action="http://localhost/!/simple-commerce/cart"');
 });
 
 test('can fetch cart empty form data', function () {
     $form = Statamic::tag('sc:cart:empty')->fetch();
 
-    $this->assertStringContainsString('<input type="hidden" name="_token"', $form['params_html']);
-    $this->assertStringContainsString('<input type="hidden" name="_method" value="DELETE"', $form['params_html']);
-    $this->assertEquals($form['attrs_html'], 'method="POST" action="http://localhost/!/simple-commerce/cart"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_token"');
+    expect($form['params_html'])->toContain('<input type="hidden" name="_method" value="DELETE"');
+    expect('method="POST" action="http://localhost/!/simple-commerce/cart"')->toEqual($form['attrs_html']);
 
     $this->assertArrayHasKey('_token', $form['params']);
-    $this->assertEquals($form['params']['_method'], 'DELETE');
-    $this->assertEquals($form['attrs']['action'], 'http://localhost/!/simple-commerce/cart');
-    $this->assertEquals($form['attrs']['method'], 'POST');
+    expect('DELETE')->toEqual($form['params']['_method']);
+    expect('http://localhost/!/simple-commerce/cart')->toEqual($form['attrs']['action']);
+    expect('POST')->toEqual($form['attrs']['method']);
 });
 
 test('can output if product already exists in cart', function () {
@@ -721,7 +721,7 @@ test('can output if product already exists in cart', function () {
 
     $usage = $this->tag->alreadyExists();
 
-    $this->assertTrue($usage);
+    expect($usage)->toBeTrue();
 });
 
 test('can output if product and variant already exists in cart', function () {
@@ -776,7 +776,7 @@ test('can output if product and variant already exists in cart', function () {
 
     $usage = $this->tag->alreadyExists();
 
-    $this->assertTrue($usage);
+    expect($usage)->toBeTrue();
 });
 
 test('can output if product does not already exists in cart', function () {
@@ -799,7 +799,7 @@ test('can output if product does not already exists in cart', function () {
 
     $usage = $this->tag->alreadyExists();
 
-    $this->assertFalse($usage);
+    expect($usage)->toBeFalse();
 });
 
 test('cant output if product does not already exist in cart because there is no cart', function () {
@@ -832,7 +832,7 @@ test('cant output if product does not already exist in cart because there is no 
 
     $usage = $this->tag->alreadyExists();
 
-    $this->assertFalse($usage);
+    expect($usage)->toBeFalse();
 });
 
 test('can get data from cart', function () {
@@ -848,8 +848,8 @@ test('can get data from cart', function () {
 
     $usage = $this->tag->wildcard('note');
 
-    $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_string($usage));
-    $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 'Deliver by front door.');
+    expect($usage instanceof \Statamic\Fields\Value || is_string($usage))->toBeTrue();
+    expect('Deliver by front door.')->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
 });
 
 /**
@@ -868,8 +868,8 @@ test('can get data from cart when method should be converted to studly case', fu
 
     $usage = $this->tag->wildcard('raw_grand_total');
 
-    $this->assertTrue($usage instanceof \Statamic\Fields\Value || is_int($usage));
-    $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, 1590);
+    expect($usage instanceof \Statamic\Fields\Value || is_int($usage))->toBeTrue();
+    expect(1590)->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
 });
 
 test('cant get data from cart if there is no cart', function () {
@@ -878,8 +878,8 @@ test('cant get data from cart if there is no cart', function () {
 
     $usage = $this->tag->wildcard('note');
 
-    $this->assertFalse($usage instanceof \Statamic\Fields\Value || is_string($usage));
-    $this->assertSame($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage, null);
+    expect($usage instanceof \Statamic\Fields\Value || is_string($usage))->toBeFalse();
+    expect(null)->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
 });
 
 // Helpers

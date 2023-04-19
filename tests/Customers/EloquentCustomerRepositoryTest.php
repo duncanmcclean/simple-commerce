@@ -30,8 +30,8 @@ test('can get all customers', function () {
 
     $all = Customer::all();
 
-    $this->assertTrue($all instanceof Collection);
-    $this->assertSame($all->count(), 2);
+    expect($all instanceof Collection)->toBeTrue();
+    expect(2)->toBe($all->count());
 });
 
 test('can find customer', function () {
@@ -45,10 +45,10 @@ test('can find customer', function () {
 
     $find = Customer::find($customer->id);
 
-    $this->assertSame($find->id(), $customer->id);
-    $this->assertSame($find->name(), $customer->name);
-    $this->assertSame($find->email(), $customer->email);
-    $this->assertSame($find->get('role'), 'Press Secretary');
+    expect($customer->id)->toBe($find->id());
+    expect($customer->name)->toBe($find->name());
+    expect($customer->email)->toBe($find->email());
+    expect('Press Secretary')->toBe($find->get('role'));
 });
 
 test('can find customer with custom column', function () {
@@ -63,11 +63,11 @@ test('can find customer with custom column', function () {
 
     $find = Customer::find($customer->id);
 
-    $this->assertSame($find->id(), $customer->id);
-    $this->assertSame($find->name(), $customer->name);
-    $this->assertSame($find->email(), $customer->email);
-    $this->assertSame($find->get('role'), 'Press Secretary');
-    $this->assertSame($find->get('favourite_colour'), 'Orange');
+    expect($customer->id)->toBe($find->id());
+    expect($customer->name)->toBe($find->name());
+    expect($customer->email)->toBe($find->email());
+    expect('Press Secretary')->toBe($find->get('role'));
+    expect('Orange')->toBe($find->get('favourite_colour'));
 });
 
 test('can find customer by email', function () {
@@ -81,10 +81,10 @@ test('can find customer by email', function () {
 
     $find = Customer::findByEmail($customer->email);
 
-    $this->assertSame($find->id(), $customer->id);
-    $this->assertSame($find->name(), $customer->name);
-    $this->assertSame($find->email(), $customer->email);
-    $this->assertSame($find->get('role'), 'Press Secretary');
+    expect($customer->id)->toBe($find->id());
+    expect($customer->name)->toBe($find->name());
+    expect($customer->email)->toBe($find->email());
+    expect('Press Secretary')->toBe($find->get('role'));
 });
 
 test('can create', function () {
@@ -97,8 +97,8 @@ test('can create', function () {
     $create->save();
 
     $this->assertNotNull($create->id());
-    $this->assertSame($create->name(), 'Sam Seaborne');
-    $this->assertSame($create->email(), 'sam@whitehouse.gov');
+    expect('Sam Seaborne')->toBe($create->name());
+    expect('sam@whitehouse.gov')->toBe($create->email());
 });
 
 test('can save', function () {
@@ -116,8 +116,8 @@ test('can save', function () {
 
     $customer->save();
 
-    $this->assertSame($customer->id(), $customerRecord->id);
-    $this->assertSame($customer->get('is_senior_advisor'), true);
+    expect($customerRecord->id)->toBe($customer->id());
+    expect(true)->toBe($customer->get('is_senior_advisor'));
 });
 
 test('can save with custom column', function () {
@@ -135,8 +135,8 @@ test('can save with custom column', function () {
 
     $customer->save();
 
-    $this->assertSame($customer->id(), $customerRecord->id);
-    $this->assertSame($customer->get('favourite_colour'), 'Yellow');
+    expect($customerRecord->id)->toBe($customer->id());
+    expect('Yellow')->toBe($customer->get('favourite_colour'));
 });
 
 test('can delete', function () {
