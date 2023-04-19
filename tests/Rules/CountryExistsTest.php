@@ -1,9 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
-
 
 it('passes for matching iso code', function () {
     $data = [

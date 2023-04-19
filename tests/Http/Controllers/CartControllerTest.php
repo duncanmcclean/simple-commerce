@@ -6,8 +6,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 

@@ -1,7 +1,5 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 beforeEach(function () {
     $this->trait = new TraitAccess();

@@ -2,7 +2,6 @@
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\RegionFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;

@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CouponFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;

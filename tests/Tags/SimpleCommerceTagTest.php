@@ -3,9 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Currencies;
 use DoubleThreeDigital\SimpleCommerce\Regions;
-use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
-use DoubleThreeDigital\SimpleCommerce\Tags\SubTag;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Parse;
 
 beforeEach(function () {

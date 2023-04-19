@@ -1,11 +1,9 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Rules\ProductExists;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
-
 
 it('passes if entry exists', function () {
     Collection::make('products')->save();

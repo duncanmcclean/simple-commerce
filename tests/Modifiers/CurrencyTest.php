@@ -1,7 +1,6 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Modifiers\Currency as CurrencyModifier;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 beforeEach(function () {
     $this->modifier = new CurrencyModifier;

@@ -2,8 +2,6 @@
 
 use DoubleThreeDigital\SimpleCommerce\Actions\UpdateOrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;

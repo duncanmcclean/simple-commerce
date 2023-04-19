@@ -2,10 +2,8 @@
 
 use DoubleThreeDigital\SimpleCommerce\Customers\Customer as CustomersCustomer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
-
 
 test('can create', function () {
     $create = Customer::make()

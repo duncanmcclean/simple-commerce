@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductVariantFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
 uses(SetupCollections::class);
 

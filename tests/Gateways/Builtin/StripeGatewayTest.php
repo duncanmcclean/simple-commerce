@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Stripe\Customer as StripeCustomer;

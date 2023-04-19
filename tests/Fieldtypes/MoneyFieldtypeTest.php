@@ -1,11 +1,8 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Field;
-
 
 test('can preload currency with no field', function () {
     $preload = (new MoneyFieldtype())->preload();

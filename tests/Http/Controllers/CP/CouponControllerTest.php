@@ -1,9 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\User;
-
 
 test('can get index', function () {
     Coupon::make()

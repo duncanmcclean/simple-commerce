@@ -3,11 +3,9 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\GatewayFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;
-
 
 test('can get title', function () {
     $title = GatewayFieldtype::title();

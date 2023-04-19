@@ -5,10 +5,8 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Collection;
-
 
 /**
  * Inline with the fix suggested here: https://github.com/duncanmcclean/simple-commerce/pull/438#issuecomment-888498198

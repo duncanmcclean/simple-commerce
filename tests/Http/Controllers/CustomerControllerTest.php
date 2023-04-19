@@ -1,8 +1,6 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
 

@@ -3,8 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Regions;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-
 
 test('can get address as array', function () {
     $order = Order::make()

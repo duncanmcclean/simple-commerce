@@ -1,6 +1,5 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Filesystem\Filesystem;
 
 beforeEach(function () {

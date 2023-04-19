@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\User;
 
