@@ -1,7 +1,5 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders\Checkout;
-
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -10,261 +8,247 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Pipeline\Pipeline;
 
-class ValidateProductStockTest extends TestCase
-{
-    use SetupCollections;
+uses(TestCase::class);
+uses(SetupCollections::class);
 
-    /** @test */
-    public function can_pass_validation_for_standard_product_with_enough_stock()
-    {
-        $product = Product::make()
-            ->price(1200)
-            ->stock(10)
-            ->data([
-                'title' => 'Medium Jumper',
-            ]);
+test('can pass validation for standard product with enough stock', function () {
+    $product = Product::make()
+        ->price(1200)
+        ->stock(10)
+        ->data([
+            'title' => 'Medium Jumper',
+        ]);
 
-        $product->save();
+    $product->save();
 
-        $order = Order::make()
-            ->lineItems([
-                [
-                    'product' => $product->id(),
-                    'quantity' => 3,
-                ],
-            ]);
+    $order = Order::make()
+        ->lineItems([
+            [
+                'product' => $product->id(),
+                'quantity' => 3,
+            ],
+        ]);
 
-        $order->save();
+    $order->save();
 
-        try {
-            app(Pipeline::class)
-                ->send($order)
-                ->through([ValidateProductStock::class])
-                ->thenReturn();
+    try {
+        app(Pipeline::class)
+            ->send($order)
+            ->through([ValidateProductStock::class])
+            ->thenReturn();
 
-            // No exception was thrown, so we're good.
-            $this->assertTrue(true);
-        } catch (CheckoutProductHasNoStockException $e) {
-            $this->fail('Validation failed when it should have passed.');
-        }
+        // No exception was thrown, so we're good.
+        $this->assertTrue(true);
+    } catch (CheckoutProductHasNoStockException $e) {
+        $this->fail('Validation failed when it should have passed.');
     }
+});
 
-    /** @test */
-    public function cant_pass_validation_for_standard_product_without_enough_stock_to_fulfill_order()
-    {
-        $product = Product::make()
-            ->price(1200)
-            ->stock(5)
-            ->data([
-                'title' => 'Giant Jumper',
-            ]);
+test('cant pass validation for standard product without enough stock to fulfill order', function () {
+    $product = Product::make()
+        ->price(1200)
+        ->stock(5)
+        ->data([
+            'title' => 'Giant Jumper',
+        ]);
 
-        $product->save();
+    $product->save();
 
-        $order = Order::make()
-            ->lineItems([
-                [
-                    'product' => $product->id(),
-                    'quantity' => 20,
-                ],
-            ]);
+    $order = Order::make()
+        ->lineItems([
+            [
+                'product' => $product->id(),
+                'quantity' => 20,
+            ],
+        ]);
 
-        $order->save();
+    $order->save();
 
-        try {
-            app(Pipeline::class)
-                ->send($order)
-                ->through([ValidateProductStock::class])
-                ->thenReturn();
+    try {
+        app(Pipeline::class)
+            ->send($order)
+            ->through([ValidateProductStock::class])
+            ->thenReturn();
 
-            $this->fail('Validation passed when it should have failed.');
-        } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($order->lineItems()->count() === 0);
-        }
+        $this->fail('Validation passed when it should have failed.');
+    } catch (CheckoutProductHasNoStockException $e) {
+        $this->assertTrue($order->lineItems()->count() === 0);
     }
+});
 
-    /** @test */
-    public function cant_pass_validation_for_standard_product_with_no_stock()
-    {
-        $product = Product::make()
-            ->price(1200)
-            ->stock(0)
-            ->data([
-                'title' => 'Tiny Jumper',
-            ]);
+test('cant pass validation for standard product with no stock', function () {
+    $product = Product::make()
+        ->price(1200)
+        ->stock(0)
+        ->data([
+            'title' => 'Tiny Jumper',
+        ]);
 
-        $product->save();
+    $product->save();
 
-        $order = Order::make()
-            ->lineItems([
-                [
-                    'product' => $product->id(),
-                    'quantity' => 5,
-                ],
-            ]);
+    $order = Order::make()
+        ->lineItems([
+            [
+                'product' => $product->id(),
+                'quantity' => 5,
+            ],
+        ]);
 
-        $order->save();
+    $order->save();
 
-        try {
-            app(Pipeline::class)
-                ->send($order)
-                ->through([ValidateProductStock::class])
-                ->thenReturn();
+    try {
+        app(Pipeline::class)
+            ->send($order)
+            ->through([ValidateProductStock::class])
+            ->thenReturn();
 
-            $this->fail('Validation passed when it should have failed.');
-        } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($order->lineItems()->count() === 0);
-        }
+        $this->fail('Validation passed when it should have failed.');
+    } catch (CheckoutProductHasNoStockException $e) {
+        $this->assertTrue($order->lineItems()->count() === 0);
     }
+});
 
-    /** @test */
-    public function can_pass_validation_for_variant_product_with_enough_stock()
-    {
-        $product = Product::make()
-            ->productVariants([
-                'variants' => [
-                    [
-                        'name' => 'Colour',
-                        'values' => ['Yellow'],
-                    ],
-                    [
-                        'name' => 'Size',
-                        'values' => ['Large'],
-                    ],
-                ],
-                'options' => [
-                    [
-                        'key' => 'Yellow_Large',
-                        'variant' => 'Yellow, Large',
-                        'price' => 1500,
-                        'stock' => 10,
-                    ],
-                ],
-            ]);
-
-        $product->save();
-
-        $order = Order::make()
-            ->lineItems([
+test('can pass validation for variant product with enough stock', function () {
+    $product = Product::make()
+        ->productVariants([
+            'variants' => [
                 [
-                    'product' => $product->id(),
-                    'variant' => 'Yellow_Large',
-                    'quantity' => 3,
+                    'name' => 'Colour',
+                    'values' => ['Yellow'],
                 ],
-            ]);
-
-        $order->save();
-
-        try {
-            app(Pipeline::class)
-                ->send($order)
-                ->through([ValidateProductStock::class])
-                ->thenReturn();
-
-            // No exception was thrown, so we're good.
-            $this->assertTrue(true);
-        } catch (CheckoutProductHasNoStockException $e) {
-            $this->fail('Validation failed when it should have passed.');
-        }
-    }
-
-    /** @test */
-    public function cant_pass_validation_for_variant_product_without_enough_stock_to_fulfill_order()
-    {
-        $product = Product::make()
-            ->productVariants([
-                'variants' => [
-                    [
-                        'name' => 'Colour',
-                        'values' => ['Yellow'],
-                    ],
-                    [
-                        'name' => 'Size',
-                        'values' => ['Large'],
-                    ],
-                ],
-                'options' => [
-                    [
-                        'key' => 'Yellow_Large',
-                        'variant' => 'Yellow, Large',
-                        'price' => 1500,
-                        'stock' => 10,
-                    ],
-                ],
-            ]);
-
-        $product->save();
-
-        $order = Order::make()
-            ->lineItems([
                 [
-                    'product' => $product->id(),
-                    'variant' => 'Yellow_Large',
-                    'quantity' => 25,
+                    'name' => 'Size',
+                    'values' => ['Large'],
                 ],
-            ]);
-
-        $order->save();
-
-        try {
-            app(Pipeline::class)
-                ->send($order)
-                ->through([ValidateProductStock::class])
-                ->thenReturn();
-
-            $this->fail('Validation passed when it should have failed.');
-        } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($order->lineItems()->count() === 0);
-        }
-    }
-
-    /** @test */
-    public function cant_pass_validation_for_variant_product_with_no_stock()
-    {
-        $product = Product::make()
-            ->productVariants([
-                'variants' => [
-                    [
-                        'name' => 'Colour',
-                        'values' => ['Yellow'],
-                    ],
-                    [
-                        'name' => 'Size',
-                        'values' => ['Large'],
-                    ],
-                ],
-                'options' => [
-                    [
-                        'key' => 'Yellow_Large',
-                        'variant' => 'Yellow, Large',
-                        'price' => 1500,
-                        'stock' => 0,
-                    ],
-                ],
-            ]);
-
-        $product->save();
-
-        $order = Order::make()
-            ->lineItems([
+            ],
+            'options' => [
                 [
-                    'product' => $product->id(),
-                    'variant' => 'Yellow_Large',
-                    'quantity' => 5,
+                    'key' => 'Yellow_Large',
+                    'variant' => 'Yellow, Large',
+                    'price' => 1500,
+                    'stock' => 10,
                 ],
-            ]);
+            ],
+        ]);
 
-        $order->save();
+    $product->save();
 
-        try {
-            app(Pipeline::class)
-                ->send($order)
-                ->through([ValidateProductStock::class])
-                ->thenReturn();
+    $order = Order::make()
+        ->lineItems([
+            [
+                'product' => $product->id(),
+                'variant' => 'Yellow_Large',
+                'quantity' => 3,
+            ],
+        ]);
 
-            $this->fail('Validation passed when it should have failed.');
-        } catch (CheckoutProductHasNoStockException $e) {
-            $this->assertTrue($order->lineItems()->count() === 0);
-        }
+    $order->save();
+
+    try {
+        app(Pipeline::class)
+            ->send($order)
+            ->through([ValidateProductStock::class])
+            ->thenReturn();
+
+        // No exception was thrown, so we're good.
+        $this->assertTrue(true);
+    } catch (CheckoutProductHasNoStockException $e) {
+        $this->fail('Validation failed when it should have passed.');
     }
-}
+});
+
+test('cant pass validation for variant product without enough stock to fulfill order', function () {
+    $product = Product::make()
+        ->productVariants([
+            'variants' => [
+                [
+                    'name' => 'Colour',
+                    'values' => ['Yellow'],
+                ],
+                [
+                    'name' => 'Size',
+                    'values' => ['Large'],
+                ],
+            ],
+            'options' => [
+                [
+                    'key' => 'Yellow_Large',
+                    'variant' => 'Yellow, Large',
+                    'price' => 1500,
+                    'stock' => 10,
+                ],
+            ],
+        ]);
+
+    $product->save();
+
+    $order = Order::make()
+        ->lineItems([
+            [
+                'product' => $product->id(),
+                'variant' => 'Yellow_Large',
+                'quantity' => 25,
+            ],
+        ]);
+
+    $order->save();
+
+    try {
+        app(Pipeline::class)
+            ->send($order)
+            ->through([ValidateProductStock::class])
+            ->thenReturn();
+
+        $this->fail('Validation passed when it should have failed.');
+    } catch (CheckoutProductHasNoStockException $e) {
+        $this->assertTrue($order->lineItems()->count() === 0);
+    }
+});
+
+test('cant pass validation for variant product with no stock', function () {
+    $product = Product::make()
+        ->productVariants([
+            'variants' => [
+                [
+                    'name' => 'Colour',
+                    'values' => ['Yellow'],
+                ],
+                [
+                    'name' => 'Size',
+                    'values' => ['Large'],
+                ],
+            ],
+            'options' => [
+                [
+                    'key' => 'Yellow_Large',
+                    'variant' => 'Yellow, Large',
+                    'price' => 1500,
+                    'stock' => 0,
+                ],
+            ],
+        ]);
+
+    $product->save();
+
+    $order = Order::make()
+        ->lineItems([
+            [
+                'product' => $product->id(),
+                'variant' => 'Yellow_Large',
+                'quantity' => 5,
+            ],
+        ]);
+
+    $order->save();
+
+    try {
+        app(Pipeline::class)
+            ->send($order)
+            ->through([ValidateProductStock::class])
+            ->thenReturn();
+
+        $this->fail('Validation passed when it should have failed.');
+    } catch (CheckoutProductHasNoStockException $e) {
+        $this->assertTrue($order->lineItems()->count() === 0);
+    }
+});

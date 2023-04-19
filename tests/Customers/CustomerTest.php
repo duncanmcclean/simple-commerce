@@ -1,97 +1,86 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
-
 use DoubleThreeDigital\SimpleCommerce\Customers\Customer as CustomersCustomer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
-class CustomerTest extends TestCase
-{
-    /** @test */
-    public function can_create()
-    {
-        $create = Customer::make()
-            ->email('joe.smith@example.com')
-            ->data([
-                'name' => 'Joe Smith',
-            ]);
+uses(TestCase::class);
 
-        $create->save();
+test('can create', function () {
+    $create = Customer::make()
+        ->email('joe.smith@example.com')
+        ->data([
+            'name' => 'Joe Smith',
+        ]);
 
-        $this->assertTrue($create instanceof CustomersCustomer);
+    $create->save();
 
-        $this->assertNotNull($create->id());
+    $this->assertTrue($create instanceof CustomersCustomer);
 
-        $this->assertSame($create->name(), 'Joe Smith');
-        $this->assertSame($create->email(), 'joe.smith@example.com');
-        $this->assertSame($create->get('slug'), 'joesmith-at-examplecom');
-    }
+    $this->assertNotNull($create->id());
 
-    /** @test */
-    public function can_create_and_ensure_customer_entry_is_published()
-    {
-        $create = Customer::make()
-            ->email('joe.smith@example.com')
-            ->data([
-                'name' => 'Joe Smith',
-                'published' => true,
-            ]);
+    $this->assertSame($create->name(), 'Joe Smith');
+    $this->assertSame($create->email(), 'joe.smith@example.com');
+    $this->assertSame($create->get('slug'), 'joesmith-at-examplecom');
+});
 
-        $create->save();
+test('can create and ensure customer entry is published', function () {
+    $create = Customer::make()
+        ->email('joe.smith@example.com')
+        ->data([
+            'name' => 'Joe Smith',
+            'published' => true,
+        ]);
 
-        $this->assertTrue($create instanceof CustomersCustomer);
+    $create->save();
 
-        $this->assertNotNull($create->id());
-        $this->assertSame($create->name(), 'Joe Smith');
-        $this->assertSame($create->email(), 'joe.smith@example.com');
+    $this->assertTrue($create instanceof CustomersCustomer);
 
-        $this->assertTrue($create->get('published'));
-    }
+    $this->assertNotNull($create->id());
+    $this->assertSame($create->name(), 'Joe Smith');
+    $this->assertSame($create->email(), 'joe.smith@example.com');
 
-    /** @test */
-    public function can_find_by_id()
-    {
-        Entry::make()
-            ->collection('customers')
-            ->id($id = Stache::generateId())
-            ->slug('smoke-at-firecom')
-            ->data([
-                'name' => 'Smoke Fire',
-                'email' => 'smoke@fire.com',
-            ])
-            ->save();
+    $this->assertTrue($create->get('published'));
+});
 
-        $findByEmail = Customer::find($id);
+test('can find by id', function () {
+    Entry::make()
+        ->collection('customers')
+        ->id($id = Stache::generateId())
+        ->slug('smoke-at-firecom')
+        ->data([
+            'name' => 'Smoke Fire',
+            'email' => 'smoke@fire.com',
+        ])
+        ->save();
 
-        $this->assertTrue($findByEmail instanceof CustomersCustomer);
+    $findByEmail = Customer::find($id);
 
-        $this->assertSame($findByEmail->name(), 'Smoke Fire');
-        $this->assertSame($findByEmail->email(), 'smoke@fire.com');
-        $this->assertSame($findByEmail->get('slug'), 'smoke-at-firecom');
-    }
+    $this->assertTrue($findByEmail instanceof CustomersCustomer);
 
-    /** @test */
-    public function can_find_by_email()
-    {
-        Entry::make()
-            ->collection('customers')
-            ->id(Stache::generateId())
-            ->slug('sam-at-whitehousegov')
-            ->data([
-                'name' => 'Sam Seaboarn',
-                'email' => 'sam@whitehouse.gov',
-            ])
-            ->save();
+    $this->assertSame($findByEmail->name(), 'Smoke Fire');
+    $this->assertSame($findByEmail->email(), 'smoke@fire.com');
+    $this->assertSame($findByEmail->get('slug'), 'smoke-at-firecom');
+});
 
-        $findByEmail = Customer::findByEmail('sam@whitehouse.gov');
+test('can find by email', function () {
+    Entry::make()
+        ->collection('customers')
+        ->id(Stache::generateId())
+        ->slug('sam-at-whitehousegov')
+        ->data([
+            'name' => 'Sam Seaboarn',
+            'email' => 'sam@whitehouse.gov',
+        ])
+        ->save();
 
-        $this->assertTrue($findByEmail instanceof CustomersCustomer);
+    $findByEmail = Customer::findByEmail('sam@whitehouse.gov');
 
-        $this->assertSame($findByEmail->name(), 'Sam Seaboarn');
-        $this->assertSame($findByEmail->email(), 'sam@whitehouse.gov');
-        $this->assertSame($findByEmail->get('slug'), 'sam-at-whitehousegov');
-    }
-}
+    $this->assertTrue($findByEmail instanceof CustomersCustomer);
+
+    $this->assertSame($findByEmail->name(), 'Sam Seaboarn');
+    $this->assertSame($findByEmail->email(), 'sam@whitehouse.gov');
+    $this->assertSame($findByEmail->get('slug'), 'sam-at-whitehousegov');
+});

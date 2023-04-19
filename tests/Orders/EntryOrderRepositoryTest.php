@@ -1,7 +1,5 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders;
-
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
@@ -10,78 +8,66 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
-class EntryOrderRepositoryTest extends TestCase
-{
-    use SetupCollections, RefreshContent;
+uses(TestCase::class);
+uses(SetupCollections::class);
+uses(RefreshContent::class);
+beforeEach(function () {
+    $this->repository = new EntryOrderRepository;
+});
 
-    protected $repository;
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('can generate order number from minimum order number', function () {
+    app()['config']->set('simple-commerce.minimum_order_number', 1000);
 
-        $this->repository = new EntryOrderRepository;
-    }
+    $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
 
-    /** @test */
-    public function can_generate_order_number_from_minimum_order_number()
-    {
-        $this->app['config']->set('simple-commerce.minimum_order_number', 1000);
+    $this->assertSame($generateOrderNumber, 1000);
+});
 
-        $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
+test('can generate order number from previous order titles', function () {
+    Collection::find('orders')->titleFormats([])->save();
 
-        $this->assertSame($generateOrderNumber, 1000);
-    }
+    Entry::make()
+        ->collection('orders')
+        ->data(['title' => '#1234'])
+        ->save();
 
-    /** @test */
-    public function can_generate_order_number_from_previous_order_titles()
-    {
-        Collection::find('orders')->titleFormats([])->save();
+    Entry::make()
+        ->collection('orders')
+        ->data(['title' => '#1235'])
+        ->save();
 
-        Entry::make()
-            ->collection('orders')
-            ->data(['title' => '#1234'])
-            ->save();
+    Entry::make()
+        ->collection('orders')
+        ->data(['title' => '#1236'])
+        ->save();
 
-        Entry::make()
-            ->collection('orders')
-            ->data(['title' => '#1235'])
-            ->save();
+    $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
 
-        Entry::make()
-            ->collection('orders')
-            ->data(['title' => '#1236'])
-            ->save();
+    $this->assertSame($generateOrderNumber, 1237);
+});
 
-        $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
+test('can generate order number from previous order number', function () {
+    Collection::find('orders')->titleFormats([
+        'default' => '#{order_number}',
+    ])->save();
 
-        $this->assertSame($generateOrderNumber, 1237);
-    }
+    Entry::make()
+        ->collection('orders')
+        ->data(['order_number' => 6001])
+        ->save();
 
-    /** @test */
-    public function can_generate_order_number_from_previous_order_number()
-    {
-        Collection::find('orders')->titleFormats([
-            'default' => '#{order_number}',
-        ])->save();
+    Entry::make()
+        ->collection('orders')
+        ->data(['order_number' => 6002])
+        ->save();
 
-        Entry::make()
-            ->collection('orders')
-            ->data(['order_number' => 6001])
-            ->save();
+    Entry::make()
+        ->collection('orders')
+        ->data(['order_number' => 6003])
+        ->save();
 
-        Entry::make()
-            ->collection('orders')
-            ->data(['order_number' => 6002])
-            ->save();
+    $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
 
-        Entry::make()
-            ->collection('orders')
-            ->data(['order_number' => 6003])
-            ->save();
-
-        $generateOrderNumber = (new Invader($this->repository))->generateOrderNumber();
-
-        $this->assertSame($generateOrderNumber, 6004);
-    }
-}
+    $this->assertSame($generateOrderNumber, 6004);
+});

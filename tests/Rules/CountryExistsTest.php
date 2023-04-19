@@ -1,38 +1,31 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Rules;
-
 use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 
-class CountryExistsTest extends TestCase
-{
-    /** @test */
-    public function it_passes_for_matching_iso_code()
-    {
-        $data = [
-            'country' => 'GB',
-        ];
+uses(TestCase::class);
 
-        $validate = Validator::make($data, [
-            'country' => [new CountryExists()],
-        ]);
+it('passes for matching iso code', function () {
+    $data = [
+        'country' => 'GB',
+    ];
 
-        $this->assertFalse($validate->fails());
-    }
+    $validate = Validator::make($data, [
+        'country' => [new CountryExists()],
+    ]);
 
-    /** @test */
-    public function it_fails_for_made_up_country()
-    {
-        $data = [
-            'country' => 'stataland',
-        ];
+    $this->assertFalse($validate->fails());
+});
 
-        $validate = Validator::make($data, [
-            'country' => [new CountryExists()],
-        ]);
+it('fails for made up country', function () {
+    $data = [
+        'country' => 'stataland',
+    ];
 
-        $this->assertTrue($validate->fails());
-    }
-}
+    $validate = Validator::make($data, [
+        'country' => [new CountryExists()],
+    ]);
+
+    $this->assertTrue($validate->fails());
+});

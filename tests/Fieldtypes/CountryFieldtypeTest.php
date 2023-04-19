@@ -1,7 +1,5 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
 use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
@@ -9,83 +7,65 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-class CountryFieldtypeTest extends TestCase
-{
-    protected $fieldtype;
+uses(TestCase::class);
+beforeEach(function () {
+    $this->fieldtype = new CountryFieldtype;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
 
-        $this->fieldtype = new CountryFieldtype;
-    }
+test('can get index items', function () {
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-    /** @test */
-    public function can_get_index_items()
-    {
-        $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $this->assertTrue($getIndexItems instanceof Collection);
 
-        $this->assertTrue($getIndexItems instanceof Collection);
+    $this->assertSame($getIndexItems->last(), [
+        'id' => 'ZW',
+        'iso' => 'ZW',
+        'name' => 'Zimbabwe',
+    ]);
+});
 
-        $this->assertSame($getIndexItems->last(), [
-            'id' => 'ZW',
-            'iso' => 'ZW',
-            'name' => 'Zimbabwe',
-        ]);
-    }
+test('can get columns', function () {
+    $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-    /** @test */
-    public function can_get_columns()
-    {
-        $getColumns = (new Invader($this->fieldtype))->getColumns();
+    $this->assertIsArray($getColumns);
 
-        $this->assertIsArray($getColumns);
+    $this->assertTrue($getColumns[0] instanceof Column);
+    $this->assertSame($getColumns[0]->field(), 'name');
+    $this->assertSame($getColumns[0]->label(), 'Name');
 
-        $this->assertTrue($getColumns[0] instanceof Column);
-        $this->assertSame($getColumns[0]->field(), 'name');
-        $this->assertSame($getColumns[0]->label(), 'Name');
+    $this->assertTrue($getColumns[1] instanceof Column);
+    $this->assertSame($getColumns[1]->field(), 'iso');
+    $this->assertSame($getColumns[1]->label(), 'ISO Code');
+});
 
-        $this->assertTrue($getColumns[1] instanceof Column);
-        $this->assertSame($getColumns[1]->field(), 'iso');
-        $this->assertSame($getColumns[1]->label(), 'ISO Code');
-    }
+test('can return as item array', function () {
+    $toItemArray = $this->fieldtype->toItemArray('GB');
 
-    /** @test */
-    public function can_return_as_item_array()
-    {
-        $toItemArray = $this->fieldtype->toItemArray('GB');
+    $this->assertIsArray($toItemArray);
 
-        $this->assertIsArray($toItemArray);
+    $this->assertSame($toItemArray, [
+        'id' => 'GB',
+        'title' => 'United Kingdom',
+    ]);
+});
 
-        $this->assertSame($toItemArray, [
-            'id' => 'GB',
-            'title' => 'United Kingdom',
-        ]);
-    }
+test('can preprocess index', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex('GB');
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex('GB');
+    $this->assertIsString($preProcessIndex);
+    $this->assertSame($preProcessIndex, 'United Kingdom');
+});
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'United Kingdom');
-    }
+test('can preprocess index with no country', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-    /** @test */
-    public function can_preprocess_index_with_no_country()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(null);
+    $this->assertNull($preProcessIndex);
+});
 
-        $this->assertNull($preProcessIndex);
-    }
+test('can preprocess with multiple countries', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(['GB', 'US']);
 
-    /** @test */
-    public function can_preprocess_with_multiple_countries()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(['GB', 'US']);
-
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'United Kingdom, United States');
-    }
-}
+    $this->assertIsString($preProcessIndex);
+    $this->assertSame($preProcessIndex, 'United Kingdom, United States');
+});

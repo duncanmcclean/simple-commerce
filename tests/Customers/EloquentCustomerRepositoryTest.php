@@ -1,7 +1,5 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
-
 use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
@@ -9,171 +7,154 @@ use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 
-class EloquentCustomerRepositoryTest extends TestCase
-{
-    use RefreshDatabase, UseDatabaseContentDrivers;
+uses(TestCase::class);
+uses(RefreshDatabase::class);
+uses(UseDatabaseContentDrivers::class);
 
-    /** @test */
-    public function can_get_all_customers()
-    {
-        CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
+test('can get all customers', function () {
+    CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
+
+    CustomerModel::create([
+        'name' => 'Sam Seaborn',
+        'email' => 'sam@whitehouse.gov',
+        'data' => [
+            'role' => 'Deputy Communications Director',
+        ],
+    ]);
+
+    $all = Customer::all();
+
+    $this->assertTrue($all instanceof Collection);
+    $this->assertSame($all->count(), 2);
+});
+
+test('can find customer', function () {
+    $customer = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
+
+    $find = Customer::find($customer->id);
+
+    $this->assertSame($find->id(), $customer->id);
+    $this->assertSame($find->name(), $customer->name);
+    $this->assertSame($find->email(), $customer->email);
+    $this->assertSame($find->get('role'), 'Press Secretary');
+});
+
+test('can find customer with custom column', function () {
+    $customer = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+        'favourite_colour' => 'Orange',
+    ]);
+
+    $find = Customer::find($customer->id);
+
+    $this->assertSame($find->id(), $customer->id);
+    $this->assertSame($find->name(), $customer->name);
+    $this->assertSame($find->email(), $customer->email);
+    $this->assertSame($find->get('role'), 'Press Secretary');
+    $this->assertSame($find->get('favourite_colour'), 'Orange');
+});
+
+test('can find customer by email', function () {
+    $customer = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
+
+    $find = Customer::findByEmail($customer->email);
+
+    $this->assertSame($find->id(), $customer->id);
+    $this->assertSame($find->name(), $customer->name);
+    $this->assertSame($find->email(), $customer->email);
+    $this->assertSame($find->get('role'), 'Press Secretary');
+});
+
+test('can create', function () {
+    $create = Customer::make()
+        ->email('sam@whitehouse.gov')
+        ->data([
+            'name' => 'Sam Seaborne',
         ]);
 
-        CustomerModel::create([
-            'name' => 'Sam Seaborn',
-            'email' => 'sam@whitehouse.gov',
-            'data' => [
-                'role' => 'Deputy Communications Director',
-            ],
-        ]);
+    $create->save();
 
-        $all = Customer::all();
+    $this->assertNotNull($create->id());
+    $this->assertSame($create->name(), 'Sam Seaborne');
+    $this->assertSame($create->email(), 'sam@whitehouse.gov');
+});
 
-        $this->assertTrue($all instanceof Collection);
-        $this->assertSame($all->count(), 2);
-    }
+test('can save', function () {
+    $customerRecord = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
 
-    /** @test */
-    public function can_find_customer()
-    {
-        $customer = CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
-        ]);
+    $customer = Customer::find($customerRecord->id);
 
-        $find = Customer::find($customer->id);
+    $customer->set('is_senior_advisor', true);
 
-        $this->assertSame($find->id(), $customer->id);
-        $this->assertSame($find->name(), $customer->name);
-        $this->assertSame($find->email(), $customer->email);
-        $this->assertSame($find->get('role'), 'Press Secretary');
-    }
+    $customer->save();
 
-    /** @test */
-    public function can_find_customer_with_custom_column()
-    {
-        $customer = CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
-            'favourite_colour' => 'Orange',
-        ]);
+    $this->assertSame($customer->id(), $customerRecord->id);
+    $this->assertSame($customer->get('is_senior_advisor'), true);
+});
 
-        $find = Customer::find($customer->id);
+test('can save with custom column', function () {
+    $customerRecord = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
 
-        $this->assertSame($find->id(), $customer->id);
-        $this->assertSame($find->name(), $customer->name);
-        $this->assertSame($find->email(), $customer->email);
-        $this->assertSame($find->get('role'), 'Press Secretary');
-        $this->assertSame($find->get('favourite_colour'), 'Orange');
-    }
+    $customer = Customer::find($customerRecord->id);
 
-    /** @test */
-    public function can_find_customer_by_email()
-    {
-        $customer = CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
-        ]);
+    $customer->set('favourite_colour', 'Yellow');
 
-        $find = Customer::findByEmail($customer->email);
+    $customer->save();
 
-        $this->assertSame($find->id(), $customer->id);
-        $this->assertSame($find->name(), $customer->name);
-        $this->assertSame($find->email(), $customer->email);
-        $this->assertSame($find->get('role'), 'Press Secretary');
-    }
+    $this->assertSame($customer->id(), $customerRecord->id);
+    $this->assertSame($customer->get('favourite_colour'), 'Yellow');
+});
 
-    /** @test */
-    public function can_create()
-    {
-        $create = Customer::make()
-            ->email('sam@whitehouse.gov')
-            ->data([
-                'name' => 'Sam Seaborne',
-            ]);
+test('can delete', function () {
+    $customerRecord = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
 
-        $create->save();
+    $customer = Customer::find($customerRecord->id);
 
-        $this->assertNotNull($create->id());
-        $this->assertSame($create->name(), 'Sam Seaborne');
-        $this->assertSame($create->email(), 'sam@whitehouse.gov');
-    }
+    $customer->delete();
 
-    /** @test */
-    public function can_save()
-    {
-        $customerRecord = CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
-        ]);
-
-        $customer = Customer::find($customerRecord->id);
-
-        $customer->set('is_senior_advisor', true);
-
-        $customer->save();
-
-        $this->assertSame($customer->id(), $customerRecord->id);
-        $this->assertSame($customer->get('is_senior_advisor'), true);
-    }
-
-    /** @test */
-    public function can_save_with_custom_column()
-    {
-        $customerRecord = CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
-        ]);
-
-        $customer = Customer::find($customerRecord->id);
-
-        $customer->set('favourite_colour', 'Yellow');
-
-        $customer->save();
-
-        $this->assertSame($customer->id(), $customerRecord->id);
-        $this->assertSame($customer->get('favourite_colour'), 'Yellow');
-    }
-
-    /** @test */
-    public function can_delete()
-    {
-        $customerRecord = CustomerModel::create([
-            'name' => 'CJ Cregg',
-            'email' => 'cj@whitehouse.gov',
-            'data' => [
-                'role' => 'Press Secretary',
-            ],
-        ]);
-
-        $customer = Customer::find($customerRecord->id);
-
-        $customer->delete();
-
-        $this->assertDatabaseMissing('customers', [
-            'id' => $customerRecord->id,
-            'name' => 'CJ Cregg',
-            'email' => $customerRecord->email,
-        ]);
-    }
-}
+    $this->assertDatabaseMissing('customers', [
+        'id' => $customerRecord->id,
+        'name' => 'CJ Cregg',
+        'email' => $customerRecord->email,
+    ]);
+});

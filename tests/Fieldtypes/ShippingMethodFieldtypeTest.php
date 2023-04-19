@@ -1,7 +1,5 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingMethodFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
@@ -10,78 +8,60 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-class ShippingMethodFieldtypeTest extends TestCase
-{
-    protected $fieldtype;
+uses(TestCase::class);
+beforeEach(function () {
+    $this->fieldtype = new ShippingMethodFieldtype;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
 
-        $this->fieldtype = new ShippingMethodFieldtype;
-    }
+test('can get config field items', function () {
+    $configFieldItems = (new Invader($this->fieldtype))->configFieldItems();
 
-    /** @test */
-    public function can_get_config_field_items()
-    {
-        $configFieldItems = (new Invader($this->fieldtype))->configFieldItems();
+    $this->assertIsArray($configFieldItems);
+});
 
-        $this->assertIsArray($configFieldItems);
-    }
+test('can get index items', function () {
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-    /** @test */
-    public function can_get_index_items()
-    {
-        $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $this->assertTrue($getIndexItems instanceof Collection);
 
-        $this->assertTrue($getIndexItems instanceof Collection);
+    $this->assertSame($getIndexItems->last(), [
+        'id' => FreeShipping::class,
+        'name' => 'Free Shipping',
+        'title' => 'Free Shipping',
+    ]);
+});
 
-        $this->assertSame($getIndexItems->last(), [
-            'id' => FreeShipping::class,
-            'name' => 'Free Shipping',
-            'title' => 'Free Shipping',
-        ]);
-    }
+test('can get columns', function () {
+    $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-    /** @test */
-    public function can_get_columns()
-    {
-        $getColumns = (new Invader($this->fieldtype))->getColumns();
+    $this->assertIsArray($getColumns);
 
-        $this->assertIsArray($getColumns);
+    $this->assertTrue($getColumns[0] instanceof Column);
+    $this->assertSame($getColumns[0]->field(), 'name');
+    $this->assertSame($getColumns[0]->label(), 'Name');
+});
 
-        $this->assertTrue($getColumns[0] instanceof Column);
-        $this->assertSame($getColumns[0]->field(), 'name');
-        $this->assertSame($getColumns[0]->label(), 'Name');
-    }
+test('can return as item array', function () {
+    $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
 
-    /** @test */
-    public function can_return_as_item_array()
-    {
-        $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
+    $this->assertIsArray($toItemArray);
 
-        $this->assertIsArray($toItemArray);
+    $this->assertSame($toItemArray, [
+        'id' => FreeShipping::class,
+        'title' => 'Free Shipping',
+    ]);
+});
 
-        $this->assertSame($toItemArray, [
-            'id' => FreeShipping::class,
-            'title' => 'Free Shipping',
-        ]);
-    }
+test('can preprocess index', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
+    $this->assertIsString($preProcessIndex);
+    $this->assertSame($preProcessIndex, 'Free Shipping');
+});
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'Free Shipping');
-    }
+test('can preprocess index with no shipping method', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-    /** @test */
-    public function can_preprocess_index_with_no_shipping_method()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(null);
-
-        $this->assertNull($preProcessIndex);
-    }
-}
+    $this->assertNull($preProcessIndex);
+});

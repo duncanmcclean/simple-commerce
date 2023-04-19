@@ -1,7 +1,5 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\GatewayFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
@@ -10,116 +8,103 @@ use Illuminate\Support\Facades\Auth;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;
 
-class GatewayFieldtypeTest extends TestCase
-{
-    /** @test */
-    public function can_get_title()
-    {
-        $title = GatewayFieldtype::title();
+uses(TestCase::class);
 
-        $this->assertSame('Payment Gateway', $title);
-    }
+test('can get title', function () {
+    $title = GatewayFieldtype::title();
 
-    /** @test */
-    public function can_preload()
-    {
-        $preload = (new GatewayFieldtype)->preload();
+    $this->assertSame('Payment Gateway', $title);
+});
 
-        $this->assertIsArray($preload);
-        $this->assertArrayHasKey('gateways', $preload);
-    }
+test('can preload', function () {
+    $preload = (new GatewayFieldtype)->preload();
 
-    /** @test */
-    public function can_preprocess()
-    {
-        $order = Order::make();
-        $order->save();
+    $this->assertIsArray($preload);
+    $this->assertArrayHasKey('gateways', $preload);
+});
 
-        $user = User::make()->email('test@test.com');
-        $user->save();
+test('can preprocess', function () {
+    $order = Order::make();
+    $order->save();
 
-        $field = new Field('gateway', [
-            'type' => 'gateway',
-        ]);
+    $user = User::make()->email('test@test.com');
+    $user->save();
 
-        $field->setParent($order->resource());
+    $field = new Field('gateway', [
+        'type' => 'gateway',
+    ]);
 
-        Auth::setUser($user);
+    $field->setParent($order->resource());
 
-        $preProcess = (new GatewayFieldtype)->setField($field)->preProcess([
-            'use' => DummyGateway::class,
-            'data' => [
-                'id' => 'abc123',
-                'smth' => 'cool',
-            ],
-        ]);
+    Auth::setUser($user);
 
-        $this->assertIsArray($preProcess);
+    $preProcess = (new GatewayFieldtype)->setField($field)->preProcess([
+        'use' => DummyGateway::class,
+        'data' => [
+            'id' => 'abc123',
+            'smth' => 'cool',
+        ],
+    ]);
 
-        $this->assertArrayHasKey('data', $preProcess);
-        $this->assertSame([
-            'use' => DummyGateway::class,
-            'data' => [
-                'id' => 'abc123',
-                'smth' => 'cool',
-            ],
-        ], $preProcess['data']);
+    $this->assertIsArray($preProcess);
 
-        $this->assertArrayHasKey('entry', $preProcess);
-        $this->assertArrayHasKey('gateway_class', $preProcess);
-        $this->assertArrayHasKey('display', $preProcess);
-        $this->assertArrayHasKey('actions', $preProcess);
-        $this->assertArrayHasKey('action_url', $preProcess);
-    }
+    $this->assertArrayHasKey('data', $preProcess);
+    $this->assertSame([
+        'use' => DummyGateway::class,
+        'data' => [
+            'id' => 'abc123',
+            'smth' => 'cool',
+        ],
+    ], $preProcess['data']);
 
-    /** @test */
-    public function can_process()
-    {
-        $process = (new GatewayFieldtype)->process([
-            'data' => [
-                'use' => DummyGateway::class,
-                'data' => ['smth' => 'cool'],
-            ],
-            'actions' => [],
-        ]);
+    $this->assertArrayHasKey('entry', $preProcess);
+    $this->assertArrayHasKey('gateway_class', $preProcess);
+    $this->assertArrayHasKey('display', $preProcess);
+    $this->assertArrayHasKey('actions', $preProcess);
+    $this->assertArrayHasKey('action_url', $preProcess);
+});
 
-        $this->assertIsArray($process);
-
-        $this->assertSame([
+test('can process', function () {
+    $process = (new GatewayFieldtype)->process([
+        'data' => [
             'use' => DummyGateway::class,
             'data' => ['smth' => 'cool'],
-        ], $process);
-    }
+        ],
+        'actions' => [],
+    ]);
 
-    /** @test */
-    public function can_augment()
-    {
-        $augment = (new GatewayFieldtype)->augment([
-            'use' => DummyGateway::class,
-            'data' => ['smth' => 'cool'],
-        ]);
+    $this->assertIsArray($process);
 
-        $this->assertIsArray($augment);
+    $this->assertSame([
+        'use' => DummyGateway::class,
+        'data' => ['smth' => 'cool'],
+    ], $process);
+});
 
-        $this->assertArrayHasKey('name', $augment);
-        $this->assertArrayHasKey('handle', $augment);
-        $this->assertArrayHasKey('class', $augment);
-        $this->assertArrayHasKey('formatted_class', $augment);
-        $this->assertArrayHasKey('display', $augment);
-        $this->assertArrayHasKey('checkoutRules', $augment);
-        $this->assertArrayHasKey('config', $augment);
-        $this->assertArrayHasKey('webhook_url', $augment);
-        $this->assertArrayHasKey('data', $augment);
-    }
+test('can augment', function () {
+    $augment = (new GatewayFieldtype)->augment([
+        'use' => DummyGateway::class,
+        'data' => ['smth' => 'cool'],
+    ]);
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = (new GatewayFieldtype)->preProcessIndex([
-            'use' => DummyGateway::class,
-            'data' => ['smth' => 'cool'],
-        ]);
+    $this->assertIsArray($augment);
 
-        $this->assertSame('Dummy', $preProcessIndex);
-    }
-}
+    $this->assertArrayHasKey('name', $augment);
+    $this->assertArrayHasKey('handle', $augment);
+    $this->assertArrayHasKey('class', $augment);
+    $this->assertArrayHasKey('formatted_class', $augment);
+    $this->assertArrayHasKey('display', $augment);
+    $this->assertArrayHasKey('checkoutRules', $augment);
+    $this->assertArrayHasKey('config', $augment);
+    $this->assertArrayHasKey('webhook_url', $augment);
+    $this->assertArrayHasKey('data', $augment);
+});
+
+test('can preprocess index', function () {
+    $preProcessIndex = (new GatewayFieldtype)->preProcessIndex([
+        'use' => DummyGateway::class,
+        'data' => ['smth' => 'cool'],
+    ]);
+
+    $this->assertSame('Dummy', $preProcessIndex);
+});
