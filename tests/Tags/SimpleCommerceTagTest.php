@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 test('can get countries', function () {
-    $usage = tag('{{ sc:countries }}{{ name }},{{ /sc:countries }}');
+    $usage = (string) tag('{{ sc:countries }}{{ name }},{{ /sc:countries }}');
 
     foreach (Countries::toArray() as $country) {
         expect($usage)->toContain($country['name']);
@@ -18,7 +18,7 @@ test('can get countries', function () {
 });
 
 test('can get countries with only parameter', function () {
-    $usage = tag('{{ sc:countries only="GB|Ireland" }}{{ name }},{{ /sc:countries }}');
+    $usage = (string) tag('{{ sc:countries only="GB|Ireland" }}{{ name }},{{ /sc:countries }}');
 
     expect($usage)->toContain('United Kingdom');
     expect($usage)->toContain('Ireland');
@@ -27,7 +27,7 @@ test('can get countries with only parameter', function () {
 });
 
 test('can get countries with exclude parameter', function () {
-    $usage = tag('{{ sc:countries exclude="United Kingdom|Ireland" }}{{ name }},{{ /sc:countries }}');
+    $usage = (string) tag('{{ sc:countries exclude="United Kingdom|Ireland" }}{{ name }},{{ /sc:countries }}');
 
     $this->assertStringNotContainsString('United Kingdom', $usage);
     $this->assertStringNotContainsString('Ireland', $usage);
@@ -36,7 +36,7 @@ test('can get countries with exclude parameter', function () {
 });
 
 test('can get countries with common parameter', function () {
-    $usage = tag('{{ sc:countries common="IE" }}{{ name }},{{ /sc:countries }}');
+    $usage = (string) tag('{{ sc:countries common="IE" }}{{ name }},{{ /sc:countries }}');
 
     expect($usage)->toContain('Ireland,-,');
 
@@ -45,13 +45,13 @@ test('can get countries with common parameter', function () {
 });
 
 test('can get countries with regions inside', function () {
-    $usage = tag('{{ sc:countries }}{{ name }}|{{ regions limit="1" }}{{ name }}{{ /regions }},{{ /sc:countries }}');
+    $usage = (string) tag('{{ sc:countries }}{{ name }}|{{ regions limit="1" }}{{ name }}{{ /regions }},{{ /sc:countries }}');
 
     expect($usage)->toContain('Austria|Burgenland');
 });
 
 test('can get currencies', function () {
-    $usage = tag('{{ sc:currencies }}{{ name }},{{ /sc:currencies }}');
+    $usage = (string) tag('{{ sc:currencies }}{{ name }},{{ /sc:currencies }}');
 
     foreach (Currencies::toArray() as $currency) {
         expect($usage)->toContain($currency['name']);
@@ -59,7 +59,7 @@ test('can get currencies', function () {
 });
 
 test('can get regions', function () {
-    $usage = tag('{{ sc:regions }}{{ name }} ({{ country:iso }}),{{ /sc:regions }}');
+    $usage = (string) tag('{{ sc:regions }}{{ name }} ({{ country:iso }}),{{ /sc:regions }}');
 
     foreach (Regions::toArray() as $region) {
         expect($usage)->toContain($region['name']);
@@ -68,7 +68,7 @@ test('can get regions', function () {
 });
 
 test('can get regions scoped by country', function () {
-    $usage = tag('{{ sc:regions country="GB" }}{{ name }} ({{ country:iso }}),{{ /sc:regions }}');
+    $usage = (string) tag('{{ sc:regions country="GB" }}{{ name }} ({{ country:iso }}),{{ /sc:regions }}');
 
     foreach (Regions::where('country_iso', 'GB')->toArray() as $region) {
         expect($usage)->toContain($region['name']);
@@ -79,19 +79,19 @@ test('can get regions scoped by country', function () {
 });
 
 test('can get sub tag index', function () {
-    $usage = tag('{{ sc:test }}');
+    $usage = (string) tag('{{ sc:test }}');
 
     expect((string) $usage)->toBe('This is the index method.');
 });
 
 test('can get sub tag method', function () {
-    $usage = tag('{{ sc:test:cheese }}');
+    $usage = (string) tag('{{ sc:test:cheese }}');
 
     expect((string) $usage)->toBe('This is the cheese method.');
 });
 
 test('can get sub tag wildcard', function () {
-    $usage = tag('{{ sc:test:something }}');
+    $usage = (string) tag('{{ sc:test:something }}');
 
     expect((string) $usage)->toBe('This is the wildcard method.');
 });

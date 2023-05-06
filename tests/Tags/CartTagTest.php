@@ -64,7 +64,7 @@ test('can get cart items', function () {
 
     fakeCart($cart);
 
-    expect(tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'))->toContain('5');
+    expect((string) tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'))->toContain('5');
 });
 
 test('can get cart items count', function () {
@@ -338,7 +338,7 @@ test('can get cart tax total split', function () {
     $taxReducedFormatted = Currency::parse($taxReduced, Site::default());
 
     // Expected tag output format = '7:£12.34|19:£56.78'
-    $renderedTag = tag('{{ sc:cart:taxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:taxTotalSplit }}');
+    $renderedTag = (string) tag('{{ sc:cart:taxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:taxTotalSplit }}');
 
     expect($renderedTag)->toContain($taxRateDefault->rate().':'.$taxDefaultFormatted);
     expect($renderedTag)->toContain($taxRateReduced->rate().':'.$taxReducedFormatted);
