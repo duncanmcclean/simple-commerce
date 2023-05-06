@@ -33,7 +33,6 @@ beforeEach(function () {
     ]);
 });
 
-
 test('has a name', function () {
     $name = $this->cardElementsGateway->name();
 
@@ -337,10 +336,10 @@ test('cant checkout when in payment elements mode', function () {
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $product = Product::make()
-         ->price(1234)
-         ->data([
-             'title' => 'Zoo Ticket',
-         ]);
+        ->price(1234)
+        ->data([
+            'title' => 'Zoo Ticket',
+        ]);
 
     $product->save();
 

@@ -67,7 +67,7 @@ test('cant store coupon where a coupon already exists with the provided code', f
             'redeemed' => 0,
             'minimum_cart_value' => null,
         ])
-     ->save();
+        ->save();
 
     $this
         ->actingAs(user())

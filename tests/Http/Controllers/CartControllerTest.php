@@ -381,9 +381,9 @@ test('can update cart and existing customer by email with additional data', func
     ];
 
     $response = $this
-         ->from('/cart')
-         ->withSession(['simple-commerce-cart' => $cart->id])
-         ->post(route('statamic.simple-commerce.cart.update'), $data);
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), $data);
 
     $response->assertRedirect('/cart');
 

@@ -11,7 +11,6 @@ beforeEach(function () {
     $this->fieldtype = new ShippingMethodFieldtype;
 });
 
-
 test('can get config field items', function () {
     $configFieldItems = (new Invader($this->fieldtype))->configFieldItems();
 

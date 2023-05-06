@@ -17,7 +17,6 @@ beforeEach(function () {
     $this->useBasicTaxEngine();
 });
 
-
 test('does not calculate totals if order is paid', function () {
     $product = Product::make()->price(500);
     $product->save();

@@ -701,10 +701,10 @@ test('can post checkout with customer array with additional information', functi
     Event::fake();
 
     $product = Product::make()
-         ->price(5000)
-         ->data([
-             'title' => 'Bacon',
-         ]);
+        ->price(5000)
+        ->data([
+            'title' => 'Bacon',
+        ]);
 
     $product->save();
 
@@ -720,19 +720,19 @@ test('can post checkout with customer array with additional information', functi
     $order->save();
 
     $this
-         ->withSession(['simple-commerce-cart' => $order->id])
-         ->post(route('statamic.simple-commerce.checkout.store'), [
-             'customer' => [
-                 'name' => 'Joe Doe',
-                 'email' => 'joe.doe@example.com',
-                 'dob' => '01/01/2000',
-             ],
-             'gateway' => DummyGateway::class,
-             'card_number' => '4242424242424242',
-             'expiry_month' => '01',
-             'expiry_year' => '2025',
-             'cvc' => '123',
-         ]);
+        ->withSession(['simple-commerce-cart' => $order->id])
+        ->post(route('statamic.simple-commerce.checkout.store'), [
+            'customer' => [
+                'name' => 'Joe Doe',
+                'email' => 'joe.doe@example.com',
+                'dob' => '01/01/2000',
+            ],
+            'gateway' => DummyGateway::class,
+            'card_number' => '4242424242424242',
+            'expiry_month' => '01',
+            'expiry_year' => '2025',
+            'cvc' => '123',
+        ]);
 
     $order = $order->fresh();
 
@@ -770,10 +770,10 @@ test('can post checkout with customer array and existing customer with additiona
     Event::fake();
 
     $product = Product::make()
-         ->price(5000)
-         ->data([
-             'title' => 'Bacon',
-         ]);
+        ->price(5000)
+        ->data([
+            'title' => 'Bacon',
+        ]);
 
     $product->save();
 
@@ -789,27 +789,27 @@ test('can post checkout with customer array and existing customer with additiona
     $order->save();
 
     $customer = Customer::make()
-         ->email('joe.doe@example.com')
-         ->data([
-             'name' => 'Joe Doe',
-         ]);
+        ->email('joe.doe@example.com')
+        ->data([
+            'name' => 'Joe Doe',
+        ]);
 
     $customer->save();
 
     $this
-         ->withSession(['simple-commerce-cart' => $order->id])
-         ->post(route('statamic.simple-commerce.checkout.store'), [
-             'customer' => [
-                 'name' => 'Joe Doe',
-                 'email' => 'joe.doe@example.com',
-                 'dob' => '01/01/2000',
-             ],
-             'gateway' => DummyGateway::class,
-             'card_number' => '4242424242424242',
-             'expiry_month' => '01',
-             'expiry_year' => '2025',
-             'cvc' => '123',
-         ]);
+        ->withSession(['simple-commerce-cart' => $order->id])
+        ->post(route('statamic.simple-commerce.checkout.store'), [
+            'customer' => [
+                'name' => 'Joe Doe',
+                'email' => 'joe.doe@example.com',
+                'dob' => '01/01/2000',
+            ],
+            'gateway' => DummyGateway::class,
+            'card_number' => '4242424242424242',
+            'expiry_month' => '01',
+            'expiry_year' => '2025',
+            'cvc' => '123',
+        ]);
 
     $order = $order->fresh();
 

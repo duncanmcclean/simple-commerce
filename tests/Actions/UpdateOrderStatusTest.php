@@ -13,7 +13,6 @@ beforeEach(function () {
     $this->action = new UpdateOrderStatus();
 });
 
-
 test('is not visible to products', function () {
     $product = Product::make()
         ->price(1200)

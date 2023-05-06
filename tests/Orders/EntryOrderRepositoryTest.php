@@ -13,7 +13,6 @@ beforeEach(function () {
     $this->repository = new EntryOrderRepository;
 });
 
-
 test('can generate order number from minimum order number', function () {
     app()['config']->set('simple-commerce.minimum_order_number', 1000);
 

@@ -48,7 +48,6 @@ uses(\DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections::class)->
 */
 
 /** @link https://pestphp.com/docs/custom-helpers */
-
 function user()
 {
     return User::make()

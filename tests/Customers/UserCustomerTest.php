@@ -30,7 +30,6 @@ afterEach(function () {
     );
 });
 
-
 test('can get all users', function () {
     User::make()
         ->email('james@example.com')

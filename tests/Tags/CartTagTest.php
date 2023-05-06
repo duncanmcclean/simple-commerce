@@ -11,7 +11,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
-use Statamic\Facades\Parse;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Statamic;

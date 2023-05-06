@@ -34,7 +34,6 @@ beforeEach(function () {
     }
 });
 
-
 test('can correctly calculate tax rate based on country', function () {
     Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
 

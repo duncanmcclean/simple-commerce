@@ -15,7 +15,6 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\PaymentRefundedNot
 use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\SomeRandomEvent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\SomeRandomEventNotification;
 use Illuminate\Support\Facades\Config;
-
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 test('can send configured notification to customer', function () {
