@@ -40,7 +40,7 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.3",
-        "nunomaduro/collision": "^7.0",
+        "nunomaduro/collision": "^6.1",
         "orchestra/testbench": "^8.0",
         "spatie/ray": "^1.17",
         "spatie/test-time": "^1.3",
