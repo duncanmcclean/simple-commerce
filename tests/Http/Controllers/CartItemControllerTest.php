@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CartItemStoreFormRequest;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CartItemUpdateFormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 

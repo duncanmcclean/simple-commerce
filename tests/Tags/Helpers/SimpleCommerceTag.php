@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
 
-use Statamic\Tags\Tags;
+use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
 
-class SimpleCommerceTag extends Tags
+class SimpleCommerceTag extends Tag
 {
     protected $tagClasses = [
         'test' => TestTag::class,
