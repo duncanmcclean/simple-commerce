@@ -4,7 +4,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Support\Facades\File;
-use Statamic\Facades\User;
 
 beforeEach(function () {
     if (File::exists(base_path('content/simple-commerce/tax-categories'))) {
@@ -14,7 +13,6 @@ beforeEach(function () {
             });
     }
 });
-
 
 test('can get index', function () {
     TaxCategory::make()
@@ -94,7 +92,6 @@ test('can destroy tax category', function () {
 });
 
 /**
- *
  * This test ensures that any rates belonging to this tax category
  * are cleaned up during the delete process.
  */

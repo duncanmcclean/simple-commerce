@@ -13,7 +13,6 @@ beforeEach(function () {
     Collection::make('orders')->title('Order')->save();
 });
 
-
 test('has a name', function () {
     $name = $this->gateway->name();
 

@@ -10,7 +10,6 @@ beforeEach(function () {
     $this->fieldtype = new CountryFieldtype;
 });
 
-
 test('can get index items', function () {
     $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 

@@ -13,7 +13,6 @@ beforeEach(function () {
     $this->action = new RefundAction();
 });
 
-
 test('is visible to paid and non refunded order', function () {
     $this->markTestSkipped();
 

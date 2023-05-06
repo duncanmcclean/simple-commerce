@@ -854,11 +854,11 @@ test('can store item with customer present in request', function () {
 
 test('can store item with customer array', function () {
     $product = Product::make()
-         ->price(1000)
-         ->data([
-             'title' => 'Dog Food',
-             'slug' => 'dog-food',
-         ]);
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ]);
 
     $product->save();
 
@@ -872,8 +872,8 @@ test('can store item with customer array', function () {
     ];
 
     $response = $this
-         ->from('/products/'.$product->get('slug'))
-         ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
     $response->assertRedirect('/products/'.$product->get('slug'));
     $response->assertSessionHas('simple-commerce-cart');
@@ -893,19 +893,19 @@ test('can store item with customer array', function () {
 
 test('can store item with customer array and existing customer', function () {
     $product = Product::make()
-         ->price(1000)
-         ->data([
-             'title' => 'Dog Food',
-             'slug' => 'dog-food',
-         ]);
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ]);
 
     $product->save();
 
     $customer = Customer::make()
-         ->email('pluto@clubhouse.disney')
-         ->data([
-             'name' => 'Pluto',
-         ]);
+        ->email('pluto@clubhouse.disney')
+        ->data([
+            'name' => 'Pluto',
+        ]);
 
     $customer->save();
 
@@ -918,8 +918,8 @@ test('can store item with customer array and existing customer', function () {
     ];
 
     $response = $this
-         ->from('/products/'.$product->get('slug'))
-         ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
     $response->assertRedirect('/products/'.$product->get('slug'));
     $response->assertSessionHas('simple-commerce-cart');
@@ -946,11 +946,11 @@ test('can store item with customer array and additional customer information', f
     ]);
 
     $product = Product::make()
-         ->price(1000)
-         ->data([
-             'title' => 'Dog Food',
-             'slug' => 'dog-food',
-         ]);
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ]);
 
     $product->save();
 
@@ -965,8 +965,8 @@ test('can store item with customer array and additional customer information', f
     ];
 
     $response = $this
-         ->from('/products/'.$product->get('slug'))
-         ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
     $response->assertRedirect('/products/'.$product->get('slug'));
     $response->assertSessionHas('simple-commerce-cart');
@@ -994,19 +994,19 @@ test('can store item with customer array and existing customer and additional cu
     ]);
 
     $product = Product::make()
-         ->price(1000)
-         ->data([
-             'title' => 'Dog Food',
-             'slug' => 'dog-food',
-         ]);
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ]);
 
     $product->save();
 
     $customer = Customer::make()
-         ->email('pluto@clubhouse.disney')
-         ->data([
-             'name' => 'Pluto',
-         ]);
+        ->email('pluto@clubhouse.disney')
+        ->data([
+            'name' => 'Pluto',
+        ]);
 
     $customer->save();
 
@@ -1020,8 +1020,8 @@ test('can store item with customer array and existing customer and additional cu
     ];
 
     $response = $this
-         ->from('/products/'.$product->get('slug'))
-         ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), $data);
 
     $response->assertRedirect('/products/'.$product->get('slug'));
     $response->assertSessionHas('simple-commerce-cart');

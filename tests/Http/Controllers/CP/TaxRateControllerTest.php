@@ -4,7 +4,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Support\Facades\File;
-use Statamic\Facades\User;
 
 beforeEach(function () {
     collect(File::allFiles(base_path('content/simple-commerce/tax-rates')))
@@ -12,7 +11,6 @@ beforeEach(function () {
             File::delete($file);
         });
 });
-
 
 test('can get index', function () {
     TaxZone::make()->id('the-uk')->name('The UK')->country('GB')->save();

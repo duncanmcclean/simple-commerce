@@ -6,7 +6,6 @@ beforeEach(function () {
     $this->trait = new TraitAccess();
 });
 
-
 test('can get all data', function () {
     $this->trait->data = collect([
         'foo' => 'bar',

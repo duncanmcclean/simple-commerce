@@ -35,7 +35,6 @@ beforeEach(function () {
     ]);
 });
 
-
 test('can output checkout form', function () {
     fakeCartWithLineItem();
 

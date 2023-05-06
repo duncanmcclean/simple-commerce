@@ -17,7 +17,6 @@ beforeEach(function () {
         ->setContext([]);
 });
 
-
 test('can get available shipping method', function () {
     // This will add onto the existing one we have from the default config
     SimpleCommerce::registerShippingMethod('default', RoyalMail::class);
