@@ -1,7 +1,6 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use Statamic\Facades\User;
 
 test('can get index', function () {
     Coupon::make()
@@ -42,6 +41,7 @@ test('can store coupon', function () {
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
             'enabled' => true,
+            'expires_at' => null,
         ])
         ->assertJsonStructure([
             'redirect',
@@ -137,6 +137,7 @@ test('can update coupon', function () {
             'description' => 'You can actually get a 51% discount on Friday!',
             'enabled' => false,
             'minimum_cart_value' => '76.00',
+            'expires_at' => null,
         ])
         ->assertJsonStructure([
             'coupon',

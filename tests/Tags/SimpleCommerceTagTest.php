@@ -3,12 +3,11 @@
 use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Currencies;
 use DoubleThreeDigital\SimpleCommerce\Regions;
-use Statamic\Facades\Parse;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\SimpleCommerceTag;
 
 beforeEach(function () {
     SimpleCommerceTag::register();
 });
-
 
 test('can get countries', function () {
     $usage = tag('{{ sc:countries }}{{ name }},{{ /sc:countries }}');
@@ -96,24 +95,3 @@ test('can get sub tag wildcard', function () {
 
     expect((string) $usage)->toBe('This is the wildcard method.');
 });
-
-// Helpers
-function tag($tag)
-{
-    return Parse::template($tag, []);
-}
-
-function index()
-{
-    return 'This is the index method.';
-}
-
-function cheese()
-{
-    return 'This is the cheese method.';
-}
-
-function wildcard()
-{
-    return 'This is the wildcard method.';
-}

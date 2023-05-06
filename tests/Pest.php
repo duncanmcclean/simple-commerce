@@ -1,5 +1,10 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use Illuminate\Support\Facades\Session;
+use Statamic\Facades\Parse;
+use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 
 uses(\DoubleThreeDigital\SimpleCommerce\Tests\TestCase::class)->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Rules', 'Tags', 'Tax');
@@ -51,4 +56,62 @@ function user()
         ->email('joe.bloggs@example.com')
         ->set('password', 'secret')
         ->save();
+}
+
+function buildCartWithProducts()
+{
+    $product = Product::make()
+        ->price(1000)
+        ->data([
+            'title' => 'Food',
+        ]);
+
+    $product->save();
+
+    $order = Order::make()
+        ->lineItems([
+            [
+                'id' => Stache::generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ]);
+
+    $order->save();
+
+    return [$product, $order];
+}
+
+function tag($tag)
+{
+    return Parse::template($tag, []);
+}
+
+function fakeCart($cart = null)
+{
+    if (is_null($cart)) {
+        $cart = Order::make()->merge([
+            'note' => 'Special note.',
+        ]);
+
+        $cart->save();
+    }
+
+    Session::shouldReceive('get')
+        ->with('simple-commerce-cart')
+        ->andReturn($cart->id);
+
+    Session::shouldReceive('token')
+        ->andReturn('random-token');
+
+    Session::shouldReceive('has')
+        ->with('simple-commerce-cart')
+        ->andReturn(true);
+
+    Session::shouldReceive('has')
+        ->with('errors')
+        ->andReturn([]);
+
+    return $cart;
 }

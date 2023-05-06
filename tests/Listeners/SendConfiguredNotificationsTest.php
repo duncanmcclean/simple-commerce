@@ -1,6 +1,5 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
@@ -8,7 +7,13 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Listeners\SendConfiguredNotifications;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use Illuminate\Notifications\Messages\MailMessage;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\AnotherRandomEvent;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\AnotherRandomEventNotification;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\OrderDispatchedNotification;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\OrderPlacedNotification;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\PaymentRefundedNotification;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\SomeRandomEvent;
+use DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers\SomeRandomEventNotification;
 use Illuminate\Support\Facades\Config;
 
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -289,21 +294,3 @@ test('can send configured notification and ensure all events defined in notifica
         }
     );
 });
-
-// Helpers
-function __construct(public OrderContract $order, public bool $somethingElseThatIsAProperty)
-{
-}
-
-function via($notifiable)
-{
-    return ['mail'];
-}
-
-function toMail($notifiable)
-{
-    return (new MailMessage)
-        ->line('The introduction to the notification.')
-        ->action('Notification Action', url('/'))
-        ->line('Thank you for using our application!');
-}

@@ -1,15 +1,14 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Orders\Helpers\Postage;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Site;
 
@@ -667,24 +666,3 @@ test('ensure product variant price hook is used to determine price of product va
         return $variant->price();
     });
 });
-
-// Helpers
-function name(): string
-{
-    return __('simple-commerce::shipping.standard_post.name');
-}
-
-function description(): string
-{
-    return __('simple-commerce::shipping.standard_post.description');
-}
-
-function calculateCost(OrderContract $order): int
-{
-    return 250;
-}
-
-function checkAvailability(OrderContract $order, Address $address): bool
-{
-    return true;
-}

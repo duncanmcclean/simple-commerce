@@ -8,10 +8,10 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Collection;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     $this->useBasicTaxEngine();
 });
-
 
 test('can get line items', function () {
     $productOne = Product::make()->price(1000);

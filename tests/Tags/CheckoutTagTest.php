@@ -1,6 +1,5 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
@@ -9,8 +8,9 @@ use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
 use DoubleThreeDigital\SimpleCommerce\Tags\GatewayTags;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\TestOffsiteGateway;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\TestOnsiteGateway;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 use Statamic\Statamic;
@@ -37,7 +37,7 @@ beforeEach(function () {
 
 
 test('can output checkout form', function () {
-    fakeCart();
+    fakeCartWithLineItem();
 
     $this->tag->setParameters([]);
 
@@ -69,7 +69,7 @@ test('can fetch checkout form data', function () {
 });
 
 test('gateways tag can get specific gateway', function () {
-    fakeCart();
+    fakeCartWithLineItem();
 
     $this->gatewaysTag->setParameters([]);
 
@@ -80,7 +80,7 @@ test('gateways tag can get specific gateway', function () {
 });
 
 test('can redirect user to offsite gateway', function () {
-    fakeCart();
+    fakeCartWithLineItem();
 
     $this->tag->setParameters([]);
 
@@ -90,7 +90,7 @@ test('can redirect user to offsite gateway', function () {
 });
 
 test('can redirect user to offsite gateway with redirect url', function () {
-    fakeCart();
+    fakeCartWithLineItem();
 
     $this->tag->setParameters([
         'redirect' => 'http://localhost/thanks',
@@ -122,7 +122,7 @@ test('can redirect user to confirmation page instead of offsite gateway when ord
     $cart->recalculate();
     $cart->save();
 
-    fakeCart($cart);
+    fakeCartWithLineItem($cart);
 
     Session::shouldReceive('forget');
     Session::shouldReceive('put');
@@ -156,7 +156,7 @@ test('cant redirect user to offsite gateway when product in cart does not have e
     $cart->recalculate();
     $cart->save();
 
-    fakeCart($cart);
+    fakeCartWithLineItem($cart);
 
     $this->tag->setParameters([
         'redirect' => 'http://localhost/order-confirmation',
@@ -171,7 +171,7 @@ test('cant redirect user to offsite gateway when product in cart does not have e
 });
 
 // Helpers
-function fakeCart($cart = null)
+function fakeCartWithLineItem($cart = null)
 {
     if (is_null($cart)) {
         $product = Product::make()->price(1500);
@@ -202,37 +202,4 @@ function fakeCart($cart = null)
     Session::shouldReceive('has')
         ->with('errors')
         ->andReturn(null);
-}
-
-function name(): string
-{
-    return 'Test Off-site Gateway';
-}
-
-function isOffsiteGateway(): bool
-{
-    return true;
-}
-
-function prepare(Request $request, OrderContract $order): array
-{
-    return [
-        'bagpipes' => 'music',
-        'checkout_url' => 'http://backpipes.com',
-    ];
-}
-
-function checkout(Request $request, OrderContract $order): array
-{
-    return [];
-}
-
-function refund(OrderContract $order): array
-{
-    return [];
-}
-
-function webhook(Request $request)
-{
-    return 'Success.';
 }

@@ -2,15 +2,13 @@
 
 use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Stache;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     Stache::store('simple-commerce-coupons')->clear();
 
@@ -22,11 +20,10 @@ beforeEach(function () {
     $this->useBasicTaxEngine();
 });
 
-
 test('can store coupon', function () {
     Event::fake();
 
-    buildCartWithProducts();
+    [$product, $cart] = buildCartWithProducts();
 
     $coupon = Coupon::make()
         ->code('hof-price')
@@ -47,15 +44,15 @@ test('can store coupon', function () {
 
     $response = $this
         ->from('/cart')
-        ->withSession(['simple-commerce-cart' => $this->cart->id])
+        ->withSession(['simple-commerce-cart' => $cart->id])
         ->post(route('statamic.simple-commerce.coupon.store'), $data);
 
     $response->assertRedirect('/cart');
 
-    $this->cart = $this->cart->fresh();
+    $cart = $cart->fresh();
 
-    expect($coupon->id())->toBe($this->cart->coupon()->id());
-    $this->assertNotSame($this->cart->couponTotal(), 0);
+    expect($coupon->id())->toBe($cart->coupon()->id());
+    $this->assertNotSame($cart->couponTotal(), 0);
 
     Event::assertDispatched(CouponRedeemed::class);
 });
@@ -63,7 +60,7 @@ test('can store coupon', function () {
 test('can store coupon and request json response', function () {
     Event::fake();
 
-    buildCartWithProducts();
+    [$product, $cart] = buildCartWithProducts();
 
     $coupon = Coupon::make()
         ->code('halav-price')
@@ -84,7 +81,7 @@ test('can store coupon and request json response', function () {
 
     $response = $this
         ->from('/cart')
-        ->withSession(['simple-commerce-cart' => $this->cart->id])
+        ->withSession(['simple-commerce-cart' => $cart->id])
         ->postJson(route('statamic.simple-commerce.coupon.store'), $data);
 
     $response->assertJsonStructure([
@@ -93,16 +90,16 @@ test('can store coupon and request json response', function () {
         'cart',
     ]);
 
-    $this->cart = $this->cart->fresh();
+    $cart = $cart->fresh();
 
-    expect($coupon->id())->toBe($this->cart->coupon()->id());
-    $this->assertNotSame($this->cart->couponTotal(), 0000);
+    expect($coupon->id())->toBe($cart->coupon()->id());
+    $this->assertNotSame($cart->couponTotal(), 0000);
 
     Event::assertDispatched(CouponRedeemed::class);
 });
 
 test('cant store invalid coupon', function () {
-    buildCartWithProducts();
+    [$product, $cart] = buildCartWithProducts();
 
     $coupon = Coupon::make()
         ->code('half-price')
@@ -124,20 +121,20 @@ test('cant store invalid coupon', function () {
 
     $response = $this
         ->from('/cart')
-        ->withSession(['simple-commerce-cart' => $this->cart->id])
+        ->withSession(['simple-commerce-cart' => $cart->id])
         ->post(route('statamic.simple-commerce.coupon.store'), $data);
 
     $response->assertRedirect('/cart');
     $response->assertSessionHasErrors();
 
-    $this->cart = $this->cart->fresh();
+    $cart = $cart->fresh();
 
-    expect($this->cart->coupon())->toBeNull();
-    expect(00)->toBe($this->cart->couponTotal()00);
+    expect($cart->coupon())->toBeNull();
+    expect(00)->toBe($cart->couponTotal());
 });
 
 test('cant store coupon that does not exist', function () {
-    buildCartWithProducts();
+    [$product, $cart] = [$product, $cart] = buildCartWithProducts();
 
     $data = [
         'code' => 'christmas',
@@ -145,19 +142,19 @@ test('cant store coupon that does not exist', function () {
 
     $response = $this
         ->from('/cart')
-        ->withSession(['simple-commerce-cart' => $this->cart->id])
+        ->withSession(['simple-commerce-cart' => $cart->id])
         ->post(route('statamic.simple-commerce.coupon.store'), $data);
 
     $response->assertRedirect('/cart');
     $response->assertSessionHasErrors();
 
-    $this->cart = $this->cart->fresh();
+    $cart = $cart->fresh();
 
-    $this->assertNull($this->cart->coupon(), 0000);
+    $this->assertNull($cart->coupon(), 0000);
 });
 
 test('can destroy coupon', function () {
-    buildCartWithProducts();
+    [$product, $cart] = buildCartWithProducts();
 
     $coupon = Coupon::make()
         ->code('half-price')
@@ -172,24 +169,24 @@ test('can destroy coupon', function () {
     $coupon->save();
     $coupon->fresh();
 
-    $this->cart->coupon($coupon->id());
-    $this->cart->save();
+    $cart->coupon($coupon->id());
+    $cart->save();
 
     $response = $this
         ->from('/cart')
-        ->withSession(['simple-commerce-cart' => $this->cart->id])
+        ->withSession(['simple-commerce-cart' => $cart->id])
         ->delete(route('statamic.simple-commerce.coupon.destroy'));
 
     $response->assertRedirect('/cart');
 
-    $this->cart = $this->cart->fresh();
+    $cart = $cart->fresh();
 
-    expect($this->cart->coupon())->toBeNull();
-    expect(00)->toBe($this->cart->couponTotal()00);
+    expect($cart->coupon())->toBeNull();
+    expect(00)->toBe($cart->couponTotal());
 });
 
 test('can destroy coupon and request json', function () {
-    buildCartWithProducts();
+    [$product, $cart] = buildCartWithProducts();
 
     $coupon = Coupon::make()
         ->code('half-price')
@@ -204,12 +201,12 @@ test('can destroy coupon and request json', function () {
     $coupon->save();
     $coupon->fresh();
 
-    $this->cart->coupon($coupon->id());
-    $this->cart->save();
+    $cart->coupon($coupon->id());
+    $cart->save();
 
     $response = $this
         ->from('/cart')
-        ->withSession(['simple-commerce-cart' => $this->cart->id()])
+        ->withSession(['simple-commerce-cart' => $cart->id()])
         ->deleteJson(route('statamic.simple-commerce.coupon.destroy'));
 
     $response->assertJsonStructure([
@@ -218,32 +215,8 @@ test('can destroy coupon and request json', function () {
         'cart',
     ]);
 
-    $this->cart = $this->cart->fresh();
+    $cart = $cart->fresh();
 
-    expect($this->cart->coupon())->toBeNull();
-    expect(00)->toBe($this->cart->couponTotal()00);
+    expect($cart->coupon())->toBeNull();
+    expect(00)->toBe($cart->couponTotal());
 });
-
-// Helpers
-function buildCartWithProducts()
-{
-    test()->product = Product::make()
-        ->price(1000)
-        ->data([
-            'title' => 'Food',
-        ]);
-
-    test()->product->save();
-
-    test()->cart = Order::make()
-        ->lineItems([
-            [
-                'id' => Stache::generateId(),
-                'product' => test()->product->id,
-                'quantity' => 1,
-                'total' => 1000,
-            ],
-        ]);
-
-    test()->cart->save();
-}

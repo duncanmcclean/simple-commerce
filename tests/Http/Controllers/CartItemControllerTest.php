@@ -6,15 +6,16 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CartItemStoreFormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+
 beforeEach(function () {
     $this->useBasicTaxEngine();
 });
-
 
 test('can store item', function () {
     $product = Product::make()
@@ -2025,11 +2026,3 @@ test('can destroy item', function () {
 
     expect($cart->lineItems()->toArray())->toBeEmpty();
 });
-
-// Helpers
-function rules()
-{
-    return [
-        'coolzies' => ['required', 'string'],
-    ];
-}

@@ -1,8 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use Statamic\Facades\Collection;
-use Statamic\Fields\Field;
+use DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes\Helpers\MoneyFieldtypeWithMockedField;
 
 test('can preload currency with no field', function () {
     $preload = (new MoneyFieldtype())->preload();
@@ -73,15 +72,3 @@ test('can get pre process index', function () {
 
     expect($augment)->toBe('£25.72');
 });
-
-// Helpers
-function field(): ?Field
-{
-    test()->setupProducts();
-
-    $products = Collection::findByHandle('products');
-
-    return (new Field('price', [
-        'read_only' => false,
-    ]))->setParent($products)->setValue(1599);
-}

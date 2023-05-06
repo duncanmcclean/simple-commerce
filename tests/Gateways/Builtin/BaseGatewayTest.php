@@ -1,19 +1,19 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
+use DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin\Helpers\FakeOffsiteGateway;
+use DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin\Helpers\FakeOnsiteGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     $this->setupCollections();
 });
-
 
 test('can mark order as paid with offsite gateway', function () {
     Event::fake();
@@ -158,24 +158,3 @@ test('can mark order as paid with onsite gateway and ensure gateway is set in or
         return $event->order->gateway['use'] === FakeOnsiteGateway::class;
     });
 });
-
-// Helpers
-function name(): string
-{
-    return 'Fake Offsite Gateway';
-}
-
-function isOffsiteGateway(): bool
-{
-    return true;
-}
-
-function prepare(Request $request, ContractsOrder $order): array
-{
-    return [];
-}
-
-function refund(ContractsOrder $order): ?array
-{
-    return [];
-}

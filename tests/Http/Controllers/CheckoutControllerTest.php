@@ -1,14 +1,11 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
 use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
@@ -21,7 +18,9 @@ use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use Illuminate\Http\Request;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CheckoutFormRequest;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\TestCheckoutErrorGateway;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\TestValidationGateway;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -30,10 +29,10 @@ use Statamic\Facades\Stache;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+
 beforeEach(function () {
     $this->useBasicTaxEngine();
 });
-
 
 test('can post checkout', function () {
     Event::fake();
@@ -2362,66 +2361,3 @@ test('can post checkout and ensure gateway errors are handled correctly', functi
     // Finally, assert order is no longer attached to the users' session
     expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
-
-// Helpers
-function authorize()
-{
-    return true;
-}
-
-function rules()
-{
-    return [
-        'accept_terms' => ['required', 'boolean'],
-    ];
-}
-
-function messages()
-{
-    return [
-        'accept_terms.required' => 'Please accept the terms & conditions.',
-    ];
-}
-
-function name(): string
-{
-    return 'Test Checkout Error Gateway';
-}
-
-function isOffsiteGateway(): bool
-{
-    return false;
-}
-
-function prepare(Request $request, OrderContract $order): array
-{
-    return [
-        'bagpipes' => 'music',
-        'checkout_url' => 'http://backpipes.com',
-    ];
-}
-
-function checkout(Request $request, OrderContract $order): array
-{
-    throw new GatewayCheckoutFailed('Something went wrong with your payment. Sorry!');
-}
-
-function checkoutRules(): array
-{
-    return [];
-}
-
-function checkoutMessages(): array
-{
-    return [];
-}
-
-function refund(OrderContract $order): array
-{
-    return [];
-}
-
-function webhook(Request $request)
-{
-    return 'Success.';
-}

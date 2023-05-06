@@ -17,6 +17,7 @@ use Statamic\Facades\Stache;
 use Statamic\Statamic;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     $this->setupCollections();
 
@@ -24,7 +25,6 @@ beforeEach(function () {
         ->setParser(Antlers::parser())
         ->setContext([]);
 });
-
 
 test('can get index', function () {
     fakeCart();
@@ -879,37 +879,3 @@ test('cant get data from cart if there is no cart', function () {
     expect($usage instanceof \Statamic\Fields\Value || is_string($usage))->toBeFalse();
     expect(null)->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
 });
-
-// Helpers
-function tag($tag)
-{
-    return Parse::template($tag, []);
-}
-
-function fakeCart($cart = null)
-{
-    if (is_null($cart)) {
-        $cart = Order::make()->merge([
-            'note' => 'Special note.',
-        ]);
-
-        $cart->save();
-    }
-
-    Session::shouldReceive('get')
-        ->with('simple-commerce-cart')
-        ->andReturn($cart->id);
-
-    Session::shouldReceive('token')
-        ->andReturn('random-token');
-
-    Session::shouldReceive('has')
-        ->with('simple-commerce-cart')
-        ->andReturn(true);
-
-    Session::shouldReceive('has')
-        ->with('errors')
-        ->andReturn([]);
-
-    return $cart;
-}

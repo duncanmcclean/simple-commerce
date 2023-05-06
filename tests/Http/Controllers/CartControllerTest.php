@@ -6,15 +6,17 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CartUpdateFormRequest;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CartUpdateWithNoRulesFormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+
 beforeEach(function () {
     $this->useBasicTaxEngine();
 });
-
 
 test('can get cart index', function () {
     $cart = Order::make();
@@ -623,19 +625,3 @@ test('can destroy cart and request json response', function () {
 
     expect([])->toBe($cart->lineItems()->toArray());
 });
-
-// Helpers
-function authorize()
-{
-    return true;
-}
-
-function rules()
-{
-    return [];
-}
-
-function messages()
-{
-    return [];
-}

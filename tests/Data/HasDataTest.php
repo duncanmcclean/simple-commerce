@@ -1,5 +1,6 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Tests\Data\TraitAccess;
 
 beforeEach(function () {
     $this->trait = new TraitAccess();
@@ -143,9 +144,3 @@ test('can get data as array', function () {
         'foo' => 'bar',
     ]);
 });
-
-// Helpers
-function __construct()
-{
-    test()->data = collect();
-}

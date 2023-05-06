@@ -4,8 +4,6 @@ use DoubleThreeDigital\SimpleCommerce\Coupons\Coupon as CouponsCoupon;
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Statamic\Facades\Stache;
 
 test('can create', function () {
@@ -283,29 +281,3 @@ test('is not valid after coupon has expired', function () {
 
     expect($isValid)->toBeFalse();
 });
-
-// Helpers
-function buildCartWithProducts()
-{
-    $product = Product::make()
-        ->price(1000)
-        ->data([
-            'title' => 'Food',
-        ]);
-
-    $product->save();
-
-    $order = Order::make()
-        ->lineItems([
-            [
-                'id' => Stache::generateId(),
-                'product' => $product->id,
-                'quantity' => 1,
-                'total' => 1000,
-            ],
-        ]);
-
-    $order->save();
-
-    return [$product, $order];
-}

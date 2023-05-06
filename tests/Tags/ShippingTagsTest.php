@@ -1,12 +1,13 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tags\ShippingTags;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\StaticCartDriver;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\DPD;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\RoyalMail;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\StorePickup;
 use Statamic\Facades\Antlers;
 
 uses(SetupCollections::class);
@@ -76,24 +77,3 @@ test('can get available shipping method when shipping method has config', functi
     expect('Royal Mail')->toBe($usage[1]['name']);
     expect('Store Pickup - Glasgow')->toBe($usage[2]['name']);
 });
-
-// Helpers
-function name(): string
-{
-    return 'Store Pickup - '.test()->config()->get('location');
-}
-
-function description(): string
-{
-    return 'Pick up your parcel from the store.';
-}
-
-function calculateCost(OrderContract $order): int
-{
-    return 0;
-}
-
-function checkAvailability(OrderContract $order, Address $address): bool
-{
-    return true;
-}
