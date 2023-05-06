@@ -1,92 +1,69 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\RegionFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-class RegionFieldtypeTest extends TestCase
-{
-    protected $fieldtype;
+beforeEach(function () {
+    $this->fieldtype = new RegionFieldtype;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('can get index items', function () {
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-        $this->fieldtype = new RegionFieldtype;
-    }
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
-    /** @test */
-    public function can_get_index_items()
-    {
-        $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $this->assertSame($getIndexItems->last(), [
+        'id' => 'zw-mw',
+        'country_iso' => 'ZW',
+        'country_name' => 'Zimbabwe',
+        'name' => 'Mashonaland West',
+    ]);
+});
 
-        $this->assertTrue($getIndexItems instanceof Collection);
+test('can get columns', function () {
+    $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-        $this->assertSame($getIndexItems->last(), [
-            'id' => 'zw-mw',
-            'country_iso' => 'ZW',
-            'country_name' => 'Zimbabwe',
-            'name' => 'Mashonaland West',
-        ]);
-    }
+    expect($getColumns)->toBeArray();
 
-    /** @test */
-    public function can_get_columns()
-    {
-        $getColumns = (new Invader($this->fieldtype))->getColumns();
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('name')->toBe($getColumns[0]->field());
+    expect('Name')->toBe($getColumns[0]->label());
 
-        $this->assertIsArray($getColumns);
+    expect($getColumns[1] instanceof Column)->toBeTrue();
+    expect('country_name')->toBe($getColumns[1]->field());
+    expect('Country')->toBe($getColumns[1]->label());
+});
 
-        $this->assertTrue($getColumns[0] instanceof Column);
-        $this->assertSame($getColumns[0]->field(), 'name');
-        $this->assertSame($getColumns[0]->label(), 'Name');
+test('can return as item array', function () {
+    $toItemArray = $this->fieldtype->toItemArray('gb-sct');
 
-        $this->assertTrue($getColumns[1] instanceof Column);
-        $this->assertSame($getColumns[1]->field(), 'country_name');
-        $this->assertSame($getColumns[1]->label(), 'Country');
-    }
+    expect($toItemArray)->toBeArray();
 
-    /** @test */
-    public function can_return_as_item_array()
-    {
-        $toItemArray = $this->fieldtype->toItemArray('gb-sct');
+    $this->assertSame($toItemArray, [
+        'id' => 'gb-sct',
+        'title' => 'Scotland',
+    ]);
+});
 
-        $this->assertIsArray($toItemArray);
+test('can preprocess index', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex('gb-sct');
 
-        $this->assertSame($toItemArray, [
-            'id' => 'gb-sct',
-            'title' => 'Scotland',
-        ]);
-    }
+    expect($preProcessIndex)->toBeString();
+    expect('Scotland')->toBe($preProcessIndex);
+});
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex('gb-sct');
+test('can preprocess index with no region', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'Scotland');
-    }
+    expect($preProcessIndex)->toBeNull();
+});
 
-    /** @test */
-    public function can_preprocess_index_with_no_region()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(null);
+test('can preprocess with multiple regions', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(['gb-sct', 'gb-wls']);
 
-        $this->assertNull($preProcessIndex);
-    }
-
-    /** @test */
-    public function can_preprocess_with_multiple_regions()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(['gb-sct', 'gb-wls']);
-
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'Scotland, Wales');
-    }
-}
+    expect($preProcessIndex)->toBeString();
+    expect('Scotland, Wales')->toBe($preProcessIndex);
+});

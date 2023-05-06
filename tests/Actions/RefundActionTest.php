@@ -1,129 +1,103 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Actions;
-
 use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
-class RefundActionTest extends TestCase
-{
-    use SetupCollections;
+beforeEach(function () {
+    $this->action = new RefundAction();
+});
 
-    public $action;
+test('is visible to paid and non refunded order', function () {
+    $this->markTestSkipped();
 
-    public function setUp(): void
-    {
-        parent::setUp();
+    $order = Order::make()->status(OrderStatus::Placed)->paymentStatus(PaymentStatus::Paid);
+    $order->save();
 
-        $this->action = new RefundAction();
-    }
+    $action = $this->action->visibleTo($order->resource());
 
-    /** @test */
-    public function is_visible_to_paid_and_non_refunded_order()
-    {
-        $this->markTestSkipped();
+    expect($action)->toBeTrue();
+});
 
-        $order = Order::make()->status(OrderStatus::Placed)->paymentStatus(PaymentStatus::Paid);
-        $order->save();
+test('is not visible to unpaid orders', function () {
+    $this->markTestSkipped();
 
-        $action = $this->action->visibleTo($order->resource());
+    $order = Order::make()->status(OrderStatus::Cart)->paymentStatus(PaymentStatus::Unpaid);
+    $order->save();
 
-        $this->assertTrue($action);
-    }
+    $action = $this->action->visibleTo($order->resource());
 
-    /** @test */
-    public function is_not_visible_to_unpaid_orders()
-    {
-        $this->markTestSkipped();
+    expect($action)->toBeFalse();
+});
 
-        $order = Order::make()->status(OrderStatus::Cart)->paymentStatus(PaymentStatus::Unpaid);
-        $order->save();
+test('is not visible to already refunded orders', function () {
+    $this->markTestSkipped();
 
-        $action = $this->action->visibleTo($order->resource());
+    $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
 
-        $this->assertFalse($action);
-    }
+    $order->save();
 
-    /** @test */
-    public function is_not_visible_to_already_refunded_orders()
-    {
-        $this->markTestSkipped();
+    $action = $this->action->visibleTo($order->resource());
 
-        $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
+    expect($action)->toBeFalse();
+});
 
-        $order->save();
+test('is not visible to products', function () {
+    $this->markTestSkipped();
 
-        $action = $this->action->visibleTo($order->resource());
+    $product = Product::make()
+        ->price(1200)
+        ->data([
+            'title' => 'Medium Jumper',
+        ]);
 
-        $this->assertFalse($action);
-    }
+    $product->save();
 
-    /** @test */
-    public function is_not_visible_to_products()
-    {
-        $this->markTestSkipped();
+    $action = $this->action->visibleTo($product->resource());
 
-        $product = Product::make()
-            ->price(1200)
-            ->data([
-                'title' => 'Medium Jumper',
-            ]);
+    expect($action)->toBeFalse();
+});
 
-        $product->save();
+test('is not able to be run in bulk', function () {
+    $this->markTestSkipped();
 
-        $action = $this->action->visibleTo($product->resource());
+    $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
 
-        $this->assertFalse($action);
-    }
+    $order->save();
 
-    /** @test */
-    public function is_not_able_to_be_run_in_bulk()
-    {
-        $this->markTestSkipped();
+    $action = $this->action->visibleToBulk([$order->resource()]);
 
-        $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
+    expect($action)->toBeFalse();
+});
 
-        $order->save();
+test('order can be refunded', function () {
+    Collection::make('orders')->save();
 
-        $action = $this->action->visibleToBulk([$order->resource()]);
-
-        $this->assertFalse($action);
-    }
-
-    /** @test */
-    public function order_can_be_refunded()
-    {
-        Collection::make('orders')->save();
-
-        $order = Entry::make()
-            ->collection('orders')
-            ->id(Stache::generateId())
-            ->merge([
-                'status' => OrderStatus::Placed,
-                'payment_status' => PaymentStatus::Paid,
-                'gateway' => [
-                    'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',
-                    'data' => [
-                        'id' => '123456789abcdefg',
-                    ],
+    $order = Entry::make()
+        ->collection('orders')
+        ->id(Stache::generateId())
+        ->merge([
+            'status' => OrderStatus::Placed,
+            'payment_status' => PaymentStatus::Paid,
+            'gateway' => [
+                'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',
+                'data' => [
+                    'id' => '123456789abcdefg',
                 ],
-            ]);
+            ],
+        ]);
 
-        $order->save();
+    $order->save();
 
-        $this->action->run([$order], null);
+    $this->action->run([$order], null);
 
-        $order->fresh();
+    $order->fresh();
 
-        $this->assertSame($order->data()->get('payment_status'), 'refunded');
-        $this->assertArrayHasKey('refund', $order->data()->get('gateway'));
-    }
-}
+    expect('refunded')->toBe($order->data()->get('payment_status'));
+    $this->assertArrayHasKey('refund', $order->data()->get('gateway'));
+});

@@ -1,13 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Customers;
-
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Statamic\Auth\User as StatamicAuthUser;
@@ -15,324 +12,273 @@ use Statamic\Facades\User;
 use Statamic\Http\Resources\API\UserResource;
 use Statamic\Statamic;
 
-class UserCustomerTest extends TestCase
-{
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Statamic::repository(
-            \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-            \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class
-        );
-
-        File::deleteDirectory(__DIR__.'/../__fixtures__/users');
-
-        app('stache')->stores()->get('users')->clear();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDownAfterClass();
-
-        Statamic::repository(
-            \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-            \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
-        );
-    }
-
-    /** @test */
-    public function can_get_all_users()
-    {
-        User::make()
-            ->email('james@example.com')
-            ->save();
-
-        User::make()
-            ->email('ben@example.com')
-            ->save();
+beforeEach(function () {
+    Statamic::repository(
+        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class
+    );
 
-        $all = Customer::all();
+    File::deleteDirectory(__DIR__.'/../__fixtures__/users');
 
-        $this->assertTrue($all instanceof Collection);
-        $this->assertSame($all->count(), 2);
-    }
-
-    /** @test */
-    public function can_query_users()
-    {
-        User::make()
-            ->email('james@example.com')
-            ->save();
+    app('stache')->stores()->get('users')->clear();
+});
 
-        User::make()
-            ->email('ben@example.com')
-            ->save();
-
-        $query = Customer::all();
+afterEach(function () {
+    Statamic::repository(
+        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
+    );
+});
 
-        $this->assertTrue($query instanceof Collection);
-        $this->assertSame($query->count(), 2);
-    }
+test('can get all users', function () {
+    User::make()
+        ->email('james@example.com')
+        ->save();
 
-    /** @test */
-    public function can_find_user()
-    {
-        $user = User::make()->email('james@example.com')->set('name', 'James Example');
-        $user->save();
+    User::make()
+        ->email('ben@example.com')
+        ->save();
 
-        $find = Customer::find($user->id());
+    $all = Customer::all();
 
-        // $this->assertTrue($find instanceof UserCustomer);
+    expect($all instanceof Collection)->toBeTrue();
+    expect(2)->toBe($all->count());
+});
 
-        $this->assertSame($find->id(), $user->id());
-        $this->assertSame($find->name(), $user->get('name'));
-        $this->assertSame($find->email(), $user->email());
-    }
+test('can query users', function () {
+    User::make()
+        ->email('james@example.com')
+        ->save();
 
-    /** @test */
-    public function can_find_user_by_email()
-    {
-        $user = User::make()->email('ben@example.com')->set('name', 'Ben Example');
-        $user->save();
+    User::make()
+        ->email('ben@example.com')
+        ->save();
 
-        $findByEmail = Customer::findByEmail($user->email());
+    $query = Customer::all();
 
-        // $this->assertTrue($findByEmail instanceof UserCustomer);
+    expect($query instanceof Collection)->toBeTrue();
+    expect(2)->toBe($query->count());
+});
 
-        $this->assertSame($findByEmail->id(), $user->id());
-        $this->assertSame($findByEmail->name(), $user->get('name'));
-        $this->assertSame($findByEmail->email(), $user->email());
-    }
+test('can find user', function () {
+    $user = User::make()->email('james@example.com')->set('name', 'James Example');
+    $user->save();
 
-    /** @test */
-    public function can_create()
-    {
-        $create = Customer::make()
-            ->email('joe.smith@example.com')
-            ->data([
-                'name' => 'Joe Smith',
-            ]);
+    $find = Customer::find($user->id());
 
-        $create->save();
+    // $this->assertTrue($find instanceof UserCustomer);
 
-        // $this->assertTrue($create instanceof UserCustomer);
+    expect($user->id())->toBe($find->id());
+    expect($user->get('name'))->toBe($find->name());
+    expect($user->email())->toBe($find->email());
+});
 
-        $this->assertNotNull($create->id());
-        $this->assertSame($create->name(), 'Joe Smith');
-        $this->assertSame($create->email(), 'joe.smith@example.com');
-    }
+test('can find user by email', function () {
+    $user = User::make()->email('ben@example.com')->set('name', 'Ben Example');
+    $user->save();
 
-    /** @test */
-    public function can_save()
-    {
-        $user = User::make()->id('sarah')->email('sarah@example.com')->set('name', 'Sarah Example');
-        $user->save();
+    $findByEmail = Customer::findByEmail($user->email());
 
-        $customer = Customer::find('sarah');
-        $customer->name = 'Sarah Test';
+    // $this->assertTrue($findByEmail instanceof UserCustomer);
 
-        $customer->set('name', 'Sarah Test');
+    expect($user->id())->toBe($findByEmail->id());
+    expect($user->get('name'))->toBe($findByEmail->name());
+    expect($user->email())->toBe($findByEmail->email());
+});
 
-        $customer->save();
+test('can create', function () {
+    $create = Customer::make()
+        ->email('joe.smith@example.com')
+        ->data([
+            'name' => 'Joe Smith',
+        ]);
 
-        $this->assertSame($user->id(), 'sarah');
-        $this->assertSame($customer->name(), 'Sarah Test');
-    }
+    $create->save();
 
-    /** @test */
-    public function can_delete()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    // $this->assertTrue($create instanceof UserCustomer);
 
-        $customer = Customer::find('sam');
+    $this->assertNotNull($create->id());
+    expect('Joe Smith')->toBe($create->name());
+    expect('joe.smith@example.com')->toBe($create->email());
+});
 
-        $customer->delete();
+test('can save', function () {
+    $user = User::make()->id('sarah')->email('sarah@example.com')->set('name', 'Sarah Example');
+    $user->save();
 
-        $this->assertNull(User::find('sam'));
-    }
+    $customer = Customer::find('sarah');
+    $customer->name = 'Sarah Test';
 
-    /** @test */
-    public function can_get_user()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer->set('name', 'Sarah Test');
 
-        $customer = Customer::find('sam');
+    $customer->save();
 
-        $this->assertTrue($customer->resource() instanceof StatamicAuthUser);
-    }
+    expect('sarah')->toBe($user->id());
+    expect('Sarah Test')->toBe($customer->name());
+});
 
-    /** @test */
-    public function can_get_customer_to_resource()
-    {
-        $this->markTestSkipped();
+test('can delete', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer = Customer::find('sam');
 
-        $customer = Customer::find('sam');
-        $toResource = $customer->toResource();
+    $customer->delete();
 
-        $this->assertTrue($toResource instanceof UserResource);
-    }
+    expect(User::find('sam'))->toBeNull();
+});
 
-    /** @test */
-    public function can_get_customer_to_augmented_array()
-    {
-        $this->markTestSkipped();
+test('can get user', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer = Customer::find('sam');
 
-        $customer = Customer::find('sam');
-        $toAugmentedArray = $customer->toAugmentedArray();
+    expect($customer->resource() instanceof StatamicAuthUser)->toBeTrue();
+});
 
-        $this->assertIsArray($toAugmentedArray);
-    }
+test('can get customer to resource', function () {
+    $this->markTestSkipped();
 
-    /** @test */
-    public function can_get_customer_to_array()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $customer = Customer::find('sam');
-        $toArray = $customer->toArray();
+    $customer = Customer::find('sam');
+    $toResource = $customer->toResource();
 
-        $this->assertIsArray($toArray);
-    }
+    expect($toResource instanceof UserResource)->toBeTrue();
+});
 
-    /** @test */
-    public function can_get_id()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+test('can get customer to augmented array', function () {
+    $this->markTestSkipped();
 
-        $customer = Customer::find('sam');
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $this->assertSame($customer->id(), 'sam');
-    }
+    $customer = Customer::find('sam');
+    $toAugmentedArray = $customer->toAugmentedArray();
 
-    /** @test */
-    public function can_get_title()
-    {
-        $this->markTestSkipped();
+    expect($toAugmentedArray)->toBeArray();
+});
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+test('can get customer to array', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $customer = Customer::find('sam');
+    $customer = Customer::find('sam');
+    $toArray = $customer->toArray();
 
-        $this->assertSame($customer->title(), 'Sam Example <sam@example.com>');
-    }
+    expect($toArray)->toBeArray();
+});
 
-    /** @test */
-    public function can_get_slug()
-    {
-        $this->markTestSkipped();
+test('can get id', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer = Customer::find('sam');
 
-        $customer = Customer::find('sam');
+    expect('sam')->toBe($customer->id());
+});
 
-        $this->assertSame($customer->slug(), 'sam');
-    }
+test('can get title', function () {
+    $this->markTestSkipped();
 
-    /** @test */
-    public function can_get_site()
-    {
-        $this->markTestSkipped();
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer = Customer::find('sam');
 
-        $customer = Customer::find('sam');
+    expect('Sam Example <sam@example.com>')->toBe($customer->title());
+});
 
-        $this->assertNull($customer->site());
-    }
+test('can get slug', function () {
+    $this->markTestSkipped();
 
-    /** @test */
-    public function can_get_fresh()
-    {
-        $this->markTestSkipped();
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer = Customer::find('sam');
 
-        $customer = Customer::find('sam');
+    expect('sam')->toBe($customer->slug());
+});
 
-        $this->assertSame($customer->name(), 'Sam Example');
+test('can get site', function () {
+    $this->markTestSkipped();
 
-        $user->set('name', 'Sam Test')->save();
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $fresh = $customer->fresh();
+    $customer = Customer::find('sam');
 
-        $this->assertNotSame($customer->name(), 'Sam Example');
-        $this->assertSame($customer->name(), 'Sam Test');
-    }
+    expect($customer->site())->toBeNull();
+});
 
-    /** @test */
-    public function can_get_name()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+test('can get fresh', function () {
+    $this->markTestSkipped();
 
-        $customer = Customer::find('sam');
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $this->assertSame($customer->name(), 'Sam Example');
-    }
+    $customer = Customer::find('sam');
 
-    /** @test */
-    public function can_get_email()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    expect('Sam Example')->toBe($customer->name());
 
-        $customer = Customer::find('sam');
+    $user->set('name', 'Sam Test')->save();
 
-        $this->assertSame($customer->email(), 'sam@example.com');
-    }
+    $fresh = $customer->fresh();
 
-    /** @test */
-    public function can_get_orders()
-    {
-        $order = Order::make()->merge(['foo' => 'bar']);
-        $order->save();
+    $this->assertNotSame($customer->name(), 'Sam Example');
+    expect('Sam Test')->toBe($customer->name());
+});
 
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example')->set('orders', [$order->id()]);
-        $user->save();
+test('can get name', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-        $customer = Customer::find('sam');
+    $customer = Customer::find('sam');
 
-        $this->assertTrue($customer->orders() instanceof Collection);
-        $this->assertTrue($customer->orders()->first() instanceof ContractsOrder);
+    expect('Sam Example')->toBe($customer->name());
+});
 
-        $this->assertSame($customer->orders()->first()->get('foo'), 'bar');
-    }
+test('can get email', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
 
-    /** @test */
-    public function can_get_mail_notification_route()
-    {
-        $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
-        $user->save();
+    $customer = Customer::find('sam');
 
-        $customer = Customer::find('sam');
+    expect('sam@example.com')->toBe($customer->email());
+});
 
-        $this->assertSame($customer->routeNotificationForMail(), 'sam@example.com');
-    }
+test('can get orders', function () {
+    $order = Order::make()->merge(['foo' => 'bar']);
+    $order->save();
 
-    /** @test */
-    public function can_get_blueprint_default_fields()
-    {
-        $this->markTestSkipped("The `defaultFieldsInBlueprint` method doesn't seem to exist here.");
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example')->set('orders', [$order->id()]);
+    $user->save();
 
-        $customerInstance = resolve(CustomerContract::class);
+    $customer = Customer::find('sam');
 
-        $defaultFieldsInBlueprint = (new Invader($customerInstance))->defaultFieldsInBlueprint();
+    expect($customer->orders() instanceof Collection)->toBeTrue();
+    expect($customer->orders()->first() instanceof ContractsOrder)->toBeTrue();
 
-        $this->assertIsArray($defaultFieldsInBlueprint);
-    }
-}
+    expect('bar')->toBe($customer->orders()->first()->get('foo'));
+});
+
+test('can get mail notification route', function () {
+    $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
+    $user->save();
+
+    $customer = Customer::find('sam');
+
+    expect('sam@example.com')->toBe($customer->routeNotificationForMail());
+});
+
+test('can get blueprint default fields', function () {
+    $this->markTestSkipped("The `defaultFieldsInBlueprint` method doesn't seem to exist here.");
+
+    $customerInstance = resolve(CustomerContract::class);
+
+    $defaultFieldsInBlueprint = (new Invader($customerInstance))->defaultFieldsInBlueprint();
+
+    expect($defaultFieldsInBlueprint)->toBeArray();
+});

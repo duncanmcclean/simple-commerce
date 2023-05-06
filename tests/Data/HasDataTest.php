@@ -1,190 +1,145 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Data;
+use DoubleThreeDigital\SimpleCommerce\Tests\Data\TraitAccess;
 
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+beforeEach(function () {
+    $this->trait = new TraitAccess();
+});
 
-class HasDataTest extends TestCase
-{
-    protected TraitAccess $trait;
+test('can get all data', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+        'fiz' => 'baa',
+    ]);
 
-    public function setUp(): void
-    {
-        $this->trait = new TraitAccess();
-    }
+    $data = $this->trait->data();
 
-    /** @test */
-    public function can_get_all_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-            'fiz' => 'baa',
-        ]);
+    expect($data)->toBeObject();
 
-        $data = $this->trait->data();
+    expect($data->has('foo'))->toBeTrue();
+    expect($data->has('fiz'))->toBeTrue();
+});
 
-        $this->assertIsObject($data);
+test('can set data', function () {
+    $data = $this->trait->data([
+        'joo' => 'mla',
+        'dru' => 'pal',
+    ]);
 
-        $this->assertTrue($data->has('foo'));
-        $this->assertTrue($data->has('fiz'));
-    }
+    expect($data)->toBeObject();
 
-    /** @test */
-    public function can_set_data()
-    {
-        $data = $this->trait->data([
-            'joo' => 'mla',
-            'dru' => 'pal',
-        ]);
+    $this->assertArrayHasKey('joo', $this->trait->data->toArray());
+    $this->assertArrayHasKey('dru', $this->trait->data->toArray());
+});
 
-        $this->assertIsObject($data);
+test('can set data and ensure existing data has been overwritten', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+        'fiz' => 'baa',
+    ]);
 
-        $this->assertArrayHasKey('joo', $this->trait->data->toArray());
-        $this->assertArrayHasKey('dru', $this->trait->data->toArray());
-    }
+    $data = $this->trait->data([
+        'joo' => 'mla',
+        'dru' => 'pal',
+    ]);
 
-    /** @test */
-    public function can_set_data_and_ensure_existing_data_has_been_overwritten()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-            'fiz' => 'baa',
-        ]);
+    expect($data)->toBeObject();
 
-        $data = $this->trait->data([
-            'joo' => 'mla',
-            'dru' => 'pal',
-        ]);
+    $this->assertArrayNotHasKey('foo', $this->trait->data->toArray());
+    $this->assertArrayNotHasKey('fiz', $this->trait->data->toArray());
+    $this->assertArrayHasKey('joo', $this->trait->data->toArray());
+    $this->assertArrayHasKey('dru', $this->trait->data->toArray());
+});
 
-        $this->assertIsObject($data);
+test('returns true if has data', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertArrayNotHasKey('foo', $this->trait->data->toArray());
-        $this->assertArrayNotHasKey('fiz', $this->trait->data->toArray());
-        $this->assertArrayHasKey('joo', $this->trait->data->toArray());
-        $this->assertArrayHasKey('dru', $this->trait->data->toArray());
-    }
+    $has = $this->trait->has('foo');
 
-    /** @test */
-    public function returns_true_if_has_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    expect($has)->toBeTrue();
+});
 
-        $has = $this->trait->has('foo');
+test('returns false if does not have data', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertTrue($has);
-    }
+    $has = $this->trait->has('bar');
 
-    /** @test */
-    public function returns_false_if_does_not_have_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    expect($has)->toBeFalse();
+});
 
-        $has = $this->trait->has('bar');
+test('can get data', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertFalse($has);
-    }
+    $get = $this->trait->get('foo');
 
-    /** @test */
-    public function can_get_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    expect($get)->toBeString();
+    expect('bar')->toBe($get);
+});
 
-        $get = $this->trait->get('foo');
+test('returns null if data does not exist', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertIsString($get);
-        $this->assertSame($get, 'bar');
-    }
+    $get = $this->trait->get('bar');
 
-    /** @test */
-    public function returns_null_if_data_does_not_exist()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    expect($get)->toBeNull();
+});
 
-        $get = $this->trait->get('bar');
+test('can set new data', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertNull($get);
-    }
+    $set = $this->trait->set('bar', 'foo');
 
-    /** @test */
-    public function can_set_new_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    $this->assertArrayHasKey('bar', $this->trait->data->toArray());
+    expect('foo')->toBe($this->trait->get('bar'));
+});
 
-        $set = $this->trait->set('bar', 'foo');
+test('can set existing data', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertArrayHasKey('bar', $this->trait->data->toArray());
-        $this->assertSame($this->trait->get('bar'), 'foo');
-    }
+    $set = $this->trait->set('foo', 'barz');
 
-    /** @test */
-    public function can_set_existing_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    $this->assertArrayHasKey('foo', $this->trait->data->toArray());
+    expect('barz')->toBe($this->trait->data->get('foo'));
+});
 
-        $set = $this->trait->set('foo', 'barz');
+test('can merge data', function () {
+    $this->trait->data = collect([
+        'foo' => 'barz',
+    ]);
 
-        $this->assertArrayHasKey('foo', $this->trait->data->toArray());
-        $this->assertSame($this->trait->data->get('foo'), 'barz');
-    }
+    $set = $this->trait->merge([
+        'fiz' => 'baa',
+    ]);
 
-    /** @test */
-    public function can_merge_data()
-    {
-        $this->trait->data = collect([
-            'foo' => 'barz',
-        ]);
+    $this->assertArrayHasKey('foo', $this->trait->data->toArray());
+    $this->assertArrayHasKey('fiz', $this->trait->data->toArray());
 
-        $set = $this->trait->merge([
-            'fiz' => 'baa',
-        ]);
+    expect('barz')->toBe($this->trait->data->get('foo'));
+    expect('baa')->toBe($this->trait->data->get('fiz'));
+});
 
-        $this->assertArrayHasKey('foo', $this->trait->data->toArray());
-        $this->assertArrayHasKey('fiz', $this->trait->data->toArray());
+test('can get data as array', function () {
+    $this->trait->data = collect([
+        'foo' => 'bar',
+    ]);
 
-        $this->assertSame($this->trait->data->get('foo'), 'barz');
-        $this->assertSame($this->trait->data->get('fiz'), 'baa');
-    }
+    $toArray = $this->trait->toArray();
 
-    /** @test */
-    public function can_get_data_as_array()
-    {
-        $this->trait->data = collect([
-            'foo' => 'bar',
-        ]);
+    expect($toArray)->toBeArray();
 
-        $toArray = $this->trait->toArray();
-
-        $this->assertIsArray($toArray);
-
-        $this->assertSame($toArray, [
-            'foo' => 'bar',
-        ]);
-    }
-}
-
-// We're using this `TraitAccess` class instead of simply 'using' the class
-// as some of the trait's method name's conflict with those of Testbench's Test Case.
-class TraitAccess
-{
-    public $data;
-
-    use HasData;
-
-    public function __construct()
-    {
-        $this->data = collect();
-    }
-}
+    $this->assertSame($toArray, [
+        'foo' => 'bar',
+    ]);
+});

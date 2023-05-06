@@ -1,91 +1,70 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin;
-
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 
-class DummyGatewayTest extends TestCase
-{
-    public $gateway;
+beforeEach(function () {
+    $this->gateway = new DummyGateway();
 
-    public function setUp(): void
-    {
-        parent::setUp();
+    Collection::make('orders')->title('Order')->save();
+});
 
-        $this->gateway = new DummyGateway();
+test('has a name', function () {
+    $name = $this->gateway->name();
 
-        Collection::make('orders')->title('Order')->save();
-    }
+    expect($name)->toBeString();
+    expect($name)->toBe('Dummy');
+});
 
-    /** @test */
-    public function has_a_name()
-    {
-        $name = $this->gateway->name();
+test('can prepare', function () {
+    $prepare = $this->gateway->prepare(
+        new Request(),
+        Order::make()
+    );
 
-        $this->assertIsString($name);
-        $this->assertSame('Dummy', $name);
-    }
+    expect($prepare)->toBeArray();
+    expect([])->toBe($prepare);
+});
 
-    /** @test */
-    public function can_prepare()
-    {
-        $prepare = $this->gateway->prepare(
-            new Request(),
-            Order::make()
-        );
+test('can checkout', function () {
+    Notification::fake();
 
-        $this->assertIsArray($prepare);
-        $this->assertSame($prepare, []);
-    }
+    TestTime::freeze();
 
-    /** @test */
-    public function can_checkout()
-    {
-        Notification::fake();
+    $checkout = $this->gateway->checkout(
+        new Request(),
+        Order::make()
+    );
 
-        TestTime::freeze();
+    expect($checkout)->toBeArray();
 
-        $checkout = $this->gateway->checkout(
-            new Request(),
-            Order::make()
-        );
+    $this->assertSame([
+        'id' => '123456789abcdefg',
+        'last_four' => '4242',
+        'date' => (string) now()->subDays(14),
+        'refunded' => false,
+    ], $checkout);
+});
 
-        $this->assertIsArray($checkout);
+test('has checkout rules', function () {
+    $rules = $this->gateway->checkoutRules();
 
-        $this->assertSame([
-            'id' => '123456789abcdefg',
-            'last_four' => '4242',
-            'date' => (string) now()->subDays(14),
-            'refunded' => false,
-        ], $checkout);
-    }
+    expect($rules)->toBeArray();
 
-    /** @test */
-    public function has_checkout_rules()
-    {
-        $rules = $this->gateway->checkoutRules();
+    $this->assertSame([
+        'card_number' => ['required', 'string'],
+        'expiry_month' => ['required'],
+        'expiry_year' => ['required'],
+        'cvc' => ['required'],
+    ], $rules);
+});
 
-        $this->assertIsArray($rules);
+test('can refund charge', function () {
+    $refund = $this->gateway->refund(Order::make());
 
-        $this->assertSame([
-            'card_number' => ['required', 'string'],
-            'expiry_month' => ['required'],
-            'expiry_year' => ['required'],
-            'cvc' => ['required'],
-        ], $rules);
-    }
-
-    /** @test */
-    public function can_refund_charge()
-    {
-        $refund = $this->gateway->refund(Order::make());
-
-        $this->assertIsArray($refund);
-    }
-}
+    expect($refund)->toBeArray();
+});

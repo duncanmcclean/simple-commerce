@@ -1,176 +1,160 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers;
-
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
-use Illuminate\Foundation\Http\FormRequest;
+use DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers\CustomerUpdateFormRequest;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
 
-class CustomerControllerTest extends TestCase
-{
-    use SetupCollections;
+uses(SetupCollections::class);
 
-    /** @test */
-    public function can_get_customer()
-    {
-        $customer = Entry::make()
-            ->collection('customers')
-            ->slug('duncan_double_three_digital')
-            ->data([
-                'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name' => 'Duncan McClean',
-                'email' => 'duncan@doublethree.digital',
-            ]);
+test('can get customer', function () {
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
+        ]);
 
-        $customer->save();
-        $customer->fresh();
+    $customer->save();
+    $customer->fresh();
 
-        $response = $this->getJson(route('statamic.simple-commerce.customer.index', [
+    $response = $this->getJson(route('statamic.simple-commerce.customer.index', [
+        'customer' => $customer->id(),
+    ]));
+
+    $response
+        ->assertOk()
+        ->assertJsonStructure([
+            'data',
+        ])
+        ->assertSee('Duncan McClean')
+        ->assertSee('duncan@doublethree.digital');
+});
+
+test('can update customer', function () {
+    Config::set('simple-commerce.field_whitelist.customers', [
+        'name', 'email', 'vip',
+    ]);
+
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
+        ]);
+
+    $customer->save();
+    $customer->fresh();
+
+    $data = [
+        'vip' => true,
+    ];
+
+    $response = $this
+        ->from('/account')
+        ->post(route('statamic.simple-commerce.customer.update', [
             'customer' => $customer->id(),
-        ]));
+        ]), $data);
 
-        $response
-            ->assertOk()
-            ->assertJsonStructure([
-                'data',
-            ])
-            ->assertSee('Duncan McClean')
-            ->assertSee('duncan@doublethree.digital');
-    }
+    $response->assertRedirect('/account');
 
-    /** @test */
-    public function can_update_customer()
-    {
-        Config::set('simple-commerce.field_whitelist.customers', [
-            'name', 'email', 'vip',
+    $customer->fresh();
+
+    expect(true)->toBe($customer->data()->get('vip'));
+});
+
+test('can update customer and request json', function () {
+    Config::set('simple-commerce.field_whitelist.customers', [
+        'name', 'email', 'vip',
+    ]);
+
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
         ]);
 
-        $customer = Entry::make()
-            ->collection('customers')
-            ->slug('duncan_double_three_digital')
-            ->data([
-                'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name' => 'Duncan McClean',
-                'email' => 'duncan@doublethree.digital',
-            ]);
+    $customer->save();
+    $customer->fresh();
 
-        $customer->save();
-        $customer->fresh();
+    $data = [
+        'vip' => true,
+    ];
 
-        $data = [
-            'vip' => true,
-        ];
+    $response = $this
+        ->from('/account')
+        ->postJson(route('statamic.simple-commerce.customer.update', [
+            'customer' => $customer->id(),
+        ]), $data);
 
-        $response = $this
-            ->from('/account')
-            ->post(route('statamic.simple-commerce.customer.update', [
-                'customer' => $customer->id(),
-            ]), $data);
+    $response->assertJsonStructure([
+        'status',
+        'message',
+        'customer',
+    ]);
 
-        $response->assertRedirect('/account');
+    $customer->fresh();
 
-        $customer->fresh();
+    expect(true)->toBe($customer->data()->get('vip'));
+});
 
-        $this->assertSame($customer->data()->get('vip'), true);
-    }
-
-    /** @test */
-    public function can_update_customer_and_request_json()
-    {
-        Config::set('simple-commerce.field_whitelist.customers', [
-            'name', 'email', 'vip',
+test('can update customer and ensure custom form request is used', function () {
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
         ]);
 
-        $customer = Entry::make()
-            ->collection('customers')
-            ->slug('duncan_double_three_digital')
-            ->data([
-                'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name' => 'Duncan McClean',
-                'email' => 'duncan@doublethree.digital',
-            ]);
+    $customer->save();
+    $customer->fresh();
 
-        $customer->save();
-        $customer->fresh();
+    $data = [
+        '_request' => encrypt(CustomerUpdateFormRequest::class),
+        'vip' => true,
+    ];
 
-        $data = [
-            'vip' => true,
-        ];
+    $response = $this
+        ->from('/account')
+        ->post(route('statamic.simple-commerce.customer.update', [
+            'customer' => $customer->id(),
+        ]), $data)
+        ->assertSessionHasErrors('business_name');
 
-        $response = $this
-            ->from('/account')
-            ->postJson(route('statamic.simple-commerce.customer.update', [
-                'customer' => $customer->id(),
-            ]), $data);
+    expect("You can't have a business without a name. Silly sausage!")->toEqual(session('errors')->default->first('business_name'));
 
-        $response->assertJsonStructure([
-            'status',
-            'message',
-            'customer',
-        ]);
+    $response->assertRedirect('/account');
 
-        $customer->fresh();
+    $customer->fresh();
 
-        $this->assertSame($customer->data()->get('vip'), true);
-    }
+    $this->assertArrayNotHasKey('vip', $customer->data());
+});
 
-    /** @test */
-    public function can_update_customer_and_ensure_custom_form_request_is_used()
-    {
-        $customer = Entry::make()
-            ->collection('customers')
-            ->slug('duncan_double_three_digital')
-            ->data([
-                'title' => 'Duncan McClean <duncan@doublethree.digital>',
-                'name' => 'Duncan McClean',
-                'email' => 'duncan@doublethree.digital',
-            ]);
-
-        $customer->save();
-        $customer->fresh();
-
-        $data = [
-            '_request' => encrypt(CustomerUpdateFormRequest::class),
-            'vip' => true,
-        ];
-
-        $response = $this
-            ->from('/account')
-            ->post(route('statamic.simple-commerce.customer.update', [
-                'customer' => $customer->id(),
-            ]), $data)
-            ->assertSessionHasErrors('business_name');
-
-        $this->assertEquals(session('errors')->default->first('business_name'), "You can't have a business without a name. Silly sausage!");
-
-        $response->assertRedirect('/account');
-
-        $customer->fresh();
-
-        $this->assertArrayNotHasKey('vip', $customer->data());
-    }
+// Helpers
+function authorize()
+{
+    return true;
 }
 
-class CustomerUpdateFormRequest extends FormRequest
+function rules()
 {
-    public function authorize()
-    {
-        return true;
-    }
+    return [
+        'business_name' => ['required', 'string'],
+    ];
+}
 
-    public function rules()
-    {
-        return [
-            'business_name' => ['required', 'string'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'business_name.required' => "You can't have a business without a name. Silly sausage!",
-        ];
-    }
+function messages()
+{
+    return [
+        'business_name.required' => "You can't have a business without a name. Silly sausage!",
+    ];
 }

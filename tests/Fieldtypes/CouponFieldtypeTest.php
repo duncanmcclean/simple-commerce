@@ -1,148 +1,125 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CouponFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-class CouponFieldtypeTest extends TestCase
-{
-    protected $fieldtype;
+beforeEach(function () {
+    $this->fieldtype = new CouponFieldtype;
 
-    public function setUp(): void
-    {
-        parent::setUp();
+    Coupon::all()->each->delete();
 
-        $this->fieldtype = new CouponFieldtype;
+    Coupon::make()
+        ->id('blah')
+        ->code('GITHUB')
+        ->type('percentage')
+        ->value(10)
+        ->save();
 
-        Coupon::all()->each->delete();
+    Coupon::make()
+        ->id('foo')
+        ->code('TUPLE')
+        ->type('percentage')
+        ->value(15)
+        ->save();
 
-        Coupon::make()
-            ->id('blah')
-            ->code('GITHUB')
-            ->type('percentage')
-            ->value(10)
-            ->save();
+    Coupon::make()
+        ->id('rad')
+        ->code('STATAMIC')
+        ->type('percentage')
+        ->value(60)
+        ->data([
+            'redeemed' => 25,
+        ])
+        ->save();
+});
 
-        Coupon::make()
-            ->id('foo')
-            ->code('TUPLE')
-            ->type('percentage')
-            ->value(15)
-            ->save();
+test('can get index items', function () {
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-        Coupon::make()
-            ->id('rad')
-            ->code('STATAMIC')
-            ->type('percentage')
-            ->value(60)
-            ->data([
-                'redeemed' => 25,
-            ])
-            ->save();
-    }
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
-    /** @test */
-    public function can_get_index_items()
-    {
-        $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $this->assertSame($getIndexItems->first(), [
+        'id' => 'blah',
+        'code' => 'GITHUB',
+        'discount' => '10%',
+        'redeemed' => '0 times',
+    ]);
 
-        $this->assertTrue($getIndexItems instanceof Collection);
+    $this->assertSame($getIndexItems->last(), [
+        'id' => 'rad',
+        'code' => 'STATAMIC',
+        'discount' => '60%',
+        'redeemed' => '25 times',
+    ]);
+});
 
-        $this->assertSame($getIndexItems->first(), [
-            'id' => 'blah',
-            'code' => 'GITHUB',
-            'discount' => '10%',
-            'redeemed' => '0 times',
-        ]);
+test('can get columns', function () {
+    $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-        $this->assertSame($getIndexItems->last(), [
-            'id' => 'rad',
-            'code' => 'STATAMIC',
-            'discount' => '60%',
-            'redeemed' => '25 times',
-        ]);
-    }
+    expect($getColumns)->toBeArray();
 
-    /** @test */
-    public function can_get_columns()
-    {
-        $getColumns = (new Invader($this->fieldtype))->getColumns();
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('code')->toBe($getColumns[0]->field());
+    expect('Code')->toBe($getColumns[0]->label());
 
-        $this->assertIsArray($getColumns);
+    expect($getColumns[1] instanceof Column)->toBeTrue();
+    expect('discount')->toBe($getColumns[1]->field());
+    expect('Discount')->toBe($getColumns[1]->label());
 
-        $this->assertTrue($getColumns[0] instanceof Column);
-        $this->assertSame($getColumns[0]->field(), 'code');
-        $this->assertSame($getColumns[0]->label(), 'Code');
+    expect($getColumns[2] instanceof Column)->toBeTrue();
+    expect('redeemed')->toBe($getColumns[2]->field());
+    expect('Redeemed')->toBe($getColumns[2]->label());
+});
 
-        $this->assertTrue($getColumns[1] instanceof Column);
-        $this->assertSame($getColumns[1]->field(), 'discount');
-        $this->assertSame($getColumns[1]->label(), 'Discount');
+test('can return as item array', function () {
+    $toItemArray = $this->fieldtype->toItemArray('foo');
 
-        $this->assertTrue($getColumns[2] instanceof Column);
-        $this->assertSame($getColumns[2]->field(), 'redeemed');
-        $this->assertSame($getColumns[2]->label(), 'Redeemed');
-    }
+    expect($toItemArray)->toBeArray();
 
-    /** @test */
-    public function can_return_as_item_array()
-    {
-        $toItemArray = $this->fieldtype->toItemArray('foo');
+    $this->assertSame($toItemArray, [
+        'id' => 'foo',
+        'title' => 'TUPLE',
+    ]);
+});
 
-        $this->assertIsArray($toItemArray);
+test('can preprocess index', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex('foo');
 
-        $this->assertSame($toItemArray, [
-            'id' => 'foo',
-            'title' => 'TUPLE',
-        ]);
-    }
+    expect($preProcessIndex instanceof Collection)->toBeTrue();
+    expect($preProcessIndex)->toHaveCount(1);
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex('foo');
+    $this->assertSame($preProcessIndex[0], [
+        'id' => 'foo',
+        'title' => 'TUPLE',
+        'edit_url' => 'http://localhost/cp/simple-commerce/coupons/foo/edit',
+    ]);
+});
 
-        $this->assertTrue($preProcessIndex instanceof Collection);
-        $this->assertCount(1, $preProcessIndex);
+test('can preprocess index with no country', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-        $this->assertSame($preProcessIndex[0], [
-            'id' => 'foo',
-            'title' => 'TUPLE',
-            'edit_url' => 'http://localhost/cp/simple-commerce/coupons/foo/edit',
-        ]);
-    }
+    expect($preProcessIndex)->toBeNull();
+});
 
-    /** @test */
-    public function can_preprocess_index_with_no_country()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(null);
+test('can preprocess with multiple countries', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(['foo', 'rad']);
 
-        $this->assertNull($preProcessIndex);
-    }
+    expect($preProcessIndex instanceof Collection)->toBeTrue();
+    expect($preProcessIndex)->toHaveCount(2);
 
-    /** @test */
-    public function can_preprocess_with_multiple_countries()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(['foo', 'rad']);
+    $this->assertSame($preProcessIndex[0], [
+        'id' => 'foo',
+        'title' => 'TUPLE',
+        'edit_url' => 'http://localhost/cp/simple-commerce/coupons/foo/edit',
+    ]);
 
-        $this->assertTrue($preProcessIndex instanceof Collection);
-        $this->assertCount(2, $preProcessIndex);
-
-        $this->assertSame($preProcessIndex[0], [
-            'id' => 'foo',
-            'title' => 'TUPLE',
-            'edit_url' => 'http://localhost/cp/simple-commerce/coupons/foo/edit',
-        ]);
-
-        $this->assertSame($preProcessIndex[1], [
-            'id' => 'rad',
-            'title' => 'STATAMIC',
-            'edit_url' => 'http://localhost/cp/simple-commerce/coupons/rad/edit',
-        ]);
-    }
-}
+    $this->assertSame($preProcessIndex[1], [
+        'id' => 'rad',
+        'title' => 'STATAMIC',
+        'edit_url' => 'http://localhost/cp/simple-commerce/coupons/rad/edit',
+    ]);
+});

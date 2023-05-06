@@ -1,87 +1,64 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingMethodFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-class ShippingMethodFieldtypeTest extends TestCase
-{
-    protected $fieldtype;
+beforeEach(function () {
+    $this->fieldtype = new ShippingMethodFieldtype;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('can get config field items', function () {
+    $configFieldItems = (new Invader($this->fieldtype))->configFieldItems();
 
-        $this->fieldtype = new ShippingMethodFieldtype;
-    }
+    expect($configFieldItems)->toBeArray();
+});
 
-    /** @test */
-    public function can_get_config_field_items()
-    {
-        $configFieldItems = (new Invader($this->fieldtype))->configFieldItems();
+test('can get index items', function () {
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-        $this->assertIsArray($configFieldItems);
-    }
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
-    /** @test */
-    public function can_get_index_items()
-    {
-        $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $this->assertSame($getIndexItems->last(), [
+        'id' => FreeShipping::class,
+        'name' => 'Free Shipping',
+        'title' => 'Free Shipping',
+    ]);
+});
 
-        $this->assertTrue($getIndexItems instanceof Collection);
+test('can get columns', function () {
+    $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-        $this->assertSame($getIndexItems->last(), [
-            'id' => FreeShipping::class,
-            'name' => 'Free Shipping',
-            'title' => 'Free Shipping',
-        ]);
-    }
+    expect($getColumns)->toBeArray();
 
-    /** @test */
-    public function can_get_columns()
-    {
-        $getColumns = (new Invader($this->fieldtype))->getColumns();
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('name')->toBe($getColumns[0]->field());
+    expect('Name')->toBe($getColumns[0]->label());
+});
 
-        $this->assertIsArray($getColumns);
+test('can return as item array', function () {
+    $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
 
-        $this->assertTrue($getColumns[0] instanceof Column);
-        $this->assertSame($getColumns[0]->field(), 'name');
-        $this->assertSame($getColumns[0]->label(), 'Name');
-    }
+    expect($toItemArray)->toBeArray();
 
-    /** @test */
-    public function can_return_as_item_array()
-    {
-        $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
+    $this->assertSame($toItemArray, [
+        'id' => FreeShipping::class,
+        'title' => 'Free Shipping',
+    ]);
+});
 
-        $this->assertIsArray($toItemArray);
+test('can preprocess index', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
 
-        $this->assertSame($toItemArray, [
-            'id' => FreeShipping::class,
-            'title' => 'Free Shipping',
-        ]);
-    }
+    expect($preProcessIndex)->toBeString();
+    expect('Free Shipping')->toBe($preProcessIndex);
+});
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
+test('can preprocess index with no shipping method', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'Free Shipping');
-    }
-
-    /** @test */
-    public function can_preprocess_index_with_no_shipping_method()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(null);
-
-        $this->assertNull($preProcessIndex);
-    }
-}
+    expect($preProcessIndex)->toBeNull();
+});

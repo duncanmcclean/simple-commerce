@@ -1,91 +1,68 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes;
-
 use DoubleThreeDigital\SimpleCommerce\Fieldtypes\CountryFieldtype;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;
 
-class CountryFieldtypeTest extends TestCase
-{
-    protected $fieldtype;
+beforeEach(function () {
+    $this->fieldtype = new CountryFieldtype;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('can get index items', function () {
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
 
-        $this->fieldtype = new CountryFieldtype;
-    }
+    expect($getIndexItems instanceof Collection)->toBeTrue();
 
-    /** @test */
-    public function can_get_index_items()
-    {
-        $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $this->assertSame($getIndexItems->last(), [
+        'id' => 'ZW',
+        'iso' => 'ZW',
+        'name' => 'Zimbabwe',
+    ]);
+});
 
-        $this->assertTrue($getIndexItems instanceof Collection);
+test('can get columns', function () {
+    $getColumns = (new Invader($this->fieldtype))->getColumns();
 
-        $this->assertSame($getIndexItems->last(), [
-            'id' => 'ZW',
-            'iso' => 'ZW',
-            'name' => 'Zimbabwe',
-        ]);
-    }
+    expect($getColumns)->toBeArray();
 
-    /** @test */
-    public function can_get_columns()
-    {
-        $getColumns = (new Invader($this->fieldtype))->getColumns();
+    expect($getColumns[0] instanceof Column)->toBeTrue();
+    expect('name')->toBe($getColumns[0]->field());
+    expect('Name')->toBe($getColumns[0]->label());
 
-        $this->assertIsArray($getColumns);
+    expect($getColumns[1] instanceof Column)->toBeTrue();
+    expect('iso')->toBe($getColumns[1]->field());
+    expect('ISO Code')->toBe($getColumns[1]->label());
+});
 
-        $this->assertTrue($getColumns[0] instanceof Column);
-        $this->assertSame($getColumns[0]->field(), 'name');
-        $this->assertSame($getColumns[0]->label(), 'Name');
+test('can return as item array', function () {
+    $toItemArray = $this->fieldtype->toItemArray('GB');
 
-        $this->assertTrue($getColumns[1] instanceof Column);
-        $this->assertSame($getColumns[1]->field(), 'iso');
-        $this->assertSame($getColumns[1]->label(), 'ISO Code');
-    }
+    expect($toItemArray)->toBeArray();
 
-    /** @test */
-    public function can_return_as_item_array()
-    {
-        $toItemArray = $this->fieldtype->toItemArray('GB');
+    $this->assertSame($toItemArray, [
+        'id' => 'GB',
+        'title' => 'United Kingdom',
+    ]);
+});
 
-        $this->assertIsArray($toItemArray);
+test('can preprocess index', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex('GB');
 
-        $this->assertSame($toItemArray, [
-            'id' => 'GB',
-            'title' => 'United Kingdom',
-        ]);
-    }
+    expect($preProcessIndex)->toBeString();
+    expect('United Kingdom')->toBe($preProcessIndex);
+});
 
-    /** @test */
-    public function can_preprocess_index()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex('GB');
+test('can preprocess index with no country', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(null);
 
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'United Kingdom');
-    }
+    expect($preProcessIndex)->toBeNull();
+});
 
-    /** @test */
-    public function can_preprocess_index_with_no_country()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(null);
+test('can preprocess with multiple countries', function () {
+    $preProcessIndex = $this->fieldtype->preProcessIndex(['GB', 'US']);
 
-        $this->assertNull($preProcessIndex);
-    }
-
-    /** @test */
-    public function can_preprocess_with_multiple_countries()
-    {
-        $preProcessIndex = $this->fieldtype->preProcessIndex(['GB', 'US']);
-
-        $this->assertIsString($preProcessIndex);
-        $this->assertSame($preProcessIndex, 'United Kingdom, United States');
-    }
-}
+    expect($preProcessIndex)->toBeString();
+    expect('United Kingdom, United States')->toBe($preProcessIndex);
+});

@@ -1,26 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Modifiers;
-
 use DoubleThreeDigital\SimpleCommerce\Modifiers\Currency as CurrencyModifier;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 
-class CurrencyTest extends TestCase
-{
-    protected $modifier;
+beforeEach(function () {
+    $this->modifier = new CurrencyModifier;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('can convert value into currency string', function () {
+    $modifier = $this->modifier->index(1557, [], []);
 
-        $this->modifier = new CurrencyModifier;
-    }
-
-    /** @test */
-    public function can_convert_value_into_currency_string()
-    {
-        $modifier = $this->modifier->index(1557, [], []);
-
-        $this->assertSame($modifier, '£15.57');
-    }
-}
+    expect('£15.57')->toBe($modifier);
+});
