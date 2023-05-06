@@ -130,13 +130,3 @@ test('can destroy tax rate', function () {
         ->delete('/cp/simple-commerce/tax/rates/uk-standard-products/delete')
         ->assertJson(['success' => true]);
 });
-
-// Helpers
-function user()
-{
-    return User::make()
-        ->makeSuper()
-        ->email('joe.bloggs@example.com')
-        ->set('password', 'secret')
-        ->save();
-}

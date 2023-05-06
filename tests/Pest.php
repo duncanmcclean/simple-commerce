@@ -1,5 +1,7 @@
 <?php
 
+use Statamic\Facades\User;
+
 uses(\DoubleThreeDigital\SimpleCommerce\Tests\TestCase::class)->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Rules', 'Tags', 'Tax');
 uses(\DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections::class)->in('Actions', 'Coupons', 'Listeners');
 
@@ -41,3 +43,12 @@ uses(\DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections::class)->
 */
 
 /** @link https://pestphp.com/docs/custom-helpers */
+
+function user()
+{
+    return User::make()
+        ->makeSuper()
+        ->email('joe.bloggs@example.com')
+        ->set('password', 'secret')
+        ->save();
+}

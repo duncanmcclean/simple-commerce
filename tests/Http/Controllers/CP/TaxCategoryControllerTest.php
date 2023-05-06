@@ -120,13 +120,3 @@ test('can destroy tax category and delete assosiated rates', function () {
 
     $this->assertFileDoesNotExist($taxRate->path());
 });
-
-// Helpers
-function user()
-{
-    return User::make()
-        ->makeSuper()
-        ->email('joe.bloggs@example.com')
-        ->set('password', 'secret')
-        ->save();
-}

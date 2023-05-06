@@ -198,13 +198,3 @@ test('can destroy coupon', function () {
         ->delete('/cp/simple-commerce/coupons/random-id')
         ->assertRedirect('/cp/simple-commerce/coupons');
 });
-
-// Helpers
-function user()
-{
-    return User::make()
-        ->makeSuper()
-        ->email('joe.bloggs@example.com')
-        ->set('password', 'secret')
-        ->save();
-}
