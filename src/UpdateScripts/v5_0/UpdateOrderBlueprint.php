@@ -26,7 +26,7 @@ class UpdateOrderBlueprint extends UpdateScript
                     $blueprint->removeField('is_paid');
                     $blueprint->removeField('paid_date');
 
-                    $blueprint->ensureFieldInSection('order_status', [
+                    $blueprint->ensureFieldInTab('order_status', [
                         'type' => 'order_status',
                         'display' => 'Order Status',
                         'read_only' => true,
@@ -34,7 +34,7 @@ class UpdateOrderBlueprint extends UpdateScript
                         'listable' => true,
                     ], 'sidebar');
 
-                    $blueprint->ensureFieldInSection('payment_status', [
+                    $blueprint->ensureFieldInTab('payment_status', [
                         'type' => 'payment_status',
                         'display' => 'Payment Status',
                         'read_only' => true,
@@ -42,7 +42,7 @@ class UpdateOrderBlueprint extends UpdateScript
                         'listable' => true,
                     ], 'sidebar');
 
-                    $blueprint->ensureFieldInSection('status_log', [
+                    $blueprint->ensureFieldInTab('status_log', [
                         'type' => 'sc_status_log',
                         'display' => 'Status Log',
                     ], 'sidebar');
@@ -59,7 +59,7 @@ class UpdateOrderBlueprint extends UpdateScript
             $blueprint->removeField('is_paid');
             $blueprint->removeField('paid_date');
 
-            $blueprint->ensureFieldInSection('order_status', [
+            $blueprint->ensureFieldInTab('order_status', [
                 'type' => 'order_status',
                 'display' => 'Order Status',
                 'read_only' => true,
@@ -67,7 +67,7 @@ class UpdateOrderBlueprint extends UpdateScript
                 'listable' => true,
             ], 'sidebar');
 
-            $blueprint->ensureFieldInSection('payment_status', [
+            $blueprint->ensureFieldInTab('payment_status', [
                 'type' => 'payment_status',
                 'display' => 'Payment Status',
                 'read_only' => true,
@@ -75,7 +75,7 @@ class UpdateOrderBlueprint extends UpdateScript
                 'listable' => true,
             ], 'sidebar');
 
-            $blueprint->ensureFieldInSection('status_log', [
+            $blueprint->ensureFieldInTab('status_log', [
                 'type' => 'sc_status_log',
                 'display' => 'Status Log',
             ], 'sidebar');
