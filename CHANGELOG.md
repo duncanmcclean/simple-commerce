@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.0.1 (2023-05-09)
+
+### What's fixed
+
+-   Fixed an error during the update process
+
 ## v5.0.0 (2023-04-28)
 
 ### What's new
