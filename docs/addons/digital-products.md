@@ -18,7 +18,7 @@ You may optionally publish the config file by running:
 php artisan vendor:publish --tag="sc-digital-products-config"
 ```
 
-The config file wil be published to `config/sc-digital-products.php`
+The config file will be published to `config/sc-digital-products.php`
 
 **That's it!** You're ready to start selling Digital Products with Simple Commerce! 🎉
 
@@ -34,7 +34,7 @@ In each of your digital products, you should enable the `Is Digital Product?` to
 
 As of v3.1.0, the Digital Products addon supports adding different 'downloadable assets' per variant. So, instead of specifying the 'Download Limit' and 'Downloadable Assets' in the `Digital Product` tab, you'll specify them on each of your variants.
 
-## Overriding the licence key generation logic
+## Overriding the license key generation logic
 
 By default, we create a serial license key which you can give to your customers. However, you may want to customise where the code comes from or maybe you want to send it away to a third party service.
 
@@ -67,7 +67,7 @@ You can learn more about Simple Commerce's notifications system in the [SC Docum
 If you wish to customise the default email view, you can publish it with this command.
 
 ```
-php artisan vendor:pulish --tag="sc-digital-products-views"
+php artisan vendor:publish --tag="sc-digital-products-views"
 ```
 
 You'll then find the published views in your `resources/views/vendor/sc-digital-products` folder.
