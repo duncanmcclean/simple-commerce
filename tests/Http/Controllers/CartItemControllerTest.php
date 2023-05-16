@@ -225,6 +225,50 @@ test('can store item with variant', function () {
     expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 });
 
+// https://github.com/duncanmcclean/simple-commerce/issues/867
+test('cant store item without variant when product is a variant product', function () {
+    $product = Product::make()
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ])
+        ->productVariants([
+            'variants' => [
+                [
+                    'name' => 'Colours',
+                    'values' => [
+                        'Red',
+                    ],
+                ],
+                [
+                    'name' => 'Sizes',
+                    'values' => [
+                        'Small',
+                    ],
+                ],
+            ],
+            'options' => [
+                [
+                    'key' => 'Red_Small',
+                    'variant' => 'Red Small',
+                    'price' => 1000,
+                ],
+            ],
+        ]);
+
+    $product->save();
+
+    $data = [
+        'product' => $product->id,
+        'quantity' => 1,
+    ];
+
+    $this
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), $data)
+        ->assertSessionHasErrors('variant');
+});
+
 test('can store item with metadata where metadata is unique', function () {
     Config::set('simple-commerce.cart.unique_metadata', true);
     Config::set('simple-commerce.field_whitelist.line_items', ['foo', 'barz']);
