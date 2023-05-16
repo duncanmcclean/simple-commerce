@@ -36,7 +36,7 @@ class StoreRequest extends FormRequest
             'quantity' => [
                 'required',
                 'numeric',
-                'gt:0'
+                'gt:0',
             ],
             'email' => [
                 'nullable',
@@ -45,7 +45,7 @@ class StoreRequest extends FormRequest
                     if (preg_match('/^\S*$/u', $value) === 0) {
                         return $fail(__('Your email may not contain any spaces.'));
                     }
-                }
+                },
             ],
             'customer.email' => [
                 'nullable',
@@ -54,7 +54,7 @@ class StoreRequest extends FormRequest
                     if (preg_match('/^\S*$/u', $value) === 0) {
                         return $fail(__('Your email may not contain any spaces.'));
                     }
-                }
+                },
             ],
         ];
 
