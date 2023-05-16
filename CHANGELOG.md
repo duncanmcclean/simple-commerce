@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.0.2 (2023-05-16)
+
+### What's fixed
+
+-   A validation error will now be thrown when adding a variant product to the cart without a variant #867 #870
+
 ## v5.0.1 (2023-05-09)
 
 ### What's fixed
