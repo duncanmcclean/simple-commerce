@@ -26,7 +26,7 @@ The config file will be published to `config/sc-digital-products.php`
 
 Once installed, you'll see a `Digital Product` tab appear on the publish form for your product entries.
 
-![Screenshot](https://raw.githubusercontent.com/duncanmcclean/sc-digital-products/master/publish-form.png)
+![Screenshot](https://raw.githubusercontent.com/duncanmcclean/sc-digital-products/5.x/publish-form.png)
 
 In each of your digital products, you should enable the `Is Digital Product?` toggle and add the downloadable assets. These are the assets the customer will be able to access once they have purchased your product.
 
