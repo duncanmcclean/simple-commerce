@@ -6,7 +6,7 @@
 
 ### What's fixed
 
--   Fixed 'Paid Date' not being migrated correctly to the status log, during the v5 upgrade #871
+-   Fixed 'Paid Date' not being migrated correctly to the status log, during the v5 upgrade #871 by @ajcsilva
 
 ## v5.0.2 (2023-05-16)
 
