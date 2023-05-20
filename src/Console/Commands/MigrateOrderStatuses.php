@@ -122,7 +122,7 @@ class MigrateOrderStatuses extends Command
 
                         $model->data = array_merge($model->data, [
                             'status_log' => [
-                                'paid' => $model->paid_date->format('Y-m-d H:i'),
+                                'paid' => Carbon::parse($model->paid_date)->format('Y-m-d H:i'),
                             ],
                         ]);
 
