@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.0.3 (2023-05-20)
+
+### What's fixed
+
+-   Fixed 'Paid Date' not being migrated correctly to the status log, during the v5 upgrade #871
+
 ## v5.0.2 (2023-05-16)
 
 ### What's fixed
