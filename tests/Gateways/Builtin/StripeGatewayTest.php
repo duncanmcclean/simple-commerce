@@ -19,6 +19,7 @@ use Stripe\Stripe;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+
 beforeEach(function () {
     $this->setupCollections();
 
@@ -41,10 +42,6 @@ test('has a name', function () {
 });
 
 test('can prepare', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     $product = Product::make()
         ->price(5500)
         ->data([
@@ -83,13 +80,9 @@ test('can prepare', function () {
     expect($order->grandTotal())->toBe($paymentIntent->amount);
     expect($paymentIntent->customer)->toBeNull();
     expect($paymentIntent->receipt_email)->toBeNull();
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('can prepare with customer', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     $product = Product::make()
         ->price(1299)
         ->data([
@@ -137,13 +130,9 @@ test('can prepare with customer', function () {
     expect($paymentIntent->customer)->toBe($stripeCustomer->id);
     expect('George')->toBe($stripeCustomer->name);
     expect('george@example.com')->toBe($stripeCustomer->email);
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('can prepare with receipt email', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     $product = Product::make()
         ->price(1299)
         ->data([
@@ -196,13 +185,9 @@ test('can prepare with receipt email', function () {
     expect($paymentIntent->customer)->toBe($stripeCustomer->id);
     expect('George')->toBe($stripeCustomer->name);
     expect('george@example.com')->toBe($stripeCustomer->email);
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('can prepare with payment intent data closure', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     $this->cardElementsGateway->setConfig([
         'secret' => env('STRIPE_SECRET'),
         'payment_intent_data' => function (ContractsOrder $order) {
@@ -259,13 +244,9 @@ test('can prepare with payment intent data closure', function () {
     $this->cardElementsGateway->setConfig([
         'secret' => env('STRIPE_SECRET'),
     ]);
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('can checkout when in card elements mode', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $product = Product::make()
@@ -326,13 +307,9 @@ test('can checkout when in card elements mode', function () {
 
     expect(PaymentStatus::Paid)->toBe($order->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('cant checkout when in payment elements mode', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $product = Product::make()
@@ -387,7 +364,7 @@ test('cant checkout when in payment elements mode', function () {
 
     expect(PaymentStatus::Unpaid)->toBe($order->paymentStatus());
     $this->assertNotNull($order->statusLog('paid'));
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('has checkout rules', function () {
     $rules = (new StripeGateway())->checkoutRules();
@@ -400,10 +377,6 @@ test('has checkout rules', function () {
 });
 
 test('can refund charge', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $order = Order::make()->grandTotal(1234)->gateway([
@@ -439,7 +412,7 @@ test('can refund charge', function () {
     expect($refund['id'])->toContain('re_');
     expect(1234)->toBe($refund['amount']);
     expect($paymentIntent)->toBe($refund['payment_intent']);
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('can hit webhook with payment intent succeeded event', function () {
     $order = Order::make();
@@ -467,10 +440,6 @@ test('can hit webhook with payment intent succeeded event', function () {
 });
 
 test('returns array from payment display', function () {
-    if (! env('STRIPE_SECRET')) {
-        $this->markTestSkipped('Skipping, no Stripe Secret has been defined for this environment.');
-    }
-
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $fieldtypeDisplay = $this->cardElementsGateway->fieldtypeDisplay([
@@ -489,7 +458,7 @@ test('returns array from payment display', function () {
         'text' => $paymentIntent,
         'url' => 'https://dashboard.stripe.com/test/payments/'.$paymentIntent,
     ], $fieldtypeDisplay);
-});
+})->skip(! env('STRIPE_SECRET'));
 
 test('does not return array from payment display if no payment intent is set', function () {
     $fieldtypeDisplay = $this->cardElementsGateway->fieldtypeDisplay([

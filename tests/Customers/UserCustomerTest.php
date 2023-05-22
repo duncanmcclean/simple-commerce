@@ -138,8 +138,6 @@ test('can get user', function () {
 });
 
 test('can get customer to resource', function () {
-    $this->markTestSkipped();
-
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 
@@ -147,11 +145,9 @@ test('can get customer to resource', function () {
     $toResource = $customer->toResource();
 
     expect($toResource instanceof UserResource)->toBeTrue();
-});
+})->skip();
 
 test('can get customer to augmented array', function () {
-    $this->markTestSkipped();
-
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 
@@ -159,7 +155,7 @@ test('can get customer to augmented array', function () {
     $toAugmentedArray = $customer->toAugmentedArray();
 
     expect($toAugmentedArray)->toBeArray();
-});
+})->skip();
 
 test('can get customer to array', function () {
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
@@ -181,41 +177,33 @@ test('can get id', function () {
 });
 
 test('can get title', function () {
-    $this->markTestSkipped();
-
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 
     $customer = Customer::find('sam');
 
     expect('Sam Example <sam@example.com>')->toBe($customer->title());
-});
+})->skip();
 
 test('can get slug', function () {
-    $this->markTestSkipped();
-
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 
     $customer = Customer::find('sam');
 
     expect('sam')->toBe($customer->slug());
-});
+})->skip();
 
 test('can get site', function () {
-    $this->markTestSkipped();
-
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 
     $customer = Customer::find('sam');
 
     expect($customer->site())->toBeNull();
-});
+})->skip();
 
 test('can get fresh', function () {
-    $this->markTestSkipped();
-
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 
@@ -229,7 +217,7 @@ test('can get fresh', function () {
 
     $this->assertNotSame($customer->name(), 'Sam Example');
     expect('Sam Test')->toBe($customer->name());
-});
+})->skip();
 
 test('can get name', function () {
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
@@ -274,11 +262,9 @@ test('can get mail notification route', function () {
 });
 
 test('can get blueprint default fields', function () {
-    $this->markTestSkipped("The `defaultFieldsInBlueprint` method doesn't seem to exist here.");
-
     $customerInstance = resolve(CustomerContract::class);
 
     $defaultFieldsInBlueprint = (new Invader($customerInstance))->defaultFieldsInBlueprint();
 
     expect($defaultFieldsInBlueprint)->toBeArray();
-});
+})->skip(true, 'The `defaultFieldsInBlueprint` method doesn\'t seem to exist here.');

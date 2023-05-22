@@ -519,8 +519,6 @@ test('cant update cart and create new customer via customer array if email conta
  * PR: https://github.com/duncanmcclean/simple-commerce/pull/337
  */
 test('can update cart and ensure customer is not overwritten', function () {
-    $this->markTestSkipped();
-
     $customer = Customer::make()->email('duncan@test.com')->data([
         'name' => 'Duncan',
     ]);
@@ -548,7 +546,7 @@ test('can update cart and ensure customer is not overwritten', function () {
 
     expect($cartCustomer->id)->toBe($customer->id);
     expect($cartCustomer->get('name'))->toBe($customer->get('name'));
-});
+})->skip();
 
 test('can update cart with custom redirect page', function () {
     $cart = Order::make();

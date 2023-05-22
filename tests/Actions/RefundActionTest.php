@@ -14,30 +14,24 @@ beforeEach(function () {
 });
 
 test('is visible to paid and non refunded order', function () {
-    $this->markTestSkipped();
-
     $order = Order::make()->status(OrderStatus::Placed)->paymentStatus(PaymentStatus::Paid);
     $order->save();
 
     $action = $this->action->visibleTo($order->resource());
 
     expect($action)->toBeTrue();
-});
+})->skip();
 
 test('is not visible to unpaid orders', function () {
-    $this->markTestSkipped();
-
     $order = Order::make()->status(OrderStatus::Cart)->paymentStatus(PaymentStatus::Unpaid);
     $order->save();
 
     $action = $this->action->visibleTo($order->resource());
 
     expect($action)->toBeFalse();
-});
+})->skip();
 
 test('is not visible to already refunded orders', function () {
-    $this->markTestSkipped();
-
     $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
 
     $order->save();
@@ -45,11 +39,9 @@ test('is not visible to already refunded orders', function () {
     $action = $this->action->visibleTo($order->resource());
 
     expect($action)->toBeFalse();
-});
+})->skip();
 
 test('is not visible to products', function () {
-    $this->markTestSkipped();
-
     $product = Product::make()
         ->price(1200)
         ->data([
@@ -61,11 +53,9 @@ test('is not visible to products', function () {
     $action = $this->action->visibleTo($product->resource());
 
     expect($action)->toBeFalse();
-});
+})->skip();
 
 test('is not able to be run in bulk', function () {
-    $this->markTestSkipped();
-
     $order = Order::make()->paymentStatus(PaymentStatus::Refunded);
 
     $order->save();
@@ -73,7 +63,7 @@ test('is not able to be run in bulk', function () {
     $action = $this->action->visibleToBulk([$order->resource()]);
 
     expect($action)->toBeFalse();
-});
+})->skip();
 
 test('order can be refunded', function () {
     Collection::make('orders')->save();
