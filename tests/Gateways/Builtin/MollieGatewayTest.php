@@ -27,9 +27,6 @@ test('has a name', function () {
 });
 
 test('can prepare', function () {
-    if (! env('MOLLIE_KEY')) {
-        $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
-    }
 
     $product = Product::make()
         ->price(5500)
@@ -64,14 +61,10 @@ test('can prepare', function () {
     expect($molliePayment->amount->value)->toBe('55.00');
     expect($molliePayment->description)->toBe('Order '.$order->orderNumber());
     expect($molliePayment->redirectUrl)->toContain('/!/simple-commerce/gateways/mollie/callback?_order_id='.$order->id());
-});
+})->skip(! env('MOLLIE_KEY'));
 
 test('can refund charge', function () {
     $this->markTestIncomplete('Need to figure out how we can fake a REAL payment, so we can then go onto refund it.');
-
-    if (! env('MOLLIE_KEY')) {
-        $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
-    }
 
     $order = Order::make();
     $order->save();
@@ -79,13 +72,9 @@ test('can refund charge', function () {
     $refund = $this->gateway->refund($order);
 
     expect($refund)->toBeArray();
-});
+})->skip(! env('MOLLIE_KEY'));
 
 test('can hit webhook', function () {
-    if (! env('MOLLIE_KEY')) {
-        $this->markTestSkipped('Skipping, no Mollie key has been defined for this environment.');
-    }
-
     (new Invader($this->gateway))->setupMollie();
 
     $molliePayment = (new Invader($this->gateway))->mollie->payments->create([
@@ -108,4 +97,4 @@ test('can hit webhook', function () {
     $webhook = $this->gateway->webhook(new Request([], $payload));
 
     expect(null)->toBe($webhook);
-});
+})->skip(! env('MOLLIE_KEY'));

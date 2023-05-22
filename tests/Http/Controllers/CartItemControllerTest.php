@@ -1086,8 +1086,6 @@ test('can store item with customer array and existing customer and additional cu
 });
 
 test('can store item where product requires prerequisite product and customer has purchased prerequisite product', function () {
-    $this->markTestSkipped();
-
     $prerequisiteProduct = Product::make()
         ->price(1000)
         ->data([
@@ -1146,7 +1144,7 @@ test('can store item where product requires prerequisite product and customer ha
     expect($cart->itemsTotal())->toBe(1599);
 
     expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id());
-});
+})->skip();
 
 test('cant store item where product requires prerequisite product and no customer available', function () {
     $prerequisiteProduct = Product::make()
@@ -1238,8 +1236,6 @@ test('cant store item where product requires prerequisite product and customer h
 });
 
 test('can add second item to a cart with an existing item', function () {
-    $this->markTestSkipped();
-
     $productOne = Product::make()
         ->price(1000)
         ->data([
@@ -1287,7 +1283,7 @@ test('can add second item to a cart with an existing item', function () {
     expect($cart->itemsTotal())->toBe(2000);
 
     expect(json_encode($cart->lineItems()->toArray()))->toContain($productTwo->id);
-});
+})->skip();
 
 test('can store a product that is already in the cart', function () {
     $product = Product::make()
@@ -1688,8 +1684,6 @@ test('cant update item with extra data if fields not whitelisted in config', fun
 });
 
 test('can update item with extra data and ensure existing metadata isnt overwritten', function () {
-    $this->markTestSkipped();
-
     $product = Product::make()
         ->price(1000)
         ->data([
@@ -1736,7 +1730,7 @@ test('can update item with extra data and ensure existing metadata isnt overwrit
 
     expect('bar')->toBe($cart->lineItems()->toArray()[0]->metadata()->toArray()['foo']);
     expect('baz')->toBe($cart->lineItems()->toArray()[0]->metadata()->toArray()['bar']);
-});
+})->skip();
 
 test('can update item with string quantity and ensure quantity is saved as integer', function () {
     $product = Product::make()
@@ -2034,8 +2028,6 @@ test('can update item and request json', function () {
 });
 
 test('can destroy item', function () {
-    $this->markTestSkipped();
-
     $product = Product::make()
         ->price(1000)
         ->data([
@@ -2070,4 +2062,4 @@ test('can destroy item', function () {
     ]);
 
     expect($cart->lineItems()->toArray())->toBeEmpty();
-});
+})->skip();
