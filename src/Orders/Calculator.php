@@ -13,9 +13,9 @@ use Statamic\Facades\Site;
 class Calculator
 {
     /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order */
-    protected $order;
+    protected static $order;
 
-    public function calculate(OrderContract $order): array
+    public static function calculate(OrderContract $order): array
     {
         if ($order->paymentStatus()->is(PaymentStatus::Paid)) {
             return $order->data()->merge([
@@ -28,7 +28,7 @@ class Calculator
             ])->toArray();
         }
 
-        $this->order = $order;
+        static::$order = $order;
 
         $data = [
             'grand_total' => 0,
@@ -44,7 +44,7 @@ class Calculator
                 return $lineItem->toArray();
             })
             ->map(function ($lineItem) use (&$data) {
-                $calculate = $this->calculateLineItem($data, $lineItem);
+                $calculate = static::calculateLineItem($data, $lineItem);
 
                 $data = $calculate['data'];
                 $lineItem = $calculate['lineItem'];
@@ -52,7 +52,7 @@ class Calculator
                 return $lineItem;
             })
             ->map(function ($lineItem) use (&$data) {
-                $calculate = $this->calculateLineItemTax($data, $lineItem);
+                $calculate = static::calculateLineItemTax($data, $lineItem);
 
                 $data = $calculate['data'];
                 $lineItem = $calculate['lineItem'];
@@ -64,9 +64,9 @@ class Calculator
             })
             ->toArray();
 
-        $data = $this->calculateOrderCoupons($data)['data'];
+        $data = static::calculateOrderCoupons($data)['data'];
 
-        $data = $this->calculateOrderShipping($data)['data'];
+        $data = static::calculateOrderShipping($data)['data'];
 
         $data['grand_total'] = (($data['items_total'] + $data['tax_total']) - $data['coupon_total']) + $data['shipping_total'];
         $data['grand_total'] = (int) round($data['grand_total']);
@@ -74,7 +74,7 @@ class Calculator
         return $data;
     }
 
-    public function calculateLineItem(array $data, array $lineItem): array
+    public static function calculateLineItem(array $data, array $lineItem): array
     {
         $product = ProductAPI::find($lineItem['product']);
 
@@ -84,7 +84,7 @@ class Calculator
             );
 
             if (SimpleCommerce::$productVariantPriceHook) {
-                $productPrice = (SimpleCommerce::$productVariantPriceHook)($this->order, $product, $variant);
+                $productPrice = (SimpleCommerce::$productVariantPriceHook)(static::$order, $product, $variant);
             } else {
                 $productPrice = $variant->price();
             }
@@ -101,7 +101,7 @@ class Calculator
         }
 
         if (SimpleCommerce::$productPriceHook) {
-            $productPrice = (SimpleCommerce::$productPriceHook)($this->order, $product);
+            $productPrice = (SimpleCommerce::$productPriceHook)(static::$order, $product);
         } else {
             $productPrice = $product->price();
         }
@@ -117,10 +117,10 @@ class Calculator
         ];
     }
 
-    public function calculateLineItemTax(array $data, array $lineItem): array
+    public static function calculateLineItemTax(array $data, array $lineItem): array
     {
         $taxEngine = SimpleCommerce::taxEngine();
-        $taxCalculation = $taxEngine->calculate($this->order, $lineItem);
+        $taxCalculation = $taxEngine->calculate(static::$order, $lineItem);
 
         $lineItem['tax'] = $taxCalculation->toArray();
 
@@ -137,9 +137,9 @@ class Calculator
         ];
     }
 
-    public function calculateOrderShipping(array $data): array
+    public static function calculateOrderShipping(array $data): array
     {
-        $shippingMethod = $this->order->get('shipping_method');
+        $shippingMethod = static::$order->get('shipping_method');
         $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
 
         if (! $shippingMethod && ! $defaultShippingMethod) {
@@ -150,20 +150,20 @@ class Calculator
 
         $data['shipping_total'] = Shipping::site(Site::current()->handle())
             ->use($shippingMethod ?? $defaultShippingMethod)
-            ->calculateCost($this->order);
+            ->calculateCost(static::$order);
 
         return [
             'data' => $data,
         ];
     }
 
-    public function calculateOrderCoupons(array $data): array
+    public static function calculateOrderCoupons(array $data): array
     {
-        if ($coupon = $this->order->coupon()) {
+        if ($coupon = static::$order->coupon()) {
             $value = (int) $coupon->value();
 
             // Double check coupon is still valid
-            if (! $coupon->isValid($this->order)) {
+            if (! $coupon->isValid(static::$order)) {
                 return [
                     'data' => $data,
                 ];

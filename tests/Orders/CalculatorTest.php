@@ -39,7 +39,7 @@ test('does not calculate totals if order is paid', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -68,7 +68,7 @@ test('standard product price is calculated correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -108,7 +108,7 @@ test('variant product price is calculated correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -137,7 +137,7 @@ test('ensure decimals in standard product prices are stripped out', function () 
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -177,7 +177,7 @@ test('ensure decimals in variant product prices are stripped out', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -206,7 +206,7 @@ test('can calculate correct tax amount', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -239,7 +239,7 @@ test('ensure shipping price is applied correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -284,7 +284,7 @@ test('ensure grand total is calculated correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -326,7 +326,7 @@ test('ensure percentage coupon is calculated correctly on items total', function
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -371,7 +371,7 @@ test('ensure percentage coupon is calculated correctly on items total when value
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -416,7 +416,7 @@ test('ensure percentage coupon is calculated correctly on items total when produ
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -458,7 +458,7 @@ test('ensure fixed coupon is calculated correctly on items total', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -503,7 +503,7 @@ test('ensure fixed coupon is calculated correctly on items total when value is a
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -548,7 +548,7 @@ test('ensure tax is included when using coupon', function () {
     $cart->save();
     $cart->fresh();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -583,7 +583,7 @@ test('ensure product price hook is used to determine price of product', function
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 
@@ -648,7 +648,7 @@ test('ensure product variant price hook is used to determine price of product va
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
     expect($calculate)->toBeArray();
 

@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
@@ -338,7 +337,7 @@ class Order implements Contract
 
     public function recalculate(): self
     {
-        $calculate = resolve(CalculatorContract::class)->calculate($this);
+        $calculate = Calculator::calculate($this);
 
         $this->lineItems($calculate['items']);
 
