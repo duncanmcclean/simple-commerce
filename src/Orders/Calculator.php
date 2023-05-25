@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductAPI;
@@ -11,7 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Site;
 
-class Calculator implements Contract
+class Calculator
 {
     /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Order */
     protected $order;
