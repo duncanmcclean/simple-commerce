@@ -84,7 +84,7 @@ class TaxCategoryRepository implements Contract
 
         TaxRate::make()
             ->id('default-shipping-rate')
-            ->name('Default Shipping')
+            ->name('Default - Shipping')
             ->category('shipping')
             ->zone('everywhere')
             ->rate(0)
