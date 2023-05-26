@@ -337,21 +337,11 @@ class Order implements Contract
 
     public function recalculate(): self
     {
-        $calculate = Calculator::calculate($this);
+        $orderCalculation = Calculator::calculate($this);
 
-        $this->lineItems($calculate['items']);
+        $orderCalculation->order->save();
 
-        $this->grandTotal($calculate['grand_total']);
-        $this->itemsTotal($calculate['items_total']);
-        $this->taxTotal($calculate['tax_total']);
-        $this->shippingTotal($calculate['shipping_total']);
-        $this->couponTotal($calculate['coupon_total']);
-
-        $this->merge(Arr::except($calculate, 'items'));
-
-        $this->save();
-
-        return $this;
+        return $orderCalculation->order->fresh();
     }
 
     public function withoutRecalculating(callable $callback)
