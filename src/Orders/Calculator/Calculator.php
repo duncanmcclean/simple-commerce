@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\OrderCalculation;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Support\Facades\Pipeline;
 
 class Calculator
@@ -16,12 +16,12 @@ class Calculator
 
         return Pipeline::send(new OrderCalculation($order))
             ->through([
-                Calculator\LineItemCalculator::class,
-                Calculator\LineItemTaxCalculator::class,
-                Calculator\CalculateItemsTotal::class,
-                Calculator\CouponCalculator::class,
-                Calculator\ShippingCalculator::class,
-                Calculator\GrandTotalCalculator::class,
+                LineItemCalculator::class,
+                LineItemTaxCalculator::class,
+                CalculateItemsTotal::class,
+                CouponCalculator::class,
+                ShippingCalculator::class,
+                GrandTotalCalculator::class,
             ])
             ->thenReturn();
     }

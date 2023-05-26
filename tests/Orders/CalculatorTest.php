@@ -3,7 +3,7 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\OrderCalculation;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
