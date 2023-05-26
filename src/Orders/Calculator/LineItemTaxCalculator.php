@@ -29,10 +29,6 @@ class LineItemTaxCalculator
                     );
                 }
 
-                $orderCalculation->order->itemsTotal(
-                    $orderCalculation->order->itemsTotal() + $lineItem->total()
-                );
-
                 return $lineItem;
             });
 

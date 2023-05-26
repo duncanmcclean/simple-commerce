@@ -18,6 +18,7 @@ class Calculator
             ->through([
                 Calculator\LineItemCalculator::class,
                 Calculator\LineItemTaxCalculator::class,
+                Calculator\CalculateItemsTotal::class,
                 Calculator\CouponCalculator::class,
                 Calculator\ShippingCalculator::class,
                 Calculator\GrandTotalCalculator::class,
