@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;

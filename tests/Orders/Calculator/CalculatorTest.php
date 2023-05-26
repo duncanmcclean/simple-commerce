@@ -1,8 +1,8 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
@@ -11,9 +11,8 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Orders\Helpers\Postage;
 use Illuminate\Support\Facades\Config;
-use Statamic\Facades\Site;
-
 use function PHPUnit\Framework\assertTrue;
+use Statamic\Facades\Site;
 
 uses(SetupCollections::class);
 
