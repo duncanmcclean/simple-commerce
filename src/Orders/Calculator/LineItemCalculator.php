@@ -16,7 +16,9 @@ class LineItemCalculator
                 $product = $lineItem->product();
 
                 if ($product->purchasableType() === ProductType::Variant) {
-                    $variant = $product->variant($lineItem->variant());
+                    $variant = $product->variant(
+                        isset($lineItem->variant()['variant']) ? $lineItem->variant()['variant'] : $lineItem->variant()
+                    );
 
                     if (SimpleCommerce::$productVariantPriceHook) {
                         $productPrice = (SimpleCommerce::$productVariantPriceHook)($orderCalculation->order, $product, $variant);
