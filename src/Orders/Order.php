@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as CalculatorContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
@@ -15,10 +14,10 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
+use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Site as FacadesSite;
@@ -338,21 +337,13 @@ class Order implements Contract
 
     public function recalculate(): self
     {
-        $calculate = resolve(CalculatorContract::class)->calculate($this);
+        if ($this->paymentStatus()->is(PaymentStatus::Paid)) {
+            return $this;
+        }
 
-        $this->lineItems($calculate['items']);
+        $calculation = tap(Calculator::calculate($this))->save();
 
-        $this->grandTotal($calculate['grand_total']);
-        $this->itemsTotal($calculate['items_total']);
-        $this->taxTotal($calculate['tax_total']);
-        $this->shippingTotal($calculate['shipping_total']);
-        $this->couponTotal($calculate['coupon_total']);
-
-        $this->merge(Arr::except($calculate, 'items'));
-
-        $this->save();
-
-        return $this;
+        return $calculation->fresh();
     }
 
     public function withoutRecalculating(callable $callback)

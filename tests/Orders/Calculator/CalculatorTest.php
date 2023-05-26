@@ -1,18 +1,21 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Orders\Helpers\Postage;
 use Illuminate\Support\Facades\Config;
+use function PHPUnit\Framework\assertTrue;
 use Statamic\Facades\Site;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     $this->useBasicTaxEngine();
 });
@@ -39,17 +42,18 @@ test('does not calculate totals if order is paid', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    // This logic has been moved into the Order class, rather than in the Calculator class.
+    $calculate = $cart->recalculate();
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(123)->toBe($calculate['grand_total']);
-    expect(123)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(123)->toBe($calculate->grandTotal());
+    expect(123)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(123)->toBe($calculate['items'][0]->total());
+    expect(123)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('standard product price is calculated correctly', function () {
@@ -68,17 +72,17 @@ test('standard product price is calculated correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(500)->toBe($calculate['grand_total']);
-    expect(500)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(500)->toBe($calculate->grandTotal());
+    expect(500)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(500)->toBe($calculate['items'][0]->total());
+    expect(500)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('variant product price is calculated correctly', function () {
@@ -108,17 +112,17 @@ test('variant product price is calculated correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(250)->toBe($calculate['grand_total']);
-    expect(250)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(250)->toBe($calculate->grandTotal());
+    expect(250)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(250)->toBe($calculate['items'][0]->total());
+    expect(250)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure decimals in standard product prices are stripped out', function () {
@@ -137,17 +141,17 @@ test('ensure decimals in standard product prices are stripped out', function () 
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(1550)->toBe($calculate['grand_total']);
-    expect(1550)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(1550)->toBe($calculate->grandTotal());
+    expect(1550)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(1550)->toBe($calculate['items'][0]->total());
+    expect(1550)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure decimals in variant product prices are stripped out', function () {
@@ -177,17 +181,17 @@ test('ensure decimals in variant product prices are stripped out', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(1550)->toBe($calculate['grand_total']);
-    expect(1550)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(1550)->toBe($calculate->grandTotal());
+    expect(1550)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(1550)->toBe($calculate['items'][0]->total());
+    expect(1550)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('can calculate correct tax amount', function () {
@@ -206,17 +210,17 @@ test('can calculate correct tax amount', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(2400)->toBe($calculate['grand_total']);
-    expect(2000)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(400)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(2400)->toBe($calculate->grandTotal());
+    expect(2000)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(400)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(2000)->toBe($calculate['items'][0]['total']);
+    expect(2000)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure shipping price is applied correctly', function () {
@@ -239,17 +243,17 @@ test('ensure shipping price is applied correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(2650)->toBe($calculate['grand_total']);
-    expect(2000)->toBe($calculate['items_total']);
-    expect(250)->toBe($calculate['shipping_total']);
-    expect(400)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(2650)->toBe($calculate->grandTotal());
+    expect(2000)->toBe($calculate->itemsTotal());
+    expect(250)->toBe($calculate->shippingTotal());
+    expect(400)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(2000)->toBe($calculate['items'][0]['total']);
+    expect(2000)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure grand total is calculated correctly', function () {
@@ -284,17 +288,17 @@ test('ensure grand total is calculated correctly', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(1450)->toBe($calculate['grand_total']);
-    expect(2000)->toBe($calculate['items_total']);
-    expect(250)->toBe($calculate['shipping_total']);
-    expect(400)->toBe($calculate['tax_total']);
-    expect(1200)->toBe($calculate['coupon_total']);
+    expect(1450)->toBe($calculate->grandTotal());
+    expect(2000)->toBe($calculate->itemsTotal());
+    expect(250)->toBe($calculate->shippingTotal());
+    expect(400)->toBe($calculate->taxTotal());
+    expect(1200)->toBe($calculate->couponTotal());
 
-    expect(2000)->toBe($calculate['items'][0]['total']);
+    expect(2000)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure percentage coupon is calculated correctly on items total', function () {
@@ -326,17 +330,17 @@ test('ensure percentage coupon is calculated correctly on items total', function
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(5000)->toBe($calculate['grand_total']);
-    expect(10000)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(5000)->toBe($calculate['coupon_total']);
+    expect(5000)->toBe($calculate->grandTotal());
+    expect(10000)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(5000)->toBe($calculate->couponTotal());
 
-    expect(10000)->toBe($calculate['items'][0]['total']);
+    expect(10000)->toBe($calculate->lineItems()->first()->total());
 });
 
 /**
@@ -371,17 +375,17 @@ test('ensure percentage coupon is calculated correctly on items total when value
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(9000)->toBe($calculate['grand_total']);
-    expect(10000)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(1000)->toBe($calculate['coupon_total']);
+    expect(9000)->toBe($calculate->grandTotal());
+    expect(10000)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(1000)->toBe($calculate->couponTotal());
 
-    expect(10000)->toBe($calculate['items'][0]['total']);
+    expect(10000)->toBe($calculate->lineItems()->first()->total());
 });
 
 /**
@@ -416,17 +420,17 @@ test('ensure percentage coupon is calculated correctly on items total when produ
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(2249)->toBe($calculate['grand_total']);
-    expect(2499)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(250)->toBe($calculate['coupon_total']);
+    expect(2249)->toBe($calculate->grandTotal());
+    expect(2499)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(250)->toBe($calculate->couponTotal());
 
-    expect(2499)->toBe($calculate['items'][0]['total']);
+    expect(2499)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure fixed coupon is calculated correctly on items total', function () {
@@ -458,17 +462,17 @@ test('ensure fixed coupon is calculated correctly on items total', function () {
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(9900)->toBe($calculate['grand_total']);
-    expect(10000)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(100)->toBe($calculate['coupon_total']);
+    expect(9900)->toBe($calculate->grandTotal());
+    expect(10000)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(100)->toBe($calculate->couponTotal());
 
-    expect(10000)->toBe($calculate['items'][0]['total']);
+    expect(10000)->toBe($calculate->lineItems()->first()->total());
 });
 
 /**
@@ -503,17 +507,17 @@ test('ensure fixed coupon is calculated correctly on items total when value is a
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(9000)->toBe($calculate['grand_total']);
-    expect(10000)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(0)->toBe($calculate['tax_total']);
-    expect(1000)->toBe($calculate['coupon_total']);
+    expect(9000)->toBe($calculate->grandTotal());
+    expect(10000)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(0)->toBe($calculate->taxTotal());
+    expect(1000)->toBe($calculate->couponTotal());
 
-    expect(10000)->toBe($calculate['items'][0]['total']);
+    expect(10000)->toBe($calculate->lineItems()->first()->total());
 
     expect(1000)->toBe($coupon->value());
 });
@@ -548,17 +552,17 @@ test('ensure tax is included when using coupon', function () {
     $cart->save();
     $cart->fresh();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(0)->toBe($calculate['grand_total']);
-    expect(10000)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(2000)->toBe($calculate['tax_total']);
-    expect(12000)->toBe($calculate['coupon_total']);
+    expect(0)->toBe($calculate->grandTotal());
+    expect(10000)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(2000)->toBe($calculate->taxTotal());
+    expect(12000)->toBe($calculate->couponTotal());
 
-    expect(10000)->toBe($calculate['items'][0]['total']);
+    expect(10000)->toBe($calculate->lineItems()->first()->total());
 });
 
 test('ensure product price hook is used to determine price of product', function () {
@@ -583,17 +587,17 @@ test('ensure product price hook is used to determine price of product', function
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(240)->toBe($calculate['grand_total']);
-    expect(200)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(40)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(240)->toBe($calculate->grandTotal());
+    expect(200)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(40)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(200)->toBe($calculate['items'][0]['total']);
+    expect(200)->toBe($calculate->lineItems()->first()->total());
 
     // Revert hook
     SimpleCommerce::productPriceHook(function ($order, $product) {
@@ -648,17 +652,17 @@ test('ensure product variant price hook is used to determine price of product va
 
     $cart->save();
 
-    $calculate = (new Calculator())->calculate($cart);
+    $calculate = Calculator::calculate($cart);
 
-    expect($calculate)->toBeArray();
+    assertTrue($calculate instanceof OrderContract);
 
-    expect(240)->toBe($calculate['grand_total']);
-    expect(200)->toBe($calculate['items_total']);
-    expect(0)->toBe($calculate['shipping_total']);
-    expect(40)->toBe($calculate['tax_total']);
-    expect(0)->toBe($calculate['coupon_total']);
+    expect(240)->toBe($calculate->grandTotal());
+    expect(200)->toBe($calculate->itemsTotal());
+    expect(0)->toBe($calculate->shippingTotal());
+    expect(40)->toBe($calculate->taxTotal());
+    expect(0)->toBe($calculate->couponTotal());
 
-    expect(200)->toBe($calculate['items'][0]['total']);
+    expect(200)->toBe($calculate->lineItems()->first()->total());
 
     // Revert hook
     SimpleCommerce::productVariantPriceHook(function ($order, $product, $variant) {

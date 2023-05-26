@@ -216,7 +216,6 @@ class ServiceProvider extends AddonServiceProvider
 
         $this->app->bind(Contracts\GatewayManager::class, Gateways\Manager::class);
         $this->app->bind(Contracts\ShippingManager::class, Shipping\Manager::class);
-        $this->app->bind(Contracts\Calculator::class, Orders\Calculator::class);
 
         $this->app->bind(Contracts\Order::class, Orders\Order::class);
         $this->app->bind(Contracts\Coupon::class, Coupons\Coupon::class);

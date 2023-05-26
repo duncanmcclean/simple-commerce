@@ -97,7 +97,7 @@ test('can correctly calculate tax rate based on country', function () {
     ]);
 
     // Ensure global order tax is right
-    expect(167)->toBe($recalculate->get('tax_total'));
+    expect(167)->toBe($recalculate->taxTotal());
 });
 
 test('can correctly calculate tax rate based on region', function () {
@@ -166,7 +166,7 @@ test('can correctly calculate tax rate based on region', function () {
     ]);
 
     // Ensure global order tax is right
-    expect(130)->toBe($recalculate->get('tax_total'));
+    expect(130)->toBe($recalculate->taxTotal());
 });
 
 test('can calculate tax rate when included in price', function () {
@@ -233,7 +233,7 @@ test('can calculate tax rate when included in price', function () {
     ]);
 
     // Ensure global order tax is right
-    expect(167)->toBe($recalculate->get('tax_total'));
+    expect(167)->toBe($recalculate->taxTotal());
 });
 
 test('can use default tax rate if no rate available', function () {
@@ -287,7 +287,7 @@ test('can use default tax rate if no rate available', function () {
     expect(12)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    expect(107)->toBe($recalculate->get('tax_total'));
+    expect(107)->toBe($recalculate->taxTotal());
 });
 
 test('throws prevent checkout exception if no rate available', function () {
@@ -398,7 +398,7 @@ test('uses default address if no address provided', function () {
     expect(99)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    expect(497)->toBe($recalculate->get('tax_total'));
+    expect(497)->toBe($recalculate->taxTotal());
 });
 
 test('throws prevent checkout exception if no address provided', function () {
@@ -453,5 +453,5 @@ test('throws prevent checkout exception if no address provided', function () {
     expect(99)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    expect(497)->toBe($recalculate->get('tax_total'));
+    expect(497)->toBe($recalculate->taxTotal());
 });

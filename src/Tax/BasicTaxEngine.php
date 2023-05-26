@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tax;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use Illuminate\Support\Facades\Config;
 
 class BasicTaxEngine implements TaxEngine
@@ -26,18 +26,18 @@ class BasicTaxEngine implements TaxEngine
         return __('Basic Tax Engine');
     }
 
-    public function calculate(Order $order, array $lineItem): TaxCalculation
+    public function calculate(Order $order, LineItem $lineItem): TaxCalculation
     {
-        $product = Product::find($lineItem['product']);
+        $product = $lineItem->product();
 
         if ($product->get('exempt_from_tax') === true) {
             return new TaxCalculation;
         }
 
         if ($this->includedInPrices) {
-            $taxAmount = $lineItem['total'] / (100 + $this->taxRate) * $this->taxRate;
+            $taxAmount = $lineItem->total() / (100 + $this->taxRate) * $this->taxRate;
         } else {
-            $taxAmount = $lineItem['total'] * ($this->taxRate / 100);
+            $taxAmount = $lineItem->total() * ($this->taxRate / 100);
         }
 
         return new TaxCalculation(
