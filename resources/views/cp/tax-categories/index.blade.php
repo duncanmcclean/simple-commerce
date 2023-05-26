@@ -37,7 +37,7 @@
                                         <dropdown-item :text="__('Edit')" redirect="{{ $taxCategory->editUrl() }}"></dropdown-item>
                                     @endif
 
-                                    @if($taxCategory->id() !== 'default' && auth()->user()->can('delete tax categories'))
+                                    @if($taxCategory->id() !== 'default' && $taxCategory->id() !== 'shipping' && auth()->user()->can('delete tax categories'))
                                         <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
                                             <resource-deleter
                                                 ref="deleter"

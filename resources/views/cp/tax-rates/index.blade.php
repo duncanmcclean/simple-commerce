@@ -60,7 +60,7 @@
                                         <dropdown-item :text="__('Edit')" redirect="{{ $taxRate->editUrl() }}"></dropdown-item>
                                     @endif
 
-                                    @if($taxRate->id() !== 'default-rate' && auth()->user()->can('delete tax rates'))
+                                    @if($taxRate->id() !== 'default-rate' && $taxRate->id() !== 'default-shipping-rate' && auth()->user()->can('delete tax rates'))
                                         <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
                                             <resource-deleter
                                                 ref="deleter"
