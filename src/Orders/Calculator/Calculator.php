@@ -16,7 +16,7 @@ class Calculator
                 CalculateItemsTotal::class,
                 CouponCalculator::class,
                 ShippingCalculator::class,
-                GrandTotalCalculator::class,
+                CalculateGrandTotal::class,
             ])
             ->thenReturn();
     }

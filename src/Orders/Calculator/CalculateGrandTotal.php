@@ -5,7 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 
-class GrandTotalCalculator
+class CalculateGrandTotal
 {
     public function handle(Order $order, Closure $next)
     {
