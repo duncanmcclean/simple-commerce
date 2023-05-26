@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate as StandardTaxRate;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
 use Illuminate\Support\Facades\Config;
@@ -20,7 +21,7 @@ class TaxEngine implements Contract
         return 'Standard';
     }
 
-    public function calculate(Order $order, array $lineItem): TaxCalculation
+    public function calculate(Order $order, LineItem $lineItem): TaxCalculation
     {
         $taxRate = $this->decideOnRate($order, $lineItem);
 
@@ -36,15 +37,15 @@ class TaxEngine implements Contract
             }
         }
 
-        $taxAmount = ($lineItem['total'] / 100) * ($taxRate->rate() / (100 + $taxRate->rate()));
+        $taxAmount = ($lineItem->total() / 100) * ($taxRate->rate() / (100 + $taxRate->rate()));
         $itemTax = (int) round($taxAmount * 100);
 
         return new TaxCalculation($itemTax, $taxRate->rate(), $taxRate->includeInPrice());
     }
 
-    protected function decideOnRate(Order $order, array $lineItem): ?StandardTaxRate
+    protected function decideOnRate(Order $order, LineItem $lineItem): ?StandardTaxRate
     {
-        $product = Product::find($lineItem['product']);
+        $product = $lineItem->product();
 
         /** @var \DoubleThreeDigital\SimpleCommerce\Orders\Address */
         $address = config('simple-commerce.tax_engine_config.address') === 'billing'
