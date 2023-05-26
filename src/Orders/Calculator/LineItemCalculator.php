@@ -3,16 +3,17 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 class LineItemCalculator
 {
-    public function handle(OrderCalculation $orderCalculation, Closure $next)
+    public function handle(Order $order, Closure $next)
     {
-        $orderCalculation->order->lineItems()
-            ->transform(function (LineItem $lineItem) use ($orderCalculation) {
+        $order->lineItems()
+            ->transform(function (LineItem $lineItem) use ($order) {
                 $product = $lineItem->product();
 
                 if ($product->purchasableType() === ProductType::Variant) {
@@ -21,7 +22,7 @@ class LineItemCalculator
                     );
 
                     if (SimpleCommerce::$productVariantPriceHook) {
-                        $productPrice = (SimpleCommerce::$productVariantPriceHook)($orderCalculation->order, $product, $variant);
+                        $productPrice = (SimpleCommerce::$productVariantPriceHook)($order, $product, $variant);
                     } else {
                         $productPrice = $variant->price();
                     }
@@ -36,7 +37,7 @@ class LineItemCalculator
 
                 if ($product->purchasableType() === ProductType::Product) {
                     if (SimpleCommerce::$productPriceHook) {
-                        $productPrice = (SimpleCommerce::$productPriceHook)($orderCalculation->order, $product);
+                        $productPrice = (SimpleCommerce::$productPriceHook)($order, $product);
                     } else {
                         $productPrice = $product->price();
                     }
@@ -52,6 +53,6 @@ class LineItemCalculator
                 return $lineItem;
             });
 
-        return $next($orderCalculation);
+        return $next($order);
     }
 }

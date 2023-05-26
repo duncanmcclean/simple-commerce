@@ -338,11 +338,13 @@ class Order implements Contract
 
     public function recalculate(): self
     {
-        $orderCalculation = Calculator::calculate($this);
+        if ($this->paymentStatus()->is(PaymentStatus::Paid)) {
+            return $this;
+        }
 
-        $orderCalculation->order->save();
+        $calculation = tap(Calculator::calculate($this))->save();
 
-        return $orderCalculation->order->fresh();
+        return $calculation->fresh();
     }
 
     public function withoutRecalculating(callable $callback)

@@ -3,40 +3,41 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
 
 class CouponCalculator
 {
-    public function handle(OrderCalculation $orderCalculation, Closure $next)
+    public function handle(Order $order, Closure $next)
     {
-        if ($coupon = $orderCalculation->order->coupon()) {
+        if ($coupon = $order->coupon()) {
             $value = (int) $coupon->value();
 
             // Double check coupon is still valid
-            if (! $coupon->isValid($orderCalculation->order)) {
-                return $next($orderCalculation);
+            if (! $coupon->isValid($order)) {
+                return $next($order);
             }
 
-            $baseAmount = $orderCalculation->order->itemsTotal() + $orderCalculation->order->taxTotal();
+            $baseAmount = $order->itemsTotal() + $order->taxTotal();
 
             // Otherwise do all the other stuff...
             if ($coupon->type() === CouponType::Percentage) {
-                $orderCalculation->order->couponTotal(
+                $order->couponTotal(
                     (int) ($value * $baseAmount) / 100
                 );
             }
 
             if ($coupon->type() === CouponType::Fixed) {
-                $orderCalculation->order->couponTotal(
+                $order->couponTotal(
                     (int) $baseAmount - ($baseAmount - $value)
                 );
             }
 
-            $orderCalculation->order->couponTotal(
-                (int) round($orderCalculation->order->couponTotal())
+            $order->couponTotal(
+                (int) round($order->couponTotal())
             );
         }
 
-        return $next($orderCalculation);
+        return $next($order);
     }
 }

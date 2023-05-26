@@ -3,19 +3,20 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 
 class GrandTotalCalculator
 {
-    public function handle(OrderCalculation $orderCalculation, Closure $next)
+    public function handle(Order $order, Closure $next)
     {
-        $orderCalculation->order->grandTotal(
-            (($orderCalculation->order->itemsTotal() + $orderCalculation->order->taxTotal()) - $orderCalculation->order->couponTotal()) + $orderCalculation->order->shippingTotal()
+        $order->grandTotal(
+            (($order->itemsTotal() + $order->taxTotal()) - $order->couponTotal()) + $order->shippingTotal()
         );
 
-        $orderCalculation->order->grandTotal(
-            (int) $orderCalculation->order->grandTotal()
+        $order->grandTotal(
+            (int) $order->grandTotal()
         );
 
-        return $next($orderCalculation);
+        return $next($order);
     }
 }

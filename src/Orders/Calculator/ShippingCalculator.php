@@ -3,26 +3,27 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use Statamic\Facades\Site;
 
 class ShippingCalculator
 {
-    public function handle(OrderCalculation $orderCalculation, Closure $next)
+    public function handle(Order $order, Closure $next)
     {
-        $shippingMethod = $orderCalculation->order->get('shipping_method');
+        $shippingMethod = $order->get('shipping_method');
         $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
 
         if (! $shippingMethod && ! $defaultShippingMethod) {
-            return $next($orderCalculation);
+            return $next($order);
         }
 
-        $orderCalculation->order->shippingTotal(
+        $order->shippingTotal(
             Shipping::site(Site::current()->handle())
                 ->use($shippingMethod ?? $defaultShippingMethod)
-                ->calculateCost($orderCalculation->order)
+                ->calculateCost($order)
         );
 
-        return $next($orderCalculation);
+        return $next($order);
     }
 }

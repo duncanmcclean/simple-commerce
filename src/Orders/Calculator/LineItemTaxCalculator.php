@@ -3,35 +3,36 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 
 class LineItemTaxCalculator
 {
-    public function handle(OrderCalculation $orderCalculation, Closure $next)
+    public function handle(Order $order, Closure $next)
     {
-        $orderCalculation->order->lineItems()
-            ->transform(function (LineItem $lineItem) use ($orderCalculation) {
+        $order->lineItems()
+            ->transform(function (LineItem $lineItem) use ($order) {
                 $taxEngine = SimpleCommerce::taxEngine();
-                $taxCalculation = $taxEngine->calculate($orderCalculation->order, $lineItem);
+                $taxCalculation = $taxEngine->calculate($order, $lineItem);
 
                 $lineItem->tax($taxCalculation->toArray());
 
                 if ($taxCalculation->priceIncludesTax()) {
                     $lineItem->total($taxCalculation->amount());
 
-                    $orderCalculation->order->taxTotal(
-                        $orderCalculation->order->taxTotal() + $taxCalculation->amount()
+                    $order->taxTotal(
+                        $order->taxTotal() + $taxCalculation->amount()
                     );
                 } else {
-                    $orderCalculation->order->taxTotal(
-                        $orderCalculation->order->taxTotal() + $taxCalculation->amount()
+                    $order->taxTotal(
+                        $order->taxTotal() + $taxCalculation->amount()
                     );
                 }
 
                 return $lineItem;
             });
 
-        return $next($orderCalculation);
+        return $next($order);
     }
 }
