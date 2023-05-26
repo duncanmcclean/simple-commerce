@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
@@ -20,7 +21,7 @@ class TaxEngine implements Contract
         return 'Standard';
     }
 
-    public function calculate(Order $order, LineItem $lineItem): TaxCalculation
+    public function calculateForLineItem(Order $order, LineItem $lineItem): TaxCalculation
     {
         $taxRate = $this->decideOnRate($order, $lineItem);
 
@@ -40,6 +41,11 @@ class TaxEngine implements Contract
         $itemTax = (int) round($taxAmount * 100);
 
         return new TaxCalculation($itemTax, $taxRate->rate(), $taxRate->includeInPrice());
+    }
+
+    public function calculateForShipping(Order $order, ShippingMethod $shippingMethod): TaxCalculation
+    {
+        // TODO
     }
 
     protected function decideOnRate(Order $order, LineItem $lineItem): ?StandardTaxRate

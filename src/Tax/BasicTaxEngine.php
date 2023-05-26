@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tax;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use Illuminate\Support\Facades\Config;
@@ -26,7 +27,7 @@ class BasicTaxEngine implements TaxEngine
         return __('Basic Tax Engine');
     }
 
-    public function calculate(Order $order, LineItem $lineItem): TaxCalculation
+    public function calculateForLineItem(Order $order, LineItem $lineItem): TaxCalculation
     {
         $product = $lineItem->product();
 
@@ -45,5 +46,10 @@ class BasicTaxEngine implements TaxEngine
             $this->taxRate,
             $this->includedInPrices
         );
+    }
+
+    public function calculateForShipping(Order $order, ShippingMethod $shippingMethod): TaxCalculation
+    {
+        // TODO
     }
 }

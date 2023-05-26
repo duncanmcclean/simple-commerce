@@ -28,7 +28,7 @@ test('can calculate tax when not included in price', function () {
 
     $order->save();
 
-    $taxCalculation = (new BasicTaxEngine)->calculate($order, $order->lineItems()->first());
+    $taxCalculation = (new BasicTaxEngine)->calculateForLineItem($order, $order->lineItems()->first());
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
@@ -54,7 +54,7 @@ test('can calculate tax when included in price', function () {
 
     $order->save();
 
-    $taxCalculation = (new BasicTaxEngine)->calculate($order, $order->lineItems()->first());
+    $taxCalculation = (new BasicTaxEngine)->calculateForLineItem($order, $order->lineItems()->first());
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
@@ -82,7 +82,7 @@ test('can calculate tax when tax rate is decimal number', function () {
 
     $order->save();
 
-    $taxCalculation = (new BasicTaxEngine)->calculate($order, $order->lineItems()->first());
+    $taxCalculation = (new BasicTaxEngine)->calculateForLineItem($order, $order->lineItems()->first());
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
@@ -107,7 +107,7 @@ test('can calculate tax when it is nothing', function () {
 
     $order->save();
 
-    $taxCalculation = (new BasicTaxEngine)->calculate($order, $order->lineItems()->first());
+    $taxCalculation = (new BasicTaxEngine)->calculateForLineItem($order, $order->lineItems()->first());
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
@@ -136,7 +136,7 @@ test('ensure round value tax is calculated correctly', function () {
 
     $order->save();
 
-    $taxCalculation = (new BasicTaxEngine)->calculate($order, $order->lineItems()->first());
+    $taxCalculation = (new BasicTaxEngine)->calculateForLineItem($order, $order->lineItems()->first());
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 

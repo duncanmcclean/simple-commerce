@@ -14,7 +14,7 @@ class LineItemTaxCalculator
         $order->lineItems()
             ->transform(function (LineItem $lineItem) use ($order) {
                 $taxEngine = SimpleCommerce::taxEngine();
-                $taxCalculation = $taxEngine->calculate($order, $lineItem);
+                $taxCalculation = $taxEngine->calculateForLineItem($order, $lineItem);
 
                 $lineItem->tax($taxCalculation->toArray());
 
