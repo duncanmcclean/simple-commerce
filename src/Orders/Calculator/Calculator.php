@@ -2,10 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use Illuminate\Support\Facades\Pipeline;
 
-class Calculator
+class Calculator implements Contract
 {
     public static function calculate(Order $order): Order
     {
