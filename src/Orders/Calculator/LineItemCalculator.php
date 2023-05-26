@@ -27,8 +27,11 @@ class LineItemCalculator
                         $productPrice = $variant->price();
                     }
 
-                    // Ensure we strip any decimals from price
-                    $productPrice = (int) str_replace('.', '', (string) $productPrice);
+                    // If $productPrice contains a decimal, we need to strip it & ensure we have two decimal places.
+                    if (str_contains($productPrice, '.')) {
+                        $productPrice = number_format($productPrice, 2, '.', '');
+                        $productPrice = (int) str_replace('.', '', (string) $productPrice);
+                    }
 
                     $lineItem->total(
                         $productPrice * $lineItem->quantity()
@@ -42,8 +45,11 @@ class LineItemCalculator
                         $productPrice = $product->price();
                     }
 
-                    // Ensure we strip any decimals from price
-                    $productPrice = (int) str_replace('.', '', (string) $productPrice);
+                    // If $productPrice contains a decimal, we need to strip it & ensure we have two decimal places.
+                    if (str_contains($productPrice, '.')) {
+                        $productPrice = number_format($productPrice, 2, '.', '');
+                        $productPrice = (int) str_replace('.', '', (string) $productPrice);
+                    }
 
                     $lineItem->total(
                         $productPrice * $lineItem->quantity()
