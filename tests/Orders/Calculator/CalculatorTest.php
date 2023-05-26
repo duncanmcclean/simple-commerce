@@ -16,6 +16,7 @@ use Statamic\Facades\Site;
 use function PHPUnit\Framework\assertTrue;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     $this->useBasicTaxEngine();
 });
@@ -42,7 +43,8 @@ test('does not calculate totals if order is paid', function () {
 
     $cart->save();
 
-    $calculate = Calculator::calculate($cart);
+    // This logic has been moved into the Order class, rather than in the Calculator class.
+    $calculate = $cart->recalculate();
 
     assertTrue($calculate instanceof OrderContract);
 
