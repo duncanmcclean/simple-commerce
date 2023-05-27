@@ -3,8 +3,10 @@
 namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
+use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
@@ -20,9 +22,9 @@ class TaxEngine implements Contract
         return 'Standard';
     }
 
-    public function calculate(Order $order, LineItem $lineItem): TaxCalculation
+    public function calculateForLineItem(Order $order, LineItem $lineItem): TaxCalculation
     {
-        $taxRate = $this->decideOnRate($order, $lineItem);
+        $taxRate = $this->decideOnLineItemRate($order, $lineItem);
 
         if (! $taxRate) {
             $noRateAvailable = config('simple-commerce.tax_engine_config.behaviour.no_rate_available');
@@ -42,7 +44,7 @@ class TaxEngine implements Contract
         return new TaxCalculation($itemTax, $taxRate->rate(), $taxRate->includeInPrice());
     }
 
-    protected function decideOnRate(Order $order, LineItem $lineItem): ?StandardTaxRate
+    protected function decideOnLineItemRate(Order $order, LineItem $lineItem): ?StandardTaxRate
     {
         $product = $lineItem->product();
 
@@ -66,6 +68,77 @@ class TaxEngine implements Contract
         $taxRateQuery = TaxRate::all()
             ->filter(function ($taxRate) use ($product) {
                 return $taxRate->category()->id() === $product->taxCategory()->id();
+            });
+
+        $taxZoneQuery = TaxZone::all()->where('id', '!=', 'everywhere');
+
+        if ($address->country()) {
+            $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
+                return $taxZone->country() === $address->country();
+            });
+
+            if ($address->region()) {
+                $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
+                    return $taxZone->region() === $address->region();
+                });
+            }
+        }
+
+        if ($taxZoneQuery->count() < 1) {
+            $taxZoneQuery = TaxZone::query()->where('id', 'everywhere')->get();
+        }
+
+        return $taxRateQuery
+            ->filter(function ($taxRate) use ($taxZoneQuery) {
+                return $taxRate->zone()->id() === $taxZoneQuery->first()->id();
+            })
+            ->first();
+    }
+
+    public function calculateForShipping(Order $order, ShippingMethod $shippingMethod): TaxCalculation
+    {
+        $taxRate = $this->decideOnShippingRate($order, $shippingMethod);
+
+        if (! $taxRate) {
+            $noRateAvailable = config('simple-commerce.tax_engine_config.behaviour.no_rate_available');
+
+            if ($noRateAvailable === 'default_rate') {
+                $taxRate = TaxRate::find('default-rate');
+            }
+
+            if ($noRateAvailable === 'prevent_checkout') {
+                throw new PreventCheckout(__('This order cannot be completed as no tax rate is available.'));
+            }
+        }
+
+        $taxAmount = $order->shippingTotal() / 100 * $taxRate->rate();
+        $itemTax = (int) round($taxAmount);
+
+        return new TaxCalculation($itemTax, $taxRate->rate(), $taxRate->includeInPrice());
+    }
+
+    protected function decideOnShippingRate(Order $order, ShippingMethod $shippingMethod): ?StandardTaxRate
+    {
+        /** @var \DoubleThreeDigital\SimpleCommerce\Orders\Address */
+        $address = config('simple-commerce.tax_engine_config.address') === 'billing'
+            ? $order->billingAddress()
+            : $order->shippingAddress();
+
+        if (! $address) {
+            $noAddressProvided = config('simple-commerce.tax_engine_config.behaviour.no_address_provided');
+
+            if ($noAddressProvided === 'default_address') {
+                $address = $this->defaultAddress();
+            }
+
+            if ($noAddressProvided === 'prevent_checkout') {
+                throw new PreventCheckout(__('This order cannot be completed as no address has been added to this order.'));
+            }
+        }
+
+        $taxRateQuery = TaxRate::all()
+            ->filter(function ($taxRate) {
+                return $taxRate->category()->id() === TaxCategory::find('shipping')->id();
             });
 
         $taxZoneQuery = TaxZone::all()->where('id', '!=', 'everywhere');

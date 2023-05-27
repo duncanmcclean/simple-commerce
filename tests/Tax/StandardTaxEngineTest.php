@@ -8,11 +8,13 @@ use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tax\Helpers\DummyShippingMethod;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 
 uses(SetupCollections::class);
+
 beforeEach(function () {
     try {
         collect(File::allFiles(base_path('content/simple-commerce/tax-categories')))
@@ -34,7 +36,7 @@ beforeEach(function () {
     }
 });
 
-test('can correctly calculate tax rate based on country', function () {
+test('can correctly calculate line item tax rate based on country', function () {
     Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
     Config::set('simple-commerce.tax_engine_config', [
@@ -100,7 +102,7 @@ test('can correctly calculate tax rate based on country', function () {
     expect(167)->toBe($recalculate->taxTotal());
 });
 
-test('can correctly calculate tax rate based on region', function () {
+test('can correctly calculate line item tax rate based on region', function () {
     Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
     Config::set('simple-commerce.tax_engine_config', [
@@ -169,7 +171,7 @@ test('can correctly calculate tax rate based on region', function () {
     expect(130)->toBe($recalculate->taxTotal());
 });
 
-test('can calculate tax rate when included in price', function () {
+test('can calculate line item tax rate when included in price', function () {
     Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
 
     Config::set('simple-commerce.tax_engine_config', [
@@ -236,7 +238,7 @@ test('can calculate tax rate when included in price', function () {
     expect(167)->toBe($recalculate->taxTotal());
 });
 
-test('can use default tax rate if no rate available', function () {
+test('can use default line item tax rate if no rate available', function () {
     Config::set('simple-commerce.tax_engine_config.behaviour.no_rate_available', 'default_rate');
 
     TaxCategory::make()
@@ -454,4 +456,77 @@ test('throws prevent checkout exception if no address provided', function () {
 
     // Ensure global order tax is right
     expect(497)->toBe($recalculate->taxTotal());
+});
+
+// https://github.com/duncanmcclean/simple-commerce/issues/856
+test('can use default shipping tax rate if no rate available', function () {
+    Config::set('simple-commerce.tax_engine_config.behaviour.no_rate_available', 'default_rate');
+
+    TaxZone::make()
+        ->id('everywhere')
+        ->name('Everywhere')
+        ->save();
+
+    TaxCategory::make()
+        ->id('no-tax')
+        ->name('No TAX')
+        ->save();
+
+    TaxRate::make()
+        ->id('no-tax')
+        ->name('No Tax')
+        ->rate(0)
+        ->includeInPrice(true)
+        ->category('no-tax')
+        ->zone('everywhere')
+        ->save();
+
+    TaxCategory::make()
+        ->id('shipping')
+        ->name('Shipping')
+        ->save();
+
+    TaxRate::make()
+        ->id('shipping-rate')
+        ->name('Default = Shipping')
+        ->rate(10)
+        ->includeInPrice(true)
+        ->category('shipping')
+        ->zone('everywhere')
+        ->save();
+
+    $product = Product::make()
+        ->price(1000)
+        ->taxCategory('no-tax')
+        ->data([
+            'title' => 'Cat Food',
+        ]);
+
+    $product->save();
+
+    $order = Order::make()
+        ->lineItems([
+            [
+                'id' => app('stache')->generateId(),
+                'product' => $product->id,
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ])
+        ->merge([
+            'billing_address' => '1 Test Street',
+            'billing_country' => 'GB',
+            'use_shipping_address_for_billing' => false,
+            'shipping_method' => DummyShippingMethod::class,
+        ]);
+
+    $order->save();
+
+    $recalculate = $order->recalculate();
+
+    // Ensure 10% is deducted from shipping_total (500 -> 450)
+    expect($recalculate->shippingTotal())->toBe(450);
+
+    // Ensure tax total is 50
+    expect($recalculate->taxTotal())->toBe(50);
 });

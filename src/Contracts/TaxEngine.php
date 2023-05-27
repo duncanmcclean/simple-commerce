@@ -9,5 +9,7 @@ interface TaxEngine
 {
     public function name(): string;
 
-    public function calculate(Order $order, LineItem $lineItem): TaxCalculation;
+    public function calculateForLineItem(Order $order, LineItem $lineItem): TaxCalculation;
+
+    public function calculateForShipping(Order $order, ShippingMethod $shippingMethod): TaxCalculation;
 }

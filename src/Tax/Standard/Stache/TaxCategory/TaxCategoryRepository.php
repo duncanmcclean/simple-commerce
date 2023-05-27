@@ -59,8 +59,14 @@ class TaxCategoryRepository implements Contract
     {
         $this->make()
             ->id('default')
-            ->name('Default')
+            ->name(__('Default'))
             ->description(__('Will be used for all products where a category has not been assigned.'))
+            ->save();
+
+        $this->make()
+            ->id('shipping')
+            ->name(__('Shipping'))
+            ->description(__('This tax category will be automatically applied to shipping costs.'))
             ->save();
 
         TaxZone::make()
@@ -72,6 +78,14 @@ class TaxCategoryRepository implements Contract
             ->id('default-rate')
             ->name('Default')
             ->category('default')
+            ->zone('everywhere')
+            ->rate(0)
+            ->save();
+
+        TaxRate::make()
+            ->id('default-shipping-rate')
+            ->name('Default - Shipping')
+            ->category('shipping')
             ->zone('everywhere')
             ->rate(0)
             ->save();

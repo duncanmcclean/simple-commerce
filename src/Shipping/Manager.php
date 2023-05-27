@@ -62,7 +62,7 @@ class Manager implements Contract
             ->first();
 
         return resolve($this->className, [
-            'config' => $shippingMethod['config'],
+            'config' => $shippingMethod['config'] ?? [],
         ]);
     }
 }
