@@ -104,14 +104,6 @@ Unfortunatley, PayPal offers no way for Simple Commerce to configure the webhook
 4. The Webhook URL should be: `https://example.com/!/simple-commerce/gateways/paypal/webhook`
 5. Under 'Event types', you should select 'All events'. You can then save the webhook.
 
-You will also need to add the webhook's URL to your list of CSRF exceptions, which can be found in `app/Http/Middleware/VerifyCsrfToken.php`.
-
-```php
-protected $except = [
-  '/!/simple-commerce/gateways/paypal/webhook',
-];
-```
-
 :::note Note!
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, Mollie wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
 :::
