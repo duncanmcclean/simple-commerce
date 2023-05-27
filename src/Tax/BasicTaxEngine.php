@@ -50,6 +50,16 @@ class BasicTaxEngine implements TaxEngine
 
     public function calculateForShipping(Order $order, ShippingMethod $shippingMethod): TaxCalculation
     {
-        // TODO
+        if (config('tax_engine_config.shipping_exempt') === true)  {
+            return new TaxCalculation;
+        }
+
+        $taxAmount = $order->shippingTotal() / 100 * $this->taxRate;
+
+        return new TaxCalculation(
+            (int) round($taxAmount),
+            $this->taxRate,
+            $this->includedInPrices
+        );
     }
 }

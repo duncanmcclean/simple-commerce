@@ -17,6 +17,7 @@ class Calculator implements Contract
                 CalculateItemsTotal::class,
                 CouponCalculator::class,
                 ShippingCalculator::class,
+                ShippingTaxCalculator::class,
                 CalculateGrandTotal::class,
             ])
             ->thenReturn();

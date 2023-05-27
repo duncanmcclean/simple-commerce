@@ -5,13 +5,14 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
+use DoubleThreeDigital\SimpleCommerce\Tests\Tax\Helpers\DummyShippingMethod;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Collection;
 
 /**
  * Inline with the fix suggested here: https://github.com/duncanmcclean/simple-commerce/pull/438#issuecomment-888498198
  */
-test('can calculate tax when not included in price', function () {
+test('can calculate line item tax when not included in price', function () {
     Config::set('simple-commerce.tax_engine_config.rate', 20);
     Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
 
@@ -37,7 +38,7 @@ test('can calculate tax when not included in price', function () {
     expect(20)->toBe($taxCalculation->rate());
 });
 
-test('can calculate tax when included in price', function () {
+test('can calculate line item tax when included in price', function () {
     Config::set('simple-commerce.tax_engine_config.rate', 20);
     Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
 
@@ -63,7 +64,7 @@ test('can calculate tax when included in price', function () {
     expect(20)->toBe($taxCalculation->rate());
 });
 
-test('can calculate tax when tax rate is decimal number', function () {
+test('can calculate line item tax when tax rate is decimal number', function () {
     Config::set('simple-commerce.tax_engine_config.rate', 10.5);
 
     Collection::make('products')->save();
@@ -91,7 +92,7 @@ test('can calculate tax when tax rate is decimal number', function () {
     expect(10.5)->toBe($taxCalculation->rate());
 });
 
-test('can calculate tax when it is nothing', function () {
+test('can calculate line item tax when it is nothing', function () {
     Config::set('simple-commerce.tax_engine_config.rate', 0);
 
     $product = Product::make()->price(1000);
@@ -116,9 +117,7 @@ test('can calculate tax when it is nothing', function () {
     expect(0)->toBe($taxCalculation->rate());
 });
 
-/**
- * Covers #430 (https://github.com/duncanmcclean/simple-commerce/pull/430)
- */
+// https://github.com/duncanmcclean/simple-commerce/pull/430
 test('ensure round value tax is calculated correctly', function () {
     Config::set('simple-commerce.tax_engine_config.rate', 20);
     Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
@@ -141,6 +140,26 @@ test('ensure round value tax is calculated correctly', function () {
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
     expect(1300)->toBe($taxCalculation->amount());
+    expect(true)->toBe($taxCalculation->priceIncludesTax());
+    expect(20)->toBe($taxCalculation->rate());
+});
+
+test('can calculate shipping tax when included in price', function () {
+    Config::set('simple-commerce.tax_engine_config.rate', 20);
+    Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
+
+    $order = Order::make()
+        ->status(OrderStatus::Cart)
+        ->merge(['shipping_method' => DummyShippingMethod::class])
+        ->shippingTotal(500);
+
+    $order->save();
+
+    $taxCalculation = (new BasicTaxEngine)->calculateForShipping($order, new DummyShippingMethod);
+
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
+
+    expect(100)->toBe($taxCalculation->amount());
     expect(true)->toBe($taxCalculation->priceIncludesTax());
     expect(20)->toBe($taxCalculation->rate());
 });
