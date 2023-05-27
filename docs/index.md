@@ -3,44 +3,44 @@ title: Introduction
 table_of_contents: false
 ---
 
-### Everything's just an entry
+## Everything's just an entry
 
 Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
 
 And, when your site grows, it's easy to [move your orders & customers](/database-orders) into a traditional database.
 
-### Payment Gateways
+## Payment Gateways
 
 Out-of-the-box, Simple Commerce ships with support for three of the big payment gateways: Stripe, PayPal and Mollie. Use whichever one you need, or if you need something else: it's easy to build one.
 
 -   [Documentation: Payment Gateways](/gateways)
 -   [Documentation: Building custom gateways](/extending/custom-gateways)
 
-### Flexible Shipping
+## Flexible Shipping
 
 Provide your customers with different shipping options depending on their address.
 
 -   [Documentation: Shipping](/shipping)
 
-### Discounting
+## Discounting
 
 Simple Commerce has support for discount coupons. You can limit coupons to certain products or to be used a max number of times. All your customer has to do is redeem the discount during checkout.
 
 -   [Documentation: Coupons](/coupons)
 
-### Product Variants
+## Product Variants
 
 Sometimes you need to sell different versions of the same product. Like a t-shirt, you might want to sell it in Small, Medium & Large - each with different prices and stock levels. That's where Product Variants come in. Create a single product and configure the variants inside it.
 
 -   [Documentation: Product Variants](/product-variants)
 
-### Multi-site friendly
+## Multi-site friendly
 
 If you need to sell across different countries, you can take advantage of Statamic's multi-site feature in Simple Commerce to have a site per currency. Each site may also have its own set of shipping methods.
 
 -   [Documentation: Multi-site](/multisite)
 
-### And lots more...
+## And lots more...
 
 Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
 
