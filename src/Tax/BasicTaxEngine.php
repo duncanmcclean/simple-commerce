@@ -50,7 +50,7 @@ class BasicTaxEngine implements TaxEngine
 
     public function calculateForShipping(Order $order, ShippingMethod $shippingMethod): TaxCalculation
     {
-        if (! config('simple-commerce.tax_engine_config.shipping_taxes'))  {
+        if (! config('simple-commerce.tax_engine_config.shipping_taxes')) {
             return new TaxCalculation;
         }
 
