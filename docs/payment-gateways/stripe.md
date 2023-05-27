@@ -151,14 +151,6 @@ You'll need to configure the webhook in the Stripe Dashboard:
         - `payment_intent.failed`
         - `charge.refunded`
 
-You will also need to add the webhook's URL to your list of CSRF exceptions, which can be found in `app/Http/Middleware/VerifyCsrfToken.php`.
-
-```php
-protected $except = [
-  '/!/simple-commerce/gateways/stripe/webhook',
-];
-```
-
 :::note Note!
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, Stripe wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
 :::

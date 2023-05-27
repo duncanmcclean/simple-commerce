@@ -106,14 +106,6 @@ When anything changes payment-wise on the order, the off-site gateway will send 
 
 Webhook URLs look a little something like this: `/!/simple-commerce/gateways/YOUR_GATEWAY_NAME/webhook`
 
-And for each webhook, you'll need to add an exception to the CSRF middleware, found in `app/Http/Middleware/VerifyCsrfToken.php`.
-
-```php
-protected $except = [
-  '/!/simple-commerce/gateways/mollie/webhook',
-];
-```
-
 :::note Note!
 When you're going through the payment flow in your development environment, you will need to use something like Expose or Ngrok to proxy request to your local server. Otherwise, Mollie wouldn't be able to hit the webhook. You will also need to update the `APP_URL` in your `.env`.
 :::
