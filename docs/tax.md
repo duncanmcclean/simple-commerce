@@ -30,7 +30,9 @@ As explained above, the Basic Tax Engine simply lets you define a flat tax rate 
 
 If you have a product which is exempt from tax, you may add a Toggle field to your Product blueprint, called `exempt_from_tax`. Then, you may turn the toggle on for the product.
 
-You may optionally enable taxes for shipping - simply flick the toggle in your Simple Commerce config:
+### Shipping Tax
+
+If you wish to enable tax for shipping costs, simply flick the toggle in your Simple Commerce config:
 
 ```php
 // config/simple-commerce.php
@@ -40,6 +42,8 @@ You may optionally enable taxes for shipping - simply flick the toggle in your S
     'shipping_taxes' => true,
 ],
 ```
+
+Now, the tax rate you have set for all products will also be applied to shipping costs.
 
 ## Standard Tax Engine
 
@@ -79,11 +83,13 @@ After enabling the tax engine, you will also want to go ahead and setup your Rat
 
 > If you'd like your client (or other non-super user) to be able to access these pages, you may give them access via [Permissions](https://statamic.dev/users#permissions).
 
-### Shipping Taxes
+### Shipping Tax
 
-Simple Commerce will automatically create a 'Default - Shipping' tax category. This category will be used when Simple Commerce is figuring out if/what tax should be applied to shipping.
+Simple Commerce will automatically create a 'Default - Shipping' tax category when you enable the Standard Tax Engine.
 
-You may associate tax rates & zones to this category like normal. They'll be picked up when Simple Commerce calculates taxes after a shipping method has been selected.
+This tax category will be used when Simple Commerce is figuring out what tax (if any) should be applied to shipping costs.
+
+Similar to products, you may associate tax rates with the shipping category. Then tax will be applied to shipping in the user's cart.
 
 ### Edge Cases
 
