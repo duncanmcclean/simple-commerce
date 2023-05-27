@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+## v5.1.0 (2023-05-27)
+
+### What's new
+
+* Shipping Tax #856 #874
+
+### What's improved
+
+* Gateway Webhooks are now automatically excluded from CSRF protection #875
+* The Order Calculator has been refactored #873
+* Changed the way tests are skipped #872
+
+### Note: Extending the calculator
+
+If you're extending the `Calculator` class at all, you want to [read these notes](https://github.com/duncanmcclean/simple-commerce/pull/873) about changes to how the calculator works.
+
 ## v5.0.3 (2023-05-20)
 
 ### What's fixed
