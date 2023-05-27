@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DoubleThreeDigital\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
@@ -31,5 +32,8 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     });
 
     Route::get('/gateways/{gateway}/callback', [GatewayCallbackController::class, 'index'])->name('gateways.callback');
-    Route::post('/gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])->name('gateways.webhook');
+
+    Route::post('/gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])
+        ->name('gateways.webhook')
+        ->withoutMiddleware([VerifyCsrfToken::class]);
 });
