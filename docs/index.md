@@ -3,20 +3,6 @@ title: Introduction
 table_of_contents: false
 ---
 
-**Build flexible e-commerce sites in Statamic:** Simple Commerce is a simple, yet powerful e-commerce addon for Statamic. You retain complete control over the content structure and front-end of your site.
-
-<div class="testimonial">
-    <div class="testimonial-body">
-        “Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!”
-    </div>
-    <div class="testimonial-person">
-        <a href="https://www.thoughtcollective.com" target="_blank">
-            <img src="/img/testimonials/ryan.jpeg">
-            <span>Ryan Mitchell, Digital Director at Thought Collective</span>
-        </a>
-    </div>
-</div>
-
 ### Everything's just an entry
 
 Stay with what you love - Statamic entries. With Simple Commerce, all of your products, orders, customers & coupons are Statamic entries. Giving you the flexibility you need to build bespoke e-commerce sites for your clients.
@@ -57,3 +43,18 @@ If you need to sell across different countries, you can take advantage of Statam
 ### And lots more...
 
 Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
+
+<div class="not-prose testimonial">
+    <div class="testimonial-body">
+        “Duncan has baked-in lots of flexibility, so if you need to roll your own payment provider, shipping integration or even tax calculations, you can do it. If you are looking to sell on Statamic, this should be your go to, our developers love working with it and our clients love using it!”
+    </div>
+    <div class="testimonial-person">
+        <a href="https://www.thoughtcollective.com" target="_blank">
+            <img src="/img/testimonials/ryan.jpeg">
+            <div>
+                <p>Ryan Mitchell</p>
+                <span>Digital Director at Thought Collective</span>
+            </div>
+        </a>
+    </div>
+</div>
