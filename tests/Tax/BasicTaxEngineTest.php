@@ -147,6 +147,7 @@ test('ensure round value tax is calculated correctly', function () {
 test('can calculate shipping tax when included in price', function () {
     Config::set('simple-commerce.tax_engine_config.rate', 20);
     Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
+    Config::set('simple-commerce.tax_engine_config.shipping_taxes', true);
 
     $order = Order::make()
         ->status(OrderStatus::Cart)
