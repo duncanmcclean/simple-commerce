@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
+use DoubleThreeDigital\Runway\Traits\HasRunwayResource;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CustomerModel extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRunwayResource;
 
     protected $table = 'customers';
 
