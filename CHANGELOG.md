@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v5.2.0 (2023-06-14)
+
+### What's new
+
+* PHP 8.1 is now supported again! #878
+
+### What's fixed
+
+* Fixed error when using Database Orders & Runway v5.x #876 #877
+
 ## v5.1.0 (2023-05-27)
 
 ### What's new
