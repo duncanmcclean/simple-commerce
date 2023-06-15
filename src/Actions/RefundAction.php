@@ -11,7 +11,7 @@ class RefundAction extends Action
 {
     public static function title()
     {
-        return __('Refund');
+        return __('Reefund');
     }
 
     public function visibleTo($item)
