@@ -1,6 +1,4 @@
-<?php
-
-namespace DoubleThreeDigital\SimpleCommerce\Actions;
+<?php namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
