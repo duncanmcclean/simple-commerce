@@ -111,7 +111,7 @@ class TaxEngine implements Contract
             }
         }
 
-        $taxAmount =  $order->shippingTotal() * ($taxRate->rate() / 100);
+        $taxAmount = $order->shippingTotal() * ($taxRate->rate() / 100);
         $itemTax = (int) round($taxAmount);
 
         return new TaxCalculation($itemTax, $taxRate->rate(), $taxRate->includeInPrice());
