@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.2.1 (2023-06-16)
+
+### What's fixed
+
+* Fixed issues with tax calculations #880
+
 ## v5.2.0 (2023-06-14)
 
 ### What's new
