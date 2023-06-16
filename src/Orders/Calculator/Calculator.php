@@ -12,6 +12,7 @@ class Calculator implements Contract
     {
         return Pipeline::send($order)
             ->through([
+                ResetTotals::class,
                 LineItemCalculator::class,
                 LineItemTaxCalculator::class,
                 CalculateItemsTotal::class,
