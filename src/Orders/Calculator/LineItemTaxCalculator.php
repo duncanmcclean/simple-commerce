@@ -19,7 +19,9 @@ class LineItemTaxCalculator
                 $lineItem->tax($taxCalculation->toArray());
 
                 if ($taxCalculation->priceIncludesTax()) {
-                    $lineItem->total($taxCalculation->amount());
+                    $lineItem->total(
+                        $lineItem->total() - $taxCalculation->amount()
+                    );
 
                     $order->taxTotal(
                         $order->taxTotal() + $taxCalculation->amount()
