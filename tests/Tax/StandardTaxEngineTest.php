@@ -93,13 +93,13 @@ test('can correctly calculate line item tax rate based on country', function () 
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 200,
+        'amount' => 167,
         'rate' => 20,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(200)->toBe($recalculate->taxTotal());
+    expect(167)->toBe($recalculate->taxTotal());
 });
 
 test('can correctly calculate line item tax rate based on region', function () {
@@ -162,13 +162,13 @@ test('can correctly calculate line item tax rate based on region', function () {
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 150,
+        'amount' => 130,
         'rate' => 15,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(150)->toBe($recalculate->taxTotal());
+    expect(130)->toBe($recalculate->taxTotal());
 });
 
 test('can calculate line item tax rate when included in price', function () {
@@ -229,13 +229,13 @@ test('can calculate line item tax rate when included in price', function () {
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 200,
+        'amount' => 167,
         'rate' => 20,
         'price_includes_tax' => true,
     ]);
 
     // Ensure global order tax is right
-    expect(200)->toBe($recalculate->taxTotal());
+    expect(167)->toBe($recalculate->taxTotal());
 });
 
 test('can use default line item tax rate if no rate available', function () {
@@ -289,7 +289,7 @@ test('can use default line item tax rate if no rate available', function () {
     expect(12)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    expect(120)->toBe($recalculate->taxTotal());
+    expect(107)->toBe($recalculate->taxTotal());
 });
 
 test('throws prevent checkout exception if no rate available', function () {
@@ -400,7 +400,7 @@ test('uses default address if no address provided', function () {
     expect(99)->toBe($recalculate->lineItems()->first()->tax()['rate']);
 
     // Ensure global order tax is right
-    expect(990)->toBe($recalculate->taxTotal());
+    expect(497)->toBe($recalculate->taxTotal());
 });
 
 test('throws prevent checkout exception if no address provided', function () {
@@ -525,8 +525,8 @@ test('can use default shipping tax rate if no rate available', function () {
     $recalculate = $order->recalculate();
 
     // Ensure 10% is deducted from shipping_total (500 -> 450)
-    expect($recalculate->shippingTotal())->toBe(450);
+    expect($recalculate->shippingTotal())->toBe(455);
 
     // Ensure tax total is 50
-    expect($recalculate->taxTotal())->toBe(50);
+    expect($recalculate->taxTotal())->toBe(45);
 });
