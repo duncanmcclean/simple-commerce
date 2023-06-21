@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.2.2 (2023-06-21)
+
+### What's fixed
+
+* Rollback tax calculation fix #882
+
 ## v5.2.1 (2023-06-16)
 
 ### What's fixed
