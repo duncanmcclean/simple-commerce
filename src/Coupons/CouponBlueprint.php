@@ -57,11 +57,13 @@ class CouponBlueprint
                         'validate' => [
                             'required',
                         ],
+                        'listable' => true,
                     ],
                     'description' => [
                         'type' => 'textarea',
                         'instructions' => __('Give yourself a reminder of what this coupon is for.'),
                         'display' => __('Description'),
+                        'listable' => true,
                     ],
                     'type' => [
                         'options' => [
@@ -80,6 +82,7 @@ class CouponBlueprint
                         'validate' => [
                             'required',
                         ],
+                        'listable' => true,
                     ],
                     'value' => [
                         'input_type' => 'text',
@@ -89,10 +92,12 @@ class CouponBlueprint
                         'validate' => [
                             'required',
                         ],
+                        'listable' => true,
                     ],
                     'optional_settings' => [
                         'type' => 'section',
                         'display' => __('Optional Settings'),
+                        'listable' => 'hidden',
                     ],
                     'maximum_uses' => [
                         'input_type' => 'text',
@@ -100,6 +105,7 @@ class CouponBlueprint
                         'instructions' => __('If set, this coupon will only be able to be used a certain amount of times.'),
                         'width' => 50,
                         'display' => __('Maximum Uses'),
+                        'listable' => 'hidden',
                     ],
                     'minimum_cart_value' => [
                         'read_only' => false,
@@ -107,6 +113,7 @@ class CouponBlueprint
                         'instructions' => __("What's the minimum items total a cart should have before this coupon can be redeemed?"),
                         'width' => 50,
                         'display' => __('Minimum Cart Value'),
+                        'listable' => 'hidden',
                     ],
                     'products' => [
                         'mode' => 'default',
@@ -118,6 +125,7 @@ class CouponBlueprint
                         'icon' => 'entries',
                         'width' => 50,
                         'instructions' => __('If selected, this coupon will only be valid when any of the products are present.'),
+                        'listable' => 'hidden',
                     ],
                     'customers' => $customerField,
                     'expires_at' => [
@@ -125,6 +133,7 @@ class CouponBlueprint
                         'display' => __('Expires At'),
                         'instructions' => __('If defined, this coupon will no longer be redeemable after the expiry date.'),
                         'width' => 50,
+                        'listable' => 'hidden',
                     ],
                 ],
             ],
@@ -137,14 +146,15 @@ class CouponBlueprint
                         'type' => 'toggle',
                         'instructions' => __('When disabled, this coupon will not be redeemable.'),
                         'default' => true,
+                        'listable' => true,
                     ],
                     'redeemed' => [
-                        'input_type' => 'number',
-                        'type' => 'text',
+                        'type' => 'integer',
                         'instructions' => __('Amount of times this coupon has been redeemed.'),
                         'display' => __('Redeemed'),
                         'read_only' => true,
                         'default' => 0,
+                        'listable' => true,
                     ],
                 ],
             ],

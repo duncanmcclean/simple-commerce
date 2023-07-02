@@ -57,3 +57,8 @@ Statamic.$components.register('overview-orders-chart', OverviewOrdersChart)
 Statamic.$components.register('overview', Overview)
 Statamic.$components.register('overview-recent-orders', OverviewRecentOrders)
 Statamic.$components.register('overview-top-customers', OverviewTopCustomers)
+
+// Listings
+import CouponListing from './components/Listings/CouponListing.vue'
+
+Statamic.$components.register('coupon-listing', CouponListing)
