@@ -55,6 +55,9 @@ class Coupon implements Contract
     {
         return $this
             ->fluentlyGetOrSet('type')
+            ->getter(function ($type) {
+                return CouponType::from($type);
+            })
             ->setter(function ($value) {
                 if ($value === 'fixed') {
                     $value = CouponType::Fixed;
@@ -69,7 +72,7 @@ class Coupon implements Contract
                     $this->value = $this->value / 100;
                 }
 
-                return $value;
+                return $value?->value;
             })
             ->args(func_get_args());
     }

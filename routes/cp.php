@@ -1,6 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\CouponController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponListingController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\OverviewController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
@@ -15,11 +17,14 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
 
     Route::prefix('coupons')->name('coupons.')->group(function () {
         Route::get('/', [CouponController::class, 'index'])->name('index');
+        Route::get('/listing-api', [CouponListingController::class, 'index'])->name('listing-api');
+        Route::post('/actions', [CouponActionController::class, 'runAction'])->name('actions.run');
+        Route::post('/actions/list', [CouponActionController::class, 'bulkActionsList'])->name('actions.bulk');
+
         Route::get('create', [CouponController::class, 'create'])->name('create');
         Route::post('/', [CouponController::class, 'store'])->name('store');
         Route::get('{coupon}/edit', [CouponController::class, 'edit'])->name('edit');
         Route::post('{coupon}', [CouponController::class, 'update'])->name('update');
-        Route::delete('{coupon}', [CouponController::class, 'destroy'])->name('destroy');
     });
 
     if (SimpleCommerce::isUsingStandardTaxEngine()) {

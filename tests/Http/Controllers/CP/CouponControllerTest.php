@@ -3,24 +3,10 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 
 test('can get index', function () {
-    Coupon::make()
-        ->id('random-id')
-        ->code('fifty-friday')
-        ->value(50)
-        ->type('percentage')
-        ->data([
-            'description' => 'Fifty Friday',
-            'redeemed' => 0,
-            'minimum_cart_value' => null,
-        ])
-        ->save();
-
     $this
         ->actingAs(user())
         ->get('/cp/simple-commerce/coupons')
-        ->assertOk()
-        ->assertSee('Fifty Friday')
-        ->assertSee('50%');
+        ->assertOk();
 });
 
 test('can create coupon', function () {
@@ -179,23 +165,4 @@ test('cant update coupon if type is percentage and value is greater than 100', f
 
     expect(50)->toBe($coupon->value());
     expect('Fifty Friday')->toBe($coupon->get('description'));
-});
-
-test('can destroy coupon', function () {
-    Coupon::make()
-        ->id('random-id')
-        ->code('fifty-friday')
-        ->value(50)
-        ->type('percentage')
-        ->data([
-            'description' => 'Fifty Friday',
-            'redeemed' => 0,
-            'minimum_cart_value' => null,
-        ])
-        ->save();
-
-    $this
-        ->actingAs(user())
-        ->delete('/cp/simple-commerce/coupons/random-id')
-        ->assertRedirect('/cp/simple-commerce/coupons');
 });

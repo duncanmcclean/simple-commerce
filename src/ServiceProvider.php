@@ -22,6 +22,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $actions = [
+        Actions\Delete::class,
         Actions\RefundAction::class,
         Actions\UpdateOrderStatus::class,
     ];
@@ -91,10 +92,11 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $scopes = [
-        Scopes\OrderContainsProduct::class,
-        Scopes\OrderCustomer::class,
-        Scopes\OrderStatusFilter::class,
-        Scopes\PaymentStatusFilter::class,
+        Query\Scopes\CouponTypeFilter::class,
+        Query\Scopes\OrderContainsProduct::class,
+        Query\Scopes\OrderCustomer::class,
+        Query\Scopes\OrderStatusFilter::class,
+        Query\Scopes\PaymentStatusFilter::class,
     ];
 
     protected $tags = [
