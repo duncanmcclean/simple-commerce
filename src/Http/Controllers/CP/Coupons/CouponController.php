@@ -130,11 +130,4 @@ class CouponController
             'coupon' => $coupon,
         ];
     }
-
-    public function destroy(DeleteRequest $request, $coupon)
-    {
-        Coupon::find($coupon)->delete();
-
-        return redirect(cp_route('simple-commerce.coupons.index'));
-    }
 }

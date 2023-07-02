@@ -25,7 +25,6 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
         Route::post('/', [CouponController::class, 'store'])->name('store');
         Route::get('{coupon}/edit', [CouponController::class, 'edit'])->name('edit');
         Route::post('{coupon}', [CouponController::class, 'update'])->name('update');
-        Route::delete('{coupon}', [CouponController::class, 'destroy'])->name('destroy');
     });
 
     if (SimpleCommerce::isUsingStandardTaxEngine()) {
