@@ -46,9 +46,9 @@ test('can store coupon with expiry date', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/coupons', [
-            'code' => 'thursday-thirty',
+            'code' => 'thursday-thirty-two',
             'type' => 'percentage',
-            'value' => 30,
+            'value' => 32,
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
             'enabled' => true,
@@ -62,7 +62,7 @@ test('can store coupon with expiry date', function () {
         ])
         ->assertSessionHasNoErrors();
 
-    $coupon = Coupon::findByCode('thursday-thirty');
+    $coupon = Coupon::findByCode('thursday-thirty-two');
 
     expect($coupon->get('expires_at'))->toBe('2024-01-01');
 });
