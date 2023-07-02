@@ -45,7 +45,7 @@ export default {
         },
 
         statusName() {
-            return this.meta.statuses[this.value]
+            return __(this.meta.statuses[this.value])
         },
     },
 }

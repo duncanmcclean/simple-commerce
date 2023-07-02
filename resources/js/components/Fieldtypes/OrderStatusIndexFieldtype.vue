@@ -34,10 +34,10 @@ export default {
         },
 
         statusName() {
-            return (
+            return __((
                 this.value.charAt(0).toUpperCase() +
                 this.value.substr(1).toLowerCase()
-            )
+            ))
         },
     },
 }
