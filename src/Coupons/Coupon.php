@@ -72,7 +72,7 @@ class Coupon implements Contract
                     $this->value = $this->value / 100;
                 }
 
-                return $value->value;
+                return $value?->value;
             })
             ->args(func_get_args());
     }
