@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Illuminate\Http\Request;
 use Statamic\Http\Controllers\CP\ActionController;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 
 class CouponActionController extends ActionController
 {
