@@ -3,9 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Actions\Delete;
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use Statamic\Facades\Entry;
 
 beforeEach(function () {
