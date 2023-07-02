@@ -37,6 +37,6 @@ class CouponTypeFilter extends Filter
 
     public function visibleTo($key)
     {
-        return $key === 'simple_commerce.coupons';
+        return $key === 'simple-commerce.coupons';
     }
 }
