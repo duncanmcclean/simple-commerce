@@ -98,16 +98,14 @@
                             :sortable="true"
                             :toggle-selection-on-row-click="true"
                             :allow-column-picker="true"
-                            :column-preferences-key="preferencesKey('columns')"
+                            :column-preferences-key="preferencesKey('simple-commerce.columns')"
                             @sorted="sorted"
                         >
-                            <template
-                                slot="cell-id"
-                                slot-scope="{ row, value }"
-                            >
-                                <a :href="row.edit_url" @click.stop>{{
-                                    value
-                                }}</a>
+                            <template slot="cell-code" slot-scope="{ row, value }">
+                                <div class="title-index-field">
+                                    <div class="little-dot mr-2" v-tooltip="getStatusLabel(row)" :class="getStatusClass(row)" v-if="! columnShowing('enabled')" />
+                                    <a :href="row.edit_url" @click.stop>{{ row.code }}</a>
+                                </div>
                             </template>
 
                             <template
@@ -194,7 +192,7 @@ export default {
 
     data() {
         return {
-            listingKey: 'id',
+            listingKey: 'code',
             preferencesPrefix: this.listingConfig.preferencesPrefix ?? 'simple-commerce.coupons',
             requestUrl: this.listingConfig.requestUrl,
             columns: this.initialColumns,
@@ -250,6 +248,31 @@ export default {
                     (column) => column.visible
                 )
             }, 50)
+        },
+
+        getStatusClass(coupon) {
+            if (coupon.enabled) {
+                return 'bg-green-600';
+            } else {
+                return 'bg-gray-400';
+            }
+        },
+
+        getStatusLabel(coupon) {
+            if (coupon.enabled) {
+                return __('Enabled');
+            } else {
+                return __('Disabled');
+            }
+        },
+
+        // TODO: Implement this if we end up needing it
+        getStatusTooltip(coupon) {
+            return false;
+        },
+
+        columnShowing(column) {
+            return this.visibleColumns.find(c => c.field === column);
         },
     },
 }

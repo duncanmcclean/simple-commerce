@@ -146,7 +146,7 @@ class CouponBlueprint
                         'type' => 'toggle',
                         'instructions' => __('When disabled, this coupon will not be redeemable.'),
                         'default' => true,
-                        'listable' => true,
+                        'listable' => 'hidden',
                     ],
                     'redeemed' => [
                         'type' => 'integer',
@@ -154,7 +154,7 @@ class CouponBlueprint
                         'display' => __('Redeemed'),
                         'read_only' => true,
                         'default' => 0,
-                        'listable' => true,
+                        'listable' => 'hidden',
                     ],
                 ],
             ],
