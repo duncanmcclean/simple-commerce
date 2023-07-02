@@ -92,6 +92,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $scopes = [
+        Query\Scopes\CouponTypeFilter::class,
         Query\Scopes\OrderContainsProduct::class,
         Query\Scopes\OrderCustomer::class,
         Query\Scopes\OrderStatusFilter::class,
