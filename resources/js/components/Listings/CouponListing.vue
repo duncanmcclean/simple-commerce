@@ -126,12 +126,6 @@
                                     "
                                 >
                                     <dropdown-item
-                                        v-if="canViewRow(row)"
-                                        :text="__('View')"
-                                        :redirect="row.permalink"
-                                    />
-
-                                    <dropdown-item
                                         v-if="canEditRow(row)"
                                         :text="__('Edit')"
                                         :redirect="row.edit_url"
@@ -139,11 +133,7 @@
 
                                     <div
                                         class="divider"
-                                        v-if="
-                                            (canViewRow(row) ||
-                                                canEditRow(row)) &&
-                                            row.actions.length
-                                        "
+                                        v-if="canEditRow(row) && row.actions.length"
                                     />
 
                                     <data-list-inline-actions
@@ -208,10 +198,6 @@ export default {
     },
 
     methods: {
-        canViewRow(row) {
-            return row.viewable && row.permalink
-        },
-
         canEditRow(row) {
             return row.editable
         },
