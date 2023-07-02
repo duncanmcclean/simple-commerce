@@ -34,18 +34,19 @@ class ListedCoupon extends JsonResource
             [
                 'id' => $coupon->id(),
                 'enabled' => $coupon->enabled(),
+                'discount_text' => $coupon->discountText(),
                 'edit_url' => cp_route('simple-commerce.coupons.edit', ['coupon' => $coupon->id()]),
                 'editable' => User::current()->can('edit coupons'),
                 'viewable' => User::current()->can('view coupons'),
                 'actions' => Action::for($coupon),
             ],
-            $this->values()->toArray(),
+            $this->values(['type' => $coupon->type()->value])->toArray(),
         );
     }
 
     protected function values($extra = [])
     {
-        return $this->columns->mapWithKeys(function ($column) {
+        return $this->columns->mapWithKeys(function ($column) use ($extra) {
             $key = $column->field;
 
             $field = $this->blueprint->field($key);

@@ -108,6 +108,12 @@
                                 </div>
                             </template>
 
+                            <template slot="cell-value" slot-scope="{ row, value }">
+                                <div>
+                                    {{ row.discount_text }}
+                                </div>
+                            </template>
+
                             <template
                                 slot="actions"
                                 slot-scope="{ row, index }"
