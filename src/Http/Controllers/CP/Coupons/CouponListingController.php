@@ -50,7 +50,7 @@ class CouponListingController extends CpController
 
         return (new Coupons($coupons))
             ->blueprint(CouponBlueprint::getBlueprint())
-            ->columnPreferenceKey('simple-commerce.coupons.columns')
+            ->columnPreferenceKey('simple_commerce.coupons.columns')
             ->additional(['meta' => [
                 'activeFilterBadges' => $activeFilterBadges,
             ]]);

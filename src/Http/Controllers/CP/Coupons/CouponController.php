@@ -41,7 +41,7 @@ class CouponController
                 ->values(),
             'filters' => Scope::filters('simple-commerce.coupons'),
             'listingConfig' => [
-                'preferencesPrefix' => 'simple-commerce.coupons',
+                'preferencesPrefix' => 'simple_commerce.coupons',
                 'requestUrl' => cp_route('simple-commerce.coupons.listing-api'),
                 'listingUrl' => cp_route('simple-commerce.coupons.index'),
             ],
