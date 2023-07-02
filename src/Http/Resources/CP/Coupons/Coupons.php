@@ -7,7 +7,7 @@ use Statamic\Http\Resources\CP\Concerns\HasRequestedColumns;
 
 class Coupons extends ResourceCollection
 {
-    use HasRequestedColumns; // TODO
+    use HasRequestedColumns;
 
     public $collects = ListedCoupon::class;
 
