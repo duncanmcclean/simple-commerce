@@ -1,8 +1,8 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponListingController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\OverviewController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;

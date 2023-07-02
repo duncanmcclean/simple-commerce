@@ -34,7 +34,7 @@ class CouponListingController extends CpController
 
         $coupons = $coupons->paginate(
             $request->input('perPage',
-            config('statamic.cp.pagination_size'))
+                config('statamic.cp.pagination_size'))
         );
 
         return (new Coupons($coupons))
