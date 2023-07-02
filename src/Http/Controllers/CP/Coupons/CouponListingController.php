@@ -34,20 +34,6 @@ class CouponListingController extends CpController
 
         $coupons = $coupons->paginate($request->input('perPage', config('statamic.cp.pagination_size')));
 
-        $columns = CouponBlueprint::getBlueprint()
-            ->fields()
-            ->items()
-            ->pluck('handle')
-            ->map(function ($columnKey) {
-                $field = CouponBlueprint::getBlueprint()->field($columnKey);
-
-                return [
-                    'handle' => $columnKey,
-                    'title' => $field->display() ?? $field,
-                ];
-            })
-            ->toArray();
-
         return (new Coupons($coupons))
             ->blueprint(CouponBlueprint::getBlueprint())
             ->columnPreferenceKey('simple_commerce.coupons.columns')
