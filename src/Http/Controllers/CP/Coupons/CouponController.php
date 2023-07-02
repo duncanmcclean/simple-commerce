@@ -45,7 +45,7 @@ class CouponController
                 'requestUrl' => cp_route('simple-commerce.coupons.listing-api'),
                 'listingUrl' => cp_route('simple-commerce.coupons.index'),
             ],
-            'actionUrl' => '#',
+            'actionUrl' => cp_route('simple-commerce.coupons.actions.run'),
         ]);
     }
 
