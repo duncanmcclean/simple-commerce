@@ -24,15 +24,18 @@ class CouponListingController extends CpController
 
         $coupons = Coupon::query();
 
+        if ($searchQuery = $request->input('search')) {
+            $coupons->where('code', 'like', '%'.$searchQuery.'%');
+        }
+
         $activeFilterBadges = $this->queryFilters($coupons, $request->filters, [
             'blueprints' => [$blueprint],
         ]);
 
-        // if ($searchQuery = $request->input('search')) {
-        //     $query->orWhere($field['handle'], 'LIKE', '%'.$searchQuery.'%');
-        // }
-
-        $coupons = $coupons->paginate($request->input('perPage', config('statamic.cp.pagination_size')));
+        $coupons = $coupons->paginate(
+            $request->input('perPage',
+            config('statamic.cp.pagination_size'))
+        );
 
         return (new Coupons($coupons))
             ->blueprint(CouponBlueprint::getBlueprint())
