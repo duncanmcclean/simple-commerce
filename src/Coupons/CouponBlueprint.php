@@ -83,6 +83,7 @@ class CouponBlueprint
                             'required',
                         ],
                         'listable' => true,
+                        'max_items' => 1,
                     ],
                     'value' => [
                         'input_type' => 'text',
