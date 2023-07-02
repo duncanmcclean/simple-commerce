@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Resources;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Resources\CP\Coupons;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Statamic\Facades\Action;

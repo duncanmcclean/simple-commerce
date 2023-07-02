@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Resources;
+namespace DoubleThreeDigital\SimpleCommerce\Http\Resources\CP\Coupons;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Statamic\Http\Resources\CP\Concerns\HasRequestedColumns;

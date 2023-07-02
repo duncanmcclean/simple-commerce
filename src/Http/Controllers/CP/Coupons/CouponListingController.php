@@ -4,7 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons;
 
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponBlueprint;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Http\Resources\Coupons;
+use DoubleThreeDigital\SimpleCommerce\Http\Resources\CP\Coupons\Coupons;
 use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
 use Statamic\Http\Requests\FilteredRequest;
