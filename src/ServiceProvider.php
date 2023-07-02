@@ -92,10 +92,10 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $scopes = [
-        Scopes\OrderContainsProduct::class,
-        Scopes\OrderCustomer::class,
-        Scopes\OrderStatusFilter::class,
-        Scopes\PaymentStatusFilter::class,
+        Query\Scopes\OrderContainsProduct::class,
+        Query\Scopes\OrderCustomer::class,
+        Query\Scopes\OrderStatusFilter::class,
+        Query\Scopes\PaymentStatusFilter::class,
     ];
 
     protected $tags = [

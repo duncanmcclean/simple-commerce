@@ -1,41 +1,48 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Scopes;
+namespace DoubleThreeDigital\SimpleCommerce\Query\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Statamic\Query\Scopes\Filter;
 
-class PaymentStatusFilter extends Filter
+class OrderStatusFilter extends Filter
 {
     public $pinned = true;
 
-    public static $title = 'Payment Status';
+    public static $title = 'Order Status';
 
     public function fieldItems()
     {
         return [
             'type' => [
                 'type' => 'radio',
-                'options' => collect(PaymentStatus::cases())->mapWithKeys(fn ($case) => [
-                    $case->value => $case->name,
+                'options' => collect(OrderStatus::cases())->mapWithKeys(fn ($case) => [
+                    $case->value => __($case->name),
                 ])->toArray(),
             ],
         ];
     }
 
+    public function autoApply()
+    {
+        return [
+            'type' => 'placed',
+        ];
+    }
+
     public function apply($query, $values)
     {
-        return $query->where('payment_status', $values['type']);
+        return $query->where('order_status', $values['type']);
     }
 
     public function badge($values)
     {
-        $paymentStatusLabel = PaymentStatus::from($values['type'])->name;
+        $orderStatusLabel = OrderStatus::from($values['type'])->name;
 
-        return "Payment Status: {$paymentStatusLabel}";
+        return __('Order Status: :orderStatus', ['orderStatus' => $orderStatusLabel]);
     }
 
     public function visibleTo($key)

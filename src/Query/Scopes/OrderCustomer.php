@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Scopes;
+namespace DoubleThreeDigital\SimpleCommerce\Query\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
