@@ -58,7 +58,14 @@ class UpdateRequest extends FormRequest
             ],
             'expires_at' => [
                 'nullable',
+                'array',
+            ],
+            'expires_at.date' => [
+                'nullable',
                 'date',
+            ],
+            'expires_at.time' => [
+                'nullable',
             ],
             'enabled' => [
                 'required',

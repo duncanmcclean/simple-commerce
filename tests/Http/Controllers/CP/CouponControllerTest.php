@@ -42,6 +42,31 @@ test('can store coupon', function () {
     expect(6500)->toBe($coupon->get('minimum_cart_value'));
 });
 
+test('can store coupon with expiry date', function () {
+    $this
+        ->actingAs(user())
+        ->post('/cp/simple-commerce/coupons', [
+            'code' => 'thursday-thirty-two',
+            'type' => 'percentage',
+            'value' => 32,
+            'description' => '30% discount on a Thursday!',
+            'minimum_cart_value' => '65.00',
+            'enabled' => true,
+            'expires_at' => [
+                'date' => '2024-01-01',
+                'time' => null,
+            ],
+        ])
+        ->assertJsonStructure([
+            'redirect',
+        ])
+        ->assertSessionHasNoErrors();
+
+    $coupon = Coupon::findByCode('thursday-thirty-two');
+
+    expect($coupon->get('expires_at'))->toBe('2024-01-01');
+});
+
 test('cant store coupon where a coupon already exists with the provided code', function () {
     Coupon::make()
         ->id('random-id')
@@ -135,6 +160,43 @@ test('can update coupon', function () {
     expect(false)->toBe($coupon->enabled());
     expect('You can actually get a 51% discount on Friday!')->toBe($coupon->get('description'));
     expect(7600)->toBe($coupon->get('minimum_cart_value'));
+});
+
+test('can update coupon with expriry date', function () {
+    $coupon = Coupon::make()
+        ->id('random-id')
+        ->code('fifty-friday')
+        ->value(50)
+        ->type('percentage')
+        ->data([
+            'description' => 'Fifty Friday',
+            'redeemed' => 0,
+            'minimum_cart_value' => null,
+        ]);
+
+    $coupon->save();
+
+    $this
+        ->actingAs(user())
+        ->post('/cp/simple-commerce/coupons/random-id', [
+            'code' => 'fifty-friday',
+            'type' => 'percentage',
+            'value' => 51,
+            'description' => 'You can actually get a 51% discount on Friday!',
+            'enabled' => false,
+            'minimum_cart_value' => '76.00',
+            'expires_at' => [
+                'date' => '2024-01-01',
+                'time' => null,
+            ],
+        ])
+        ->assertJsonStructure([
+            'coupon',
+        ]);
+
+    $coupon->fresh();
+
+    expect($coupon->get('expires_at'))->toBe('2024-01-01');
 });
 
 test('cant update coupon if type is percentage and value is greater than 100', function () {
