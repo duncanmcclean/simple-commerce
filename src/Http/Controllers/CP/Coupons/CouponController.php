@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons;
 use DoubleThreeDigital\SimpleCommerce\Coupons\CouponBlueprint;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\CreateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\DeleteRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\EditRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
