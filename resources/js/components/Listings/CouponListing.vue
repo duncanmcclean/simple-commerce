@@ -148,18 +148,6 @@
                             </template>
                         </data-list-table>
                     </div>
-
-                    <confirmation-modal
-                        v-if="deletingRow !== false"
-                        :title="__('Delete')"
-                        :bodyText="
-                            __('Are you sure you want to delete this item?')
-                        "
-                        :buttonText="__('Delete')"
-                        :danger="true"
-                        @confirm="deleteRow()"
-                        @cancel="cancelDeleteRow"
-                    ></confirmation-modal>
                 </div>
 
                 <data-list-pagination
@@ -193,53 +181,12 @@ export default {
             requestUrl: this.listingConfig.requestUrl,
             columns: this.initialColumns,
             meta: {},
-            deletingRow: false,
         }
     },
 
     methods: {
         canEditRow(row) {
             return row.editable
-        },
-
-        confirmDeleteRow(id, index, deleteUrl) {
-            this.visibleColumns = this.columns.filter(
-                (column) => column.visible
-            )
-            this.deletingRow = { id, index, deleteUrl }
-        },
-
-        deleteRow(message) {
-            const id = this.deletingRow.id
-            message = message || __('Deleted')
-
-            this.$axios
-                .delete(this.deletingRow.deleteUrl)
-                .then(() => {
-                    let i = _.indexOf(
-                        this.items,
-                        _.findWhere(this.rows, { id })
-                    )
-                    this.items.splice(i, 1)
-                    this.deletingRow = false
-                    this.$toast.success(message)
-                })
-                .catch((e) => {
-                    this.$toast.error(
-                        e.response
-                            ? e.response.data.message
-                            : __('Something went wrong')
-                    )
-                })
-        },
-
-        cancelDeleteRow() {
-            this.deletingRow = false
-            setTimeout(() => {
-                this.visibleColumns = this.columns.filter(
-                    (column) => column.visible
-                )
-            }, 50)
         },
 
         getStatusClass(coupon) {
