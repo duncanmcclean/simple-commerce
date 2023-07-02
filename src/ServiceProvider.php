@@ -22,6 +22,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $translations = false;
 
     protected $actions = [
+        Actions\Delete::class,
         Actions\RefundAction::class,
         Actions\UpdateOrderStatus::class,
     ];
