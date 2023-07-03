@@ -51,7 +51,10 @@ test('can store coupon with expiry date', function () {
         ->post('/cp/simple-commerce/coupons', [
             'code' => 'thursday-thirty-two',
             'type' => 'percentage',
-            'value' => 32,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 32,
+            ],
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
             'enabled' => true,
@@ -190,7 +193,10 @@ test('can update coupon with expriry date', function () {
         ->post('/cp/simple-commerce/coupons/random-id', [
             'code' => 'fifty-friday',
             'type' => 'percentage',
-            'value' => 51,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 51,
+            ],
             'description' => 'You can actually get a 51% discount on Friday!',
             'enabled' => false,
             'minimum_cart_value' => '76.00',
