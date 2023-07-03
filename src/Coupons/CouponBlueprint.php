@@ -50,14 +50,13 @@ class CouponBlueprint
                 'display' => 'Main',
                 'fields' => [
                     'code' => [
-                        'type' => 'text',
-                        'localizable' => true,
-                        'generate' => true,
+                        'type' => 'coupon_code',
                         'display' => __('Coupon Code'),
                         'validate' => [
                             'required',
                         ],
                         'listable' => true,
+                        'instructions' => __('Customers will use this code to redeem the coupon.'),
                     ],
                     'description' => [
                         'type' => 'textarea',
