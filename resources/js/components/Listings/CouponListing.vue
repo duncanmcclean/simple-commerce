@@ -120,7 +120,6 @@
                             >
                                 <dropdown-list
                                     v-if="
-                                        canViewRow(row) ||
                                         canEditRow(row) ||
                                         row.actions.length
                                     "
