@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v5.3.0 (2023-07-03)
+
+### What's improved
+
+* Rebuilt the Coupons Listing Table #885
+* Improved the UX around creating/editing coupons #888 #889
+
+### What's fixed
+
+* Order & Payment Status labels are now translatable #883 #886
+* Fixed the 'Expiry Date' field causing validation errors when saving coupons #887
+
 ## v5.2.2 (2023-06-21)
 
 ### What's fixed
