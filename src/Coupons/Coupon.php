@@ -226,7 +226,7 @@ class Coupon implements Contract
             'id' => $this->id,
             'code' => $this->code,
             'value' => $this->value,
-            'type' => optional($this->type)->value,
+            'type' => $this->type,
             'enabled' => $this->enabled,
         ]);
     }
