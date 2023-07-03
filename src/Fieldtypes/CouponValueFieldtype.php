@@ -8,6 +8,7 @@ use Statamic\Fields\Fieldtype;
 class CouponValueFieldtype extends Fieldtype
 {
     protected $selectable = false;
+
     protected $component = 'coupon-value';
 
     public function preload()
