@@ -95,7 +95,7 @@ class CouponController
         $blueprint = CouponBlueprint::getBlueprint();
 
         $fields = $blueprint->fields();
-        $fields = $fields->addValues($coupon->toArray());
+        $fields = $fields->addValues($coupon->toArray())->setParent($coupon);
         $fields = $fields->preProcess();
 
         return view('simple-commerce::cp.coupons.edit', [

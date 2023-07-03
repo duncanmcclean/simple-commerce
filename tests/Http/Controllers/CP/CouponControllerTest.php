@@ -23,7 +23,10 @@ test('can store coupon', function () {
         ->post('/cp/simple-commerce/coupons', [
             'code' => 'thursday-thirty',
             'type' => 'percentage',
-            'value' => 30,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 30,
+            ],
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
             'enabled' => true,
@@ -60,7 +63,10 @@ test('cant store coupon where a coupon already exists with the provided code', f
         ->post('/cp/simple-commerce/coupons', [
             'code' => 'tuesday-subway',
             'type' => 'percentage',
-            'value' => 30,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 30,
+            ],
             'description' => '30% discount on a Tuesday!',
         ])
         ->assertSessionHasErrors('code');
@@ -119,7 +125,10 @@ test('can update coupon', function () {
         ->post('/cp/simple-commerce/coupons/random-id', [
             'code' => 'fifty-friday',
             'type' => 'percentage',
-            'value' => 51,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 51,
+            ],
             'description' => 'You can actually get a 51% discount on Friday!',
             'enabled' => false,
             'minimum_cart_value' => '76.00',
@@ -156,10 +165,13 @@ test('cant update coupon if type is percentage and value is greater than 100', f
         ->post('/cp/simple-commerce/coupons/random-id', [
             'code' => 'fifty-friday',
             'type' => 'percentage',
-            'value' => 110,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 110,
+            ],
             'description' => 'You can actually get a 51% discount on Friday!',
         ])
-        ->assertSessionHasErrors('value');
+        ->assertSessionHasErrors('value.value');
 
     $coupon->fresh();
 
