@@ -36,11 +36,20 @@ class StoreRequest extends FormRequest
             ],
             'value' => [
                 'required',
-                'numeric',
+                'array',
+            ],
+            'value.mode' => [
+                'required',
+                'string',
+                Rule::in(['fixed', 'percentage']),
+            ],
+            'value.value' => [
+                'required',
                 'min:0',
+                'numeric',
                 function ($attribute, $value, $fail) {
                     if ($this->type === 'percentage' && $value > 100) {
-                        $fail(__('Percentage value cannot be over 100.'));
+                        $fail(__('For percentage coupons, the value can not be over 100.'));
                     }
                 },
             ],

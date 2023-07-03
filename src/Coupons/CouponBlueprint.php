@@ -86,8 +86,7 @@ class CouponBlueprint
                         'max_items' => 1,
                     ],
                     'value' => [
-                        'input_type' => 'text',
-                        'type' => 'text',
+                        'type' => 'coupon_value',
                         'display' => __('Value'),
                         'width' => 50,
                         'validate' => [
