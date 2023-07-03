@@ -49,7 +49,7 @@ class StoreRequest extends FormRequest
                 'numeric',
                 function ($attribute, $value, $fail) {
                     if ($this->type === 'percentage' && $value > 100) {
-                        $fail(__("For percentage coupons, the value can not be over 100."));
+                        $fail(__('For percentage coupons, the value can not be over 100.'));
                     }
                 },
             ],
