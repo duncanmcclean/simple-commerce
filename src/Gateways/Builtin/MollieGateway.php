@@ -155,10 +155,9 @@ class MollieGateway extends BaseGateway implements Gateway
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             // TODO: refactor this query
             return collect(OrderFacade::all())
-                ->filter(function ($entry) use ($mollieId) {
+                ->filter(function ($entry) use ($request) {
                     return isset($entry->data()->get('mollie')['id'])
-                        && $entry->data()->get('mollie')['id']
-                        === $mollieId;
+                        && $entry->data()->get('mollie')['id'] === $request->get('id');
                 })
                 ->map(function ($entry) {
                     return OrderFacade::find($entry->id());
@@ -169,7 +168,7 @@ class MollieGateway extends BaseGateway implements Gateway
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
             $order = (new (SimpleCommerce::orderDriver()['model']))
                 ->query()
-                ->where('data->mollie->id', $mollieId)
+                ->where('data->mollie->id', $request->get('id'))
                 ->first();
 
             return OrderFacade::find($order->id);
