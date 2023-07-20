@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.3.1 (2023-07-20)
+
+### What's fixed
+
+* Fixed an issue with the Mollie webhook #890 #891
+
 ## v5.3.0 (2023-07-03)
 
 ### What's improved
