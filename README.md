@@ -55,7 +55,7 @@ Sometimes you need to sell different versions of the same product. Like a t-shir
 
 If you need to sell across different countries, you can take advantage of Statamic's multi-site feature in Simple Commerce to have a site per currency. Each site may also have its own set of shipping methods.
 
--   [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/multisite)
+-   [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/guides/multisite)
 
 ### And lots more...
 
