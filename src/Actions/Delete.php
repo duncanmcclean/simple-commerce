@@ -8,6 +8,8 @@ class Delete extends Action
 {
     protected $dangerous = true;
 
+    protected static $handle = 'simple-commerce-delete';
+
     public static function title()
     {
         return __('Delete');
