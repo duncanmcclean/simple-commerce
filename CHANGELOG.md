@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.3.2 (2023-07-21)
+
+### What's fixed
+
+* Fixed an issue where the Delete action was missing on anything but coupons
+
 ## v5.3.1 (2023-07-20)
 
 ### What's fixed
