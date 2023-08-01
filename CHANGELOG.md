@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v5.3.3 (2023-08-01)
+
+### What's fixed
+
+* Fixed the 'Coupon Code' fieldtype showing as selectable in form blueprints #895 by @duncanmcclean
+* Empty arrays are no longer saved to product entries when variants & variant options aren't provided #892 #894 by @duncanmcclean
+
 ## v5.3.2 (2023-07-21)
 
 ### What's fixed
