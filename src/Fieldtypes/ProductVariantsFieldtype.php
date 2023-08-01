@@ -79,7 +79,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function process($data)
     {
-        return [
+        $process = [
             'variants' => $this->processInsideFields(
                 $data['variants'],
                 $this->preload()['variant_fields'],
@@ -91,6 +91,12 @@ class ProductVariantsFieldtype extends Fieldtype
                 'process'
             ),
         ];
+
+        if (count($process['variants']) === 0 && count($process['options']) === 0) {
+            return null;
+        }
+
+        return $process;
     }
 
     public static function title()
@@ -115,7 +121,7 @@ class ProductVariantsFieldtype extends Fieldtype
         ];
     }
 
-    protected function processInsideFields(array $fieldValues, array $fields, string $method)
+    protected function processInsideFields(array $fieldValues, array $fields, string $method): array
     {
         return collect($fieldValues)
             ->map(function ($optionAttributeValues) use ($fields, $method) {
