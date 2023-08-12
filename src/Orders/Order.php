@@ -235,7 +235,12 @@ class Order implements Contract
             return $this->shippingAddress();
         }
 
-        if (! $this->has('billing_address') && ! $this->has('billing_address_line1')) {
+        if (
+            ! $this->has('billing_address')
+            && ! $this->has('billing_address_line1')
+            && ! $this->has('billing_address_line2')
+            && ! $this->has('billing_city')
+        ) {
             return null;
         }
 
@@ -244,7 +249,12 @@ class Order implements Contract
 
     public function shippingAddress(): ?Address
     {
-        if (! $this->has('shipping_address') && ! $this->has('shipping_address_line1')) {
+        if (
+            ! $this->has('shipping_address')
+            && ! $this->has('shipping_address_line1')
+            && ! $this->has('shipping_address_line2')
+            && ! $this->has('shipping_city')
+        ) {
             return null;
         }
 
