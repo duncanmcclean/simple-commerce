@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v5.3.4 (2023-08-12)
+
+### What's improved
+
+* Improved docblocks in the `Coupon`, `Customer`, `Order` and `Product` facades
+* The `billingAddress` and `shippingAddress` methods now check a few more fields when deciding if an address is present or not
+
 ## v5.3.3 (2023-08-01)
 
 ### What's fixed
