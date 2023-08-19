@@ -11,8 +11,9 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use DoubleThreeDigital\SimpleCommerce\Tests\Orders\Helpers\Postage;
 use Illuminate\Support\Facades\Config;
-use function PHPUnit\Framework\assertTrue;
 use Statamic\Facades\Site;
+
+use function PHPUnit\Framework\assertTrue;
 
 uses(SetupCollections::class);
 
