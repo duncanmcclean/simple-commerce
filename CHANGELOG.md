@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v5.3.5 (2023-08-19)
+
+### What's fixed
+
+* Fixed an issue in multi-site, where new orders would always be created in the default site #899 #900 by @duncanmcclean
+* Fixed an issue where the customer could see an empty cart on the post-checkout page #901 by @duncanmcclean
+* Fixed the "Are you sure you want to leave this page?" warning from popping up when using the Money Fieldtype #897 #902 by @duncanmcclean
+
 ## v5.3.4 (2023-08-12)
 
 ### What's improved
