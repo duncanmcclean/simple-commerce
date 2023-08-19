@@ -22,7 +22,6 @@ export default {
     data() {
         return {
             symbol: this.meta.symbol,
-            formattedValue: this.value,
         }
     },
 
@@ -30,12 +29,6 @@ export default {
         inputType() {
             return this.show
         },
-    },
-
-    mounted() {
-        if (isNaN(parseFloat(this.value)) == false) {
-            this.$emit('input', parseFloat(this.value).toFixed(2))
-        }
     },
 }
 </script>
