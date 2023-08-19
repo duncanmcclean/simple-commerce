@@ -28,8 +28,13 @@ class MoneyFieldtype extends Fieldtype
 
     public function preProcess($data)
     {
-        if ($data !== null) {
-            return substr_replace($data, '.', -2, 0);
+        if (! $data) {
+            return null;
+        }
+
+        // Replaces the second-last character with a decimal point
+        if (! str_contains($data, '.')) {
+            $data = substr_replace($data, '.', -2, 0);
         }
 
         return $data;
@@ -38,8 +43,6 @@ class MoneyFieldtype extends Fieldtype
     public function process($data)
     {
         if ($data === '' || $data === null) {
-            // return (int) 0000;
-
             return null;
         }
 

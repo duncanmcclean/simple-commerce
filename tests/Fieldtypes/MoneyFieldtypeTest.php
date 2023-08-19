@@ -29,6 +29,14 @@ test('can pre process data', function () {
     expect($process)->toBe('25.50');
 });
 
+test('can pre process data where value includes a decimal points', function () {
+    $value = '25.99';
+
+    $process = (new MoneyFieldtype())->preProcess($value);
+
+    expect($process)->toBe('25.99');
+});
+
 test('can process data', function () {
     $value = '12.65';
 
