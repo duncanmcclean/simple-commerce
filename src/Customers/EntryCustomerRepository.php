@@ -76,7 +76,7 @@ class EntryCustomerRepository implements RepositoryContract
         }
 
         if ($customer->get('site')) {
-            $entry->site($customer->get('site'));
+            $entry->locale($customer->get('site'));
         }
 
         if ($customer->get('slug')) {

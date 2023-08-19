@@ -92,7 +92,7 @@ class EntryOrderRepository implements RepositoryContract
         }
 
         if ($order->get('site')) {
-            $entry->site($order->get('site'));
+            $entry->locale($order->get('site'));
         }
 
         if ($order->get('slug')) {
