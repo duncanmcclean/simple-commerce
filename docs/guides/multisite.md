@@ -62,7 +62,7 @@ If you're using subdirectories for your multi-sites, it's recommended you provid
 
 It's pretty simple to do - loop through your sites & provide a route prefix.
 
-```
+```php
 // routes/web.php
 
 foreach (Site::all() as $site) {
@@ -76,6 +76,8 @@ foreach (Site::all() as $site) {
     });
 }
 ```
+
+If you're using different domains for each of your sites, replace `Route::prefix($site->url())` with `Route::domain($site->url())` in the above code snippet.
 
 ### Using the same cart between sites
 

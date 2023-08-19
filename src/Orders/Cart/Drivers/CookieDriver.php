@@ -49,6 +49,7 @@ class CookieDriver implements CartDriver
     public function makeCart(): Order
     {
         $cart = OrderAPI::make();
+        $cart->set('site', $this->guessSiteFromRequest()->handle());
         $cart->save();
 
         Cookie::queue($this->getKey(), $cart->id);
@@ -83,17 +84,17 @@ class CookieDriver implements CartDriver
             return Site::get($site);
         }
 
-        foreach (Site::all()->reverse() as $site) {
-            if (Str::contains(request()->url(), $site->url())) {
-                return $site;
-            }
-        }
-
         if ($referer = request()->header('referer')) {
             foreach (Site::all()->reverse() as $site) {
                 if (Str::contains($referer, $site->url())) {
                     return $site;
                 }
+            }
+        }
+
+        foreach (Site::all()->reverse() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
             }
         }
 

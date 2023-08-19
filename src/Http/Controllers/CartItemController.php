@@ -259,17 +259,17 @@ class CartItemController extends BaseActionController
             return Site::get($site);
         }
 
-        foreach (Site::all() as $site) {
-            if (Str::contains(request()->url(), $site->url())) {
-                return $site;
-            }
-        }
-
         if ($referer = request()->header('referer')) {
             foreach (Site::all() as $site) {
                 if (Str::contains($referer, $site->url())) {
                     return $site;
                 }
+            }
+        }
+
+        foreach (Site::all() as $site) {
+            if (Str::contains(request()->url(), $site->url())) {
+                return $site;
             }
         }
 
