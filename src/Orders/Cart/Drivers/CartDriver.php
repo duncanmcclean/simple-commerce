@@ -57,7 +57,10 @@ trait CartDriver
             }
 
             // Is the user on the redirect URL? If not, use normal cart driver.
-            if (request()->path() !== ltrim($checkoutSuccess['url'], '/')) {
+            if (
+                request()->path() !== ltrim($checkoutSuccess['url'], '/')
+                && request()->fullUrl() !== ltrim($checkoutSuccess['url'].'/', '/')
+            ) {
                 return resolve(CartDriverContract::class);
             }
 
