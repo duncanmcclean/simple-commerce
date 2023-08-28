@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.3.6 (2023-08-28)
+
+### What's fixed
+
+* Fixed an issue where customers were created in the default site, instead of the order's site #899 #903 by @duncanmcclean
+
 ## v5.3.5 (2023-08-19)
 
 ### What's fixed
