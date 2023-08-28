@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -55,6 +56,13 @@ class CartController extends BaseActionController
                     'published' => true,
                 ];
 
+                if (
+                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+                ) {
+                    $customerData['site'] = $cart->resource()->site()->handle();
+                }
+
                 if (isset($customerData['customer']['name'])) {
                     $customerData['name'] = $customerData['customer']['name'];
                 }
@@ -72,8 +80,17 @@ class CartController extends BaseActionController
             }
 
             if (is_array($data['customer'])) {
+                $customerData = Arr::only($data['customer'], config('simple-commerce.field_whitelist.customers'));
+
+                if (
+                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+                ) {
+                    $customerData['site'] = $cart->resource()->site()->handle();
+                }
+
                 $customer
-                    ->merge(Arr::only($data['customer'], config('simple-commerce.field_whitelist.customers')))
+                    ->merge($customerData)
                     ->save();
             }
 
@@ -96,6 +113,13 @@ class CartController extends BaseActionController
                 $customerData = [
                     'published' => true,
                 ];
+
+                if (
+                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+                ) {
+                    $customerData['site'] = $cart->resource()->site()->handle();
+                }
 
                 if (isset($data['name'])) {
                     $customerData['name'] = $data['name'];
@@ -172,5 +196,11 @@ class CartController extends BaseActionController
         }
 
         return Site::current();
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

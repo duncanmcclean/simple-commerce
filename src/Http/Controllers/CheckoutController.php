@@ -18,6 +18,7 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -109,6 +110,13 @@ class CheckoutController extends BaseActionController
             return $this;
         }
 
+        if (
+            $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+            && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+        ) {
+            $customerData['site'] = $this->order->resource()->site()->handle();
+        }
+
         if ($this->request->has('name') && $this->request->has('email')) {
             $customerData['name'] = $this->request->get('name');
             $customerData['email'] = $this->request->get('email');
@@ -136,6 +144,13 @@ class CheckoutController extends BaseActionController
                 $customerItemData = [
                     'published' => true,
                 ];
+
+                if (
+                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+                ) {
+                    $customerItemData['site'] = $this->order->resource()->site()->handle();
+                }
 
                 if (isset($customerData['name'])) {
                     $customerItemData['name'] = $customerData['name'];
@@ -288,5 +303,11 @@ class CheckoutController extends BaseActionController
         }
 
         return Site::current();
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
