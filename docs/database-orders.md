@@ -38,9 +38,9 @@ Then, to move over any existing order & customer entries, you can run the provid
 php please sc:migrate-to-database
 ```
 
-One thing worth noting is that the above command will not delete the order/customer entries or the collections. That's something you should do yourself after you're satisfied with the migration.
+It's worth noting that the above command will not delete the order/customer entries, or the associated collections. You may do that when you're satisfied with the migration.
 
-If you receive this error (You must run the `sc:switch-to-database` command before running this command.) when running the `sc:migrate-to-database` command, you should ensure your SC 'content config' looks like this:
+If you receive an error running the `sc:migrate-to-database` command, please ensure you've run the `sc:switch-to-database` command first and that your `content` array looks like this:
 
 ```php
 // config/simple-commerce.php
