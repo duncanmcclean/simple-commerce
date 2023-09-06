@@ -9,7 +9,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant
 {
-    use HasData, FluentlyGetsAndSets;
+    use FluentlyGetsAndSets, HasData;
 
     protected $key;
 

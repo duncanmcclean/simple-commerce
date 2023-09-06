@@ -11,8 +11,8 @@ use Statamic\Facades\Site;
 
 class CartTags extends SubTag
 {
-    use Concerns\FormBuilder;
     use CartDriver;
+    use Concerns\FormBuilder;
 
     public function index()
     {

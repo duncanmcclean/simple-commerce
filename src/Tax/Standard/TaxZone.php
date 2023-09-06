@@ -14,7 +14,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class TaxZone
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, TracksQueriedColumns;
 
     public $id;
 
