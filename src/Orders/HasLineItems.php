@@ -103,7 +103,7 @@ trait HasLineItems
     public function updateLineItem($lineItemId, array $lineItemData): LineItem
     {
         $this->lineItems = $this->lineItems->map(function ($item) use ($lineItemId, $lineItemData) {
-            if ($item->id() !== $lineItemId) {
+            if ($lineItemId !== $item->id()) {
                 return $item;
             }
 
@@ -148,7 +148,7 @@ trait HasLineItems
     public function removeLineItem($lineItemId): Collection
     {
         $this->lineItems = $this->lineItems->reject(function ($item) use ($lineItemId) {
-            return $item->id() === $lineItemId;
+            return $lineItemId === $item->id();
         })->values();
 
         $this->save();

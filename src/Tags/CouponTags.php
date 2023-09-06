@@ -7,8 +7,8 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
 {
-    use Concerns\FormBuilder;
     use CartDriver;
+    use Concerns\FormBuilder;
 
     public function index(): array
     {

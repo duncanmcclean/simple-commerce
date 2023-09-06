@@ -19,16 +19,16 @@ class EnforceEntryBlueprintFields
 
         if (
             $this->isOrExtendsClass($customerDriver['repository'], EntryCustomerRepository::class)
-            && $event->blueprint->namespace() === "collections.{$customerDriver['collection']}"
+            && "collections.{$customerDriver['collection']}" === $event->blueprint->namespace()
         ) {
             return $this->enforceCustomerFields($event);
         }
 
-        if (isset($productDriver['collection']) && $event->blueprint->namespace() === "collections.{$productDriver['collection']}") {
+        if (isset($productDriver['collection']) && "collections.{$productDriver['collection']}" === $event->blueprint->namespace()) {
             return $this->enforceProductFields($event);
         }
 
-        if (isset($orderDriver['collection']) && $event->blueprint->namespace() === "collections.{$orderDriver['collection']}") {
+        if (isset($orderDriver['collection']) && "collections.{$orderDriver['collection']}" === $event->blueprint->namespace()) {
             return $this->enforceOrderFields($event);
         }
     }

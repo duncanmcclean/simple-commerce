@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
 {
-    use Concerns\FormBuilder;
     use CartDriver;
+    use Concerns\FormBuilder;
 
     public function index()
     {
