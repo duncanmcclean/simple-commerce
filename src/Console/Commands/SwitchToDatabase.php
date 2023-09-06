@@ -36,10 +36,10 @@ class SwitchToDatabase extends Command
 
         $this
             ->copyMigrationStubs()
-            ->switchRepositories()
             ->copyBlueprintStubs()
             ->installRunway()
-            ->installDbal();
+            ->installDbal()
+            ->switchRepositories();
 
         $this->line('');
         $this->info('Next steps:');
