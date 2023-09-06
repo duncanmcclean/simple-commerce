@@ -108,13 +108,13 @@ class CartItemController extends BaseActionController
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::Product) {
-            if (is_int($product->stock()) && $product->stock() < $request->quantity) {
+            if (is_int($product->stock()) && $request->quantity > $product->stock()) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         } elseif ($product->purchasableType() === ProductType::Variant) {
             $variant = $product->variant($request->get('variant'));
 
-            if ($variant !== null && is_int($variant->stock()) && $variant->stock() < $request->quantity) {
+            if ($variant !== null && is_int($variant->stock()) && $request->quantity > $variant->stock()) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         }
@@ -212,7 +212,7 @@ class CartItemController extends BaseActionController
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::Product) {
-            if (is_int($product->stock()) && $product->stock() < $request->quantity) {
+            if (is_int($product->stock()) && $request->quantity > $product->stock()) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         } elseif ($product->purchasableType() === ProductType::Variant) {
@@ -220,7 +220,7 @@ class CartItemController extends BaseActionController
                 ? $product->variant($request->get('variant'))
                 : $product->variant($lineItem->variant()['variant']);
 
-            if ($variant !== null && is_int($variant->stock()) && $variant->stock() < $request->quantity) {
+            if ($variant !== null && is_int($variant->stock()) && $request->quantity > $variant->stock()) {
                 return $this->withErrors($request, __("There's not enough stock to fulfil the quantity you selected. Please try again later."));
             }
         }

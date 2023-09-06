@@ -17,7 +17,7 @@ use Statamic\Facades\User;
 
 class MigrateOrdersToDatabase extends Command
 {
-    use RunsInPlease, ConfirmableTrait;
+    use ConfirmableTrait, RunsInPlease;
 
     protected $name = 'sc:migrate-to-database';
 
