@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v5.3.7 (2023-09-06)
+
+### What's fixed
+
+* Fixed errors using the "Overview" page with Database Orders #911 by @duncanmcclean
+* Fixed empty dropdown when using Country & Region fieldtypes in Select mode #909 by @duncanmcclean
+* Re-ordered steps in migration process for migrating orders/customers to the database #910 by @duncanmcclean
+
 ## v5.3.6 (2023-08-28)
 
 ### What's fixed
