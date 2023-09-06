@@ -18,7 +18,7 @@ use Statamic\Facades\Entry;
 
 class MigrateOrderStatuses extends Command
 {
-    use RunsInPlease, ConfirmableTrait;
+    use ConfirmableTrait, RunsInPlease;
 
     protected $name = 'sc:migrate-order-statuses';
 

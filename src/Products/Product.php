@@ -150,7 +150,7 @@ class Product implements Contract
     public function variant(string $optionKey): ?ProductVariant
     {
         return $this->variantOptions()->filter(function ($variant) use ($optionKey) {
-            return $variant->key() === $optionKey;
+            return $optionKey === $variant->key();
         })->first();
     }
 
