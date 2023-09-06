@@ -12,7 +12,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class TaxCategory
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, TracksQueriedColumns;
 
     public $id;
 

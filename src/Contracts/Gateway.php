@@ -24,8 +24,6 @@ interface Gateway
      *
      * If you're building an off-site gateway, you should return a `checkout_url` key with the
      * URL the user should be redirected to for checkout.
-     *
-     * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
      */
     public function prepare(Request $request, Order $order): array;
 
@@ -36,8 +34,6 @@ interface Gateway
      * If you need to display an error message, you should throw a GatewayCheckoutFailed exception.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
-     *
-     * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
      */
     public function checkout(Request $request, Order $order): array;
 
@@ -62,7 +58,6 @@ interface Gateway
      * return an array of any data which may prove helpful in the future to track down
      * refunds (like a Refund ID).
      *
-     * @param  \DoubleThreeDigital\SimpleCommerce\Contracts\Order  $order
      * @return array|null
      */
     public function refund(Order $order): array;

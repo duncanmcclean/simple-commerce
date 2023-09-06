@@ -26,7 +26,7 @@ use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use CartDriver, AcceptsFormRequests;
+    use AcceptsFormRequests, CartDriver;
 
     public $order;
 

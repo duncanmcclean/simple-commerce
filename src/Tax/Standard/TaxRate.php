@@ -13,7 +13,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class TaxRate
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, TracksQueriedColumns;
 
     public $id;
 

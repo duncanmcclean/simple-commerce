@@ -17,7 +17,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Coupon implements Contract
 {
-    use FluentlyGetsAndSets, ExistsAsFile, TracksQueriedColumns, ContainsData;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, TracksQueriedColumns;
 
     public $id;
 
