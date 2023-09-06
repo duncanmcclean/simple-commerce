@@ -19,6 +19,7 @@ class CountryFieldtype extends Relationship
                 'id' => $country['iso'],
                 'iso' => $country['iso'],
                 'name' => __($country['name']),
+                'title' => __($country['name']),
             ];
         })->values();
     }
