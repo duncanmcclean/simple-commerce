@@ -21,6 +21,7 @@ class RegionFieldtype extends Relationship
                 'country_iso' => $region['country_iso'],
                 'country_name' => __(Countries::findByRegion($region)->first()['name']),
                 'name' => __($region['name']),
+                'title' => __($region['name']),
             ];
         })->sortBy('country_name')->values();
     }
