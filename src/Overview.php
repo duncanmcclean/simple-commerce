@@ -66,7 +66,7 @@ class Overview
 
                         $query = $orderModel::query()
                             ->where('payment_status', PaymentStatus::Paid->value)
-                            ->whereDate('status_log->paid', $date)
+                            ->whereDate('data->status_log->paid', $date)
                             ->get();
                     }
 
@@ -113,7 +113,7 @@ class Overview
 
                     $query = $orderModel::query()
                         ->where('payment_status', PaymentStatus::Paid->value)
-                        ->orderBy('status_log->paid', 'desc')
+                        ->orderBy('data->status_log->paid', 'desc')
                         ->limit(5)
                         ->get()
                         ->map(function ($order) {
