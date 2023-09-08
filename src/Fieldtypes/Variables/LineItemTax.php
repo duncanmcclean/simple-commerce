@@ -16,6 +16,10 @@ class LineItemTax extends VariableFieldtype
 
     public function augment($value)
     {
+        if (! isset($value['amount'])) {
+            return $value;
+        }
+
         $value['amount'] = Currency::parse($value['amount'], Site::current());
 
         return $value;
