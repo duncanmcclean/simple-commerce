@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.3.8 (2023-09-08)
+
+### What's fixed
+
+* Fixed an error caused by the Line Item Tax fieldtype when it was being augmented by @duncanmcclean
+
 ## v5.3.7 (2023-09-06)
 
 ### What's fixed
