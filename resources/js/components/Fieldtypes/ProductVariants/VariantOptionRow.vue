@@ -1,6 +1,6 @@
 <template>
     <div class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item">
-        <div class="grid-item-header">
+        <div class="grid-item-header rounded-t">
             {{ option.variant || __('Variants') }}
         </div>
 

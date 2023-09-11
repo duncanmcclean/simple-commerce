@@ -8,7 +8,7 @@
                     :key="variantIndex"
                     class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
                 >
-                    <div class="grid-item-header">
+                    <div class="grid-item-header rounded-t">
                         {{ variant.name || 'Variant' }}
                         <button
                             v-if="variants.length > 1"
