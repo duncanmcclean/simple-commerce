@@ -42,49 +42,30 @@
         <!-- Variant Options -->
         <div class="grid-fieldtype-container">
             <div class="grid-stacked">
-                <div
+                <VariantOptionRow
                     v-for="(option, index) in options"
                     :key="index"
-                    class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
-                >
-                    <div class="grid-item-header">
-                        {{ option.variant || __('Variants') }}
-                    </div>
-
-                    <publish-fields-container>
-                        <publish-field
-                            v-for="(
-                                optionField, optionIndex
-                            ) in meta.option_fields"
-                            :key="'option-' + optionField.handle"
-                            :config="optionField"
-                            :value="option[optionField.handle]"
-                            :meta="meta[optionField.handle]"
-                            :errors="errors(optionField.handle)"
-                            class="p-2"
-                            @input="
-                                updatedOptions(
-                                    index,
-                                    optionField.handle,
-                                    $event
-                                )
-                            "
-                            @meta-updated="metaUpdated(option.handle, $event)"
-                            @focus="$emit('focus')"
-                            @blur="$emit('blur')"
-                        />
-                    </publish-fields-container>
-                </div>
+                    :option="option"
+                    :index="index"
+                    :meta="meta"
+                    :values="value.options[index]"
+                    :fieldPathPrefix="handle + '.options.' + index"
+                    @updated="optionsUpdated"
+                    @metaUpdated="metaUpdated"
+                    @focus="$emit('focus')"
+                    @blur="$emit('blur')"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import GridRow from '../../statamic/Row.vue'
-import SortableList from '../../../../vendor/statamic/cms/resources/js/components/sortable/SortableList.vue'
-import GridHeaderCell from '../../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell.vue'
-import View from '../../statamic/View.vue'
+import GridRow from '../../../statamic/Row.vue'
+import SortableList from '../../../../../vendor/statamic/cms/resources/js/components/sortable/SortableList.vue'
+import GridHeaderCell from '../../../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell.vue'
+import View from '../../../statamic/View.vue'
+import VariantOptionRow from './VariantOptionRow.vue'
 
 export default {
     name: 'product-variants-fieldtype',
@@ -95,6 +76,7 @@ export default {
         GridHeaderCell,
         GridRow,
         SortableList,
+        VariantOptionRow,
     },
 
     props: ['meta'],
@@ -182,8 +164,8 @@ export default {
             this.variants[variantIndex][fieldHandle] = value
         },
 
-        updatedOptions(optionIndex, fieldHandle, value) {
-            this.options[optionIndex][fieldHandle] = value
+        optionsUpdated(index, value) {
+            this.options[index] = value
         },
 
         metaUpdated(fieldHandle, event) {
