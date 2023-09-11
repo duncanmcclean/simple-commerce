@@ -20,6 +20,7 @@ test('can get index items', function () {
         'country_iso' => 'ZW',
         'country_name' => 'Zimbabwe',
         'name' => 'Mashonaland West',
+        'title' => 'Mashonaland West',
     ]);
 });
 
