@@ -72,6 +72,7 @@ class EnforceEntryBlueprintFields
             $event->blueprint->ensureField('price', [
                 'type' => 'money',
                 'display' => __('Price'),
+                'save_zero_value' => true,
             ], 'sidebar');
         }
 
@@ -94,6 +95,7 @@ class EnforceEntryBlueprintFields
             'display' => __('Grand Total'),
             'read_only' => true,
             'validate' => ['required'],
+            'save_zero_value' => true,
         ]);
 
         $event->blueprint->ensureField('items_total', [
@@ -101,6 +103,7 @@ class EnforceEntryBlueprintFields
             'display' => __('Items Total'),
             'read_only' => true,
             'validate' => ['required'],
+            'save_zero_value' => true,
         ]);
 
         $event->blueprint->ensureField('shipping_total', [
@@ -108,6 +111,7 @@ class EnforceEntryBlueprintFields
             'display' => __('Shipping Total'),
             'read_only' => true,
             'validate' => ['required'],
+            'save_zero_value' => true,
         ]);
 
         $event->blueprint->ensureField('tax_total', [
@@ -115,6 +119,7 @@ class EnforceEntryBlueprintFields
             'display' => __('Tax Total'),
             'read_only' => true,
             'validate' => ['required'],
+            'save_zero_value' => true,
         ]);
 
         $event->blueprint->ensureField('coupon_total', [
@@ -122,6 +127,7 @@ class EnforceEntryBlueprintFields
             'display' => __('Coupon Total'),
             'read_only' => true,
             'validate' => ['required'],
+            'save_zero_value' => true,
         ]);
 
         $event->blueprint->ensureField('order_status', [

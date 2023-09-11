@@ -26,3 +26,4 @@ tabs:
           localizable: false
           listable: hidden
           display: Price
+          save_zero_value: true

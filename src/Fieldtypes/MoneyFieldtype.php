@@ -18,6 +18,12 @@ class MoneyFieldtype extends Fieldtype
                 'instructions' => __('Should this field be read only?'),
                 'width' => 50,
             ],
+            'save_zero_value' => [
+                'type' => 'toggle',
+                'display' => __('Save Zero Value?'),
+                'instructions' => __('When the value is zero, should it be saved as zero or be left empty?'),
+                'width' => 50,
+            ],
         ];
     }
 
@@ -29,7 +35,9 @@ class MoneyFieldtype extends Fieldtype
     public function preProcess($data)
     {
         if (! $data) {
-            return null;
+            return $this->config('save_zero_value', false)
+                ? 0
+                : null;
         }
 
         // Replaces the second-last character with a decimal point
@@ -43,7 +51,9 @@ class MoneyFieldtype extends Fieldtype
     public function process($data)
     {
         if ($data === '' || $data === null) {
-            return null;
+            return $this->config('save_zero_value', false)
+                ? 0
+                : null;
         }
 
         if (! str_contains($data, '.')) {
@@ -66,7 +76,9 @@ class MoneyFieldtype extends Fieldtype
     public function augment($value)
     {
         if (empty($value)) {
-            return null;
+            return $this->config('save_zero_value', false)
+                ? Currency::parse(0, Site::selected())
+                : null;
         }
 
         return Currency::parse($value, Site::current());
@@ -75,7 +87,9 @@ class MoneyFieldtype extends Fieldtype
     public function preProcessIndex($value)
     {
         if (! $value) {
-            return;
+            return $this->config('save_zero_value', false)
+                ? Currency::parse(0, Site::selected())
+                : null;
         }
 
         return Currency::parse($value, Site::selected());

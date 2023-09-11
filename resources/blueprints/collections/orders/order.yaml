@@ -61,6 +61,7 @@ tabs:
               listable: hidden
               instructions_position: above
               visibility: read_only
+              save_zero_value: true
           - handle: coupon_total
             field:
               type: money
@@ -70,6 +71,7 @@ tabs:
               width: 33
               listable: false
               visibility: read_only
+              save_zero_value: true
           - handle: tax_total
             field:
               type: money
@@ -79,6 +81,7 @@ tabs:
               width: 33
               listable: false
               visibility: read_only
+              save_zero_value: true
           - handle: shipping_total
             field:
               type: money
@@ -88,6 +91,7 @@ tabs:
               width: 33
               listable: false
               visibility: read_only
+              save_zero_value: true
           - handle: grand_total
             field:
               type: money
@@ -98,6 +102,7 @@ tabs:
               listable: true
               instructions_position: above
               visibility: read_only
+              save_zero_value: true
       - display: "Line Items"
         fields:
           - handle: items
