@@ -6,7 +6,7 @@
                 <div
                     v-for="(variant, variantIndex) in variants"
                     :key="variantIndex"
-                    class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item"
+                    class="bg-grey-10 shadow-sm mb-4 rounded border variants-sortable-item"
                 >
                     <div class="grid-item-header rounded-t">
                         {{ variant.name || 'Variant' }}
@@ -27,7 +27,7 @@
                             :value="variant[field.handle]"
                             :meta="meta[field.handle]"
                             :errors="errors(field.handle)"
-                            class="p-2 w-1/2"
+                            class="p-3 w-1/2"
                             @input="updated(variantIndex, field.handle, $event)"
                             @meta-updated="metaUpdated(field.handle, $event)"
                             @focus="$emit('focus')"

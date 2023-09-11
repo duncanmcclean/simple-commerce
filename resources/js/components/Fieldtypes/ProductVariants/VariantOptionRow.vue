@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-grey-10 shadow-sm mb-2 rounded border variants-sortable-item">
+    <div class="bg-grey-10 shadow-sm mb-4 rounded border variants-sortable-item">
         <div class="grid-item-header rounded-t">
             {{ option.variant || __('Variants') }}
         </div>
@@ -14,7 +14,7 @@
                 :meta="meta[optionField.handle]"
                 :errors="errors(optionField.handle)"
                 :field-path-prefix="fieldPath(optionIndex, optionField.handle)"
-                class="p-2"
+                class="p-3"
                 @input="updatedOptions(optionField.handle, $event)"
                 @meta-updated="metaUpdated(option.handle, $event)"
                 @focus="$emit('focus')"
