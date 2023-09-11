@@ -15,7 +15,9 @@
                             class="icon icon-cross cursor-pointer"
                             @click="deleteVariant(variantIndex)"
                             :aria-label="__('Delete Variant')"
-                        />
+                        >
+                            <svg-icon name="micro/trash" class="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                        </button>
                     </div>
                     <publish-fields-container>
                         <publish-field
