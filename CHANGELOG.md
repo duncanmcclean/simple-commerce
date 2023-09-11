@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## v5.4.0 (2023-09-11)
+
+### What's new
+
+* Introduced "Save Zero Value?" config option to Money fieldtype #916 #918 by @duncanmcclean
+
+### What's improved
+
+* Refactored the Product Variants field behind the scenes to support field conditions! 🎉 #913 #917 by @duncanmcclean
+
+### What's fixed
+
+* Fixed failing tests after recent tweaks to Country & Region fieldtype #919 by @duncanmcclean
+
 ## v5.3.8 (2023-09-08)
 
 ### What's fixed
