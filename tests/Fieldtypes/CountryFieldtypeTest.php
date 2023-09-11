@@ -19,6 +19,7 @@ test('can get index items', function () {
         'id' => 'ZW',
         'iso' => 'ZW',
         'name' => 'Zimbabwe',
+        'title' => 'Zimbabwe',
     ]);
 });
 
