@@ -68,3 +68,11 @@ test('can preprocess with multiple regions', function () {
     expect($preProcessIndex)->toBeString();
     expect('Scotland, Wales')->toBe($preProcessIndex);
 });
+
+it('can augment region', function () {
+    $augment = $this->fieldtype->augment('gb-sct');
+
+    expect($augment)->toBeArray();
+    expect($augment['id'])->toBe('gb-sct');
+    expect($augment['name'])->toBe('Scotland');
+});

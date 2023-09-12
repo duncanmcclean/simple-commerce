@@ -67,3 +67,11 @@ test('can preprocess with multiple countries', function () {
     expect($preProcessIndex)->toBeString();
     expect('United Kingdom, United States')->toBe($preProcessIndex);
 });
+
+test('can augment country', function () {
+    $augment = $this->fieldtype->augment('GB');
+
+    expect($augment)->toBeArray();
+    expect($augment['iso'])->toBe('GB');
+    expect($augment['name'])->toBe('United Kingdom');
+});
