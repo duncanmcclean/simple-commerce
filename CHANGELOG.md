@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.5.0 (2023-09-12)
+
+### What's new
+
+* Added augmentation to the Country & Region fieldtypes #921 by @duncanmcclean
+
 ## v5.4.0 (2023-09-11)
 
 ### What's new
