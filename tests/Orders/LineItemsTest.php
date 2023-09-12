@@ -6,6 +6,7 @@ use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 
 uses(SetupCollections::class);
 
@@ -99,6 +100,60 @@ test('line items return empty if order has no items', function () {
 
     expect($lineItems instanceof Collection)->toBeTrue();
     expect(0)->toBe($lineItems->count());
+});
+
+test('can use the totalIncludingTax method on a LineItem when tax is included in prices', function () {
+    Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
+
+    $product = Product::make()->price(1000);
+    $product->save();
+
+    $order = Order::make()->lineItems([
+        [
+            'id' => 'ein-zwei-drei',
+            'product' => $product->id(),
+            'quantity' => 1,
+            'total' => $product->price() - 200,
+            'tax' => [
+                'amount' => 200,
+                'percentage' => 20,
+                'included_in_price' => true,
+            ],
+        ],
+    ]);
+
+    $order->save();
+
+    $lineItem = $order->lineItems()->first();
+
+    expect($lineItem->totalIncludingTax())->toBe(1000);
+});
+
+test('can use the totalIncludingTax method on a LineItem when tax is not included in prices', function () {
+    Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
+
+    $product = Product::make()->price(1000);
+    $product->save();
+
+    $order = Order::make()->lineItems([
+        [
+            'id' => 'ein-zwei-drei',
+            'product' => $product->id(),
+            'quantity' => 1,
+            'total' => $product->price(),
+            'tax' => [
+                'amount' => 200,
+                'percentage' => 20,
+                'included_in_price' => false,
+            ],
+        ],
+    ]);
+
+    $order->save();
+
+    $lineItem = $order->lineItems()->first();
+
+    expect($lineItem->totalIncludingTax())->toBe(1200);
 });
 
 test('can update line item', function () {
