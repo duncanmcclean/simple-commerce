@@ -59,4 +59,13 @@ class RegionFieldtype extends Relationship
             return __($region['name']);
         })->join(', ');
     }
+
+    public function augment($values)
+    {
+        if (! $values) {
+            return null;
+        }
+
+        return Regions::find($values);
+    }
 }

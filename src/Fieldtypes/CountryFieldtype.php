@@ -57,4 +57,13 @@ class CountryFieldtype extends Relationship
             return __($country['name']);
         })->join(', ');
     }
+
+    public function augment($values)
+    {
+        if (! $values) {
+            return null;
+        }
+
+        return Countries::firstWhere('iso', $values);
+    }
 }
