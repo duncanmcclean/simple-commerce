@@ -104,7 +104,7 @@ class Telemetry
 
             return [
                 $query->count(),
-                (int) $query->sum('grand_total')
+                (int) $query->sum('grand_total'),
             ];
         }
 
