@@ -9,14 +9,13 @@
 | {{ __('Items') }}       | {{ __('Quantity') }}         | {{ __('Total') }} |
 | :--------- | :------------- | :----- |
 @foreach ($order->lineItems() as $lineItem)
-| [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem->total(), $site) }} |
+| [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($lineItem->totalIncludingTax(), $site) }} |
 @endforeach
-| | {{ __('Subtotal') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->itemsTotal(), $site) }}
+| | {{ __('Subtotal') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->itemsTotalWithTax(), $site) }}
 @if($order->coupon())
 | | {{ __('Coupon') }}: | -{{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->couponTotal(), $site) }}
 @endif
-| | {{ __('Shipping') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->shippingTotal(), $site) }}
-| | {{ __('Tax') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->taxTotal(), $site) }}
+| | {{ __('Shipping') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->shippingTotalWithTax(), $site) }}
 | | **{{ __('Total') }}:** | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->grandTotal(), $site) }}
 | | |
 @endcomponent
