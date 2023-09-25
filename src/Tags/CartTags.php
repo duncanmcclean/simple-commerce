@@ -116,6 +116,22 @@ class CartTags extends SubTag
         return 0;
     }
 
+    public function shippingTotalWithTax()
+    {
+        if ($this->hasCart()) {
+            $shippingTotal = $this->getCart()->shippingTotal();
+            $shippingTax = $this->getCart()->get('shipping_tax');
+
+            if (isset($shippingTax) && ! $shippingTax['price_includes_tax']) {
+                return Currency::parse($shippingTotal + $shippingTax['amount'], Site::current());
+            }
+
+            return Currency::parse($shippingTotal, Site::current());
+        }
+
+        return 0;
+    }
+
     public function rawShippingTotal()
     {
         if ($this->hasCart()) {
