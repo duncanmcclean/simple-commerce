@@ -5,6 +5,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -98,10 +99,11 @@ class CartTags extends SubTag
     public function itemsTotalWithTax()
     {
         if ($this->hasCart()) {
-            return Currency::parse(
-                $this->getCart()->itemsTotal() + $this->getCart()->taxTotal(),
-                Site::current()
-            );
+            $itemsTotalWithTax = $this->getCart()->lineItems()->sum(function (LineItem $lineItem) {
+                return $lineItem->totalIncludingTax();
+            });
+
+            return Currency::parse($itemsTotalWithTax, Site::current());
         }
 
         return 0;
@@ -111,6 +113,15 @@ class CartTags extends SubTag
     {
         if ($this->hasCart()) {
             return $this->getCart()->toAugmentedArray()['shipping_total']->value();
+        }
+
+        return 0;
+    }
+
+    public function rawShippingTotal()
+    {
+        if ($this->hasCart()) {
+            return $this->getCart()->shippingTotal();
         }
 
         return 0;
@@ -127,15 +138,6 @@ class CartTags extends SubTag
             }
 
             return Currency::parse($shippingTotal, Site::current());
-        }
-
-        return 0;
-    }
-
-    public function rawShippingTotal()
-    {
-        if ($this->hasCart()) {
-            return $this->getCart()->shippingTotal();
         }
 
         return 0;
