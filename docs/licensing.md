@@ -10,7 +10,7 @@ Like Statamic itself, using Simple Commerce is free during development & staging
 
 I've recorded a quick screencast showing how you can assign a Simple Commerce liense to a site on [statamic.com](https://statamic.com) 🔽
 
-<div style="position: relative; padding-bottom: 59.210526315789465%; height: 0;"><iframe src="https://www.loom.com/embed/b5a5315e0bb24f34aef1c04ac76fc1c3" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+[📺 Watch the video](https://share.cleanshot.com/Tjh1yX0y)
 
 TLDR of it is:
 
