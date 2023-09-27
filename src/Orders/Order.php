@@ -131,6 +131,13 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
+    public function itemsTotalWithTax(): int
+    {
+        return $this->lineItems()->sum(function (LineItem $lineItem) {
+            return $lineItem->totalIncludingTax();
+        });
+    }
+
     public function taxTotal($taxTotal = null)
     {
         return $this

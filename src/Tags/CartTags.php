@@ -99,11 +99,7 @@ class CartTags extends SubTag
     public function itemsTotalWithTax()
     {
         if ($this->hasCart()) {
-            $itemsTotalWithTax = $this->getCart()->lineItems()->sum(function (LineItem $lineItem) {
-                return $lineItem->totalIncludingTax();
-            });
-
-            return Currency::parse($itemsTotalWithTax, Site::current());
+            return Currency::parse($this->getCart()->itemsTotalWithTax(), Site::current());
         }
 
         return 0;
