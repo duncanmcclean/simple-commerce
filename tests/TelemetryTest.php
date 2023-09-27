@@ -2,14 +2,14 @@
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Telemetry;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\{SetupCollections, RefreshContent};
 
 use function PHPUnit\Framework\assertFileDoesNotExist;
 use function PHPUnit\Framework\assertNotNull;
