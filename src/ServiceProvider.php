@@ -148,6 +148,10 @@ class ServiceProvider extends AddonServiceProvider
                 ->createNavItems()
                 ->registerPermissions()
                 ->registerComputedValues();
+
+            if (! app()->environment('testing')) {
+                Telemetry::send();
+            }
         });
 
         if (class_exists('Barryvdh\Debugbar\ServiceProvider') && config('debugbar.enabled', false) === true) {
