@@ -76,6 +76,11 @@ class LineItem
             ->args(func_get_args());
     }
 
+    public function totalIncludingTax(): int
+    {
+        return $this->total() + $this->tax()['amount'];
+    }
+
     public function tax($tax = null)
     {
         return $this

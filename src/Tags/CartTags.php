@@ -98,10 +98,7 @@ class CartTags extends SubTag
     public function itemsTotalWithTax()
     {
         if ($this->hasCart()) {
-            return Currency::parse(
-                $this->getCart()->itemsTotal() + $this->getCart()->taxTotal(),
-                Site::current()
-            );
+            return Currency::parse($this->getCart()->itemsTotalWithTax(), Site::current());
         }
 
         return 0;
@@ -120,6 +117,15 @@ class CartTags extends SubTag
     {
         if ($this->hasCart()) {
             return $this->getCart()->shippingTotal();
+        }
+
+        return 0;
+    }
+
+    public function shippingTotalWithTax()
+    {
+        if ($this->hasCart()) {
+            return Currency::parse($this->getCart()->shippingTotalWithTax(), Site::current());
         }
 
         return 0;

@@ -190,13 +190,72 @@ test('can get cart items total', function () {
     expect((string) tag('{{ sc:cart:itemsTotal }}'))->toBe('£25.50');
 });
 
-test('can get cart items total with cart tax total', function () {
-    $cart = Order::make()->itemsTotal(2550)->taxTotal(620);
+test('can get cart items total with cart tax total, when tax is included in the price', function () {
+    $product = Product::make()
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+        ]);
+
+    $product->save();
+
+    $cart = Order::make()
+        ->lineItems([
+            [
+                'id' => 'blah',
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 800,
+                'tax' => [
+                    'amount' => 200,
+                    'rate' => 20,
+                    'price_includes_tax' => true,
+                ],
+            ],
+        ])
+        ->itemsTotal(1000)
+        ->taxTotal(200)
+        ->grandTotal(1000);
+
     $cart->save();
 
     fakeCart($cart);
 
-    expect((string) tag('{{ sc:cart:itemsTotalWithTax }}'))->toBe('£31.70');
+    expect((string) tag('{{ sc:cart:itemsTotalWithTax }}'))->toBe('£10.00');
+});
+
+test('can get cart items total with cart tax total, when tax is not included in the price', function () {
+    $product = Product::make()
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+        ]);
+
+    $product->save();
+
+    $cart = Order::make()
+        ->lineItems([
+            [
+                'id' => 'blah',
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 1000,
+                'tax' => [
+                    'amount' => 200,
+                    'rate' => 20,
+                    'price_includes_tax' => false,
+                ],
+            ],
+        ])
+        ->itemsTotal(1000)
+        ->taxTotal(200)
+        ->grandTotal(1200);
+
+    $cart->save();
+
+    fakeCart($cart);
+
+    expect((string) tag('{{ sc:cart:itemsTotalWithTax }}'))->toBe('£12.00');
 });
 
 test('can get cart shipping total', function () {
@@ -206,6 +265,36 @@ test('can get cart shipping total', function () {
     fakeCart($cart);
 
     expect((string) tag('{{ sc:cart:shippingTotal }}'))->toBe('£25.50');
+});
+
+test('can get cart shipping total with tax when tax is included in the price', function () {
+    $cart = Order::make()->shippingTotal(2550)->merge([
+        'shipping_tax' => [
+            'amount' => 400,
+            'rate' => 20,
+            'price_includes_tax' => true,
+        ],
+    ]);
+    $cart->save();
+
+    fakeCart($cart);
+
+    expect((string) tag('{{ sc:cart:shippingTotalWithTax }}'))->toBe('£25.50');
+});
+
+test('can get cart shipping total with tax when tax is not included in the price', function () {
+    $cart = Order::make()->shippingTotal(2000)->merge([
+        'shipping_tax' => [
+            'amount' => 400,
+            'rate' => 20,
+            'price_includes_tax' => false,
+        ],
+    ]);
+    $cart->save();
+
+    fakeCart($cart);
+
+    expect((string) tag('{{ sc:cart:shippingTotalWithTax }}'))->toBe('£24.00');
 });
 
 test('can get cart tax total', function () {

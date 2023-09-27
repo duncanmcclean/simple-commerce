@@ -131,6 +131,13 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
+    public function itemsTotalWithTax(): int
+    {
+        return $this->lineItems()->sum(function (LineItem $lineItem) {
+            return $lineItem->totalIncludingTax();
+        });
+    }
+
     public function taxTotal($taxTotal = null)
     {
         return $this
@@ -143,6 +150,18 @@ class Order implements Contract
         return $this
             ->fluentlyGetOrSet('shippingTotal')
             ->args(func_get_args());
+    }
+
+    public function shippingTotalWithTax(): int
+    {
+        $shippingTotal = $this->shippingTotal();
+        $shippingTax = $this->get('shipping_tax');
+
+        if (isset($shippingTax) && ! $shippingTax['price_includes_tax']) {
+            return $shippingTotal + $shippingTax['amount'];
+        }
+
+        return $shippingTotal;
     }
 
     public function couponTotal($couponTotal = null)
