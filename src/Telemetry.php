@@ -20,11 +20,11 @@ class Telemetry
             return;
         }
 
-        if (app()->runningInConsole()) {
+        if (app()->runningInConsole() && ! app()->runningUnitTests()) {
             return;
         }
 
-        if (! app()->environment('production')) {
+        if (! app()->environment('production') && ! app()->environment('testing')) {
             return;
         }
 
@@ -34,7 +34,7 @@ class Telemetry
             $telemetry = json_decode(File::get($telemetryPath), true);
             $lastSentAt = Carbon::parse($telemetry['last_sent_at']);
 
-            if ($lastSentAt->diffInDays(Carbon::now()) < 1) {
+            if ($lastSentAt->diffInDays(Carbon::now()) < 30) {
                 return;
             }
         }
