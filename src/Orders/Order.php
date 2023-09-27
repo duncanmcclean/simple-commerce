@@ -152,6 +152,18 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
+    public function shippingTotalWithTax(): int
+    {
+        $shippingTotal = $this->shippingTotal();
+        $shippingTax = $this->get('shipping_tax');
+
+        if (isset($shippingTax) && ! $shippingTax['price_includes_tax']) {
+            return $shippingTotal + $shippingTax['amount'];
+        }
+
+        return $shippingTotal;
+    }
+
     public function couponTotal($couponTotal = null)
     {
         return $this
