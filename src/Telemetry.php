@@ -28,6 +28,7 @@ class Telemetry
             return;
         }
 
+        $lastSentAt = null;
         $telemetryPath = storage_path('statamic/addons/simple-commerce/telemetry.json');
 
         if (File::exists($telemetryPath)) {
