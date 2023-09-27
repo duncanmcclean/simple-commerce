@@ -18,6 +18,9 @@
 | | {{ __('Coupon') }}: | -{{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->couponTotal(), $site) }}
 @endif
 | | {{ __('Shipping') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
+@if(!$taxIncludedInPrices)
+| | {{ __('Tax') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->taxTotal(), $site) }}
+@endif
 | | **{{ __('Total') }}:** | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->grandTotal(), $site) }}
 | | |
 @endcomponent
