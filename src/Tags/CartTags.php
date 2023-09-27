@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Tags;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
