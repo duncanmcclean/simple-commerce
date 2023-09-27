@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v5.6.0 (2023-09-27)
+
+### What's new
+
+* Added anonymous telemetry #924
+
+### What's improved
+
+* Improved how tax is displayed when included in prices #922
+
 ## v5.5.0 (2023-09-12)
 
 ### What's new
