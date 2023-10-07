@@ -59,17 +59,17 @@ return [
 
     'notifications' => [
         'order_paid' => [
-            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
-                'to' => 'customer',
-            ],
+            // \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+            //     'to' => 'customer',
+            // ],
 
-            \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
-                'to' => 'duncan@example.com',
-            ],
+            // \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+            //     'to' => 'duncan@example.com',
+            // ],
         ],
 
         'order_dispatched' => [
-            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
+            // \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
         ],
     ],
 
