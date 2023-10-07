@@ -19,10 +19,13 @@
             action-url="{{ $actionUrl }}"
         ></coupon-listing>
     @else
-        @include('statamic::partials.create-first', [
-            'resource' => __('Coupon'),
-            'svg' => 'empty/collection',
-            'route' => cp_route('simple-commerce.coupons.create'),
+        @include('statamic::partials.empty-state', [
+            'title' => __('Coupons'),
+            'description' => __('Coupons are a great way to offer discounts to your customers. You can create coupons and apply them to orders.'),
+            'svg' => 'empty/content',
+            'button_text' => __('Create Coupon'),
+            'button_url' => cp_route('simple-commerce.coupons.create'),
+            'can' => auth()->user()->can('create coupons'),
         ])
     @endif
 @endsection

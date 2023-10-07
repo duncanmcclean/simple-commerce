@@ -64,10 +64,13 @@
             </table>
         </div>
     @else
-        @include('statamic::partials.create-first', [
-            'resource' => __('Tax Zone'),
-            'svg' => 'empty/collection',
-            'route' => cp_route('simple-commerce.tax-zones.create'),
+        @include('statamic::partials.empty-state', [
+            'title' => __('Tax Zone'),
+            'description' => __("Tax Zones allow you to define which locations should be grouped together for tax purposes. You can create tax zones and assign them to tax rates."),
+            'svg' => 'empty/content',
+            'button_text' => __('Create Tax Zone'),
+            'button_url' => cp_route('simple-commerce.tax-zones.create'),
+            'can' => auth()->user()->can('create tax zones'),
         ])
     @endif
 @endsection

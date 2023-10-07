@@ -56,10 +56,13 @@
             </table>
         </div>
     @else
-        @include('statamic::partials.create-first', [
-            'resource' => __('Tax Category'),
-            'svg' => 'empty/collection',
-            'route' => cp_route('simple-commerce.tax-categories.create'),
+        @include('statamic::partials.empty-state', [
+            'title' => __('Tax Categories'),
+            'description' => __('Tax Categories allow you to set different tax rates for different types of products. You can create tax categories and assign them to products.'),
+            'svg' => 'empty/content',
+            'button_text' => __('Create Tax Category'),
+            'button_url' => cp_route('simple-commerce.tax-categories.create'),
+            'can' => auth()->user()->can('create tax categories'),
         ])
     @endif
 @endsection
