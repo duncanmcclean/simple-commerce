@@ -79,10 +79,13 @@
             </table>
         </div>
     @else
-        @include('statamic::partials.create-first', [
-            'resource' => __('Tax Rate'),
-            'svg' => 'empty/collection',
-            'route' => cp_route('simple-commerce.tax-rates.create'),
+        @include('statamic::partials.empty-state', [
+            'title' => __('Tax Rate'),
+            'description' => __("Tax Rates allow you to set different tax rates for different categories of products, depending on the customer's location."),
+            'svg' => 'empty/content',
+            'button_text' => __('Create Tax Rate'),
+            'button_url' => cp_route('simple-commerce.tax-rates.create'),
+            'can' => auth()->user()->can('create tax rates'),
         ])
     @endif
 @endsection
