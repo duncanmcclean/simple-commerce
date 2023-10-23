@@ -16,7 +16,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
@@ -472,7 +471,7 @@ class Order implements Contract
         }
 
         if ($this->resource() instanceof Model) {
-            return Runway::orderModel()->augment($this->resource());
+            return $this->resource()->toAugmentedArray();
         }
 
         return [];

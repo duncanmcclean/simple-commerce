@@ -9,7 +9,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -173,7 +172,7 @@ class Customer implements Contract
         }
 
         if ($this->resource() instanceof Model) {
-            return Runway::customerModel()->augment($this->resource());
+            return $this->resource()->toAugmentedArray();
         }
 
         return null;
