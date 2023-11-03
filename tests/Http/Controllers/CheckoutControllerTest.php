@@ -2156,6 +2156,15 @@ test('can post checkout and ensure user is redirected', function () {
 });
 
 test('can post checkout and ensure order paid notifications are sent', function () {
+    config(['simple-commerce.notifications.order_paid' => [
+        \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+            'to' => 'customer',
+        ],
+        \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+            'to' => 'duncan@example.com',
+        ],
+    ]]);
+
     Notification::fake();
 
     $product = Product::make()
