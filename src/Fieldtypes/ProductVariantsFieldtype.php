@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
+use Illuminate\Support\Arr;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
@@ -136,6 +137,7 @@ class ProductVariantsFieldtype extends Fieldtype
                             ->map(function ($field) use ($value, $method) {
                                 return (new FieldtypeRepository())
                                     ->find($field['type'])
+                                    ->setField(new Field($field['handle'], Arr::except($field, ['handle'])))
                                     ->{$method}($value);
                             })
                             ->first();
