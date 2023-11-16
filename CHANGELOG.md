@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v5.6.1 (2023-11-16)
+
+### What's fixed
+
+* The Product Variants fieldtype now augments fields *with* the config for each of the fields #936 by @duncanmcclean
+
+### What's improved
+
+* Tidied up empty state for Tax & Coupon pages in the Control Panel #628 by @duncanmcclean
+* Notifications are now disabled by default
+
 ## v5.6.0 (2023-09-27)
 
 ### What's new
