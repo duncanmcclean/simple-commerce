@@ -313,7 +313,7 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
-                    ->can("View {$orderResource->plural()}")
+                    ->can('view', $orderResource)
                     ->icon(SimpleCommerce::svg('shop'));
             }
 
@@ -342,7 +342,7 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resourceHandle' => $customerResource->handle()])
-                    ->can("View {$customerResource->plural()}")
+                    ->can('view', $customerResource)
                     ->icon('user');
             }
 
