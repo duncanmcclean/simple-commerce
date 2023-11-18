@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v5.6.2 (2023-11-18)
+
+### What's fixed
+
+* Fixed missing Control Panel nav items when using database orders & logged in as a non-super-user #937 #938 by @duncanmcclean
+
 ## v5.6.1 (2023-11-16)
 
 ### What's fixed
