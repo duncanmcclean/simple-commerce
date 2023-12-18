@@ -121,6 +121,14 @@ First, in order to customise the Eloquent model, you'll need to create your own 
 'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class, // [tl! remove]
 'model' => \App\Models\Order::class, // [tl! add]
 ```
+3. Finally, update the reference to the `Order` model in the Runway config (`config/runway.php`):
+
+```php
+\DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class => [ // [tl! remove]
+\App\Models\Order::class => [ // [tl! remove]
+    // ...
+],
+```
 
 And there you go... that's you using a custom version of the Eloquent model.
 
