@@ -78,7 +78,7 @@ class Telemetry
         ]));
     }
 
-    protected static function ordersSinceLastTelemetry(Carbon $lastSentAt = null): array
+    protected static function ordersSinceLastTelemetry(?Carbon $lastSentAt = null): array
     {
         if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             $query = Collection::find(SimpleCommerce::orderDriver()['collection'])

@@ -29,7 +29,7 @@ it('can preload with configured option fields', function () {
                         'type' => 'text',
                         'validate' => 'required',
                     ],
-                ]
+                ],
             ],
         ]))
         ->preload();
@@ -63,7 +63,7 @@ it('can preprocess', function () {
     expect($preProcess)->toBeArray();
     expect($preProcess['variants'])->toBeArray()->toHaveCount(1);
 
-     // Ensures the 'Price' field has been pre-processed.
+    // Ensures the 'Price' field has been pre-processed.
     expect($preProcess['options'][0]['price'])->toBeString()->toBe('10.00');
     expect($preProcess['options'][1]['price'])->toBeString()->toBe('15.00');
     expect($preProcess['options'][2]['price'])->toBeString()->toBe('17.99');
