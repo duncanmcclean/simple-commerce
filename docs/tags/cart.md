@@ -72,7 +72,7 @@ If you find yourself needing to check if an order is 'free' (grand total is £0)
 
 ## Add Item to Cart
 
-This tag allows you to add a product/variant to your cart. It's a [form tag](/tags#form-tags) so you need to provide a couple of parameters (form fields) when submitting:
+This tag allows you to add a product or variant to the cart. It's a [form tag](/tags#form-tags) so you need to provide a couple of parameters (form fields) when submitting:
 
 -   `product` - The ID of the product you want to add to the cart.
 -   `variant` - If applicable, the key of the variant you wish to add to the cart. Bear in mind, you will also need to provide the `product` with this.
@@ -84,6 +84,37 @@ This tag allows you to add a product/variant to your cart. It's a [form tag](/ta
   <input type="number" name="quantity" value="2">
 {{ /sc:cart:addItem }}
 ```
+
+If you want to store any additional information with a line item (like as customisation text), simply add an additional input inside the `{{ sc:cart:addItem }}` form:
+
+```antlers
+{{ sc:cart:addItem }}
+  <input type="hidden" name="product" value="{{ id }}">
+  <input type="number" name="quantity" value="1">
+  <input type="text" name="custom_name"> // [tl! **]
+{{ /sc:cart:addItem }}
+```
+
+Before the additional information is saved, you will need to whitelist the field in your Simple Commerce config:
+
+```php
+'field_whitelist' => [
+    'orders' => [
+        'shipping_name', 'shipping_address', 'shipping_address_line1', 'shipping_address_line2', 'shipping_city',
+        'shipping_region', 'shipping_postal_code', 'shipping_country', 'shipping_note', 'shipping_method',
+        'use_shipping_address_for_billing', 'billing_name', 'billing_address', 'billing_address_line2',
+        'billing_city', 'billing_region', 'billing_postal_code', 'billing_country',
+    ],
+
+    'line_items' => ['custom_name'], // [tl! **]
+
+    'customers' => ['name', 'email'],
+],
+```
+
+Now, when you submit the "add to cart" form, the additional data will be saved as "metadata" on the Line Item:
+
+![Viewing Line Item Metadata in the Control Panel](/img/simple-commerce/line-item-metadata.png)
 
 ## Update Cart Item
 
