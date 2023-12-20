@@ -83,6 +83,8 @@ export default {
 
     props: ['meta'],
 
+    inject: ['storeName'],
+
     data() {
         return {
             variants: [
@@ -130,14 +132,24 @@ export default {
 
     mounted() {
         if (this.value.variants && this.value.options) {
-            this.canWatchVariants = false
-            this.variants = this.value.variants
-            this.options = this.value.options
-            this.canWatchVariants = true
+            this.updateVariantsAndOptions();
         }
+
+        this.$store.watch((state) => state.publish[this.storeName].site, (newValue, oldValue) => {
+            if (newValue !== oldValue) {
+                this.updateVariantsAndOptions();
+            }
+        })
     },
 
     methods: {
+        updateVariantsAndOptions() {
+            this.canWatchVariants = false;
+            this.variants = this.value.variants;
+            this.options = this.value.options;
+            this.canWatchVariants = true;
+        },
+
         addVariant() {
             this.variants.push({
                 name: '',
@@ -184,8 +196,7 @@ export default {
 
                 this.options = this.cartesian.map((item) => {
                     let key = typeof item === 'string' ? item : item.join('_')
-                    let variantName =
-                        typeof item === 'string' ? item : item.join(', ')
+                    let variantName = typeof item === 'string' ? item : item.join(', ')
 
                     let existingData = this.value.options.filter((option) => {
                         return option.key === key
