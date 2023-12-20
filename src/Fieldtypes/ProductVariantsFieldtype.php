@@ -266,6 +266,7 @@ class ProductVariantsFieldtype extends Fieldtype
             ->when($this->config('localizable', false), function ($fields) {
                 return $fields->map(function (array $field) {
                     $field['field']['localizable'] = true;
+
                     return $field;
                 });
             })
