@@ -228,7 +228,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     protected function optionFields(): Fields
     {
-        $optionFields = array_merge([
+        $optionFields = collect([
             [
                 'handle' => 'key',
                 'field' => [
@@ -261,7 +261,16 @@ class ProductVariantsFieldtype extends Fieldtype
                     'width' => 50,
                 ],
             ],
-        ], $this->config('option_fields', []));
+        ])
+            ->merge($this->config('option_fields', []))
+            ->when($this->config('localizable', false), function ($fields) {
+                return $fields->map(function (array $field) {
+                    $field['field']['localizable'] = true;
+
+                    return $field;
+                });
+            })
+            ->toArray();
 
         return new Fields($optionFields, $this->field()->parent(), $this->field());
     }
