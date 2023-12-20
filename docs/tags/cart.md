@@ -91,7 +91,7 @@ If you want to store any additional information with a line item (like as custom
 {{ sc:cart:addItem }}
   <input type="hidden" name="product" value="{{ id }}">
   <input type="number" name="quantity" value="1">
-  <input type="text" name="custom_name"> // [tl! **]
+  <input type="text" name="custom_name"> {{# [tl! **] #}}
 {{ /sc:cart:addItem }}
 ```
 
