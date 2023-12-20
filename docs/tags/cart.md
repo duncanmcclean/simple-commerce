@@ -13,7 +13,7 @@ title: 'Cart'
 {{ /sc:cart }}
 ```
 
-## Cart Items
+## Line Items
 
 This is probably the most common use case for the `sc:cart` tag, fetching items from the cart.
 
@@ -50,7 +50,7 @@ There's tags for each of the different totals in a cart.
 
 -   `{{ sc:cart:total }}` - Returns the overall/grand total of the cart
 -   `{{ sc:cart:grand_total }}` - Does the same thing as `sc:cart:total`
--   `{{ sc:cart:items_total }}` - Returns the total of all cart items.
+-   `{{ sc:cart:items_total }}` - Returns the total of all line items.
 -   `{{ sc:cart:shipping_total }}` - Returns the shipping total of the cart.
 -   `{{ sc:cart:shipping_total_with_tax }}` - Return the shipping total, inclusive of any tax.
 -   `{{ sc:cart:tax_total }}` - Returns the tax total of the cart.
@@ -76,7 +76,7 @@ This tag allows you to add a product or variant to the cart. It's a [form tag](/
 
 -   `product` - The ID of the product you want to add to the cart.
 -   `variant` - If applicable, the key of the variant you wish to add to the cart. Bear in mind, you will also need to provide the `product` with this.
--   `quantity` - The quantity of the cart item you're adding.
+-   `quantity` - The quantity of the line item you're adding.
 
 ```antlers
 {{ sc:cart:addItem }}
@@ -116,11 +116,11 @@ Now, when you submit the "add to cart" form, the additional data will be saved a
 
 ![Viewing Line Item Metadata in the Control Panel](/img/simple-commerce/line-item-metadata.png)
 
-## Update Cart Item
+## Update Line Item
 
 With this tag, you can update a specific item in your cart. It's a [form tag](/tags#form-tags).
 
-The tag itself requires an `item` parameter which should be the ID of the specfic cart item you wish to update. You may then provide the parameters you wish to update on the item as input fields, like the below example:
+The tag itself requires an `item` parameter which should be the ID of the specfic line item you wish to update. You may then provide the parameters you wish to update on the item as input fields, like the below example:
 
 ```antlers
 {{ sc:cart:updateItem :item="id" }}
@@ -128,7 +128,7 @@ The tag itself requires an `item` parameter which should be the ID of the specfi
 {{ /sc:cart:updateItem }}
 ```
 
-Alternatively, if you don't have easy access to the ID of the cart item, you can pass in the product ID instead:
+Alternatively, if you don't have easy access to the ID of the line item, you can pass in the product ID instead:
 
 ```antlers
 {{ sc:cart:updateItem :product="id" }}
@@ -136,9 +136,9 @@ Alternatively, if you don't have easy access to the ID of the cart item, you can
 {{ /sc:cart:updateItem }}
 ```
 
-## Remove Cart Item
+## Remove Line Item
 
-This tag allows you to remove an item from the cart. It's a [form tag](/tags#form-tags) and the only required parameter is on the tag itself: the `item` parameter should be the ID or the specific cart item you wish to remove from the cart.
+This tag allows you to remove an item from the cart. It's a [form tag](/tags#form-tags) and the only required parameter is on the tag itself: the `item` parameter should be the ID or the specific line item you wish to remove from the cart.
 
 ```antlers
 {{ sc:cart:removeItem :item="id" }}
@@ -146,7 +146,7 @@ This tag allows you to remove an item from the cart. It's a [form tag](/tags#for
 {{ /sc:cart:removeItem }}
 ```
 
-Alternatively, if you don't have easy access to the ID of the cart item, you can pass in the product ID instead:
+Alternatively, if you don't have easy access to the ID of the line item, you can pass in the product ID instead:
 
 ```antlers
 {{ sc:cart:removeItem :product="id" }}

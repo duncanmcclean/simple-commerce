@@ -236,7 +236,7 @@ class CartItemController extends BaseActionController
         );
 
         return $this->withSuccess($request, [
-            'message' => __('Cart Item Updated'),
+            'message' => __('Line Item Updated'),
             'cart' => $cart->toAugmentedArray(),
         ]);
     }

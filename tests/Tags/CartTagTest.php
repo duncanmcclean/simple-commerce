@@ -42,7 +42,7 @@ test('user has a cart if cart exists', function () {
     expect((string) tag('{{ if {sc:cart:has} === true }}Has cart{{ else }}No cart{{ /if }}'))->toBe('Has cart');
 });
 
-test('can get cart items', function () {
+test('can get line items', function () {
     $product = Product::make()
         ->price(1000)
         ->data([
@@ -67,7 +67,7 @@ test('can get cart items', function () {
     expect((string) tag('{{ sc:cart:items }}{{ quantity }}{{ /sc:cart:items }}'))->toContain('5');
 });
 
-test('can get cart items count', function () {
+test('can get line items count', function () {
     $productOne = Product::make()
         ->price(1000)
         ->data([
@@ -106,7 +106,7 @@ test('can get cart items count', function () {
     expect((string) tag('{{ sc:cart:count }}'))->toBe('2');
 });
 
-test('can get cart items quantity total', function () {
+test('can get line items quantity total', function () {
     $productOne = Product::make()
         ->price(1000)
         ->data([
@@ -181,7 +181,7 @@ test('can get cart grand total', function () {
     expect((string) tag('{{ sc:cart:grandTotal }}'))->toBe('£25.50');
 });
 
-test('can get cart items total', function () {
+test('can get line items total', function () {
     $cart = Order::make()->itemsTotal(2550);
     $cart->save();
 
@@ -190,7 +190,7 @@ test('can get cart items total', function () {
     expect((string) tag('{{ sc:cart:itemsTotal }}'))->toBe('£25.50');
 });
 
-test('can get cart items total with cart tax total, when tax is included in the price', function () {
+test('can get line items total with cart tax total, when tax is included in the price', function () {
     $product = Product::make()
         ->price(1000)
         ->data([
@@ -224,7 +224,7 @@ test('can get cart items total with cart tax total, when tax is included in the 
     expect((string) tag('{{ sc:cart:itemsTotalWithTax }}'))->toBe('£10.00');
 });
 
-test('can get cart items total with cart tax total, when tax is not included in the price', function () {
+test('can get line items total with cart tax total, when tax is not included in the price', function () {
     $product = Product::make()
         ->price(1000)
         ->data([
