@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
+use Statamic\Facades\User;
 
 class UpdateOrderStatus extends Action
 {
@@ -69,7 +70,8 @@ class UpdateOrderStatus extends Action
         $orderStatus = OrderStatus::from($values['order_status']);
 
         $data = collect([
-            'reason' => $values['reason'] ?? null
+            'user' => User::current()->id(),
+            'reason' => $values['reason'] ?? null,
         ])->filter();
 
         collect($items)->each(function ($entry) use ($orderStatus, $data) {

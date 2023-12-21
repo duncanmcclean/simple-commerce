@@ -7,11 +7,17 @@ use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
+
+use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->setupCollections();
 
     $this->action = new UpdateOrderStatus();
+
+    $user = User::make()->id('one')->makeSuper()->save();
+    actingAs($user);
 });
 
 test('is not visible to products', function () {
@@ -52,7 +58,7 @@ test('order can have its status updated', function () {
 
     expect('dispatched')->toBe($order->data()->get('order_status'));
     expect($order->data()->get('status_log'))->toBe([
-        ['status' => 'dispatched', 'timestamp' => $now, 'data' => []],
+        ['status' => 'dispatched', 'timestamp' => $now, 'data' => ['user' => 'one']],
     ]);
 });
 
@@ -74,13 +80,13 @@ test('order can have its status updated with reason', function () {
 
     $this->action->run([$order], [
         'order_status' => 'dispatched',
-        'reason' => 'Dispatched and handed over to the delivery company.',
+        'reason' => 'Handed to the delivery company.',
     ]);
 
     $order->fresh();
 
     expect('dispatched')->toBe($order->data()->get('order_status'));
     expect($order->data()->get('status_log'))->toBe([
-        ['status' => 'dispatched', 'timestamp' => $now, 'data' => ['reason' => 'Dispatched and handed over to the delivery company.']],
+        ['status' => 'dispatched', 'timestamp' => $now, 'data' => ['user' => 'one', 'reason' => 'Handed to the delivery company.']],
     ]);
 });
