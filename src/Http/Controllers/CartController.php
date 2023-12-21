@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
@@ -16,7 +17,7 @@ use Statamic\Sites\Site as SitesSite;
 
 class CartController extends BaseActionController
 {
-    use CartDriver;
+    use CartDriver, HandlesCustomerInformation;
 
     public function index(IndexRequest $request)
     {
@@ -30,126 +31,25 @@ class CartController extends BaseActionController
     public function update(UpdateRequest $request)
     {
         $cart = $this->getCart();
-        $data = Arr::except($request->all(), ['_token', '_params', '_redirect', '_request']);
+        $cart = $this->handleCustomerInformation($request, $cart);
 
-        foreach ($data as $key => $value) {
-            if ($value === 'on') {
-                $value = true;
-            } elseif ($value === 'off') {
-                $value = false;
-            }
-
-            $data[$key] = $value;
-        }
-
-        if (isset($data['customer'])) {
-            try {
-                if ($cart->customer() && $cart->customer() !== null) {
-                    $customer = $cart->customer();
-                } elseif (isset($data['customer']['email']) && $data['customer']['email'] !== null) {
-                    $customer = Customer::findByEmail($data['customer']['email']);
-                } else {
-                    throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
-                }
-            } catch (CustomerNotFound $e) {
-                $customerData = [
-                    'published' => true,
-                ];
-
-                if (
-                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
-                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
-                ) {
-                    $customerData['site'] = $cart->resource()->site()->handle();
+        $data = collect($request->all())
+            ->except(['_token', '_params', '_redirect', '_request', 'customer', 'email'])
+            ->only(config('simple-commerce.field_whitelist.orders'))
+            ->map(function ($value) {
+                if ($value === 'on') {
+                    return true;
                 }
 
-                if (isset($customerData['customer']['name'])) {
-                    $customerData['name'] = $customerData['customer']['name'];
+                if ($value === 'off') {
+                    return false;
                 }
 
-                if (isset($customerData['customer']['first_name'])) {
-                    $customerData['first_name'] = $customerData['customer']['first_name'];
-                    $customerData['last_name'] = $customerData['customer']['last_name'];
-                }
+                return $value;
+            });
 
-                $customer = Customer::make()
-                    ->email($data['customer']['email'])
-                    ->data($customerData);
-
-                $customer->save();
-            }
-
-            if (is_array($data['customer'])) {
-                $customerData = Arr::only($data['customer'], config('simple-commerce.field_whitelist.customers'));
-
-                if (
-                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
-                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
-                ) {
-                    $customerData['site'] = $cart->resource()->site()->handle();
-                }
-
-                $customer
-                    ->merge($customerData)
-                    ->save();
-            }
-
-            $cart->customer($customer->id());
-            $cart->save();
-
-            $cart = $cart->fresh();
-
-            unset($data['customer']);
-        }
-
-        if (isset($data['email'])) {
-            try {
-                if (isset($data['email']) && $data['email'] !== null) {
-                    $customer = Customer::findByEmail($data['email']);
-                } else {
-                    throw new CustomerNotFound("Customer with ID [{$data['customer']}] could not be found.");
-                }
-            } catch (CustomerNotFound $e) {
-                $customerData = [
-                    'published' => true,
-                ];
-
-                if (
-                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
-                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
-                ) {
-                    $customerData['site'] = $cart->resource()->site()->handle();
-                }
-
-                if (isset($data['name'])) {
-                    $customerData['name'] = $data['name'];
-                }
-
-                if (isset($data['first_name']) && isset($data['last_name'])) {
-                    $customerData['first_name'] = $data['first_name'];
-                    $customerData['last_name'] = $data['last_name'];
-                }
-
-                $customer = Customer::make()
-                    ->email($data['email'])
-                    ->data($customerData);
-
-                $customer->save();
-            }
-
-            $cart->customer($customer->id());
-            $cart->save();
-
-            $cart = $cart->fresh();
-
-            unset($data['name']);
-            unset($data['first_name']);
-            unset($data['last_name']);
-            unset($data['email']);
-        }
-
-        if ($data !== null) {
-            $cart = $cart->merge(Arr::only($data, config('simple-commerce.field_whitelist.orders')));
+        if ($data->isNotEmpty()) {
+            $cart->merge($data->toArray());
         }
 
         $cart->save();

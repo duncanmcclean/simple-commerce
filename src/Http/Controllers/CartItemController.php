@@ -2,9 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
@@ -18,7 +17,7 @@ use Statamic\Sites\Site as SitesSite;
 
 class CartItemController extends BaseActionController
 {
-    use CartDriver;
+    use CartDriver, HandlesCustomerInformation;
 
     protected $reservedKeys = [
         'product', 'quantity', 'variant', '_token', '_redirect', '_error_redirect', '_request',
@@ -31,80 +30,7 @@ class CartItemController extends BaseActionController
 
         $items = $cart->lineItems();
 
-        // Handle customer stuff..
-        if ($request->has('customer')) {
-            if (is_string($request->get('customer'))) {
-                $customer = Customer::find($request->get('customer'));
-
-                $cart->customer($customer->id());
-            }
-
-            if (is_array($request->get('customer'))) {
-                try {
-                    if ($cart->customer() && $cart->customer() !== null) {
-                        $customer = $cart->customer();
-                    } elseif (isset($request->get('customer')['email'])) {
-                        $customer = Customer::findByEmail($request->get('customer')['email']);
-
-                        $cart->customer($customer->id());
-                    }
-                } catch (CustomerNotFound $e) {
-                    $customerData = [
-                        'published' => true,
-                    ];
-
-                    if (isset($request->get('customer')['name'])) {
-                        $customerData['name'] = $request->get('customer')['name'];
-                    }
-
-                    if (isset($request->get('customer')['first_name']) && isset($request->get('customer')['last_name'])) {
-                        $customerData['first_name'] = $request->get('customer')['first_name'];
-                        $customerData['last_name'] = $request->get('customer')['last_name'];
-                    }
-
-                    $customer = Customer::make()
-                        ->email($request->get('customer')['email'])
-                        ->data($customerData);
-
-                    $customer->save();
-
-                    $cart->customer($customer->id());
-                }
-
-                if (isset($customer) && Arr::except($request->get('customer'), ['email', 'name', 'first_name', 'last_name']) !== []) {
-                    $customer
-                        ->merge(
-                            Arr::only($request->get('customer'), config('simple-commerce.field_whitelist.customers'))
-                        )
-                        ->save();
-                }
-            }
-        } elseif ($request->has('email')) {
-            try {
-                $customer = Customer::findByEmail($request->get('email'));
-            } catch (CustomerNotFound $e) {
-                $customerData = [
-                    'published' => true,
-                ];
-
-                if ($request->get('name')) {
-                    $customerData['name'] = $request->get('name');
-                }
-
-                if ($request->get('first_name') && $request->get('last_name')) {
-                    $customerData['first_name'] = $request->get('first_name');
-                    $customerData['last_name'] = $request->get('last_name');
-                }
-
-                $customer = Customer::make()
-                    ->email($request->get('email'))
-                    ->data($customerData);
-
-                $customer->save();
-            }
-
-            $cart->customer($customer->id());
-        }
+        $cart = $this->handleCustomerInformation($request, $cart);
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::Product) {
