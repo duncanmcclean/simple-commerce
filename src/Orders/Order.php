@@ -18,6 +18,8 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Site as FacadesSite;
@@ -320,26 +322,36 @@ class Order implements Contract
         return $this;
     }
 
-    public function statusLog($key = null): Collection|string|null
+    public function statusLog(): Collection|string|null
     {
-        $statusLog = collect($this->get('status_log'));
-
-        if ($key) {
-            return $statusLog->get($key);
+        // Convert the old format to the new format. We can probably remove this in the future.
+        if (! empty($this->get('status_log')) && ! is_array(Arr::first($this->get('status_log')))) {
+            $this->set('status_log', collect($this->get('status_log'))->map(function ($date, $status) {
+                return [
+                    'status' => $status,
+                    'timestamp' => Carbon::parse($date)->timestamp,
+                ];
+            })->values()->toArray());
         }
 
-        return $statusLog;
+        return collect($this->get('status_log'));
+    }
+
+    public function statusLogIncludes(OrderStatus|PaymentStatus $status): bool
+    {
+        return $this->statusLog()->contains(function ($log) use ($status) {
+            return $log['status'] === $status->value;
+        });
     }
 
     public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
     {
-        $this->merge([
-            'status_log' => collect($this->get('status_log', []))
-                ->merge([
-                    $status->value => now()->format('Y-m-d H:i'),
-                ])
-                ->toArray(),
+        $this->statusLog()->push([
+            'status' => $status->value,
+            'timestamp' => Carbon::now()->timestamp,
         ]);
+
+        $this->set('status_log', $this->statusLog()->toArray());
 
         return $this;
     }
