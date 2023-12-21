@@ -66,8 +66,7 @@ class UpdateOrderStatus extends Action
         collect($items)
             ->each(function ($entry) use ($orderStatus) {
                 $order = Order::find($entry->id);
-
-                $order->updateOrderStatus($orderStatus);
+                $order->updateOrderStatus($orderStatus)->save();
             });
     }
 
