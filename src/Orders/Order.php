@@ -346,12 +346,12 @@ class Order implements Contract
 
     public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
     {
-        $this->statusLog()->push([
+        $statusLog = $this->statusLog()->push([
             'status' => $status->value,
             'timestamp' => Carbon::now()->timestamp,
         ]);
 
-        $this->set('status_log', $this->statusLog()->toArray());
+        $this->set('status_log', $statusLog->toArray());
 
         return $this;
     }
