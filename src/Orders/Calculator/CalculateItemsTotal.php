@@ -4,7 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
 
 class CalculateItemsTotal
 {
