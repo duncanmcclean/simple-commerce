@@ -1,22 +1,22 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class DPD extends BaseShippingMethod implements ShippingMethod
+class StorePickup extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return 'DPD';
+        return 'Store Pickup - '.$this->config()->get('location');
     }
 
     public function description(): string
     {
-        return 'Description of your shipping method';
+        return 'Pick up your parcel from the store.';
     }
 
     public function calculateCost(Order $order): int
@@ -26,6 +26,6 @@ class DPD extends BaseShippingMethod implements ShippingMethod
 
     public function checkAvailability(Order $order, Address $address): bool
     {
-        return false;
+        return true;
     }
 }

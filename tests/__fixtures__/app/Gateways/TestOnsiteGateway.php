@@ -1,29 +1,29 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
-class TestOffsiteGateway extends BaseGateway implements Gateway
+class TestOnsiteGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
-        return 'Test Off-site Gateway';
+        return 'Test On-site Gateway';
     }
 
     public function isOffsiteGateway(): bool
     {
-        return true;
+        return false;
     }
 
     public function prepare(Request $request, OrderContract $order): array
     {
         return [
-            'bagpipes' => 'music',
-            'checkout_url' => 'http://backpipes.com',
+            'haggis' => true,
+            'tatties' => true,
         ];
     }
 
@@ -35,10 +35,5 @@ class TestOffsiteGateway extends BaseGateway implements Gateway
     public function refund(OrderContract $order): array
     {
         return [];
-    }
-
-    public function webhook(Request $request)
-    {
-        return 'Success.';
     }
 }

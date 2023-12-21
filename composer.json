@@ -9,7 +9,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DoubleThreeDigital\\SimpleCommerce\\Tests\\": "tests"
+            "DoubleThreeDigital\\SimpleCommerce\\Tests\\": "tests",
+            "DoubleThreeDigital\\SimpleCommerce\\Tests\\Fixtures\\": "tests/__fixtures__/app"
         }
     },
     "extra": {

@@ -1,18 +1,17 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
-class TestCheckoutErrorGateway extends BaseGateway implements Gateway
+class TestValidationGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
-        return 'Test Checkout Error Gateway';
+        return 'Test Validation Gateway';
     }
 
     public function isOffsiteGateway(): bool
@@ -30,17 +29,21 @@ class TestCheckoutErrorGateway extends BaseGateway implements Gateway
 
     public function checkout(Request $request, OrderContract $order): array
     {
-        throw new GatewayCheckoutFailed('Something went wrong with your payment. Sorry!');
+        return [];
     }
 
     public function checkoutRules(): array
     {
-        return [];
+        return [
+            'something_mental' => ['required'],
+        ];
     }
 
     public function checkoutMessages(): array
     {
-        return [];
+        return [
+            'something_mental.required' => 'You must have something mental to do.',
+        ];
     }
 
     public function refund(OrderContract $order): array

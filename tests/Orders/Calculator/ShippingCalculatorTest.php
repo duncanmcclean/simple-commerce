@@ -4,7 +4,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\ShippingCalculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tests\Orders\Helpers\Postage;
+use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\Postage;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Pipeline;
 use Statamic\Facades\Site;

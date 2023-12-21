@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Orders\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;

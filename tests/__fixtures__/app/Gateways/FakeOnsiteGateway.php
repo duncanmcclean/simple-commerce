@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;

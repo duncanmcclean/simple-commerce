@@ -1,14 +1,14 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AnotherRandomEventNotification extends Notification
+class OrderDispatchedNotification extends Notification
 {
-    public function __construct(public OrderContract $order, public bool $somethingElseThatIsAProperty)
+    public function __construct(protected OrderContract $order)
     {
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

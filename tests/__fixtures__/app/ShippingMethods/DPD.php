@@ -1,17 +1,17 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
 use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class RoyalMail extends BaseShippingMethod implements ShippingMethod
+class DPD extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return 'Royal Mail';
+        return 'DPD';
     }
 
     public function description(): string
@@ -26,6 +26,6 @@ class RoyalMail extends BaseShippingMethod implements ShippingMethod
 
     public function checkAvailability(Order $order, Address $address): bool
     {
-        return true;
+        return false;
     }
 }

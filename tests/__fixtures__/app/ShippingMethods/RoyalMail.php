@@ -1,26 +1,27 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tax\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class DummyShippingMethod implements ShippingMethod
+class RoyalMail extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return 'Dummy Shipping Method';
+        return 'Royal Mail';
     }
 
     public function description(): string
     {
-        return 'Dummy Shipping Method Description';
+        return 'Description of your shipping method';
     }
 
     public function calculateCost(Order $order): int
     {
-        return 500;
+        return 0;
     }
 
     public function checkAvailability(Order $order, Address $address): bool

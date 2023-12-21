@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Listeners\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use Illuminate\Notifications\Messages\MailMessage;

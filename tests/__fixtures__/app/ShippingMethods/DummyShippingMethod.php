@@ -1,27 +1,26 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class StorePickup extends BaseShippingMethod implements ShippingMethod
+class DummyShippingMethod implements ShippingMethod
 {
     public function name(): string
     {
-        return 'Store Pickup - '.$this->config()->get('location');
+        return 'Dummy Shipping Method';
     }
 
     public function description(): string
     {
-        return 'Pick up your parcel from the store.';
+        return 'Dummy Shipping Method Description';
     }
 
     public function calculateCost(Order $order): int
     {
-        return 0;
+        return 500;
     }
 
     public function checkAvailability(Order $order, Address $address): bool

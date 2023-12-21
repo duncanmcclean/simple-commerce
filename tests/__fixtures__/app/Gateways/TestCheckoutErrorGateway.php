@@ -1,17 +1,18 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
-class TestOnsiteGateway extends BaseGateway implements Gateway
+class TestCheckoutErrorGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
-        return 'Test On-site Gateway';
+        return 'Test Checkout Error Gateway';
     }
 
     public function isOffsiteGateway(): bool
@@ -22,12 +23,22 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
     public function prepare(Request $request, OrderContract $order): array
     {
         return [
-            'haggis' => true,
-            'tatties' => true,
+            'bagpipes' => 'music',
+            'checkout_url' => 'http://backpipes.com',
         ];
     }
 
     public function checkout(Request $request, OrderContract $order): array
+    {
+        throw new GatewayCheckoutFailed('Something went wrong with your payment. Sorry!');
+    }
+
+    public function checkoutRules(): array
+    {
+        return [];
+    }
+
+    public function checkoutMessages(): array
     {
         return [];
     }
@@ -35,5 +46,10 @@ class TestOnsiteGateway extends BaseGateway implements Gateway
     public function refund(OrderContract $order): array
     {
         return [];
+    }
+
+    public function webhook(Request $request)
+    {
+        return 'Success.';
     }
 }

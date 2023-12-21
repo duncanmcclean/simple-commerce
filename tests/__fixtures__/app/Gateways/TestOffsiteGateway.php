@@ -1,22 +1,22 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Http\Controllers\Helpers;
+namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
-class TestValidationGateway extends BaseGateway implements Gateway
+class TestOffsiteGateway extends BaseGateway implements Gateway
 {
     public function name(): string
     {
-        return 'Test Validation Gateway';
+        return 'Test Off-site Gateway';
     }
 
     public function isOffsiteGateway(): bool
     {
-        return false;
+        return true;
     }
 
     public function prepare(Request $request, OrderContract $order): array
@@ -30,20 +30,6 @@ class TestValidationGateway extends BaseGateway implements Gateway
     public function checkout(Request $request, OrderContract $order): array
     {
         return [];
-    }
-
-    public function checkoutRules(): array
-    {
-        return [
-            'something_mental' => ['required'],
-        ];
-    }
-
-    public function checkoutMessages(): array
-    {
-        return [
-            'something_mental.required' => 'You must have something mental to do.',
-        ];
     }
 
     public function refund(OrderContract $order): array
