@@ -298,11 +298,11 @@ class Order implements Contract
         return false;
     }
 
-    public function updateOrderStatus(OrderStatus $orderStatus): self
+    public function updateOrderStatus(OrderStatus $orderStatus, array $data = []): self
     {
         $this
             ->status($orderStatus)
-            ->appendToStatusLog($orderStatus)
+            ->appendToStatusLog($orderStatus, $data)
             ->save();
 
         event(new OrderStatusUpdated($this, $orderStatus));
@@ -310,11 +310,11 @@ class Order implements Contract
         return $this;
     }
 
-    public function updatePaymentStatus(PaymentStatus $paymentStatus): self
+    public function updatePaymentStatus(PaymentStatus $paymentStatus, array $data = []): self
     {
         $this
             ->paymentStatus($paymentStatus)
-            ->appendToStatusLog($paymentStatus)
+            ->appendToStatusLog($paymentStatus, $data)
             ->save();
 
         event(new PaymentStatusUpdated($this, $paymentStatus));

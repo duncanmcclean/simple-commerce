@@ -26,6 +26,11 @@ class UpdateOrderStatus extends Action
                     $case->value => $case->name,
                 ])->toArray(),
                 'instructions' => __('**Note:** Changing the order status will not refund or charge the customer.'),
+                'validate' => 'required',
+            ],
+            'reason' => [
+                'type' => 'textarea',
+                'instructions' => __("Optionally, provide a reason for this status change. This will be visible in the order's status log."),
             ],
         ];
     }
@@ -63,11 +68,14 @@ class UpdateOrderStatus extends Action
     {
         $orderStatus = OrderStatus::from($values['order_status']);
 
-        collect($items)
-            ->each(function ($entry) use ($orderStatus) {
-                $order = Order::find($entry->id);
-                $order->updateOrderStatus($orderStatus)->save();
-            });
+        $data = collect([
+            'reason' => $values['reason'] ?? null
+        ])->filter();
+
+        collect($items)->each(function ($entry) use ($orderStatus, $data) {
+            $order = Order::find($entry->id);
+            $order->updateOrderStatus($orderStatus, $data->toArray())->save();
+        });
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool

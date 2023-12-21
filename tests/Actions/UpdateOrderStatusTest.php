@@ -52,6 +52,35 @@ test('order can have its status updated', function () {
 
     expect('dispatched')->toBe($order->data()->get('order_status'));
     expect($order->data()->get('status_log'))->toBe([
-        ['status' => 'dispatched', 'timestamp' => $now],
+        ['status' => 'dispatched', 'timestamp' => $now, 'data' => []],
+    ]);
+});
+
+test('order can have its status updated with reason', function () {
+    TestTime::freeze();
+
+    $now = Carbon::now()->timestamp;
+
+    Collection::make('orders')->save();
+
+    $order = Entry::make()
+        ->collection('orders')
+        ->id(Stache::generateId())
+        ->data([
+            'order_status' => 'cart',
+        ]);
+
+    $order->save();
+
+    $this->action->run([$order], [
+        'order_status' => 'dispatched',
+        'reason' => 'Dispatched and handed over to the delivery company.',
+    ]);
+
+    $order->fresh();
+
+    expect('dispatched')->toBe($order->data()->get('order_status'));
+    expect($order->data()->get('status_log'))->toBe([
+        ['status' => 'dispatched', 'timestamp' => $now, 'data' => ['reason' => 'Dispatched and handed over to the delivery company.']],
     ]);
 });
