@@ -327,29 +327,34 @@ class Order implements Contract
         // Convert the old format to the new format. We can probably remove this in the future.
         if (! empty($this->get('status_log')) && ! is_array(Arr::first($this->get('status_log')))) {
             $this->set('status_log', collect($this->get('status_log'))->map(function ($date, $status) {
-                return [
-                    'status' => $status,
-                    'timestamp' => Carbon::parse($date)->timestamp,
-                ];
+                return new StatusLogEvent(
+                    status: $status,
+                    timestamp: Carbon::parse($date)->timestamp
+                );
             })->values()->toArray());
         }
 
-        return collect($this->get('status_log'));
+        return collect($this->get('status_log'))->map(function (array $statusLogEvent) {
+            return new StatusLogEvent(
+                status: $statusLogEvent['status'],
+                timestamp: $statusLogEvent['timestamp'],
+                data: $statusLogEvent['data'] ?? [],
+            );
+        });
     }
 
     public function statusLogIncludes(OrderStatus|PaymentStatus $status): bool
     {
-        return $this->statusLog()->contains(function ($log) use ($status) {
-            return $log['status'] === $status->value;
-        });
+        return $this->statusLog()->contains(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is($status));
     }
 
-    public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
+    public function appendToStatusLog(OrderStatus|PaymentStatus $status, array $data = []): self
     {
-        $statusLog = $this->statusLog()->push([
-            'status' => $status->value,
-            'timestamp' => Carbon::now()->timestamp,
-        ]);
+        $statusLog = $this->statusLog()->push(new StatusLogEvent(
+            status: $status,
+            timestamp: Carbon::now()->timestamp,
+            data: $data,
+        ));
 
         $this->set('status_log', $statusLog->toArray());
 
