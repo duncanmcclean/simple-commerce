@@ -2,6 +2,7 @@
 
 use DoubleThreeDigital\SimpleCommerce\Actions\UpdateOrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use Illuminate\Support\Carbon;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -30,7 +31,7 @@ test('is not visible to products', function () {
 test('order can have its status updated', function () {
     TestTime::freeze();
 
-    $now = TestTime::now()->format('Y-m-d H:i');
+    $now = Carbon::now()->timestamp;
 
     Collection::make('orders')->save();
 
@@ -50,8 +51,7 @@ test('order can have its status updated', function () {
     $order->fresh();
 
     expect('dispatched')->toBe($order->data()->get('order_status'));
-
-    $this->assertSame($order->data()->get('status_log'), [
-        'dispatched' => $now,
+    expect($order->data()->get('status_log'))->toBe([
+        ['status' => 'dispatched', 'timestamp' => $now],
     ]);
 });
