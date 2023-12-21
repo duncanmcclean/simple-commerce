@@ -306,7 +306,7 @@ test('can checkout when in card elements mode', function () {
     $order = $order->fresh();
 
     expect(PaymentStatus::Paid)->toBe($order->paymentStatus());
-    $this->assertNotNull($order->statusLog('paid'));
+    $this->assertNotNull($order->statusLogIncludes(PaymentStatus::Paid));
 })->skip(! env('STRIPE_SECRET'));
 
 test('cant checkout when in payment elements mode', function () {
@@ -363,7 +363,7 @@ test('cant checkout when in payment elements mode', function () {
     $order = $order->fresh();
 
     expect(PaymentStatus::Unpaid)->toBe($order->paymentStatus());
-    $this->assertNotNull($order->statusLog('paid'));
+    $this->assertNotNull($order->statusLogIncludes(PaymentStatus::Paid));
 })->skip(! env('STRIPE_SECRET'));
 
 test('has checkout rules', function () {
