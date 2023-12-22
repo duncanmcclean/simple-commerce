@@ -19,26 +19,40 @@ So, instead of your orders & customers living as entries in your `content` folde
 # Switching to a database
 
 :::note Note!
-The below steps assume you already have a database setup.
+The following steps assume you already have a database setup. If you don't, please [review Laravel's documentation](https://laravel.com/docs/10.x/database#configuration).
 :::
 
-I've written a few command to make the process of switching your site to a database as painless as possible.
+The process of switching your site to a database is painless, all you need to do is run a few commands, then you'll be golden.
 
-First, you'll want to run the 'switch' command which will update your Simple Commerce config file & install Runway so you can manage your orders in the [Control Panel](#control-panel-interface).
+First, you need to install [Runway](https://statamic.com/runway) & Doctrine DBAL.
 
+Runway will let you view your customers & orders in the Control Panel and DBAL will help Simple Commerce understand your database (which is needed for [custom columns](#custom-columns)).
+
+```sh
+composer require doublethreedigital/runway doctrine/dbal
 ```
+
+Next, run the "switch command". It'll copy the relevant database migrations, publish Runway's config file and update references in the Simple Commerce config:
+
+```sh
 php please sc:switch-to-database
 ```
 
-The above command will publish some database migrations, you'll need to run the `php artisan migrate` for those migrations to take place.
+Before continuing, you should run the copied database migrations. You can do this by running:
 
-Then, to move over any existing order & customer entries, you can run the provided 'migrate' command. It may be a good idea to run this per environment (eg. local, staging, production).
-
+```sh
+php artisan migrate
 ```
+
+Finally, if you want to migrate any existing orders or customers, you should run the "migrate command". Make sure you run this command in each of your environments.
+
+```sh
 php please sc:migrate-to-database
 ```
 
-It's worth noting that the above command will not delete the order/customer entries, or the associated collections. You may do that when you're satisfied with the migration.
+The above command will **not** delete any entries or collections. You may do this yourself once you're satisfied with the migration.
+
+## Troubleshooting
 
 If you receive an error running the `sc:migrate-to-database` command, please ensure you've run the `sc:switch-to-database` command first and that your `content` array looks like this:
 
@@ -71,6 +85,7 @@ If you receive an error running the `sc:migrate-to-database` command, please ens
 If you re-run the command, it should then run as expected.
 
 # Control Panel
+
 
 When you make the switch, Simple Commerce will install [Runway](https://statamic.com/runway), another addon by me (Duncan McClean). Runway is the thing which lets you manage your database records/Eloquent models in the Control Panel.
 
