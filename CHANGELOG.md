@@ -1,6 +1,22 @@
 # Changelog
 
-## Unreleased
+## v5.7.0 (2023-12-22)
+
+### What's new
+* Orders *finally* have an "Order Date" field #655 by @duncanmcclean
+* The Product Variants field can now be localized #952 by @duncanmcclean
+* PHP 8.3 Support #951 by @duncanmcclean
+
+### What's improved
+* Changed how the "status log" is saved #954 by @duncanmcclean
+* Simplified the handling of customer information in the `{{ sc:cart:addItem }}` and `{{ sc:cart:update }}` tags
+* Various improvements to the docs
+
+### What's fixed
+* Name & Email are now listed by default in the Database Customers listing
+* Fixed Gateway Fieldtype when using Database Orders
+* Fixed errors in the "switch to database" process
+* Fixed Product Variant fieldtype when viewed in inline publish form #950 by @duncanmcclean
 
 ## v5.6.2 (2023-11-18)
 
