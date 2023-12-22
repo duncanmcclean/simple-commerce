@@ -18,6 +18,8 @@ use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Site as FacadesSite;
@@ -296,11 +298,11 @@ class Order implements Contract
         return false;
     }
 
-    public function updateOrderStatus(OrderStatus $orderStatus): self
+    public function updateOrderStatus(OrderStatus $orderStatus, array $data = []): self
     {
         $this
             ->status($orderStatus)
-            ->appendToStatusLog($orderStatus)
+            ->appendToStatusLog($orderStatus, $data)
             ->save();
 
         event(new OrderStatusUpdated($this, $orderStatus));
@@ -308,11 +310,11 @@ class Order implements Contract
         return $this;
     }
 
-    public function updatePaymentStatus(PaymentStatus $paymentStatus): self
+    public function updatePaymentStatus(PaymentStatus $paymentStatus, array $data = []): self
     {
         $this
             ->paymentStatus($paymentStatus)
-            ->appendToStatusLog($paymentStatus)
+            ->appendToStatusLog($paymentStatus, $data)
             ->save();
 
         event(new PaymentStatusUpdated($this, $paymentStatus));
@@ -322,24 +324,47 @@ class Order implements Contract
 
     public function statusLog($key = null): Collection|string|null
     {
-        $statusLog = collect($this->get('status_log'));
-
-        if ($key) {
-            return $statusLog->get($key);
+        // Convert the old format to the new format. We can probably remove this in the future.
+        if (! empty($this->get('status_log')) && ! is_array(Arr::first($this->get('status_log')))) {
+            $this->set('status_log', collect($this->get('status_log'))->map(function ($date, $status) {
+                return new StatusLogEvent(
+                    status: $status,
+                    timestamp: Carbon::parse($date)->timestamp
+                );
+            })->values()->toArray());
         }
 
-        return $statusLog;
+        // v5 compatability: when a $key is passed, we want to return the date of the status change. (v6 TODO: remove this)
+        if ($key) {
+            return collect($this->get('status_log'))
+                ->filter(fn (array $statusLogEvent) => $statusLogEvent['status'] === $key)
+                ->map(fn (array $statusLogEvent) => Carbon::parse($statusLogEvent['timestamp'])->format('Y-m-d H:i'))
+                ->first();
+        }
+
+        return collect($this->get('status_log'))->map(function (array $statusLogEvent) {
+            return new StatusLogEvent(
+                status: $statusLogEvent['status'],
+                timestamp: $statusLogEvent['timestamp'],
+                data: $statusLogEvent['data'] ?? [],
+            );
+        });
     }
 
-    public function appendToStatusLog(OrderStatus|PaymentStatus $status): self
+    public function statusLogIncludes(OrderStatus|PaymentStatus $status): bool
     {
-        $this->merge([
-            'status_log' => collect($this->get('status_log', []))
-                ->merge([
-                    $status->value => now()->format('Y-m-d H:i'),
-                ])
-                ->toArray(),
-        ]);
+        return $this->statusLog()->contains(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is($status));
+    }
+
+    public function appendToStatusLog(OrderStatus|PaymentStatus $status, array $data = []): self
+    {
+        $statusLog = $this->statusLog()->push(new StatusLogEvent(
+            status: $status,
+            timestamp: Carbon::now()->timestamp,
+            data: $data,
+        ));
+
+        $this->set('status_log', $statusLog->toArray());
 
         return $this;
     }

@@ -9,6 +9,7 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Config;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
+use Statamic\Facades\User;
 
 class UpdateOrderStatus extends Action
 {
@@ -26,6 +27,11 @@ class UpdateOrderStatus extends Action
                     $case->value => $case->name,
                 ])->toArray(),
                 'instructions' => __('**Note:** Changing the order status will not refund or charge the customer.'),
+                'validate' => 'required',
+            ],
+            'reason' => [
+                'type' => 'textarea',
+                'instructions' => __("Provide a reason for this status change. This will be visible in the order's status log."),
             ],
         ];
     }
@@ -63,12 +69,15 @@ class UpdateOrderStatus extends Action
     {
         $orderStatus = OrderStatus::from($values['order_status']);
 
-        collect($items)
-            ->each(function ($entry) use ($orderStatus) {
-                $order = Order::find($entry->id);
+        $data = collect([
+            'user' => User::current()->id(),
+            'reason' => $values['reason'] ?? null,
+        ])->filter();
 
-                $order->updateOrderStatus($orderStatus);
-            });
+        collect($items)->each(function ($entry) use ($orderStatus, $data) {
+            $order = Order::find($entry->id);
+            $order->updateOrderStatus($orderStatus, $data->toArray())->save();
+        });
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool

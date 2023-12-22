@@ -132,7 +132,7 @@ $shippingAddress->toArray();
 // Redeem a coupon
 $order->redeemCoupon('coupon-code');
 
-// Get the status log (you may optionally pass in a status as a parameter to get the timestamp)
+// Get the status log
 $order->statusLog();
 
 // Recalculate order totals
