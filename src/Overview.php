@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
