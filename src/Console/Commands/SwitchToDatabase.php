@@ -35,11 +35,11 @@ class SwitchToDatabase extends Command
         }
 
         if (! Composer::create()->isInstalled('doublethreedigital/runway')) {
-            return $this->error("You need to install Runway before running this command. Run `composer require doublethreedigital/runway` first.");
+            return $this->error('You need to install Runway before running this command. Run `composer require doublethreedigital/runway` first.');
         }
 
         if (! Composer::create()->isInstalled('doctrine/dbal')) {
-            return $this->error("You need to install Doctrine DBAL before running this command. Run `composer require doctrine/dbal` first.");
+            return $this->error('You need to install Doctrine DBAL before running this command. Run `composer require doctrine/dbal` first.');
         }
 
         $this
@@ -87,7 +87,7 @@ class SwitchToDatabase extends Command
 
     protected function publishRunwayConfig(): self
     {
-        $this->info("Publishing Runway config file...");
+        $this->info('Publishing Runway config file...');
 
         if (! File::exists(config_path('runway.php'))) {
             File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
