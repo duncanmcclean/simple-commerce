@@ -3,6 +3,8 @@
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
 use Carbon\Carbon;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\StatusLogEvent;
 use Illuminate\Support\Arr;
 use Statamic\Fields\Fieldtype;
@@ -24,6 +26,8 @@ class StatusLogFieldtype extends Fieldtype
     {
         return [
             'indexUrl' => cp_route('simple-commerce.fieldtype-api.status-log'),
+            'orderStatuses' => OrderStatus::cases(),
+            'paymentStatuses' => PaymentStatus::cases(),
         ];
     }
 

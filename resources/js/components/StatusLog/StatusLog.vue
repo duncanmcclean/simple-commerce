@@ -28,6 +28,8 @@
                         v-for="event in group.events"
                         :key="event.timestamp"
                         :event="event"
+                        :order-statuses="orderStatuses"
+                        :payment-statuses="paymentStatuses"
                         :current-order-status="currentOrderStatus"
                         :current-payment-status="currentPaymentStatus"
                     />
@@ -48,6 +50,8 @@ export default {
     props: {
         indexUrl: String,
         orderId: String,
+        orderStatuses: Array,
+        paymentStatuses: Array,
         currentOrderStatus: String,
         currentPaymentStatus: String,
     },

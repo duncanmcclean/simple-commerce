@@ -13,6 +13,8 @@
                 slot-scope="{ close }"
                 :index-url="meta.indexUrl"
                 :order-id="orderId"
+                :order-statuses="meta.orderStatuses"
+                :payment-statuses="meta.paymentStatuses"
                 :current-order-status="currentOrderStatus"
                 :current-payment-status="currentPaymentStatus"
                 @closed="close"
