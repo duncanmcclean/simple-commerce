@@ -3,7 +3,7 @@
 ## v5.7.0 (2023-12-22)
 
 ### What's new
-* Orders *finally* have an "Order Date" field #655 by @duncanmcclean
+* Orders *finally* have an "Order Date" field #955 by @duncanmcclean
 * The Product Variants field can now be localized #952 by @duncanmcclean
 * PHP 8.3 Support #951 by @duncanmcclean
 
