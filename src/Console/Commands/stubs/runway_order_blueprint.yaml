@@ -299,6 +299,23 @@ tabs:
     display: Sidebar
     sections:
       - fields:
+          - handle: order_date
+            field:
+              mode: single
+              inline: false
+              full_width: false
+              columns: 1
+              rows: 1
+              time_enabled: false
+              time_seconds_enabled: false
+              type: date
+              display: 'Order Date'
+              icon: date
+              listable: true
+              instructions_position: above
+              visibility: read_only
+              replicator_preview: true
+              hide_display: false
           - handle: order_status
             field:
               type: order_status
