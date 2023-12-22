@@ -12,6 +12,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
+use DoubleThreeDigital\SimpleCommerce\Orders\StatusLogEvent;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Http\Request;
@@ -103,7 +104,11 @@ class Overview
                             'order_number' => $order->orderNumber(),
                             'edit_url' => $order->resource()->editUrl(),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                            'paid_at' => Carbon::parse($order->statusLog(PaymentStatus::Paid->value))->format(config('statamic.system.date_format')),
+                            'paid_at' => $order->statusLog()
+                                ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
+                                ->first()
+                                ->date()
+                                ->format(config('statamic.system.date_format')),
                         ];
                     });
                 }
@@ -130,7 +135,11 @@ class Overview
                                 'record' => $order->resource()->{$orderModel->getRouteKeyName()},
                             ]),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                            'paid_at' => Carbon::parse($order->statusLog(PaymentStatus::Paid->value))->format(config('statamic.system.date_format')),
+                            'paid_at' => $order->statusLog()
+                                ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
+                                ->first()
+                                ->date()
+                                ->format(config('statamic.system.date_format')),
                         ];
                     });
                 }
