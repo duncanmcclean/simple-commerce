@@ -130,6 +130,15 @@ class EnforceEntryBlueprintFields
             'save_zero_value' => true,
         ]);
 
+        $event->blueprint->ensureField('order_date', [
+            'type' => 'date',
+            'display' => 'Order Date',
+            'mode' => 'single',
+            'time_enabled' => false,
+            'listable' => true,
+            'visibility' => 'read_only',
+        ], 'sidebar');
+
         $event->blueprint->ensureField('order_status', [
             'type' => 'order_status',
             'display' => 'Order Status',
