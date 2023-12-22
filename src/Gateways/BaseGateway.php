@@ -126,7 +126,7 @@ abstract class BaseGateway
      * Once you've confirmed that the payment has been made, you can mark the order as paid
      * using this method. For off-site gateways, it'll handle updating stock & redeeming any coupons.
      */
-    public function markOrderAsPaid(Order $order): bool
+    public function markOrderAsPaid(Order $order, array $data = []): bool
     {
         // We need to ensure that the gateway is available in the
         // order when the OrderPaid event is dispatched.
@@ -141,7 +141,7 @@ abstract class BaseGateway
                 ->thenReturn();
 
             $order->updateOrderStatus(OrderStatus::Placed);
-            $order->updatePaymentStatus(PaymentStatus::Paid);
+            $order->updatePaymentStatus(PaymentStatus::Paid, $data);
 
             if ($order->coupon()) {
                 $order->coupon()->redeem();
@@ -152,7 +152,7 @@ abstract class BaseGateway
             return true;
         }
 
-        $order->updatePaymentStatus(PaymentStatus::Paid);
+        $order->updatePaymentStatus(PaymentStatus::Paid, $data);
 
         return true;
     }

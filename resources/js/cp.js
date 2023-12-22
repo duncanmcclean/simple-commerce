@@ -10,6 +10,7 @@ import PaymentStatusFieldtype from './components/Fieldtypes/PaymentStatusFieldty
 import PaymentStatusIndexFieldtype from './components/Fieldtypes/PaymentStatusIndexFieldtype.vue'
 import ProductVariantFieldtype from './components/Fieldtypes/ProductVariantFieldtype.vue'
 import ProductVariantsFildtype from './components/Fieldtypes/ProductVariants/ProductVariantsFieldtype.vue'
+import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
 
 Statamic.$components.register('coupon-code-fieldtype', CouponCodeFieldtype)
 Statamic.$components.register('coupon-value-fieldtype', CouponValueFieldtype)
@@ -36,6 +37,7 @@ Statamic.$components.register(
     'product-variants-fieldtype',
     ProductVariantsFildtype
 )
+Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)
 
 // Inputs
 
