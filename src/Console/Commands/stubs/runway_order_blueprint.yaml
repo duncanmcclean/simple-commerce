@@ -299,6 +299,12 @@ tabs:
     display: Sidebar
     sections:
       - fields:
+          - handle: status_log
+            field:
+              type: sc_status_log
+              display: 'Status Log'
+              listable: false
+              hide_display: true
           - handle: order_date
             field:
               mode: single
@@ -346,7 +352,3 @@ tabs:
               instructions_position: above
               listable: hidden
               always_save: false
-          - handle: status_log
-            field:
-              type: sc_status_log
-              display: "Status Log"

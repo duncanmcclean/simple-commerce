@@ -40,7 +40,7 @@ export default {
                     return 'bg-blue-300'
 
                 case 'cancelled':
-                    return 'bg-red'
+                    return 'bg-red-500'
 
                 default:
                     return ''
