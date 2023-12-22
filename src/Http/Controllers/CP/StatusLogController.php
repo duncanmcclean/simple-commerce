@@ -2,13 +2,10 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\StatusLogEvent;
-use DoubleThreeDigital\SimpleCommerce\Regions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
 use Statamic\Facades\User;
 
 class StatusLogController
