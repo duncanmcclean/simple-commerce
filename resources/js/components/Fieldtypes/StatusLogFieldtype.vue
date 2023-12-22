@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import StatusLog from '../StatusLog.vue';
+import StatusLog from '../StatusLog/StatusLog.vue';
 
 export default {
     name: 'status-log-fieldtype',
