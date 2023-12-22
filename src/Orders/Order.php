@@ -322,7 +322,7 @@ class Order implements Contract
         return $this;
     }
 
-    public function statusLog(): Collection|string|null
+    public function statusLog($key = null): Collection|string|null
     {
         // Convert the old format to the new format. We can probably remove this in the future.
         if (! empty($this->get('status_log')) && ! is_array(Arr::first($this->get('status_log')))) {
@@ -332,6 +332,14 @@ class Order implements Contract
                     timestamp: Carbon::parse($date)->timestamp
                 );
             })->values()->toArray());
+        }
+
+        // v5 compatability: when a $key is passed, we want to return the date of the status change. (v6 TODO: remove this)
+        if ($key) {
+            return collect($this->get('status_log'))
+                ->filter(fn (array $statusLogEvent) => $statusLogEvent['status'] === $key)
+                ->map(fn (array $statusLogEvent) => Carbon::parse($statusLogEvent['timestamp'])->format('Y-m-d H:i'))
+                ->first();
         }
 
         return collect($this->get('status_log'))->map(function (array $statusLogEvent) {
