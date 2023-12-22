@@ -159,9 +159,9 @@ class CouponBlueprint
                                         'width' => 50,
                                         'listable' => 'hidden',
                                     ],
-                                ]
+                                ],
                             ],
-                        ]
+                        ],
                     ],
                 ],
                 'sidebar' => [
@@ -190,7 +190,7 @@ class CouponBlueprint
                                     ],
                                 ],
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
