@@ -28,6 +28,8 @@
                         v-for="event in group.events"
                         :key="event.timestamp"
                         :event="event"
+                        :order-id="orderId"
+                        :resend-notifications-url="resendNotificationsUrl"
                         :order-statuses="orderStatuses"
                         :payment-statuses="paymentStatuses"
                         :current-order-status="currentOrderStatus"
@@ -49,6 +51,7 @@ export default {
 
     props: {
         indexUrl: String,
+        resendNotificationsUrl: String,
         orderId: String,
         orderStatuses: Array,
         paymentStatuses: Array,

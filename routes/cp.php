@@ -5,6 +5,7 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponControll
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponListingController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\OverviewController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\ResendNotificationsController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\StatusLogController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxRateController;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
     Route::get('/overview', [OverviewController::class, 'index'])->name('overview');
+    Route::post('/resend-notifications', [ResendNotificationsController::class, '__invoke'])->name('resend-notifications');
 
     Route::prefix('coupons')->name('coupons.')->group(function () {
         Route::get('/', [CouponController::class, 'index'])->name('index');

@@ -15,7 +15,7 @@
                     </div>
 
                     <dropdown-list class="ml-2">
-                        <dropdown-item :text="__('Re-send notifications')" :redirect="`#`" />
+                        <dropdown-item :text="__('Resend notifications')" @click="resendNotifications" />
                     </dropdown-list>
                 </div>
             </div>
@@ -33,11 +33,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { __ } from '../../../../vendor/statamic/cms/resources/js/bootstrap/globals';
 
 export default {
     props: {
         event: Object,
+        orderId: String,
+        resendNotificationsUrl: String,
         orderStatuses: Array,
         paymentStatuses: Array,
         currentOrderStatus: String,
@@ -69,6 +72,19 @@ export default {
         isCurrent() {
             return this.event.status === this.currentOrderStatus
                 || this.event.status === this.currentPaymentStatus;
+        },
+    },
+
+    methods: {
+        resendNotifications() {
+            axios.post(this.resendNotificationsUrl, {
+                order_id: this.orderId,
+                status: this.event.status,
+            }).then(response => {
+                this.$toast.success(__('Notifications resent'));
+            }).catch(error => {
+                this.$toast.error(__('Unable to resend notifications'));
+            })
         },
     },
 }

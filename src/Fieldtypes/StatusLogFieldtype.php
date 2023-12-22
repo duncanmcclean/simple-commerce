@@ -26,6 +26,7 @@ class StatusLogFieldtype extends Fieldtype
     {
         return [
             'indexUrl' => cp_route('simple-commerce.fieldtype-api.status-log'),
+            'resendNotificationsUrl' => cp_route('simple-commerce.resend-notifications'),
             'orderStatuses' => OrderStatus::cases(),
             'paymentStatuses' => PaymentStatus::cases(),
         ];
