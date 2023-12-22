@@ -31,7 +31,7 @@ class UpdateOrderStatus extends Action
             ],
             'reason' => [
                 'type' => 'textarea',
-                'instructions' => __("Optionally, provide a reason for this status change. This will be visible in the order's status log."),
+                'instructions' => __("Provide a reason for this status change. This will be visible in the order's status log."),
             ],
         ];
     }
