@@ -5,21 +5,34 @@
             'status-published': false,
         }"
     >
-        <div v-if="event.data?.reason" class="revision-item-note truncate" v-text="event.data.reason" />
-
         <div class="flex items-center">
-            <avatar v-if="event.user" :user="event.user" class="shrink-0 mr-2 w-6" />
-
-            <div class="revision-item-content w-full flex">
-                <div class="flex-1">
-                    <div class="revision-author text-gray-700 text-2xs">
-                        <template v-if="event.user">{{ event.user.name || event.user.email }} &ndash;</template>
-                        {{ date.isBefore($moment().startOf('day')) ? date.format('LT') : date.fromNow() }}
-                    </div>
+            <div class="revision-item-content w-full flex items-center justify-between">
+                <div>
+                    <span class="badge" :class="statusColour" v-text="__(event.status)" />
+                    <span class="badge bg-orange" v-if="isCurrent" v-text="__('Current')" />
                 </div>
 
-                <span class="badge" :class="statusColour" v-text="__(event.status)" />
-                <span class="badge bg-orange" v-if="isCurrent" v-text="__('Current')" />
+                <div class="flex-1 flex items-center justify-end">
+                    <div>
+                        <div class="revision-author text-gray-700 text-2xs">
+                            <!-- <template v-if="event.user">{{ event.user.name || event.user.email }} &ndash;</template> -->
+                            {{ date.isBefore($moment().startOf('day')) ? date.format('LT') : date.fromNow() }}
+                        </div>
+                    </div>
+
+                    <dropdown-list class="ml-2">
+                        <dropdown-item :text="__('Re-send notifications')" :redirect="`#`" />
+                    </dropdown-list>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="event.data?.reason" class="revision-item-note truncate ml-2 mt-2" v-text="event.data.reason" />
+
+        <div v-if="event.user" class="flex items-center ml-2 mt-2">
+            <avatar v-if="event.user" :user="event.user" class="shrink-0 mr-2 w-6" />
+            <div class="flex-1 revision-author text-gray-700 text-2xs">
+                <template v-if="event.user">{{ event.user.name || event.user.email }}</template>
             </div>
         </div>
     </div>
