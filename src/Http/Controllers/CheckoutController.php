@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
@@ -26,13 +27,13 @@ use Statamic\Sites\Site as SitesSite;
 
 class CheckoutController extends BaseActionController
 {
-    use AcceptsFormRequests, CartDriver;
+    use AcceptsFormRequests, CartDriver, HandlesCustomerInformation;
 
     public $order;
 
     public StoreRequest $request;
 
-    public $excludedKeys = ['_token', '_params', '_redirect', '_request'];
+    public $excludedKeys = ['_token', '_params', '_redirect', '_request', 'customer', 'email', 'name', 'first_name', 'last_name'];
 
     public function __invoke(StoreRequest $request)
     {
@@ -97,90 +98,7 @@ class CheckoutController extends BaseActionController
 
     protected function handleCustomerDetails(): self
     {
-        $customerData = $this->request->has('customer')
-            ? $this->request->get('customer')
-            : [];
-
-        if (is_string($customerData)) {
-            $this->order->customer($customerData);
-            $this->order->save();
-
-            $this->excludedKeys[] = 'customer';
-
-            return $this;
-        }
-
-        if (
-            $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
-            && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
-        ) {
-            $customerData['site'] = $this->order->resource()->site()->handle();
-        }
-
-        if ($this->request->has('name') && $this->request->has('email')) {
-            $customerData['name'] = $this->request->get('name');
-            $customerData['email'] = $this->request->get('email');
-
-            $this->excludedKeys[] = 'name';
-            $this->excludedKeys[] = 'email';
-        } elseif ($this->request->has('first_name') && $this->request->has('last_name') && $this->request->has('email')) {
-            $customerData['first_name'] = $this->request->get('first_name');
-            $customerData['last_name'] = $this->request->get('last_name');
-            $customerData['email'] = $this->request->get('email');
-
-            $this->excludedKeys[] = 'first_name';
-            $this->excludedKeys[] = 'last_name';
-            $this->excludedKeys[] = 'email';
-        } elseif ($this->request->has('email')) {
-            $customerData['email'] = $this->request->get('email');
-
-            $this->excludedKeys[] = 'email';
-        }
-
-        if (isset($customerData['email'])) {
-            try {
-                $customer = Customer::findByEmail($customerData['email']);
-            } catch (CustomerNotFound $e) {
-                $customerItemData = [
-                    'published' => true,
-                ];
-
-                if (
-                    $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
-                    && $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
-                ) {
-                    $customerItemData['site'] = $this->order->resource()->site()->handle();
-                }
-
-                if (isset($customerData['name'])) {
-                    $customerItemData['name'] = $customerData['name'];
-                }
-
-                if (isset($customerData['first_name']) && isset($customerData['last_name'])) {
-                    $customerItemData['first_name'] = $customerData['first_name'];
-                    $customerItemData['last_name'] = $customerData['last_name'];
-                }
-
-                $customer = Customer::make()
-                    ->email($customerData['email'])
-                    ->data($customerItemData);
-
-                $customer->save();
-            }
-
-            $customer
-                ->merge(
-                    Arr::only($customerData, config('simple-commerce.field_whitelist.customers'))
-                )
-                ->save();
-
-            $this->order->customer($customer->id());
-            $this->order->save();
-
-            $this->order = $this->order->fresh();
-        }
-
-        $this->excludedKeys[] = 'customer';
+        $this->order = $this->handleCustomerInformation($this->request, $this->order);
 
         return $this;
     }
