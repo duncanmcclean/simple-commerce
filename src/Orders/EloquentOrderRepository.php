@@ -32,7 +32,7 @@ class EloquentOrderRepository implements RepositoryContract
 
     public function all()
     {
-        return (new $this->model)->all();
+        return (new $this->model)->all()->transform(fn ($model) => $this->fromModel($model));
     }
 
     public function find($id): ?Order
@@ -43,6 +43,11 @@ class EloquentOrderRepository implements RepositoryContract
             throw new OrderNotFound("Order [{$id}] could not be found.");
         }
 
+        return $this->fromModel($model);
+    }
+
+    protected function fromModel(OrderModel $model)
+    {
         return app(Order::class)
             ->resource($model)
             ->id($model->id)

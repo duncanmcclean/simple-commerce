@@ -13,9 +13,7 @@ class EloquentCustomerRepository implements RepositoryContract
 {
     protected $model;
 
-    protected $knownColumns = [
-        'name',
-    ];
+    protected $knownColumns = ['name'];
 
     public function __construct()
     {
@@ -24,7 +22,7 @@ class EloquentCustomerRepository implements RepositoryContract
 
     public function all()
     {
-        return (new $this->model)->all();
+        return (new $this->model)->all()->transform(fn ($model) => $this->fromModel($model));
     }
 
     public function find($id): ?Customer
@@ -35,6 +33,22 @@ class EloquentCustomerRepository implements RepositoryContract
             throw new CustomerNotFound("Customer [{$id}] could not be found.");
         }
 
+        return $this->fromModel($model);
+    }
+
+    public function findByEmail(string $email): ?Customer
+    {
+        $model = (new $this->model)->query()->firstWhere('email', $email);
+
+        if (! $model) {
+            throw new CustomerNotFound("Customer [{$email}] could not be found.");
+        }
+
+        return $this->fromModel($model);
+    }
+
+    protected function fromModel($model)
+    {
         return app(Customer::class)
             ->resource($model)
             ->id($model->id)
@@ -52,17 +66,6 @@ class EloquentCustomerRepository implements RepositoryContract
                             ->toArray()
                     )
             );
-    }
-
-    public function findByEmail(string $email): ?Customer
-    {
-        $model = (new $this->model)->query()->firstWhere('email', $email);
-
-        if (! $model) {
-            throw new CustomerNotFound("Customer [{$email}] could not be found.");
-        }
-
-        return $this->find($model->id);
     }
 
     public function make(): Customer

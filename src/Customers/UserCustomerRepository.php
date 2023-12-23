@@ -12,7 +12,7 @@ class UserCustomerRepository implements RepositoryContract
 {
     public function all()
     {
-        return User::all();
+        return User::all()->transform(fn ($user) => $this->fromUser($user));
     }
 
     public function find($id): ?Customer
@@ -23,11 +23,7 @@ class UserCustomerRepository implements RepositoryContract
             throw new CustomerNotFound("Customer [{$id}] could not be found.");
         }
 
-        return app(Customer::class)
-            ->resource($user)
-            ->id($user->id())
-            ->email($user->email())
-            ->data($user->data()->toArray());
+        return $this->fromUser($user);
     }
 
     public function findByEmail(string $email): ?Customer
@@ -38,7 +34,16 @@ class UserCustomerRepository implements RepositoryContract
             throw new CustomerNotFound("Customer [{$email}] could not be found.");
         }
 
-        return $this->find($user->id());
+        return $this->fromUser($user);
+    }
+
+    protected function fromUser($user)
+    {
+        return app(Customer::class)
+            ->resource($user)
+            ->id($user->id())
+            ->email($user->email())
+            ->data($user->data()->toArray());
     }
 
     public function make(): Customer
