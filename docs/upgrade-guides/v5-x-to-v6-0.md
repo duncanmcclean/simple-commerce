@@ -53,4 +53,4 @@ This saves you needing to `find` the order/product/customer to use any of Simple
 
 ---
 
-[You may also view a diff of changes between v5.x and v6.0](https://github.com/duncanmcclean/simple-commerce/compare/5.x...6.x)
+[You may also view a diff of changes between v5.x and v6.0](https://github.com/duncanmcclean/simple-commerce/compare/5.x...main)
