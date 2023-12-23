@@ -49,6 +49,7 @@ tabs:
               type: shipping_method
               width: 50
               visibility: read_only
+              max_items: 1
       - display: Totals
         fields:
           - handle: items_total
