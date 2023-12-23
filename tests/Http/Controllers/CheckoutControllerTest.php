@@ -27,8 +27,6 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\Stache;
 
-use function Pest\Laravel\withoutExceptionHandling;
-
 uses(SetupCollections::class);
 uses(RefreshContent::class);
 

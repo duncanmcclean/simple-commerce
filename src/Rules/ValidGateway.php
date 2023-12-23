@@ -3,9 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidGateway implements Rule
