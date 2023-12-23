@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\Stache;
 
+use function Pest\Laravel\withoutExceptionHandling;
+
 uses(SetupCollections::class);
 uses(RefreshContent::class);
 
@@ -123,7 +125,7 @@ test('cant post checkout and ensure custom form request is used', function () {
     $order->fresh();
 
     // Assert events have been dispatched
-    Event::assertDispatched(PreCheckout::class);
+    Event::assertNotDispatched(PreCheckout::class);
     Event::assertNotDispatched(PostCheckout::class);
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
@@ -1106,7 +1108,7 @@ test('cant post checkout with coupon when coupon has been redeemed for maxium us
     $order = $order->fresh();
 
     // Assert events have been dispatched
-    Event::assertDispatched(PreCheckout::class);
+    Event::assertNotDispatched(PreCheckout::class);
     Event::assertNotDispatched(PostCheckout::class);
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
@@ -1181,7 +1183,7 @@ test('cant post checkout with coupon where coupon is only valid for products not
     $order = $order->fresh();
 
     // Assert events have been dispatched
-    Event::assertDispatched(PreCheckout::class);
+    Event::assertNotDispatched(PreCheckout::class);
     Event::assertNotDispatched(PostCheckout::class);
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);
@@ -2313,7 +2315,7 @@ test('can post checkout and ensure gateway validation rules are used', function 
     $order = $order->fresh();
 
     // Assert events have been dispatched
-    Event::assertDispatched(PreCheckout::class);
+    Event::assertNotDispatched(PreCheckout::class);
     Event::assertNotDispatched(PostCheckout::class);
 
     $this->assertNotSame($order->fresh()->status(), OrderStatus::Placed);

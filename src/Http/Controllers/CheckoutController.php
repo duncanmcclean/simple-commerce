@@ -4,22 +4,18 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
 
 use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
 use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Checkout\StoreRequest;
+use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
 use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -31,20 +27,19 @@ class CheckoutController extends BaseActionController
 
     public $order;
 
-    public StoreRequest $request;
+    public CheckoutRequest $request;
 
     public $excludedKeys = ['_token', '_params', '_redirect', '_request', 'customer', 'email', 'name', 'first_name', 'last_name'];
 
-    public function __invoke(StoreRequest $request)
+    public function __invoke(CheckoutRequest $request)
     {
-        $this->order = $this->getCart();
         $this->request = $request;
+        $this->order = $this->getCart();
 
         try {
             event(new PreCheckout($this->order, $this->request));
 
             $this
-                ->handleAdditionalValidation()
                 ->handleCustomerDetails()
                 ->handleCoupon()
                 ->handleRemainingData()
@@ -60,40 +55,6 @@ class CheckoutController extends BaseActionController
             'cart' => $this->order->toAugmentedArray(),
             'is_checkout_request' => true,
         ]);
-    }
-
-    protected function handleAdditionalValidation(): self
-    {
-        $rules = array_merge(
-            $this->request->get('_request')
-                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->rules()
-            : [],
-            $this->request->has('gateway')
-                    ? Gateway::use($this->request->get('gateway'))->checkoutRules()
-                    : [],
-            [
-                'coupon' => ['nullable', new ValidCoupon($this->order)],
-                'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
-                    if (preg_match('/^\S*$/u', $value) === 0) {
-                        return $fail(__('Your email may not contain any spaces.'));
-                    }
-                }],
-            ],
-        );
-
-        $messages = array_merge(
-            $this->request->get('_request')
-                ? $this->buildFormRequest($this->request->get('_request'), $this->request)->messages()
-                : [],
-            $this->request->has('gateway')
-                ? Gateway::use($this->request->get('gateway'))->checkoutMessages()
-                : [],
-            [],
-        );
-
-        $this->request->validate($rules, $messages);
-
-        return $this;
     }
 
     protected function handleCustomerDetails(): self
