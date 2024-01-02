@@ -5,14 +5,24 @@ namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 trait HandlesCustomerInformation
 {
     protected function handleCustomerInformation(Request $request, OrderContract $cart): OrderContract
     {
-        if (! $request->has('customer') && ! $request->has('email')) {
+        // When the customer driver is set to users, a user is logged in, and the cart doesn't have a customer,
+        // we'll set the customer to the logged in user.
+        if (
+            $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class)
+            && Auth::check()
+            && ! $cart->customer()
+        ) {
+            $cart->customer(Auth::id());
+        } elseif (! $request->has('customer') && ! $request->has('email')) {
             return $cart;
         }
 
@@ -72,5 +82,11 @@ trait HandlesCustomerInformation
             ->save();
 
         return $cart;
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }

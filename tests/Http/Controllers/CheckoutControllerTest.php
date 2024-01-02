@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
@@ -835,6 +836,70 @@ test('can post checkout with customer array and existing customer with additiona
 
     // Finally, assert order is no longer attached to the users' session
     expect(session()->has('simple-commerce-cart'))->toBeFalse();
+});
+
+test('can post checkout with customer array and use logged in user as customer', function () {
+    Event::fake();
+    setupUserCustomerRepository();
+
+    $product = Product::make()
+        ->price(5000)
+        ->data([
+            'title' => 'Bacon',
+        ]);
+
+    $product->save();
+
+    $order = Order::make()->lineItems([
+        [
+            'id' => Stache::generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 5000,
+        ],
+    ])->grandTotal(5000);
+
+    $order->save();
+
+    $user = User::make()->email('james@example.com')->set('name', 'James Test');
+    $user->save();
+
+    $this
+        ->actingAs($user)
+        ->withSession(['simple-commerce-cart' => $order->id])
+        ->post(route('statamic.simple-commerce.checkout.store'), [
+            'gateway' => DummyGateway::class,
+            'card_number' => '4242424242424242',
+            'expiry_month' => '01',
+            'expiry_year' => '2025',
+            'cvc' => '123',
+        ]);
+
+    $order = $order->fresh();
+
+    // Assert events have been dispatched
+    Event::assertDispatched(PreCheckout::class);
+    Event::assertDispatched(PostCheckout::class);
+
+    expect(OrderStatus::Placed)->toBe($order->fresh()->status());
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
+    $this->assertNotNull($order->statusLogIncludes(PaymentStatus::Paid));
+
+    // Assert customer has been created with provided details
+    $this->assertNotNull($order->customer());
+
+    expect($user->id)->toBe($order->customer()->id());
+    expect($user->name)->toBe($order->customer()->name());
+    expect($user->email)->toBe($order->customer()->email());
+
+    $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
+        $order->id,
+    ]);
+
+    // Finally, assert order is no longer attached to the users' session
+    expect(session()->has('simple-commerce-cart'))->toBeFalse();
+
+    tearDownUserCustomerRepository();
 });
 
 test('can post checkout with coupon', function () {
