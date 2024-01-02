@@ -136,6 +136,7 @@ class CouponBlueprint
                                         'options' => [
                                             'all' => __('All'),
                                             'specific_customers' => __('Specific customers'),
+                                            'customers_by_domain' => __('Specific customers (by domain)'),
                                         ],
                                         'inline' => false,
                                         'type' => 'radio',
@@ -148,6 +149,18 @@ class CouponBlueprint
                                     'handle' => 'customers',
                                     'field' => $customerField,
                                 ],
+                                [
+                                    'handle' => 'customers_by_domain',
+                                    'field' => [
+                                        'type' => 'list',
+                                        'display' => __('Domains'),
+                                        'instructions' => __('Provide a list of domains that are eligible for this coupon. One per line.'),
+                                        'add_button' => __('Add Domain'),
+                                        'if' => [
+                                            'customer_eligibility' => 'customers_by_domain',
+                                        ],
+                                    ],
+                                ]
                             ],
                         ],
                         [
