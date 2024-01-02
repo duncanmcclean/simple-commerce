@@ -134,6 +134,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $widgets = [
         Widgets\RecentOrders::class,
+        Widgets\TopCustomers::class,
     ];
 
     public function boot()
