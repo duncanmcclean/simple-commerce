@@ -145,8 +145,15 @@ class Coupon implements Contract
         }
 
         if ($this->isCustomerSpecific()) {
-            $isCustomerAllowed = collect($this->get('customers'))
-                ->contains(optional($order->customer())->id());
+            $isCustomerAllowed = collect($this->get('customers'))->contains(optional($order->customer())->id());
+
+            if (! $isCustomerAllowed) {
+                return false;
+            }
+        }
+
+        if ($domains = $this->get('customers_by_domain')) {
+            $isCustomerAllowed = collect($domains)->contains(optional($order->customer())->email());
 
             if (! $isCustomerAllowed) {
                 return false;

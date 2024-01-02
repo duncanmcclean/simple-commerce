@@ -303,3 +303,67 @@ test('is not valid after coupon has expired', function () {
 
     expect($isValid)->toBeFalse();
 });
+
+test('is valid for customer where email matches domain', function () {
+    [$product, $order] = buildCartWithProducts();
+
+    $customer = Customer::make()
+        ->email('john@example.com')
+        ->data(['name' => 'John Doe'])
+        ->save();
+
+    $order->customer($customer->id());
+    $order->save();
+
+    $coupon = Coupon::make()
+        ->id(Stache::generateId())
+        ->code('halv-price')
+        ->value(50)
+        ->type('percentage')
+        ->data([
+            'description' => 'Halv Price',
+            'redeemed' => 0,
+            'minimum_cart_value' => null,
+            'customers_by_domain' => [
+                'example.com',
+            ],
+        ]);
+
+    $coupon->save();
+
+    $isValid = $coupon->isValid($order);
+
+    expect($isValid)->toBeTrue();
+});
+
+test('is not valid for customer where email does not match domain', function () {
+    [$product, $order] = buildCartWithProducts();
+
+    $customer = Customer::make()
+        ->email('john@example.com')
+        ->data(['name' => 'John Doe'])
+        ->save();
+
+    $order->customer($customer->id());
+    $order->save();
+
+    $coupon = Coupon::make()
+        ->id(Stache::generateId())
+        ->code('halv-price')
+        ->value(50)
+        ->type('percentage')
+        ->data([
+            'description' => 'Halv Price',
+            'redeemed' => 0,
+            'minimum_cart_value' => null,
+            'customers_by_domain' => [
+                'doublethree.digital',
+            ],
+        ]);
+
+    $coupon->save();
+
+    $isValid = $coupon->isValid($order);
+
+    expect($isValid)->toBeFalse();
+});
