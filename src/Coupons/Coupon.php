@@ -14,6 +14,7 @@ use Statamic\Data\TracksQueriedColumns;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
+use Illuminate\Support\Str;
 
 class Coupon implements Contract
 {
@@ -152,8 +153,12 @@ class Coupon implements Contract
             }
         }
 
-        if ($domains = $this->get('customers_by_domain')) {
-            $isCustomerAllowed = collect($domains)->contains(optional($order->customer())->email());
+        if ($this->customerEligibility() === 'customers_by_domain' && $domains = $this->get('customers_by_domain')) {
+            if (! $order->customer()) {
+                return false;
+            }
+
+            $isCustomerAllowed = collect($domains)->contains(Str::after($order->customer()->email(), '@'));
 
             if (! $isCustomerAllowed) {
                 return false;
@@ -173,15 +178,22 @@ class Coupon implements Contract
         return $this;
     }
 
-    protected function isProductSpecific()
+    protected function isProductSpecific(): bool
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
     }
 
-    protected function isCustomerSpecific()
+    protected function customerEligibility(): string
     {
-        return $this->has('customers')
+        return $this->get('customer_eligibility') ?? 'all';
+    }
+
+    protected function isCustomerSpecific(): bool
+    {
+        return
+            $this->customerEligibility() === 'specific_customers'
+            && $this->has('customers')
             && collect($this->get('customers'))->count() >= 1;
     }
 

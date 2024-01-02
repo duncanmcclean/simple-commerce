@@ -195,6 +195,7 @@ test('is valid when limited to certain customers and current customer is in allo
             'description' => 'Hof Price',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'specific_customers',
             'customers' => [$customer->id],
         ]);
 
@@ -228,6 +229,7 @@ test('is not valid when limited to customers and current customer is not in allo
             'description' => 'Hof Price',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'specific_customers',
             'customers' => [$customer->id],
         ]);
 
@@ -324,6 +326,7 @@ test('is valid for customer where email matches domain', function () {
             'description' => 'Halv Price',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'customers_by_domain',
             'customers_by_domain' => [
                 'example.com',
             ],
@@ -356,6 +359,7 @@ test('is not valid for customer where email does not match domain', function () 
             'description' => 'Halv Price',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'customers_by_domain',
             'customers_by_domain' => [
                 'doublethree.digital',
             ],
