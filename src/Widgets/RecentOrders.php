@@ -76,7 +76,7 @@ class RecentOrders extends Widget
         }
 
         if (! $recentOrders) {
-            throw new \Exception("Recent Orders widget only supports Entry & Database order drivers.");
+            throw new \Exception('Recent Orders widget is not compatible with the configured customer repository.');
         }
 
         return view('simple-commerce::cp.widgets.recent-orders', [
