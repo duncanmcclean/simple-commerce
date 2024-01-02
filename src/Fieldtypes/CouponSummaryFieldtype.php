@@ -9,6 +9,7 @@ use Statamic\Fields\Fieldtype;
 class CouponSummaryFieldtype extends Fieldtype
 {
     protected $selectable = false;
+
     protected $component = 'coupon-summary';
 
     public function preload()

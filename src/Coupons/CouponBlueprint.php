@@ -106,7 +106,7 @@ class CouponBlueprint
                                         'type' => 'coupon_value',
                                         'display' => __('Value'),
                                         'width' => 50,
-                                        'validate' => ['required',],
+                                        'validate' => ['required'],
                                         'listable' => true,
                                     ],
                                 ],
@@ -203,7 +203,7 @@ class CouponBlueprint
                                     ],
                                 ],
                             ],
-                        ]
+                        ],
                     ],
                 ],
                 'sidebar' => [

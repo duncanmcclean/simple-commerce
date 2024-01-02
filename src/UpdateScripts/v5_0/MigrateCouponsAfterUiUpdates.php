@@ -4,9 +4,6 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v5_0;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\UpdateScripts\UpdateScript;
 
 class MigrateCouponsAfterUiUpdates extends UpdateScript
