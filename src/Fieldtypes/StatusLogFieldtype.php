@@ -36,8 +36,12 @@ class StatusLogFieldtype extends Fieldtype
     {
         // Support the old format for the status log. We can remove this in the future.
         if (! empty($value) && ! is_array(Arr::first($value))) {
-            return collect($value)->map(function ($timestamp, $status) {
-                return Carbon::parse($timestamp);
+            $value = collect($value)->map(function ($date, $status) {
+                return [
+                    'status' => $status,
+                    'timestamp' => Carbon::parse($date)->timestamp,
+                    'data' => [],
+                ];
             })->toArray();
         }
 
@@ -50,8 +54,19 @@ class StatusLogFieldtype extends Fieldtype
         });
     }
 
+    /**
+     * Allows for querying the timestamp of a status (it'll query the latest timestamp for that status)
+     * Eg: `->whereDate('status_log->paid', '>', '2024-01-01')`
+     */
     public function toQueryableValue($value)
     {
-        return $this->augment($value);
+        return $this->augment($value)
+            ->groupBy(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->value)
+            ->map(function ($events) {
+                $latestEvent = $events->sortByDesc(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->date())->first();
+
+                return $latestEvent->date();
+            })
+            ->toArray();
     }
 }
