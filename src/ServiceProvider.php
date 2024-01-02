@@ -45,6 +45,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\CountryFieldtype::class,
         Fieldtypes\CouponCodeFieldtype::class,
         Fieldtypes\CouponFieldtype::class,
+        Fieldtypes\CouponSummaryFieldtype::class,
         Fieldtypes\CouponValueFieldtype::class,
         Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
@@ -119,6 +120,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v5_0\UpdateNotificationsConfig::class,
         UpdateScripts\v5_0\UpdateOrderBlueprint::class,
         UpdateScripts\v5_0\CreateShippingTaxCategory::class,
+        UpdateScripts\v5_0\MigrateCouponsAfterUiUpdates::class,
     ];
 
     protected $vite = [
