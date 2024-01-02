@@ -26,7 +26,6 @@ class LowStockProducts extends Widget
 
             $lowStockProducts = Collection::find(SimpleCommerce::productDriver()['collection'])
                 ->queryEntries()
-                ->where('stock', '<', config('simple-commerce.low_stock_threshold'))
                 ->orderBy('stock', 'asc')
                 ->get()
                 ->reject(function ($entry) {
