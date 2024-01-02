@@ -1,5 +1,26 @@
 # Changelog
 
+## v5.9.0 (2024-01-02)
+
+### What's new
+- Added 'Start Date' setting to coupons #959 by @duncanmcclean
+- You can now whitelist customers in coupons by their domains #960 by @duncanmcclean
+
+### What's improved
+- Improved the Coupons UI in the Control Panel (& added a new 'Summary' to coupons) #959 by @duncanmcclean
+
+## v5.8.0 (2023-12-23)
+
+### What's new
+* You can now view the Status Log history in the Control Panel #956 by @duncanmcclean
+
+### What's improved
+* Refactored the `CheckoutController` #957 by @duncanmcclean
+* Coupon blueprint now uses an actual section, rather than the old Section fieldtype
+
+### What's fixed
+* Added `max_items` to Shipping Method field in default orders blueprint
+
 ## v5.7.0 (2023-12-22)
 
 ### What's new

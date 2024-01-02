@@ -51,6 +51,7 @@ class CouponController
     public function create(CreateRequest $request)
     {
         $blueprint = CouponBlueprint::getBlueprint();
+        $blueprint = $blueprint->removeField('redeemed');
 
         $fields = $blueprint->fields();
         $fields = $fields->preProcess();

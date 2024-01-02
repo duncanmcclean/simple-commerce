@@ -1,6 +1,7 @@
 // Fieldtypes
 
 import CouponCodeFieldtype from './components/Fieldtypes/CouponCodeFieldtype.vue'
+import CouponSummaryFieldtype from './components/Fieldtypes/CouponSummaryFieldtype.vue'
 import CouponValueFieldtype from './components/Fieldtypes/CouponValueFieldtype.vue'
 import GatewayFieldtype from './components/Fieldtypes/GatewayFieldtype.vue'
 import MoneyFieldtype from './components/Fieldtypes/MoneyFieldtype.vue'
@@ -13,6 +14,7 @@ import ProductVariantsFildtype from './components/Fieldtypes/ProductVariants/Pro
 import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
 
 Statamic.$components.register('coupon-code-fieldtype', CouponCodeFieldtype)
+Statamic.$components.register('coupon-summary-fieldtype', CouponSummaryFieldtype)
 Statamic.$components.register('coupon-value-fieldtype', CouponValueFieldtype)
 Statamic.$components.register('gateway-fieldtype', GatewayFieldtype)
 Statamic.$components.register('money-fieldtype', MoneyFieldtype)
