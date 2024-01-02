@@ -132,6 +132,10 @@ class ServiceProvider extends AddonServiceProvider
         ],
     ];
 
+    protected $widgets = [
+        Widgets\RecentOrders::class,
+    ];
+
     public function boot()
     {
         parent::boot();
