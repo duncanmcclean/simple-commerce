@@ -154,8 +154,6 @@ class ServiceProvider extends AddonServiceProvider
         SimpleCommerce::bootTaxEngine();
         SimpleCommerce::bootShippingMethods();
 
-        Overview::bootCoreWidgets();
-
         Statamic::booted(function () {
             $this
                 ->bootStacheStores()
@@ -304,12 +302,6 @@ class ServiceProvider extends AddonServiceProvider
     protected function createNavItems()
     {
         Nav::extend(function ($nav) {
-            $nav->create(__('Overview'))
-                ->section(__('Simple Commerce'))
-                ->route('simple-commerce.overview')
-                ->can('view simple commerce overview')
-                ->icon('charts');
-
             if (
                 $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
             ) {
@@ -414,9 +406,6 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function registerPermissions()
     {
-        Permission::register('view simple commerce overview')
-            ->label(__('View Simple Commerce Overview'));
-
         Permission::register('view coupons', function ($permission) {
             $permission->children([
                 Permission::make('edit coupons')->children([

@@ -5,7 +5,7 @@
                 <LineChartGenerator
                     :chart-options="chartOptions"
                     :chart-data="chartData"
-                    :chart-id="'overview-orders-chart'"
+                    :chart-id="'orders-chart'"
                     :dataset-id-key="'label'"
                     :cssClasses="''"
                     :styles="{}"

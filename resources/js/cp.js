@@ -47,13 +47,6 @@ Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)
 import RegionSelector from './components/Inputs/RegionSelector.vue'
 Statamic.$components.register('region-selector', RegionSelector)
 
-// Overview
-import OverviewConfigure from './components/Overview/Configure.vue'
-import Overview from './components/Overview/Overview.vue'
-
-Statamic.$components.register('overview-configure', OverviewConfigure)
-Statamic.$components.register('overview', Overview)
-
 // Listings
 import CouponListing from './components/Listings/CouponListing.vue'
 Statamic.$components.register('coupon-listing', CouponListing)
