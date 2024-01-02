@@ -110,6 +110,12 @@ class Coupon implements Contract
             return false;
         }
 
+        if ($this->get('valid_from') !== null) {
+            if (Carbon::parse($this->get('valid_from'))->isFuture()) {
+                return false;
+            }
+        }
+
         if ($this->has('expires_at') && $this->get('expires_at') !== null) {
             if (Carbon::parse($this->get('expires_at'))->isPast()) {
                 return false;
