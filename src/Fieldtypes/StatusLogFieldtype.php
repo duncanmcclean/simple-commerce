@@ -36,8 +36,12 @@ class StatusLogFieldtype extends Fieldtype
     {
         // Support the old format for the status log. We can remove this in the future.
         if (! empty($value) && ! is_array(Arr::first($value))) {
-            return collect($value)->map(function ($timestamp, $status) {
-                return Carbon::parse($timestamp);
+            $value = collect($value)->map(function ($date, $status) {
+                return [
+                    'status' => $status,
+                    'timestamp' => Carbon::parse($date)->timestamp,
+                    'data' => [],
+                ];
             })->toArray();
         }
 
