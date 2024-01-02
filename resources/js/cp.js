@@ -1,5 +1,4 @@
 // Fieldtypes
-
 import CouponCodeFieldtype from './components/Fieldtypes/CouponCodeFieldtype.vue'
 import CouponSummaryFieldtype from './components/Fieldtypes/CouponSummaryFieldtype.vue'
 import CouponValueFieldtype from './components/Fieldtypes/CouponValueFieldtype.vue'
@@ -45,22 +44,20 @@ Statamic.$components.register(
 Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)
 
 // Inputs
-
 import RegionSelector from './components/Inputs/RegionSelector.vue'
-
 Statamic.$components.register('region-selector', RegionSelector)
 
 // Overview
-
 import OverviewConfigure from './components/Overview/Configure.vue'
-import OverviewOrdersChart from './components/Overview/OrdersChart.vue'
 import Overview from './components/Overview/Overview.vue'
 
 Statamic.$components.register('overview-configure', OverviewConfigure)
-Statamic.$components.register('overview-orders-chart', OverviewOrdersChart)
 Statamic.$components.register('overview', Overview)
 
 // Listings
 import CouponListing from './components/Listings/CouponListing.vue'
-
 Statamic.$components.register('coupon-listing', CouponListing)
+
+// Widgets
+import OrdersChart from './components/Widgets/OrdersChart.vue'
+Statamic.$components.register('orders-chart', OrdersChart)

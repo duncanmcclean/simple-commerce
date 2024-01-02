@@ -134,6 +134,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $widgets = [
         Widgets\LowStockProducts::class,
+        Widgets\OrdersChart::class,
         Widgets\RecentOrders::class,
         Widgets\TopCustomers::class,
     ];
