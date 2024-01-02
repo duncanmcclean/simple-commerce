@@ -89,12 +89,14 @@ class SwitchToDatabase extends Command
     {
         $this->info('Copying blueprint stubs...');
 
-        if (! File::exists(resource_path('blueprints/customer.yaml'))) {
-            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/customer.yaml'));
+        File::ensureDirectoryExists(resource_path('blueprints/vendor/runway'));
+
+        if (! File::exists(resource_path('blueprints/vendor/runway/customer.yaml'))) {
+            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/vendor/runway/customer.yaml'));
         }
 
-        if (! File::exists(resource_path('blueprints/order.yaml'))) {
-            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/order.yaml'));
+        if (! File::exists(resource_path('blueprints/vendor/runway/order.yaml'))) {
+            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/vendor/runway/order.yaml'));
         }
 
         return $this;
