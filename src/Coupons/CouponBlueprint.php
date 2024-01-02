@@ -160,7 +160,7 @@ class CouponBlueprint
                                             'customer_eligibility' => 'customers_by_domain',
                                         ],
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                         [
