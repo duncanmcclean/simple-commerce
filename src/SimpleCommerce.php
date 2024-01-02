@@ -136,7 +136,7 @@ class SimpleCommerce
         return static::taxEngine() instanceof Tax\Standard\TaxEngine;
     }
 
-    public static function shippingMethods(string $site = null)
+    public static function shippingMethods(?string $site = null)
     {
         if ($site) {
             return collect(static::$shippingMethods[$site] ?? []);
