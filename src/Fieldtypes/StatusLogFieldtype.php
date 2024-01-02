@@ -50,8 +50,19 @@ class StatusLogFieldtype extends Fieldtype
         });
     }
 
+    /**
+     * Allows for querying the timestamp of a status (it'll query the latest timestamp for that status)
+     * Eg: `->whereDate('status_log->paid', '>', '2024-01-01')`
+     */
     public function toQueryableValue($value)
     {
-        return $this->augment($value);
+        return $this->augment($value)
+            ->groupBy(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->value)
+            ->map(function ($events) {
+                $latestEvent = $events->sortByDesc(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->date())->first();
+
+                return $latestEvent->date();
+            })
+            ->toArray();
     }
 }
