@@ -56,7 +56,6 @@ import OverviewConfigure from './components/Overview/Configure.vue'
 import OverviewLowStockProducts from './components/Overview/LowStockProducts.vue'
 import OverviewOrdersChart from './components/Overview/OrdersChart.vue'
 import Overview from './components/Overview/Overview.vue'
-import OverviewTopCustomers from './components/Overview/TopCustomers.vue'
 
 Statamic.$components.register('overview-configure', OverviewConfigure)
 Statamic.$components.register(
@@ -65,7 +64,6 @@ Statamic.$components.register(
 )
 Statamic.$components.register('overview-orders-chart', OverviewOrdersChart)
 Statamic.$components.register('overview', Overview)
-Statamic.$components.register('overview-top-customers', OverviewTopCustomers)
 
 // Listings
 import CouponListing from './components/Listings/CouponListing.vue'
