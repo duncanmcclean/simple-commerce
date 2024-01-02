@@ -24,7 +24,12 @@ class CartController extends BaseActionController
             return [];
         }
 
-        return ['data' => $this->getCart()->toAugmentedArray()];
+        return [
+            'data' => $this->getCart()
+                ->toAugmentedCollection()
+                ->withShallowNesting()
+                ->toArray(),
+        ];
     }
 
     public function update(UpdateRequest $request)
