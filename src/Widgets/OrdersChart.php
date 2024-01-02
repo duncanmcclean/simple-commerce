@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
+use Illuminate\Support\Carbon;
 use Statamic\Facades\Collection;
 use Statamic\Widgets\Widget;
 
@@ -23,7 +24,7 @@ class OrdersChart extends Widget
             $indexUrl = cp_route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()]);
         }
 
-        $timePeriod = CarbonPeriod::create(now()->subDays(30)->format('Y-m-d'), now()->format('Y-m-d'));
+        $timePeriod = CarbonPeriod::create(Carbon::now()->subDays(30)->format('Y-m-d'), Carbon::now()->format('Y-m-d'));
 
         $data = collect($timePeriod)->map(function ($date) {
             if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
