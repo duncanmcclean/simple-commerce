@@ -31,6 +31,7 @@ test('can store coupon', function () {
             'minimum_cart_value' => '65.00',
             'enabled' => true,
             'expires_at' => null,
+            'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
             'redirect',
@@ -62,6 +63,7 @@ test('can store coupon with expiry date', function () {
                 'date' => '2024-01-01',
                 'time' => null,
             ],
+            'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
             'redirect',
@@ -83,6 +85,7 @@ test('cant store coupon where a coupon already exists with the provided code', f
             'description' => 'Fifty Friday',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'all',
         ])
         ->save();
 
@@ -96,6 +99,7 @@ test('cant store coupon where a coupon already exists with the provided code', f
                 'value' => 30,
             ],
             'description' => '30% discount on a Tuesday!',
+            'customer_eligibility' => 'all',
         ])
         ->assertSessionHasErrors('code');
 });
@@ -144,6 +148,7 @@ test('can update coupon', function () {
             'description' => 'Fifty Friday',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'all',
         ]);
 
     $coupon->save();
@@ -161,6 +166,7 @@ test('can update coupon', function () {
             'enabled' => false,
             'minimum_cart_value' => '76.00',
             'expires_at' => null,
+            'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
             'coupon',
@@ -184,6 +190,7 @@ test('can update coupon with expriry date', function () {
             'description' => 'Fifty Friday',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'all',
         ]);
 
     $coupon->save();
@@ -204,6 +211,7 @@ test('can update coupon with expriry date', function () {
                 'date' => '2024-01-01',
                 'time' => null,
             ],
+            'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
             'coupon',
@@ -224,6 +232,7 @@ test('cant update coupon if type is percentage and value is greater than 100', f
             'description' => 'Fifty Friday',
             'redeemed' => 0,
             'minimum_cart_value' => null,
+            'customer_eligibility' => 'all',
         ]);
 
     $coupon->save();
@@ -238,6 +247,7 @@ test('cant update coupon if type is percentage and value is greater than 100', f
                 'value' => 110,
             ],
             'description' => 'You can actually get a 51% discount on Friday!',
+            'customer_eligibility' => 'all',
         ])
         ->assertSessionHasErrors('value.value');
 

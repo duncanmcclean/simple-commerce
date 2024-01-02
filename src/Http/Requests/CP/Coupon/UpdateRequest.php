@@ -64,11 +64,20 @@ class UpdateRequest extends FormRequest
             'customer_eligibility' => [
                 'nullable',
                 'string',
-                Rule::in(['all', 'specific_customers']),
+                Rule::in(['all', 'specific_customers', 'customers_by_domain']),
             ],
             'customers' => [
-                'nullable',
+                'required_if:customer_eligibility,specific_customers',
                 'array',
+            ],
+            'customers_by_domain' => [
+                'required_if:customer_eligibility,customers_by_domain',
+                'array',
+            ],
+            'customers_by_domain.*' => [
+                'required',
+                'string',
+                'regex:/^[^@]*$/',
             ],
             'valid_from' => [
                 'nullable',
