@@ -91,6 +91,11 @@ class Customer implements Contract
         })->filter()->values();
     }
 
+    public function getKey()
+    {
+        return $this->id();
+    }
+
     public function routeNotificationForMail($notification = null)
     {
         return $this->email();

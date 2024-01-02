@@ -4,8 +4,8 @@ use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin\Helpers\FakeOffsiteGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Gateways\Builtin\Helpers\FakeOnsiteGateway;
+use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\FakeOffsiteGateway;
+use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\FakeOnsiteGateway;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Event;
 

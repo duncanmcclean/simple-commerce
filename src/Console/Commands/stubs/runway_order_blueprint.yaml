@@ -44,6 +44,7 @@ tabs:
               type: shipping_method
               width: 50
               visibility: read_only
+              max_items: 1
       - display: Totals
         fields:
           - handle: items_total
@@ -299,6 +300,29 @@ tabs:
     display: Sidebar
     sections:
       - fields:
+          - handle: status_log
+            field:
+              type: sc_status_log
+              display: 'Status Log'
+              listable: false
+              hide_display: true
+          - handle: order_date
+            field:
+              mode: single
+              inline: false
+              full_width: false
+              columns: 1
+              rows: 1
+              time_enabled: false
+              time_seconds_enabled: false
+              type: date
+              display: 'Order Date'
+              icon: date
+              listable: true
+              instructions_position: above
+              visibility: read_only
+              replicator_preview: true
+              hide_display: false
           - handle: order_status
             field:
               type: order_status
@@ -329,7 +353,3 @@ tabs:
               instructions_position: above
               listable: hidden
               always_save: false
-          - handle: status_log
-            field:
-              type: sc_status_log
-              display: "Status Log"

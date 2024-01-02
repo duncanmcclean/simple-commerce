@@ -3,8 +3,12 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Foundation\Console\AboutCommand;
+use Illuminate\Support\Carbon;
 use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Events\UserBlueprintFound;
@@ -41,6 +45,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\CountryFieldtype::class,
         Fieldtypes\CouponCodeFieldtype::class,
         Fieldtypes\CouponFieldtype::class,
+        Fieldtypes\CouponSummaryFieldtype::class,
         Fieldtypes\CouponValueFieldtype::class,
         Fieldtypes\GatewayFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
@@ -115,9 +120,11 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v5_0\UpdateNotificationsConfig::class,
         UpdateScripts\v5_0\UpdateOrderBlueprint::class,
         UpdateScripts\v5_0\CreateShippingTaxCategory::class,
+        UpdateScripts\v5_0\MigrateCouponsAfterUiUpdates::class,
     ];
 
     protected $vite = [
+        'hotFile' => 'vendor/simple-commerce/hot',
         'publicDirectory' => 'dist',
         'input' => [
             'resources/js/cp.js',
@@ -313,7 +320,7 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
-                    ->can("View {$orderResource->plural()}")
+                    ->can('view', $orderResource)
                     ->icon(SimpleCommerce::svg('shop'));
             }
 
@@ -342,7 +349,7 @@ class ServiceProvider extends AddonServiceProvider
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resourceHandle' => $customerResource->handle()])
-                    ->can("View {$customerResource->plural()}")
+                    ->can('view', $customerResource)
                     ->icon('user');
             }
 
@@ -451,6 +458,20 @@ class ServiceProvider extends AddonServiceProvider
         ) {
             Collection::computed(SimpleCommerce::productDriver()['collection'], 'raw_price', function ($entry, $value) {
                 return $entry->get('price');
+            });
+        }
+
+        if (
+            $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+        ) {
+            Collection::computed(SimpleCommerce::orderDriver()['collection'], 'order_date', function ($entry, $value) {
+                try {
+                    $order = Order::find($entry->id());
+
+                    return $order->statusLog()->where('status', OrderStatus::Placed)->map->date()->last();
+                } catch (OrderNotFound $e) {
+                    return Carbon::now();
+                }
             });
         }
     }

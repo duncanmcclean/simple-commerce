@@ -65,7 +65,7 @@ class GatewayFieldtype extends Fieldtype
 
         return [
             'data' => $value,
-            'entry' => optional($this->field->parent())->id(),
+            'entry' => optional($this->field->parent())->id,
 
             'gateway_class' => $gateway['class'],
             'display' => Gateway::use($gateway['class'])->fieldtypeDisplay($value),

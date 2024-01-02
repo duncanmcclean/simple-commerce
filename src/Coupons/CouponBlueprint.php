@@ -15,145 +15,243 @@ class CouponBlueprint
         $customerField = [
             'mode' => 'default',
             'collections' => [
-                'customers',
+                config('simple-commerce.content.customers.collection', 'customers'),
             ],
-            'display' => __('Customers'),
+            'display' => __('Specific Customers'),
             'type' => 'entries',
             'icon' => 'entries',
-            'instructions' => __('If selected, this coupon will only be valid for selected customers.'),
-            'width' => 50,
+            'if' => [
+                'customer_eligibility' => 'specific_customers',
+            ],
         ];
 
         if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], UserCustomerRepository::class)) {
             $customerField = [
                 'mode' => 'default',
-                'display' => __('Customers'),
+                'display' => __('Specific Customers'),
                 'type' => 'users',
                 'icon' => 'users',
-                'instructions' => __('If selected, this coupon will only be valid for selected customers.'),
-                'width' => 50,
+                'if' => [
+                    'customer_eligibility' => 'specific_customers',
+                ],
             ];
         }
 
         if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
             $customerField = [
                 'type' => 'has_many',
-                'instructions' => __('If selected, this coupon will only be valid for selected customers.'),
-                'display' => __('Customers'),
-                'width' => 50,
+                'display' => __('Specific Customers'),
                 'resource' => 'customers',
+                'if' => [
+                    'customer_eligibility' => 'specific_customers',
+                ],
             ];
         }
 
-        return Blueprint::makeFromTabs([
-            'main' => [
-                'display' => 'Main',
-                'fields' => [
-                    'code' => [
-                        'type' => 'coupon_code',
-                        'display' => __('Coupon Code'),
-                        'validate' => [
-                            'required',
+        return Blueprint::make()->setContents([
+            'tabs' => [
+                'main' => [
+                    'sections' => [
+                        [
+                            'fields' => [
+                                [
+                                    'handle' => 'code',
+                                    'field' => [
+                                        'type' => 'coupon_code',
+                                        'display' => __('Coupon Code'),
+                                        'validate' => ['required'],
+                                        'listable' => true,
+                                        'instructions' => __('Customers will enter this code to redeem the coupon.'),
+                                    ],
+                                ],
+                                [
+                                    'handle' => 'description',
+                                    'field' => [
+                                        'type' => 'textarea',
+                                        'instructions' => __('Give yourself a reminder of what this coupon is for.'),
+                                        'display' => __('Description'),
+                                        'listable' => true,
+                                    ],
+                                ],
+                            ],
                         ],
-                        'listable' => true,
-                        'instructions' => __('Customers will use this code to redeem the coupon.'),
-                    ],
-                    'description' => [
-                        'type' => 'textarea',
-                        'instructions' => __('Give yourself a reminder of what this coupon is for.'),
-                        'display' => __('Description'),
-                        'listable' => true,
-                    ],
-                    'type' => [
-                        'options' => [
-                            'percentage' => __('Percentage Discount'),
-                            'fixed' => __('Fixed Discount'),
+                        [
+                            'display' => __('Options'),
+                            'fields' => [
+                                [
+                                    'handle' => 'type',
+                                    'field' => [
+                                        'type' => 'select',
+                                        'options' => [
+                                            'percentage' => __('Percentage Discount'),
+                                            'fixed' => __('Fixed Discount'),
+                                        ],
+                                        'clearable' => false,
+                                        'multiple' => false,
+                                        'searchable' => false,
+                                        'taggable' => false,
+                                        'push_tags' => false,
+                                        'cast_booleans' => false,
+                                        'type' => 'select',
+                                        'display' => 'Type',
+                                        'width' => 50,
+                                        'validate' => ['required'],
+                                        'listable' => true,
+                                        'max_items' => 1,
+                                    ],
+                                ],
+                                [
+                                    'handle' => 'value',
+                                    'field' => [
+                                        'type' => 'coupon_value',
+                                        'display' => __('Value'),
+                                        'width' => 50,
+                                        'validate' => ['required'],
+                                        'listable' => true,
+                                    ],
+                                ],
+                            ],
                         ],
-                        'clearable' => false,
-                        'multiple' => false,
-                        'searchable' => false,
-                        'taggable' => false,
-                        'push_tags' => false,
-                        'cast_booleans' => false,
-                        'type' => 'select',
-                        'display' => 'Type',
-                        'width' => 50,
-                        'validate' => [
-                            'required',
+                        [
+                            'display' => __('Minimum Requirements'),
+                            'fields' => [
+                                [
+                                    'handle' => 'minimum_cart_value',
+                                    'field' => [
+                                        'type' => 'money',
+                                        'instructions' => __("The minimum value the customer's cart should have before this coupon can be redeemed."),
+                                        'width' => 50,
+                                        'display' => __('Minimum Order Value'),
+                                        'listable' => 'hidden',
+                                    ],
+                                ],
+                            ],
                         ],
-                        'listable' => true,
-                        'max_items' => 1,
-                    ],
-                    'value' => [
-                        'type' => 'coupon_value',
-                        'display' => __('Value'),
-                        'width' => 50,
-                        'validate' => [
-                            'required',
+                        [
+                            'display' => __('Customer Eligibility'),
+                            'fields' => [
+                                [
+                                    'handle' => 'customer_eligibility',
+                                    'field' => [
+                                        'options' => [
+                                            'all' => __('All'),
+                                            'specific_customers' => __('Specific customers'),
+                                            'customers_by_domain' => __('Specific customers (by domain)'),
+                                        ],
+                                        'inline' => false,
+                                        'type' => 'radio',
+                                        'display' => __('Which customers are eligible for this coupon?'),
+                                        'validate' => ['required'],
+                                        'default' => 'all',
+                                    ],
+                                ],
+                                [
+                                    'handle' => 'customers',
+                                    'field' => $customerField,
+                                ],
+                                [
+                                    'handle' => 'customers_by_domain',
+                                    'field' => [
+                                        'type' => 'list',
+                                        'display' => __('Domains'),
+                                        'instructions' => __('Provide a list of domains that are eligible for this coupon. One per line.'),
+                                        'add_button' => __('Add Domain'),
+                                        'if' => [
+                                            'customer_eligibility' => 'customers_by_domain',
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
-                        'listable' => true,
-                    ],
-                    'optional_settings' => [
-                        'type' => 'section',
-                        'display' => __('Optional Settings'),
-                        'listable' => 'hidden',
-                    ],
-                    'maximum_uses' => [
-                        'input_type' => 'text',
-                        'type' => 'text',
-                        'instructions' => __('If set, this coupon will only be able to be used a certain amount of times.'),
-                        'width' => 50,
-                        'display' => __('Maximum Uses'),
-                        'listable' => 'hidden',
-                    ],
-                    'minimum_cart_value' => [
-                        'read_only' => false,
-                        'type' => 'money',
-                        'instructions' => __("What's the minimum items total a cart should have before this coupon can be redeemed?"),
-                        'width' => 50,
-                        'display' => __('Minimum Cart Value'),
-                        'listable' => 'hidden',
-                    ],
-                    'products' => [
-                        'mode' => 'default',
-                        'collections' => [
-                            config('simple-commerce.content.products.collection', 'product'),
+                        [
+                            'display' => __('Usage Limits'),
+                            'fields' => [
+                                [
+                                    'handle' => 'maximum_uses',
+                                    'field' => [
+                                        'type' => 'integer',
+                                        'width' => 50,
+                                        'display' => __('Maximum times coupon can be redeemed'),
+                                        'instructions' => __('By default, coupons can be redeemed an unlimited amount of times. You can set a maximum here if you wish.'),
+                                        'listable' => 'hidden',
+                                    ],
+                                ],
+                                [
+                                    'handle' => 'products',
+                                    'field' => [
+                                        'mode' => 'default',
+                                        'collections' => [
+                                            config('simple-commerce.content.products.collection', 'products'),
+                                        ],
+                                        'display' => __('Limit to certain products'),
+                                        'instructions' => __('This coupon will only be redeemable when *any* of these products are present in the order.'),
+                                        'type' => 'entries',
+                                        'icon' => 'entries',
+                                        'width' => 50,
+                                        'listable' => 'hidden',
+                                    ],
+                                ],
+                            ],
                         ],
-                        'display' => __('Products'),
-                        'type' => 'entries',
-                        'icon' => 'entries',
-                        'width' => 50,
-                        'instructions' => __('If selected, this coupon will only be valid when any of the products are present.'),
-                        'listable' => 'hidden',
-                    ],
-                    'customers' => $customerField,
-                    'expires_at' => [
-                        'type' => 'date',
-                        'display' => __('Expires At'),
-                        'instructions' => __('If defined, this coupon will no longer be redeemable after the expiry date.'),
-                        'width' => 50,
-                        'listable' => 'hidden',
+                        [
+                            'display' => __('Active Dates'),
+                            'instructions' => __('Configure when this coupon is active. Leave both dates blank to make the coupon active indefinitely.'),
+                            'fields' => [
+                                [
+                                    'handle' => 'valid_from',
+                                    'field' => [
+                                        'type' => 'date',
+                                        'display' => __('Start Date'),
+                                        'width' => 50,
+                                        'listable' => 'hidden',
+                                    ],
+                                ],
+                                [
+                                    'handle' => 'expires_at',
+                                    'field' => [
+                                        'type' => 'date',
+                                        'display' => __('End Date'),
+                                        'width' => 50,
+                                        'listable' => 'hidden',
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
-            ],
-
-            'sidebar' => [
-                'display' => 'Sidebar',
-                'fields' => [
-                    'enabled' => [
-                        'display' => __('Enabled?'),
-                        'type' => 'toggle',
-                        'instructions' => __('When disabled, this coupon will not be redeemable.'),
-                        'default' => true,
-                        'listable' => 'hidden',
-                    ],
-                    'redeemed' => [
-                        'type' => 'integer',
-                        'instructions' => __('Amount of times this coupon has been redeemed.'),
-                        'display' => __('Redeemed'),
-                        'read_only' => true,
-                        'default' => 0,
-                        'listable' => 'hidden',
+                'sidebar' => [
+                    'sections' => [
+                        [
+                            'fields' => [
+                                ['handle' => 'summary', 'field' => ['type' => 'coupon_summary']],
+                            ],
+                        ],
+                        [
+                            'fields' => [
+                                // TODO: Remove this 'Enabled' state in favour of the start/end dates.
+                                [
+                                    'handle' => 'enabled',
+                                    'field' => [
+                                        'type' => 'toggle',
+                                        'instructions' => __('When disabled, this coupon will not be able to be redeemed. This setting overrides other settings.'),
+                                        'default' => true,
+                                        'listable' => 'hidden',
+                                        'display' => __('Enabled?'),
+                                    ],
+                                ],
+                                [
+                                    'handle' => 'redeemed',
+                                    'field' => [
+                                        'type' => 'integer',
+                                        'display' => __('Redemptions'),
+                                        'instructions' => __('The number of times this coupon has been redeemed.'),
+                                        'visibility' => 'read_only',
+                                        'default' => 0,
+                                        'listable' => 'hidden',
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],

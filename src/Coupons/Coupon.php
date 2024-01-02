@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Currency;
 use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use Illuminate\Support\Str;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;
@@ -110,6 +111,12 @@ class Coupon implements Contract
             return false;
         }
 
+        if ($this->get('valid_from') !== null) {
+            if (Carbon::parse($this->get('valid_from'))->isFuture()) {
+                return false;
+            }
+        }
+
         if ($this->has('expires_at') && $this->get('expires_at') !== null) {
             if (Carbon::parse($this->get('expires_at'))->isPast()) {
                 return false;
@@ -139,8 +146,19 @@ class Coupon implements Contract
         }
 
         if ($this->isCustomerSpecific()) {
-            $isCustomerAllowed = collect($this->get('customers'))
-                ->contains(optional($order->customer())->id());
+            $isCustomerAllowed = collect($this->get('customers'))->contains(optional($order->customer())->id());
+
+            if (! $isCustomerAllowed) {
+                return false;
+            }
+        }
+
+        if ($this->customerEligibility() === 'customers_by_domain' && $domains = $this->get('customers_by_domain')) {
+            if (! $order->customer()) {
+                return false;
+            }
+
+            $isCustomerAllowed = collect($domains)->contains(Str::after($order->customer()->email(), '@'));
 
             if (! $isCustomerAllowed) {
                 return false;
@@ -160,15 +178,22 @@ class Coupon implements Contract
         return $this;
     }
 
-    protected function isProductSpecific()
+    protected function isProductSpecific(): bool
     {
         return $this->has('products')
             && collect($this->get('products'))->count() >= 1;
     }
 
-    protected function isCustomerSpecific()
+    protected function customerEligibility(): string
     {
-        return $this->has('customers')
+        return $this->get('customer_eligibility') ?? 'all';
+    }
+
+    protected function isCustomerSpecific(): bool
+    {
+        return
+            $this->customerEligibility() === 'specific_customers'
+            && $this->has('customers')
             && collect($this->get('customers'))->count() >= 1;
     }
 

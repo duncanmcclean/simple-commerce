@@ -1,6 +1,60 @@
 # Changelog
 
-## Unreleased
+## v5.9.0 (2024-01-02)
+
+### What's new
+- Added 'Start Date' setting to coupons #959 by @duncanmcclean
+- You can now whitelist customers in coupons by their domains #960 by @duncanmcclean
+
+### What's improved
+- Improved the Coupons UI in the Control Panel (& added a new 'Summary' to coupons) #959 by @duncanmcclean
+
+## v5.8.0 (2023-12-23)
+
+### What's new
+* You can now view the Status Log history in the Control Panel #956 by @duncanmcclean
+
+### What's improved
+* Refactored the `CheckoutController` #957 by @duncanmcclean
+* Coupon blueprint now uses an actual section, rather than the old Section fieldtype
+
+### What's fixed
+* Added `max_items` to Shipping Method field in default orders blueprint
+
+## v5.7.0 (2023-12-22)
+
+### What's new
+* Orders *finally* have an "Order Date" field #955 by @duncanmcclean
+* The Product Variants field can now be localized #952 by @duncanmcclean
+* PHP 8.3 Support #951 by @duncanmcclean
+
+### What's improved
+* Changed how the "status log" is saved #954 by @duncanmcclean
+* Simplified the handling of customer information in the `{{ sc:cart:addItem }}` and `{{ sc:cart:update }}` tags
+* Various improvements to the docs
+
+### What's fixed
+* Name & Email are now listed by default in the Database Customers listing
+* Fixed Gateway Fieldtype when using Database Orders
+* Fixed errors in the "switch to database" process
+* Fixed Product Variant fieldtype when viewed in inline publish form #950 by @duncanmcclean
+
+## v5.6.2 (2023-11-18)
+
+### What's fixed
+
+* Fixed missing Control Panel nav items when using database orders & logged in as a non-super-user #937 #938 by @duncanmcclean
+
+## v5.6.1 (2023-11-16)
+
+### What's fixed
+
+* The Product Variants fieldtype now augments fields *with* the config for each of the fields #936 by @duncanmcclean
+
+### What's improved
+
+* Tidied up empty state for Tax & Coupon pages in the Control Panel #628 by @duncanmcclean
+* Notifications are now disabled by default
 
 ## v5.6.0 (2023-09-27)
 

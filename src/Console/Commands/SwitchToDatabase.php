@@ -34,11 +34,18 @@ class SwitchToDatabase extends Command
             return $this->error('You should not run this command in production. Please switch locally first, then deploy the changes.');
         }
 
+        if (! Composer::create()->isInstalled('doublethreedigital/runway')) {
+            return $this->error('You need to install Runway before running this command. Run `composer require doublethreedigital/runway` first.');
+        }
+
+        if (! Composer::create()->isInstalled('doctrine/dbal')) {
+            return $this->error('You need to install Doctrine DBAL before running this command. Run `composer require doctrine/dbal` first.');
+        }
+
         $this
             ->copyMigrationStubs()
             ->copyBlueprintStubs()
-            ->installRunway()
-            ->installDbal()
+            ->publishRunwayConfig()
             ->switchRepositories();
 
         $this->line('');
@@ -63,6 +70,34 @@ class SwitchToDatabase extends Command
         return $this;
     }
 
+    protected function copyBlueprintStubs(): self
+    {
+        $this->info('Copying blueprint stubs...');
+
+        File::ensureDirectoryExists(resource_path('blueprints/vendor/runway'));
+
+        if (! File::exists(resource_path('blueprints/vendor/runway/customer.yaml'))) {
+            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/vendor/runway/customer.yaml'));
+        }
+
+        if (! File::exists(resource_path('blueprints/vendor/runway/order.yaml'))) {
+            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/vendor/runway/order.yaml'));
+        }
+
+        return $this;
+    }
+
+    protected function publishRunwayConfig(): self
+    {
+        $this->info('Publishing Runway config file...');
+
+        if (! File::exists(config_path('runway.php'))) {
+            File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
+        }
+
+        return $this;
+    }
+
     protected function switchRepositories(): self
     {
         $this->info('Switching content repositories...');
@@ -81,53 +116,6 @@ class SwitchToDatabase extends Command
                 'model' => \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class,
             ])
             ->save();
-
-        return $this;
-    }
-
-    protected function copyBlueprintStubs(): self
-    {
-        $this->info('Copying blueprint stubs...');
-
-        File::ensureDirectoryExists(resource_path('blueprints/vendor/runway'));
-
-        if (! File::exists(resource_path('blueprints/vendor/runway/customer.yaml'))) {
-            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/vendor/runway/customer.yaml'));
-        }
-
-        if (! File::exists(resource_path('blueprints/vendor/runway/order.yaml'))) {
-            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/vendor/runway/order.yaml'));
-        }
-
-        return $this;
-    }
-
-    protected function installRunway(): self
-    {
-        $this->info('Installing Runway...');
-
-        if (! Composer::create()->isInstalled('doublethreedigital/runway')) {
-            Composer::create()->require('doublethreedigital/runway');
-        }
-
-        if (! File::exists(config_path('runway.php'))) {
-            File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
-        }
-
-        return $this;
-    }
-
-    protected function installDbal(): self
-    {
-        $this->info('Installing Doctrine DBAL...');
-
-        if (! Composer::create()->isInstalled('doctrine/dbal')) {
-            Composer::create()->require('doctrine/dbal');
-        }
-
-        if (! File::exists(config_path('runway.php'))) {
-            File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
-        }
 
         return $this;
     }

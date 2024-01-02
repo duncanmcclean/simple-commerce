@@ -5,7 +5,7 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
-use DoubleThreeDigital\SimpleCommerce\Tests\Tax\Helpers\DummyShippingMethod;
+use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\DummyShippingMethod;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Collection;
 

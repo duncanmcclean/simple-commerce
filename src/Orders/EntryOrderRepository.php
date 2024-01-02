@@ -27,7 +27,10 @@ class EntryOrderRepository implements RepositoryContract
 
     public function all()
     {
-        return Entry::whereCollection($this->collection)->all();
+        return Entry::query()
+            ->where('collection', $this->collection)
+            ->get()
+            ->transform(fn ($entry) => $this->fromEntry($entry));
     }
 
     public function find($id): ?Order
@@ -38,6 +41,11 @@ class EntryOrderRepository implements RepositoryContract
             throw new OrderNotFound("Order [{$id}] could not be found.");
         }
 
+        return $this->fromEntry($entry);
+    }
+
+    protected function fromEntry($entry): Order
+    {
         $order = app(Order::class)
             ->resource($entry)
             ->id($entry->id())

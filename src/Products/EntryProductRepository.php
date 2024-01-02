@@ -21,7 +21,10 @@ class EntryProductRepository implements RepositoryContract
 
     public function all()
     {
-        return Entry::whereCollection($this->collection)->all();
+        return Entry::query()
+            ->where('collection', $this->collection)
+            ->get()
+            ->transform(fn ($entry) => $this->fromEntry($entry));
     }
 
     public function find($id): ?Product
@@ -32,6 +35,11 @@ class EntryProductRepository implements RepositoryContract
             throw new ProductNotFound("Product [{$id}] could not be found.");
         }
 
+        return $this->fromEntry($entry);
+    }
+
+    protected function fromEntry($entry)
+    {
         $product = app(Product::class)
             ->resource($entry)
             ->id($entry->id());

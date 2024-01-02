@@ -130,6 +130,22 @@ class EnforceEntryBlueprintFields
             'save_zero_value' => true,
         ]);
 
+        $event->blueprint->ensureField('status_log', [
+            'type' => 'sc_status_log',
+            'display' => 'Status Log',
+            'listable' => 'hidden',
+            'hide_display' => true,
+        ], 'sidebar');
+
+        $event->blueprint->ensureField('order_date', [
+            'type' => 'date',
+            'display' => 'Order Date',
+            'mode' => 'single',
+            'time_enabled' => false,
+            'listable' => true,
+            'visibility' => 'read_only',
+        ], 'sidebar');
+
         $event->blueprint->ensureField('order_status', [
             'type' => 'order_status',
             'display' => 'Order Status',
@@ -142,11 +158,6 @@ class EnforceEntryBlueprintFields
             'display' => 'Payment Status',
             'read_only' => true,
             'validate' => 'required',
-        ], 'sidebar');
-
-        $event->blueprint->ensureField('status_log', [
-            'type' => 'sc_status_log',
-            'display' => 'Status Log',
         ], 'sidebar');
 
         return $event->blueprint;

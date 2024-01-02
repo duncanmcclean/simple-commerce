@@ -49,6 +49,7 @@ tabs:
               type: shipping_method
               width: 50
               visibility: read_only
+              max_items: 1
       - display: Totals
         fields:
           - handle: items_total
@@ -314,6 +315,12 @@ tabs:
               validate:
                 - required
               visibility: read_only
+          - handle: status_log
+            field:
+              type: sc_status_log
+              display: 'Status Log'
+              listable: false
+              hide_display: true
           - handle: order_status
             field:
               type: order_status
@@ -344,7 +351,3 @@ tabs:
               instructions_position: above
               listable: hidden
               always_save: false
-          - handle: status_log
-            field:
-              type: sc_status_log
-              display: "Status Log"

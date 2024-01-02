@@ -21,7 +21,10 @@ class EntryCustomerRepository implements RepositoryContract
 
     public function all()
     {
-        return Entry::whereCollection($this->collection)->all();
+        return Entry::query()
+            ->where('collection', $this->collection)
+            ->get()
+            ->transform(fn ($entry) => $this->fromEntry($entry));
     }
 
     public function find($id): ?Customer
@@ -32,18 +35,7 @@ class EntryCustomerRepository implements RepositoryContract
             throw new CustomerNotFound("Customer [{$id}] could not be found.");
         }
 
-        return app(Customer::class)
-            ->resource($entry)
-            ->id($entry->id())
-            ->email($entry->get('email'))
-            ->data(array_merge(
-                $entry->data()->toArray(),
-                [
-                    'site' => optional($entry->site())->handle(),
-                    'slug' => $entry->slug(),
-                    'published' => $entry->published(),
-                ]
-            ));
+        return $this->fromEntry($entry);
     }
 
     public function findByEmail(string $email): ?Customer
@@ -57,7 +49,23 @@ class EntryCustomerRepository implements RepositoryContract
             throw new CustomerNotFound("Customer [{$email}] could not be found.");
         }
 
-        return $this->find($entry->id());
+        return $this->fromEntry($entry);
+    }
+
+    protected function fromEntry($entry)
+    {
+        return app(Customer::class)
+            ->resource($entry)
+            ->id($entry->id())
+            ->email($entry->get('email'))
+            ->data(array_merge(
+                $entry->data()->toArray(),
+                [
+                    'site' => optional($entry->site())->handle(),
+                    'slug' => $entry->slug(),
+                    'published' => $entry->published(),
+                ]
+            ));
     }
 
     public function make(): Customer

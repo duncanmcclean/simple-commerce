@@ -31,6 +31,20 @@ $product->variantOptions();
 // Get a specific variant (returns a ProductVariant instance)
 $product->variant('Red_Large');
 
+// Set product variants & options.
+$product->productVariants([
+    'variants' => [
+        ['name' => 'Colours', 'values' => ['Red', 'Green', 'Blue']],
+        ['name' => 'Size', 'value' => ['Small', 'Medium']],
+    ],
+    'options' => [
+        ['key' => 'Red_Small', 'variant' => 'Red Small', 'price' => 2500],
+        ['key' => 'Red_Medium', 'variant' => 'Red Medium', 'price' => 2700],
+        ['key' => 'Green_Small', 'variant' => 'Green Small', 'price' => 2500],
+        // ...
+    ],
+]);
+
 // Set the product title (works the same for any Entry data)
 $product->set('title', 'Tartan Kilt');
 ```
@@ -118,7 +132,7 @@ $shippingAddress->toArray();
 // Redeem a coupon
 $order->redeemCoupon('coupon-code');
 
-// Get the status log (you may optionally pass in a status as a parameter to get the timestamp)
+// Get the status log
 $order->statusLog();
 
 // Recalculate order totals

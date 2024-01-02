@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
 
+use Illuminate\Support\Arr;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
@@ -136,6 +137,7 @@ class ProductVariantsFieldtype extends Fieldtype
                             ->map(function ($field) use ($value, $method) {
                                 return (new FieldtypeRepository())
                                     ->find($field['type'])
+                                    ->setField(new Field($field['handle'], Arr::except($field, ['handle'])))
                                     ->{$method}($value);
                             })
                             ->first();
@@ -226,7 +228,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     protected function optionFields(): Fields
     {
-        $optionFields = array_merge([
+        $optionFields = collect([
             [
                 'handle' => 'key',
                 'field' => [
@@ -259,7 +261,16 @@ class ProductVariantsFieldtype extends Fieldtype
                     'width' => 50,
                 ],
             ],
-        ], $this->config('option_fields', []));
+        ])
+            ->merge($this->config('option_fields', []))
+            ->when($this->config('localizable', false), function ($fields) {
+                return $fields->map(function (array $field) {
+                    $field['field']['localizable'] = true;
+
+                    return $field;
+                });
+            })
+            ->toArray();
 
         return new Fields($optionFields, $this->field()->parent(), $this->field());
     }

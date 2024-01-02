@@ -54,6 +54,8 @@ export default {
 
     props: ['meta'],
 
+    inject: ['storeName'],
+
     data() {
         return {
             initializing: true,
@@ -65,7 +67,7 @@ export default {
 
     computed: {
         product() {
-            return Statamic.$store.state.publish.base.values.items[
+            return Statamic.$store.state.publish[this.storeName].values.items[
                 this.namePrefix.match(/\[(.*)\]/).pop()
             ].product[0]
         },

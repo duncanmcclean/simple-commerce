@@ -4,9 +4,13 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\Runway\Traits\HasRunwayResource;
 use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 class OrderModel extends Model
 {
@@ -32,5 +36,20 @@ class OrderModel extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(CustomerModel::class);
+    }
+
+    public function orderDate(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                try {
+                    $order = OrderFacade::find($this->id);
+
+                    return $order->statusLog()->where('status', OrderStatus::Placed)->map->date()->last();
+                } catch (OrderNotFound $e) {
+                    return Carbon::now();
+                }
+            },
+        );
     }
 }

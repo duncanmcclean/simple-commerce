@@ -10,6 +10,7 @@ tabs:
           width: 50
           display: Name
           validate: required
+          listable: shown
       - handle: email
         field:
           input_type: email
@@ -17,6 +18,7 @@ tabs:
           width: 50
           display: Email
           validate: required
+          listable: shown
       - handle: orders
         field:
           create: false
