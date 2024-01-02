@@ -18,14 +18,17 @@ class RecentOrders extends Widget
 {
     public function html()
     {
+        $indexUrl = null;
         $recentOrders = null;
 
         if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            $indexUrl = cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
+
             $recentOrders = Collection::find(SimpleCommerce::orderDriver()['collection'])
                 ->queryEntries()
                 ->where('payment_status', PaymentStatus::Paid->value)
                 ->orderBy('status_log->paid', 'desc')
-                ->limit(5)
+                ->limit($this->config('limit', 5))
                 ->get()
                 ->map(function ($entry) {
                     $order = Order::find($entry->id());
@@ -45,10 +48,12 @@ class RecentOrders extends Widget
         }
 
         if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            $indexUrl = cp_route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()]);
+
             $recentOrders = Runway::orderModel()->model()->query()
                 ->where('payment_status', PaymentStatus::Paid->value)
                 ->orderBy('data->status_log->paid', 'desc')
-                ->limit(5)
+                ->limit($this->config('limit', 5))
                 ->get()
                 ->map(function ($order) {
                     $order = Order::find($order->id);
@@ -60,6 +65,11 @@ class RecentOrders extends Widget
                             'resourceHandle' => Runway::orderModel()->handle(),
                             'record' => $order->resource()->{$order->getRouteKeyName()},
                         ]),
+                        'date' => $order->statusLog()
+                            ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
+                            ->last()
+                            ->date()
+                            ->format(config('statamic.system.date_format')),
                     ];
                 })
                 ->values();
@@ -70,7 +80,7 @@ class RecentOrders extends Widget
         }
 
         return view('simple-commerce::cp.widgets.recent-orders', [
-            'url' => '#', // TODO
+            'url' => $indexUrl,
             'recentOrders' => $recentOrders,
         ]);
     }
