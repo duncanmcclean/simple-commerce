@@ -260,6 +260,28 @@ test('is not valid when coupon is disabled', function () {
     expect($isValid)->toBeFalse();
 });
 
+test('is not valid before coupon valid_from timestamp', function () {
+    [$product, $order] = buildCartWithProducts();
+
+    $coupon = Coupon::make()
+        ->id(Stache::generateId())
+        ->code('halv-price')
+        ->value(50)
+        ->type('percentage')
+        ->data([
+            'description' => 'Halv Price',
+            'redeemed' => 0,
+            'minimum_cart_value' => null,
+            'valid_from' => '2030-01-01',
+        ]);
+
+    $coupon->save();
+
+    $isValid = $coupon->isValid($order);
+
+    expect($isValid)->toBeFalse();
+});
+
 test('is not valid after coupon has expired', function () {
     [$product, $order] = buildCartWithProducts();
 

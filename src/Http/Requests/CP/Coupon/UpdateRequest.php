@@ -61,9 +61,25 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'array',
             ],
+            'customer_eligibility' => [
+                'nullable',
+                'string',
+                Rule::in(['all', 'specific_customers']),
+            ],
             'customers' => [
                 'nullable',
                 'array',
+            ],
+            'valid_from' => [
+                'nullable',
+                'array',
+            ],
+            'valid_from.date' => [
+                'nullable',
+                'date',
+            ],
+            'valid_from.time' => [
+                'nullable',
             ],
             'expires_at' => [
                 'nullable',
