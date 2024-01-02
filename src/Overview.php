@@ -77,43 +77,6 @@ class Overview
                 });
             }
         );
-
-        static::registerWidget(
-            'low-stock-products',
-            [
-                'name' => __('Low Stock Products'),
-                'component' => 'overview-low-stock-products',
-            ],
-            function (Request $request) {
-                if ((new self)->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)) {
-                    $query = Collection::find(SimpleCommerce::productDriver()['collection'])
-                        ->queryEntries()
-                        ->where('stock', '<', config('simple-commerce.low_stock_threshold'))
-                        ->orderBy('stock', 'asc')
-                        ->get()
-                        ->reject(function ($entry) {
-                            return $entry->has('product_variants')
-                                || ! $entry->has('stock');
-                        })
-                        ->take(5)
-                        ->map(function ($entry) {
-                            return Product::find($entry->id());
-                        })
-                        ->values();
-
-                    return $query->map(function ($product) {
-                        return [
-                            'id' => $product->id(),
-                            'title' => $product->get('title'),
-                            'stock' => $product->stock(),
-                            'edit_url' => $product->resource()->editUrl(),
-                        ];
-                    });
-                }
-
-                return null;
-            },
-        );
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
