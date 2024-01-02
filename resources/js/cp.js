@@ -1,5 +1,4 @@
 // Fieldtypes
-
 import CouponCodeFieldtype from './components/Fieldtypes/CouponCodeFieldtype.vue'
 import CouponSummaryFieldtype from './components/Fieldtypes/CouponSummaryFieldtype.vue'
 import CouponValueFieldtype from './components/Fieldtypes/CouponValueFieldtype.vue'
@@ -14,7 +13,10 @@ import ProductVariantsFildtype from './components/Fieldtypes/ProductVariants/Pro
 import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
 
 Statamic.$components.register('coupon-code-fieldtype', CouponCodeFieldtype)
-Statamic.$components.register('coupon-summary-fieldtype', CouponSummaryFieldtype)
+Statamic.$components.register(
+    'coupon-summary-fieldtype',
+    CouponSummaryFieldtype
+)
 Statamic.$components.register('coupon-value-fieldtype', CouponValueFieldtype)
 Statamic.$components.register('gateway-fieldtype', GatewayFieldtype)
 Statamic.$components.register('money-fieldtype', MoneyFieldtype)
@@ -42,31 +44,13 @@ Statamic.$components.register(
 Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)
 
 // Inputs
-
 import RegionSelector from './components/Inputs/RegionSelector.vue'
-
 Statamic.$components.register('region-selector', RegionSelector)
-
-// Overview
-
-import OverviewConfigure from './components/Overview/Configure.vue'
-import OverviewLowStockProducts from './components/Overview/LowStockProducts.vue'
-import OverviewOrdersChart from './components/Overview/OrdersChart.vue'
-import Overview from './components/Overview/Overview.vue'
-import OverviewRecentOrders from './components/Overview/RecentOrders.vue'
-import OverviewTopCustomers from './components/Overview/TopCustomers.vue'
-
-Statamic.$components.register('overview-configure', OverviewConfigure)
-Statamic.$components.register(
-    'overview-low-stock-products',
-    OverviewLowStockProducts
-)
-Statamic.$components.register('overview-orders-chart', OverviewOrdersChart)
-Statamic.$components.register('overview', Overview)
-Statamic.$components.register('overview-recent-orders', OverviewRecentOrders)
-Statamic.$components.register('overview-top-customers', OverviewTopCustomers)
 
 // Listings
 import CouponListing from './components/Listings/CouponListing.vue'
-
 Statamic.$components.register('coupon-listing', CouponListing)
+
+// Widgets
+import OrdersChart from './components/Widgets/OrdersChart.vue'
+Statamic.$components.register('orders-chart', OrdersChart)

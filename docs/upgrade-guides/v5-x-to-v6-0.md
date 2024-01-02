@@ -43,6 +43,10 @@ The `all` method on these repositories now returns a `Collection` of `Order`/`Pr
 
 This saves you needing to `find` the order/product/customer to use any of Simple Commerce's helper methods.
 
+### Medium: The "Overview" page has been removed
+
+The "Overview" page has been removed in Simple Commerce v6, in favour of Dashboard Widgets. To configure Simple Commerce widgets, review the [Control Panel](/control-panel#content-widgets) page.
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)

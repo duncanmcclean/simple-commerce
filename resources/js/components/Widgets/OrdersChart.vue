@@ -1,26 +1,18 @@
 <template>
-    <div class="card p-2 content mb-2">
-        <div class="flex justify-between items-center p-2">
-            <h2 class="font-semibold text-base">
-                {{ __('Number of Orders (Last 30 Days)') }}
-            </h2>
-        </div>
-
-        <div class="flex flex-wrap -mx-2 mb-4">
-            <div class="px-2 w-full">
-                <div class="px-1" v-if="ready">
-                    <LineChartGenerator
-                        :chart-options="chartOptions"
-                        :chart-data="chartData"
-                        :chart-id="'overview-orders-chart'"
-                        :dataset-id-key="'label'"
-                        :cssClasses="''"
-                        :styles="{}"
-                        :plugins="[]"
-                        :width="'400'"
-                        :height="'200'"
-                    />
-                </div>
+    <div class="flex flex-wrap -mx-2 mb-4">
+        <div class="px-2 w-full">
+            <div class="px-1" v-if="ready">
+                <LineChartGenerator
+                    :chart-options="chartOptions"
+                    :chart-data="chartData"
+                    :chart-id="'orders-chart'"
+                    :dataset-id-key="'label'"
+                    :cssClasses="''"
+                    :styles="{}"
+                    :plugins="[]"
+                    :width="'400'"
+                    :height="'200'"
+                />
             </div>
         </div>
     </div>
