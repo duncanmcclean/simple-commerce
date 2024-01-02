@@ -10,6 +10,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
@@ -1083,6 +1084,42 @@ test('can store item with customer array and existing customer and additional cu
     expect('Pluto')->toBe($cart->customer()->name());
     expect('pluto@clubhouse.disney')->toBe($cart->customer()->email());
     expect('01/01/2000')->toBe($cart->customer()->get('dob'));
+});
+
+test('can store item and use logged in user as customer', function () {
+    setupUserCustomerRepository();
+
+    $product = Product::make()
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ]);
+
+    $product->save();
+
+    $user = User::make()->email('james@example.com')->set('name', 'James Test');
+    $user->save();
+
+    $response = $this
+        ->actingAs($user)
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => 1,
+        ]);
+
+    $response->assertRedirect('/products/'.$product->get('slug'));
+    $response->assertSessionHas('simple-commerce-cart');
+
+    $cart = Order::find(session()->get('simple-commerce-cart'));
+
+    $this->assertNotNull($cart->customer());
+    expect($user->id)->toBe($cart->customer()->id());
+    expect($user->name)->toBe($cart->customer()->name());
+    expect($user->email)->toBe($cart->customer()->email());
+
+    tearDownUserCustomerRepository();
 });
 
 test('can store item where product requires prerequisite product and customer has purchased prerequisite product', function () {

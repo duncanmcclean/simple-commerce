@@ -10,6 +10,9 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
+
+use function PHPUnit\Framework\assertSame;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
@@ -547,6 +550,32 @@ test('can update cart and ensure customer is not overwritten', function () {
     expect($cartCustomer->id)->toBe($customer->id);
     expect($cartCustomer->get('name'))->toBe($customer->get('name'));
 })->skip();
+
+test('can update cart and use logged in user as customer', function () {
+    setupUserCustomerRepository();
+
+    $cart = Order::make();
+    $cart->save();
+
+    $user = User::make()->email('james@example.com')->set('name', 'James Test');
+    $user->save();
+
+    $response = $this
+        ->actingAs($user)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'));
+
+    $response->assertRedirect('/cart');
+
+    $cart = $cart->fresh();
+
+    assertSame($cart->customer()->id(), $user->id());
+    assertSame($cart->customer()->name(), $user->name);
+    assertSame($cart->customer()->email(), $user->email);
+
+    tearDownUserCustomerRepository();
+});
 
 test('can update cart with custom redirect page', function () {
     $cart = Order::make();
