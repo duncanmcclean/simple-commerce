@@ -29,7 +29,7 @@
                 Can only be used when certain products are part of the order
             </li>
 
-            <li v-if="values.expires_at?.date" class="text-sm mb-1.5">
+            <li v-if="values.valid_from?.date" class="text-sm mb-1.5">
                 Redeemable after {{ values.valid_from.date }}
             </li>
 
