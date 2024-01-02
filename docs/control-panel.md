@@ -2,87 +2,92 @@
 title: Control Panel
 ---
 
-Once installed, Simple Commerce will create a 'Simple Commerce' section in the Control Panel Nav for your users to access Orders, Products, etc without needing to go via the Collections menu.
+## Control Panel Navigation
 
-Simple Commerce will also give you an 'Overview' page which lets you get a top-level picture of your e-commerce store, there's more documentation on that below:
+Once installed, you'll see a "Simple Commerce" section in the Control Panel navigation. It provides easy access to Orders, Products, Coupons, etc.
 
-## 'Overview' Page
+![Simple Commerce section in Control Panel nav](/img/simple-commerce/cp-nav-section.png)
 
-![Overview Screenshot](/img/simple-commerce/cp-overview.png)
+If you want to hide pages from the Control Panel navigation, you can use the [Nav Customizer](https://statamic.dev/customizing-the-cp-nav) .
 
-The 'Overview' page gives you and your users a quick overview of your e-commerce store.
+## Widgets
 
-By default, all 'widgets' will be visible to you. If you wish you hide a certain widget, you may do so with the 'Configure' button at the top right of the page. Your preferences will be saved for future.
+Simple Commerce comes with a few helpful [widgets](https://statamic.dev/widgets) you can add to your site's dashboard.
 
-### Automatically redirecting users to the 'Overview' after logging in
+### Orders Chart
 
-Statamic lets you automatically redirect users to a specific URL after logging them in. By default, it'll redirect them the Dashboard page. However, if you wish, you may redirect them to Simple Commerce's Overview page.
+![Screenshot of the Recent Orders widget](/img/simple-commerce/orders-chart-widget.png)
 
-Simply update the `start_page` value in your `config/statamic/cp.php` config file:
-
-```php
-/*
-|--------------------------------------------------------------------------
-| Start Page
-|--------------------------------------------------------------------------
-|
-| When a user logs into the Control Panel, they will be taken here.
-| For example: "dashboard", "collections/pages", etc.
-|
-*/
-
-'start_page' => 'simple-commerce/overview',
-```
-
-### Registering a custom 'overview widget'
-
-You may build your own Overview Widgets. There's two parts of a widget: backend & frontend.
-
-#### Back-end
-
-To register an overview widget, simply add something like this to your `AppServiceProvider` (or similar):
+The Orders Chart widget displays a line chart of paid orders over the last 30 days.
 
 ```php
-static::registerWidget(
-    'orders-chart',
-    [
-        'name' => 'Orders Chart',
-        'component' => 'overview-orders-chart',
+// config/statamic/cp.php
+
+'widgets' => [
+    [ // [tl! highlight:3]
+        'type' => 'orders_chart',
+        'width' => 100,
     ],
-    function (Request $request) {
-        return [];
-    }
-);
+],
 ```
 
-The first parameter should be the 'handle' of the widget, the second parameter should be an array which contains both a `name` and a `component`. Finally, the last parameter should be a 'callback' which will be used to gather 'data' for your widget.
+### Recent Orders
 
-#### Front-end
+![Screenshot of the Recent Orders widget](/img/simple-commerce/recent-orders-widget.png)
 
-After you've got your back-end sorted for your widget, you'll need to get the front-end sorted. The front-end requires you to setup a Vue component which is loaded in the Control Panel (you may read about how to do this over on [the Statamic docs](https://statamic.dev/extending/control-panel#adding-css-and-js-assets)).
+The Recent Orders widget displays a list of the site's recent orders.
 
-A blank widget component may look something like this:
+```php
+// config/statamic/cp.php
 
-```vue
-<template>
-  <div class="flex-1 card p-0 overflow-hidden h-full">
-    <div class="flex justify-between items-center p-2 pb-1">
-      <h2>
-        <span>Basic Widget</span>
-      </h2>
-    </div>
-
-    <p>Hello world!</p>
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    data: Array,
-  },
-};
-</script>
+'widgets' => [
+    [ // [tl! highlight:4]
+        'type' => 'recent_orders',
+        'width' => 50,
+        'limit' => 5,
+    ],
+],
 ```
 
-The `data` prop will be what's returned from your PHP callback.
+By default, it'll only show 5 orders but you can adjust the `limit` however you'd like.
+
+### Top Customers
+
+![Screenshot of the Top Customers widget](/img/simple-commerce/top-customers-widget.png)
+
+The Top Customers widget displays a list of the site's top customers (those with the most orders).
+
+```php
+// config/statamic/cp.php
+
+'widgets' => [
+    [ // [tl! highlight:4]
+        'type' => 'top_customers',
+        'width' => 50,
+        'limit' => 5,
+    ],
+],
+```
+
+By default, it'll only show 5 customers but you can adjust the `limit` however you'd like.
+
+
+### Low Stock Products
+
+![Screenshot of the Low Stock Products widget](/img/simple-commerce/low-stock-products-widget.png)
+
+The Low Stock Products widget displays a list of products with low stock.
+
+```php
+// config/statamic/cp.php
+
+'widgets' => [
+    [ // [tl! highlight:4]
+        'type' => 'low_stock_products',
+        'width' => 50,
+        'limit' => 5,
+    ],
+],
+```
+
+By default, it'll only show 5 products but you can adjust the `limit` however you'd like.
