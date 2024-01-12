@@ -130,8 +130,8 @@ class Overview
                             'id' => $order->id(),
                             'order_number' => $order->orderNumber(),
                             'edit_url' => cp_route('runway.edit', [
-                                'resourceHandle' => Runway::orderModel()->handle(),
-                                'record' => $order->resource()->{$orderModel->getRouteKeyName()},
+                                'resource' => Runway::orderModel()->handle(),
+                                'model' => $order->resource()->{$orderModel->getRouteKeyName()},
                             ]),
                             'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
                             'paid_at' => $order->statusLog()
@@ -198,8 +198,8 @@ class Overview
                             'id' => $customer->id(),
                             'email' => $customer->email(),
                             'edit_url' => cp_route('runway.edit', [
-                                'resourceHandle' => Runway::customerModel()->handle(),
-                                'record' => $customer->resource()->{$customerModel->getRouteKeyName()},
+                                'resource' => Runway::customerModel()->handle(),
+                                'model' => $customer->resource()->{$customerModel->getRouteKeyName()},
                             ]),
                             'orders_count' => $customer->orders()->count(),
                         ];
