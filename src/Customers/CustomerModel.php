@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
-use DoubleThreeDigital\Runway\Traits\HasRunwayResource;
+use StatamicRadPack\Runway\Traits\HasRunwayResource;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

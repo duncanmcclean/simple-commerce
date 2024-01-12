@@ -10,13 +10,13 @@ class Runway
     {
         $orderModel = SimpleCommerce::customerDriver()['model'];
 
-        return \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModel);
+        return \StatamicRadPack\Runway\Runway::findResourceByModel(new $orderModel);
     }
 
     public static function orderModel()
     {
         $orderModel = SimpleCommerce::orderDriver()['model'];
 
-        return \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModel);
+        return \StatamicRadPack\Runway\Runway::findResourceByModel(new $orderModel);
     }
 }

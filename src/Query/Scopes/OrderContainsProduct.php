@@ -76,7 +76,7 @@ class OrderContainsProduct extends Filter
 
         // if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
         //     $orderModelClass = SimpleCommerce::orderDriver()['model'];
-        //     $runwayResource = \DoubleThreeDigital\Runway\Runway::findResourceByModel(new $orderModelClass);
+        //     $runwayResource = \StatamicRadPack\Runway\Runway::findResourceByModel(new $orderModelClass);
 
         //     return $key === "runway_{$runwayResource->handle()}";
         // }

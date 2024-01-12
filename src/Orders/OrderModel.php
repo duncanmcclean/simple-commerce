@@ -2,7 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\Runway\Traits\HasRunwayResource;
+use StatamicRadPack\Runway\Traits\HasRunwayResource;
 use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
