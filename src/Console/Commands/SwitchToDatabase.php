@@ -34,8 +34,8 @@ class SwitchToDatabase extends Command
             return $this->error('You should not run this command in production. Please switch locally first, then deploy the changes.');
         }
 
-        if (! Composer::create()->isInstalled('doublethreedigital/runway')) {
-            return $this->error('You need to install Runway before running this command. Run `composer require doublethreedigital/runway` first.');
+        if (! Composer::create()->isInstalled('statamic-rad-pack/runway')) {
+            return $this->error('You need to install Runway before running this command. Run `composer require statamic-rad-pack/runway` first.');
         }
 
         if (! Composer::create()->isInstalled('doctrine/dbal')) {

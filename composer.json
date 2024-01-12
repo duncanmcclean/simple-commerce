@@ -41,7 +41,7 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.3",
-        "doublethreedigital/runway": "^5.0",
+        "statamic-rad-pack/runway": "^6.0",
         "orchestra/testbench": "^8.0",
         "pestphp/pest": "^2.2",
         "pestphp/pest-plugin-laravel": "^2.0",
