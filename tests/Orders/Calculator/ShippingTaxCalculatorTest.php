@@ -39,7 +39,7 @@ it('calculates shipping tax when price does not include tax', function () {
 
     $order = Order::make()->lineItems([
         ['id' => '123', 'product' => $product->id, 'quantity' => 1, 'total' => 1000],
-    ])->set('shipping_method', Postage::class)->shippingTotal(250)->save();
+    ])->set('shipping_method', Postage::handle())->shippingTotal(250)->save();
 
     $order = Pipeline::send($order)->through([ShippingTaxCalculator::class])->thenReturn();
 
@@ -61,7 +61,7 @@ it('calculates shipping tax when price includes tax', function () {
 
     $order = Order::make()->lineItems([
         ['id' => '123', 'product' => $product->id, 'quantity' => 1, 'total' => 1000],
-    ])->set('shipping_method', Postage::class)->shippingTotal(250)->save();
+    ])->set('shipping_method', Postage::handle())->shippingTotal(250)->save();
 
     $order = Pipeline::send($order)->through([ShippingTaxCalculator::class])->thenReturn();
 

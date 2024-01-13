@@ -32,7 +32,7 @@ class ShippingTags extends SubTag
                 $cost = $instance->calculateCost($order);
 
                 return [
-                    'handle' => $shippingMethod['class'],
+                    'handle' => $shippingMethod['handle'],
                     'name' => $instance->name(),
                     'description' => $instance->description(),
                     'cost' => Currency::parse($cost, Site::current()),

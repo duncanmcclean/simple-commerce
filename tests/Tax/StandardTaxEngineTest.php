@@ -6,11 +6,13 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
 use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\DummyShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Statamic\Facades\Site;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 
 uses(SetupCollections::class);
@@ -461,6 +463,7 @@ test('throws prevent checkout exception if no address provided', function () {
 // https://github.com/duncanmcclean/simple-commerce/issues/856
 test('can use default shipping tax rate if no rate available', function () {
     Config::set('simple-commerce.tax_engine_config.behaviour.no_rate_available', 'default_rate');
+    SimpleCommerce::registerShippingMethod(Site::current()->handle(), DummyShippingMethod::class);
 
     TaxZone::make()
         ->id('everywhere')
@@ -517,7 +520,7 @@ test('can use default shipping tax rate if no rate available', function () {
             'billing_address' => '1 Test Street',
             'billing_country' => 'GB',
             'use_shipping_address_for_billing' => false,
-            'shipping_method' => DummyShippingMethod::class,
+            'shipping_method' => DummyShippingMethod::handle(),
         ]);
 
     $order->save();

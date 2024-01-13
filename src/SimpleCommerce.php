@@ -107,6 +107,7 @@ class SimpleCommerce
 
                         return [
                             'name' => $instance->name(),
+                            'handle' => $key::handle(),
                             'description' => $instance->description(),
                             'class' => $key,
                             'config' => $config,
@@ -153,6 +154,7 @@ class SimpleCommerce
 
         static::$shippingMethods[$site][] = [
             'name' => $instance->name(),
+            'handle' => $shippingMethod::handle(),
             'description' => $instance->description(),
             'class' => $shippingMethod,
             'config' => $config,

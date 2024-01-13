@@ -51,7 +51,7 @@ it('calculates shipping total using shipping method from order', function () {
 
     $order = Order::make()->lineItems([
         ['id' => '123', 'product' => $product->id, 'quantity' => 2, 'total' => 2000],
-    ])->set('shipping_method', Postage::class)->save();
+    ])->set('shipping_method', Postage::handle())->save();
 
     $order = Pipeline::send($order)->through([ShippingCalculator::class])->thenReturn();
 

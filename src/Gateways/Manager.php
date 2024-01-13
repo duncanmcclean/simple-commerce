@@ -128,7 +128,7 @@ class Manager implements Contract
         return $this;
     }
 
-    protected function resolve()
+    public function resolve()
     {
         if (! $this->handle) {
             throw new GatewayNotProvided('No gateway provided.');
