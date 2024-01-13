@@ -1,5 +1,14 @@
 # Changelog
 
+## v5.9.1 (2024-01-13)
+
+### What's fixed
+* Fixed positioning of "Configure" dropdown on the Overview page #964 by @duncanmcclean
+* "Paid Orders" string in Overview orders chart is now translatable #965 by @duncanmcclean
+* Fixed issues querying the status log #962 by @duncanmcclean
+
+
+
 ## v5.9.0 (2024-01-02)
 
 ### What's new
