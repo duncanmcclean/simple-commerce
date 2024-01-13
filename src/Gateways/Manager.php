@@ -61,7 +61,7 @@ class Manager implements Contract
         $order = Order::find($order->id());
 
         $order->gateway([
-            'use' => $this->handle,  // TODO
+            'use' => $this->handle,
             'data' => $checkout,
         ]);
 
@@ -134,11 +134,7 @@ class Manager implements Contract
             throw new GatewayNotProvided('No gateway provided.');
         }
 
-        $gateway = SimpleCommerce::gateways()
-            ->filter(function ($gateway) {
-                return $this->handle === $gateway['class']::handle() || $gateway['class'] === $this->handle;
-            })
-            ->first();
+        $gateway = SimpleCommerce::gateways()->firstWhere('handle', $this->handle);
 
         if (! $gateway) {
             throw new GatewayDoesNotExist("Gateway [{$this->handle}] does not exist.");

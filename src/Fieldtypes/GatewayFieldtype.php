@@ -33,13 +33,7 @@ class GatewayFieldtype extends Fieldtype
         $actionUrl = null;
 
         $gateway = SimpleCommerce::gateways()
-            ->filter(function ($gateway) use ($value) {
-                $handle = isset($value['use'])
-                    ? $value['use']
-                    : $value;
-
-                return $gateway['handle'] === $handle || $gateway['class'] === $handle;
-            })
+            ->where('handle', $value['use'])
             ->first();
 
         if (! $gateway) {
@@ -93,13 +87,7 @@ class GatewayFieldtype extends Fieldtype
     public function augment($value)
     {
         $gateway = SimpleCommerce::gateways()
-            ->filter(function ($gateway) use ($value) {
-                $handle = isset($value['use'])
-                    ? $value['use']
-                    : $value;
-
-                return $gateway['handle'] === $handle || $gateway['class'] === $handle;
-            })
+            ->where('handle', $value['use'])
             ->first();
 
         if (! $gateway) {
@@ -118,13 +106,7 @@ class GatewayFieldtype extends Fieldtype
         }
 
         $gateway = SimpleCommerce::gateways()
-            ->filter(function ($gateway) use ($value) {
-                $handle = isset($value['use'])
-                    ? $value['use']
-                    : $value;
-
-                return $gateway['handle'] === $handle || $gateway['class'] === $handle;
-            })
+            ->where('handle', $value['use'])
             ->first();
 
         if (! $gateway) {

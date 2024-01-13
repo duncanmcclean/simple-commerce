@@ -68,9 +68,7 @@ class CheckoutTags extends SubTag
         $cart = $this->getCart();
         $gatewayHandle = last(explode(':', $tag));
 
-        $gateway = SimpleCommerce::gateways()
-            ->filter(fn ($gateway) => $gatewayHandle === $gateway['class']::handle())
-            ->first();
+        $gateway = SimpleCommerce::gateways()->firstWhere('handle', $gatewayHandle);
 
         if (! $gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);

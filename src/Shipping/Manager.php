@@ -53,11 +53,7 @@ class Manager implements Contract
     {
         $siteHandle = $this->siteHandle ?? Site::current()->handle();
 
-        $shippingMethod = SimpleCommerce::shippingMethods($siteHandle)
-            ->filter(function ($shippingMethod) {
-                return $this->handle === $shippingMethod['class']::handle() || $shippingMethod['class'] === $this->handle;
-            })
-            ->first();
+        $shippingMethod = SimpleCommerce::shippingMethods($siteHandle)->firstWhere('handle', $this->handle);
 
         if (! $shippingMethod) {
             throw new ShippingMethodDoesNotExist("Shipping method [{$this->handle}] does not exist.");
