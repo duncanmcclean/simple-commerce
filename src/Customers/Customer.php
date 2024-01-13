@@ -163,24 +163,12 @@ class Customer implements Contract
 
     public function toAugmentedArray($keys = null): array
     {
-        if ($this->resource() instanceof Entry) {
-            $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-                return isset($field['import']) || $field['handle'] === 'value';
-            })->pluck('handle')->toArray();
+        return $this->resource()->toAugmentedArray($keys);
+    }
 
-            $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
-
-            return array_merge(
-                $this->toArray(),
-                $augmentedData,
-            );
-        }
-
-        if ($this->resource() instanceof Model) {
-            return $this->resource()->toAugmentedArray();
-        }
-
-        return null;
+    public function toAugmentedCollection($keys = null): Collection
+    {
+        return $this->resource()->toAugmentedCollection($keys);
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
