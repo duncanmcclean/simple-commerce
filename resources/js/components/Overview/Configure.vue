@@ -1,74 +1,66 @@
 <template>
-    <div>
-        <button class="btn flex items-center" @click="open = !open">
-            {{ __('Configure') }}
-            <svg viewBox="0 0 10 6.5" class="ml-1 w-2">
-                <path
-                    fill="currentColor"
-                    d="M9.9 1.4 5 6.4l-5-5L1.4 0 5 3.5 8.5 0l1.4 1.4z"
-                ></path>
-            </svg>
-        </button>
-
-        <div
-            class="popover-container dropdown-list"
-            :class="{ 'popover-open': open }"
-        >
-            <div class="popover">
-                <div
-                    class="popover-content bg-white shadow-popover rounded-md p-0 overflow-hidden"
+    <popover :disabled="false" :placement="'bottom-end'" :autoclose="false" @opened="$emit('opened')" @closed="$emit('closed')">
+        <template #trigger>
+            <button class="btn flex items-center" :aria-label="__('Open Configure Options')">
+                {{ __('Configure') }}
+                <svg viewBox="0 0 10 6.5" class="ml-1 w-2">
+                    <path
+                        fill="currentColor"
+                        d="M9.9 1.4 5 6.4l-5-5L1.4 0 5 3.5 8.5 0l1.4 1.4z"
+                    ></path>
+                </svg>
+            </button>
+        </template>
+        <template #default class="p-0 overflow-hidden">
+            <div class="outline-none text-left">
+                <header
+                    class="border-y p-3 text-sm bg-white font-medium"
                 >
-                    <div class="outline-none text-left">
-                        <header
-                            class="border-y px-2 py-2 text-sm bg-white font-medium"
-                        >
-                            {{ __('Available Widgets') }}
-                        </header>
+                    {{ __('Available Widgets') }}
+                </header>
 
-                        <div
-                            class="flex flex-col space-y-1 py-2 px-3 select-none"
-                        >
-                            <div
-                                v-for="widget in widgets"
-                                :key="widget.handle"
-                                class="column-picker-item"
-                            >
-                                <label class="flex items-center cursor-pointer"
-                                    ><input
-                                        type="checkbox"
-                                        v-model="
-                                            selectedWidgets[`${widget.handle}`]
-                                        "
-                                        @disabled="saving"
-                                        @change="setSharedStateColumns"
-                                        class="mr-2"
-                                    />
-                                    {{ widget.name }}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex border-t text-gray-800">
-                        <button
-                            class="p-2 hover:bg-gray-100 rounded-bl text-xs flex-1 text-center hover:text-gray-800"
-                            @click="reset"
-                            @disabled="saving"
-                        >
-                            {{ __('Reset') }}
-                        </button>
-                        <button
-                            class="p-2 hover:bg-gray-100 text-blue flex-1 rounded-br border-l text-xs text-center"
-                            @click="save"
-                            @disabled="saving"
-                        >
-                            {{ __('Save') }}
-                        </button>
+                <div
+                    class="flex flex-col space-y-1 p-3 pt-0 select-none"
+                >
+                    <div
+                        v-for="widget in widgets"
+                        :key="widget.handle"
+                        class="column-picker-item"
+                    >
+                        <label class="flex items-center cursor-pointer"
+                            ><input
+                                type="checkbox"
+                                v-model="
+                                    selectedWidgets[`${widget.handle}`]
+                                "
+                                @disabled="saving"
+                                @change="setSharedStateColumns"
+                                class="mr-2"
+                            />
+                            {{ widget.name }}
+                        </label>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div class="flex border-t text-gray-800">
+                <button
+                    class="p-2 hover:bg-gray-100 rounded-bl text-xs flex-1 text-center hover:text-gray-800"
+                    @click="reset"
+                    @disabled="saving"
+                >
+                    {{ __('Reset') }}
+                </button>
+                <button
+                    class="p-2 hover:bg-gray-100 text-blue flex-1 rounded-br border-l text-xs text-center"
+                    @click="save"
+                    @disabled="saving"
+                >
+                    {{ __('Save') }}
+                </button>
+            </div>
+        </template>
+    </popover>
 </template>
 
 <script>
