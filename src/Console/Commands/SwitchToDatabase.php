@@ -34,8 +34,8 @@ class SwitchToDatabase extends Command
             return $this->error('You should not run this command in production. Please switch locally first, then deploy the changes.');
         }
 
-        if (! Composer::create()->isInstalled('doublethreedigital/runway')) {
-            return $this->error('You need to install Runway before running this command. Run `composer require doublethreedigital/runway` first.');
+        if (! Composer::create()->isInstalled('statamic-rad-pack/runway')) {
+            return $this->error('You need to install Runway before running this command. Run `composer require statamic-rad-pack/runway` first.');
         }
 
         if (! Composer::create()->isInstalled('doctrine/dbal')) {
@@ -74,12 +74,14 @@ class SwitchToDatabase extends Command
     {
         $this->info('Copying blueprint stubs...');
 
-        if (! File::exists(resource_path('blueprints/customer.yaml'))) {
-            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/customer.yaml'));
+        File::ensureDirectoryExists(resource_path('blueprints/vendor/runway'));
+
+        if (! File::exists(resource_path('blueprints/vendor/runway/customer.yaml'))) {
+            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/vendor/runway/customer.yaml'));
         }
 
-        if (! File::exists(resource_path('blueprints/order.yaml'))) {
-            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/order.yaml'));
+        if (! File::exists(resource_path('blueprints/vendor/runway/order.yaml'))) {
+            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/vendor/runway/order.yaml'));
         }
 
         return $this;

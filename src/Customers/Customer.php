@@ -9,11 +9,9 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
 
@@ -164,24 +162,12 @@ class Customer implements Contract
 
     public function toAugmentedArray($keys = null): array
     {
-        if ($this->resource() instanceof Entry) {
-            $blueprintFields = $this->resource()->blueprint()->fields()->items()->reject(function ($field) {
-                return isset($field['import']) || $field['handle'] === 'value';
-            })->pluck('handle')->toArray();
+        return $this->resource()->toAugmentedArray($keys);
+    }
 
-            $augmentedData = $this->resource()->toAugmentedArray($blueprintFields);
-
-            return array_merge(
-                $this->toArray(),
-                $augmentedData,
-            );
-        }
-
-        if ($this->resource() instanceof Model) {
-            return Runway::customerModel()->augment($this->resource());
-        }
-
-        return null;
+    public function toAugmentedCollection($keys = null): Collection
+    {
+        return $this->resource()->toAugmentedCollection($keys);
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool

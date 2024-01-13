@@ -311,7 +311,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->can('view', Collection::find(SimpleCommerce::orderDriver()['collection']))
                     ->icon(SimpleCommerce::svg('shop'));
             } elseif (
-                class_exists('DoubleThreeDigital\Runway\Runway') &&
+                class_exists('StatamicRadPack\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class)
             ) {
                 $orderResource = Runway::orderModel();
@@ -340,7 +340,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->can('index', \Statamic\Contracts\Auth\User::class)
                     ->icon('user');
             } elseif (
-                class_exists('DoubleThreeDigital\Runway\Runway') &&
+                class_exists('StatamicRadPack\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class)
             ) {
                 $customerResource = Runway::customerModel();
