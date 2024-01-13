@@ -2,11 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Customers;
 
-use StatamicRadPack\Runway\Traits\HasRunwayResource;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use StatamicRadPack\Runway\Traits\HasRunwayResource;
 
 class CustomerModel extends Model
 {
