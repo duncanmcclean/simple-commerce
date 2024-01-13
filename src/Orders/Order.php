@@ -215,15 +215,7 @@ class Order implements Contract
 
     public function currentGateway(): ?array
     {
-        if (is_string($this->gateway())) {
-            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway());
-        }
-
-        if (is_array($this->gateway())) {
-            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway()['use']);
-        }
-
-        return null;
+        return SimpleCommerce::gateways()->firstWhere('class', $this->gateway()['use']);
     }
 
     public function resource($resource = null)
@@ -370,16 +362,9 @@ class Order implements Contract
     {
         $this->updatePaymentStatus(PaymentStatus::Refunded);
 
-        if (is_string($this->gateway())) {
-            $data = [
-                'use' => $this->gateway(),
-                'refund' => $refundData,
-            ];
-        } elseif (is_array($this->gateway())) {
-            $data = array_merge($this->gateway(), [
-                'refund' => $refundData,
-            ]);
-        }
+        $data = array_merge($this->gateway(), [
+            'refund' => $refundData,
+        ]);
 
         $this->gateway($data);
 
