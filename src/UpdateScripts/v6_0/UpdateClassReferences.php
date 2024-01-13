@@ -28,15 +28,23 @@ class UpdateClassReferences extends UpdateScript
                 ->queryEntries()
                 ->where('gateway', '!=', null)
                 ->chunk(50, function ($orders) {
-                    $orders->each(function ($entry) {
-                        if (! class_exists($entry->get('gateway')['use'])) {
-                            return;
-                        }
+                    $orders
+                        ->each(function ($entry) {
+                            if (! class_exists($entry->get('gateway')['use'])) {
+                                return;
+                            }
 
-                        $entry->set('gateway', array_merge($entry->get('gateway'), [
-                            'use' => $entry->get('gateway')['use']::handle(),
-                        ]))->saveQuietly();
-                    });
+                            $entry->set('gateway', array_merge($entry->get('gateway'), [
+                                'use' => $entry->get('gateway')['use']::handle(),
+                            ]))->saveQuietly();
+                        })
+                        ->each(function ($entry) {
+                            if (! $entry->has('shipping_method') || ! class_exists($entry->get('shipping_method'))) {
+                                return;
+                            }
+
+                            $entry->set('shipping_method', $entry->get('shipping_method')::handle())->saveQuietly();
+                        });
                 });
         }
 
@@ -44,17 +52,27 @@ class UpdateClassReferences extends UpdateScript
             OrderModel::query()
                 ->where('gateway', '!=', null)
                 ->chunk(50, function ($orders) {
-                    $orders->each(function ($order) {
-                        if (! class_exists($order->gateway['use'])) {
-                            return;
-                        }
+                    $orders
+                        ->each(function ($order) {
+                            if (! class_exists($order->gateway['use'])) {
+                                return;
+                            }
 
-                        $order->gateway = array_merge($order->gateway, [
-                            'use' => $order->gateway['use']::handle(),
-                        ]);
+                            $order->gateway = array_merge($order->gateway, [
+                                'use' => $order->gateway['use']::handle(),
+                            ]);
 
-                        $order->saveQuietly();
-                    });
+                            $order->saveQuietly();
+                        })
+                        ->each(function ($order) {
+                            if (! isset($order->data['shipping_method']) || ! class_exists($order->data['shipping_method'])) {
+                                return;
+                            }
+
+                            $order->data['shipping_method'] = $order->data['shipping_method']::handle();
+
+                            $order->saveQuietly();
+                        });
                 });
         }
 
