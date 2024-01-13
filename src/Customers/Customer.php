@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Statamic\Contracts\Entries\Entry;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
 
