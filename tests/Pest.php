@@ -2,10 +2,13 @@
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Parse;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use Statamic\Statamic;
 
 uses(\DoubleThreeDigital\SimpleCommerce\Tests\TestCase::class)->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Rules', 'Tags', 'Tax');
 uses(\DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections::class)->in('Actions', 'Coupons', 'Listeners');
@@ -113,4 +116,32 @@ function fakeCart($cart = null)
         ->andReturn([]);
 
     return $cart;
+}
+
+function setupUserCustomerRepository(): void
+{
+    Config::set('simple-commerce.content.customers', [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class,
+    ]);
+
+    Statamic::repository(
+        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class
+    );
+
+    File::deleteDirectory(__DIR__.'/../__fixtures__/users');
+    app('stache')->stores()->get('users')->clear();
+}
+
+function tearDownUserCustomerRepository(): void
+{
+    Config::set('simple-commerce.content.customers', [
+        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
+        'collection' => 'customers',
+    ]);
+
+    Statamic::repository(
+        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
+    );
 }

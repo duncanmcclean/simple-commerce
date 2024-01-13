@@ -190,3 +190,13 @@ The closure should accept an `$order` parameter and should then return an array 
 :::warning Warning!
 Laravel doesn't support using closures inside config files when using config caching.
 :::
+
+## Can I use Stripe Checkout?
+
+Unfortunately, no. 😞
+
+I've explored implementing Stripe Checkout a few times. However, every time I've decided against it since it takes over too much of the checkout process, to a point where you'd be better off not using Simple Commerce at all.
+
+For example: Stripe Checkout wants you to use Stripe's Coupons/Discounts, wants customers to enter shipping/billing information on their page, stock needs to be managed in Stripe, tax & shipping would need to work differently.
+
+Yes, you could argue that some of those things could be mapped across from Simple Commerce into Stripe. However, that's probably more work than it's actually worth.
