@@ -158,10 +158,6 @@ class MigrateOrdersToDatabase extends Command
                 }
 
                 if ($gateway = $entry->get('gateway')) {
-                    if (is_string($gateway)) {
-                        $gateway = ['use' => $gateway];
-                    }
-
                     $order->gateway($gateway);
                 }
 
