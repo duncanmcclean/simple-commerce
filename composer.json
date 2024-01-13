@@ -40,8 +40,7 @@
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.3",
-        "statamic-rad-pack/runway": "^6.0",
+        "statamic-rad-pack/runway": "^6.0.1",
         "orchestra/testbench": "^8.0",
         "pestphp/pest": "^2.2",
         "pestphp/pest-plugin-laravel": "^2.0",
