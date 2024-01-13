@@ -136,7 +136,7 @@ class Manager implements Contract
 
         $gateway = SimpleCommerce::gateways()
             ->filter(function ($gateway) {
-                return $gateway['class']::handle() === $this->handle || $gateway['class'] === $this->handle;
+                return $this->handle === $gateway['class']::handle() || $gateway['class'] === $this->handle;
             })
             ->first();
 

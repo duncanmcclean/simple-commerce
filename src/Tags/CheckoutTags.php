@@ -69,7 +69,7 @@ class CheckoutTags extends SubTag
         $gatewayHandle = last(explode(':', $tag));
 
         $gateway = SimpleCommerce::gateways()
-            ->filter(fn ($gateway) => $gateway['class']::handle() === $gatewayHandle)
+            ->filter(fn ($gateway) => $gatewayHandle === $gateway['class']::handle())
             ->first();
 
         if (! $gateway) {

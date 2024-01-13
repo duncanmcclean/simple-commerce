@@ -55,7 +55,7 @@ class Manager implements Contract
 
         $shippingMethod = SimpleCommerce::shippingMethods($siteHandle)
             ->filter(function ($shippingMethod) {
-                return $shippingMethod['class']::handle() === $this->handle || $shippingMethod['class'] === $this->handle;
+                return $this->handle === $shippingMethod['class']::handle() || $shippingMethod['class'] === $this->handle;
             })
             ->first();
 

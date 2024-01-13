@@ -26,6 +26,7 @@ use Statamic\Facades\Site;
 class PayPalGateway extends BaseGateway implements Gateway
 {
     protected $paypalClient;
+
     protected static $handle = 'paypal';
 
     public function name(): string

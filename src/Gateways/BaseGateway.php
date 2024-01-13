@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Extend\HasHandle;
-use Statamic\Extend\RegistersItself;
 
 abstract class BaseGateway
 {
