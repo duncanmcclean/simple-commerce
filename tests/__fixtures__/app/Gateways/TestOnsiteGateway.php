@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class TestOnsiteGateway extends BaseGateway implements Gateway
 {
+    protected static $handle = 'testonsitegateway';
+
     public function name(): string
     {
         return 'Test On-site Gateway';

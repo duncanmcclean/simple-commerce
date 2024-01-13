@@ -69,7 +69,7 @@ class CheckoutTags extends SubTag
         $gatewayHandle = last(explode(':', $tag));
 
         $gateway = SimpleCommerce::gateways()
-            ->where('handle', $gatewayHandle)
+            ->filter(fn ($gateway) => $gateway['class']::handle() === $gatewayHandle)
             ->first();
 
         if (! $gateway) {
@@ -111,7 +111,7 @@ class CheckoutTags extends SubTag
                 : back()->with($data);
         }
 
-        $prepare = Gateway::use($gateway['class']);
+        $prepare = Gateway::use($gateway['handle']);
 
         if ($this->params->has('redirect')) {
             $prepare->withRedirectUrl($this->params->get('redirect'));
@@ -127,7 +127,7 @@ class CheckoutTags extends SubTag
             array_merge(
                 $cart->gateway() !== null && is_string($cart->gateway()) ? $cart->gateway() : [],
                 [
-                    'use' => $gateway['class'],
+                    'use' => $gateway['class']::handle(),
                 ]
             )
         );

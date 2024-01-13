@@ -380,7 +380,7 @@ test('can refund charge', function () {
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $order = Order::make()->grandTotal(1234)->gateway([
-        'use' => StripeGateway::class,
+        'use' => StripeGateway::handle(),
         'data' => [
             'payment_intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
@@ -443,7 +443,7 @@ test('returns array from payment display', function () {
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $fieldtypeDisplay = $this->cardElementsGateway->fieldtypeDisplay([
-        'use' => StripeGateway::class,
+        'use' => StripeGateway::handle(),
         'data' => [
             'payment_intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
@@ -462,7 +462,7 @@ test('returns array from payment display', function () {
 
 test('does not return array from payment display if no payment intent is set', function () {
     $fieldtypeDisplay = $this->cardElementsGateway->fieldtypeDisplay([
-        'use' => StripeGateway::class,
+        'use' => StripeGateway::handle(),
         'data' => [],
     ]);
 

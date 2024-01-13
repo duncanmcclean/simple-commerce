@@ -55,18 +55,20 @@ class SimpleCommerce
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
+                $class = $gateway[0];
+
                 /** @var Contracts\Gateway $instance */
-                $instance = new $gateway[0]();
+                $instance = new $class();
 
                 return [
                     'name' => $instance->name(),
-                    'handle' => $handle = Str::of($instance->name())->camel()->lower()->__toString(),
-                    'class' => $gateway[0],
+                    'handle' => $class::handle(),
+                    'class' => $class,
                     'formatted_class' => addslashes($gateway[0]),
                     'display' => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'checkoutRules' => $instance->checkoutRules(),
                     'config' => $gateway[1],
-                    'webhook_url' => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook',
+                    'webhook_url' => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$class::handle().'/webhook',
                 ];
             });
     }

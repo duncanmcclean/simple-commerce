@@ -26,6 +26,7 @@ use Stripe\Stripe;
 class StripeGateway extends BaseGateway implements Gateway
 {
     protected bool $isUsingTestMode = false;
+    protected static $handle = 'stripe';
 
     public function name(): string
     {

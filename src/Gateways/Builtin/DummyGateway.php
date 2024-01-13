@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class DummyGateway extends BaseGateway implements Gateway
 {
+    protected static $handle = 'dummy';
+
     public function name(): string
     {
         return __('Dummy');

@@ -11,21 +11,18 @@ use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Statamic\Extend\HasHandle;
 
 abstract class BaseGateway
 {
+    use HasHandle;
+
     public function __construct(
         protected array $config = [],
-        protected string $handle = '',
         protected string $webhookUrl = '',
         protected string $redirectUrl = '/',
         protected string $errorRedirectUrl = '/'
     ) {
-    }
-
-    public function handle(): string
-    {
-        return $this->handle;
     }
 
     public function name(): string
@@ -99,7 +96,7 @@ abstract class BaseGateway
     public function callbackUrl(array $extraParamters = []): string
     {
         $data = array_merge($extraParamters, [
-            'gateway' => $this->handle,
+            'gateway' => static::handle(),
             '_redirect' => $this->redirectUrl,
             '_error_redirect' => $this->errorRedirectUrl,
         ]);
@@ -131,7 +128,7 @@ abstract class BaseGateway
         // We need to ensure that the gateway is available in the
         // order when the OrderPaid event is dispatched.
         $order->gateway([
-            'use' => get_class($this),
+            'use' => static::handle(),
             'data' => [],
         ]);
 

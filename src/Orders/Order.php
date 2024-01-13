@@ -215,15 +215,13 @@ class Order implements Contract
 
     public function currentGateway(): ?array
     {
-        if (is_string($this->gateway())) {
-            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway());
-        }
+        $value = isset($this->gateway()['use'])
+            ? $this->gateway()['use']
+            : $this->gateway();
 
-        if (is_array($this->gateway())) {
-            return SimpleCommerce::gateways()->firstWhere('class', $this->gateway()['use']);
-        }
-
-        return null;
+        return SimpleCommerce::gateways()
+            ->filter(fn ($gateway) => $gateway['handle'] === $value || $gateway['class'] === $value)
+            ->first();
     }
 
     public function resource($resource = null)

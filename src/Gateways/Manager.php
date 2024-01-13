@@ -15,15 +15,15 @@ use Illuminate\Validation\ValidationException;
 
 class Manager implements Contract
 {
-    protected $className;
+    protected $handle;
 
     protected $redirectUrl;
 
     protected $errorRedirectUrl;
 
-    public function use($className): self
+    public function use($handle): self
     {
-        $this->className = $className;
+        $this->handle = $handle;
 
         return $this;
     }
@@ -61,7 +61,7 @@ class Manager implements Contract
         $order = Order::find($order->id());
 
         $order->gateway([
-            'use' => $this->className,
+            'use' => $this->handle,  // TODO
             'data' => $checkout,
         ]);
 
@@ -96,7 +96,7 @@ class Manager implements Contract
             return $this->resolve()->callback($request);
         }
 
-        return new GatewayCallbackMethodDoesNotExist("Gateway [{$this->className}] does not have a `callback` method.");
+        return new GatewayCallbackMethodDoesNotExist("Gateway [{$this->handle}] does not have a `callback` method.");
     }
 
     public function webhook(Request $request)
@@ -130,22 +130,21 @@ class Manager implements Contract
 
     protected function resolve()
     {
-        if (! $this->className) {
+        if (! $this->handle) {
             throw new GatewayNotProvided('No gateway provided.');
         }
 
-        if (! resolve($this->className)) {
-            throw new GatewayDoesNotExist("Gateway [{$this->className}] does not exist.");
-        }
-
         $gateway = SimpleCommerce::gateways()
-            ->where('class', $this->className)
+            ->filter(function ($gateway) {
+                return $gateway['class']::handle() === $this->handle || $gateway['class'] === $this->handle;
+            })
             ->first();
 
-        $data = [
-            'config' => $gateway['config'],
-            'handle' => $gateway['handle'],
-        ];
+        if (! $gateway) {
+            throw new GatewayDoesNotExist("Gateway [{$this->handle}] does not exist.");
+        }
+
+        $data = ['config' => $gateway['config']];
 
         if (isset($gateway['webhook_url'])) {
             $data['webhookUrl'] = $gateway['webhook_url'];
@@ -159,6 +158,6 @@ class Manager implements Contract
             $data['errorRedirectUrl'] = $this->errorRedirectUrl;
         }
 
-        return resolve($this->className, $data);
+        return resolve($gateway['class'], $data);
     }
 }

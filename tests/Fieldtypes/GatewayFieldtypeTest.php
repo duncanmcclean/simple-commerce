@@ -36,7 +36,7 @@ test('can preprocess', function () {
     Auth::setUser($user);
 
     $preProcess = (new GatewayFieldtype)->setField($field)->preProcess([
-        'use' => DummyGateway::class,
+        'use' => DummyGateway::handle(),
         'data' => [
             'id' => 'abc123',
             'smth' => 'cool',
@@ -47,7 +47,7 @@ test('can preprocess', function () {
 
     $this->assertArrayHasKey('data', $preProcess);
     $this->assertSame([
-        'use' => DummyGateway::class,
+        'use' => DummyGateway::handle(),
         'data' => [
             'id' => 'abc123',
             'smth' => 'cool',
@@ -64,7 +64,7 @@ test('can preprocess', function () {
 test('can process', function () {
     $process = (new GatewayFieldtype)->process([
         'data' => [
-            'use' => DummyGateway::class,
+            'use' => DummyGateway::handle(),
             'data' => ['smth' => 'cool'],
         ],
         'actions' => [],
@@ -73,14 +73,14 @@ test('can process', function () {
     expect($process)->toBeArray();
 
     $this->assertSame([
-        'use' => DummyGateway::class,
+        'use' => DummyGateway::handle(),
         'data' => ['smth' => 'cool'],
     ], $process);
 });
 
 test('can augment', function () {
     $augment = (new GatewayFieldtype)->augment([
-        'use' => DummyGateway::class,
+        'use' => DummyGateway::handle(),
         'data' => ['smth' => 'cool'],
     ]);
 
@@ -99,7 +99,7 @@ test('can augment', function () {
 
 test('can preprocess index', function () {
     $preProcessIndex = (new GatewayFieldtype)->preProcessIndex([
-        'use' => DummyGateway::class,
+        'use' => DummyGateway::handle(),
         'data' => ['smth' => 'cool'],
     ]);
 

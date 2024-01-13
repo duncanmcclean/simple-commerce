@@ -33,7 +33,13 @@ class GatewayFieldtype extends Fieldtype
         $actionUrl = null;
 
         $gateway = SimpleCommerce::gateways()
-            ->where('class', isset($value['use']) ? $value['use'] : $value)
+            ->filter(function ($gateway) use ($value) {
+                $handle = isset($value['use'])
+                    ? $value['use']
+                    : $value;
+
+                return $gateway['handle'] === $handle || $gateway['class'] === $handle;
+            })
             ->first();
 
         if (! $gateway) {
@@ -68,7 +74,7 @@ class GatewayFieldtype extends Fieldtype
             'entry' => optional($this->field->parent())->id,
 
             'gateway_class' => $gateway['class'],
-            'display' => Gateway::use($gateway['class'])->fieldtypeDisplay($value),
+            'display' => Gateway::use($gateway['handle'])->fieldtypeDisplay($value),
 
             'actions' => $actions,
             'action_url' => $actionUrl,
@@ -87,7 +93,13 @@ class GatewayFieldtype extends Fieldtype
     public function augment($value)
     {
         $gateway = SimpleCommerce::gateways()
-            ->where('class', isset($value['use']) ? $value['use'] : $value)
+            ->filter(function ($gateway) use ($value) {
+                $handle = isset($value['use'])
+                    ? $value['use']
+                    : $value;
+
+                return $gateway['handle'] === $handle || $gateway['class'] === $handle;
+            })
             ->first();
 
         if (! $gateway) {
@@ -106,7 +118,13 @@ class GatewayFieldtype extends Fieldtype
         }
 
         $gateway = SimpleCommerce::gateways()
-            ->where('class', isset($value['use']) ? $value['use'] : $value)
+            ->filter(function ($gateway) use ($value) {
+                $handle = isset($value['use'])
+                    ? $value['use']
+                    : $value;
+
+                return $gateway['handle'] === $handle || $gateway['class'] === $handle;
+            })
             ->first();
 
         if (! $gateway) {
