@@ -380,7 +380,7 @@ test('can refund charge', function () {
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
     $order = Order::make()->grandTotal(1234)->gatewayData(
-        use: StripeGateway::handle(),
+        gateway: StripeGateway::handle(),
         data: [
             'payment_intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
