@@ -27,7 +27,6 @@ test('has a name', function () {
 });
 
 test('can prepare', function () {
-
     $product = Product::make()
         ->price(5500)
         ->data(['title' => 'Concert Ticket']);
