@@ -854,6 +854,54 @@ test('can store item with customer already in present in order', function () {
     expect('goofy@clubhouse.disney')->toBe($cart->customer()->email());
 });
 
+test('can store item with customer already in present in order and ensure the customer email is updated', function () {
+    $product = Product::make()
+        ->price(1000)
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ]);
+
+    $product->save();
+
+    $customer = Customer::make()
+        ->email('goofy@clubhouse.disney')
+        ->data([
+            'name' => 'Goofy',
+        ]);
+
+    $customer->save();
+
+    $order = Order::make()->customer($customer->id);
+    $order->save();
+
+    $data = [
+        'product' => $product->id,
+        'quantity' => 1,
+        'customer' => ['email' => 'goofy@mickeymouse.clubhouse'],
+    ];
+
+    $response = $this
+        ->withSession(['simple-commerce-cart' => $order->id()])
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+
+    $response->assertRedirect('/products/'.$product->get('slug'));
+    $response->assertSessionHas('simple-commerce-cart');
+
+    $cart = Order::find(session()->get('simple-commerce-cart'));
+
+    expect($cart->itemsTotal())->toBe(1000);
+
+    expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
+
+    // Assert customer has been created with provided details
+    $this->assertNotNull($cart->customer());
+
+    expect('Goofy')->toBe($cart->customer()->name());
+    expect('goofy@mickeymouse.clubhouse')->toBe($cart->customer()->email());
+});
+
 test('can store item with customer present in request', function () {
     $product = Product::make()
         ->price(1000)
