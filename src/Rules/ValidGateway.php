@@ -3,23 +3,14 @@
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidGateway implements Rule
 {
     public function passes($attribute, $value)
     {
-        if (! class_exists($value)) {
-            return false;
-        }
-
-        $isGateway = (new $value()) instanceof Gateway;
-
-        if (! $isGateway) {
-            return false;
-        }
-
-        return true;
+        return SimpleCommerce::gateways()->where('handle', $value)->count() > 0;
     }
 
     public function message()
