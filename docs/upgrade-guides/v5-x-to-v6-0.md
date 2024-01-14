@@ -80,6 +80,22 @@ This saves you needing to `find` the order/product/customer to use any of Simple
 
 The "Overview" page has been removed in Simple Commerce v6, in favour of Dashboard Widgets. To configure Simple Commerce widgets, review the [Control Panel](/control-panel#content-widgets) page.
 
+### Medium: Order Gateway methods have changed
+
+Both the `gateway` and `currentGateway` methods on orders have been replaced. If you were calling these methods anywhere in your code, you should update your code to use the new `gatewayData` method:
+
+```php
+// Get the gateway's name & handle
+$order->gatewayData()->gateway()->name();
+$order->gatewayData()->gateway()::handle();
+
+// Get the gateway / payment info
+$order->gatewayData()->data();
+
+// Get any refund data
+$order->gatewayData()->refund();
+```
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
