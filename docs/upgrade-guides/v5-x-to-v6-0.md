@@ -80,6 +80,23 @@ This saves you needing to `find` the order/product/customer to use any of Simple
 
 The "Overview" page has been removed in Simple Commerce v6, in favour of Dashboard Widgets. To configure Simple Commerce widgets, review the [Control Panel](/control-panel#content-widgets) page.
 
+### Medium: Changes to the `statusLog` method on Orders
+
+The `statusLog` method no longer accepts passing a status. Instead, you should query the status log for the event you're after, then get the `->last()` item in the collection.
+
+```php
+// Previously
+$order->statusLog('paid');
+
+// Now
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+
+$order->statusLog()
+    ->where('status', OrderStatus::Placed)
+    ->map(fn ($statusLogEvent) => $statusLogEvent->data()->timestamp)
+    ->last();
+```
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
