@@ -5,12 +5,10 @@ namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
-use Statamic\Facades\Entry;
 
 class UpdateClassReferences extends Command
 {

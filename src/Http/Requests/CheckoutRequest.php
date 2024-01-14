@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway as GatewayContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;

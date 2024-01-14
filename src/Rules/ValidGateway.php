@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Contracts\Validation\Rule;
 
