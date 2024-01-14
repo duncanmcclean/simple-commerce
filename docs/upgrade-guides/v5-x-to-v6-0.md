@@ -96,6 +96,23 @@ $order->gatewayData()->data();
 $order->gatewayData()->refund();
 ```
 
+### Medium: Changes to the `statusLog` method on Orders
+
+The `statusLog` method no longer accepts passing a status. Instead, you should query the status log for the event you're after, then get the `->last()` item in the collection.
+
+```php
+// Previously
+$order->statusLog('paid');
+
+// Now
+use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+
+$order->statusLog()
+    ->where('status', OrderStatus::Placed)
+    ->map(fn ($statusLogEvent) => $statusLogEvent->data()->timestamp)
+    ->last();
+```
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
