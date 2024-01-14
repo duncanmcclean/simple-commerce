@@ -103,8 +103,12 @@ abstract class BaseGateway
         return route('statamic.simple-commerce.gateways.callback', $data);
     }
 
-    public function webhookUrl(): string
+    public function webhookUrl(): ?string
     {
+        if (app()->environment('testing')) {
+            return null;
+        }
+
         return Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$this::handle().'/webhook';
     }
 
