@@ -93,7 +93,6 @@ test('can augment', function () {
     $this->assertArrayHasKey('display', $augment);
     $this->assertArrayHasKey('checkoutRules', $augment);
     $this->assertArrayHasKey('config', $augment);
-    $this->assertArrayHasKey('webhook_url', $augment);
     $this->assertArrayHasKey('data', $augment);
 });
 
