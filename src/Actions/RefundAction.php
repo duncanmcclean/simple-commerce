@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Actions;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
@@ -44,8 +43,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id);
 
-                return Gateway::use($order->currentGateway()['handle'])
-                    ->refund($order);
+                return $order->gatewayData()->gateway()->refund($order);
             });
     }
 

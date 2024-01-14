@@ -13,4 +13,6 @@ interface ShippingManager
     public function calculateCost(Order $order): int;
 
     public function checkAvailability(Order $order, Address $address): bool;
+
+    public function resolve();
 }
