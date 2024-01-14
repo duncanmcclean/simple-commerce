@@ -62,6 +62,7 @@ trait HandlesCustomerInformation
         // If the order already has a customer assigned, update the email on the existing customer.
         if ($customer = $cart->customer()) {
             $customer->email($email)->save();
+
             return $cart;
         }
 
