@@ -130,10 +130,7 @@ abstract class BaseGateway
     {
         // We need to ensure that the gateway is available in the
         // order when the OrderPaid event is dispatched.
-        $order->gatewayData([
-            'use' => static::handle(),
-            'data' => [],
-        ]);
+        $order->gatewayData(gateway: static::handle(), data: []);
 
         if ($this->isOffsiteGateway()) {
             $order = app(CheckoutPipeline::class)

@@ -44,8 +44,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id);
 
-                return Gateway::use($order->currentGateway()['handle'])
-                    ->refund($order);
+                return $order->gatewayData()->gateway()->refund($order);
             });
     }
 

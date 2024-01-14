@@ -158,7 +158,7 @@ class MigrateOrdersToDatabase extends Command
                 }
 
                 if ($gateway = $entry->get('gateway')) {
-                    $order->gatewayData($gateway);
+                    $order->gatewayData(gateway: $gateway);
                 }
 
                 $order->data($data);

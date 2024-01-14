@@ -59,12 +59,7 @@ class Manager implements Contract
         }
 
         $order = Order::find($order->id());
-
-        $order->gatewayData([
-            'use' => $this->handle,
-            'data' => $checkout,
-        ]);
-
+        $order->gatewayData(gateway: $this->handle, data: $checkout);
         $order->save();
 
         return $checkout;

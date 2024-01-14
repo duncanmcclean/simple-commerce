@@ -206,16 +206,25 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function gatewayData($gateway = null)
+    public function gatewayData(string $gateway = null, array $data = null, array $refund = null): ?GatewayData
     {
-        return $this
-            ->fluentlyGetOrSet('gateway')
-            ->args(func_get_args());
-    }
+        if ($gateway) {
+            $this->gateway = array_merge($this->gateway ?? [], ['use' => $gateway]);
+        }
 
-    public function currentGateway(): ?array
-    {
-        return SimpleCommerce::gateways()->firstWhere('handle', $this->gatewayData()['use']);
+        if ($data) {
+            $this->gateway = array_merge($this->gateway ?? [], ['data' => $data]);
+        }
+
+        if ($refund) {
+            $this->gateway = array_merge($this->gateway ?? [], ['refund' => $refund]);
+        }
+
+        if (! $this->gateway) {
+            return null;
+        }
+
+        return new GatewayData($this->gateway);
     }
 
     public function resource($resource = null)
@@ -362,11 +371,7 @@ class Order implements Contract
     {
         $this->updatePaymentStatus(PaymentStatus::Refunded);
 
-        $data = array_merge($this->gatewayData(), [
-            'refund' => $refundData,
-        ]);
-
-        $this->gatewayData($data);
+        $this->gatewayData(refund: $refundData);
 
         return $this;
     }
