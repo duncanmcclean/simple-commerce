@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Statamic\Facades\Addon;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
@@ -55,18 +54,19 @@ class SimpleCommerce
     {
         return collect(static::$gateways)
             ->map(function ($gateway) {
+                $class = $gateway[0];
+
                 /** @var Contracts\Gateway $instance */
-                $instance = new $gateway[0]();
+                $instance = new $class();
 
                 return [
                     'name' => $instance->name(),
-                    'handle' => $handle = Str::of($instance->name())->camel()->lower()->__toString(),
-                    'class' => $gateway[0],
+                    'handle' => $class::handle(),
+                    'class' => $class,
                     'formatted_class' => addslashes($gateway[0]),
                     'display' => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'checkoutRules' => $instance->checkoutRules(),
                     'config' => $gateway[1],
-                    'webhook_url' => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$handle.'/webhook',
                 ];
             });
     }
@@ -105,6 +105,7 @@ class SimpleCommerce
 
                         return [
                             'name' => $instance->name(),
+                            'handle' => $key::handle(),
                             'description' => $instance->description(),
                             'class' => $key,
                             'config' => $config,
@@ -151,6 +152,7 @@ class SimpleCommerce
 
         static::$shippingMethods[$site][] = [
             'name' => $instance->name(),
+            'handle' => $shippingMethod::handle(),
             'description' => $instance->description(),
             'class' => $shippingMethod,
             'config' => $config,

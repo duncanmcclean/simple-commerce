@@ -27,8 +27,7 @@ class RefundAction extends Action
         if (isset(SimpleCommerce::orderDriver()['model'])) {
             $orderModelClass = SimpleCommerce::orderDriver()['model'];
 
-            return $item instanceof $orderModelClass
-                && $item->payment_status === 'paid';
+            return $item instanceof $orderModelClass && $item->payment_status === 'paid';
         }
 
         return false;
@@ -45,7 +44,7 @@ class RefundAction extends Action
             ->each(function ($entry) {
                 $order = Order::find($entry->id);
 
-                return Gateway::use($order->currentGateway()['class'])
+                return Gateway::use($order->currentGateway()['handle'])
                     ->refund($order);
             });
     }

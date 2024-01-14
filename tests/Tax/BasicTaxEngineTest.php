@@ -3,11 +3,13 @@
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine;
 use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
 use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\DummyShippingMethod;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Collection;
+use Statamic\Facades\Site;
 
 /**
  * Inline with the fix suggested here: https://github.com/duncanmcclean/simple-commerce/pull/438#issuecomment-888498198
@@ -149,9 +151,11 @@ test('can calculate shipping tax when included in price', function () {
     Config::set('simple-commerce.tax_engine_config.included_in_prices', true);
     Config::set('simple-commerce.tax_engine_config.shipping_taxes', true);
 
+    SimpleCommerce::registerShippingMethod(Site::current()->handle(), DummyShippingMethod::class);
+
     $order = Order::make()
         ->status(OrderStatus::Cart)
-        ->merge(['shipping_method' => DummyShippingMethod::class])
+        ->merge(['shipping_method' => DummyShippingMethod::handle()])
         ->shippingTotal(500);
 
     $order->save();

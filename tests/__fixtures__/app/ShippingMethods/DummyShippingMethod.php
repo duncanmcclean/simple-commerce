@@ -5,8 +5,9 @@ namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
 use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
 
-class DummyShippingMethod implements ShippingMethod
+class DummyShippingMethod extends BaseShippingMethod implements ShippingMethod
 {
     public function name(): string
     {

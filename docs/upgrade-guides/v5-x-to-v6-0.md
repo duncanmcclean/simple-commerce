@@ -46,6 +46,28 @@ php artisan view:clear
 
 If you're storing orders & customers in the database, you should also follow the [Runway v6 Upgrade Guide](https://runway.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0).
 
+## High: References to gateways & shipping methods in orders have changed
+
+Previously, when referencing a Payment Gateway or Shipping Method in an order, Simple Commerce would use its fully-qualified class name, like so:
+
+```yaml
+shipping_method: DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping
+```
+
+However, v6 changes this so Payment Gateways & Shipping Methods are now referenced by their handles:
+
+```yaml
+shipping_method: free_shipping
+```
+
+Simple Commerce *should* automatically update your orders. However, if it didn't or you need to run it manually after deploying (eg. your orders are excluded from version control or stored in a database), you can run this command to manually trigger the updates:
+
+```
+php please sc:update-class-references
+```
+
+If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
+
 ### Medium: The `all` method on repositories has changed
 
 If you have any custom code which calls `Order::all()`, `Product::all()` or `Customer::all()`, you may need to adjust your code.

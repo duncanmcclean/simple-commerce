@@ -84,7 +84,7 @@ test('can mark order as paid with offsite gateway and ensure gateway is set in o
     expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 
     Event::assertDispatched(function (PaymentStatusUpdated $event) {
-        return $event->order->gateway['use'] === FakeOffsiteGateway::class;
+        return $event->order->gateway['use'] === FakeOffsiteGateway::handle();
     });
 
     // Assert stock count has been updated
@@ -155,6 +155,6 @@ test('can mark order as paid with onsite gateway and ensure gateway is set in or
     expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 
     Event::assertDispatched(function (PaymentStatusUpdated $event) {
-        return $event->order->gateway['use'] === FakeOnsiteGateway::class;
+        return $event->order->gateway['use'] === FakeOnsiteGateway::handle();
     });
 });

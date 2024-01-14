@@ -2,11 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway as GatewayContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
 use DoubleThreeDigital\SimpleCommerce\Rules\ValidGateway;
+use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CheckoutRequest extends FormRequest
@@ -64,18 +64,6 @@ class CheckoutRequest extends FormRequest
 
     protected function shouldDoGatewayValidation(): bool
     {
-        $gateway = $this->get('gateway');
-
-        if (! class_exists($gateway)) {
-            return false;
-        }
-
-        $isGateway = (new $gateway()) instanceof GatewayContract;
-
-        if (! $isGateway) {
-            return false;
-        }
-
-        return true;
+        return SimpleCommerce::gateways()->where('handle', $this->get('gateway'))->count() > 0;
     }
 }

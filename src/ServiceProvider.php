@@ -39,6 +39,7 @@ class ServiceProvider extends AddonServiceProvider
         Console\Commands\MigrateOrderStatuses::class,
         Console\Commands\MigrateOrdersToDatabase::class,
         Console\Commands\SwitchToDatabase::class,
+        Console\Commands\UpdateClassReferences::class,
     ];
 
     protected $fieldtypes = [
@@ -121,6 +122,8 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v5_0\UpdateOrderBlueprint::class,
         UpdateScripts\v5_0\CreateShippingTaxCategory::class,
         UpdateScripts\v5_0\MigrateCouponsAfterUiUpdates::class,
+
+        UpdateScripts\v6_0\UpdateClassReferences::class,
     ];
 
     protected $vite = [

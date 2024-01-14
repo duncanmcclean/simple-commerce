@@ -3,6 +3,7 @@
 use DoubleThreeDigital\SimpleCommerce\Actions\RefundAction;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use Statamic\Facades\Collection;
@@ -75,7 +76,7 @@ test('order can be refunded', function () {
             'status' => OrderStatus::Placed,
             'payment_status' => PaymentStatus::Paid,
             'gateway' => [
-                'use' => 'DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway',
+                'use' => DummyGateway::handle(),
                 'data' => [
                     'id' => '123456789abcdefg',
                 ],

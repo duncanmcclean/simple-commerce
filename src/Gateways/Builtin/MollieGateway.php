@@ -24,6 +24,8 @@ class MollieGateway extends BaseGateway implements Gateway
 {
     protected $mollie;
 
+    protected static $handle = 'mollie';
+
     public function name(): string
     {
         return __('Mollie');

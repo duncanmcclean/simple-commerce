@@ -34,10 +34,10 @@ class CheckoutTags extends SubTag
                     return true;
                 })
                 ->each(function ($gateway) use (&$cart, &$data) {
-                    $config = Gateway::use($gateway['class'])->config();
-                    $prepare = Gateway::use($gateway['class'])->prepare(request(), $cart);
+                    $config = Gateway::use($gateway['handle'])->config();
+                    $prepare = Gateway::use($gateway['handle'])->prepare(request(), $cart);
 
-                    $callbackUrl = Gateway::use($gateway['class'])
+                    $callbackUrl = Gateway::use($gateway['handle'])
                         ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
                         ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
                         ->callbackUrl();
@@ -68,9 +68,7 @@ class CheckoutTags extends SubTag
         $cart = $this->getCart();
         $gatewayHandle = last(explode(':', $tag));
 
-        $gateway = SimpleCommerce::gateways()
-            ->where('handle', $gatewayHandle)
-            ->first();
+        $gateway = SimpleCommerce::gateways()->firstWhere('handle', $gatewayHandle);
 
         if (! $gateway) {
             throw new GatewayDoesNotExist($gatewayHandle);
@@ -111,7 +109,7 @@ class CheckoutTags extends SubTag
                 : back()->with($data);
         }
 
-        $prepare = Gateway::use($gateway['class']);
+        $prepare = Gateway::use($gateway['handle']);
 
         if ($this->params->has('redirect')) {
             $prepare->withRedirectUrl($this->params->get('redirect'));
@@ -125,7 +123,7 @@ class CheckoutTags extends SubTag
 
         $cart->gateway([
             ...$cart->gateway() ?? [],
-            'use' => $gateway['class'],
+            'use' => $gateway['class']::handle(),
         ]);
 
         $cart->set($gateway['handle'], $prepare);

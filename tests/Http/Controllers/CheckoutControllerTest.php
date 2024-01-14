@@ -62,7 +62,7 @@ test('can post checkout', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -111,7 +111,7 @@ test('cant post checkout and ensure custom form request is used', function () {
             '_request' => encrypt(CheckoutFormRequest::class),
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -162,7 +162,7 @@ test('can post checkout with name and email', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Mike Scott',
             'email' => 'mike.scott@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -221,7 +221,7 @@ test('can post checkout with first name and last name and email', function () {
             'first_name' => 'Mike',
             'last_name' => 'Scott',
             'email' => 'mike.scott@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -277,7 +277,7 @@ test('cant post checkout with name and email when email address contains spaces'
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Mike Scott',
             'email' => 'mike dot scott@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -328,7 +328,7 @@ test('can post checkout with only email', function () {
         ->withSession(['simple-commerce-cart' => $order->id])
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'email' => 'jim@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -388,7 +388,7 @@ test('can post checkout with customer already present in order', function () {
     $this
         ->withSession(['simple-commerce-cart' => $order->id])
         ->post(route('statamic.simple-commerce.checkout.store'), [
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -452,7 +452,7 @@ test('can post checkout with customer present in request', function () {
         ->withSession(['simple-commerce-cart' => $order->id])
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'customer' => $customer->id,
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -529,7 +529,7 @@ test('can post checkout with customer where customer has invalid orders', functi
         ->withSession(['simple-commerce-cart' => $order->id])
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'customer' => $customer->id,
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -591,7 +591,7 @@ test('can post checkout with customer array', function () {
                 'name' => 'Joe Doe',
                 'email' => 'joe.doe@example.com',
             ],
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -659,7 +659,7 @@ test('can post checkout with customer array and existing customer', function () 
                 'name' => 'Joe Doe',
                 'email' => 'joe.doe@example.com',
             ],
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -728,7 +728,7 @@ test('can post checkout with customer array with additional information', functi
                 'email' => 'joe.doe@example.com',
                 'dob' => '01/01/2000',
             ],
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -805,7 +805,7 @@ test('can post checkout with customer array and existing customer with additiona
                 'email' => 'joe.doe@example.com',
                 'dob' => '01/01/2000',
             ],
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -868,7 +868,7 @@ test('can post checkout with customer array and use logged in user as customer',
         ->actingAs($user)
         ->withSession(['simple-commerce-cart' => $order->id])
         ->post(route('statamic.simple-commerce.checkout.store'), [
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -944,7 +944,7 @@ test('can post checkout with coupon', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1084,7 +1084,7 @@ test('cant post checkout with coupon where minimum cart value has not been reach
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1159,7 +1159,7 @@ test('cant post checkout with coupon when coupon has been redeemed for maxium us
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1234,7 +1234,7 @@ test('cant post checkout with coupon where coupon is only valid for products not
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1291,7 +1291,7 @@ test('can post checkout with product with stock counter', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1345,7 +1345,7 @@ test('can post checkout when product is running low on stock', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1399,7 +1399,7 @@ test('cant post checkout when product has no stock', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1460,7 +1460,7 @@ test('cant post checkout when product has a single item left in stock and single
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1539,7 +1539,7 @@ test('can post checkout with variant product with stock counter', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1616,7 +1616,7 @@ test('can post checkout when variant product is running low on stock', function 
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1693,7 +1693,7 @@ test('cant post checkout when variant product has no stock', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1777,7 +1777,7 @@ test('can post checkout when variant product has a single item left in stock and
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1836,7 +1836,7 @@ test('can post checkout and ensure remaining request data is saved to order', fu
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1896,7 +1896,7 @@ test('cant post checkout and ensure remaining request data is saved to order if 
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -1998,7 +1998,7 @@ test('cant post checkout with no payment information on paid order', function ()
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
         ])
         ->assertSessionHasErrors(['card_number', 'expiry_month', 'expiry_year', 'cvc']);
 
@@ -2132,7 +2132,7 @@ test('can post checkout requesting json and ensure json is returned', function (
         ->postJson(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -2191,7 +2191,7 @@ test('can post checkout and ensure user is redirected', function () {
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -2256,7 +2256,7 @@ test('can post checkout and ensure order paid notifications are sent', function 
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Guvna B',
             'email' => 'guvna.b@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -2318,7 +2318,7 @@ test('can post checkout and ensure temp gateway data is tidied up', function () 
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => DummyGateway::class,
+            'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
@@ -2365,7 +2365,7 @@ test('can post checkout and ensure gateway validation rules are used', function 
     $this
         ->withSession(['simple-commerce-cart' => $order->id])
         ->postJson(route('statamic.simple-commerce.checkout.store'), [
-            'gateway' => TestValidationGateway::class,
+            'gateway' => TestValidationGateway::handle(),
         ])
         ->assertJson([
             'errors' => [
@@ -2418,7 +2418,7 @@ test('can post checkout and ensure gateway errors are handled correctly', functi
         ->post(route('statamic.simple-commerce.checkout.store'), [
             'name' => 'Smelly Joe',
             'email' => 'smelly.joe@example.com',
-            'gateway' => TestCheckoutErrorGateway::class,
+            'gateway' => TestCheckoutErrorGateway::handle(),
         ])
         ->assertSessionHasErrors('gateway');
 

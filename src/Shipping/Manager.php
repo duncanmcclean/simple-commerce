@@ -13,18 +13,18 @@ class Manager implements Contract
 {
     protected $siteHandle;
 
-    protected $className;
+    protected $handle;
 
     public function site($siteHandle): self
     {
-        $this->className = $siteHandle;
+        $this->siteHandle = $siteHandle;
 
         return $this;
     }
 
-    public function use($className): self
+    public function use($handle): self
     {
-        $this->className = $className;
+        $this->handle = $handle;
 
         return $this;
     }
@@ -49,19 +49,17 @@ class Manager implements Contract
         return $this->resolve()->checkAvailability($order, $address);
     }
 
-    protected function resolve()
+    public function resolve()
     {
-        if (! resolve($this->className)) {
-            throw new ShippingMethodDoesNotExist("Shipping method [{$this->className}] does not exist.");
-        }
-
         $siteHandle = $this->siteHandle ?? Site::current()->handle();
 
-        $shippingMethod = SimpleCommerce::shippingMethods($siteHandle)
-            ->where('class', $this->className)
-            ->first();
+        $shippingMethod = SimpleCommerce::shippingMethods($siteHandle)->firstWhere('handle', $this->handle);
 
-        return resolve($this->className, [
+        if (! $shippingMethod) {
+            throw new ShippingMethodDoesNotExist("Shipping method [{$this->handle}] does not exist.");
+        }
+
+        return resolve($shippingMethod['class'], [
             'config' => $shippingMethod['config'] ?? [],
         ]);
     }

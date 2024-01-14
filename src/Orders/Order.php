@@ -215,7 +215,7 @@ class Order implements Contract
 
     public function currentGateway(): ?array
     {
-        return SimpleCommerce::gateways()->firstWhere('class', $this->gateway()['use']);
+        return SimpleCommerce::gateways()->firstWhere('handle', $this->gateway()['use']);
     }
 
     public function resource($resource = null)

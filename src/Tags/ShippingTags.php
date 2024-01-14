@@ -19,7 +19,7 @@ class ShippingTags extends SubTag
         return SimpleCommerce::shippingMethods(Site::current()->handle())
             ->map(function ($shippingMethod) use ($order) {
                 $instance = Shipping::site(Site::current()->handle())
-                    ->use($shippingMethod['class']);
+                    ->use($shippingMethod['handle']);
 
                 if (! $shipingAddress = $order->shippingAddress()) {
                     return null;
@@ -32,7 +32,7 @@ class ShippingTags extends SubTag
                 $cost = $instance->calculateCost($order);
 
                 return [
-                    'handle' => $shippingMethod['class'],
+                    'handle' => $shippingMethod['handle'],
                     'name' => $instance->name(),
                     'description' => $instance->description(),
                     'cost' => Currency::parse($cost, Site::current()),

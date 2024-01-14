@@ -4,6 +4,7 @@ namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
 
 use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Site;
 
@@ -19,7 +20,7 @@ class ShippingTaxCalculator
         }
 
         $taxEngine = SimpleCommerce::taxEngine();
-        $taxCalculation = $taxEngine->calculateForShipping($order, new $shippingMethod);
+        $taxCalculation = $taxEngine->calculateForShipping($order, Shipping::use($shippingMethod)->resolve());
 
         $order->set('shipping_tax', $taxCalculation->toArray());
 
