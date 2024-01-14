@@ -123,7 +123,7 @@ class CheckoutTags extends SubTag
 
         $cart->gateway([
             ...$cart->gateway() ?? [],
-            'use' => $gateway['class']::class(),
+            'use' => $gateway['class']::handle(),
         ]);
 
         $cart->set($gateway['handle'], $prepare);
