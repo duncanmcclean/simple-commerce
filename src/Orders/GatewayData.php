@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway as GatewayContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
 use DoubleThreeDigital\SimpleCommerce\Gateways\Manager;
 use Illuminate\Support\Collection;
@@ -10,7 +9,9 @@ use Illuminate\Support\Collection;
 class GatewayData
 {
     public $gateway;
+
     public $data;
+
     public $refund;
 
     public function __construct(array $gatewayData)

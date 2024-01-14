@@ -206,7 +206,7 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
-    public function gatewayData(string $gateway = null, array $data = null, array $refund = null): ?GatewayData
+    public function gatewayData(?string $gateway = null, ?array $data = null, ?array $refund = null): ?GatewayData
     {
         if ($gateway) {
             $this->gateway = array_merge($this->gateway ?? [], ['use' => $gateway]);
