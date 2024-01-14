@@ -68,7 +68,6 @@ class SimpleCommerce
                     'display' => isset($gateway[1]['display']) ? $gateway[1]['display'] : $instance->name(),
                     'checkoutRules' => $instance->checkoutRules(),
                     'config' => $gateway[1],
-                    'webhook_url' => Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$class::handle().'/webhook',
                 ];
             });
     }
