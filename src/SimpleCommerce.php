@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Statamic\Facades\Addon;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
