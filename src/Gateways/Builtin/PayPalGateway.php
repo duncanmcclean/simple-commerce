@@ -210,9 +210,9 @@ class PayPalGateway extends BaseGateway implements Gateway
                     ->save();
             }
 
-            $order->gateway(
+            $order->gatewayData(
                 array_merge(
-                    $order->gateway(),
+                    $order->gatewayData(),
                     [
                         'data' => $responseBody,
                     ]

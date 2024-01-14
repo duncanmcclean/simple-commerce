@@ -68,7 +68,7 @@ class EntryOrderRepository implements RepositoryContract
         }
 
         if ($entry->has('gateway')) {
-            $order->gateway($entry->get('gateway'));
+            $order->gatewayData($entry->get('gateway'));
         }
 
         return $order->data(array_merge(
@@ -124,7 +124,7 @@ class EntryOrderRepository implements RepositoryContract
                     'coupon_total' => $order->couponTotal(),
                     'customer' => $order->customer() instanceof CustomerContract ? $order->customer()->id() : $order->customer(),
                     'coupon' => $order->coupon() instanceof CouponContract ? $order->coupon()->id() : $order->coupon(),
-                    'gateway' => $order->gateway(),
+                    'gateway' => $order->gatewayData(),
                 ],
             )
         );

@@ -129,8 +129,8 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $paymentIntent = null;
 
-        if (isset($order->gateway()['data']['payment_intent'])) {
-            $paymentIntent = $order->gateway()['data']['payment_intent'];
+        if (isset($order->gatewayData()['data']['payment_intent'])) {
+            $paymentIntent = $order->gatewayData()['data']['payment_intent'];
         }
 
         if (isset($order->get('stripe')['intent'])) {

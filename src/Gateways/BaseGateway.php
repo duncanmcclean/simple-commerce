@@ -130,7 +130,7 @@ abstract class BaseGateway
     {
         // We need to ensure that the gateway is available in the
         // order when the OrderPaid event is dispatched.
-        $order->gateway([
+        $order->gatewayData([
             'use' => static::handle(),
             'data' => [],
         ]);

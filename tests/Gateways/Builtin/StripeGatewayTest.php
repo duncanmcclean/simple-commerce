@@ -379,7 +379,7 @@ test('has checkout rules', function () {
 test('can refund charge', function () {
     Stripe::setApiKey(env('STRIPE_SECRET'));
 
-    $order = Order::make()->grandTotal(1234)->gateway([
+    $order = Order::make()->grandTotal(1234)->gatewayData([
         'use' => StripeGateway::handle(),
         'data' => [
             'payment_intent' => $paymentIntent = PaymentIntent::create([
