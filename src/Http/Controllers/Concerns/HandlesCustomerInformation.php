@@ -59,6 +59,14 @@ trait HandlesCustomerInformation
 
     private function findOrCreateCustomer(OrderContract $cart, string $email): OrderContract
     {
+        // If the order already has a customer assigned, update the email on the existing customer.
+        if ($customer = $cart->customer()) {
+            $customer->email($email)->save();
+
+            return $cart;
+        }
+
+        // Otherwise, find or create a customer with the provided email.
         try {
             $customer = Customer::findByEmail($email);
             $cart->customer($customer->id());

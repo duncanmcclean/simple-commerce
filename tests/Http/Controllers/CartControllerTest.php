@@ -181,6 +181,35 @@ test('can update cart with customer already in cart', function () {
     expect($customer->id)->toBe($cart->customer()->id());
 });
 
+test('can update cart with customer already in cart and ensure the customer email is updated', function () {
+    $customer = Customer::make()
+        ->email('dan.smith@example.com')
+        ->data([
+            'name' => 'Dan Smith',
+        ]);
+
+    $customer->save();
+
+    $cart = Order::make()->customer($customer->id);
+    $cart->save();
+
+    $data = [
+        'customer' => ['email' => 'dan@smith.test'],
+    ];
+
+    $response = $this
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), $data);
+
+    $response->assertRedirect('/cart');
+
+    $cart = $cart->fresh();
+
+    expect($customer->id)->toBe($cart->customer()->id());
+    expect('dan@smith.test')->toBe($cart->customer()->email());
+});
+
 /**
  * https://github.com/duncanmcclean/simple-commerce/issues/658
  */
