@@ -142,10 +142,6 @@ class Manager implements Contract
 
         $data = ['config' => $gateway['config']];
 
-        if (isset($gateway['webhook_url'])) {
-            $data['webhookUrl'] = $gateway['webhook_url'];
-        }
-
         if ($this->redirectUrl) {
             $data['redirectUrl'] = $this->redirectUrl;
         }

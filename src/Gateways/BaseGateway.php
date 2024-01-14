@@ -19,7 +19,6 @@ abstract class BaseGateway
 
     public function __construct(
         protected array $config = [],
-        protected string $webhookUrl = '',
         protected string $redirectUrl = '/',
         protected string $errorRedirectUrl = '/'
     ) {
@@ -106,7 +105,7 @@ abstract class BaseGateway
 
     public function webhookUrl(): string
     {
-        return $this->webhookUrl;
+        return Str::finish(config('app.url'), '/').config('statamic.routes.action').'/simple-commerce/gateways/'.$this::handle().'/webhook';
     }
 
     public function redirectUrl(): ?string
