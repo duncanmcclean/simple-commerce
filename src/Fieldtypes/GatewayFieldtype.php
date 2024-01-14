@@ -84,6 +84,10 @@ class GatewayFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        if (! $value) {
+            return null;
+        }
+
         $gateway = SimpleCommerce::gateways()->firstWhere('handle', $value['use']);
 
         if (! $gateway) {
