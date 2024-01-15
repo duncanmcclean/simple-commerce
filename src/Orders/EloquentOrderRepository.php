@@ -35,6 +35,13 @@ class EloquentOrderRepository implements RepositoryContract
         return (new $this->model)->all()->transform(fn ($model) => $this->fromModel($model));
     }
 
+    public function query()
+    {
+        return app(EloquentQueryBuilder::class, [
+            'builder' => (new $this->model)->query(),
+        ]);
+    }
+
     public function find($id): ?Order
     {
         $model = (new $this->model)->find($id);
@@ -46,7 +53,7 @@ class EloquentOrderRepository implements RepositoryContract
         return $this->fromModel($model);
     }
 
-    protected function fromModel(OrderModel $model)
+    public function fromModel(OrderModel $model)
     {
         return app(Order::class)
             ->resource($model)

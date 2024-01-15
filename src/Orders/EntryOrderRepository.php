@@ -33,6 +33,13 @@ class EntryOrderRepository implements RepositoryContract
             ->transform(fn ($entry) => $this->fromEntry($entry));
     }
 
+    public function query()
+    {
+        return app(EntryQueryBuilder::class, [
+            'store' => app('stache')->store('entries'),
+        ]);
+    }
+
     public function find($id): ?Order
     {
         $entry = Entry::find($id);
@@ -44,7 +51,7 @@ class EntryOrderRepository implements RepositoryContract
         return $this->fromEntry($entry);
     }
 
-    protected function fromEntry($entry): Order
+    public function fromEntry($entry): Order
     {
         $order = app(Order::class)
             ->resource($entry)
