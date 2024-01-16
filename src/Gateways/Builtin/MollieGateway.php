@@ -9,8 +9,6 @@ use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
 use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
 use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
@@ -154,28 +152,8 @@ class MollieGateway extends BaseGateway implements Gateway
 
     protected function getOrderFromWebhookRequest(Request $request): ?Order
     {
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            // TODO: refactor this query
-            return collect(OrderFacade::all())
-                ->filter(function ($entry) use ($request) {
-                    return isset($entry->data()->get('mollie')['id'])
-                        && $entry->data()->get('mollie')['id'] === $request->get('id');
-                })
-                ->map(function ($entry) {
-                    return OrderFacade::find($entry->id());
-                })
-                ->first();
-        }
-
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $order = (new (SimpleCommerce::orderDriver()['model']))
-                ->query()
-                ->where('data->mollie->id', $request->get('id'))
-                ->first();
-
-            return OrderFacade::find($order->id);
-        }
-
-        return null;
+        return OrderFacade::query()
+            ->where('data->mollie->id', $request->get('id'))
+            ->first();
     }
 }
