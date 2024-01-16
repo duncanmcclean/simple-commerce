@@ -13,4 +13,14 @@ class EntryQueryBuilder extends QueryEntryQueryBuilder
 
         return $get->map(fn ($entry) => Order::fromEntry($entry));
     }
+
+    public function whereOrderStatus(OrderStatus $orderStatus)
+    {
+        return $this->where('order_status', $orderStatus->value);
+    }
+
+    public function wherePaymentStatus(PaymentStatus $paymentStatus)
+    {
+        return $this->where('payment_status', $paymentStatus->value);
+    }
 }
