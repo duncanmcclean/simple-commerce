@@ -14,6 +14,7 @@ use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\StatusLogEvent;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
@@ -213,7 +214,11 @@ class Overview
                     $query = $userModel::query()
                         ->where('orders', '!=', null)
                         ->orderBy(function ($query) {
-                            $query->selectRaw('JSON_ARRAY_LENGTH(orders)');
+                            $query->when($query->connection instanceof SQLiteConnection, function ($query) {
+                                $query->selectRaw('JSON_ARRAY_LENGTH(orders)');
+                            }, function ($query) {
+                                $query->selectRaw('JSON_LENGTH(orders)');
+                            });
                         }, 'desc')
                         ->limit(5)
                         ->get()
