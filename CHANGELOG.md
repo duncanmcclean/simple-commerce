@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.9.2 (2024-01-20)
+
+### What's fixed
+* Fixed "Top Customers" query when storing users in a database #977 by @duncanmcclean
+
+
+
 ## v5.9.1 (2024-01-13)
 
 ### What's fixed
