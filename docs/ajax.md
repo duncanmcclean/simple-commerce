@@ -52,9 +52,34 @@ let params = {
 };
 
 axios.post("/!/simple-commerce/cart-items", params).then((response) => {
-  console.alert("Whoop! The product has been added to your cart");
+  console.log("Whoop! The product has been added to your cart");
 });
 ```
+
+Using a native the `fetch()` function, you’ll need to specify a few headers for the request.
+
+```js
+let headers = {
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+};
+
+let body = {
+  _token: "{{ csrf_token }}",
+  _request: "Empty",
+  product: "your-product-id",
+  quantity: 1,
+};
+
+fetch("/!/simple-commerce/cart-items", {
+  method: "POST",
+  headers: headers,
+  body: JSON.stringify(body),
+}).then((response) => {
+  console.log("Whoop! The product has been added to your cart");
+});
+```
+
 
 ## Form Parameter Validation
 
