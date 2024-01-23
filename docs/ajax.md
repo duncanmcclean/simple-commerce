@@ -40,7 +40,11 @@ let params = {
 };
 ```
 
-## Example
+## Examples
+
+To get you started, here's two examples of making requests to Simple Commerce endpoints using `axios` and Javascript's native `fetch` API:
+
+### `axios`
 
 Here's a quick & basic example of using Axios to make an HTTP request to one of Simple Commerce's endpoints.
 
@@ -52,11 +56,13 @@ let params = {
 };
 
 axios.post("/!/simple-commerce/cart-items", params).then((response) => {
-  console.log("Whoop! The product has been added to your cart");
+  console.log("Woo hoo! The product has been added to your cart");
 });
 ```
 
-Using a native the `fetch()` function, you’ll need to specify a few headers for the request.
+### `fetch`
+
+Here's a quick example of using JavaScript's native `fetch` API to make an HTTP request to one of Simple Commerce's endpoints. Make sure you pass the `Accept` & `Content-Type` headers, otherwise you won't receive the expected response.
 
 ```js
 let headers = {
@@ -76,7 +82,7 @@ fetch("/!/simple-commerce/cart-items", {
   headers: headers,
   body: JSON.stringify(body),
 }).then((response) => {
-  console.log("Whoop! The product has been added to your cart");
+  console.log("Woo hoo! The product has been added to your cart");
 });
 ```
 
