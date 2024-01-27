@@ -21,10 +21,14 @@ class EntryProductRepository implements RepositoryContract
 
     public function all()
     {
-        return Entry::query()
-            ->where('collection', $this->collection)
-            ->get()
-            ->transform(fn ($entry) => $this->fromEntry($entry));
+        return $this->query()->get();
+    }
+
+    public function query()
+    {
+        return app(EntryQueryBuilder::class, [
+            'store' => app('stache')->store('entries'),
+        ]);
     }
 
     public function find($id): ?Product
@@ -38,7 +42,7 @@ class EntryProductRepository implements RepositoryContract
         return $this->fromEntry($entry);
     }
 
-    protected function fromEntry($entry)
+    public function fromEntry($entry)
     {
         $product = app(Product::class)
             ->resource($entry)
