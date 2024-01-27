@@ -28,7 +28,7 @@ class EntryCustomerRepository implements RepositoryContract
     {
         return app(EntryQueryBuilder::class, [
             'store' => app('stache')->store('entries'),
-        ]);
+        ])->where('collection', $this->collection);
     }
 
     public function find($id): ?Customer
