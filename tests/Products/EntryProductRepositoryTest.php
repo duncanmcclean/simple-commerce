@@ -5,8 +5,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryQueryBuilder;
 use Statamic\Facades\Collection;
 
-use function PHPUnit\Framework\assertTrue;
-
 afterEach(function () {
     Collection::find('products')->queryEntries()->get()->each->delete();
 });
