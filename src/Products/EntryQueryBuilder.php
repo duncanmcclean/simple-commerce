@@ -2,6 +2,7 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Products;
 
+use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Statamic\Stache\Query\EntryQueryBuilder as QueryEntryQueryBuilder;
 
 class EntryQueryBuilder extends QueryEntryQueryBuilder
