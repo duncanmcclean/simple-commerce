@@ -1,7 +1,9 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Orders\EloquentQueryBuilder;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
@@ -14,7 +16,7 @@ uses(SetupCollections::class);
 uses(RefreshDatabase::class);
 uses(UseDatabaseContentDrivers::class);
 
-test('can get all orders', function () {
+it('can get all orders', function () {
     $productOne = Product::make()->price(1000);
     $productOne->save();
 
@@ -22,6 +24,7 @@ test('can get all orders', function () {
     $productTwo->save();
 
     OrderModel::create([
+        'order_number' => 1002,
         'items' => [
             [
                 'product' => $productOne->id(),
@@ -35,6 +38,7 @@ test('can get all orders', function () {
     ]);
 
     OrderModel::create([
+        'order_number' => 1003,
         'items' => [
             [
                 'product' => $productTwo->id(),
@@ -47,13 +51,57 @@ test('can get all orders', function () {
         ],
     ]);
 
-    $all = Order::all();
+    $orders = Order::all();
 
-    expect($all instanceof Collection)->toBeTrue();
-    expect(2)->toBe($all->count());
+    expect($orders->count())->toBe(2);
+    expect($orders->map->orderNumber()->toArray())->toBe([1002, 1003]);
 });
 
-test('can find order', function () {
+it('can query orders', function () {
+    $productOne = Product::make()->price(1000);
+    $productOne->save();
+
+    $productTwo = Product::make()->price(1000);
+    $productTwo->save();
+
+    OrderModel::create([
+        'order_number' => 1002,
+        'items' => [
+            [
+                'product' => $productOne->id(),
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ],
+        'data' => [
+            'foo' => 'bar',
+        ],
+    ]);
+
+    OrderModel::create([
+        'order_number' => 1003,
+        'items' => [
+            [
+                'product' => $productTwo->id(),
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ],
+        'data' => [
+            'boo' => 'foo',
+        ],
+    ]);
+
+    $query = Order::query();
+    expect($query)->toBeInstanceOf(EloquentQueryBuilder::class);
+    expect($query->count())->toBe(2);
+
+    $query = Order::query()->where('order_number', 1002);
+    expect($query->count())->toBe(1);
+    expect($query->get()[0])->toBeInstanceOf(OrderContract::class);
+});
+
+it('can find order', function () {
     $product = Product::make()->price(1000);
     $product->save();
 
@@ -77,7 +125,7 @@ test('can find order', function () {
     expect('bar')->toBe($find->get('foo'));
 });
 
-test('can find order with custom column', function () {
+it('can find order with custom column', function () {
     $product = Product::make()->price(1000);
     $product->save();
 
@@ -103,7 +151,7 @@ test('can find order with custom column', function () {
     expect('Yes')->toBe($find->get('ordered_on_tuesday'));
 });
 
-test('can create', function () {
+it('can create order', function () {
     $create = Order::make()
         ->status(OrderStatus::Placed)
         ->paymentStatus(PaymentStatus::Paid)
@@ -117,7 +165,7 @@ test('can create', function () {
     expect(1000)->toBe($create->grandTotal());
 });
 
-test('can save', function () {
+it('can save order', function () {
     $product = Product::make()->price(1000);
     $product->save();
 
@@ -144,7 +192,7 @@ test('can save', function () {
     expect(true)->toBe($order->get('is_special_order'));
 });
 
-test('can save when bit of data has its own column', function () {
+it('can save order when bit of data has its own column', function () {
     $product = Product::make()->price(1000);
     $product->save();
 
@@ -173,7 +221,7 @@ test('can save when bit of data has its own column', function () {
     ]);
 });
 
-test('can delete', function () {
+it('can delete order', function () {
     $orderRecord = OrderModel::create([
         'payment_status' => 'paid',
         'grand_total' => 1000,
