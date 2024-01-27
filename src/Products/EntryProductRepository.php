@@ -88,7 +88,7 @@ class EntryProductRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id(Stache::generateId())
+                ->id($product->id() ?? Stache::generateId())
                 ->collection($this->collection);
         }
 

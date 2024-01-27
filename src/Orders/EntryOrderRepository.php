@@ -99,7 +99,7 @@ class EntryOrderRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id(Stache::generateId())
+                ->id($order->id() ?? Stache::generateId())
                 ->collection($this->collection);
         }
 
