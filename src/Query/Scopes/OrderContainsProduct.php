@@ -31,32 +31,21 @@ class OrderContainsProduct extends Filter
         })->toArray();
     }
 
-    // TODO: refactor query
     public function apply($query, $values)
     {
         $products = $values['products'];
 
-        // TODO: Refactor query once we have a better way of querying
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            $query
-                ->whereIn('items->0->product', $products)
-                ->orWhereIn('items->1->product', $products)
-                ->orWhereIn('items->2->product', $products)
-                ->orWhereIn('items->3->product', $products)
-                ->orWhereIn('items->4->product', $products)
-                ->orWhereIn('items->5->product', $products)
-                ->orWhereIn('items->6->product', $products)
-                ->orWhereIn('items->7->product', $products)
-                ->orWhereIn('items->8->product', $products)
-                ->orWhereIn('items->9->product', $products);
-        }
-
-        // TODO: Make this query work when using the Eloquent driver
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            //
-        }
-
-        return $query;
+        $query
+            ->whereIn('items->0->product', $products)
+            ->orWhereIn('items->1->product', $products)
+            ->orWhereIn('items->2->product', $products)
+            ->orWhereIn('items->3->product', $products)
+            ->orWhereIn('items->4->product', $products)
+            ->orWhereIn('items->5->product', $products)
+            ->orWhereIn('items->6->product', $products)
+            ->orWhereIn('items->7->product', $products)
+            ->orWhereIn('items->8->product', $products)
+            ->orWhereIn('items->9->product', $products);
     }
 
     public function badge($values)
@@ -70,19 +59,9 @@ class OrderContainsProduct extends Filter
 
     public function visibleTo($key)
     {
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            return $key === 'entries'
-                && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
-        }
-
-        // if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-        //     $orderModelClass = SimpleCommerce::orderDriver()['model'];
-        //     $runwayResource = \StatamicRadPack\Runway\Runway::findResourceByModel(new $orderModelClass);
-
-        //     return $key === "runway_{$runwayResource->handle()}";
-        // }
-
-        return false;
+        return $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)
+            && $key === 'entries'
+            && $this->context['collection'] === SimpleCommerce::orderDriver()['collection'];
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
