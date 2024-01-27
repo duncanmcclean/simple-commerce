@@ -22,7 +22,14 @@ class EloquentCustomerRepository implements RepositoryContract
 
     public function all()
     {
-        return (new $this->model)->all()->transform(fn ($model) => $this->fromModel($model));
+        return $this->query()->get();
+    }
+
+    public function query()
+    {
+        return app(EloquentQueryBuilder::class, [
+            'builder' => (new $this->model)->query(),
+        ]);
     }
 
     public function find($id): ?Customer
@@ -47,7 +54,7 @@ class EloquentCustomerRepository implements RepositoryContract
         return $this->fromModel($model);
     }
 
-    protected function fromModel($model)
+    public function fromModel($model)
     {
         return app(Customer::class)
             ->resource($model)
