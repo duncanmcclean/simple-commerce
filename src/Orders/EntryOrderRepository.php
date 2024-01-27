@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 

@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce\Query\Scopes;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Query\Scopes\Filter;

@@ -1,12 +1,11 @@
 <?php
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
 use DoubleThreeDigital\SimpleCommerce\Customers\EloquentQueryBuilder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Collection;
 
 uses(RefreshDatabase::class);
 uses(UseDatabaseContentDrivers::class);
