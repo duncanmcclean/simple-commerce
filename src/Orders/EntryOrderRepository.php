@@ -27,10 +27,7 @@ class EntryOrderRepository implements RepositoryContract
 
     public function all()
     {
-        return Entry::query()
-            ->where('collection', $this->collection)
-            ->get()
-            ->transform(fn ($entry) => $this->fromEntry($entry));
+        return $this->query()->get();
     }
 
     public function query()

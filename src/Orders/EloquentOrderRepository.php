@@ -32,7 +32,7 @@ class EloquentOrderRepository implements RepositoryContract
 
     public function all()
     {
-        return (new $this->model)->all()->transform(fn ($model) => $this->fromModel($model));
+        return $this->query()->get();
     }
 
     public function query()
