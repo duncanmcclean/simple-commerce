@@ -19,6 +19,7 @@ class TopCustomers extends Widget
         $indexUrl = null;
         $topCustomers = null;
 
+        // TODO: refactor query
         if ((new self)->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EntryCustomerRepository::class)) {
             $indexUrl = cp_route('collections.show', SimpleCommerce::customerDriver()['collection']);
 

@@ -57,6 +57,7 @@ class MigrateOrdersToDatabase extends Command
         $this->info('Migration complete!');
     }
 
+    // TODO: refactor query
     protected function migrateEntryCustomers(string $collectionHandle): self
     {
         Collection::find($collectionHandle)
@@ -85,6 +86,7 @@ class MigrateOrdersToDatabase extends Command
         return $this;
     }
 
+    // TODO: refactor query
     protected function migrateUserCustomers(): self
     {
         User::all()

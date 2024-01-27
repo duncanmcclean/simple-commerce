@@ -31,6 +31,7 @@ class OrderContainsProduct extends Filter
         })->toArray();
     }
 
+    // TODO: refactor query
     public function apply($query, $values)
     {
         $products = $values['products'];

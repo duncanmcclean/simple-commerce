@@ -120,17 +120,9 @@ public function webhook(Request $request)
     $payment = $this->mollie->payments->get($mollieId);
 
     if ($payment->status === MolliePaymentStatus::STATUS_PAID) {
-        $order = collect(OrderFacade::all())
-            ->filter(function ($entry) use ($mollieId) {
-                return isset($entry->data()->get('mollie')['id'])
-                    && $entry->data()->get('mollie')['id']
-                    === $mollieId;
-            })
-            ->map(function ($entry) {
-                return OrderFacade::find($entry->id());
-            })
+        $order = OrderFacade::query()
+            ->where('data->mollie->id', $request->get('id'))
             ->first();
-        }
 
         if (! $order) {
             throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");

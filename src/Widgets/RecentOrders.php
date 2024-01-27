@@ -21,6 +21,7 @@ class RecentOrders extends Widget
         $indexUrl = null;
         $recentOrders = null;
 
+        // TODO: refactor query
         if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             $indexUrl = cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
 

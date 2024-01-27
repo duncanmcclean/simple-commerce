@@ -22,6 +22,7 @@ class UpdateClassReferences extends Command
     {
         $this->info('Updating class references...');
 
+        // TODO: refactor query
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             Collection::find(SimpleCommerce::orderDriver()['collection'])
                 ->queryEntries()

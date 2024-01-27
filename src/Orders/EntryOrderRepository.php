@@ -166,6 +166,7 @@ class EntryOrderRepository implements RepositoryContract
         return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
     }
 
+    // TODO: refactor query
     protected function generateOrderNumber(): int
     {
         $lastOrder = Collection::find($this->collection)

@@ -26,6 +26,7 @@ class OrdersChart extends Widget
 
         $timePeriod = CarbonPeriod::create(Carbon::now()->subDays(30)->format('Y-m-d'), Carbon::now()->format('Y-m-d'));
 
+        // TODO: refactor query
         $data = collect($timePeriod)->map(function ($date) {
             if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
                 $query = Collection::find(SimpleCommerce::orderDriver()['collection'])

@@ -45,13 +45,13 @@ class EloquentCustomerRepository implements RepositoryContract
 
     public function findByEmail(string $email): ?Customer
     {
-        $model = (new $this->model)->query()->firstWhere('email', $email);
+        $customer = (new $this->model)->query()->firstWhere('email', $email);
 
-        if (! $model) {
+        if (! $customer) {
             throw new CustomerNotFound("Customer [{$email}] could not be found.");
         }
 
-        return $this->fromModel($model);
+        return $customer;
     }
 
     public function fromModel($model)
