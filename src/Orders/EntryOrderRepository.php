@@ -166,22 +166,13 @@ class EntryOrderRepository implements RepositoryContract
         return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
     }
 
-    // TODO: refactor query
     protected function generateOrderNumber(): int
     {
-        $lastOrder = Collection::find($this->collection)
-            ->queryEntries()
-            ->orderBy('order_number', 'desc')
-            ->where('order_number', '!=', null)
-            ->first();
+        $lastOrder = $this->query()->where('order_number', '!=', null)->orderByDesc('order_number')->first();
 
         // Fallback to get order number from title (otherwise: start from the start..)
         if (! $lastOrder) {
-            $lastOrder = Collection::find($this->collection)
-                ->queryEntries()
-                ->orderBy('title', 'desc')
-                ->where('title', '!=', null)
-                ->first();
+            $lastOrder = $this->query()->where('title', '!=', null)->orderByDesc('title')->first();
 
             // And if we don't have any orders with the old title format, start from the start.
             if (! $lastOrder) {
