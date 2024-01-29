@@ -6,11 +6,8 @@ use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
-use Statamic\Facades\Collection;
-use Statamic\Facades\User;
 use Statamic\Widgets\Widget;
 
 class TopCustomers extends Widget
