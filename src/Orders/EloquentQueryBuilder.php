@@ -16,7 +16,7 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
     protected function column($column)
     {
         if ($column === 'id') {
-            return 'id'; // TODO: make this based on order model keyName
+            return $this->builder->getModel()->getKeyName();
         }
 
         if ($column === 'customer') {
