@@ -2,9 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Carbon\Carbon;
-use Closure;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Statamic\Query\EloquentQueryBuilder as QueryEloquentQueryBuilder;
 
 class EloquentQueryBuilder extends QueryEloquentQueryBuilder
@@ -42,7 +41,7 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
         return $this->whereJsonContains('data->status_log', function ($query) use ($status, $date) {
             return $query
                 ->where('status', $status->value)
-                ->whereRaw("DATE(FROM_UNIXTIME(timestamp)) = ?", [$date->format('Y-m-d')]);
+                ->whereRaw('DATE(FROM_UNIXTIME(timestamp)) = ?', [$date->format('Y-m-d')]);
         });
     }
 }

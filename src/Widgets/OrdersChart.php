@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
 use Illuminate\Support\Carbon;
-use Statamic\Facades\Collection;
 use Statamic\Widgets\Widget;
 
 class OrdersChart extends Widget

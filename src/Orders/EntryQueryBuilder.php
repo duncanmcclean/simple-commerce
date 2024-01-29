@@ -2,8 +2,8 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Carbon\Carbon;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Statamic\Stache\Query\EntryQueryBuilder as QueryEntryQueryBuilder;
 
 class EntryQueryBuilder extends QueryEntryQueryBuilder
