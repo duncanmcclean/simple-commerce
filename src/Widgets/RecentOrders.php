@@ -10,7 +10,6 @@ use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use DoubleThreeDigital\SimpleCommerce\Orders\StatusLogEvent;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Widgets\Widget;
 
