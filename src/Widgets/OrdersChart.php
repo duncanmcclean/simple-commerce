@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Widgets;
 
 use Carbon\CarbonPeriod;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
@@ -26,29 +27,13 @@ class OrdersChart extends Widget
 
         $timePeriod = CarbonPeriod::create(Carbon::now()->subDays(30)->format('Y-m-d'), Carbon::now()->format('Y-m-d'));
 
-        // TODO: refactor query
         $data = collect($timePeriod)->map(function ($date) {
-            if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-                $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
-                    ->queryEntries()
-                    ->where('payment_status', PaymentStatus::Paid->value)
-                    ->whereDate('status_log->paid', $date->format('d-m-Y'))
-                    ->get();
-            }
+            $ordersCount = Order::query()
+                ->wherePaymentStatus(PaymentStatus::Paid)
+                ->whereStatusLogDate(PaymentStatus::Paid, $date)
+                ->count();
 
-            if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-                $orderModel = new (SimpleCommerce::orderDriver()['model']);
-
-                $query = $orderModel::query()
-                    ->where('payment_status', PaymentStatus::Paid->value)
-                    ->whereDate('data->status_log->paid', $date)
-                    ->get();
-            }
-
-            return [
-                'date' => $date->format('d-m-Y'),
-                'count' => $query->count(),
-            ];
+            return ['date' => $date->format('d-m-Y'), 'count' => $ordersCount];
         });
 
         if (! $data) {
