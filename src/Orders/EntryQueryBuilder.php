@@ -3,6 +3,7 @@
 namespace DoubleThreeDigital\SimpleCommerce\Orders;
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use Carbon\Carbon;
 use Statamic\Stache\Query\EntryQueryBuilder as QueryEntryQueryBuilder;
 
 class EntryQueryBuilder extends QueryEntryQueryBuilder
@@ -22,5 +23,10 @@ class EntryQueryBuilder extends QueryEntryQueryBuilder
     public function wherePaymentStatus(PaymentStatus $paymentStatus)
     {
         return $this->where('payment_status', $paymentStatus->value);
+    }
+
+    public function whereStatusLogDate(OrderStatus|PaymentStatus $status, Carbon $date)
+    {
+        return $this->whereDate("status_log->{$status->value}", $date->format('d-m-Y'));
     }
 }
