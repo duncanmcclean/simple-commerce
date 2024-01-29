@@ -85,7 +85,6 @@ class MigrateOrdersToDatabase extends Command
         return $this;
     }
 
-    // TODO: refactor query
     protected function migrateUserCustomers(): self
     {
         User::all()
