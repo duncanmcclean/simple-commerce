@@ -18,72 +18,56 @@ class RecentOrders extends Widget
 {
     public function html()
     {
-        $indexUrl = null;
-        $recentOrders = null;
+        $indexUrl = $this->getIndexUrl();
 
-        // TODO: refactor query
-        if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            $indexUrl = cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
-
-            $recentOrders = Collection::find(SimpleCommerce::orderDriver()['collection'])
-                ->queryEntries()
-                ->where('payment_status', PaymentStatus::Paid->value)
-                ->orderBy('status_log->paid', 'desc')
-                ->limit($this->config('limit', 5))
-                ->get()
-                ->map(function ($entry) {
-                    $order = Order::find($entry->id());
-
-                    return [
-                        'order_number' => $order->orderNumber,
-                        'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                        'edit_url' => $entry->editUrl(),
-                        'date' => $order->statusLog()
-                            ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
-                            ->last()
-                            ->date()
-                            ->format(config('statamic.system.date_format')),
-                    ];
-                })
-                ->values();
-        }
-
-        if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $indexUrl = cp_route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()]);
-
-            $recentOrders = Runway::orderModel()->model()->query()
-                ->where('payment_status', PaymentStatus::Paid->value)
-                ->orderBy('data->status_log->paid', 'desc')
-                ->limit($this->config('limit', 5))
-                ->get()
-                ->map(function ($order) {
-                    $order = Order::find($order->id);
-
-                    return [
-                        'order_number' => $order->orderNumber,
-                        'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
-                        'edit_url' => cp_route('runway.edit', [
-                            'resourceHandle' => Runway::orderModel()->handle(),
-                            'record' => $order->resource()->{$order->getRouteKeyName()},
-                        ]),
-                        'date' => $order->statusLog()
-                            ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
-                            ->last()
-                            ->date()
-                            ->format(config('statamic.system.date_format')),
-                    ];
-                })
-                ->values();
-        }
-
-        if (! $recentOrders) {
-            throw new \Exception('Recent Orders widget is not compatible with the configured customer repository.');
-        }
+        $recentOrders = Order::query()
+            ->wherePaymentStatus(PaymentStatus::Paid)
+            ->orderBy('status_log->paid', 'desc')
+            ->limit($this->config('limit', 5))
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'order_number' => $order->orderNumber,
+                    'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
+                    'edit_url' => $this->getEditUrl($order),
+                    'date' => $order->statusLog()
+                        ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
+                        ->last()
+                        ->date()
+                        ->format(config('statamic.system.date_format')),
+                ];
+            })
+            ->values();
 
         return view('simple-commerce::cp.widgets.recent-orders', [
             'url' => $indexUrl,
             'recentOrders' => $recentOrders,
         ]);
+    }
+
+    protected function getIndexUrl(): string
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            return cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
+        }
+
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            return cp_route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()]);
+        }
+    }
+
+    protected function getEditUrl($order): string
+    {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+            return $order->resource()->editUrl();
+        }
+
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
+            return cp_route('runway.edit', [
+                'resourceHandle' => Runway::orderModel()->handle(),
+                'record' => $order->resource()->{$order->getRouteKeyName()},
+            ]);
+        }
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
