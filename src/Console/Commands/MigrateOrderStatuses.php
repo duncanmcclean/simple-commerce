@@ -54,7 +54,6 @@ class MigrateOrderStatuses extends Command
         $this->error("This migration script doesn't support your current order repository.");
     }
 
-    // TODO: refactor query
     protected function migrateForOrderEntries(): void
     {
         Entry::query()
@@ -106,7 +105,6 @@ class MigrateOrderStatuses extends Command
 
         Artisan::call('migrate');
 
-        // TODO: refactor query
         OrderModel::query()
             ->chunk(200, function ($orders) {
                 $orders->each(function (OrderModel $model) {
