@@ -11,6 +11,7 @@ use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Statamic;
@@ -19,6 +20,8 @@ uses(SetupCollections::class);
 
 beforeEach(function () {
     $this->setupCollections();
+
+    Collection::find('orders')->queryEntries()->get()->each->delete();
 
     $this->tag = resolve(CartTags::class)
         ->setParser(Antlers::parser())
