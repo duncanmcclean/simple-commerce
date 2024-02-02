@@ -35,4 +35,6 @@ interface GatewayManager
     public function withRedirectUrl(string $redirectUrl): self;
 
     public function withErrorRedirectUrl(string $errorRedirectUrl): self;
+
+    public function resolve();
 }

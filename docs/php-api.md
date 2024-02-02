@@ -111,8 +111,9 @@ $order->coupon();
 // Set the coupon (either pass in the ID of a coupon or a Coupon instance)
 $order->coupon($coupon);
 
-// Get the current gateway
-$order->currentGateway();
+// Get the order's gateway & payment data
+$order->gatewayData()->gateway()->name(); // Returns the gateway's name
+$order->gatewayData()->data()->all(); // Returns an array of the gateway/payment data
 
 // Get the shipping address (returns an Address instance)
 $shippingAddress = $order->shippingAddress();

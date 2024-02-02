@@ -8,6 +8,7 @@ use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
+use Illuminate\Database\SQLiteConnection;
 use Statamic\Widgets\Widget;
 
 class TopCustomers extends Widget
@@ -31,7 +32,11 @@ class TopCustomers extends Widget
                 $query
                     ->where('orders', '!=', null)
                     ->orderBy(function ($query) {
-                        $query->selectRaw('JSON_ARRAY_LENGTH(orders)');
+                        $query->when($query->connection instanceof SQLiteConnection, function ($query) {
+                            $query->selectRaw('JSON_ARRAY_LENGTH(orders)');
+                        }, function ($query) {
+                            $query->selectRaw('JSON_LENGTH(orders)');
+                        });
                     }, 'desc')
                     ->limit($this->config('limit', 5));
             })
