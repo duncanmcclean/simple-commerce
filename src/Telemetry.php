@@ -2,14 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
+use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Statamic\Facades\Collection;
 use Statamic\Statamic;
 
 class Telemetry
@@ -80,36 +78,16 @@ class Telemetry
 
     protected static function ordersSinceLastTelemetry(?Carbon $lastSentAt = null): array
     {
-        if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            $query = Collection::find(SimpleCommerce::orderDriver()['collection'])
-                ->queryEntries()
-                ->where('payment_status', PaymentStatus::Paid->value)
-                ->when($lastSentAt, function ($query) use ($lastSentAt) {
-                    $query->where('status_log->paid', '>=', $lastSentAt->format('Y-m-d H:i'));
-                });
+        $query = Order::query()
+            ->wherePaymentStatus(PaymentStatus::Paid)
+            ->when($lastSentAt, function ($query) use ($lastSentAt) {
+                $query->where('status_log->paid', '>=', $lastSentAt->format('Y-m-d H:i'));
+            });
 
-            return [
-                $query->count(),
-                (int) $query->get()->map(fn ($entry) => $entry->get('grand_total'))->sum(),
-            ];
-        }
-
-        if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $orderModel = new (SimpleCommerce::orderDriver()['model']);
-
-            $query = $orderModel::query()
-                ->where('payment_status', PaymentStatus::Paid->value)
-                ->when($lastSentAt, function ($query) use ($lastSentAt) {
-                    $query->where('data->status_log->paid', '>=', $lastSentAt);
-                });
-
-            return [
-                $query->count(),
-                (int) $query->sum('grand_total'),
-            ];
-        }
-
-        return [null, null];
+        return [
+            $query->count(),
+            (int) $query->get()->map->grandTotal()->sum(),
+        ];
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool

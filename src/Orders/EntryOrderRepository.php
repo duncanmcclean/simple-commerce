@@ -12,7 +12,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
@@ -27,10 +26,14 @@ class EntryOrderRepository implements RepositoryContract
 
     public function all()
     {
-        return Entry::query()
-            ->where('collection', $this->collection)
-            ->get()
-            ->transform(fn ($entry) => $this->fromEntry($entry));
+        return $this->query()->get();
+    }
+
+    public function query()
+    {
+        return app(EntryQueryBuilder::class, [
+            'store' => app('stache')->store('entries'),
+        ])->where('collection', $this->collection);
     }
 
     public function find($id): ?Order
@@ -44,7 +47,7 @@ class EntryOrderRepository implements RepositoryContract
         return $this->fromEntry($entry);
     }
 
-    protected function fromEntry($entry): Order
+    public function fromEntry($entry): Order
     {
         $order = app(Order::class)
             ->resource($entry)
@@ -99,7 +102,7 @@ class EntryOrderRepository implements RepositoryContract
 
         if (! $entry) {
             $entry = Entry::make()
-                ->id(Stache::generateId())
+                ->id($order->id() ?? Stache::generateId())
                 ->collection($this->collection);
         }
 
@@ -168,19 +171,11 @@ class EntryOrderRepository implements RepositoryContract
 
     protected function generateOrderNumber(): int
     {
-        $lastOrder = Collection::find($this->collection)
-            ->queryEntries()
-            ->orderBy('order_number', 'desc')
-            ->where('order_number', '!=', null)
-            ->first();
+        $lastOrder = $this->query()->where('order_number', '!=', null)->orderByDesc('order_number')->first();
 
         // Fallback to get order number from title (otherwise: start from the start..)
         if (! $lastOrder) {
-            $lastOrder = Collection::find($this->collection)
-                ->queryEntries()
-                ->orderBy('title', 'desc')
-                ->where('title', '!=', null)
-                ->first();
+            $lastOrder = $this->query()->where('title', '!=', null)->orderByDesc('title')->first();
 
             // And if we don't have any orders with the old title format, start from the start.
             if (! $lastOrder) {

@@ -22,7 +22,14 @@ class EloquentCustomerRepository implements RepositoryContract
 
     public function all()
     {
-        return (new $this->model)->all()->transform(fn ($model) => $this->fromModel($model));
+        return $this->query()->get();
+    }
+
+    public function query()
+    {
+        return app(EloquentQueryBuilder::class, [
+            'builder' => (new $this->model)->query(),
+        ]);
     }
 
     public function find($id): ?Customer
@@ -38,16 +45,16 @@ class EloquentCustomerRepository implements RepositoryContract
 
     public function findByEmail(string $email): ?Customer
     {
-        $model = (new $this->model)->query()->firstWhere('email', $email);
+        $customer = $this->query()->where('email', $email)->first();
 
-        if (! $model) {
+        if (! $customer) {
             throw new CustomerNotFound("Customer [{$email}] could not be found.");
         }
 
-        return $this->fromModel($model);
+        return $customer;
     }
 
-    protected function fromModel($model)
+    public function fromModel($model)
     {
         return app(Customer::class)
             ->resource($model)

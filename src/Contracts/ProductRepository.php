@@ -6,6 +6,8 @@ interface ProductRepository
 {
     public function all();
 
+    public function query();
+
     public function find($id): ?Product;
 
     public function make(): Product;

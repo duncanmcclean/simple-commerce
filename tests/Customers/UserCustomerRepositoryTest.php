@@ -2,6 +2,7 @@
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DoubleThreeDigital\SimpleCommerce\Customers\StacheUserQueryBuilder;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
@@ -30,37 +31,33 @@ afterEach(function () {
     );
 });
 
-test('can get all users', function () {
-    User::make()
-        ->email('james@example.com')
-        ->save();
+test('can get all customers', function () {
+    User::make()->email('james@example.com')->save();
+    User::make()->email('ben@example.com')->save();
 
-    User::make()
-        ->email('ben@example.com')
-        ->save();
+    $customers = Customer::all();
 
-    $all = Customer::all();
-
-    expect($all instanceof Collection)->toBeTrue();
-    expect(2)->toBe($all->count());
+    expect($customers->count())->toBe(2);
+    expect($customers->map->email()->toArray())->toBe([
+        'james@example.com',
+        'ben@example.com',
+    ]);
 });
 
-test('can query users', function () {
-    User::make()
-        ->email('james@example.com')
-        ->save();
+test('can query customers', function () {
+    User::make()->email('james@example.com')->save();
+    User::make()->email('ben@example.com')->save();
 
-    User::make()
-        ->email('ben@example.com')
-        ->save();
+    $query = Customer::query();
+    expect($query)->toBeInstanceOf(StacheUserQueryBuilder::class);
+    expect($query->count())->toBe(2);
 
-    $query = Customer::all();
-
-    expect($query instanceof Collection)->toBeTrue();
-    expect(2)->toBe($query->count());
+    $query = Customer::query()->where('email', 'james@example.com');
+    expect($query->count())->toBe(1);
+    expect($query->get()[0])->toBeInstanceOf(CustomerContract::class);
 });
 
-test('can find user', function () {
+test('can find customer by id', function () {
     $user = User::make()->email('james@example.com')->set('name', 'James Example');
     $user->save();
 
@@ -73,7 +70,7 @@ test('can find user', function () {
     expect($user->email())->toBe($find->email());
 });
 
-test('can find user by email', function () {
+test('can find customer by email', function () {
     $user = User::make()->email('ben@example.com')->set('name', 'Ben Example');
     $user->save();
 
@@ -86,7 +83,7 @@ test('can find user by email', function () {
     expect($user->email())->toBe($findByEmail->email());
 });
 
-test('can create', function () {
+test('can create customer', function () {
     $create = Customer::make()
         ->email('joe.smith@example.com')
         ->data([
@@ -102,7 +99,7 @@ test('can create', function () {
     expect('joe.smith@example.com')->toBe($create->email());
 });
 
-test('can save', function () {
+test('can save customer', function () {
     $user = User::make()->id('sarah')->email('sarah@example.com')->set('name', 'Sarah Example');
     $user->save();
 
@@ -117,7 +114,7 @@ test('can save', function () {
     expect('Sarah Test')->toBe($customer->name());
 });
 
-test('can delete', function () {
+test('can delete customer', function () {
     $user = User::make()->id('sam')->email('sam@example.com')->set('name', 'Sam Example');
     $user->save();
 

@@ -6,6 +6,8 @@ interface OrderRepository
 {
     public function all();
 
+    public function query();
+
     public function find($id): ?Order;
 
     public function make(): Order;

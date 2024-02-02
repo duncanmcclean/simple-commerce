@@ -6,6 +6,8 @@ interface CustomerRepository
 {
     public function all();
 
+    public function query();
+
     public function find($id): ?Customer;
 
     public function findByEmail(string $email): ?Customer;

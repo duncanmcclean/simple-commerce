@@ -12,7 +12,24 @@ class UserCustomerRepository implements RepositoryContract
 {
     public function all()
     {
-        return User::all()->transform(fn ($user) => $this->fromUser($user));
+        return $this->query()->get();
+    }
+
+    public function query()
+    {
+        // Statamic users can live in the database OR in the stache, so we have
+        // to extend both query builders then use the relevant one.
+        if ($this->isUsingEloquentUsers()) {
+            $usersModel = config('auth.providers.users.model');
+
+            return app(EloquentUserQueryBuilder::class, [
+                'builder' => (new $usersModel)->query(),
+            ]);
+        }
+
+        return app(StacheUserQueryBuilder::class, [
+            'store' => app('stache')->store('users'),
+        ]);
     }
 
     public function find($id): ?Customer
@@ -37,7 +54,7 @@ class UserCustomerRepository implements RepositoryContract
         return $this->fromUser($user);
     }
 
-    protected function fromUser($user)
+    public function fromUser($user)
     {
         return app(Customer::class)
             ->resource($user)
