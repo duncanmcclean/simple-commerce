@@ -2,6 +2,9 @@
 
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -10,8 +13,13 @@ use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Statamic;
 
-uses(\DoubleThreeDigital\SimpleCommerce\Tests\TestCase::class)->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Products', 'Rules', 'Tags', 'Tax');
-uses(\DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections::class)->in('Actions', 'Coupons', 'Customers', 'Listeners', 'Products');
+uses(TestCase::class)
+    ->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Products', 'Rules', 'Tags', 'Tax');
+
+uses(
+    SetupCollections::class,
+    RefreshContent::class
+)->in('Actions', 'Coupons', 'Customers', 'Listeners', 'Products');
 
 /*
 |--------------------------------------------------------------------------
