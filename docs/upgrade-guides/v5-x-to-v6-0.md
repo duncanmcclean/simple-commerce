@@ -70,11 +70,7 @@ However, v6 changes this so Payment Gateways & Shipping Methods are now referenc
 shipping_method: free_shipping
 ```
 
-Simple Commerce *should* automatically update your orders. However, if it didn't or you need to run it manually after deploying (eg. your orders are excluded from version control or stored in a database), you can run this command to manually trigger the updates:
-
-```
-php please sc:update-class-references
-```
+Simple Commerce will automatically update your orders when you run the `sc:run-update-scripts` command.
 
 If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
 
