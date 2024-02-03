@@ -17,7 +17,8 @@ class StatusLogModel extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'timestamp' => 'timestamp',
+        'order_id' => 'integer',
+        'timestamp' => 'datetime',
         'data' => 'json',
     ];
 

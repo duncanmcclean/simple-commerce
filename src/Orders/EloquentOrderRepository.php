@@ -98,7 +98,7 @@ class EloquentOrderRepository implements RepositoryContract
                     ->merge([
                         'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
                             'status' => $statusLog->status,
-                            'timestamp' => $statusLog->timestamp,
+                            'timestamp' => $statusLog->timestamp->timestamp,
                             'data' => $statusLog->data ?? [],
                         ])
                     ])
@@ -169,22 +169,12 @@ class EloquentOrderRepository implements RepositoryContract
                 $model->{$columnName} = $order->get($columnName);
             });
 
-        // Loop through everything in the status log & save anything that's new or changed.
+        // Loop through status log events & create/update them in the database.
         $order->statusLog()->map(function (StatusLogEvent $statusLogEvent) use ($model) {
-            // Update existing status log record OR create a new one.
-            // $statusLog = StatusLogModel::updateOrCreate(
-            //     ['order_id' => $model->id, 'status' => $statusLogEvent->status, 'timestamp' => $statusLogEvent->date()->tim],
-            //     ['timestamp' => $statusLogEvent->date(), 'data' => $statusLogEvent->data ?? []
-            // );
-
-            $statusLog = StatusLogModel::firstOrNew([
-                'order_id' => $model->id,
-                'status' => $statusLogEvent->status,
-                'timestamp' => $statusLogEvent->date()->timestamp,
-            ]);
-
-            $statusLog->data = $statusLogEvent->data;
-            $statusLog->save();
+            StatusLogModel::updateOrCreate(
+                ['order_id' => $model->id, 'status' => $statusLogEvent->status, 'timestamp' => $statusLogEvent->date()],
+                ['data' => $statusLogEvent->data ?? []]
+            );
         });
 
         // Set the value of the data column - we take out any 'known' columns,
@@ -237,7 +227,7 @@ class EloquentOrderRepository implements RepositoryContract
             ->merge([
                 'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
                     'status' => $statusLog->status,
-                    'timestamp' => $statusLog->timestamp,
+                    'timestamp' => $statusLog->timestamp->timestamp,
                     'data' => $statusLog->data ?? [],
                 ])
             ]);

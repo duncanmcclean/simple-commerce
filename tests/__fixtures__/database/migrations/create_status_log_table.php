@@ -17,7 +17,7 @@ class CreateStatusLogTable extends Migration
             $table->id();
             $table->string('order_id')->index();
             $table->string('status')->index();
-            $table->timestamp('timestamp')->index();
+            $table->datetime('timestamp')->index();
             $table->json('data')->nullable();
         });
     }

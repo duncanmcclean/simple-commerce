@@ -64,38 +64,33 @@ it('can query orders', function () {
     $productTwo = Product::make()->price(1000);
     $productTwo->save();
 
-    OrderModel::create([
+    $orderModelA = OrderModel::create([
         'order_number' => 1002,
         'order_status' => OrderStatus::Cart->value,
         'payment_status' => PaymentStatus::Unpaid->value,
         'items' => [
             ['product' => $productOne->id(), 'quantity' => 1, 'total' => 1000],
         ],
-        'data' => [
-            'foo' => 'bar',
-            'status_log' => [
-                ['status' => 'cart', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []],
-            ],
-        ],
+        'data' => ['foo' => 'bar'],
     ]);
 
-    OrderModel::create([
+    $orderModelA->statusLog()->create(['status' => 'cart', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
+    $orderModelA->statusLog()->create(['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-29 15:00:00')->timestamp, 'data' => []]);
+
+    $orderModelB = OrderModel::create([
         'order_number' => 1003,
         'order_status' => OrderStatus::Placed->value,
         'payment_status' => PaymentStatus::Paid->value,
         'items' => [
             ['product' => $productTwo->id(), 'quantity' => 1, 'total' => 1000],
         ],
-        'data' => [
-            'boo' => 'foo',
-            'status_log' => [
-                ['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []],
-                ['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 17:55:00')->timestamp, 'data' => []],
-            ],
-        ],
+        'data' => ['boo' => 'foo'],
     ]);
 
-    OrderModel::create([
+    $orderModelB->statusLog()->create(['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
+    $orderModelB->statusLog()->create(['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 17:55:00')->timestamp, 'data' => []]);
+
+    $orderModelC = OrderModel::create([
         'order_number' => 1004,
         'order_status' => OrderStatus::Dispatched->value,
         'payment_status' => PaymentStatus::Paid->value,
@@ -103,15 +98,12 @@ it('can query orders', function () {
             ['product' => $productOne->id(), 'quantity' => 1, 'total' => 1000],
             ['product' => $productTwo->id(), 'quantity' => 1, 'total' => 1000],
         ],
-        'data' => [
-            'baz' => 'fax',
-            'status_log' => [
-                ['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []],
-                ['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []],
-                ['status' => 'dispatched', 'timestamp' => Carbon::parse('2024-01-29 12:12:12')->timestamp, 'data' => []],
-            ],
-        ],
+        'data' => ['baz' => 'fax'],
     ]);
+
+    $orderModelC->statusLog()->create(['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
+    $orderModelC->statusLog()->create(['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
+    $orderModelC->statusLog()->create(['status' => 'dispatched', 'timestamp' => Carbon::parse('2024-01-29 12:12:12')->timestamp, 'data' => []]);
 
     // Ensure all 3 orders are returned when we're not doing any filtering.
     $query = Order::query();
@@ -141,15 +133,14 @@ it('can query orders', function () {
         ->and($query->get()[1]->orderNumber())->toBe(1004);
 
     // Query by status log timestamps
-    // TODO: make this query not error out on sqlite & the count not be wrong on MySQL
-    // $query = Order::query()->whereStatusLogDate(PaymentStatus::Paid, Carbon::parse('2024-01-27'));
-    // expect($query->count())->toBe(2);
-    // expect($query->get()[0])
-    //     ->toBeInstanceOf(OrderContract::class)
-    //     ->and($query->get()[0]->orderNumber())->toBe(1003);
-    // expect($query->get()[1])
-    //     ->toBeInstanceOf(OrderContract::class)
-    //     ->and($query->get()[1]->orderNumber())->toBe(1004);
+    $query = Order::query()->whereStatusLogDate(PaymentStatus::Paid, Carbon::parse('2024-01-27')); // b & c
+    expect($query->count())->toBe(2);
+    expect($query->get()[0])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[0]->orderNumber())->toBe(1003);
+    expect($query->get()[1])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[1]->orderNumber())->toBe(1004);
 });
 
 it('can find order', function () {
@@ -346,7 +337,7 @@ it('can save order with status log events', function () {
     $order->save();
 
     expect($orderRecord->id)->toBe($order->id());
-    expect(2)->toBe($orderRecord->statusLog()->count());
+    expect($orderRecord->statusLog()->count())->toBe(2);
     expect($orderRecord->statusLog->first()->status)->toBe(OrderStatus::Placed->value);
     expect($orderRecord->statusLog->last()->status)->toBe(PaymentStatus::Paid->value);
     expect($orderRecord->statusLog->last()->data)->toBe(['foo' => 'bar', 'baz' => 'fax']);
