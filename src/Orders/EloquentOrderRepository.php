@@ -169,14 +169,6 @@ class EloquentOrderRepository implements RepositoryContract
                 $model->{$columnName} = $order->get($columnName);
             });
 
-        // Loop through status log events & create/update them in the database.
-        $order->statusLog()->map(function (StatusLogEvent $statusLogEvent) use ($model) {
-            StatusLogModel::updateOrCreate(
-                ['order_id' => $model->id, 'status' => $statusLogEvent->status, 'timestamp' => $statusLogEvent->date()],
-                ['data' => $statusLogEvent->data ?? []]
-            );
-        });
-
         // Set the value of the data column - we take out any 'known' columns,
         // along with any custom columns.
         $model->data = $order->data()
@@ -184,6 +176,14 @@ class EloquentOrderRepository implements RepositoryContract
             ->except($this->getCustomColumns());
 
         $model->save();
+
+        // Loop through status log events & create/update them in the database.
+        $order->statusLog()->map(function (StatusLogEvent $statusLogEvent) use ($model) {
+            StatusLogModel::updateOrCreate(
+                ['order_id' => $model->id, 'status' => $statusLogEvent->status, 'timestamp' => $statusLogEvent->date()],
+                ['data' => $statusLogEvent->data ?? []]
+            );
+        });
 
         $order->id = $model->id;
         $order->orderNumber = $model->order_number;
