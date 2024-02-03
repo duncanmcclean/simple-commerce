@@ -38,8 +38,8 @@ class ServiceProvider extends AddonServiceProvider
         Console\Commands\InstallCommand::class,
         Console\Commands\MigrateOrderStatuses::class,
         Console\Commands\MigrateOrdersToDatabase::class,
+        Console\Commands\RunUpdateScripts::class,
         Console\Commands\SwitchToDatabase::class,
-        Console\Commands\UpdateClassReferences::class,
     ];
 
     protected $fieldtypes = [
