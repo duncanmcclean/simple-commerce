@@ -38,7 +38,7 @@ As of v3.1.0, the Digital Products addon supports adding different 'downloadable
 
 By default, we create a serial license key which you can give to your customers. However, you may want to customise where the code comes from or maybe you want to send it away to a third party service.
 
-To do this, you can create your own license key repository which [implements the one provided by this addon](https://github.com/doublethreedigital/sc-digital-products/blob/master/src/Contracts/LicenseKeyRepository.php).
+To do this, you can create your own license key repository which [implements the one provided by this addon](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Contracts/LicenseKeyRepository.php).
 
 To register your repository, you'll need to bind it to our `LicenseKey` facade. You can do this in your `AppServiceProvider`.
 
@@ -53,7 +53,7 @@ If you'd like the Digital Products addon to send your customers an email notific
 ```php
 'notifications' => [
     'digital_download_ready' => [
-        \DoubleThreeDigital\DigitalProducts\Notifications\DigitalDownloadsNotification::class => [
+        \DoubleThreeDigital\SimpleCommerce\Notifications\DigitalDownloadsNotification::class => [
             'to' => 'customer',
         ],
     ],

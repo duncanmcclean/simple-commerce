@@ -8,10 +8,12 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DoubleThreeDigital\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\VerificationController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
-Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')->name('simple-commerce.')->group(function () {
+Route::name('simple-commerce.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/customer/{customer}', [CustomerController::class, 'index'])->name('customer.index');
 
@@ -36,4 +38,9 @@ Route::namespace('\DoubleThreeDigital\SimpleCommerce\Http\Controllers\Actions')-
     Route::post('/gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])
         ->name('gateways.webhook')
         ->withoutMiddleware([VerifyCsrfToken::class]);
+
+    Route::prefix('digital-products')->name('digital-products.')->group(function () {
+        Route::get('download/{orderId}/{lineItemId}', DownloadController::class)->name('download');
+        Route::post('verification', VerificationController::class)->name('verification');
+    });
 });
