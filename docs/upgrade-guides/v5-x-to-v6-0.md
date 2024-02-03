@@ -56,6 +56,14 @@ php artisan view:clear
 
 If you're storing orders & customers in the database, you should also follow the [Runway v6 Upgrade Guide](https://runway.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0).
 
+### High: Database Migrations
+
+If you're storing orders in the database, you will need to run the migrations, both locally & when deploying to any other environments:
+
+```
+php artisan migrate
+```
+
 ## High: References to gateways & shipping methods in orders have changed
 
 Previously, when referencing a Payment Gateway or Shipping Method in an order, Simple Commerce would use its fully-qualified class name, like so:
