@@ -33,9 +33,9 @@ class HandleDigitalProducts
                 $order->updateLineItem($lineItem->id(), [
                     'metadata' => array_merge($lineItem->metadata()->toArray(), [
                         'license_key' => $licenseKey = LicenseKey::generate(),
-                        'download_url' => URL::signedRoute('statamic.digital-downloads.download', [
-                            'order_id' => $event->order->id,
-                            'item_id' => $lineItem->id(),
+                        'download_url' => URL::signedRoute('statamic.simple-commerce.digital-products.download', [
+                            'orderId' => $order->id,
+                            'lineItemId' => $lineItem->id(),
                             'license_key' => $licenseKey,
                         ]),
                         'download_history' => [],

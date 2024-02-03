@@ -1,29 +1,9 @@
-title: Product
 tabs:
   main:
-    display: Main
-    fields:
+    sections:
       -
-        handle: description
-        field:
-          restrict: false
-          automatic_line_breaks: true
-          automatic_links: false
-          escape_markup: false
-          smartypants: false
-          type: markdown
-          localizable: false
-          listable: hidden
-          display: Description
-  sidebar:
-    display: Sidebar
-    fields:
-      -
-        handle: price
-        field:
-          read_only: false
-          type: money
-          localizable: false
-          listable: hidden
-          display: Price
-          save_zero_value: true
+        fields:
+          -
+            handle: product_variants
+            field:
+              type: product_variants

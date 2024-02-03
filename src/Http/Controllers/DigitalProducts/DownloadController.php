@@ -14,8 +14,8 @@ class DownloadController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $order = Order::find($request->order_id);
-        $item = $order->lineItems()->firstWhere('id', $request->item_id);
+        $order = Order::find($request->orderId);
+        $item = $order->lineItems()->firstWhere('id', $request->lineItemId);
 
         if (! $item->metadata()->has('license_key') || $item->metadata()->get('license_key') !== $request->get('license_key')) {
             abort(401);
