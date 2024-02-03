@@ -48,13 +48,10 @@ class OrderModel extends Model
     {
         return Attribute::make(
             get: function () {
-                try {
-                    $order = OrderFacade::find($this->id);
-
-                    return $order->statusLog()->where('status', OrderStatus::Placed)->map->date()->last();
-                } catch (OrderNotFound $e) {
-                    return Carbon::now();
-                }
+                return $this->statusLog()
+                    ->where('status', OrderStatus::Placed)
+                    ->map->date()
+                    ->last();
             },
         );
     }
