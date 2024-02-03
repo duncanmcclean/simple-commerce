@@ -2,9 +2,9 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
+use Facades\Statamic\UpdateScripts\Manager as UpdateScriptManager;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
-use Facades\Statamic\UpdateScripts\Manager as UpdateScriptManager;
 
 class RunUpdateScripts extends Command
 {
@@ -16,7 +16,7 @@ class RunUpdateScripts extends Command
 
     public function handle()
     {
-        $this->info("Running update scripts...");
+        $this->info('Running update scripts...');
 
         UpdateScriptManager::runUpdatesForSpecificPackageVersion(
             package: 'doublethreedigital/simple-commerce',
