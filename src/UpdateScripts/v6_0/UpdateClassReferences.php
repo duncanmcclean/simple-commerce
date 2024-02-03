@@ -5,8 +5,8 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Statamic\UpdateScripts\UpdateScript;
 
 class UpdateClassReferences extends UpdateScript
@@ -27,7 +27,7 @@ class UpdateClassReferences extends UpdateScript
     {
         Order::query()->whereNotNull('gateway')->chunk(100, function (Collection $orders) {
             $orders
-                ->filter(fn (OrderContract $order) => str_contains(Arr::get($order->gateway, 'use'), "\\"))
+                ->filter(fn (OrderContract $order) => str_contains(Arr::get($order->gateway, 'use'), '\\'))
                 ->each(function (OrderContract $order) {
                     $class = Arr::get($order->gateway, 'use');
 
@@ -50,7 +50,7 @@ class UpdateClassReferences extends UpdateScript
     {
         Order::query()->whereNotNull('shipping_method')->chunk(100, function (Collection $orders) {
             $orders
-                ->filter(fn (OrderContract $order) => str_contains($order->get('shipping_method'), "\\"))
+                ->filter(fn (OrderContract $order) => str_contains($order->get('shipping_method'), '\\'))
                 ->each(function (OrderContract $order) {
                     $class = $order->get('shipping_method');
 

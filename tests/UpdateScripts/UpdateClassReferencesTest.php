@@ -1,7 +1,7 @@
 <?php
 
-use Statamic\Facades\Entry;
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0\UpdateClassReferences;
+use Statamic\Facades\Entry;
 
 it('updates reference to gateway class', function () {
     $orderEntry = Entry::make()
