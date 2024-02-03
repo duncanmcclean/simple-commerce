@@ -100,7 +100,7 @@ class EloquentOrderRepository implements RepositoryContract
                             'status' => $statusLog->status,
                             'timestamp' => $statusLog->timestamp->timestamp,
                             'data' => $statusLog->data ?? [],
-                        ])
+                        ]),
                     ])
             );
 
@@ -229,7 +229,7 @@ class EloquentOrderRepository implements RepositoryContract
                     'status' => $statusLog->status,
                     'timestamp' => $statusLog->timestamp->timestamp,
                     'data' => $statusLog->data ?? [],
-                ])
+                ]),
             ]);
 
         $order->resource = $model;
