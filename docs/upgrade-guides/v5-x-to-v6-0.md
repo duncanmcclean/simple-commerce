@@ -22,21 +22,31 @@ To get started with the upgrade process, follow the below steps:
 composer update doublethreedigital/simple-commerce --with-dependencies
 ```
 
-**3.** If you're storing your orders in the database, you should uninstall & re-install Runway. It has moved to the Rad Pack:
+**3.** Next, manually run the update scripts. This step will make changes to your config files & order data.
+
+```
+php please sc:run-update-scripts
+```
+
+:::note Note!
+If you have excluded your orders from Git or you're storing your orders in a database, you will need to re-run this command after deploying Simple Commerce v6.
+:::
+
+**4.** If you're storing your orders in the database, you should uninstall & re-install Runway. It has moved to the Rad Pack:
 
 ```
 composer remove doublethreedigital/runway
 composer require statamic-rad-pack/runway
 ```
 
-**3.** You may also want to clear your route & view caches:
+**5.** You may also want to clear your route & view caches:
 
 ```
 php artisan route:clear
 php artisan view:clear
 ```
 
-**4.** Simple Commerce will have attempted upgrading some things for you (like config files, blueprints, etc). However, it's possible you'll need to make some manual changes. Please review this guide for information on changes which may effect your site.
+**6.** Simple Commerce will have attempted upgrading some things for you (like config files, blueprints, etc). However, it's possible you'll need to make some manual changes. Please review this guide for information on changes which may effect your site.
 
 **Please test locally before deploying to production!**
 
@@ -60,11 +70,7 @@ However, v6 changes this so Payment Gateways & Shipping Methods are now referenc
 shipping_method: free_shipping
 ```
 
-Simple Commerce *should* automatically update your orders. However, if it didn't or you need to run it manually after deploying (eg. your orders are excluded from version control or stored in a database), you can run this command to manually trigger the updates:
-
-```
-php please sc:update-class-references
-```
+Simple Commerce will automatically update your orders when you run the `sc:run-update-scripts` command.
 
 If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
 
