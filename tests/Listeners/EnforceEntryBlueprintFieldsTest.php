@@ -3,7 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Listeners\EnforceEntryBlueprintFields;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\Blueprint;
-use Statamic\Facades\Collection;
 
 test('fields can be added to product blueprint', function () {
     $blueprint = Blueprint::make('product')

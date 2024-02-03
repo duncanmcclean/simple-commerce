@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use DoubleThreeDigital\SimpleCommerce\Facades\LicenseKey;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
-use Statamic\Facades\Collection;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
+use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Statamic\Facades\Collection;
 
 uses(RefreshDatabase::class);
 uses(UseDatabaseContentDrivers::class);

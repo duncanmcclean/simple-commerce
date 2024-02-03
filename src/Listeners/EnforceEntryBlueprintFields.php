@@ -2,12 +2,12 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Listeners;
 
-use Statamic\Facades\AssetContainer;
 use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
+use Statamic\Facades\AssetContainer;
 use Statamic\Fields\Blueprint;
 
 class EnforceEntryBlueprintFields

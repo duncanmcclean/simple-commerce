@@ -5,7 +5,6 @@ use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Notifications\DigitalDownloadsNotification;
 use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleDigitalProducts;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\UpdateProductStock;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Pipeline\Pipeline;

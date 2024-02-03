@@ -5,11 +5,11 @@ use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartItemController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
+use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\VerificationController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
 use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DoubleThreeDigital\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\VerificationController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
