@@ -95,6 +95,13 @@ class EloquentOrderRepository implements RepositoryContract
                             })
                             ->toArray()
                     )
+                    ->merge([
+                        'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
+                            'status' => $statusLog->status,
+                            'timestamp' => $statusLog->timestamp,
+                            'data' => $statusLog->data ?? [],
+                        ])
+                    ])
             );
 
         if ($model->gateway) {
@@ -162,6 +169,24 @@ class EloquentOrderRepository implements RepositoryContract
                 $model->{$columnName} = $order->get($columnName);
             });
 
+        // Loop through everything in the status log & save anything that's new or changed.
+        $order->statusLog()->map(function (StatusLogEvent $statusLogEvent) use ($model) {
+            // Update existing status log record OR create a new one.
+            // $statusLog = StatusLogModel::updateOrCreate(
+            //     ['order_id' => $model->id, 'status' => $statusLogEvent->status, 'timestamp' => $statusLogEvent->date()->tim],
+            //     ['timestamp' => $statusLogEvent->date(), 'data' => $statusLogEvent->data ?? []
+            // );
+
+            $statusLog = StatusLogModel::firstOrNew([
+                'order_id' => $model->id,
+                'status' => $statusLogEvent->status,
+                'timestamp' => $statusLogEvent->date()->timestamp,
+            ]);
+
+            $statusLog->data = $statusLogEvent->data;
+            $statusLog->save();
+        });
+
         // Set the value of the data column - we take out any 'known' columns,
         // along with any custom columns.
         $model->data = $order->data()
@@ -208,7 +233,14 @@ class EloquentOrderRepository implements RepositoryContract
                         return [$columnName => $model->{$columnName}];
                     })
                     ->toArray()
-            );
+            )
+            ->merge([
+                'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
+                    'status' => $statusLog->status,
+                    'timestamp' => $statusLog->timestamp,
+                    'data' => $statusLog->data ?? [],
+                ])
+            ]);
 
         $order->resource = $model;
     }

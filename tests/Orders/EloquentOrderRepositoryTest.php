@@ -202,6 +202,45 @@ it('can find order with custom column', function () {
     expect('Yes')->toBe($find->get('ordered_on_tuesday'));
 });
 
+it('can find order with status log events', function () {
+    $product = Product::make()->price(1000);
+    $product->save();
+
+    $order = OrderModel::create([
+        'items' => [
+            [
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ],
+        'data' => [
+            'foo' => 'bar',
+        ],
+    ]);
+
+    $order->statusLog()->create([
+        'status' => OrderStatus::Placed->value,
+        'timestamp' => Carbon::now()->timestamp,
+        'data' => [],
+    ]);
+
+    $order->statusLog()->create([
+        'status' => OrderStatus::Dispatched->value,
+        'timestamp' => Carbon::now()->addDays(2)->timestamp,
+        'data' => [],
+    ]);
+
+    $find = Order::find($order->id);
+
+    expect($order->id)->toBe($find->id());
+    expect(1)->toBe($find->lineItems()->count());
+    expect('bar')->toBe($find->get('foo'));
+    expect(2)->toBe($find->statusLog()->count());
+    expect(OrderStatus::Placed)->toBe($find->statusLog()->first()->status);
+    expect(OrderStatus::Dispatched)->toBe($find->statusLog()->last()->status);
+});
+
 it('can create order', function () {
     $create = Order::make()
         ->status(OrderStatus::Placed)
@@ -270,6 +309,47 @@ it('can save order when bit of data has its own column', function () {
         'id' => $orderRecord->id,
         'ordered_on_tuesday' => 'Yes',
     ]);
+});
+
+it('can save order with status log events', function () {
+    $product = Product::make()->price(1000);
+    $product->save();
+
+    $orderRecord = OrderModel::create([
+        'items' => [
+            [
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ],
+        'data' => [
+            'foo' => 'bar',
+        ],
+    ]);
+
+    $orderRecord->statusLog()->create([
+        'status' => OrderStatus::Placed->value,
+        'timestamp' => Carbon::now()->subDays(2)->timestamp,
+        'data' => [],
+    ]);
+
+    $order = Order::find($orderRecord->id);
+
+    expect(OrderStatus::Placed)->toBe($order->statusLog()->first()->status);
+
+    $order->appendToStatusLog(PaymentStatus::Paid, [
+        'foo' => 'bar',
+        'baz' => 'fax',
+    ]);
+
+    $order->save();
+
+    expect($orderRecord->id)->toBe($order->id());
+    expect(2)->toBe($orderRecord->statusLog()->count());
+    expect($orderRecord->statusLog->first()->status)->toBe(OrderStatus::Placed->value);
+    expect($orderRecord->statusLog->last()->status)->toBe(PaymentStatus::Paid->value);
+    expect($orderRecord->statusLog->last()->data)->toBe(['foo' => 'bar', 'baz' => 'fax']);
 });
 
 it('can delete order', function () {
