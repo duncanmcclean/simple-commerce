@@ -2,7 +2,11 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
 
+use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Statamic\UpdateScripts\UpdateScript;
 
 class UpdateClassReferences extends UpdateScript
@@ -14,24 +18,54 @@ class UpdateClassReferences extends UpdateScript
 
     public function update()
     {
-        Order::query()
-            ->where('gateway', '!=', null)
-            ->chunk(50, function ($orders) {
-                $orders->each(function ($order) {
-                    // When the gateway reference is still a class, change it to the handle.
-                    if ($order->gateway() && class_exists($order->gateway()['use'])) {
-                        $order->gateway(array_merge($order->gateway(), [
-                            'use' => $order->gateway()['use']::handle(),
-                        ]));
+        $this
+            ->updateReferencesToGateways()
+            ->updateReferencesToShippingMethods();
+    }
 
-                        $order->save();
+    protected function updateReferencesToGateways(): self
+    {
+        Order::query()->whereNotNull('gateway')->chunk(100, function (Collection $orders) {
+            $orders
+                ->filter(fn (OrderContract $order) => str_contains(Arr::get($order->gateway, 'use'), '\\'))
+                ->each(function (OrderContract $order) {
+                    $class = Arr::get($order->gateway, 'use');
+
+                    // Adjust the class name before new'ing it up since the namespace has changed.
+                    if (Str::startsWith($class, 'DoubleThreeDigital')) {
+                        // $class = str_replace('DoubleThreeDigital', 'DuncanMcClean', $class);
                     }
 
-                    // When the shipping method reference is still a class, change it to the handle.
-                    if ($order->has('shipping_method') && class_exists($order->get('shipping_method'))) {
-                        $order->set('shipping_method', $order->get('shipping_method')::handle())->saveQuietly();
-                    }
+                    $handle = $class::handle();
+
+                    $order->gatewayData(gateway: $handle);
+                    $order->save();
                 });
-            });
+        });
+
+        return $this;
+    }
+
+    protected function updateReferencesToShippingMethods(): self
+    {
+        Order::query()->whereNotNull('shipping_method')->chunk(100, function (Collection $orders) {
+            $orders
+                ->filter(fn (OrderContract $order) => str_contains($order->get('shipping_method'), '\\'))
+                ->each(function (OrderContract $order) {
+                    $class = $order->get('shipping_method');
+
+                    // Adjust the class name before new'ing it up since the namespace has changed.
+                    if (Str::startsWith($class, 'DoubleThreeDigital')) {
+                        // $class = str_replace('DoubleThreeDigital', 'DuncanMcClean', $class);
+                    }
+
+                    $handle = $class::handle();
+
+                    $order->set('shipping_method', $handle);
+                    $order->save();
+                });
+        });
+
+        return $this;
     }
 }

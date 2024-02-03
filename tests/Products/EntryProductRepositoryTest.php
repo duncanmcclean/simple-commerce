@@ -3,11 +3,6 @@
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as ProductContract;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryQueryBuilder;
-use Statamic\Facades\Collection;
-
-afterEach(function () {
-    Collection::find('products')->queryEntries()->get()->each->delete();
-});
 
 it('can get all products', function () {
     Product::make()->id('one')->price(1500)->save();
