@@ -38,10 +38,10 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
 
     public function whereStatusLogDate(OrderStatus|PaymentStatus $status, Carbon $date)
     {
-        return $this->whereJsonContains('data->status_log', function ($query) use ($status, $date) {
+        return $this->whereHas('statusLog', function ($query) use ($status, $date) {
             return $query
                 ->where('status', $status->value)
-                ->whereRaw('DATE(FROM_UNIXTIME(timestamp)) = ?', [$date->format('Y-m-d')]);
+                ->whereDate('timestamp', $date->format('Y-m-d'));
         });
     }
 }

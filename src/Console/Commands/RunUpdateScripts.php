@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
 
-use Facades\Statamic\UpdateScripts\Manager as UpdateScriptManager;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
 
@@ -18,10 +17,16 @@ class RunUpdateScripts extends Command
     {
         $this->info('Running update scripts...');
 
-        UpdateScriptManager::runUpdatesForSpecificPackageVersion(
-            package: 'doublethreedigital/simple-commerce',
-            oldVersion: '5.0.0',
-            console: $this
-        );
+        // For some reason, the "proper" way of doing this didn't work so we're
+        // doing it manually here.
+        app('statamic.update-scripts')
+            ->filter(function (array $script) {
+                return $script['package'] === 'doublethreedigital/simple-commerce';
+            })
+            ->each(function (array $script) {
+                $updateScript = new $script['class']($script['package'], $this);
+
+                $updateScript->update();
+            });
     }
 }

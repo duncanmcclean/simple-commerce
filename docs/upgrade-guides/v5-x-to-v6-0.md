@@ -22,7 +22,14 @@ To get started with the upgrade process, follow the below steps:
 composer update doublethreedigital/simple-commerce --with-dependencies
 ```
 
-**3.** Next, manually run the update scripts. This step will make changes to your config files & order data.
+**3.** If you're storing your orders in the database, you should uninstall & re-install Runway. It has moved to the Rad Pack:
+
+```
+composer remove doublethreedigital/runway
+composer require statamic-rad-pack/runway
+```
+
+**4.** Next, manually run the update scripts. This step will make changes to your config files & order data.
 
 ```
 php please sc:run-update-scripts
@@ -31,13 +38,6 @@ php please sc:run-update-scripts
 :::note Note!
 If you have excluded your orders from Git or you're storing your orders in a database, you will need to re-run this command after deploying Simple Commerce v6.
 :::
-
-**4.** If you're storing your orders in the database, you should uninstall & re-install Runway. It has moved to the Rad Pack:
-
-```
-composer remove doublethreedigital/runway
-composer require statamic-rad-pack/runway
-```
 
 **5.** You may also want to clear your route & view caches:
 
@@ -55,6 +55,14 @@ php artisan view:clear
 ### High: Runway v6
 
 If you're storing orders & customers in the database, you should also follow the [Runway v6 Upgrade Guide](https://runway.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0).
+
+### High: Database Migrations
+
+If you're storing orders in the database, you will need to run the migrations, both locally & when deploying to any other environments:
+
+```
+php artisan migrate
+```
 
 ## High: References to gateways & shipping methods in orders have changed
 

@@ -95,6 +95,13 @@ class EloquentOrderRepository implements RepositoryContract
                             })
                             ->toArray()
                     )
+                    ->merge([
+                        'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
+                            'status' => $statusLog->status,
+                            'timestamp' => $statusLog->timestamp->timestamp,
+                            'data' => $statusLog->data ?? [],
+                        ]),
+                    ])
             );
 
         if ($model->gateway) {
@@ -170,6 +177,14 @@ class EloquentOrderRepository implements RepositoryContract
 
         $model->save();
 
+        // Loop through status log events & create/update them in the database.
+        $order->statusLog()->map(function (StatusLogEvent $statusLogEvent) use ($model) {
+            StatusLogModel::updateOrCreate(
+                ['order_id' => $model->id, 'status' => $statusLogEvent->status, 'timestamp' => $statusLogEvent->date()],
+                ['data' => $statusLogEvent->data ?? []]
+            );
+        });
+
         $order->id = $model->id;
         $order->orderNumber = $model->order_number;
         $order->status = OrderStatus::from($model->order_status);
@@ -208,7 +223,14 @@ class EloquentOrderRepository implements RepositoryContract
                         return [$columnName => $model->{$columnName}];
                     })
                     ->toArray()
-            );
+            )
+            ->merge([
+                'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
+                    'status' => $statusLog->status,
+                    'timestamp' => $statusLog->timestamp->timestamp,
+                    'data' => $statusLog->data ?? [],
+                ]),
+            ]);
 
         $order->resource = $model;
     }

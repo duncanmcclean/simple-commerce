@@ -113,6 +113,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
+        UpdateScripts\v6_0\PublishMigrations::class,
         UpdateScripts\v6_0\UpdateClassReferences::class,
     ];
 
