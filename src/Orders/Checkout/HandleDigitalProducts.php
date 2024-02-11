@@ -6,7 +6,6 @@ use Closure;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
 use DoubleThreeDigital\SimpleCommerce\Events\DigitalDownloadReady;
 use DoubleThreeDigital\SimpleCommerce\Facades\LicenseKey;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Facades\URL;
 
 class HandleDigitalProducts
