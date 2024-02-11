@@ -103,7 +103,7 @@ it('can query orders', function () {
     ]);
 
     $orderModelC->statusLog()->create(['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
-    $orderModelC->statusLog()->create(['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
+    $orderModelC->statusLog()->create(['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 15:20:00')->timestamp, 'data' => []]);
     $orderModelC->statusLog()->create(['status' => 'dispatched', 'timestamp' => Carbon::parse('2024-01-29 12:12:12')->timestamp, 'data' => []]);
 
     // Ensure all 3 orders are returned when we're not doing any filtering.
@@ -135,6 +135,16 @@ it('can query orders', function () {
 
     // Query by status log timestamps
     $query = Order::query()->whereStatusLogDate(PaymentStatus::Paid, Carbon::parse('2024-01-27')); // b & c
+    expect($query->count())->toBe(2);
+    expect($query->get()[0])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[0]->orderNumber())->toBe(1003);
+    expect($query->get()[1])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[1]->orderNumber())->toBe(1004);
+
+    // Order orders by status log timestamps
+    $query = Order::query()->wherePaymentStatus(PaymentStatus::Paid)->orderBy('status_log->paid', 'desc');
     expect($query->count())->toBe(2);
     expect($query->get()[0])
         ->toBeInstanceOf(OrderContract::class)

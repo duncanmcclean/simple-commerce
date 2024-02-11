@@ -31,8 +31,8 @@ class RecentOrders extends Widget
                     'edit_url' => $this->getEditUrl($order),
                     'date' => $order->statusLog()
                         ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
-                        ->last()
-                        ->date()
+                        ->first()
+                        ?->date()
                         ->format(config('statamic.system.date_format')),
                 ];
             })
@@ -64,7 +64,7 @@ class RecentOrders extends Widget
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
             return cp_route('runway.edit', [
                 'resource' => Runway::orderModel()->handle(),
-                'record' => $order->resource()->{$order->getRouteKeyName()},
+                'model' => $order->resource()->{$order->resource()->getRouteKeyName()},
             ]);
         }
     }
