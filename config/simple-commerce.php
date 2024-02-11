@@ -137,15 +137,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | And some more settings, that probably don't need much describing..
+    | Low Stock Threshold
     |--------------------------------------------------------------------------
+    |
+    | This is where you can configure the threshold at which a product is considered to be
+    | "low stock". When a product's stock reaches this threshold, it will trigger an event.
+    |
+    | https://simple-commerce.duncanmcclean.com/stock
+    |
     */
-
-    // Low Stock Threshold
 
     'low_stock_threshold' => 10,
 
-    // Content Repositories
+    /*
+    |--------------------------------------------------------------------------
+    | Repositories
+    |--------------------------------------------------------------------------
+    |
+    | This is where you can configure the repositories which determine where customers,
+    | orders, products come from and how they are stored.
+    |
+    */
 
     'content' => [
         'customers' => [
