@@ -7,6 +7,7 @@ use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
+use Statamic\Facades\AssetContainer;
 use Statamic\Fields\Blueprint;
 
 class EnforceEntryBlueprintFields
@@ -68,12 +69,64 @@ class EnforceEntryBlueprintFields
 
     protected function enforceProductFields($event): Blueprint
     {
+        $event->blueprint->ensureField('product_type', [
+            'type' => 'button_group',
+            'display' => __('Product Type'),
+            'options' => [
+                'physical' => __('Physical'),
+                'digital' => __('Digital'),
+            ],
+            'default' => 'physical',
+        ], 'sidebar', true);
+
         if (! $event->blueprint->hasField('product_variants')) {
             $event->blueprint->ensureField('price', [
                 'type' => 'money',
                 'display' => __('Price'),
                 'save_zero_value' => true,
             ], 'sidebar');
+        }
+
+        if ($event->blueprint->hasField('product_variants')) {
+            $productVariantsField = $event->blueprint->field('product_variants');
+
+            $hasDigitalProductFields = collect($productVariantsField->config()['option_fields'] ?? [])
+                ->filter(function ($value, $key) {
+                    return $value['handle'] === 'download_limit'
+                        || $value['handle'] === 'downloadable_asset';
+                })
+                ->count() > 0;
+
+            if (! $hasDigitalProductFields) {
+                $event->blueprint->ensureFieldHasConfig(
+                    'product_variants',
+                    array_merge(
+                        $productVariantsField->toArray(),
+                        [
+                            'option_fields' => array_merge(
+                                $productVariantsField->get('option_fields', []),
+                                collect($this->getDigitalProductFields())
+                                    ->map(function ($value, $key) {
+                                        return [
+                                            'handle' => $key,
+                                            'field' => $value,
+                                        ];
+                                    })
+                                    ->values()
+                                    ->toArray()
+                            ),
+                        ]
+                    )
+                );
+            }
+
+            return $event->blueprint;
+        } else {
+            collect($this->getDigitalProductFields())
+                ->reject(fn ($value, $key) => $event->blueprint->hasField($key))
+                ->each(function ($value, $key) use (&$event) {
+                    $event->blueprint->ensureFieldInTab($key, $value, 'sidebar');
+                });
         }
 
         if (SimpleCommerce::isUsingStandardTaxEngine()) {
@@ -86,6 +139,29 @@ class EnforceEntryBlueprintFields
         }
 
         return $event->blueprint;
+    }
+
+    protected function getDigitalProductFields(): array
+    {
+        return [
+            'downloadable_asset' => [
+                'type' => 'assets',
+                'mode' => 'grid',
+                'display' => __('Downloadable Asset'),
+                'container' => AssetContainer::all()->first()?->handle(),
+                'if' => [
+                    'root.product_type' => 'equals digital',
+                ],
+            ],
+            'download_limit' => [
+                'type' => 'integer',
+                'display' => __('Download Limit'),
+                'instructions' => __("If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."),
+                'if' => [
+                    'root.product_type' => 'equals digital',
+                ],
+            ],
+        ];
     }
 
     protected function enforceOrderFields($event): Blueprint

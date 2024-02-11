@@ -88,6 +88,9 @@ class ServiceProvider extends AddonServiceProvider
         Events\StockRunOut::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
+        Events\DigitalDownloadReady::class => [
+            Listeners\SendConfiguredNotifications::class,
+        ],
     ];
 
     protected $modifiers = [
@@ -113,6 +116,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
+        UpdateScripts\v6_0\MigrateProductType::class,
         UpdateScripts\v6_0\PublishMigrations::class,
         UpdateScripts\v6_0\UpdateClassReferences::class,
     ];
@@ -211,6 +215,10 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bindContracts()
     {
+        $bindings = [
+            Contracts\LicenseKeyRepository::class => Products\DigitalProducts\LicenseKeyRepository::class,
+        ];
+
         if (isset(SimpleCommerce::customerDriver()['repository'])) {
             $bindings[Contracts\CustomerRepository::class] = SimpleCommerce::customerDriver()['repository'];
         }

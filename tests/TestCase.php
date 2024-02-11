@@ -11,6 +11,7 @@ use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Statamic\Console\Processes\Composer;
 use Statamic\Extend\Manifest;
+use Statamic\Facades\AssetContainer;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Site;
 use Statamic\Providers\StatamicServiceProvider;
@@ -110,10 +111,17 @@ abstract class TestCase extends OrchestraTestCase
 
         $app['config']->set('statamic.editions.pro', true);
 
+        $app['config']->set('filesystems.disks.test', [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+        ]);
+
         Statamic::booted(function () {
             Site::setCurrent('default');
 
             Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
+
+            AssetContainer::make('assets')->disk('test')->save();
         });
 
         $this->ensureContentDirectoriesExist();

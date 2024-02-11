@@ -2,28 +2,68 @@ title: Product
 tabs:
   main:
     display: Main
-    fields:
+    sections:
       -
-        handle: description
-        field:
-          restrict: false
-          automatic_line_breaks: true
-          automatic_links: false
-          escape_markup: false
-          smartypants: false
-          type: markdown
-          localizable: false
-          listable: hidden
-          display: Description
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              required: true
+              validate:
+                - required
+              width: 50
+          -
+            handle: price
+            field:
+              type: money
+              display: Price
+              save_zero_value: true
+              listable: hidden
+              width: 50
+              instructions_position: above
+              visibility: visible
+              always_save: false
+              validate:
+                - required
   sidebar:
     display: Sidebar
-    fields:
+    sections:
       -
-        handle: price
-        field:
-          read_only: false
-          type: money
-          localizable: false
-          listable: hidden
-          display: Price
-          save_zero_value: true
+        fields:
+          -
+            handle: product_type
+            field:
+              type: button_group
+              display: 'Product Type'
+              options:
+                physical: Physical
+                digital: Digital
+              default: physical
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate:
+                - required
+      -
+        display: 'Digital Product'
+        fields:
+          -
+            handle: downloadable_asset
+            field:
+              type: assets
+              mode: grid
+              display: 'Downloadable Asset'
+              container: assets
+              if:
+                root.product_type: 'equals digital'
+          -
+            handle: download_limit
+            field:
+              type: integer
+              display: 'Download Limit'
+              instructions: "If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."
+              if:
+                root.product_type: 'equals digital'

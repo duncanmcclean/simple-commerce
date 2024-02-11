@@ -10,5 +10,6 @@ class CheckoutPipeline extends Pipeline
         StoreCustomerOrders::class,
         RedeemCoupon::class,
         UpdateProductStock::class,
+        HandleDigitalProducts::class,
     ];
 }
