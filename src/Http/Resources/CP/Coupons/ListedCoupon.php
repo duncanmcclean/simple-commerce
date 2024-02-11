@@ -33,7 +33,6 @@ class ListedCoupon extends JsonResource
         return array_merge(
             [
                 'id' => $coupon->id(),
-                'enabled' => $coupon->enabled(),
                 'discount_text' => $coupon->discountText(),
                 'edit_url' => cp_route('simple-commerce.coupons.edit', ['coupon' => $coupon->id()]),
                 'editable' => User::current()->can('edit coupons'),

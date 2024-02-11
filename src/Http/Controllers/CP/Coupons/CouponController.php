@@ -75,8 +75,7 @@ class CouponController
             ->code(Str::upper($fields->get('code')))
             ->type($fields->get('type'))
             ->value($fields->get('value'))
-            ->enabled($fields->get('enabled'))
-            ->data(Arr::except($fields, ['code', 'type', 'value', 'enabled']));
+            ->data(Arr::except($fields, ['code', 'type', 'value']));
 
         $coupon->save();
 
@@ -122,8 +121,7 @@ class CouponController
             ->code(Str::upper($fields->get('code')))
             ->type($fields->get('type'))
             ->value($fields->get('value'))
-            ->enabled($fields->get('enabled'))
-            ->data(Arr::except($fields, ['code', 'type', 'value', 'enabled']))
+            ->data(Arr::except($fields, ['code', 'type', 'value']))
             ->save();
 
         return [

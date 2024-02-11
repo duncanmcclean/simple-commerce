@@ -103,7 +103,6 @@
                         >
                             <template slot="cell-code" slot-scope="{ row, value }">
                                 <div class="title-index-field">
-                                    <div class="little-dot mr-2" v-tooltip="getStatusLabel(row)" :class="getStatusClass(row)" v-if="! columnShowing('enabled')" />
                                     <a :href="row.edit_url" @click.stop>{{ row.code }}</a>
                                 </div>
                             </template>

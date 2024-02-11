@@ -29,7 +29,6 @@ test('can store coupon', function () {
             ],
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
-            'enabled' => true,
             'expires_at' => null,
             'customer_eligibility' => 'all',
         ])
@@ -58,7 +57,6 @@ test('can store coupon with expiry date', function () {
             ],
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
-            'enabled' => true,
             'expires_at' => [
                 'date' => '2024-01-01',
                 'time' => null,
@@ -163,7 +161,6 @@ test('can update coupon', function () {
                 'value' => 51,
             ],
             'description' => 'You can actually get a 51% discount on Friday!',
-            'enabled' => false,
             'minimum_cart_value' => '76.00',
             'expires_at' => null,
             'customer_eligibility' => 'all',
@@ -205,7 +202,6 @@ test('can update coupon with expriry date', function () {
                 'value' => 51,
             ],
             'description' => 'You can actually get a 51% discount on Friday!',
-            'enabled' => false,
             'minimum_cart_value' => '76.00',
             'expires_at' => [
                 'date' => '2024-01-01',
