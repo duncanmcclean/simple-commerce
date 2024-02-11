@@ -68,10 +68,18 @@ it('adds product type field and removes old digital product fields from product 
     $collection = Collection::find('products');
 
     $blueprint = Blueprint::make('test')->setNamespace('collections.products')->setContents([
-        'fields' => [
-            ['handle' => 'is_digital_product', 'field' => ['type' => 'toggle']],
-            ['handle' => 'downloadable_asset', 'field' => ['type' => 'assets']],
-            ['handle' => 'download_limit', 'field' => ['type' => 'integer']],
+        'tabs' => [
+            'Digital Product' => [
+                'sections' => [
+                    [
+                        'fields' => [
+                            ['handle' => 'is_digital_product', 'field' => ['type' => 'toggle']],
+                            ['handle' => 'downloadable_asset', 'field' => ['type' => 'assets']],
+                            ['handle' => 'download_limit', 'field' => ['type' => 'integer']],
+                        ],
+                    ]
+                ],
+            ],
         ],
     ])->save();
 
