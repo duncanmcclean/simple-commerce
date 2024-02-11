@@ -182,6 +182,11 @@ class ServiceProvider extends AddonServiceProvider
         });
     }
 
+    protected function bootBlueprints()
+    {
+        return $this;
+    }
+
     protected function bootVendorAssets()
     {
         $this->publishes([
