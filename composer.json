@@ -1,6 +1,6 @@
 {
     "name": "duncanmcclean/simple-commerce",
-    "description": "A perfectly simple e-commerce addon for Statamic",
+    "description": "A simple, yet powerful e-commerce addon for Statamic.",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
