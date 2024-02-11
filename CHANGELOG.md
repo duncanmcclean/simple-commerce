@@ -1,5 +1,29 @@
 # Changelog
 
+## v6.0.0 (2024-02-11)
+
+### What's new
+* Runway v6 compatability #953
+* Added "Delivered" order status #991
+* Added `findOrFail` methods to `Order`/`Product`/`Customer` repositories #990
+* The [Digital Products](https://simple-commerce.duncanmcclean.com/digital-products) addon has been merged into the Core Simple Commerce addon #986
+* Orders, Products & Customers now have their own query builders (eg. `Order::query()`) #973
+* When using Statamic users as customers, the authenticated user will automatically be associated with their orders #961
+
+### What's changed
+* The package namespace has changed from `DoubleThreeDigital` to `DuncanMcClean` #993
+* Removed the "Overview" Control Panel page in favour of Dashboard widgets #963
+* Gateways & Shipping Methods are now referenced by their handles, rather than FQCNs #968
+* Removed the "Enabled" toggle from coupons, in favour of the "End Date" setting #992
+* When storing orders in the database, the "Status Log" is now stored in its own table #983
+* The `all` method on repositories now return collections of `Order`/`Product`/`Customer` objects
+* The `find` method on repositories now return `null` when no entry or model is found #990
+* Dropped support for gateways being referenced in the legacy format #969
+* Refactored method for getting gateway data in the `Order` object #970
+* When a customer submits a cart form with an `email` field and a customer already exists on the order, the existing customer will be updated, rather than a new customer being created #972
+
+You can read more about what's changed in the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0), along with steps on how to upgrade.
+
 ## v5.9.1 (2024-01-13)
 
 ### What's fixed
