@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use Carbon\Carbon;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use Illuminate\Support\Str;
 use Statamic\Query\EloquentQueryBuilder as QueryEloquentQueryBuilder;
 
 class EloquentQueryBuilder extends QueryEloquentQueryBuilder
@@ -24,6 +25,28 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
         }
 
         return $column;
+    }
+
+    public function orderBy($column, $direction = 'asc')
+    {
+        if (Str::startsWith($column, 'status_log->')) {
+            $status = Str::after($column, 'status_log->');
+
+            $this->builder
+                ->joinSub(function ($query) use ($status) {
+                    $query
+                        ->select('order_id', 'timestamp', 'status')
+                        ->from('status_log')
+                        ->where('status', $status);
+                }, 'latest_status_log', function ($join) {
+                    $join->on('orders.id', '=', 'latest_status_log.order_id');
+                })
+                ->orderBy('latest_status_log.timestamp', $direction);
+
+            return $this;
+        }
+
+        return parent::orderBy($this->column($column), $direction);
     }
 
     public function whereOrderStatus(OrderStatus $orderStatus)
