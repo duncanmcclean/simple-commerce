@@ -1,6 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\Contracts\Product as ProductContract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Products\EntryQueryBuilder;
 
@@ -35,6 +36,18 @@ it('can find product', function () {
     $product = Product::find('one');
 
     expect($product)->toBeInstanceOf(ProductContract::class);
+});
+
+it('can findOrFail product', function () {
+    Product::make()->id('one')->price(1500)->save();
+
+    $product = Product::find('one');
+
+    expect($product)->toBeInstanceOf(ProductContract::class);
+});
+
+it('can findOrFail product that does not exist', function () {
+    expect(fn () => Product::findOrFail(123))->toThrow(ProductNotFound::class);
 });
 
 it('can make product', function () {

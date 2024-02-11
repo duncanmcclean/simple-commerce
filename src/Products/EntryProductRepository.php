@@ -36,10 +36,21 @@ class EntryProductRepository implements RepositoryContract
         $entry = Entry::find($id);
 
         if (! $entry) {
-            throw new ProductNotFound("Product [{$id}] could not be found.");
+            return null;
         }
 
         return $this->fromEntry($entry);
+    }
+
+    public function findOrFail($id): Product
+    {
+        $product = $this->find($id);
+
+        if (! $product) {
+            throw new ProductNotFound("Product [{$id}] could not be found.");
+        }
+
+        return $product;
     }
 
     public function fromEntry($entry)
