@@ -3,6 +3,7 @@
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Customers\Customer as CustomersCustomer;
 use DoubleThreeDigital\SimpleCommerce\Customers\EntryQueryBuilder;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -52,13 +53,35 @@ it('can find customer by id', function () {
         ])
         ->save();
 
-    $findByEmail = Customer::find($id);
+    $find = Customer::find($id);
 
-    expect($findByEmail instanceof CustomersCustomer)->toBeTrue();
+    expect($find instanceof CustomersCustomer)->toBeTrue();
 
-    expect('Smoke Fire')->toBe($findByEmail->name());
-    expect('smoke@fire.com')->toBe($findByEmail->email());
-    expect('smoke-at-firecom')->toBe($findByEmail->get('slug'));
+    expect('Smoke Fire')->toBe($find->name());
+    expect('smoke@fire.com')->toBe($find->email());
+    expect('smoke-at-firecom')->toBe($find->get('slug'));
+});
+
+it('can findOrFail customer by id', function () {
+    Entry::make()
+        ->collection('customers')
+        ->id($id = Stache::generateId())
+        ->slug('smoke-at-firecom')
+        ->data([
+            'name' => 'Smoke Fire',
+            'email' => 'smoke@fire.com',
+        ])
+        ->save();
+
+    $find = Customer::findOrFail($id);
+
+    expect($find instanceof CustomersCustomer)->toBeTrue();
+
+    expect('Smoke Fire')->toBe($find->name());
+    expect('smoke@fire.com')->toBe($find->email());
+    expect('smoke-at-firecom')->toBe($find->get('slug'));
+
+    expect(fn () => Customer::findOrFail(123))->toThrow(CustomerNotFound::class);
 });
 
 it('can find customer by email', function () {

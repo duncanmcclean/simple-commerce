@@ -36,10 +36,21 @@ class EntryCustomerRepository implements RepositoryContract
         $entry = Entry::find($id);
 
         if (! $entry) {
-            throw new CustomerNotFound("Customer [{$id}] could not be found.");
+            return null;
         }
 
         return $this->fromEntry($entry);
+    }
+
+    public function findOrFail($id): Customer
+    {
+        $customer = $this->find($id);
+
+        if (! $customer) {
+            throw new CustomerNotFound("Customer [{$id}] could not be found.");
+        }
+
+        return $customer;
     }
 
     public function findByEmail(string $email): ?Customer

@@ -3,6 +3,7 @@
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
 use DoubleThreeDigital\SimpleCommerce\Customers\EloquentQueryBuilder;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -77,6 +78,25 @@ it('can find customer by id', function () {
     expect($customer->name)->toBe($find->name());
     expect($customer->email)->toBe($find->email());
     expect('Press Secretary')->toBe($find->get('role'));
+});
+
+it('can findOrFail customer by id', function () {
+    $customer = CustomerModel::create([
+        'name' => 'CJ Cregg',
+        'email' => 'cj@whitehouse.gov',
+        'data' => [
+            'role' => 'Press Secretary',
+        ],
+    ]);
+
+    $findOrFail = Customer::findOrFail($customer->id);
+
+    expect($customer->id)->toBe($findOrFail->id());
+    expect($customer->name)->toBe($findOrFail->name());
+    expect($customer->email)->toBe($findOrFail->email());
+    expect('Press Secretary')->toBe($findOrFail->get('role'));
+
+    expect(fn () => Customer::findOrFail(123))->toThrow(CustomerNotFound::class);
 });
 
 it('can find customer by email', function () {

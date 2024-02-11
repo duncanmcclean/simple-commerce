@@ -37,6 +37,17 @@ class UserCustomerRepository implements RepositoryContract
         $user = User::find($id);
 
         if (! $user) {
+            return null;
+        }
+
+        return $this->fromUser($user);
+    }
+
+    public function findOrFail($id): Customer
+    {
+        $user = User::find($id);
+
+        if (! $user) {
             throw new CustomerNotFound("Customer [{$id}] could not be found.");
         }
 

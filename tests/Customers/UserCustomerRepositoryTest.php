@@ -3,6 +3,7 @@
 use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
 use DoubleThreeDigital\SimpleCommerce\Customers\StacheUserQueryBuilder;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
@@ -68,6 +69,21 @@ test('can find customer by id', function () {
     expect($user->id())->toBe($find->id());
     expect($user->get('name'))->toBe($find->name());
     expect($user->email())->toBe($find->email());
+});
+
+test('can findOrFail customer by id', function () {
+    $user = User::make()->email('james@example.com')->set('name', 'James Example');
+    $user->save();
+
+    $findOrFail = Customer::findOrFail($user->id());
+
+    // $this->assertTrue($find instanceof UserCustomer);
+
+    expect($user->id())->toBe($findOrFail->id());
+    expect($user->get('name'))->toBe($findOrFail->name());
+    expect($user->email())->toBe($findOrFail->email());
+
+    expect(fn () => Customer::findOrFail('123'))->toThrow(CustomerNotFound::class);
 });
 
 test('can find customer by email', function () {

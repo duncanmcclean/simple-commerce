@@ -10,6 +10,8 @@ interface CustomerRepository
 
     public function find($id): ?Customer;
 
+    public function findOrFail($id): Customer;
+
     public function findByEmail(string $email): ?Customer;
 
     public function make(): Customer;
