@@ -8,6 +8,10 @@ use Statamic\Events\UserBlueprintFound;
 use Statamic\Facades\Blueprint;
 use Statamic\Statamic;
 
+afterEach(function () {
+    Blueprint::find('user')?->delete();
+});
+
 test('fields can be added to user blueprint', function () {
     Config::set('simple-commerce.content.customers', [
         'repository' => UserCustomerRepository::class,
