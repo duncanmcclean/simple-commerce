@@ -174,6 +174,12 @@ As part of the update process, all of your products should be updated so `Produc
 
 Previously, the "Download History" functionality provided by the addon was opt-in. This feature is now always enabled.
 
+### Low: Repository `find` methods no longer throw exceptions
+
+The `find` method on the `Order`/`Product`/`Customer` facades will no longer throw an exception when the entry or model can't be found. Instead, it'll now return `null`.
+
+You can use the `findOrFail` methods instead if you wish exceptions to be thrown.
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
