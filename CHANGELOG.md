@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.0.1 (2024-02-11)
+
+### What's fixed
+* Prevented vendor blueprints from being published
+* Fixed errors from the `PublishMigrations` upgrade script
+
+
 ## v6.0.0 (2024-02-11)
 
 ### What's new
