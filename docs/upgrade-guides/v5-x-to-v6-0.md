@@ -127,6 +127,53 @@ $order->statusLog()
     ->last();
 ```
 
+### Medium: Digital Products are now supported in Core
+
+Previously, you needed to install a separate addon to support Digital Products. With v6, this addon has been merged into Simple Commerce Core. It works *mostly* the same as the addon did but there are a few notable changes and things you should do as part of the update process:
+
+#### Uninstall Digital Products addon
+
+Now the addon is no longer needed, you may uninstall it:
+
+```
+composer remove doublethreedigital/sc-digital-products
+```
+
+#### Notifications config
+
+The namespace for the `DigitalDownloadsReady` notification has changed. You should update the reference to it in your `simple-commerce.php` config file:
+
+```php
+'notifications' => [
+    'digital_download_ready' => [
+        \DoubleThreeDigital\DigitalProducts\Notifications\DigitalDownloadsNotification::class => [ // [tl! remove]
+        \DoubleThreeDigital\SimpleCommerce\Notifications\DigitalDownloadsNotification::class => [ // [tl! add]
+            'to' => 'customer',
+        ],
+    ],
+],
+```
+
+#### URLs have changed
+
+As the code has been merged into the main Simple Commerce addon, the URLs have changed to reflect that. This means any download URLs sent prior to updating will 404 and if you're using the addon's License Verification API endpoint, you will need to reference the new URL:
+
+```
+https://example.com/!/simple-commerce/digital-products/verification
+```
+
+#### Enabling Digital Products
+
+With the addon, a "Digital Products" tab was forced onto your product blueprint which once toggled would show the other digital product related fields. This has changed a little in v6 - you now have to toggle the 'Product Type' field instead:
+
+![Product Type toggle](/img/simple-commerce/product-type-toggle.png)
+
+As part of the update process, all of your products should be updated so `Product Type` is set to `Digital`.
+
+#### Download History
+
+Previously, the "Download History" functionality provided by the addon was opt-in. This feature is now always enabled.
+
 ## Previous upgrade guides
 
 -   [v2.2 to v2.3](/upgrade-guides/v2-2-to-v2-3)
