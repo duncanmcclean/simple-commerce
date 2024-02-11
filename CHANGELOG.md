@@ -1,5 +1,17 @@
 # Changelog
 
+## v6.0.2 (2024-02-11)
+
+### What's fixed
+* Fixed errors in some of the update scripts
+* Fixed some issues with the default blueprints
+
+### What's improved
+* Refreshed the upgrade guide
+* Tidied up some of the comments in the config file
+
+
+
 ## v6.0.1 (2024-02-11)
 
 ### What's fixed
