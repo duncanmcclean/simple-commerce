@@ -47,23 +47,6 @@ tabs:
               localizable: true
               validate:
                 - required
-          -
-            handle: tax_category
-            field:
-              type: tax_category
-              display: 'Tax Category'
-              max_items: 1
-              mode: select
-          -
-            handle: stock
-            field:
-              type: integer
-              display: Stock
-              listable: hidden
-              instructions_position: above
-              visibility: visible
-              replicator_preview: true
-              hide_display: false
       -
         display: 'Digital Product'
         fields:
