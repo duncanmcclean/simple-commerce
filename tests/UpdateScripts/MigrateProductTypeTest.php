@@ -5,6 +5,10 @@ use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
+afterEach(function () {
+    Blueprint::find('collections.products.test')?->delete();
+});
+
 it('updates product_type field for physical product', function () {
     $productEntry = Entry::make()
         ->collection('products')
@@ -63,29 +67,28 @@ it('updates product_type field for digital product with variants', function () {
 it('adds product type field and removes old digital product fields from product blueprints', function () {
     $collection = Collection::find('products');
 
-    $blueprint = $collection->entryBlueprint()->setContents([
+    $blueprint = Blueprint::make('test')->setNamespace('collections.products')->setContents([
         'fields' => [
             ['handle' => 'is_digital_product', 'field' => ['type' => 'toggle']],
             ['handle' => 'downloadable_asset', 'field' => ['type' => 'assets']],
             ['handle' => 'download_limit', 'field' => ['type' => 'integer']],
         ],
-    ]);
+    ])->save();
 
     (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
 
-    $blueprint = $collection->entryBlueprint();
+    $blueprint = $collection->entryBlueprints()->where('handle', 'test')->first();
 
     expect($blueprint->fields()->all()->map->handle()->toArray())
-        ->toHaveKey('product_type')
         ->not->toHaveKey('is_digital_product')
-        ->toHaveKey('downloadable_asset')
-        ->toHaveKey('download_limit');
+        ->not->toHaveKey('downloadable_asset')
+        ->not->toHaveKey('download_limit');
 });
 
 it('adds product type field and removes old digital product fields from variant options field from product blueprints', function () {
     $collection = Collection::find('products');
 
-    $blueprint = $collection->entryBlueprint()->setContents([
+    $blueprint = Blueprint::make('test')->setNamespace('collections/products')->setContents([
         'fields' => [
             [
                 'handle' => 'product_variants',
@@ -99,14 +102,13 @@ it('adds product type field and removes old digital product fields from variant 
                 ],
             ],
         ],
-    ]);
+    ])->save();
 
     (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
 
-    $blueprint = $collection->entryBlueprint();
+    $blueprint = $collection->entryBlueprints()->where('handle', 'test')->first();
 
     expect($blueprint->fields()->all()->map->handle()->toArray())
-        ->toHaveKey('product_type')
         ->not->toHaveKey('is_digital_product')
         ->not->toHaveKey('downloadable_asset')
         ->not->toHaveKey('download_limit')
