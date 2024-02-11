@@ -40,7 +40,6 @@ test('can store coupon', function () {
     $coupon = Coupon::findByCode('thursday-thirty');
 
     expect(30)->toBe($coupon->value());
-    expect(true)->toBe($coupon->enabled());
     expect('30% discount on a Thursday!')->toBe($coupon->get('description'));
     expect(6500)->toBe($coupon->get('minimum_cart_value'));
 });
@@ -172,7 +171,6 @@ test('can update coupon', function () {
     $coupon->fresh();
 
     expect(51)->toBe($coupon->value());
-    expect(false)->toBe($coupon->enabled());
     expect('You can actually get a 51% discount on Friday!')->toBe($coupon->get('description'));
     expect(7600)->toBe($coupon->get('minimum_cart_value'));
 });

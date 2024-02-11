@@ -114,7 +114,7 @@ test('can redirect user to confirmation page instead of offsite gateway when ord
 
     $cart->save();
 
-    $coupon = Coupon::make()->code('FREEBIE')->value(100)->type('percentage')->enabled(true);
+    $coupon = Coupon::make()->code('FREEBIE')->value(100)->type('percentage');
     $coupon->save();
 
     $cart->coupon($coupon);
