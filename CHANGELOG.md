@@ -7,6 +7,7 @@
 * Fixed errors from the `PublishMigrations` upgrade script
 
 
+
 ## v6.0.0 (2024-02-11)
 
 ### What's new
