@@ -45,7 +45,7 @@ class OrderModel extends Model
     {
         return Attribute::make(
             get: function () {
-                return $this->statusLog()
+                return $this->statusLog
                     ->where('status', OrderStatus::Placed)
                     ->map->date()
                     ->last();
