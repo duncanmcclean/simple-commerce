@@ -21,7 +21,7 @@ class OrdersChart extends Widget
         if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             $indexUrl = cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
         } elseif ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            $indexUrl = cp_route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()]);
+            $indexUrl = cp_route('runway.index', ['resource' => Runway::orderModel()->handle()]);
         }
 
         $timePeriod = CarbonPeriod::create(Carbon::now()->subDays(30)->format('Y-m-d'), Carbon::now()->format('Y-m-d'));

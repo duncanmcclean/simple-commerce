@@ -70,7 +70,7 @@ class TopCustomers extends Widget
         }
 
         if ((new self)->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class)) {
-            return cp_route('runway.index', ['resourceHandle' => Runway::customerModel()->handle()]);
+            return cp_route('runway.index', ['resource' => Runway::customerModel()->handle()]);
         }
 
         if ((new self)->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], UserCustomerRepository::class)) {

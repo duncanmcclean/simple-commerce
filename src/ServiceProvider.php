@@ -325,7 +325,7 @@ class ServiceProvider extends AddonServiceProvider
 
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
-                    ->route('runway.index', ['resourceHandle' => $orderResource->handle()])
+                    ->route('runway.index', ['resource' => $orderResource->handle()])
                     ->can('view', $orderResource)
                     ->icon(SimpleCommerce::svg('shop'));
             }
@@ -354,7 +354,7 @@ class ServiceProvider extends AddonServiceProvider
 
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
-                    ->route('runway.index', ['resourceHandle' => $customerResource->handle()])
+                    ->route('runway.index', ['resource' => $customerResource->handle()])
                     ->can('view', $customerResource)
                     ->icon('user');
             }

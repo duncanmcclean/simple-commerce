@@ -51,7 +51,7 @@ class RecentOrders extends Widget
         }
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            return cp_route('runway.index', ['resourceHandle' => Runway::orderModel()->handle()]);
+            return cp_route('runway.index', ['resource' => Runway::orderModel()->handle()]);
         }
     }
 
@@ -63,7 +63,7 @@ class RecentOrders extends Widget
 
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
             return cp_route('runway.edit', [
-                'resourceHandle' => Runway::orderModel()->handle(),
+                'resource' => Runway::orderModel()->handle(),
                 'record' => $order->resource()->{$order->getRouteKeyName()},
             ]);
         }

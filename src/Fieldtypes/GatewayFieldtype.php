@@ -57,7 +57,7 @@ class GatewayFieldtype extends Fieldtype
             $orderModel = SimpleCommerce::orderDriver()['model'];
 
             $actionUrl = cp_route('runway.actions.run', [
-                'resourceHandle' => Runway::orderModel()->handle(),
+                'resource' => Runway::orderModel()->handle(),
             ]);
         }
 
