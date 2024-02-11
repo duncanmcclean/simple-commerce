@@ -11,17 +11,17 @@
 | {{ __('Items') }}       | {{ __('Quantity') }}         | {{ __('Total') }} |
 | :--------- | :------------- | :----- |
 @foreach ($order->lineItems() as $lineItem)
-| [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $lineItem->totalIncludingTax() : $lineItem->total(), $site) }} |
+| [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DuncanMcClean\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $lineItem->totalIncludingTax() : $lineItem->total(), $site) }} |
 @endforeach
-| | {{ __('Subtotal') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $order->itemsTotalWithTax() : $order->itemsTotal(), $site) }}
+| | {{ __('Subtotal') }}: | {{ \DuncanMcClean\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $order->itemsTotalWithTax() : $order->itemsTotal(), $site) }}
 @if($order->coupon())
-| | {{ __('Coupon') }}: | -{{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->couponTotal(), $site) }}
+| | {{ __('Coupon') }}: | -{{ \DuncanMcClean\SimpleCommerce\Currency::parse($order->couponTotal(), $site) }}
 @endif
-| | {{ __('Shipping') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
+| | {{ __('Shipping') }}: | {{ \DuncanMcClean\SimpleCommerce\Currency::parse($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
 @if(!$taxIncludedInPrices)
-| | {{ __('Tax') }}: | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->taxTotal(), $site) }}
+| | {{ __('Tax') }}: | {{ \DuncanMcClean\SimpleCommerce\Currency::parse($order->taxTotal(), $site) }}
 @endif
-| | **{{ __('Total') }}:** | {{ \DoubleThreeDigital\SimpleCommerce\Currency::parse($order->grandTotal(), $site) }}
+| | **{{ __('Total') }}:** | {{ \DuncanMcClean\SimpleCommerce\Currency::parse($order->grandTotal(), $site) }}
 | | |
 @endcomponent
 

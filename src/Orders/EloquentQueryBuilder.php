@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use Carbon\Carbon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use Statamic\Query\EloquentQueryBuilder as QueryEloquentQueryBuilder;
 
 class EloquentQueryBuilder extends QueryEloquentQueryBuilder

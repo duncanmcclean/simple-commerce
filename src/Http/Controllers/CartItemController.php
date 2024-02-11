@@ -1,15 +1,15 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -47,7 +47,7 @@ class CartItemController extends BaseActionController
 
         // If this product requires another one, ensure the customer has already purchased it...
         if ($product->has('prerequisite_product')) {
-            /** @var \DoubleThreeDigital\SimpleCommerce\Contracts\Customer $customer */
+            /** @var \DuncanMcClean\SimpleCommerce\Contracts\Customer $customer */
             $customer = $cart->customer();
 
             if (! $customer) {

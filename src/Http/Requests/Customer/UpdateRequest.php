@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Customer;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\Customer;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest

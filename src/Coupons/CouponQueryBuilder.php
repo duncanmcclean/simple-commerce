@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Query\Builder;

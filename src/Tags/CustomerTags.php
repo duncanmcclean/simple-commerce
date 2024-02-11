@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
-use DoubleThreeDigital\SimpleCommerce\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderAPI;
+use DuncanMcClean\SimpleCommerce\Orders\Order;
 
 class CustomerTags extends SubTag
 {

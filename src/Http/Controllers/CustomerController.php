@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Customer\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Customer\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Customer\IndexRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Customer\UpdateRequest;
 use Illuminate\Support\Arr;
 
 class CustomerController extends BaseActionController

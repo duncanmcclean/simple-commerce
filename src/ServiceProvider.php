@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DuncanMcClean\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Support\Carbon;
 use Statamic\CP\Navigation\NavItem;
@@ -115,6 +115,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $updateScripts = [
+        UpdateScripts\v6_0\ReplaceOldVendorName::class,
         UpdateScripts\v6_0\MigrateProductType::class,
         UpdateScripts\v6_0\PublishMigrations::class,
         UpdateScripts\v6_0\UpdateClassReferences::class,
@@ -253,7 +254,7 @@ class ServiceProvider extends AddonServiceProvider
         if (! $this->app->bound(Contracts\CartDriver::class)) {
             $this->app->bind(
                 Contracts\CartDriver::class,
-                config('simple-commerce.cart.driver', \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class)
+                config('simple-commerce.cart.driver', \DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class)
             );
         }
 
@@ -305,7 +306,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         Nav::extend(function ($nav) {
             if (
-                $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+                $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class)
             ) {
                 $nav->create(__('Orders'))
                     ->section(__('Simple Commerce'))
@@ -314,7 +315,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->icon(SimpleCommerce::svg('shop'));
             } elseif (
                 class_exists('StatamicRadPack\Runway\Runway') &&
-                $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class)
+                $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class)
             ) {
                 $orderResource = Runway::orderModel();
 
@@ -326,7 +327,7 @@ class ServiceProvider extends AddonServiceProvider
             }
 
             if (
-                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class)
+                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class)
             ) {
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
@@ -334,7 +335,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->can('view', Collection::find(SimpleCommerce::customerDriver()['collection']))
                     ->icon('user');
             } elseif (
-                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class)
+                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class)
             ) {
                 $nav->create(__('Customers'))
                     ->section(__('Simple Commerce'))
@@ -343,7 +344,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->icon('user');
             } elseif (
                 class_exists('StatamicRadPack\Runway\Runway') &&
-                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class)
+                $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class)
             ) {
                 $customerResource = Runway::customerModel();
 
@@ -452,7 +453,7 @@ class ServiceProvider extends AddonServiceProvider
     protected function registerComputedValues()
     {
         if (
-            $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class)
+            $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], \DuncanMcClean\SimpleCommerce\Products\EntryProductRepository::class)
         ) {
             Collection::computed(SimpleCommerce::productDriver()['collection'], 'raw_price', function ($entry, $value) {
                 return $entry->get('price');
@@ -460,7 +461,7 @@ class ServiceProvider extends AddonServiceProvider
         }
 
         if (
-            $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
+            $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class)
         ) {
             Collection::computed(SimpleCommerce::orderDriver()['collection'], 'order_date', function ($entry, $value) {
                 $order = Order::find($entry->id());

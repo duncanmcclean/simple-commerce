@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Listeners;
+namespace DuncanMcClean\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Events\PostCheckout;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
 class TidyTemporaryGatewayData
 {

@@ -1,7 +1,7 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Listeners\EnforceUserBlueprintFields;
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Listeners\EnforceUserBlueprintFields;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Statamic\Events\UserBlueprintFound;
@@ -18,8 +18,8 @@ test('fields can be added to user blueprint', function () {
     ]);
 
     Statamic::repository(
-        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class
+        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class
     );
 
     File::deleteDirectory(__DIR__.'/../__fixtures__/users');
@@ -35,8 +35,8 @@ test('fields can be added to user blueprint', function () {
     $this->assertTrue($handle->hasField('orders'));
 
     Statamic::repository(
-        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
+        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class
     );
 });
 

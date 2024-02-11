@@ -1,7 +1,7 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Http\Requests\CustomerUpdateFormRequest;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CustomerUpdateFormRequest;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
 

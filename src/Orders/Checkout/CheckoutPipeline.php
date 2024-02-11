@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
+namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Illuminate\Pipeline\Pipeline;
 

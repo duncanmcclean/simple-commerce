@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CouponNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Exceptions\CouponNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidCoupon implements Rule

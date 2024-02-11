@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Rules\ProductExists;
+use DuncanMcClean\SimpleCommerce\Rules\ProductExists;
 use Illuminate\Support\Facades\Validator;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;

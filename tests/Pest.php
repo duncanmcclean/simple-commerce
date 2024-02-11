@@ -1,10 +1,10 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -129,12 +129,12 @@ function fakeCart($cart = null)
 function setupUserCustomerRepository(): void
 {
     Config::set('simple-commerce.content.customers', [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class,
     ]);
 
     Statamic::repository(
-        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class
+        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class
     );
 
     File::deleteDirectory(__DIR__.'/../__fixtures__/users');
@@ -144,12 +144,12 @@ function setupUserCustomerRepository(): void
 function tearDownUserCustomerRepository(): void
 {
     Config::set('simple-commerce.content.customers', [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class,
         'collection' => 'customers',
     ]);
 
     Statamic::repository(
-        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
+        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class
     );
 }

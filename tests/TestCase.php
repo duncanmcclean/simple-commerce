@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests;
+namespace DuncanMcClean\SimpleCommerce\Tests;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
-use DoubleThreeDigital\SimpleCommerce\ServiceProvider;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
+use DuncanMcClean\SimpleCommerce\ServiceProvider;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use Facades\Statamic\Version;
 use Illuminate\Encryption\Encrypter;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -56,9 +56,9 @@ abstract class TestCase extends OrchestraTestCase
         parent::getEnvironmentSetUp($app);
 
         $app->make(Manifest::class)->manifest = [
-            'doublethreedigital/simple-commerce' => [
-                'id' => 'doublethreedigital/simple-commerce',
-                'namespace' => 'DoubleThreeDigital\\SimpleCommerce',
+            'duncanmcclean/simple-commerce' => [
+                'id' => 'duncanmcclean/simple-commerce',
+                'namespace' => 'DuncanMcClean\\SimpleCommerce',
             ],
         ];
     }
@@ -122,6 +122,7 @@ abstract class TestCase extends OrchestraTestCase
             Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
             AssetContainer::make('assets')->disk('test')->save();
+            AssetContainer::make('test')->disk('test')->save();
         });
 
         $this->ensureContentDirectoriesExist();
@@ -180,11 +181,11 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function useBasicTaxEngine()
     {
-        SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class);
+        SimpleCommerce::setTaxEngine(\DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class);
     }
 
     protected function useStandardTaxEngine()
     {
-        SimpleCommerce::setTaxEngine(\DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class);
+        SimpleCommerce::setTaxEngine(\DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine::class);
     }
 }

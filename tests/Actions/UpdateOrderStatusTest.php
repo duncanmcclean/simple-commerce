@@ -1,7 +1,7 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Actions\UpdateOrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Actions\UpdateOrderStatus;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 use Illuminate\Support\Carbon;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;

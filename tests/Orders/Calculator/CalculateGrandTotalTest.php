@@ -1,7 +1,7 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\CalculateGrandTotal;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\CalculateGrandTotal;
 use Illuminate\Support\Facades\Pipeline;
 
 uses()->group('calculator');

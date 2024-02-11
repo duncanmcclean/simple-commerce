@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Actions\Delete;
-use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Actions\Delete;
+use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Statamic\Facades\Entry;
 
 beforeEach(function () {

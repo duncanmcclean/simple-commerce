@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
+namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
 
 class RedeemCoupon
 {

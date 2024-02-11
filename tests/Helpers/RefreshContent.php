@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
+namespace DuncanMcClean\SimpleCommerce\Tests\Helpers;
 
 use Illuminate\Support\Facades\File;
 

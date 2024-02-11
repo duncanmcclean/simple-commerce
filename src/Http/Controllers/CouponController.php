@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\DestroyRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Coupon\DestroyRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Coupon\StoreRequest;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponController extends BaseActionController
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use Carbon\Carbon;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as Contract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon as CouponFacade;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupon as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Support\Str;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;

@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
@@ -28,7 +28,7 @@ class CartTags extends SubTag
     {
         $cart = $this->getOrMakeCart();
 
-        return collect($cart->toAugmentedArray()['items']->value())->map->toArray();
+        return $cart->toAugmentedArray('items')['items']->value();
     }
 
     public function count()
@@ -160,15 +160,15 @@ class CartTags extends SubTag
 
     public function rawTaxTotalSplit(): Collection
     {
-        return $this->items()
+        return collect($this->items())
             ->groupBy(function ($item) {
-                return $item['tax']->value()['rate'];
+                return $item['tax']['rate'];
             })
             ->map(function ($group, $groupRate) {
                 return [
                     'rate' => $groupRate,
                     'amount' => $group->sum(function ($item) {
-                        return $item['tax']->raw()['amount'];
+                        return $item['tax']['amount'];
                     }),
                 ];
             })

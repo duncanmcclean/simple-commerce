@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Support\Facades\File;
 
 beforeEach(function () {

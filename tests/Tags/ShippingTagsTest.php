@@ -1,13 +1,13 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tags\ShippingTags;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\DPD;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\RoyalMail;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\StorePickup;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\StaticCartDriver;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tags\ShippingTags;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\ShippingMethods\DPD;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\ShippingMethods\RoyalMail;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\ShippingMethods\StorePickup;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\StaticCartDriver;
 use Statamic\Facades\Antlers;
 
 uses(SetupCollections::class);

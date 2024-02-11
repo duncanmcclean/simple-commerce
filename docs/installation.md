@@ -47,7 +47,7 @@ Now that you're up and running with the Starter Kit, you're probably wanting to 
 **1.** Install Simple Commerce with Composer
 
 ```shell
-composer require doublethreedigital/simple-commerce
+composer require duncanmcclean/simple-commerce
 ```
 
 **2.** Next, run the `sc:install` command to publish Simple Commerce's config file, collections & blueprints.

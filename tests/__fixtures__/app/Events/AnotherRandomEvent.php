@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events;
+namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
 
 class AnotherRandomEvent
 {

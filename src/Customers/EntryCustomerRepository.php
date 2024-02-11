@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Customers;
+namespace DuncanMcClean\SimpleCommerce\Customers;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
-use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer;
+use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
+use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;

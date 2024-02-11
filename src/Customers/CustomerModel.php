@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Customers;
+namespace DuncanMcClean\SimpleCommerce\Customers;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
+use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

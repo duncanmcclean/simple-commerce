@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxZone;
+namespace DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxZone;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
 

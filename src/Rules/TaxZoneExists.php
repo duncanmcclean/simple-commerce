@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Contracts\Validation\Rule;
 
 class TaxZoneExists implements Rule

@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
+namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
 class FakeOffsiteGateway extends BaseGateway

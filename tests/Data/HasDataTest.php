@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Tests\Data\TraitAccess;
+use DuncanMcClean\SimpleCommerce\Tests\Data\TraitAccess;
 
 beforeEach(function () {
     $this->trait = new TraitAccess();

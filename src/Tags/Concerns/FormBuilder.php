@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags\Concerns;
+namespace DuncanMcClean\SimpleCommerce\Tags\Concerns;
 
 use Illuminate\Support\Str;
 use Statamic\Tags\Concerns\RendersForms;

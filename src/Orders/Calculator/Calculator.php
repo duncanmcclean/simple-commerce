@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Calculator as Contract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Calculator as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
 use Illuminate\Support\Facades\Pipeline;
 
 class Calculator implements Contract

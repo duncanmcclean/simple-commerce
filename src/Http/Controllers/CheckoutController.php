@@ -1,21 +1,21 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CheckoutRequest;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Events\PostCheckout;
+use DuncanMcClean\SimpleCommerce\Events\PreCheckout;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayNotProvided;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
+use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CheckoutRequest;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
+use DuncanMcClean\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;

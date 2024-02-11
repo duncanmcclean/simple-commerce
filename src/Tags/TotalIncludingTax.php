@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Currency;
 use Statamic\Facades\Site;
 use Statamic\Tags\Tags;
 

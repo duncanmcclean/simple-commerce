@@ -10,28 +10,23 @@ Please don't upgrade multiple versions at once (eg. from v4 to v6). Please upgra
 
 To get started with the upgrade process, follow the below steps:
 
-**1.** In your `composer.json` file, update the `doublethreedigital/simple-commerce` version constraint:
+**1.** As part of the v6 update, Simple Commerce's namespace has changed. You should uninstall the addon under its old name and re-install under its new name:
 
-```json
-"doublethreedigital/simple-commerce": "^6.0"
+```sh
+composer remove doublethreedigital/simple-commerce
+composer require duncanmcclean/simple-commerce:^6.0
 ```
 
-**2.** Then run:
+**2.** If you're storing your orders in the database, you should also uninstall & re-install Runway since it has moved to The Rad Pack:
 
-```
-composer update doublethreedigital/simple-commerce --with-dependencies
-```
-
-**3.** If you're storing your orders in the database, you should uninstall & re-install Runway. It has moved to the Rad Pack:
-
-```
+```sh
 composer remove doublethreedigital/runway
 composer require statamic-rad-pack/runway
 ```
 
-**4.** Next, manually run the update scripts. This step will make changes to your config files & order data.
+**3.** Next, manually run the update scripts. This step will make changes to your config files & order data.
 
-```
+```sh
 php please sc:run-update-scripts
 ```
 
@@ -39,18 +34,47 @@ php please sc:run-update-scripts
 If you have excluded your orders from Git or you're storing your orders in a database, you will need to re-run this command after deploying Simple Commerce v6.
 :::
 
-**5.** You may also want to clear your route & view caches:
+**4.** You may also want to clear your route & view caches:
 
 ```
 php artisan route:clear
 php artisan view:clear
 ```
 
-**6.** Simple Commerce will have attempted upgrading some things for you (like config files, blueprints, etc). However, it's possible you'll need to make some manual changes. Please review this guide for information on changes which may effect your site.
+**5.** Simple Commerce will have attempted upgrading some things for you (like config files, blueprints, etc). However, it's possible you'll need to make some manual changes. Please review this guide for information on changes which may effect your site.
 
 **Please test locally before deploying to production!**
 
 ## Changes
+
+### High: Simple Commerce's Namespace has changed
+
+Simple Commerce's namespace has changed from `DoubleThreeDigital` to `DuncanMcClean`.
+
+During the update process, any references to `DoubleThreeDigital` in your config file should have been automatically updated. If you have any custom code, you will need to change the namespace:
+
+```php
+use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway; // [tl! remove]
+use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway; // [tl! add]
+```
+
+## High: References to gateways & shipping methods in orders have changed
+
+Previously, when referencing a Payment Gateway or Shipping Method in an order, Simple Commerce would use its fully-qualified class name, like so:
+
+```yaml
+shipping_method: DuncanMcClean\SimpleCommerce\Shipping\FreeShipping
+```
+
+However, v6 changes this so Payment Gateways & Shipping Methods are now referenced by their handles:
+
+```yaml
+shipping_method: free_shipping
+```
+
+Simple Commerce will automatically update your orders when you run the `sc:run-update-scripts` command.
+
+If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
 
 ### High: Runway v6
 
@@ -63,24 +87,6 @@ If you're storing orders in the database, you will need to run the migrations, b
 ```
 php artisan migrate
 ```
-
-## High: References to gateways & shipping methods in orders have changed
-
-Previously, when referencing a Payment Gateway or Shipping Method in an order, Simple Commerce would use its fully-qualified class name, like so:
-
-```yaml
-shipping_method: DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping
-```
-
-However, v6 changes this so Payment Gateways & Shipping Methods are now referenced by their handles:
-
-```yaml
-shipping_method: free_shipping
-```
-
-Simple Commerce will automatically update your orders when you run the `sc:run-update-scripts` command.
-
-If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
 
 ### Medium: The `all` method on repositories has changed
 
@@ -125,7 +131,7 @@ The `statusLog` method no longer accepts passing a status. Instead, you should q
 $order->statusLog('paid');
 
 // Now
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 
 $order->statusLog()
     ->where('status', OrderStatus::Placed)
@@ -152,8 +158,8 @@ The namespace for the `DigitalDownloadsReady` notification has changed. You shou
 ```php
 'notifications' => [
     'digital_download_ready' => [
-        \DoubleThreeDigital\DigitalProducts\Notifications\DigitalDownloadsNotification::class => [ // [tl! remove]
-        \DoubleThreeDigital\SimpleCommerce\Notifications\DigitalDownloadsNotification::class => [ // [tl! add]
+        \DuncanMcClean\DigitalProducts\Notifications\DigitalDownloadsNotification::class => [ // [tl! remove]
+        \DuncanMcClean\SimpleCommerce\Notifications\DigitalDownloadsNotification::class => [ // [tl! add]
             'to' => 'customer',
         ],
     ],

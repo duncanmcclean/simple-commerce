@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Products;
+namespace DuncanMcClean\SimpleCommerce\Products;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Product as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Contracts\Product as Contract;
+use DuncanMcClean\SimpleCommerce\Data\HasData;
+use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Http\Resources\API\EntryResource;

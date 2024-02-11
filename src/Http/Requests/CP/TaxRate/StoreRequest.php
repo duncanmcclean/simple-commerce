@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate;
 
-use DoubleThreeDigital\SimpleCommerce\Rules\TaxCategoryExists;
-use DoubleThreeDigital\SimpleCommerce\Rules\TaxZoneExists;
+use DuncanMcClean\SimpleCommerce\Rules\TaxCategoryExists;
+use DuncanMcClean\SimpleCommerce\Rules\TaxZoneExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest

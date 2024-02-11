@@ -1,7 +1,7 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes\Helpers\MoneyFieldtypeWithMockedField;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\MoneyFieldtype;
+use DuncanMcClean\SimpleCommerce\Tests\Fieldtypes\Helpers\MoneyFieldtypeWithMockedField;
 use Statamic\Fields\Field;
 
 test('can preload currency with no field', function () {

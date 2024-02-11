@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Middleware;
+namespace DuncanMcClean\SimpleCommerce\Http\Middleware;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\InvalidFormParametersException;
+use DuncanMcClean\SimpleCommerce\Exceptions\InvalidFormParametersException;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class EnsureFormParametersArriveIntact

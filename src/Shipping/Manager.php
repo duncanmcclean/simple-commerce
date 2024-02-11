@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Shipping;
+namespace DuncanMcClean\SimpleCommerce\Shipping;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager as Contract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\ShippingManager as Contract;
+use DuncanMcClean\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
+use DuncanMcClean\SimpleCommerce\Orders\Address;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Site;
 
 class Manager implements Contract

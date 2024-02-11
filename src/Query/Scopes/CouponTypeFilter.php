@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Query\Scopes;
+namespace DuncanMcClean\SimpleCommerce\Query\Scopes;
 
-use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
+use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use Statamic\Query\Scopes\Filter;
 
 class CouponTypeFilter extends Filter

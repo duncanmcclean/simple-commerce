@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Facades;
+namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\CouponRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository
+ * @see \DuncanMcClean\SimpleCommerce\Contracts\CouponRepository
  */
 class Coupon extends Facade
 {

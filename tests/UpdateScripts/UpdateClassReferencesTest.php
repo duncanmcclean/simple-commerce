@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0\UpdateClassReferences;
+use DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0\UpdateClassReferences;
 use Statamic\Facades\Entry;
 
 it('updates reference to gateway class', function () {
@@ -11,7 +11,7 @@ it('updates reference to gateway class', function () {
 
     $orderEntry->save();
 
-    (new UpdateClassReferences('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new UpdateClassReferences('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $orderEntry->fresh();
 
@@ -30,7 +30,7 @@ it('updates reference to shipping method class', function () {
 
     $orderEntry->save();
 
-    (new UpdateClassReferences('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new UpdateClassReferences('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $orderEntry->fresh();
 

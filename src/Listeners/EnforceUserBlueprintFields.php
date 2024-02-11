@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Listeners;
+namespace DuncanMcClean\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\UserBlueprintFound;
 use Statamic\Fields\Blueprint;
 

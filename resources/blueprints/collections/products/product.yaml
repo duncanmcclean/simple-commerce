@@ -1,7 +1,5 @@
-title: Product
 tabs:
   main:
-    display: Main
     sections:
       -
         fields:
@@ -10,24 +8,31 @@ tabs:
             field:
               type: text
               required: true
-              validate:
-                - required
-              width: 50
           -
-            handle: price
+            handle: product_variants
             field:
-              type: money
-              display: Price
-              save_zero_value: true
-              listable: hidden
-              width: 50
-              instructions_position: above
-              visibility: visible
-              always_save: false
-              validate:
-                - required
+              type: product_variants
+              handle: product_variants
+              width: 100
+              option_fields:
+                -
+                  handle: downloadable_asset
+                  field:
+                    type: assets
+                    mode: grid
+                    display: 'Downloadable Asset'
+                    container: test
+                    if:
+                      root.product_type: 'equals digital'
+                -
+                  handle: download_limit
+                  field:
+                    type: integer
+                    display: 'Download Limit'
+                    instructions: "If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."
+                    if:
+                      root.product_type: 'equals digital'
   sidebar:
-    display: Sidebar
     sections:
       -
         fields:
@@ -45,25 +50,4 @@ tabs:
             field:
               type: slug
               localizable: true
-              validate:
-                - required
-      -
-        display: 'Digital Product'
-        fields:
-          -
-            handle: downloadable_asset
-            field:
-              type: assets
-              mode: grid
-              display: 'Downloadable Asset'
-              container: assets
-              if:
-                root.product_type: 'equals digital'
-          -
-            handle: download_limit
-            field:
-              type: integer
-              display: 'Download Limit'
-              instructions: "If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."
-              if:
-                root.product_type: 'equals digital'
+              validate: 'max:200'

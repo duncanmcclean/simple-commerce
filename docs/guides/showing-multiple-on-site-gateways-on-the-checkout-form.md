@@ -28,7 +28,7 @@ In the below example, we're using Alpine.js to react to the value of the `<selec
 
     <button
     	type="button"
-        @click.prevent="if(typeof confirmPayment == 'function' && document.getElementsByName('gateway')[0].value == 'DoubleThreeDigital\\SimpleCommerce\\Gateways\\Builtin\\StripeGateway') { confirmPayment(); } else { document.querySelector('form').submit() }">
+        @click.prevent="if(typeof confirmPayment == 'function' && document.getElementsByName('gateway')[0].value == 'DuncanMcClean\\SimpleCommerce\\Gateways\\Builtin\\StripeGateway') { confirmPayment(); } else { document.querySelector('form').submit() }">
         Complete Checkout
 	</button>
 </div>

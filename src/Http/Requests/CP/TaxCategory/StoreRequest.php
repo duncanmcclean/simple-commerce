@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 

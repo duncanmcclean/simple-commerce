@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
+namespace DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers;
 
 class PostCheckoutDriver extends SessionDriver
 {

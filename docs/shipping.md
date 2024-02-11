@@ -4,7 +4,7 @@ title: Shipping
 
 When selling physical products, you'll need a way to ship those products to your customers. Sometimes you may want to offer multiple shipping options & the prices may vary on the customer's location.
 
-Simple Commerce includes the concept of **Shipping Methods**. Allowing you to create shipping methods for different shipping options (eg. one for Next Day Delivery, another for Standard delivery or in-store pickup). 
+Simple Commerce includes the concept of **Shipping Methods**. Allowing you to create shipping methods for different shipping options (eg. one for Next Day Delivery, another for Standard delivery or in-store pickup).
 
 ## Configuration
 
@@ -19,7 +19,7 @@ Shipping Methods can be configured on a site-by-site basis which is helpful if y
 
         'shipping' => [
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
+                \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],
             ],
         ],
     ],
@@ -62,7 +62,7 @@ To let your customer enter their details, simply update those fields using the `
 {{ /sc:cart:update }}
 ```
 
-If you're using the Starter Kit, customers will be asked to enter their shipping details at the [first step of the checkout process](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/cart.antlers.html). 
+If you're using the Starter Kit, customers will be asked to enter their shipping details at the [first step of the checkout process](https://github.com/duncanmcclean/sc-starter-kit/blob/main/resources/views/cart.antlers.html).
 
 :::tip Hot Tip
 As mentioned, the default order blueprint also has Billing Address fields. You may do the same thing to allow customers update them - the field names are just `billing_` instead of `shipping_`.
@@ -72,7 +72,7 @@ As mentioned, the default order blueprint also has Billing Address fields. You m
 
 You should also use the `{{ sc:cart:update }}` tag to allow customers to select the shipping method they wish to use.
 
-You can use the `{{ sc:shipping:methods }}` tag to loop through the available shipping methods for the order. 
+You can use the `{{ sc:shipping:methods }}` tag to loop through the available shipping methods for the order.
 
 It'll provide you with variables like name & cost for each of the available shipping methods.
 
@@ -107,10 +107,10 @@ The default shipping method will be used when calculating the Shipping Total for
         ...
 
         'shipping' => [
-            'default_method' => \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class,
+            'default_method' => \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class,
 
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
+                \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],
             ],
         ],
     ],
@@ -137,10 +137,10 @@ That command will create a Shipping Method class in your `app\ShippingMethods` f
 
 namespace App\ShippingMethods;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Data\Address;
-use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Data\Address;
+use DuncanMcClean\SimpleCommerce\Shipping\BaseShippingMethod;
 
 class FirstClass extends BaseShippingMethod implements ShippingMethod
 {

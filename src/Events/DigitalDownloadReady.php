@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Events;
+namespace DuncanMcClean\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
 
 class DigitalDownloadReady
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Products;
+namespace DuncanMcClean\SimpleCommerce\Products;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
+use DuncanMcClean\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Data\HasData;
+use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant

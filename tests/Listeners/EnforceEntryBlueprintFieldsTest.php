@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Listeners\EnforceEntryBlueprintFields;
+use DuncanMcClean\SimpleCommerce\Listeners\EnforceEntryBlueprintFields;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\Blueprint;
 

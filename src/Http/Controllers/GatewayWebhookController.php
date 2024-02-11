@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Events\GatewayWebhookReceived;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Events\GatewayWebhookReceived;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
 class GatewayWebhookController extends BaseActionController

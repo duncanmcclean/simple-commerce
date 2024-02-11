@@ -1,18 +1,18 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
+namespace DuncanMcClean\SimpleCommerce\Tax\Standard;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine as Contract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate as StandardTaxRate;
-use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Contracts\TaxEngine as Contract;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Orders\Address;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxRate as StandardTaxRate;
+use DuncanMcClean\SimpleCommerce\Tax\TaxCalculation;
 use Illuminate\Support\Facades\Config;
 
 class TaxEngine implements Contract
@@ -48,7 +48,7 @@ class TaxEngine implements Contract
     {
         $product = $lineItem->product();
 
-        /** @var \DoubleThreeDigital\SimpleCommerce\Orders\Address */
+        /** @var \DuncanMcClean\SimpleCommerce\Orders\Address */
         $address = config('simple-commerce.tax_engine_config.address') === 'billing'
             ? $order->billingAddress()
             : $order->shippingAddress();
@@ -119,7 +119,7 @@ class TaxEngine implements Contract
 
     protected function decideOnShippingRate(Order $order, ShippingMethod $shippingMethod): ?StandardTaxRate
     {
-        /** @var \DoubleThreeDigital\SimpleCommerce\Orders\Address */
+        /** @var \DuncanMcClean\SimpleCommerce\Orders\Address */
         $address = config('simple-commerce.tax_engine_config.address') === 'billing'
             ? $order->billingAddress()
             : $order->shippingAddress();

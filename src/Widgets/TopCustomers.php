@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Widgets;
+namespace DuncanMcClean\SimpleCommerce\Widgets;
 
-use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
+use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Illuminate\Database\SQLiteConnection;
 use Statamic\Widgets\Widget;
 

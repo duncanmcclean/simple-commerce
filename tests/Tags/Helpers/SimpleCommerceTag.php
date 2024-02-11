@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DuncanMcClean\SimpleCommerce\Tests\Tags\Helpers;
 
-use DoubleThreeDigital\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
+use DuncanMcClean\SimpleCommerce\Tags\SimpleCommerceTag as Tag;
 
 class SimpleCommerceTag extends Tag
 {

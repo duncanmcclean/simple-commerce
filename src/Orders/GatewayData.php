@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Manager;
+use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\Gateways\Manager;
 use Illuminate\Support\Collection;
 
 class GatewayData

@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DuncanMcClean\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\SiteNotConfiguredException;
+use DuncanMcClean\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
+use DuncanMcClean\SimpleCommerce\Exceptions\SiteNotConfiguredException;
 use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;

@@ -1,8 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0\UpdateCouponExpiryDate;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0\UpdateCouponExpiryDate;
 use Spatie\TestTime\TestTime;
 
 it('sets the expiry date for a disabled coupon', function () {
@@ -18,7 +18,7 @@ it('sets the expiry date for a disabled coupon', function () {
 
     $coupon->save();
 
-    (new UpdateCouponExpiryDate('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new UpdateCouponExpiryDate('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $coupon->fresh();
 
@@ -38,7 +38,7 @@ it('does not set the expiry date for an enabled coupon', function () {
 
     $coupon->save();
 
-    (new UpdateCouponExpiryDate('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new UpdateCouponExpiryDate('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $coupon->fresh();
 
@@ -58,7 +58,7 @@ it('does not set the expiry date for an already expired coupon', function () {
 
     $coupon->save();
 
-    (new UpdateCouponExpiryDate('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new UpdateCouponExpiryDate('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $coupon->fresh();
 

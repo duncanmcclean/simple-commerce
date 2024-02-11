@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DuncanMcClean\SimpleCommerce;
 
 use Illuminate\Support\Facades\File;
 

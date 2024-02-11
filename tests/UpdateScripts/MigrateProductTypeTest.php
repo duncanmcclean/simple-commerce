@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0\MigrateProductType;
+use DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0\MigrateProductType;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -17,7 +17,7 @@ it('updates product_type field for physical product', function () {
 
     $productEntry->save();
 
-    (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new MigrateProductType('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $productEntry->fresh();
 
@@ -32,7 +32,7 @@ it('updates product_type field for digital product', function () {
 
     $productEntry->save();
 
-    (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new MigrateProductType('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $productEntry->fresh();
 
@@ -57,7 +57,7 @@ it('updates product_type field for digital product with variants', function () {
 
     $productEntry->save();
 
-    (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new MigrateProductType('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $productEntry->fresh();
 
@@ -75,7 +75,7 @@ it('adds product type field and removes old digital product fields from product 
         ],
     ])->save();
 
-    (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new MigrateProductType('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $blueprint = $collection->entryBlueprints()->where('handle', 'test')->first();
 
@@ -104,7 +104,7 @@ it('adds product type field and removes old digital product fields from variant 
         ],
     ])->save();
 
-    (new MigrateProductType('doublethreedigital/simple-commerce', '6.0.0'))->update();
+    (new MigrateProductType('duncanmcclean/simple-commerce', '6.0.0'))->update();
 
     $blueprint = $collection->entryBlueprints()->where('handle', 'test')->first();
 

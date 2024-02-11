@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Modifiers\Currency as CurrencyModifier;
+use DuncanMcClean\SimpleCommerce\Modifiers\Currency as CurrencyModifier;
 
 beforeEach(function () {
     $this->modifier = new CurrencyModifier;

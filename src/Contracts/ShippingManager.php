@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
+use DuncanMcClean\SimpleCommerce\Orders\Address;
 
 interface ShippingManager
 {

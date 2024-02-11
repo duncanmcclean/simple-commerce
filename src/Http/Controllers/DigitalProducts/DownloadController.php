@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Statamic\Assets\Asset;

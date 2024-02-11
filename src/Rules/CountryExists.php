@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Countries;
 use Illuminate\Contracts\Validation\Rule;
 
 class CountryExists implements Rule

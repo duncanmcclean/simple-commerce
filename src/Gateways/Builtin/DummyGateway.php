@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
+namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
 class DummyGateway extends BaseGateway implements Gateway

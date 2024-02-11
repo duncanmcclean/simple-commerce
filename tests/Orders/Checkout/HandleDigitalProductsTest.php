@@ -1,11 +1,11 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Notifications\DigitalDownloadsNotification;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\HandleDigitalProducts;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Notifications\DigitalDownloadsNotification;
+use DuncanMcClean\SimpleCommerce\Orders\Checkout\HandleDigitalProducts;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Config;

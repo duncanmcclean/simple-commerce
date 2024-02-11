@@ -1,15 +1,15 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
+namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
-use DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Products\EntryProductRepository;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
 class ValidateProductStock
 {

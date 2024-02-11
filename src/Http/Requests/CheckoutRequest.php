@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Rules\ValidCoupon;
-use DoubleThreeDigital\SimpleCommerce\Rules\ValidGateway;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Rules\ValidCoupon;
+use DuncanMcClean\SimpleCommerce\Rules\ValidGateway;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CheckoutRequest extends FormRequest

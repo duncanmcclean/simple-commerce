@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
+namespace DuncanMcClean\SimpleCommerce\Tax\Standard;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
+use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;

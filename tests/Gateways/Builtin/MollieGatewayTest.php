@@ -1,9 +1,9 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\MollieGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Gateways\Builtin\MollieGateway;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 

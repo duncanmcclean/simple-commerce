@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
+namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use Statamic\Console\RunsInPlease;
 

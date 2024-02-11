@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
 /**
- * @mixin \DoubleThreeDigital\SimpleCommerce\Products\DigitalProducts\LicenseKeyRepository
+ * @mixin \DuncanMcClean\SimpleCommerce\Products\DigitalProducts\LicenseKeyRepository
  */
 interface LicenseKeyRepository
 {

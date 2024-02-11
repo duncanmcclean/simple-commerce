@@ -3,7 +3,7 @@
         <h2>
             <a class="flex items-center" href="{{ $url }}">
                 <div class="h-6 w-6 mr-2 text-gray-800">
-                    {!! \DoubleThreeDigital\SimpleCommerce\SimpleCommerce::svg('shop') !!}
+                    {!! \DuncanMcClean\SimpleCommerce\SimpleCommerce::svg('shop') !!}
                 </div>
                 <span>{{ __('Recent Orders') }}</span>
             </a>

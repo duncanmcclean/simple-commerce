@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Listeners;
+namespace DuncanMcClean\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
 
 class AddHiddenFields

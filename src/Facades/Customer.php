@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Facades;
+namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository
+ * @see \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository
  */
 class Customer extends Facade
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Actions;
+namespace DuncanMcClean\SimpleCommerce\Actions;
 
 use Statamic\Actions\Action;
 
@@ -18,7 +18,7 @@ class Delete extends Action
     public function visibleTo($item)
     {
         switch (true) {
-            case $item instanceof \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon:
+            case $item instanceof \DuncanMcClean\SimpleCommerce\Coupons\Coupon:
                 return true;
             default:
                 return false;
@@ -28,7 +28,7 @@ class Delete extends Action
     public function authorize($user, $item)
     {
         switch (true) {
-            case $item instanceof \DoubleThreeDigital\SimpleCommerce\Coupons\Coupon:
+            case $item instanceof \DuncanMcClean\SimpleCommerce\Coupons\Coupon:
                 return $user->can('delete coupons');
             default:
                 return false;

@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Shipping;
 use Statamic\Facades\Site;
 
 class ShippingCalculator

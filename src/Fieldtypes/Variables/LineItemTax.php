@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes\Variables;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes\Variables;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Currency;
 use Statamic\Facades\Site;
 
 class LineItemTax extends VariableFieldtype

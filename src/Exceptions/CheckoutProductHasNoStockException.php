@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Exceptions;
+namespace DuncanMcClean\SimpleCommerce\Exceptions;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Contracts\Product;
 
 class CheckoutProductHasNoStockException extends PreventCheckout
 {

@@ -10,7 +10,7 @@ You can obtain [your API keys](https://dashboard.stripe.com/test/apikeys) from t
 
 ```php
 'gateways' => [
-	\DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [
+	\DuncanMcClean\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [
     	'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
@@ -171,7 +171,7 @@ You may do this easily by providing a closure in the Stripe gateway config:
 
 ```php
 'gateways' => [
-	\DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [
+	\DuncanMcClean\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [
     	'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'payment_intent_data' => function ($order) {

@@ -1,15 +1,15 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Gateways;
+namespace DuncanMcClean\SimpleCommerce\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\GatewayManager as Contract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayNotProvided;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\GatewayManager as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayNotProvided;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 

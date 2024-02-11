@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxRate;
+namespace DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxRate;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\TaxRateRepository as Contract;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate;
+use DuncanMcClean\SimpleCommerce\Contracts\TaxRateRepository as Contract;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxRate;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
 

@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\LicenseKey;
+use DuncanMcClean\SimpleCommerce\Facades\LicenseKey;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 

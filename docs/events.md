@@ -40,7 +40,7 @@ For more documentation around events and event listeners, consider reading [the 
 
 ### CouponRedeemed
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/CouponRedeemed.php)
+[**`DuncanMcClean\SimpleCommerce\Events\CouponRedeemed`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/CouponRedeemed.php)
 
 This event is fired when a customer adds a coupon to their cart/order.
 
@@ -53,7 +53,7 @@ public function handle(CouponRedeemed $event)
 
 ### OrderPaymentFailed
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderPaymentFailed.php)
+[**`DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderPaymentFailed.php)
 
 This event is fired whenever a payment fails to go through.
 
@@ -66,7 +66,7 @@ public function handle(OrderPaymentFailed $event)
 
 ### OrderSaved
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderSaved`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderSaved.php)
+[**`DuncanMcClean\SimpleCommerce\Events\OrderSaved`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderSaved.php)
 
 This event is fired when an order has been saved. This event will only be fired when an order is saved via Simple Commerce, not via the Control Panel.
 
@@ -79,7 +79,7 @@ public function handle(OrderSaved $event)
 
 ### OrderStatusUpdated
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderStatusUpdated.php)
+[**`DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/OrderStatusUpdated.php)
 
 This event is fired whenever the status of an order changes.
 
@@ -93,7 +93,7 @@ public function handle(OrderStatusUpdated $event)
 
 ### PaymentStatusUpdated
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PaymentStatusUpdated.php)
+[**`DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PaymentStatusUpdated.php)
 
 This event is fired whenever the payment status of an order changes.
 
@@ -107,7 +107,7 @@ public function handle(PaymentStatusUpdated $event)
 
 ### PostCheckout
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\PostCheckout`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PostCheckout.php)
+[**`DuncanMcClean\SimpleCommerce\Events\PostCheckout`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PostCheckout.php)
 
 This event is fired after the checkout process has been completed.
 
@@ -121,7 +121,7 @@ public function handle(PostCheckout $event)
 
 ### PreCheckout
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\PreCheckout`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PreCheckout.php)
+[**`DuncanMcClean\SimpleCommerce\Events\PreCheckout`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/PreCheckout.php)
 
 This event is fired before the checkout process begins.
 
@@ -135,7 +135,7 @@ public function handle(PreCheckout $event)
 
 ### GatewayWebhookReceived
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\GatewayWebhookReceived`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/GatewayWebhookReceived.php)
+[**`DuncanMcClean\SimpleCommerce\Events\GatewayWebhookReceived`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/GatewayWebhookReceived.php)
 
 This event is fired whenever a webhook request from a gateway is received.
 
@@ -148,7 +148,7 @@ public function handle(GatewayWebhookReceived $event)
 
 ### StockRunningLow
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunningLow.php)
+[**`DuncanMcClean\SimpleCommerce\Events\StockRunningLow`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunningLow.php)
 
 This event is fired when the [stock](/stock) for a product is running low.
 
@@ -163,7 +163,7 @@ public function handle(StockRunningLow $event)
 
 ### StockRunOut
 
-[**`DoubleThreeDigital\SimpleCommerce\Events\StockRunOut`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunOut.php)
+[**`DuncanMcClean\SimpleCommerce\Events\StockRunOut`**](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Events/StockRunOut.php)
 
 This event is fired when the [stock](/stock) for a product has ran out.
 

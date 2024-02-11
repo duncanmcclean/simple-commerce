@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DuncanMcClean\SimpleCommerce;
 
 use Closure;
 use Illuminate\Support\Collection;
@@ -26,10 +26,10 @@ class SimpleCommerce
     public static function version(): string
     {
         if (app()->environment('testing')) {
-            return 'v4.0.0';
+            return 'v6.0.0';
         }
 
-        return Addon::get('doublethreedigital/simple-commerce')->version();
+        return Addon::get('duncanmcclean/simple-commerce')->version();
     }
 
     public static function bootGateways()

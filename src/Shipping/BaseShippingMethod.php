@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Shipping;
+namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

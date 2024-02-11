@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
+namespace DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductVariant;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Blueprint;
 use Statamic\UpdateScripts\UpdateScript;
