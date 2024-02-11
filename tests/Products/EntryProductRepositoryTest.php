@@ -41,12 +41,10 @@ it('can find product', function () {
 it('can findOrFail product', function () {
     Product::make()->id('one')->price(1500)->save();
 
-    $product = Product::find('one');
+    $product = Product::findOrFail('one');
 
     expect($product)->toBeInstanceOf(ProductContract::class);
-});
 
-it('can findOrFail product that does not exist', function () {
     expect(fn () => Product::findOrFail(123))->toThrow(ProductNotFound::class);
 });
 

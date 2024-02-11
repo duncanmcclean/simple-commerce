@@ -255,9 +255,7 @@ it('can findOrFail order', function () {
     expect($order->id)->toBe($find->id());
     expect(1)->toBe($find->lineItems()->count());
     expect('bar')->toBe($find->get('foo'));
-});
 
-it('can findOrFail order that does not exist', function () {
     expect(fn () => Order::findOrFail(123))->toThrow(OrderNotFound::class);
 });
 

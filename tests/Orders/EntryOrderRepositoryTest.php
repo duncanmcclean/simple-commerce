@@ -117,9 +117,7 @@ it('can findOrFail order', function () {
     $order = Order::findOrFail('one');
 
     expect($order)->toBeInstanceOf(OrderContract::class);
-});
 
-it('can findOrFail order that does not exist', function () {
     expect(fn () => Order::findOrFail('two'))->toThrow(OrderNotFound::class);
 });
 
