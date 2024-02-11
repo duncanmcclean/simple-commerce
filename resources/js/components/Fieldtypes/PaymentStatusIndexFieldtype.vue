@@ -17,7 +17,7 @@ export default {
         littleDotColour() {
             switch (this.value) {
                 case 'unpaid':
-                    return 'bg-grey-40'
+                    return 'bg-gray-400'
 
                 case 'paid':
                     return 'bg-green-600'
