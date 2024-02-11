@@ -18,6 +18,8 @@ class EnforceUserBlueprintFields
         if ($this->isOrExtendsClass($customerDriver['repository'], UserCustomerRepository::class)) {
             return $this->enforceCustomerFields($event);
         }
+
+        return $event->blueprint;
     }
 
     protected function enforceCustomerFields($event): Blueprint
