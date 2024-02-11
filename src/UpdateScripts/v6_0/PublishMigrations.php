@@ -9,8 +9,10 @@ class PublishMigrations extends UpdateScript
 {
     protected $stubsPath;
 
-    public function __construct()
+    public function __construct($package, $console = null)
     {
+        parent::__construct($package, $console);
+
         $this->stubsPath = __DIR__.'/../../Console/Commands/stubs';
     }
 
