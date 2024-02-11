@@ -10,13 +10,9 @@ class ProductExists implements Rule
 {
     public function passes($attribute, $value)
     {
-        try {
-            Product::find($value);
+        $product = Product::find($value);
 
-            return true;
-        } catch (ProductNotFound $e) {
-            return false;
-        }
+        return ! is_null($product);
     }
 
     public function message()
