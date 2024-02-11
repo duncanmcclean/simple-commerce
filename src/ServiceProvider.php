@@ -118,6 +118,7 @@ class ServiceProvider extends AddonServiceProvider
         UpdateScripts\v6_0\MigrateProductType::class,
         UpdateScripts\v6_0\PublishMigrations::class,
         UpdateScripts\v6_0\UpdateClassReferences::class,
+        UpdateScripts\v6_0\UpdateCouponExpiryDate::class,
     ];
 
     protected $vite = [

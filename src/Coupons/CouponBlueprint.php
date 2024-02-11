@@ -228,17 +228,6 @@ class CouponBlueprint
                         ],
                         [
                             'fields' => [
-                                // TODO: Remove this 'Enabled' state in favour of the start/end dates.
-                                [
-                                    'handle' => 'enabled',
-                                    'field' => [
-                                        'type' => 'toggle',
-                                        'instructions' => __('When disabled, this coupon will not be able to be redeemed. This setting overrides other settings.'),
-                                        'default' => true,
-                                        'listable' => 'hidden',
-                                        'display' => __('Enabled?'),
-                                    ],
-                                ],
                                 [
                                     'handle' => 'redeemed',
                                     'field' => [

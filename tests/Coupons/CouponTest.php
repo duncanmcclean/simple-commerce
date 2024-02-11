@@ -240,28 +240,6 @@ test('is not valid when limited to customers and current customer is not in allo
     expect($isValid)->toBeFalse();
 });
 
-test('is not valid when coupon is disabled', function () {
-    [$product, $order] = buildCartWithProducts();
-
-    $coupon = Coupon::make()
-        ->id(Stache::generateId())
-        ->code('halv-price')
-        ->value(50)
-        ->type('percentage')
-        ->enabled(false)
-        ->data([
-            'description' => 'Halv Price',
-            'redeemed' => 0,
-            'minimum_cart_value' => null,
-        ]);
-
-    $coupon->save();
-
-    $isValid = $coupon->isValid($order);
-
-    expect($isValid)->toBeFalse();
-});
-
 test('is not valid before coupon valid_from timestamp', function () {
     [$product, $order] = buildCartWithProducts();
 
