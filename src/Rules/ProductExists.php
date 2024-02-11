@@ -2,7 +2,6 @@
 
 namespace DoubleThreeDigital\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use Illuminate\Contracts\Validation\Rule;
 
