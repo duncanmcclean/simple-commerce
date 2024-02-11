@@ -46,9 +46,19 @@ class MigrateProductType extends UpdateScript
             $productCollection = Collection::find($productCollection);
 
             $productCollection->entryBlueprints()->each(function (Blueprint $blueprint) {
-                $blueprint->removeField('is_digital_product');
-                $blueprint->removeField('downloadable_asset');
-                $blueprint->removeField('download_limit');
+                if ($blueprint->hasTab(__('Digital Product'))) {
+                    if ($blueprint->hasField('is_digital_product')) {
+                        $blueprint->removeField('is_digital_product', __('Digital Product'));
+                    }
+
+                    if ($blueprint->hasField('downloadable_asset')) {
+                        $blueprint->removeField('downloadable_asset', __('Digital Product'));
+                    }
+
+                    if ($blueprint->hasField('download_limit')) {
+                        $blueprint->removeField('download_limit', __('Digital Product'));
+                    }
+                }
 
                 if ($blueprint->hasField('product_variants')) {
                     $productVariantsField = $blueprint->field('product_variants');
