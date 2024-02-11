@@ -13,10 +13,9 @@ test('fields can be added to product blueprint', function () {
 
     $handle = (new EnforceEntryBlueprintFields())->handle($event);
 
-    $this->assertTrue($handle->hasField('is_digital_product'));
+    $this->assertTrue($handle->hasField('product_type'));
     $this->assertTrue($handle->hasField('download_limit'));
     $this->assertTrue($handle->hasField('downloadable_asset'));
-    $this->assertTrue($handle->hasTab('Digital Product'));
 });
 
 test('fields can be added to product blueprint with product variants', function () {
@@ -38,7 +37,7 @@ test('fields can be added to product blueprint with product variants', function 
 
     $handle = (new EnforceEntryBlueprintFields())->handle($event);
 
-    $this->assertFalse($handle->hasField('is_digital_product'));
+    $this->assertTrue($handle->hasField('product_type'));
     $this->assertFalse($handle->hasField('download_limit'));
     $this->assertFalse($handle->hasField('downloadable_asset'));
     $this->assertFalse($handle->hasTab('Digital Product'));
@@ -46,8 +45,7 @@ test('fields can be added to product blueprint with product variants', function 
 
     $optionFields = collect($handle->field('product_variants')->config()['option_fields']);
 
-    $this->assertCount(3, $optionFields);
-    $this->assertTrue($optionFields->where('handle', 'is_digital_product')->count() > 0);
+    $this->assertCount(2, $optionFields);
     $this->assertTrue($optionFields->where('handle', 'download_limit')->count() > 0);
     $this->assertTrue($optionFields->where('handle', 'downloadable_asset')->count() > 0);
 });
@@ -61,8 +59,7 @@ test('digital product fields are not added to another blueprint', function () {
 
     $handle = (new EnforceEntryBlueprintFields())->handle($event);
 
-    $this->assertFalse($handle->hasField('is_digital_product'));
+    $this->assertFalse($handle->hasField('product_type'));
     $this->assertFalse($handle->hasField('download_limit'));
     $this->assertFalse($handle->hasField('downloadable_asset'));
-    $this->assertFalse($handle->hasTab('Digital Product'));
 });

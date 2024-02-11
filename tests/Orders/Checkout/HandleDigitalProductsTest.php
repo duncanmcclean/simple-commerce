@@ -32,7 +32,7 @@ it('can handle digital products in order', function () {
     $product = Product::make()
         ->price(1200)
         ->merge([
-            'is_digital_product' => true,
+            'product_type' => 'digital',
         ]);
 
     $product->save();
@@ -98,7 +98,7 @@ it('can handle digital products in order with product variants', function () {
                 ['name' => 'Sizes', 'values' => ['Small']],
             ],
             'options' => [
-                ['key' => 'Red_Small', 'variant' => 'Red Small', 'price' => 1200, 'is_digital_product' => true],
+                ['key' => 'Red_Small', 'variant' => 'Red Small', 'price' => 1200, 'product_type' => 'digital'],
             ],
         ]);
 

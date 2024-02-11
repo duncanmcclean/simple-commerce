@@ -69,6 +69,16 @@ class EnforceEntryBlueprintFields
 
     protected function enforceProductFields($event): Blueprint
     {
+        $event->blueprint->ensureField('product_type', [
+            'type' => 'button_group',
+            'display' => __('Product Type'),
+            'options' => [
+                'physical' => __('Physical'),
+                'digital' => __('Digital'),
+            ],
+            'default' => 'physical',
+        ], 'sidebar', true);
+
         if (! $event->blueprint->hasField('product_variants')) {
             $event->blueprint->ensureField('price', [
                 'type' => 'money',
@@ -77,23 +87,12 @@ class EnforceEntryBlueprintFields
             ], 'sidebar');
         }
 
-        if (SimpleCommerce::isUsingStandardTaxEngine()) {
-            $event->blueprint->ensureField('tax_category', [
-                'type' => 'tax_category',
-                'display' => __('Tax Category'),
-                'max_items' => 1,
-                'mode' => 'select',
-            ], 'sidebar');
-        }
-
-        // TODO: do we want a toggle for this (or maybe let people add a SC-controlled fieldset)?
         if ($event->blueprint->hasField('product_variants')) {
             $productVariantsField = $event->blueprint->field('product_variants');
 
             $hasDigitalProductFields = collect($productVariantsField->config()['option_fields'] ?? [])
                 ->filter(function ($value, $key) {
-                    return $value['handle'] === 'is_digital_product'
-                        || $value['handle'] === 'download_limit'
+                    return $value['handle'] === 'download_limit'
                         || $value['handle'] === 'downloadable_asset';
                 })
                 ->count() > 0;
@@ -126,8 +125,17 @@ class EnforceEntryBlueprintFields
             collect($this->getDigitalProductFields())
                 ->reject(fn ($value, $key) => $event->blueprint->hasField($key))
                 ->each(function ($value, $key) use (&$event) {
-                    $event->blueprint->ensureField($key, $value, __('Digital Product'));
+                    $event->blueprint->ensureFieldInTab($key, $value, 'sidebar');
                 });
+        }
+
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            $event->blueprint->ensureField('tax_category', [
+                'type' => 'tax_category',
+                'display' => __('Tax Category'),
+                'max_items' => 1,
+                'mode' => 'select',
+            ], 'sidebar');
         }
 
         return $event->blueprint;
@@ -136,25 +144,21 @@ class EnforceEntryBlueprintFields
     protected function getDigitalProductFields(): array
     {
         return [
-            'is_digital_product' => [
-                'type' => 'toggle',
-                'display' => __('Is Digital Product?'),
-            ],
-            'download_limit' => [
-                'type' => 'integer',
-                'display' => __('Download Limit'),
-                'instructions' => __("If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."),
-                'if' => [
-                    'is_digital_product' => 'equals true',
-                ],
-            ],
             'downloadable_asset' => [
                 'type' => 'assets',
                 'mode' => 'grid',
                 'display' => __('Downloadable Asset'),
                 'container' => AssetContainer::all()->first()?->handle(),
                 'if' => [
-                    'is_digital_product' => 'equals true',
+                    'root.product_type' => 'equals digital',
+                ],
+            ],
+            'download_limit' => [
+                'type' => 'integer',
+                'display' => __('Download Limit'),
+                'instructions' => __("If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."),
+                'if' => [
+                    'root.product_type' => 'equals digital',
                 ],
             ],
         ];

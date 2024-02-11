@@ -15,19 +15,7 @@ class HandleDigitalProducts
     {
         $hasDownloads = $order->lineItems()
             ->filter(function ($lineItem) {
-                $product = $lineItem->product();
-
-                if ($product->purchasableType() === ProductType::Variant) {
-                    $productVariant = $product->variant($lineItem->variant()['variant'] ?? $lineItem->variant());
-
-                    return $productVariant->has('is_digital_product')
-                        ? $productVariant->get('is_digital_product')
-                        : false;
-                }
-
-                return $product->has('is_digital_product')
-                    ? $product->get('is_digital_product')
-                    : false;
+                return $lineItem->product()->get('product_type') === 'digital';
             })
             ->each(function ($lineItem) use ($order) {
                 $order->updateLineItem($lineItem->id(), [
