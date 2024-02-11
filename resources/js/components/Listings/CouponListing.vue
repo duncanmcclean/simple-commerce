@@ -187,27 +187,6 @@ export default {
             return row.editable
         },
 
-        getStatusClass(coupon) {
-            if (coupon.enabled) {
-                return 'bg-green-600';
-            } else {
-                return 'bg-gray-400';
-            }
-        },
-
-        getStatusLabel(coupon) {
-            if (coupon.enabled) {
-                return __('Enabled');
-            } else {
-                return __('Disabled');
-            }
-        },
-
-        // TODO: Implement this if we end up needing it
-        getStatusTooltip(coupon) {
-            return false;
-        },
-
         columnShowing(column) {
             return this.visibleColumns.find(c => c.field === column);
         },
