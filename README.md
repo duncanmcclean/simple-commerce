@@ -57,6 +57,12 @@ If you need to sell across different countries, you can take advantage of Statam
 
 -   [Documentation: Multi-site](https://simple-commerce.duncanmcclean.com/guides/multisite)
 
+### Digital Products
+
+If you're selling digital products, like software or e-books, Simple Commerce allows you to define the files that should be downloadable by customers after checkout. It also provides a full history of all downloads, including the user's IP address and timestamp.
+
+-   [Documentation: Digital Products](https://simple-commerce.duncanmcclean.com/digital-products)
+
 ### And lots more...
 
 Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
@@ -90,6 +96,5 @@ If you've found a bug regarding security please email security@doublethree.digit
 ## Other Repositories
 
 -   [**Starter Kit**](https://github.com/duncanmcclean/sc-starter-kit): Demo Templates & Boilerplate for your custom store
--   [**Digital Products Addon**](https://github.com/duncanmcclean/sc-digital-products): Sell digital products with Simple Commerce
 
 <!-- /statamic:hide -->

@@ -40,6 +40,12 @@ If you need to sell across different countries, you can take advantage of Statam
 
 -   [Documentation: Multi-site](/guides/multisite)
 
+## Digital Products
+
+If you're selling digital products, like software or e-books, Simple Commerce allows you to define the files that should be downloadable by customers after checkout. It also provides a full history of all downloads, including the user's IP address and timestamp.
+
+-   [Documentation: Digital Products](https://simple-commerce.duncanmcclean.com/digital-products)
+
 ## And lots more...
 
 Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
