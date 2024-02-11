@@ -32,6 +32,8 @@
 
 You can read more about what's changed in the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0), along with steps on how to upgrade.
 
+
+
 ## v5.9.1 (2024-01-13)
 
 ### What's fixed
