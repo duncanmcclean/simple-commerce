@@ -77,7 +77,7 @@ it('adds product type field and removes old digital product fields from product 
                             ['handle' => 'downloadable_asset', 'field' => ['type' => 'assets']],
                             ['handle' => 'download_limit', 'field' => ['type' => 'integer']],
                         ],
-                    ]
+                    ],
                 ],
             ],
         ],
