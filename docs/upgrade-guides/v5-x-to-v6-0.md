@@ -110,6 +110,12 @@ $order->gatewayData()->data();
 $order->gatewayData()->refund();
 ```
 
+### Medium: The "Enabled" status has been removed from Coupons
+
+The "Enabled" status toggle has been removed from coupons, in favour of the Start/End dates.
+
+As part of the update process, Simple Commerce will attempt to update your existing disabled coupons and set an end date on them so they're no longer usable.
+
 ### Medium: Changes to the `statusLog` method on Orders
 
 The `statusLog` method no longer accepts passing a status. Instead, you should query the status log for the event you're after, then get the `->last()` item in the collection.
