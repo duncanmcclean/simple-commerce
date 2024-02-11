@@ -5,7 +5,6 @@ namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Products\ProductVariant;
 use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Facades\File;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Blueprint;
 use Statamic\UpdateScripts\UpdateScript;
@@ -50,6 +49,21 @@ class MigrateProductType extends UpdateScript
                 $blueprint->removeField('is_digital_product');
                 $blueprint->removeField('downloadable_asset');
                 $blueprint->removeField('download_limit');
+
+                if ($blueprint->hasField('product_variants')) {
+                    $productVariantsField = $blueprint->field('product_variants');
+
+                    $productVariantsField->setConfig([
+                        'option_fields' => collect($productVariantsField->config()['option_fields'] ?? [])
+                            ->filter(function ($value, $key) {
+                                return $value['handle'] !== 'is_digital_product'
+                                    && $value['handle'] !== 'downloadable_asset'
+                                    && $value['handle'] !== 'download_limit';
+                            })
+                            ->toArray(),
+                    ]);
+                }
+
                 $blueprint->saveQuietly();
             });
         }
