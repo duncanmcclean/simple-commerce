@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
