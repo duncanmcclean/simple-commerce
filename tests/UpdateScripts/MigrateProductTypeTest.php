@@ -1,6 +1,7 @@
 <?php
 
 use DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0\MigrateProductType;
+use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 
