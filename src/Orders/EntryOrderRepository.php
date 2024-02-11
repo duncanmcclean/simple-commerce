@@ -41,10 +41,21 @@ class EntryOrderRepository implements RepositoryContract
         $entry = Entry::find($id);
 
         if (! $entry) {
-            throw new OrderNotFound("Order [{$id}] could not be found.");
+            return null;
         }
 
         return $this->fromEntry($entry);
+    }
+
+    public function findOrFail($id): Order
+    {
+        $order = $this->find($id);
+
+        if (! $order) {
+            throw new OrderNotFound("Order [{$id}] could not be found.");
+        }
+
+        return $order;
     }
 
     public function fromEntry($entry): Order

@@ -10,6 +10,8 @@ interface OrderRepository
 
     public function find($id): ?Order;
 
+    public function findOrFail($id): Order;
+
     public function make(): Order;
 
     public function save(Order $order): void;
