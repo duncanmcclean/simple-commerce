@@ -31,13 +31,16 @@ export default {
         littleDotColour() {
             switch (this.value) {
                 case 'cart':
-                    return 'bg-grey-40'
+                    return 'bg-gray-400'
 
                 case 'placed':
                     return 'bg-orange'
 
                 case 'dispatched':
                     return 'bg-blue-300'
+
+                case 'delivered':
+                    return 'bg-green-600'
 
                 case 'cancelled':
                     return 'bg-red-500'
