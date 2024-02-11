@@ -107,10 +107,6 @@ class StoreRequest extends FormRequest
             'expires_at.time' => [
                 'nullable',
             ],
-            'enabled' => [
-                'required',
-                'boolean',
-            ],
         ];
     }
 }

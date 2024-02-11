@@ -28,14 +28,11 @@ class Coupon implements Contract
 
     public $type;
 
-    public $enabled;
-
     protected $selectedQueryRelations = [];
 
     public function __construct()
     {
         $this->data = collect();
-        $this->enabled = true;
     }
 
     public function id($id = null)
@@ -96,20 +93,9 @@ class Coupon implements Contract
             ->args(func_get_args());
     }
 
-    public function enabled($enabled = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('enabled')
-            ->args(func_get_args());
-    }
-
     public function isValid(Order $order): bool
     {
         $order = OrderFacade::find($order->id());
-
-        if (! $this->enabled()) {
-            return false;
-        }
 
         if ($this->get('valid_from') !== null) {
             if (Carbon::parse($this->get('valid_from'))->isFuture()) {
@@ -239,7 +225,6 @@ class Coupon implements Contract
         $this->code = $freshCoupon->code;
         $this->value = $freshCoupon->value;
         $this->type = $freshCoupon->type;
-        $this->enabled = $freshCoupon->enabled;
         $this->data = $freshCoupon->data();
 
         return $this;
@@ -252,7 +237,6 @@ class Coupon implements Contract
             'code' => $this->code,
             'value' => $this->value,
             'type' => $this->type,
-            'enabled' => $this->enabled,
         ]);
     }
 

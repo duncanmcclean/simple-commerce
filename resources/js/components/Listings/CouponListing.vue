@@ -103,7 +103,6 @@
                         >
                             <template slot="cell-code" slot-scope="{ row, value }">
                                 <div class="title-index-field">
-                                    <div class="little-dot mr-2" v-tooltip="getStatusLabel(row)" :class="getStatusClass(row)" v-if="! columnShowing('enabled')" />
                                     <a :href="row.edit_url" @click.stop>{{ row.code }}</a>
                                 </div>
                             </template>
@@ -186,27 +185,6 @@ export default {
     methods: {
         canEditRow(row) {
             return row.editable
-        },
-
-        getStatusClass(coupon) {
-            if (coupon.enabled) {
-                return 'bg-green-600';
-            } else {
-                return 'bg-gray-400';
-            }
-        },
-
-        getStatusLabel(coupon) {
-            if (coupon.enabled) {
-                return __('Enabled');
-            } else {
-                return __('Disabled');
-            }
-        },
-
-        // TODO: Implement this if we end up needing it
-        getStatusTooltip(coupon) {
-            return false;
         },
 
         columnShowing(column) {

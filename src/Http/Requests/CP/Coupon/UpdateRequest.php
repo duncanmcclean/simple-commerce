@@ -101,10 +101,6 @@ class UpdateRequest extends FormRequest
             'expires_at.time' => [
                 'nullable',
             ],
-            'enabled' => [
-                'required',
-                'boolean',
-            ],
         ];
     }
 }
