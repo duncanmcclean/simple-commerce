@@ -47,16 +47,15 @@ php artisan view:clear
 
 ## Changes
 
-### High: Runway v6
+### High: Simple Commerce's Namespace has changed
 
-If you're storing orders & customers in the database, you should also follow the [Runway v6 Upgrade Guide](https://runway.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0).
+Simple Commerce's namespace has changed from `DoubleThreeDigital` to `DuncanMcClean`.
 
-### High: Database Migrations
+During the update process, any references to `DoubleThreeDigital` in your config file should have been automatically updated. If you have any custom code, you will need to change the namespace:
 
-If you're storing orders in the database, you will need to run the migrations, both locally & when deploying to any other environments:
-
-```
-php artisan migrate
+```php
+use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway; // [tl! remove]
+use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway; // [tl! add]
 ```
 
 ## High: References to gateways & shipping methods in orders have changed
@@ -76,6 +75,18 @@ shipping_method: free_shipping
 Simple Commerce will automatically update your orders when you run the `sc:run-update-scripts` command.
 
 If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
+
+### High: Runway v6
+
+If you're storing orders & customers in the database, you should also follow the [Runway v6 Upgrade Guide](https://runway.duncanmcclean.com/upgrade-guides/v5-x-to-v6-0).
+
+### High: Database Migrations
+
+If you're storing orders in the database, you will need to run the migrations, both locally & when deploying to any other environments:
+
+```
+php artisan migrate
+```
 
 ### Medium: The `all` method on repositories has changed
 
