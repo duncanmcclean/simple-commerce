@@ -2,6 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0;
 
+use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\File;
 use Statamic\UpdateScripts\UpdateScript;
 
