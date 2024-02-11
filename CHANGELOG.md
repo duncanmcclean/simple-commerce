@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.0.3 (2024-02-11)
+
+### What's fixed
+* Various fixes when using database orders #980 #1000
+
+
+
 ## v6.0.2 (2024-02-11)
 
 ### What's fixed
