@@ -14,12 +14,12 @@ use Statamic\Facades\User;
 use Statamic\Statamic;
 
 uses(TestCase::class)
-    ->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Products', 'Rules', 'Tags', 'Tax');
+    ->in('Actions', 'Console', 'Coupons', 'Customers', 'Data', 'Fieldtypes', '__fixtures__', 'Gateways', 'Helpers', 'Http', 'Listeners', 'Modifiers', 'Orders', 'Products', 'Rules', 'Tags', 'Tax', 'UpdateScripts');
 
 uses(
     SetupCollections::class,
     RefreshContent::class
-)->in('Actions', 'Coupons', 'Customers', 'Listeners', 'Products');
+)->in('Actions', 'Coupons', 'Customers', 'Listeners', 'Products', 'UpdateScripts');
 
 /*
 |--------------------------------------------------------------------------
