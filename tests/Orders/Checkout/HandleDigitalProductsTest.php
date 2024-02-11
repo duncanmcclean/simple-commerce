@@ -100,7 +100,8 @@ it('can handle digital products in order with product variants', function () {
             'options' => [
                 ['key' => 'Red_Small', 'variant' => 'Red Small', 'price' => 1200, 'product_type' => 'digital'],
             ],
-        ]);
+        ])
+        ->set('product_type', 'digital');
 
     $product->save();
 

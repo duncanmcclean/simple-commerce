@@ -121,7 +121,7 @@ abstract class TestCase extends OrchestraTestCase
 
             Blueprint::setDirectory(__DIR__.'/../resources/blueprints');
 
-            AssetContainer::make('test')->disk('test')->save();
+            AssetContainer::make('assets')->disk('test')->save();
         });
 
         $this->ensureContentDirectoriesExist();
