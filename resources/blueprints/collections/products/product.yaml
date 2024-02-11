@@ -1,9 +1,138 @@
+title: Product
 tabs:
   main:
+    display: Main
     sections:
       -
         fields:
           -
-            handle: product_variants
+            handle: title
             field:
-              type: product_variants
+              type: text
+              required: true
+              validate:
+                - required
+              width: 50
+          -
+            handle: price
+            field:
+              type: money
+              display: Price
+              save_zero_value: true
+              listable: hidden
+              width: 50
+              instructions_position: above
+              visibility: visible
+              always_save: false
+              validate:
+                - required
+          -
+            handle: photos
+            field:
+              mode: grid
+              container: assets
+              restrict: false
+              allow_uploads: true
+              display: Photos
+              type: assets
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              always_save: false
+              show_filename: true
+          -
+            handle: description
+            field:
+              collapse: false
+              always_show_set_button: false
+              previews: true
+              smart_typography: false
+              buttons:
+                - h2
+                - h3
+                - bold
+                - italic
+                - unorderedlist
+                - orderedlist
+                - removeformat
+                - quote
+                - anchor
+                - image
+                - table
+              save_html: false
+              inline: false
+              toolbar_mode: fixed
+              link_noopener: false
+              link_noreferrer: false
+              target_blank: false
+              reading_time: false
+              fullscreen: true
+              allow_source: true
+              enable_input_rules: true
+              enable_paste_rules: true
+              antlers: false
+              remove_empty_nodes: false
+              display: Description
+              type: bard
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              always_save: false
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        fields:
+          -
+            handle: product_type
+            field:
+              type: button_group
+              display: 'Product Type'
+              options:
+                physical: Physical
+                digital: Digital
+              default: physical
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate:
+                - required
+          -
+            handle: tax_category
+            field:
+              type: tax_category
+              display: 'Tax Category'
+              max_items: 1
+              mode: select
+          -
+            handle: stock
+            field:
+              type: integer
+              display: Stock
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+      -
+        display: 'Digital Product'
+        fields:
+          -
+            handle: downloadable_asset
+            field:
+              type: assets
+              mode: grid
+              display: 'Downloadable Asset'
+              container: assets
+              if:
+                root.product_type: 'equals digital'
+          -
+            handle: download_limit
+            field:
+              type: integer
+              display: 'Download Limit'
+              instructions: "If you'd like to limit the amount if times this product can be downloaded, set it here. Keep it blank if you'd like it to be unlimited."
+              if:
+                root.product_type: 'equals digital'
