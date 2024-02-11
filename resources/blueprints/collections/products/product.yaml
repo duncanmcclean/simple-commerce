@@ -21,7 +21,7 @@ tabs:
                     type: assets
                     mode: grid
                     display: 'Downloadable Asset'
-                    container: test
+                    container: assets
                     if:
                       root.product_type: 'equals digital'
                 -
