@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
 use DoubleThreeDigital\SimpleCommerce\Orders\EntryQueryBuilder;
@@ -108,6 +109,16 @@ it('can find order', function () {
     $order = Order::find('one');
 
     expect($order)->toBeInstanceOf(OrderContract::class);
+});
+
+it('can findOrFail order', function () {
+    Order::make()->id('one')->save();
+
+    $order = Order::findOrFail('one');
+
+    expect($order)->toBeInstanceOf(OrderContract::class);
+
+    expect(fn () => Order::findOrFail('two'))->toThrow(OrderNotFound::class);
 });
 
 it('can make order', function () {

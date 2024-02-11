@@ -10,6 +10,8 @@ interface ProductRepository
 
     public function find($id): ?Product;
 
+    public function findOrFail($id): Product;
+
     public function make(): Product;
 
     public function save(Product $product): void;

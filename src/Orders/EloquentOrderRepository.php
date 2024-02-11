@@ -47,10 +47,21 @@ class EloquentOrderRepository implements RepositoryContract
         $model = (new $this->model)->find($id);
 
         if (! $model) {
-            throw new OrderNotFound("Order [{$id}] could not be found.");
+            return null;
         }
 
         return $this->fromModel($model);
+    }
+
+    public function findOrFail($id): Order
+    {
+        $order = $this->find($id);
+
+        if (! $order) {
+            throw new OrderNotFound("Order [{$id}] could not be found.");
+        }
+
+        return $order;
     }
 
     public function fromModel(OrderModel $model)

@@ -3,7 +3,6 @@
 namespace DoubleThreeDigital\SimpleCommerce;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
 use DoubleThreeDigital\SimpleCommerce\Support\Runway;
@@ -463,13 +462,13 @@ class ServiceProvider extends AddonServiceProvider
             $this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class)
         ) {
             Collection::computed(SimpleCommerce::orderDriver()['collection'], 'order_date', function ($entry, $value) {
-                try {
-                    $order = Order::find($entry->id());
+                $order = Order::find($entry->id());
 
-                    return $order->statusLog()->where('status', OrderStatus::Placed)->map->date()->last();
-                } catch (OrderNotFound $e) {
+                if (! $order) {
                     return Carbon::now();
                 }
+
+                return $order->statusLog()->where('status', OrderStatus::Placed)->map->date()->last();
             });
         }
     }

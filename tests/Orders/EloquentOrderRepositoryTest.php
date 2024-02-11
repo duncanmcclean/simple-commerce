@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
+use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
 use DoubleThreeDigital\SimpleCommerce\Facades\Order;
 use DoubleThreeDigital\SimpleCommerce\Facades\Product;
 use DoubleThreeDigital\SimpleCommerce\Orders\EloquentQueryBuilder;
@@ -230,6 +231,32 @@ it('can find order with status log events', function () {
     expect(2)->toBe($find->statusLog()->count());
     expect(OrderStatus::Placed)->toBe($find->statusLog()->first()->status);
     expect(OrderStatus::Dispatched)->toBe($find->statusLog()->last()->status);
+});
+
+it('can findOrFail order', function () {
+    $product = Product::make()->price(1000);
+    $product->save();
+
+    $order = OrderModel::create([
+        'items' => [
+            [
+                'product' => $product->id(),
+                'quantity' => 1,
+                'total' => 1000,
+            ],
+        ],
+        'data' => [
+            'foo' => 'bar',
+        ],
+    ]);
+
+    $find = Order::findOrFail($order->id);
+
+    expect($order->id)->toBe($find->id());
+    expect(1)->toBe($find->lineItems()->count());
+    expect('bar')->toBe($find->get('foo'));
+
+    expect(fn () => Order::findOrFail(123))->toThrow(OrderNotFound::class);
 });
 
 it('can create order', function () {
