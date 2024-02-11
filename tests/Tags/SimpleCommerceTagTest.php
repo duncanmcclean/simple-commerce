@@ -1,9 +1,9 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Currencies;
-use DoubleThreeDigital\SimpleCommerce\Regions;
-use DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers\SimpleCommerceTag;
+use DuncanMcClean\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Currencies;
+use DuncanMcClean\SimpleCommerce\Regions;
+use DuncanMcClean\SimpleCommerce\Tests\Tags\Helpers\SimpleCommerceTag;
 
 beforeEach(function () {
     SimpleCommerceTag::register();

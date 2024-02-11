@@ -1,11 +1,11 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Carbon;
 
-uses(DoubleThreeDigital\SimpleCommerce\Tests\TestCase::class);
+uses(DuncanMcClean\SimpleCommerce\Tests\TestCase::class);
 uses(SetupCollections::class);
 
 test('product returns with raw price value', function () {

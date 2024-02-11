@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxCategory\TaxCategoryQueryBuilder;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxCategory\TaxCategoryQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxCategory;
 use Statamic\Data\DataCollection;
 
 interface TaxCategoryRepository

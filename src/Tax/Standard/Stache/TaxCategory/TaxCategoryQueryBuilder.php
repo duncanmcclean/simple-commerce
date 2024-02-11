@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxCategory;
+namespace DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxCategory;
 
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Query\Builder;

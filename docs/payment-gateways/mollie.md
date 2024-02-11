@@ -12,7 +12,7 @@ You can obtain your API keys from the Mollie Dashboard.
 
 ```php
 'gateways' => [
-	\DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\MollieGateway::class => [
+	\DuncanMcClean\SimpleCommerce\Gateways\Builtin\MollieGateway::class => [
     	'key' => env('MOLLIE_KEY'),
         'profile' => env('MOLLIE_PROFILE'),
     ],

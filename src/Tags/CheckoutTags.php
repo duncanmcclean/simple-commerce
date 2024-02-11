@@ -1,15 +1,15 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayDoesNotExist;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;

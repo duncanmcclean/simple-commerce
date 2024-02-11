@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\Cart;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Illuminate\Http\Request;
 use Statamic\Http\Controllers\CP\ActionController;
 

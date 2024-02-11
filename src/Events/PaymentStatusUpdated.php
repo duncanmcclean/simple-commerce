@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Events;
+namespace DuncanMcClean\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 

@@ -1,9 +1,9 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\CouponCalculator;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\CouponCalculator;
 use Illuminate\Support\Facades\Pipeline;
 
 uses()->group('calculator');

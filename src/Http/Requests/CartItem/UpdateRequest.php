@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\CartItem;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest

@@ -41,8 +41,8 @@ If you wish to update the order status programatically, simply use the `updateOr
 You should pass in an option from the `OrderStatus` enum as the first & only parameter.
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 
 Order::find('order-id')->updateOrderStatus(OrderStatus::Placed);
 ```

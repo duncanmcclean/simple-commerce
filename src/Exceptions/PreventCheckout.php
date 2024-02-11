@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Exceptions;
+namespace DuncanMcClean\SimpleCommerce\Exceptions;
 
 class PreventCheckout extends \Exception
 {

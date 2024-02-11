@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Shipping;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Facades\Shipping;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag

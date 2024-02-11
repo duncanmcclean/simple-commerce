@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\LicenseKey;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
+use DuncanMcClean\SimpleCommerce\Facades\LicenseKey;
+use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Statamic\Facades\Collection;
 

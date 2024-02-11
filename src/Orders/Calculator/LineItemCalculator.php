@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
 class LineItemCalculator
 {

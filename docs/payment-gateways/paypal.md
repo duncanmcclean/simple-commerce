@@ -14,7 +14,7 @@ You can then create a sandbox/live application. At the end of the app creation p
 
 ```php
 'gateways' => [
-	\DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\PayPalGateway::class => [
+	\DuncanMcClean\SimpleCommerce\Gateways\Builtin\PayPalGateway::class => [
         'client_id' => env('PAYPAL_CLIENT_ID'),
         'client_secret' => env('PAYPAL_CLIENT_SECRET'),
         'environment' => env('PAYPAL_ENVIRONMENT', 'production'),
@@ -77,7 +77,7 @@ A rough example of a PayPal implementation is provided below.
 ```antlers
 <div id="paypal-button"></div>
 <input id="paypal-payment-id" type="hidden" name="payment_id">
-<input type="hidden" name="gateway" value="DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\PayPalGateway">
+<input type="hidden" name="gateway" value="DuncanMcClean\SimpleCommerce\Gateways\Builtin\PayPalGateway">
 <script src="https://www.paypal.com/sdk/js?client-id={{ paypal:config:client_id }}&currency={{ result.currency_code }}"></script>
 <script>
     paypal.Buttons({

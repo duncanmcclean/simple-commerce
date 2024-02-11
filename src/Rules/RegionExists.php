@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Regions;
+use DuncanMcClean\SimpleCommerce\Regions;
 use Illuminate\Contracts\Validation\Rule;
 
 class RegionExists implements Rule

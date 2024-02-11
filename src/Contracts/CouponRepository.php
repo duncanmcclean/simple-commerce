@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Coupons\CouponQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Coupons\CouponQueryBuilder;
 use Statamic\Data\DataCollection;
 
 interface CouponRepository

@@ -1,15 +1,15 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CartItemController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CheckoutController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CouponController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CustomerController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\DigitalProducts\VerificationController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayCallbackController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\GatewayWebhookController;
-use DoubleThreeDigital\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CartController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CartItemController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CheckoutController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CouponController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CustomerController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\VerificationController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\GatewayCallbackController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\GatewayWebhookController;
+use DuncanMcClean\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 

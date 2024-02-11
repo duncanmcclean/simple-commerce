@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes\Variables;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes\Variables;
 
 use Statamic\Fieldtypes\Hidden;
 

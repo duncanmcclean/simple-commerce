@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 

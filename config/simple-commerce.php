@@ -20,7 +20,7 @@ return [
 
             'shipping' => [
                 'methods' => [
-                    \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class => [],
+                    \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],
                 ],
             ],
         ],
@@ -39,7 +39,7 @@ return [
     */
 
     'gateways' => [
-        \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
+        \DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
             'display' => 'Card',
         ],
     ],
@@ -59,17 +59,17 @@ return [
 
     'notifications' => [
         'order_paid' => [
-            // \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+            // \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
             //     'to' => 'customer',
             // ],
 
-            // \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+            // \DuncanMcClean\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
             //     'to' => 'duncan@example.com',
             // ],
         ],
 
         'order_dispatched' => [
-            // \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
+            // \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
         ],
     ],
 
@@ -110,7 +110,7 @@ return [
     |
     */
 
-    'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class,
+    'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine::class,
 
     'tax_engine_config' => [
         // Basic Engine
@@ -149,17 +149,17 @@ return [
 
     'content' => [
         'customers' => [
-            'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class,
             'collection' => 'customers',
         ],
 
         'orders' => [
-            'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class,
             'collection' => 'orders',
         ],
 
         'products' => [
-            'repository' => \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Products\EntryProductRepository::class,
             'collection' => 'products',
         ],
     ],

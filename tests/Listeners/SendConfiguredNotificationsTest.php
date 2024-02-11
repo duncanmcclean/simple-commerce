@@ -1,19 +1,19 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Listeners\SendConfiguredNotifications;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\AnotherRandomEvent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\AnotherRandomEventNotification;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\OrderDispatchedNotification;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\OrderPlacedNotification;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\PaymentRefundedNotification;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\SomeRandomEvent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Events\SomeRandomEventNotification;
+use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Listeners\SendConfiguredNotifications;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\AnotherRandomEvent;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\AnotherRandomEventNotification;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\OrderDispatchedNotification;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\OrderPlacedNotification;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\PaymentRefundedNotification;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\SomeRandomEvent;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events\SomeRandomEventNotification;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 

@@ -18,7 +18,7 @@ To enable the Basic Tax Engine, your config should look like this:
 ```php
 // config/simple-commerce.php
 
-'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\BasicTaxEngine::class,
+'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class,
 
 'tax_engine_config' => [
     'rate'               => 20,
@@ -52,7 +52,7 @@ The Standard Tax Engine is enabled by default in new Simple Commerce sites. You 
 ```php
 // config/simple-commerce.php
 
-'tax_engine' => \DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine::class,
+'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine::class,
 
 'tax_engine_config' => [
     'address' => 'billing',

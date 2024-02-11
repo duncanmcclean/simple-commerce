@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax;
+namespace DuncanMcClean\SimpleCommerce\Tax;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Contracts\TaxEngine;
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Contracts\TaxEngine;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use Illuminate\Support\Facades\Config;
 
 class BasicTaxEngine implements TaxEngine

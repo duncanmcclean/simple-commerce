@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Tags\Helpers;
+namespace DuncanMcClean\SimpleCommerce\Tests\Tags\Helpers;
 
-use DoubleThreeDigital\SimpleCommerce\Tags\SubTag;
+use DuncanMcClean\SimpleCommerce\Tags\SubTag;
 
 class TestTag extends SubTag
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Statamic\Fields\Fieldtype;
 
 class OrderStatusFieldtype extends Fieldtype

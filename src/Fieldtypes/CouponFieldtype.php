@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons;
 
-use DoubleThreeDigital\SimpleCommerce\Coupons\CouponBlueprint;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\CreateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\EditRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\Coupon\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Coupons\CouponBlueprint;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\CreateRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\EditRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\UpdateRequest;
 use Statamic\Facades\Scope;
 use Statamic\Support\Arr;
 use Statamic\Support\Str;

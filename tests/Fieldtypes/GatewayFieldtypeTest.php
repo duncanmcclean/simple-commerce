@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\GatewayFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\GatewayFieldtype;
+use DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway;
 use Illuminate\Support\Facades\Auth;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;

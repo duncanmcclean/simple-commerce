@@ -61,22 +61,22 @@ If you receive an error running the `sc:migrate-to-database` command, please ens
 
 'content' => [
     'coupons' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Coupons\EntryCouponRepository::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Coupons\EntryCouponRepository::class,
         'collection' => 'coupons',
     ],
 
     'customers' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class,
-        'model' => \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class,
+        'model' => \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class,
     ],
 
     'orders' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class,
-        'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
+        'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
     ],
 
     'products' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Products\EntryProductRepository::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Products\EntryProductRepository::class,
         'collection' => 'products',
     ],
 ],
@@ -133,13 +133,13 @@ First, in order to customise the Eloquent model, you'll need to create your own 
 2. In your `simple-commerce.php` config file, replace the `model` reference with your own:
 
 ```php
-'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class, // [tl! remove]
+'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class, // [tl! remove]
 'model' => \App\Models\Order::class, // [tl! add]
 ```
 3. Finally, update the reference to the `Order` model in the Runway config (`config/runway.php`):
 
 ```php
-\DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class => [ // [tl! remove]
+\DuncanMcClean\SimpleCommerce\Orders\OrderModel::class => [ // [tl! remove]
 \App\Models\Order::class => [ // [tl! remove]
     // ...
 ],
@@ -153,7 +153,7 @@ And there you go... that's you using a custom version of the Eloquent model.
 2. In your `simple-commerce.php` config file, with a reference to your new repository:
 
 ```
-'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class, // [tl! remove]
+'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class, // [tl! remove]
 'repository' => \App\SimpleCommerce\EloquentOrderRepository::class, // [tl! add]
 ```
 

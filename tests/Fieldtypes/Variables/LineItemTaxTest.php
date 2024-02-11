@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\Variables\LineItemTax;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\Variables\LineItemTax;
 
 test('can augment line item tax', function () {
     $value = [

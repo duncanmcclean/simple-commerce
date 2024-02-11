@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
+use DuncanMcClean\SimpleCommerce\Rules\CountryExists;
 use Illuminate\Support\Facades\Validator;
 
 it('passes for matching iso code', function () {

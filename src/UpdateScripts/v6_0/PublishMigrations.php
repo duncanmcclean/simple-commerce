@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
+namespace DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0;
 
 use Illuminate\Support\Facades\File;
 use Statamic\UpdateScripts\UpdateScript;

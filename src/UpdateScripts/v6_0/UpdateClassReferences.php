@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
+namespace DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -33,7 +33,7 @@ class UpdateClassReferences extends UpdateScript
 
                     // Adjust the class name before new'ing it up since the namespace has changed.
                     if (Str::startsWith($class, 'DoubleThreeDigital')) {
-                        // $class = str_replace('DoubleThreeDigital', 'DuncanMcClean', $class);
+                        $class = str_replace('DoubleThreeDigital', 'DuncanMcClean', $class);
                     }
 
                     $handle = $class::handle();
@@ -56,7 +56,7 @@ class UpdateClassReferences extends UpdateScript
 
                     // Adjust the class name before new'ing it up since the namespace has changed.
                     if (Str::startsWith($class, 'DoubleThreeDigital')) {
-                        // $class = str_replace('DoubleThreeDigital', 'DuncanMcClean', $class);
+                        $class = str_replace('DoubleThreeDigital', 'DuncanMcClean', $class);
                     }
 
                     $handle = $class::handle();

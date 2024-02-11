@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
+namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
@@ -21,7 +21,7 @@ class RunUpdateScripts extends Command
         // doing it manually here.
         app('statamic.update-scripts')
             ->filter(function (array $script) {
-                return $script['package'] === 'doublethreedigital/simple-commerce';
+                return $script['package'] === 'duncanmcclean/simple-commerce';
             })
             ->each(function (array $script) {
                 $updateScript = new $script['class']($script['package'], $this);

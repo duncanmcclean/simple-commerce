@@ -1,10 +1,10 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
-use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid;
+use DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderShipped;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\User;
@@ -18,7 +18,7 @@ it('can resend notifications for order statuses', function () {
 
     Config::set('simple-commerce.notifications', [
         'order_dispatched' => [
-            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
+            \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
         ],
     ]);
 
@@ -40,7 +40,7 @@ it('can resend notifications for payment statuses', function () {
 
     Config::set('simple-commerce.notifications', [
         'order_paid' => [
-            \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => ['to' => 'customer'],
+            \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid::class => ['to' => 'customer'],
         ],
     ]);
 

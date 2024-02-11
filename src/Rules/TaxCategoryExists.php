@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
 use Illuminate\Contracts\Validation\Rule;
 
 class TaxCategoryExists implements Rule

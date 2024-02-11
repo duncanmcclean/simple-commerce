@@ -35,7 +35,7 @@ They live in their own `customers` collection, which you can change if you need 
 	// All the other bits..
 
     'customers' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\Customer::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\Customer::class,
         'collection' => 'customers', // [tl! --]
         'collection' => 'members', // [tl! ++]
     ],
@@ -50,7 +50,7 @@ Storing your customers as users can often be handy if you're building some sort 
 You'll need to enable [Statamic Pro](https://statamic.com/pricing) if you want to store your customers as users.
 :::
 
-To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class` to `\DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class`.
+To enable, change `\DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class` to `\DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class`.
 
 ```php
 /*
@@ -70,8 +70,8 @@ To enable, change `\DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRep
 	// All the other bits..
 
     'customers' => [
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class, // [tl! --]
-        'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class, // [tl! ++]
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class, // [tl! --]
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class, // [tl! ++]
     ],
 ],
 ```
@@ -86,7 +86,7 @@ This is where you store your customers in the database. Simple Commerce supports
 
 ### Get orders made by a customer
 
-You can loop through orders made by a specific customer using the Antlers Tag. All you need to do is provide the ID of the customer. 
+You can loop through orders made by a specific customer using the Antlers Tag. All you need to do is provide the ID of the customer.
 
 If you're using the [#entries] driver, that'll be the entry ID of your customer or if you're storing customers as users, that might be the ID of the currently logged in user.
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\LineItem;
-use DoubleThreeDigital\SimpleCommerce\Tax\TaxCalculation;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Tax\TaxCalculation;
 
 interface TaxEngine
 {

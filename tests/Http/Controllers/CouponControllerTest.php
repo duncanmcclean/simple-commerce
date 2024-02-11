@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Stache;

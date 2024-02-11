@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\CreateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\EditRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxCategory\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\CreateRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\EditRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\IndexRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\StoreRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\UpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\Facades\Stache;
 

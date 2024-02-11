@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Console\Commands;
+namespace DuncanMcClean\SimpleCommerce\Tests\Console\Commands;
 
-use DoubleThreeDigital\SimpleCommerce\Tests\TestCase;
+use DuncanMcClean\SimpleCommerce\Tests\TestCase;
 use Illuminate\Filesystem\Filesystem;
 
 class MakeCommandsTest extends TestCase

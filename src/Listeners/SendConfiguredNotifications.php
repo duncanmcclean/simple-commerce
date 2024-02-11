@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Listeners;
+namespace DuncanMcClean\SimpleCommerce\Listeners;
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;

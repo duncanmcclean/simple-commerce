@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Products\DigitalProducts;
+namespace DuncanMcClean\SimpleCommerce\Products\DigitalProducts;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\LicenseKeyRepository as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\LicenseKeyRepository as Contract;
 
 class LicenseKeyRepository implements Contract
 {

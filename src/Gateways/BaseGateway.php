@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Gateways;
+namespace DuncanMcClean\SimpleCommerce\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
-use DoubleThreeDigital\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Events\PostCheckout;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
+use DuncanMcClean\SimpleCommerce\Orders\Checkout\CheckoutPipeline;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

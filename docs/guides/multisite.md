@@ -30,7 +30,7 @@ Each Statamic site you have setup in your `config/statamic/sites.php` config sho
 
         'shipping' => [
             'methods' => [
-                \DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping::class,
+                \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class,
             ],
         ],
     ],
@@ -97,7 +97,7 @@ If, for whatever reason you find yourself needing to use the same cart between a
 */
 
 'cart' => [
-    'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+    'repository' => \DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
     'key' => 'simple-commerce-cart',
     'single_cart' => false, // [tl! add]
 ],

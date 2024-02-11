@@ -1,15 +1,15 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\PreventCheckout;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods\DummyShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\ShippingMethods\DummyShippingMethod;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Site;

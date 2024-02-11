@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Regions;
-use DoubleThreeDigital\SimpleCommerce\Rules\CountryExists;
-use DoubleThreeDigital\SimpleCommerce\Rules\RegionExists;
+use DuncanMcClean\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Regions;
+use DuncanMcClean\SimpleCommerce\Rules\CountryExists;
+use DuncanMcClean\SimpleCommerce\Rules\RegionExists;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest

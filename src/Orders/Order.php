@@ -1,21 +1,21 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as Contract;
-use DoubleThreeDigital\SimpleCommerce\Data\HasData;
-use DoubleThreeDigital\SimpleCommerce\Events\CouponRedeemed;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderSaved;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
-use DoubleThreeDigital\SimpleCommerce\Http\Resources\BaseResource;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\Calculator;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupon as CouponContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as Contract;
+use DuncanMcClean\SimpleCommerce\Data\HasData;
+use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
+use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
+use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
+use DuncanMcClean\SimpleCommerce\Http\Resources\BaseResource;
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\Calculator;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;

@@ -27,10 +27,10 @@ Simple Commerce uses [Laravel Notifications](https://laravel.com/docs/master/not
 
 'notifications' => [
     'order_paid' => [
-        \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+        \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
             'to' => 'customer',
         ],
-        \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+        \DuncanMcClean\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
             'to' => 'cj.cregg@whitehouse.gov',
         ],
     ],
@@ -92,7 +92,7 @@ php artisan make:notification OrderPaidNotification
 
 Simple Commerce doesn't make any changes to the email template that ships with Laravel.
 
-It's pretty generic but you may wish to switch it up a bit when working on a bespoke e-commerce site. 
+It's pretty generic but you may wish to switch it up a bit when working on a bespoke e-commerce site.
 
 All you need to do is publish Laravel's notification views:
 
@@ -108,6 +108,6 @@ While you're in development, you'll probably want to test out your emails withou
 
 Tools like [HELO](https://a.paddle.com/v2/click/103161/130785?link=2990) and [Mailtrap](https://mailtrap.io/) let you catch all emails coming out of your site during development.
 
-![HELO Screenshot](/img/simple-commerce/helo-screenshot.png) 
+![HELO Screenshot](/img/simple-commerce/helo-screenshot.png)
 
 *Disclaimer:* The HELO link above is an affiliate link.

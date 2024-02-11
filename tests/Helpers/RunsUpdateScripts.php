@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
+namespace DuncanMcClean\SimpleCommerce\Tests\Helpers;
 
 trait RunsUpdateScripts
 {
@@ -10,7 +10,7 @@ trait RunsUpdateScripts
      * @param  string  $fqcn
      * @param  string  $package
      */
-    protected function runUpdateScript($fqcn, $package = 'doublethreedigital/simple-commerce')
+    protected function runUpdateScript($fqcn, $package = 'duncanmcclean/simple-commerce')
     {
         $script = new $fqcn($package);
 

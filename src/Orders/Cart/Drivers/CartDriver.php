@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
+namespace DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver as CartDriverContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
+use DuncanMcClean\SimpleCommerce\Contracts\CartDriver as CartDriverContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 
 trait CartDriver
 {

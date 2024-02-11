@@ -11,7 +11,7 @@ If you've ever used Statamic's `Entry` facade, a lot of the syntax and methodolo
 You can use the `Product` facade to get products out of Simple Commerce.
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 
 $product = Product::find('id-of-product');
 ```
@@ -70,7 +70,7 @@ $product->save();
 You can use the `Order` facade to get orders out of Simple Commerce.
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 
 $order = Order::find('id-of-order');
 ```
@@ -204,7 +204,7 @@ $order->withoutRecalculating(function () use (&$order) {
 You can use the `Customer` facade to get customers out of Simple Commerce.
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 
 $customer = Customer::find('id-of-customer');
 ```
@@ -212,7 +212,7 @@ $customer = Customer::find('id-of-customer');
 You can also use the `findByEmail` method on the `Customer` facade to find a customer by their email address:
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 
 $customer = Customer::findByEmail('email@example.com');
 ```

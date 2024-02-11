@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\ShippingMethods;
+namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingMethod;
-use DoubleThreeDigital\SimpleCommerce\Orders\Address;
-use DoubleThreeDigital\SimpleCommerce\Shipping\BaseShippingMethod;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Orders\Address;
+use DuncanMcClean\SimpleCommerce\Shipping\BaseShippingMethod;
 
 class StorePickup extends BaseShippingMethod implements ShippingMethod
 {

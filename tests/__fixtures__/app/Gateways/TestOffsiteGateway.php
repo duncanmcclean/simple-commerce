@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways;
+namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
 class TestOffsiteGateway extends BaseGateway implements Gateway

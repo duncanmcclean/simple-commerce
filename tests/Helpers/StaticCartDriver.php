@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Helpers;
+namespace DuncanMcClean\SimpleCommerce\Tests\Helpers;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\CartDriver;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 
 class StaticCartDriver implements CartDriver
 {

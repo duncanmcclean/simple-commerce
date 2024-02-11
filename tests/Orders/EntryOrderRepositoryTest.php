@@ -1,16 +1,16 @@
 <?php
 
 use Carbon\Carbon;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as OrderContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryQueryBuilder;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EntryQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;

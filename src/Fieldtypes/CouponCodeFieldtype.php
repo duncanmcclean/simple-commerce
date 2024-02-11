@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use Illuminate\Support\Str;
 use Statamic\Fieldtypes\Text;

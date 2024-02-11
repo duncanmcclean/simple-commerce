@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Facades;
+namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\TaxRateRepository;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\TaxRateRepository;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Facade;
 
 class TaxRate extends Facade

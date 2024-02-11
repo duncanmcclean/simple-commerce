@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax\Standard;
+namespace DuncanMcClean\SimpleCommerce\Tax\Standard;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
-use DoubleThreeDigital\SimpleCommerce\Regions;
+use DuncanMcClean\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
+use DuncanMcClean\SimpleCommerce\Regions;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\TracksQueriedColumns;

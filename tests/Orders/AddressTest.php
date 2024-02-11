@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Regions;
+use DuncanMcClean\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Regions;
 
 test('can get address as array', function () {
     $order = Order::make()

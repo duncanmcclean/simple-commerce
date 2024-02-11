@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Support;
+namespace DuncanMcClean\SimpleCommerce\Support;
 
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
 class Runway
 {

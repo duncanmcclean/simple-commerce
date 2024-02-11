@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Modifiers;
+namespace DuncanMcClean\SimpleCommerce\Modifiers;
 
-use DoubleThreeDigital\SimpleCommerce\Currency as CurrencyFacade;
+use DuncanMcClean\SimpleCommerce\Currency as CurrencyFacade;
 use Statamic\Facades\Site;
 use Statamic\Modifiers\Modifier;
 

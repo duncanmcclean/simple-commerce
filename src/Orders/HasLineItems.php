@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use Illuminate\Support\Collection;
 

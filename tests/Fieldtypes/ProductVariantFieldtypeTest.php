@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductVariantFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\ProductVariantFieldtype;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 
 uses(SetupCollections::class);
 

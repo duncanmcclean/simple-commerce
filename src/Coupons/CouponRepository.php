@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Coupons;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CouponRepository as ContractsCouponRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\CouponRepository as ContractsCouponRepository;
 use Statamic\Data\DataCollection;
 use Statamic\Stache\Stache;
 

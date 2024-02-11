@@ -1,7 +1,7 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\RegionFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\RegionFieldtype;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;

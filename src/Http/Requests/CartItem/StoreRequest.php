@@ -1,13 +1,13 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\CartItem;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\CartItem;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\AcceptsFormRequests;
-use DoubleThreeDigital\SimpleCommerce\Orders\Order as EntryOrder;
-use DoubleThreeDigital\SimpleCommerce\Products\ProductType;
-use DoubleThreeDigital\SimpleCommerce\Rules\ProductExists;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Orders\Order as EntryOrder;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
+use DuncanMcClean\SimpleCommerce\Rules\ProductExists;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Events;
+namespace DuncanMcClean\SimpleCommerce\Events;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupon;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 

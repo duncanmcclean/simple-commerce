@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Requests\Coupon;
+namespace DuncanMcClean\SimpleCommerce\Http\Requests\Coupon;
 
 use Illuminate\Foundation\Http\FormRequest;
 

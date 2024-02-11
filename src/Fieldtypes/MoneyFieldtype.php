@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Fieldtypes;
+namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Currency;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 

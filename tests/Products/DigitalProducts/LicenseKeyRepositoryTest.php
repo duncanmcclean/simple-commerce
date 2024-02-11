@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Products\DigitalProducts\LicenseKeyRepository;
+use DuncanMcClean\SimpleCommerce\Products\DigitalProducts\LicenseKeyRepository;
 
 $repository = app(LicenseKeyRepository::class);
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Gateways\Builtin;
+namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Gateway;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Currency;
-use DoubleThreeDigital\SimpleCommerce\Events\OrderPaymentFailed;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderFacade;
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
+use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
+use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Mollie\Api\MollieApiClient;

@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupon;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponTags extends SubTag
 {

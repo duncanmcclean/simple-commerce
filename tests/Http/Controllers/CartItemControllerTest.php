@@ -1,13 +1,13 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemStoreFormRequest;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemUpdateFormRequest;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemStoreFormRequest;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemUpdateFormRequest;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;

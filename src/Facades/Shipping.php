@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Facades;
+namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager;
+use DuncanMcClean\SimpleCommerce\Contracts\ShippingManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \DoubleThreeDigital\SimpleCommerce\Contracts\ShippingManager use($className)
+ * @method static \DuncanMcClean\SimpleCommerce\Contracts\ShippingManager use($className)
  */
 class Shipping extends Facade
 {

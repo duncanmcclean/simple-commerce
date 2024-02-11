@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
+namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Statamic\Console\Processes\Composer;
@@ -112,12 +112,12 @@ class SwitchToDatabase extends Command
 
         ConfigWriter::edit('simple-commerce')
             ->replace('content.orders', [
-                'repository' => \DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository::class,
-                'model' => \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class,
+                'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
+                'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
             ])
             ->replace('content.customers', [
-                'repository' => \DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository::class,
-                'model' => \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class,
+                'repository' => \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class,
+                'model' => \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class,
             ])
             ->save();
 

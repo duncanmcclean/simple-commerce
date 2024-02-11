@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce;
+namespace DuncanMcClean\SimpleCommerce;
 
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Statamic\Facades\Site;
 
 class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implements \DebugBar\DataCollector\Renderable

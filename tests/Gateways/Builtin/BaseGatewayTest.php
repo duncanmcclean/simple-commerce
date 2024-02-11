@@ -1,12 +1,12 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\FakeOffsiteGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\FakeOnsiteGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\FakeOffsiteGateway;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\FakeOnsiteGateway;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Event;
 
 uses(SetupCollections::class);

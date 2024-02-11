@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Product;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product as ProductFacade;
+use DuncanMcClean\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class LineItem

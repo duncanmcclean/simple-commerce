@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Illuminate\Contracts\Validation\Rule;
 
 class CouponExists implements Rule

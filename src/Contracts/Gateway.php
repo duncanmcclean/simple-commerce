@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
 use Illuminate\Http\Request;
 

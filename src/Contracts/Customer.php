@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
 /**
- * @mixin \DoubleThreeDigital\SimpleCommerce\Customers\Customer
+ * @mixin \DuncanMcClean\SimpleCommerce\Customers\Customer
  */
 interface Customer
 {

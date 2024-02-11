@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Customers;
+namespace DuncanMcClean\SimpleCommerce\Customers;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use Statamic\Stache\Query\EntryQueryBuilder as QueryEntryQueryBuilder;
 
 class EntryQueryBuilder extends QueryEntryQueryBuilder

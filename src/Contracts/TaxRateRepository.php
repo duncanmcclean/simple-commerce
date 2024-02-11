@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts;
 
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\Stache\TaxRate\TaxRateQueryBuilder;
-use DoubleThreeDigital\SimpleCommerce\Tax\Standard\TaxRate;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxRate\TaxRateQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxRate;
 use Statamic\Data\DataCollection;
 
 interface TaxRateRepository

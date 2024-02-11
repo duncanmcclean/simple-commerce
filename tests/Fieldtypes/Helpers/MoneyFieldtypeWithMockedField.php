@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tests\Fieldtypes\Helpers;
+namespace DuncanMcClean\SimpleCommerce\Tests\Fieldtypes\Helpers;
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\MoneyFieldtype;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Statamic\Facades\Collection;
 use Statamic\Fields\Field;
 

@@ -1,10 +1,10 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DoubleThreeDigital\SimpleCommerce\Customers\Customer as CustomersCustomer;
-use DoubleThreeDigital\SimpleCommerce\Customers\EntryQueryBuilder;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
+use DuncanMcClean\SimpleCommerce\Customers\Customer as CustomersCustomer;
+use DuncanMcClean\SimpleCommerce\Customers\EntryQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;

@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
 
 class CalculateItemsTotal
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Currencies;
-use DoubleThreeDigital\SimpleCommerce\Regions;
+use DuncanMcClean\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Currencies;
+use DuncanMcClean\SimpleCommerce\Regions;
 use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;
 

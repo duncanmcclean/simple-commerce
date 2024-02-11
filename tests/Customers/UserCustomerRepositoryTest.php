@@ -1,12 +1,12 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
-use DoubleThreeDigital\SimpleCommerce\Customers\StacheUserQueryBuilder;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Customers\StacheUserQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Statamic\Auth\User as StatamicAuthUser;
@@ -16,8 +16,8 @@ use Statamic\Statamic;
 
 beforeEach(function () {
     Statamic::repository(
-        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository::class
+        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class
     );
 
     File::deleteDirectory(__DIR__.'/../__fixtures__/users');
@@ -27,8 +27,8 @@ beforeEach(function () {
 
 afterEach(function () {
     Statamic::repository(
-        \DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DoubleThreeDigital\SimpleCommerce\Customers\EntryCustomerRepository::class
+        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+        \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class
     );
 });
 

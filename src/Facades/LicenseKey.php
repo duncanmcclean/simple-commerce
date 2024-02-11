@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Facades;
+namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\LicenseKeyRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\LicenseKeyRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DoubleThreeDigital\SimpleCommerce\Products\DigitalProducts\LicenseKeyRepository
+ * @see \DuncanMcClean\SimpleCommerce\Products\DigitalProducts\LicenseKeyRepository
  */
 class LicenseKey extends Facade
 {

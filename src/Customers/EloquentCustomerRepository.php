@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Customers;
+namespace DuncanMcClean\SimpleCommerce\Customers;
 
 use Doctrine\DBAL\Schema\Column;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer;
-use DoubleThreeDigital\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer;
+use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
+use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Schema;
 
 class EloquentCustomerRepository implements RepositoryContract

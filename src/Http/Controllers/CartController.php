@@ -1,12 +1,12 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
-use DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\IndexRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Statamic\Sites\Site as SitesSite;

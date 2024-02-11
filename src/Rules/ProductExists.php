@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Rules;
+namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 use Illuminate\Contracts\Validation\Rule;
 
 class ProductExists implements Rule

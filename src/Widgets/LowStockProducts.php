@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Widgets;
+namespace DuncanMcClean\SimpleCommerce\Widgets;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Widgets\Widget;
 
 class LowStockProducts extends Widget

@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ShippingMethodFieldtype;
-use DoubleThreeDigital\SimpleCommerce\Shipping\FreeShipping;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\Invader;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\ShippingMethodFieldtype;
+use DuncanMcClean\SimpleCommerce\Shipping\FreeShipping;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Statamic\CP\Column;

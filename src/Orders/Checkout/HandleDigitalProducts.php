@@ -1,11 +1,11 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Checkout;
+namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Closure;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Events\DigitalDownloadReady;
-use DoubleThreeDigital\SimpleCommerce\Facades\LicenseKey;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Events\DigitalDownloadReady;
+use DuncanMcClean\SimpleCommerce\Facades\LicenseKey;
 use Illuminate\Support\Facades\URL;
 
 class HandleDigitalProducts

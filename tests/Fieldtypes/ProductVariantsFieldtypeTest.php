@@ -1,6 +1,6 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Fieldtypes\ProductVariantsFieldtype;
+use DuncanMcClean\SimpleCommerce\Fieldtypes\ProductVariantsFieldtype;
 use Statamic\Fields\Field;
 
 it('can preload', function () {

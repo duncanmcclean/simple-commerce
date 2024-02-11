@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\UpdateScripts\v6_0;
+namespace DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Illuminate\Support\Carbon;
 use Statamic\UpdateScripts\UpdateScript;
 

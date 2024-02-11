@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Products;
+namespace DuncanMcClean\SimpleCommerce\Products;
 
 enum ProductType: string
 {

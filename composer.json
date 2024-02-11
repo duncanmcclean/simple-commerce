@@ -1,16 +1,16 @@
 {
-    "name": "doublethreedigital/simple-commerce",
+    "name": "duncanmcclean/simple-commerce",
     "description": "A perfectly simple e-commerce addon for Statamic",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "DoubleThreeDigital\\SimpleCommerce\\": "src"
+            "DuncanMcClean\\SimpleCommerce\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DoubleThreeDigital\\SimpleCommerce\\Tests\\": "tests",
-            "DoubleThreeDigital\\SimpleCommerce\\Tests\\Fixtures\\": "tests/__fixtures__/app"
+            "DuncanMcClean\\SimpleCommerce\\Tests\\": "tests",
+            "DuncanMcClean\\SimpleCommerce\\Tests\\Fixtures\\": "tests/__fixtures__/app"
         }
     },
     "extra": {
@@ -24,7 +24,7 @@
         },
         "laravel": {
             "providers": [
-                "DoubleThreeDigital\\SimpleCommerce\\ServiceProvider"
+                "DuncanMcClean\\SimpleCommerce\\ServiceProvider"
             ]
         }
     },

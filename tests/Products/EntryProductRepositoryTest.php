@@ -1,9 +1,9 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Product as ProductContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\ProductNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Products\EntryQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Contracts\Product as ProductContract;
+use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Products\EntryQueryBuilder;
 
 it('can get all products', function () {
     Product::make()->id('one')->price(1500)->save();

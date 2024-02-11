@@ -1,8 +1,8 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\LineItemTaxCalculator;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\LineItemTaxCalculator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Pipeline;
 

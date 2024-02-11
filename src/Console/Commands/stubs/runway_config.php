@@ -12,13 +12,13 @@ return [
     */
 
     'resources' => [
-        \DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel::class => [
+        \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class => [
             'name' => 'Customers',
             'handle' => 'customers',
             'hidden' => true,
         ],
 
-        \DoubleThreeDigital\SimpleCommerce\Orders\OrderModel::class => [
+        \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class => [
             'name' => 'Orders',
             'handle' => 'orders',
             'hidden' => true,

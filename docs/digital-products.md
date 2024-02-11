@@ -26,7 +26,7 @@ If you'd like to send your customers an email notification after they've purchas
 ```php
 'notifications' => [
     'digital_download_ready' => [
-        \DoubleThreeDigital\SimpleCommerce\Notifications\DigitalDownloadsNotification::class => [
+        \DuncanMcClean\SimpleCommerce\Notifications\DigitalDownloadsNotification::class => [
             'to' => 'customer',
         ],
     ],
@@ -87,7 +87,7 @@ And an invalid one will be like this.
 
 By default, we create a serial license key which you can give to your customers. However, you may want to customise where the code comes from or maybe you want to send it away to a third party service.
 
-To do this, you can create your own license key repository which [implements the one provided by this addon](https://github.com/doublethreedigital/simple-commerce/blob/main/src/Contracts/LicenseKeyRepository.php).
+To do this, you can create your own license key repository which [implements the one provided by this addon](https://github.com/duncanmcclean/simple-commerce/blob/main/src/Contracts/LicenseKeyRepository.php).
 
 To register your repository, you'll need to bind it to our `LicenseKey` facade. You can do this in your `AppServiceProvider`.
 

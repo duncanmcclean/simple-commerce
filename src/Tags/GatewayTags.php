@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
 class GatewayTags extends SubTag
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Coupons;
 
-use DoubleThreeDigital\SimpleCommerce\Customers\EloquentCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\Customers\UserCustomerRepository;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 use Statamic\Fields\Blueprint as FieldsBlueprint;
 

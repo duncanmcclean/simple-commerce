@@ -1,15 +1,15 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tags\CheckoutTags;
-use DoubleThreeDigital\SimpleCommerce\Tags\GatewayTags;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\TestOffsiteGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\TestOnsiteGateway;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tags\CheckoutTags;
+use DuncanMcClean\SimpleCommerce\Tags\GatewayTags;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\TestOffsiteGateway;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\TestOnsiteGateway;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;

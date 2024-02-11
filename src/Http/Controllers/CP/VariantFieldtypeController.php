@@ -1,9 +1,9 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Rules\ProductExists;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Rules\ProductExists;
 use Illuminate\Http\Request;
 
 class VariantFieldtypeController

@@ -37,7 +37,7 @@ return [
 
     'content' => [
         'products' => [
-            'repository' => \DoubleThreeDigital\SimpleCommerce\Products\Product::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Products\Product::class,
             'collection' => 'products', // handle of your collection
         ],
     ],

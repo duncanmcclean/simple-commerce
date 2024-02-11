@@ -1,15 +1,15 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order as ContractsOrder;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Gateways\Builtin\StripeGateway;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Stripe\Customer as StripeCustomer;

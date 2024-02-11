@@ -1,10 +1,10 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders\Cart\Drivers;
+namespace DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers;
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\CartDriver;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order as OrderAPI;
+use DuncanMcClean\SimpleCommerce\Contracts\CartDriver;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderAPI;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;

@@ -1,9 +1,9 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Coupons\Coupon as CouponsCoupon;
-use DoubleThreeDigital\SimpleCommerce\Coupons\CouponType;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Coupons\Coupon as CouponsCoupon;
+use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use Statamic\Facades\Stache;
 
 test('can create', function () {

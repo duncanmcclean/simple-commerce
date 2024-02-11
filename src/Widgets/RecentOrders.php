@@ -1,15 +1,15 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Widgets;
+namespace DuncanMcClean\SimpleCommerce\Widgets;
 
-use DoubleThreeDigital\SimpleCommerce\Currency;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\StatusLogEvent;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Support\Runway;
+use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Orders\StatusLogEvent;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Site;
 use Statamic\Widgets\Widget;
 

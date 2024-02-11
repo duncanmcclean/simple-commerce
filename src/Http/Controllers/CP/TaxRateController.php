@@ -1,16 +1,16 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxCategory;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxRate;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\CreateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\DeleteRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\EditRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxRate\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\CreateRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\DeleteRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\EditRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\IndexRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\StoreRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\UpdateRequest;
 use Statamic\Facades\Stache;
 
 class TaxRateController

@@ -1,9 +1,9 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Orders\Calculator\LineItemCalculator;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\LineItemCalculator;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Pipeline;
 
 uses()->group('calculator');

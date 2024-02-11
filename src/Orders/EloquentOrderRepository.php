@@ -1,16 +1,16 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use Doctrine\DBAL\Schema\Column;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Coupon as CouponContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DoubleThreeDigital\SimpleCommerce\Contracts\Order;
-use DoubleThreeDigital\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\OrderNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupon as CouponContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
+use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Schema;
 
 class EloquentOrderRepository implements RepositoryContract

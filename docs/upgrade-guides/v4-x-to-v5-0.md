@@ -125,13 +125,13 @@ Any existing sites though will be using Card Elements, which just gives you a ba
 */
 
 'gateways' => [
-    \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [ // [tl! focus]
+    \DuncanMcClean\SimpleCommerce\Gateways\Builtin\StripeGateway::class => [ // [tl! focus]
         'key' => env('STRIPE_KEY'), // [tl! focus]
         'secret' => env('STRIPE_SECRET'), // [tl! focus]
         'mode' => 'card_elements',  // [tl! add] [tl! focus]
     ], // [tl! focus]
 
-    \DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
+    \DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
         'display' => 'Card',
     ],
 ],

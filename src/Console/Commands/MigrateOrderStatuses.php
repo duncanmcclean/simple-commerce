@@ -1,14 +1,14 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Console\Commands;
+namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use Carbon\Carbon;
-use DoubleThreeDigital\SimpleCommerce\Orders\EloquentOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\EntryOrderRepository;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderModel;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Artisan;

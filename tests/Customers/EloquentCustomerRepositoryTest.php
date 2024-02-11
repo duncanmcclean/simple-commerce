@@ -1,11 +1,11 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DoubleThreeDigital\SimpleCommerce\Customers\CustomerModel;
-use DoubleThreeDigital\SimpleCommerce\Customers\EloquentQueryBuilder;
-use DoubleThreeDigital\SimpleCommerce\Exceptions\CustomerNotFound;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
+use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
+use DuncanMcClean\SimpleCommerce\Customers\CustomerModel;
+use DuncanMcClean\SimpleCommerce\Customers\EloquentQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\UseDatabaseContentDrivers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);

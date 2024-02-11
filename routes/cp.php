@@ -1,16 +1,16 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\Coupons\CouponListingController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\RegionController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\ResendNotificationsController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\StatusLogController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxRateController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\TaxZoneController;
-use DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP\VariantFieldtypeController;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponListingController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\RegionController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\ResendNotificationsController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\StatusLogController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\TaxCategoryController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\TaxRateController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\TaxZoneController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\VariantFieldtypeController;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {

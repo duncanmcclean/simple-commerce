@@ -1,6 +1,6 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Tax;
+namespace DuncanMcClean\SimpleCommerce\Tax;
 
 class TaxCalculation
 {

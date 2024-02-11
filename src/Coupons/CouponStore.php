@@ -1,8 +1,8 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Coupons;
+namespace DuncanMcClean\SimpleCommerce\Coupons;
 
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Illuminate\Support\Arr;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;

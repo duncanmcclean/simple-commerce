@@ -1,15 +1,15 @@
 <?php
 
-namespace DoubleThreeDigital\SimpleCommerce\Http\Controllers\CP;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
-use DoubleThreeDigital\SimpleCommerce\Countries;
-use DoubleThreeDigital\SimpleCommerce\Facades\TaxZone;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\CreateRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\DeleteRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\EditRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\IndexRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\StoreRequest;
-use DoubleThreeDigital\SimpleCommerce\Http\Requests\CP\TaxZone\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Countries;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\CreateRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\DeleteRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\EditRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\IndexRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\StoreRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\UpdateRequest;
 use Statamic\Facades\Stache;
 
 class TaxZoneController

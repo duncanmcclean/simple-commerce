@@ -1,26 +1,26 @@
 <?php
 
-use DoubleThreeDigital\SimpleCommerce\Events\OrderStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\PaymentStatusUpdated;
-use DoubleThreeDigital\SimpleCommerce\Events\PostCheckout;
-use DoubleThreeDigital\SimpleCommerce\Events\PreCheckout;
-use DoubleThreeDigital\SimpleCommerce\Events\StockRunningLow;
-use DoubleThreeDigital\SimpleCommerce\Events\StockRunOut;
-use DoubleThreeDigital\SimpleCommerce\Facades\Coupon;
-use DoubleThreeDigital\SimpleCommerce\Facades\Customer;
-use DoubleThreeDigital\SimpleCommerce\Facades\Order;
-use DoubleThreeDigital\SimpleCommerce\Facades\Product;
-use DoubleThreeDigital\SimpleCommerce\Gateways\Builtin\DummyGateway;
-use DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid;
-use DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid;
-use DoubleThreeDigital\SimpleCommerce\Orders\OrderStatus;
-use DoubleThreeDigital\SimpleCommerce\Orders\PaymentStatus;
-use DoubleThreeDigital\SimpleCommerce\SimpleCommerce;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\TestCheckoutErrorGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Gateways\TestValidationGateway;
-use DoubleThreeDigital\SimpleCommerce\Tests\Fixtures\Http\Requests\CheckoutFormRequest;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\RefreshContent;
-use DoubleThreeDigital\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Events\PostCheckout;
+use DuncanMcClean\SimpleCommerce\Events\PreCheckout;
+use DuncanMcClean\SimpleCommerce\Events\StockRunningLow;
+use DuncanMcClean\SimpleCommerce\Events\StockRunOut;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DuncanMcClean\SimpleCommerce\Notifications\BackOfficeOrderPaid;
+use DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\TestCheckoutErrorGateway;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\TestValidationGateway;
+use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CheckoutFormRequest;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
+use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -2222,10 +2222,10 @@ test('can post checkout and ensure user is redirected', function () {
 
 test('can post checkout and ensure order paid notifications are sent', function () {
     config(['simple-commerce.notifications.order_paid' => [
-        \DoubleThreeDigital\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+        \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
             'to' => 'customer',
         ],
-        \DoubleThreeDigital\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+        \DuncanMcClean\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
             'to' => 'duncan@example.com',
         ],
     ]]);
