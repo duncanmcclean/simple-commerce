@@ -19,6 +19,7 @@ In the Control Panel, admins can then mark orders as **Dispatched** or as **Canc
 -   Cart
 -   Placed
 -   Dispatched (renamed from Shipped)
+-   Delivered
 -   Cancelled
 
 **Payment Statuses:**
@@ -33,7 +34,7 @@ In the Control Panel, admins can then mark orders as **Dispatched** or as **Canc
 
 In the Control Panel, when you're viewing orders in the List view, you'll see a "Update Order Status" action.
 
-### Programatically 
+### Programatically
 
 If you wish to update the order status programatically, simply use the `updateOrderStatus` method available on `Order`s.
 
