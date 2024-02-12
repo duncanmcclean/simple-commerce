@@ -72,7 +72,7 @@ it('can query orders', function () {
         'items' => [
             ['product' => $productOne->id(), 'quantity' => 1, 'total' => 1000],
         ],
-        'data' => ['foo' => 'bar'],
+        'data' => ['foo' => 'bar', 'hello' => 'world'],
     ]);
 
     $orderModelA->statusLog()->create(['status' => 'cart', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
@@ -85,7 +85,7 @@ it('can query orders', function () {
         'items' => [
             ['product' => $productTwo->id(), 'quantity' => 1, 'total' => 1000],
         ],
-        'data' => ['boo' => 'foo'],
+        'data' => ['boo' => 'foo', 'hello' => 'universe'],
     ]);
 
     $orderModelB->statusLog()->create(['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
@@ -99,7 +99,7 @@ it('can query orders', function () {
             ['product' => $productOne->id(), 'quantity' => 1, 'total' => 1000],
             ['product' => $productTwo->id(), 'quantity' => 1, 'total' => 1000],
         ],
-        'data' => ['baz' => 'fax'],
+        'data' => ['baz' => 'fax', 'hello' => 'world'],
     ]);
 
     $orderModelC->statusLog()->create(['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []]);
@@ -129,6 +129,16 @@ it('can query orders', function () {
     expect($query->get()[0])
         ->toBeInstanceOf(OrderContract::class)
         ->and($query->get()[0]->orderNumber())->toBe(1003);
+    expect($query->get()[1])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[1]->orderNumber())->toBe(1004);
+
+    // Ensure we can query by data
+    $query = Order::query()->where('hello', 'world');
+    expect($query->count())->toBe(2);
+    expect($query->get()[0])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[0]->orderNumber())->toBe(1002);
     expect($query->get()[1])
         ->toBeInstanceOf(OrderContract::class)
         ->and($query->get()[1]->orderNumber())->toBe(1004);

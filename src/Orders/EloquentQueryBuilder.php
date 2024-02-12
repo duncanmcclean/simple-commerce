@@ -4,7 +4,9 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use Carbon\Carbon;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Statamic\Facades\Blink;
 use Statamic\Query\EloquentQueryBuilder as QueryEloquentQueryBuilder;
 
 class EloquentQueryBuilder extends QueryEloquentQueryBuilder
@@ -22,6 +24,18 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
 
         if ($column === 'customer') {
             return 'customer_id';
+        }
+
+        $databaseColumns = Blink::once("DatabaseColumns_{$this->builder->getModel()->getTable()}", function () {
+            $columns = Schema::getConnection()
+                ->getDoctrineSchemaManager()
+                ->listTableColumns($this->builder->getModel()->getTable());
+
+            return collect($columns)->map->getName()->values();
+        });
+
+        if (! $databaseColumns->contains($column)) {
+            $column = "data->{$column}";
         }
 
         return $column;
