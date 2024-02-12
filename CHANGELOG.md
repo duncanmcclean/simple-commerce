@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.0.4 (2024-02-12)
+
+### What's fixed
+* Fixed querying data in Eloquent Query Builders #1002 #1004 by @duncanmcclean
+
+
+
 ## v6.0.3 (2024-02-11)
 
 ### What's fixed
