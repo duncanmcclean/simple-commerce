@@ -26,15 +26,7 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
             return 'customer_id';
         }
 
-        $databaseColumns = Blink::once("DatabaseColumns_{$this->builder->getModel()->getTable()}", function () {
-            $columns = Schema::getConnection()
-                ->getDoctrineSchemaManager()
-                ->listTableColumns($this->builder->getModel()->getTable());
-
-            return collect($columns)->map->getName()->values();
-        });
-
-        if (! $databaseColumns->contains($column)) {
+        if (! $this->columnExists($column)) {
             $column = "data->{$column}";
         }
 
@@ -80,5 +72,18 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
                 ->where('status', $status->value)
                 ->whereDate('timestamp', $date->format('Y-m-d'));
         });
+    }
+
+    protected function columnExists(string $column): bool
+    {
+        $databaseColumns = Blink::once("DatabaseColumns_{$this->builder->getModel()->getTable()}", function () {
+            $columns = Schema::getConnection()
+                ->getDoctrineSchemaManager()
+                ->listTableColumns($this->builder->getModel()->getTable());
+
+            return collect($columns)->map->getName()->values();
+        });
+
+        return $databaseColumns->contains($column);
     }
 }
