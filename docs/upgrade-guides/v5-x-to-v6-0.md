@@ -80,7 +80,7 @@ This is to allow developers to change their namespaces without forcing all proje
 
 Your orders should be automatically updated with this change as part of the update process.
 
-If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` in your site's shipping & checkout pages and change any instances to `{{ handle }}`.
+If you're manually referencing gateway / shipping method class names anywhere, you should instead reference the handle. To determine if you're referencing class names, search for `{{ class }}` or `{{ formatted_class }}` in your site's shipping & checkout pages and replace any instances with `{{ handle }}`.
 
 ### High: Runway v6
 
