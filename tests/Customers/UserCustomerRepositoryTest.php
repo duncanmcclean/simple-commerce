@@ -46,7 +46,7 @@ test('can get all customers', function () {
 });
 
 test('can query customers', function () {
-    User::make()->email('james@example.com')->save();
+    User::make()->email('james@example.com')->set('role', 'Press Secretary')->save();
     User::make()->email('ben@example.com')->save();
 
     $query = Customer::query();
@@ -56,6 +56,12 @@ test('can query customers', function () {
     $query = Customer::query()->where('email', 'james@example.com');
     expect($query->count())->toBe(1);
     expect($query->get()[0])->toBeInstanceOf(CustomerContract::class);
+
+    $query = Customer::query()->where('role', 'Press Secretary');
+    expect($query->count())->toBe(1);
+    expect($query->get()[0])
+        ->toBeInstanceOf(CustomerContract::class)
+        ->and($query->get()[0]->email())->toBe('james@example.com');
 });
 
 test('can find customer by id', function () {

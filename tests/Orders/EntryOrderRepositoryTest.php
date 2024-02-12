@@ -42,6 +42,7 @@ it('can query orders', function () {
         ->set('status_log', [
             ['status' => 'cart', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []],
         ])
+        ->set('hello', 'world')
         ->save();
 
     Order::make()
@@ -52,6 +53,7 @@ it('can query orders', function () {
             ['status' => 'placed', 'timestamp' => Carbon::parse('2024-01-27 15:00:00')->timestamp, 'data' => []],
             ['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 17:55:00')->timestamp, 'data' => []],
         ])
+        ->set('hello', 'universe')
         ->save();
 
     Order::make()
@@ -63,6 +65,7 @@ it('can query orders', function () {
             ['status' => 'paid', 'timestamp' => Carbon::parse('2024-01-27 15:20:00')->timestamp, 'data' => []],
             ['status' => 'dispatched', 'timestamp' => Carbon::parse('2024-01-29 12:12:12')->timestamp, 'data' => []],
         ])
+        ->set('hello', 'world')
         ->save();
 
     // Ensure all 3 orders are returned when we're not doing any filtering.
@@ -88,6 +91,16 @@ it('can query orders', function () {
     expect($query->get()[0])
         ->toBeInstanceOf(OrderContract::class)
         ->and($query->get()[0]->id())->toBe('two');
+    expect($query->get()[1])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[1]->id())->toBe('three');
+
+    // Ensure we can query by data
+    $query = Order::query()->where('hello', 'world');
+    expect($query->count())->toBe(2);
+    expect($query->get()[0])
+        ->toBeInstanceOf(OrderContract::class)
+        ->and($query->get()[0]->id())->toBe('one');
     expect($query->get()[1])
         ->toBeInstanceOf(OrderContract::class)
         ->and($query->get()[1]->id())->toBe('three');

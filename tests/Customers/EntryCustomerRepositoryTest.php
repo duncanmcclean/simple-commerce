@@ -29,7 +29,7 @@ it('can get all customers', function () {
 });
 
 it('can query customers', function () {
-    Customer::make()->email('cj.cregg@whitehouse.gov')->save();
+    Customer::make()->email('cj.cregg@whitehouse.gov')->set('role', 'Press Secretary')->save();
     Customer::make()->email('leo.mcgary@whitehouse.gov')->save();
     Customer::make()->email('sam.seaborne@whitehouse.gov')->save();
 
@@ -40,6 +40,12 @@ it('can query customers', function () {
     $query = Customer::query()->where('email', 'cj.cregg@whitehouse.gov');
     expect($query->count())->toBe(1);
     expect($query->get()[0])->toBeInstanceOf(CustomerContract::class);
+
+    $query = Customer::query()->where('role', 'Press Secretary');
+    expect($query->count())->toBe(1);
+    expect($query->get()[0])
+        ->toBeInstanceOf(CustomerContract::class)
+        ->and($query->get()[0]->email())->toBe('cj.cregg@whitehouse.gov');
 });
 
 it('can find customer by id', function () {

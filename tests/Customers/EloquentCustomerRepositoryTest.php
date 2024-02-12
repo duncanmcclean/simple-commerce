@@ -61,6 +61,12 @@ it('can query customers', function () {
     $query = Customer::query()->where('email', 'cj@whitehouse.gov');
     expect($query->count())->toBe(1);
     expect($query->get()[0])->toBeInstanceOf(CustomerContract::class);
+
+    $query = Customer::query()->where('role', 'Press Secretary');
+    expect($query->count())->toBe(1);
+    expect($query->get()[0])
+        ->toBeInstanceOf(CustomerContract::class)
+        ->and($query->get()[0]->email())->toBe('cj@whitehouse.gov');
 });
 
 it('can find customer by id', function () {
