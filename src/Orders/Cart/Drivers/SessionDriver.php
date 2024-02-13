@@ -25,7 +25,7 @@ class SessionDriver implements CartDriver
         }
 
         try {
-            return OrderAPI::find($this->getCartKey());
+            return OrderAPI::findOrFail($this->getCartKey());
         } catch (OrderNotFound $e) {
             return $this->makeCart();
         }
