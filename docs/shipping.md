@@ -93,7 +93,7 @@ It'll provide you with variables like name & cost for each of the available ship
 
 Once the customer has submitted the form, Simple Commerce will update the order totals using the chosen shipping method.
 
-### Default Shipping Method
+## Default Shipping Method
 
 Normally, Simple Commerce won't calculate the Shipping Total for an order until the customer's entered their shipping address & selected the shipping method they'd like to use.
 
@@ -107,7 +107,7 @@ The default shipping method will be used when calculating the Shipping Total for
         ...
 
         'shipping' => [
-            'default_method' => \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class,
+            'default_method' => 'free_shipping',
 
             'methods' => [
                 \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],
