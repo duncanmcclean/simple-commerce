@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.0.5 (2024-02-13)
+
+### What's fixed
+* Prevented an error from occuring from cart drivers when the customer has no cart #1005 #1007 by @duncanmcclean
+* Fixed a typo #1008 by @duncanmcclean
+
+
+
 ## v6.0.4 (2024-02-12)
 
 ### What's fixed
