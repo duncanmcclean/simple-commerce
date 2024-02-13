@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.0.6 (2024-02-13)
+
+### What's fixed
+* Fix error when redirecting back from off-site gateways #1010 #1012 by @duncanmcclean
+* Database Orders: Fixed `Serialization of 'PDO' is not allowed` when adding items to cart #1003 #1013 by @duncanmcclean
+* Database Orders: Fixed augmentation of Status Log fieldtype #1014 by @duncanmcclean
+
+
+
 ## v6.0.5 (2024-02-13)
 
 ### What's fixed
