@@ -35,7 +35,7 @@ class GatewayCallbackController extends BaseActionController
         }
 
         try {
-            $callbackSuccess = Gateway::use($gateway['class'])->callback($request);
+            $callbackSuccess = Gateway::use($gateway['handle'])->callback($request);
         } catch (GatewayCallbackMethodDoesNotExist $e) {
             $callbackSuccess = $order->paymentStatus() === PaymentStatus::Paid;
         }
