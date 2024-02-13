@@ -19,18 +19,18 @@ class BaseActionController extends Controller
             return response()->json($data);
         }
 
-        // The cart is only useful in a JSON response, so we'll remove it from
-        // the $data array before we pass it to the view.
-        if (Arr::has($data, 'cart')) {
-            unset($data['cart']);
-        }
-
         if (Arr::has($data, 'is_checkout_request')) {
             $request->session()->put('simple-commerce.checkout.success', [
                 'order_id' => $data['cart']['id'],
                 'expiry' => now()->addMinutes(30),
                 'url' => $request->_redirect,
             ]);
+        }
+
+        // The cart is only useful in a JSON response, so we'll remove it from
+        // the $data array before we pass it to the view.
+        if (Arr::has($data, 'cart')) {
+            unset($data['cart']);
         }
 
         return $request->_redirect ?
