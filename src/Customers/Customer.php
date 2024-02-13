@@ -4,7 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Customers;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Customer as Contract;
 use DuncanMcClean\SimpleCommerce\Data\HasData;
-use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Customer as CustomerFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Http\Resources\BaseResource;
@@ -82,11 +81,7 @@ class Customer implements Contract
         $orders = $this->get('orders', []);
 
         return collect($orders)->map(function ($orderId) {
-            try {
-                return Order::find($orderId);
-            } catch (OrderNotFound $e) {
-                return null;
-            }
+            return Order::find($orderId);
         })->filter()->values();
     }
 

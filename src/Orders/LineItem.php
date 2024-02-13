@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Product;
-use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -46,11 +45,7 @@ class LineItem
                     return $product;
                 }
 
-                try {
-                    return ProductFacade::find($product);
-                } catch (ProductNotFound $e) {
-                    return null;
-                }
+                return ProductFacade::find($product);
             })
             ->args(func_get_args());
     }
