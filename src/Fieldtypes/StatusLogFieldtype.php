@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Orders\StatusLogEvent;
+use DuncanMcClean\SimpleCommerce\Orders\StatusLogModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Statamic\Fields\Fieldtype;
 
@@ -34,6 +36,15 @@ class StatusLogFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        // When orders are stored in the database, the status log is stored as a HasMany relationship.
+        if ($value instanceof HasMany) {
+            $value = $value->get();
+
+            $value = collect($value)->map(function (StatusLogModel $statusLogModel) {
+                return ['status' => $statusLogModel->status, 'timestamp' => $statusLogModel->timestamp, 'data' => $statusLogModel->data ?? []];
+            });
+        }
+
         // Support the old format for the status log. We can remove this in the future.
         if (! empty($value) && ! is_array(Arr::first($value))) {
             $value = collect($value)->map(function ($date, $status) {
