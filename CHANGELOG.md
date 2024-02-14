@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.0.7 (2024-02-14)
+
+### What's fixed
+* Fixed error in gateway webhook #1010 by @duncanmcclean
+
+
+
 ## v6.0.6 (2024-02-13)
 
 ### What's fixed
