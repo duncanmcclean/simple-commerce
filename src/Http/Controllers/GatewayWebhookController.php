@@ -24,6 +24,6 @@ class GatewayWebhookController extends BaseActionController
 
         event(new GatewayWebhookReceived($request->all()));
 
-        return Gateway::use($gateway['class'])->webhook($request);
+        return Gateway::use($gateway['handle'])->webhook($request);
     }
 }
