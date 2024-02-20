@@ -153,7 +153,7 @@ class MollieGateway extends BaseGateway implements Gateway
     protected function getOrderFromWebhookRequest(Request $request): ?Order
     {
         return OrderFacade::query()
-            ->where('data->mollie->id', $request->get('id'))
+            ->where('mollie->id', $request->get('id'))
             ->first();
     }
 }
