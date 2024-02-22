@@ -20,7 +20,7 @@ class ShippingCalculator
 
         $order->shippingTotal(
             Shipping::site(Site::current()->handle())
-                ->use($shippingMethod ?? $defaultShippingMethod::handle())
+                ->use($shippingMethod ?? $defaultShippingMethod)
                 ->calculateCost($order)
         );
 
