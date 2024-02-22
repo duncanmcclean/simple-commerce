@@ -29,7 +29,7 @@ it('does not calculate shipping total without default shipping method or shippin
 
 it('calculates shipping total using default shipping method', function () {
     SimpleCommerce::registerShippingMethod(Site::current()->handle(), Postage::class);
-    Config::set('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method', Postage::class);
+    Config::set('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method', 'postage');
 
     $product = Product::make()->price(1000);
     $product->save();
