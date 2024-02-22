@@ -57,9 +57,15 @@ class StatusLogFieldtype extends Fieldtype
         }
 
         return collect($value)->map(function (array $statusLogEvent) {
+            // When orders are stored in the database, the timestamp is cast to a Carbon instance.
+            // However, to pass it into the StatusLogEvent class, we need to convert it back to a timestamp.
+            $timestamp = $statusLogEvent['timestamp'] instanceof Carbon
+                ? $statusLogEvent['timestamp']->timestamp
+                : $statusLogEvent['timestamp'];
+
             return new StatusLogEvent(
                 $statusLogEvent['status'],
-                $statusLogEvent['timestamp'],
+                $timestamp,
                 $statusLogEvent['data'] ?? []
             );
         });
