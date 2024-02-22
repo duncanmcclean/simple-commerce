@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.0.8 (2024-02-22)
+
+### What's fixed
+* Fixed an error with the Status Log fieldtype when storing orders in the database #1022 by @duncanmcclean
+* Fixed an error when adding items to the cart with a default shipping method configured #1019 #1021 by @duncanmcclean
+* Fixed an issue where the Mollie Webhook couldn't find related orders when storing orders in the database #1018 by @duncanmcclean
+
+
+
 ## v6.0.7 (2024-02-14)
 
 ### What's fixed
