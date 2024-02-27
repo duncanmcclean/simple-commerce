@@ -40,22 +40,54 @@ let params = {
 };
 ```
 
-## Example
+## Examples
+
+To get you started, here's two examples of making requests to Simple Commerce endpoints using `axios` and Javascript's native `fetch` API:
+
+### `axios`
 
 Here's a quick & basic example of using Axios to make an HTTP request to one of Simple Commerce's endpoints.
 
 ```js
 let params = {
   _token: "{{ csrf_token }}",
- _request: 'Empty',
- '_error_redirect': 'Empty',
- '_redirect': 'Empty',
+  _request: 'Empty',
+  '_error_redirect': 'Empty',
+  '_redirect': 'Empty',
   product: "your-product-id",
   quantity: 1,
 };
 
 axios.post("/!/simple-commerce/cart-items", params).then((response) => {
-  console.alert("Whoop! The product has been added to your cart");
+  console.log("Woo hoo! The product has been added to your cart");
+});
+```
+
+### `fetch`
+
+Here's a quick example of using JavaScript's native `fetch` API to make an HTTP request to one of Simple Commerce's endpoints. Make sure you pass the `Accept` & `Content-Type` headers, otherwise you won't receive the expected response.
+
+```js
+let headers = {
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+};
+
+let body = {
+  _token: "{{ csrf_token }}",
+  _request: 'Empty',
+  '_error_redirect': 'Empty',
+  '_redirect': 'Empty',
+  product: "your-product-id",
+  quantity: 1,
+};
+
+fetch("/!/simple-commerce/cart-items", {
+  method: "POST",
+  headers: headers,
+  body: JSON.stringify(body),
+}).then((response) => {
+  console.log("Woo hoo! The product has been added to your cart");
 });
 ```
 
