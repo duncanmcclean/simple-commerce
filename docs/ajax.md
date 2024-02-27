@@ -47,6 +47,9 @@ Here's a quick & basic example of using Axios to make an HTTP request to one of 
 ```js
 let params = {
   _token: "{{ csrf_token }}",
+ _request: 'Empty',
+ '_error_redirect': 'Empty',
+ '_redirect': 'Empty',
   product: "your-product-id",
   quantity: 1,
 };
@@ -58,15 +61,15 @@ axios.post("/!/simple-commerce/cart-items", params).then((response) => {
 
 ## Form Parameter Validation
 
-Since v3.0, Simple Commerce will expect three parameters in every request to a Simple Commerce endpoint:
+Simple Commerce expects three parameters to be included in every request:
 
 - `_redirect`
 - `_error_redirect`
 - `_request`
 
-Usually, if you use Simple Commerce's built-in tags to build the `<form>` elements, it would take the given value and encrypt it. However, you'll likley want to disable the encryption aspect of this when using AJAX.
+When you use Simple Commerce's built-in tags to build the `<form>` elements, it takes the provided value and encrypts it to prevent tampering. 
 
-You can disable the behaviour by adding the following to your configuration file:
+However, when sending forms with AJAX, you're not always able to encrypt the values. In this case, you can disable the behaviour by adding the following setting to your configuration file:
 
 ```php
 // config/simple-commerce
