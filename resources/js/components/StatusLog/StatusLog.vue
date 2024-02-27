@@ -15,7 +15,7 @@
             </div>
 
             <div v-if="!loading && statusLog.length === 0" class="p-4 text-gray text-sm">
-                {{ __('No revisions') }}
+                {{ __('No status log events.') }}
             </div>
 
             <div
