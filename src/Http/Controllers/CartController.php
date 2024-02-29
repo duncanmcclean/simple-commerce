@@ -22,7 +22,7 @@ class CartController extends BaseActionController
         }
 
         return [
-            'cart' => $this->getCart()
+            'data' => $this->getCart()
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()
