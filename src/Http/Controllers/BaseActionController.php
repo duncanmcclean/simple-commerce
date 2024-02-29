@@ -10,16 +10,6 @@ class BaseActionController extends Controller
 {
     protected function withSuccess(Request $request, array $data = [])
     {
-        // The cart is only useful in a JSON response, so we'll remove it from
-        // the $data array before we pass it to the view.
-        if (Arr::has($data, 'cart')) {
-            // dd($data['cart']);
-            // unset($data['cart']['customer']);
-            // unset($data['cart']['customer_id']);
-
-            // dd($data['cart']['customer']);
-        }
-
         if ($request->wantsJson()) {
             $data = array_merge($data, [
                 'status' => 'success',
