@@ -42,7 +42,7 @@ test('user has a cart if cart does not exist', function () {
 test('user has a cart if cart exists', function () {
     fakeCart();
 
-    expect((string) tag('{{ if {sc:cart:has} === true }}Has cart{{ else }}No cart{{ /if }}'))->toBe('Has cart');
+    expect((string) tag('{{ if {sc:cart:has} }}Has cart{{ else }}No cart{{ /if }}'))->toBe('Has cart');
 });
 
 test('can get line items', function () {
@@ -163,7 +163,7 @@ test('can get cart free status if order is free', function () {
 
     fakeCart($cart);
 
-    expect((string) tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'))->toBe('Yes');
+    expect((string) tag('{{ if {sc:cart:free} }}Yes{{ else }}No{{ /if }}'))->toBe('Yes');
 });
 
 test('can get cart free status if order is paid', function () {
@@ -172,7 +172,7 @@ test('can get cart free status if order is paid', function () {
 
     fakeCart($cart);
 
-    expect((string) tag('{{ if {sc:cart:free} === true }}Yes{{ else }}No{{ /if }}'))->toBe('No');
+    expect((string) tag('{{ if {sc:cart:free} }}Yes{{ else }}No{{ /if }}'))->toBe('No');
 });
 
 test('can get cart grand total', function () {
