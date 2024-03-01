@@ -119,7 +119,11 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Added to Cart'),
-            'cart' => $cart->fresh()->toAugmentedArray(),
+            'cart' => $cart
+                ->toAugmentedCollection()
+                ->withRelations(['customer', 'customer_id'])
+                ->withShallowNesting()
+                ->toArray(),
         ]);
     }
 
@@ -163,7 +167,11 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Line Item Updated'),
-            'cart' => $cart->toAugmentedArray(),
+            'cart' => $cart
+                ->toAugmentedCollection()
+                ->withRelations(['customer', 'customer_id'])
+                ->withShallowNesting()
+                ->toArray(),
         ]);
     }
 
@@ -175,7 +183,11 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Item Removed from Cart'),
-            'cart' => $cart->toAugmentedArray(),
+            'cart' => $cart
+                ->toAugmentedCollection()
+                ->withRelations(['customer', 'customer_id'])
+                ->withShallowNesting()
+                ->toArray(),
         ]);
     }
 

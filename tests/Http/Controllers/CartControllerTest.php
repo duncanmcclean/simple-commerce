@@ -674,7 +674,6 @@ test('can destroy cart and request json response', function () {
     $response->assertJsonStructure([
         'status',
         'message',
-        'cart',
     ]);
 
     $cart = $cart->fresh();

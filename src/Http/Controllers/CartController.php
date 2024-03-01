@@ -24,6 +24,7 @@ class CartController extends BaseActionController
         return [
             'data' => $this->getCart()
                 ->toAugmentedCollection()
+                ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()
                 ->toArray(),
         ];
@@ -58,7 +59,11 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Updated'),
-            'cart' => $cart->toAugmentedArray(),
+            'cart' => $cart
+                ->toAugmentedCollection()
+                ->withRelations(['customer', 'customer_id'])
+                ->withShallowNesting()
+                ->toArray(),
         ]);
     }
 
@@ -72,7 +77,6 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Deleted'),
-            'cart' => null,
         ]);
     }
 
