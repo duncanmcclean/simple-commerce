@@ -7,6 +7,7 @@ package-lock.json
 .idea
 .antlers.json
 composer.lock
+.phpunit.cache
 
 tests/__fixtures__/users/*.yaml
 
