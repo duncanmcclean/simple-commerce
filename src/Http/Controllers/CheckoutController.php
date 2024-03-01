@@ -52,7 +52,7 @@ class CheckoutController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Checkout Complete!'),
-            'cart' => $this->getCart()
+            'cart' => $this->order
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()

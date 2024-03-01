@@ -25,7 +25,7 @@ class CouponController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Coupon added to cart'),
-            'cart' => $this->getCart()
+            'cart' => $cart
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()
@@ -45,7 +45,7 @@ class CouponController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Coupon removed from cart'),
-            'cart' => $this->getCart()
+            'cart' => $cart
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()

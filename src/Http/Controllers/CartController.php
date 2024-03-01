@@ -59,7 +59,7 @@ class CartController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Cart Updated'),
-            'cart' => $this->getCart()
+            'cart' => $cart
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()
