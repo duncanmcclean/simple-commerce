@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.0.9 (2024-03-01)
+
+### What's fixed
+* Fix "Recursion detected" error with cart endpoints #1024 #1025 by @duncanmcclean
+* Changed empty state message on Status Log stack by @duncanmcclean
+
+
+
 ## v6.0.8 (2024-02-22)
 
 ### What's fixed
