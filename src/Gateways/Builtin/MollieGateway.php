@@ -96,6 +96,9 @@ class MollieGateway extends BaseGateway implements Gateway
                 return;
             }
 
+            $order->gatewayData(data: (array) $payment);
+            $order->save();
+
             $this->markOrderAsPaid($order);
         }
 
