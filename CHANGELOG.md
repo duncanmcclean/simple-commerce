@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.0.10 (2024-03-06)
+
+### What's fixed
+* Fixed missing gateway data for payments via Mollie #1026 #1029 by @duncanmcclean
+* Fixed the Shipping Method fieldtype not finding shipping methods #1026 #1028 by @duncanmcclean
+
+
+
 ## v6.0.9 (2024-03-01)
 
 ### What's fixed
