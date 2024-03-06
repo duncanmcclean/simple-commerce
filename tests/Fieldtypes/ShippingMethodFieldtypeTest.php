@@ -40,7 +40,7 @@ test('can get columns', function () {
 });
 
 test('can return as item array', function () {
-    $toItemArray = $this->fieldtype->toItemArray(FreeShipping::class);
+    $toItemArray = $this->fieldtype->toItemArray(FreeShipping::handle());
 
     expect($toItemArray)->toBeArray();
 
@@ -51,7 +51,7 @@ test('can return as item array', function () {
 });
 
 test('can preprocess index', function () {
-    $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::class);
+    $preProcessIndex = $this->fieldtype->preProcessIndex(FreeShipping::handle());
 
     expect($preProcessIndex)->toBeString();
     expect('Free Shipping')->toBe($preProcessIndex);

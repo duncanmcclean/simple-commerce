@@ -60,7 +60,7 @@ class ShippingMethodFieldtype extends Relationship
         $site = Site::selected();
 
         $shippingMethod = SimpleCommerce::shippingMethods($site->handle())
-            ->where('class', $value)
+            ->where('handle', $value)
             ->first();
 
         if (! $shippingMethod) {
@@ -83,7 +83,7 @@ class ShippingMethodFieldtype extends Relationship
             $site = Site::selected();
 
             $shippingMethod = SimpleCommerce::shippingMethods($site->handle())
-                ->where('class', $item)
+                ->where('handle', $item)
                 ->first();
 
             if (! $shippingMethod) {
