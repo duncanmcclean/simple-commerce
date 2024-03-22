@@ -140,7 +140,7 @@ First, in order to customise the Eloquent model, you'll need to create your own 
 
 ```php
 \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class => [ // [tl! remove]
-\App\Models\Order::class => [ // [tl! remove]
+\App\Models\Order::class => [ // [tl! add]
     // ...
 ],
 ```
