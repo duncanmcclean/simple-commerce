@@ -429,6 +429,12 @@ test('can get cart tax total split', function () {
     $taxReduced = $cartProduct3->tax()['amount'];
     $taxReducedFormatted = Currency::parse($taxReduced, Site::default());
 
+    // Expected tag output format = '19:1234|7:5678'
+    $renderedTag = (string) tag('{{ sc:cart:rawTaxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:rawTaxTotalSplit }}');
+
+    expect($renderedTag)->toContain($taxRateDefault->rate().':'.$taxDefault);
+    expect($renderedTag)->toContain($taxRateReduced->rate().':'.$taxReduced);
+
     // Expected tag output format = '7:£12.34|19:£56.78'
     $renderedTag = (string) tag('{{ sc:cart:taxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:taxTotalSplit }}');
 
