@@ -160,16 +160,16 @@ class CartTags extends SubTag
 
     public function rawTaxTotalSplit(): Collection
     {
-        return collect($this->items())
-            ->groupBy(function ($item) {
-                return $item['tax']['rate'];
-            })
-            ->map(function ($group, $groupRate) {
+        if (! $this->hasCart()) {
+            return collect();
+        }
+
+        return $this->getCart()->lineItems()
+            ->groupBy(fn ($lineItem) => $lineItem->tax()['rate'])
+            ->map(function ($group, $rate) {
                 return [
-                    'rate' => $groupRate,
-                    'amount' => $group->sum(function ($item) {
-                        return $item['tax']['amount'];
-                    }),
+                    'rate' => $rate,
+                    'amount' => $group->sum(fn ($lineItem) => $lineItem->tax()['amount']),
                 ];
             })
             ->values();
