@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.0.11 (2024-04-02)
+
+### What's fixed
+
+* Fixed error with `{{ sc:cart:raw_tax_total_split }}` tag #1037 by @duncanmcclean
+
+
+
 ## v6.0.10 (2024-03-06)
 
 ### What's fixed
