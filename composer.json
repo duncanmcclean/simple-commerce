@@ -50,7 +50,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/duncanmcclean/proteus"
+            "url": "git@github.com:duncanmcclean/proteus.git"
         }
     ],
     "config": {
