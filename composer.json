@@ -40,13 +40,19 @@
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
-        "statamic-rad-pack/runway": "statamic-5",
+        "statamic-rad-pack/runway": "dev-statamic-5",
         "orchestra/testbench": "^8.0 || ^9.0",
         "pestphp/pest": "^2.2",
         "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/ray": "^1.17",
         "spatie/test-time": "^1.3"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/duncanmcclean/proteus"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
