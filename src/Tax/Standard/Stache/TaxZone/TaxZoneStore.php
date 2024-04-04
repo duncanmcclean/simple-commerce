@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxZone;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
+use Statamic\Support\Arr;
 
 class TaxZoneStore extends BasicStore
 {
@@ -17,18 +18,18 @@ class TaxZoneStore extends BasicStore
     {
         $data = YAML::file($path)->parse($contents);
 
-        if (! $id = array_pull($data, 'id')) {
+        if (! $id = Arr::pull($data, 'id')) {
             $idGenerated = true;
             $id = app('stache')->generateId();
         }
 
         $taxZone = TaxZone::make()
             ->id($id)
-            ->name(array_pull($data, 'name'))
-            ->country(array_pull($data, 'country'));
+            ->name(Arr::pull($data, 'name'))
+            ->country(Arr::pull($data, 'country'));
 
         if (isset($data['region'])) {
-            $taxZone->region(array_pull($data, 'region'));
+            $taxZone->region(Arr::pull($data, 'region'));
         }
 
         if (isset($idGenerated)) {

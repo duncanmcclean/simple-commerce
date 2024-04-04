@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Tax\Standard\Stache\TaxCategory;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
+use Statamic\Support\Arr;
 
 class TaxCategoryStore extends BasicStore
 {
@@ -17,17 +18,17 @@ class TaxCategoryStore extends BasicStore
     {
         $data = YAML::file($path)->parse($contents);
 
-        if (! $id = array_pull($data, 'id')) {
+        if (! $id = Arr::pull($data, 'id')) {
             $idGenerated = true;
             $id = app('stache')->generateId();
         }
 
         $taxCategory = TaxCategory::make()
             ->id($id)
-            ->name(array_pull($data, 'name'));
+            ->name(Arr::pull($data, 'name'));
 
         if (isset($data['description'])) {
-            $taxCategory->description(array_pull($data, 'description'));
+            $taxCategory->description(Arr::pull($data, 'description'));
         }
 
         if (isset($idGenerated)) {
