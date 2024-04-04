@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Customers;
 
+use Illuminate\Support\Str;
 use DuncanMcClean\SimpleCommerce\Contracts\Customer;
 use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
@@ -57,7 +58,7 @@ class EntryCustomerRepository implements RepositoryContract
     {
         $entry = Entry::query()
             ->where('collection', $this->collection)
-            ->where('slug', str_slug($email))
+            ->where('slug', Str::slug($email))
             ->first();
 
         if (! $entry) {
@@ -105,7 +106,7 @@ class EntryCustomerRepository implements RepositoryContract
         if ($customer->get('slug')) {
             $entry->slug($customer->get('slug'));
         } else {
-            $entry->slug(str_slug($customer->email()));
+            $entry->slug(Str::slug($customer->email()));
         }
 
         if ($customer->get('published')) {

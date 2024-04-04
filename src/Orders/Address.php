@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 use DuncanMcClean\SimpleCommerce\Countries;
 use DuncanMcClean\SimpleCommerce\Regions;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Address
 {
@@ -95,7 +96,7 @@ class Address
         }
 
         return [
-            'id' => str_slug(static::$region),
+            'id' => Str::slug(static::$region),
             'name' => static::$region,
             'country_iso' => static::$country,
         ];
