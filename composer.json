@@ -36,7 +36,7 @@
         "paypal/paypal-checkout-sdk": "^1.0",
         "pixelfear/composer-dist-plugin": "^0.1.0",
         "statamic/cms": "dev-master",
-        "stillat/proteus": "^2.0",
+        "stillat/proteus": "dev-laravel-11",
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
