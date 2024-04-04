@@ -2,12 +2,12 @@
 
 namespace DuncanMcClean\SimpleCommerce\Customers;
 
-use Illuminate\Support\Str;
 use DuncanMcClean\SimpleCommerce\Contracts\Customer;
 use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
