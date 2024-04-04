@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionParameter;
+use Statamic\Facades\Antlers;
 use Statamic\View\Antlers\Parser;
 
 class SendConfiguredNotifications implements ShouldQueue
@@ -100,9 +101,7 @@ class SendConfiguredNotifications implements ShouldQueue
             return [
                 [
                     'channel' => 'mail',
-                    'route' => (new Parser)
-                        ->parse($config['to'], $event->order->toAugmentedArray())
-                        ->__toString(),
+                    'route' => (string) Antlers::parse($config['to'], $event->order->toAugmentedArray()),
                 ],
             ];
         }
