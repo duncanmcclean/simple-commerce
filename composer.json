@@ -37,7 +37,7 @@
         "pixelfear/composer-dist-plugin": "^0.1.0",
         "spatie/ignition": "^1.13",
         "statamic/cms": "dev-master",
-        "stillat/proteus": "dev-laravel-11",
+        "stillat/proteus": "^3.0",
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
@@ -48,12 +48,6 @@
         "spatie/ray": "^1.17",
         "spatie/test-time": "^1.3"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:duncanmcclean/proteus.git"
-        }
-    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
