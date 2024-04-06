@@ -18,21 +18,18 @@ class OrderModel extends Model
 
     protected $guarded = [];
 
-    public function casts(): array
-    {
-        return [
-            'order_number' => 'integer',
-            'items' => 'json',
-            'grand_total' => 'integer',
-            'items_total' => 'integer',
-            'tax_total' => 'integer',
-            'shipping_total' => 'integer',
-            'coupon_total' => 'integer',
-            'use_shipping_address_for_billing' => 'boolean',
-            'gateway' => 'json',
-            'data' => 'json',
-        ];
-    }
+    protected $casts = [
+        'order_number' => 'integer',
+        'items' => 'json',
+        'grand_total' => 'integer',
+        'items_total' => 'integer',
+        'tax_total' => 'integer',
+        'shipping_total' => 'integer',
+        'coupon_total' => 'integer',
+        'use_shipping_address_for_billing' => 'boolean',
+        'gateway' => 'json',
+        'data' => 'json',
+    ];
 
     public function customer(): BelongsTo
     {
