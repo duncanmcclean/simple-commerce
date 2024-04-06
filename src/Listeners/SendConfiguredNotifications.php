@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionParameter;
 use Statamic\Facades\Antlers;
-use Statamic\View\Antlers\Parser;
 
 class SendConfiguredNotifications implements ShouldQueue
 {
