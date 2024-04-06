@@ -79,7 +79,7 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
         $databaseColumns = Blink::once("DatabaseColumns_{$this->builder->getModel()->getTable()}", function () {
             return collect(Schema::getColumns($this->builder->getModel()->getTable()))
                 ->map(fn (array $column) => $column['name'])
-                ->all();
+                ->values();
         });
 
         return $databaseColumns->contains($column);
