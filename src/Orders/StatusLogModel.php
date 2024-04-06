@@ -16,11 +16,14 @@ class StatusLogModel extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'order_id' => 'integer',
-        'timestamp' => 'datetime',
-        'data' => 'json',
-    ];
+    public function casts(): array
+    {
+        return [
+            'order_id' => 'integer',
+            'timestamp' => 'datetime',
+            'data' => 'json',
+        ];
+    }
 
     public function order(): BelongsTo
     {

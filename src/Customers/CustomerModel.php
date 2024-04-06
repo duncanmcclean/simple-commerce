@@ -16,9 +16,12 @@ class CustomerModel extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'data' => 'json',
-    ];
+    public function casts(): array
+    {
+        return [
+            'data' => 'json',
+        ];
+    }
 
     public function orders(): HasMany
     {
