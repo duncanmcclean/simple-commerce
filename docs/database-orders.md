@@ -24,12 +24,10 @@ The following steps assume you already have a database setup. If you don't, plea
 
 The process of switching your site to a database is painless, all you need to do is run a few commands, then you'll be golden.
 
-First, you need to install [Runway](https://statamic.com/runway) & Doctrine DBAL.
-
-Runway will let you view your customers & orders in the Control Panel and DBAL will help Simple Commerce understand your database (which is needed for [custom columns](#custom-columns)).
+First, install [Runway](https://statamic.com/runway) which will let you manage your customers & orders in the Control Panel.
 
 ```sh
-composer require statamic-rad-pack/runway doctrine/dbal
+composer require statamic-rad-pack/runway
 ```
 
 Next, run the "switch command". It'll copy the relevant database migrations, publish Runway's config file and update references in the Simple Commerce config:
