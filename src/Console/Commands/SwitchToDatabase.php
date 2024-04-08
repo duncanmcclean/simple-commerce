@@ -38,10 +38,6 @@ class SwitchToDatabase extends Command
             return $this->error('You need to install Runway before running this command. Run `composer require statamic-rad-pack/runway` first.');
         }
 
-        if (! Composer::create()->isInstalled('doctrine/dbal')) {
-            return $this->error('You need to install Doctrine DBAL before running this command. Run `composer require doctrine/dbal` first.');
-        }
-
         $this
             ->copyMigrationStubs()
             ->copyBlueprintStubs()
