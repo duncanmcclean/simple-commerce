@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Action;
 use Statamic\Fields\Fieldtype;
+use Statamic\Support\Arr;
 
 class GatewayFieldtype extends Fieldtype
 {
@@ -95,7 +96,7 @@ class GatewayFieldtype extends Fieldtype
         }
 
         return array_merge($gateway, [
-            'data' => array_pull($value, 'data', []),
+            'data' => Arr::pull($value, 'data', []),
         ]);
     }
 

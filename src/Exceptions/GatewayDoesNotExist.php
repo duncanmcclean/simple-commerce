@@ -3,9 +3,9 @@
 namespace DuncanMcClean\SimpleCommerce\Exceptions;
 
 use Exception;
-use Facade\IgnitionContracts\BaseSolution;
-use Facade\IgnitionContracts\ProvidesSolution;
-use Facade\IgnitionContracts\Solution;
+use Spatie\Ignition\Contracts\BaseSolution;
+use Spatie\Ignition\Contracts\ProvidesSolution;
+use Spatie\Ignition\Contracts\Solution;
 
 class GatewayDoesNotExist extends Exception implements ProvidesSolution
 {

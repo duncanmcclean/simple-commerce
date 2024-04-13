@@ -290,7 +290,7 @@ class Coupon implements Contract
 
     public function path()
     {
-        return Stache::store('simple-commerce-coupons')->directory().str_slug($this->code()).'.yaml';
+        return Stache::store('simple-commerce-coupons')->directory().Str::slug($this->code()).'.yaml';
     }
 
     public function fileData()

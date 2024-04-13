@@ -18,16 +18,16 @@ class CouponStore extends BasicStore
     {
         $data = YAML::file($path)->parse($contents);
 
-        if (! $id = array_pull($data, 'id')) {
+        if (! $id = Arr::pull($data, 'id')) {
             $idGenerated = true;
             $id = app('stache')->generateId();
         }
 
         $coupon = Coupon::make()
             ->id($id)
-            ->code(array_pull($data, 'code'))
-            ->type(array_pull($data, 'type'))
-            ->value(array_pull($data, 'value'))
+            ->code(Arr::pull($data, 'code'))
+            ->type(Arr::pull($data, 'type'))
+            ->value(Arr::pull($data, 'value'))
             ->data(Arr::except($data, ['code', 'type', 'value']));
 
         if (isset($idGenerated)) {

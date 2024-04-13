@@ -257,16 +257,10 @@ class EloquentOrderRepository implements RepositoryContract
      */
     protected function getCustomColumns(): array
     {
-        $tableColumns = Schema::getConnection()
-            ->getDoctrineSchemaManager()
-            ->listTableColumns((new $this->model)->getTable());
-
-        return collect($tableColumns)
-            ->reject(function (Column $column) {
-                return in_array($column->getName(), $this->knownColumns);
-            })
-            ->map->getName()
-            ->toArray();
+        return collect(Schema::getColumns((new $this->model)->getTable()))
+            ->reject(fn (array $column) => in_array($column['name'], $this->knownColumns))
+            ->map(fn (array $column) => $column['name'])
+            ->all();
     }
 
     /**

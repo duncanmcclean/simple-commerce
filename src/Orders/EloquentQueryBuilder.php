@@ -77,11 +77,9 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
     protected function columnExists(string $column): bool
     {
         $databaseColumns = Blink::once("DatabaseColumns_{$this->builder->getModel()->getTable()}", function () {
-            $columns = Schema::getConnection()
-                ->getDoctrineSchemaManager()
-                ->listTableColumns($this->builder->getModel()->getTable());
-
-            return collect($columns)->map->getName()->values();
+            return collect(Schema::getColumns($this->builder->getModel()->getTable()))
+                ->map(fn (array $column) => $column['name'])
+                ->values();
         });
 
         return $databaseColumns->contains($column);
