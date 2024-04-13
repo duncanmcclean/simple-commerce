@@ -36,7 +36,7 @@
         "paypal/paypal-checkout-sdk": "^1.0",
         "pixelfear/composer-dist-plugin": "^0.1.0",
         "spatie/ignition": "^1.13",
-        "statamic/cms": "dev-master",
+        "statamic/cms": "^5.0",
         "stillat/proteus": "^3.0",
         "stripe/stripe-php": "^7.7"
     },
