@@ -3,6 +3,9 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Customers\CustomerModel;
+use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,5 +54,25 @@ class OrderModel extends Model
                     ->last();
             },
         );
+    }
+
+    public function scopeRunwaySearch(Builder $query, string $searchQuery)
+    {
+        return $query
+            ->where('order_number', 'like', "%$searchQuery%")
+            ->orWhere('grand_total', 'like', "%" . str_replace('.', '', $searchQuery) . "%")
+            ->orWhere('items_total', 'like', "%" . str_replace('.', '', $searchQuery) . "%")
+            ->when($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class), function ($query) use ($searchQuery) {
+                $query->orWhereHas('customer', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', "%$searchQuery%")
+                        ->orWhere('email', 'like', "%$searchQuery%");
+                });
+            });
+    }
+
+    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    {
+        return is_subclass_of($class, $classToCheckAgainst)
+            || $class === $classToCheckAgainst;
     }
 }
