@@ -118,7 +118,7 @@ class SwitchToDatabase extends Command
             ])
             ->save();
 
-        $this->components->info("Switched to database repositories successfully");
+        $this->components->info('Switched to database repositories successfully');
 
         return $this;
     }
