@@ -60,8 +60,8 @@ class OrderModel extends Model
     {
         return $query
             ->where('order_number', 'like', "%$searchQuery%")
-            ->orWhere('grand_total', 'like', "%" . str_replace('.', '', $searchQuery) . "%")
-            ->orWhere('items_total', 'like', "%" . str_replace('.', '', $searchQuery) . "%")
+            ->orWhere('grand_total', 'like', '%'.str_replace('.', '', $searchQuery).'%')
+            ->orWhere('items_total', 'like', '%'.str_replace('.', '', $searchQuery).'%')
             ->when($this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], EloquentCustomerRepository::class), function ($query) use ($searchQuery) {
                 $query->orWhereHas('customer', function ($query) use ($searchQuery) {
                     $query->where('name', 'like', "%$searchQuery%")
