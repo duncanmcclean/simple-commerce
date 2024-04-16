@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.2.0 (2024-04-16)
+
+### What's improved
+* Improved the default ordering of database orders #1056 by @duncanmcclean
+* Added `order_date` to `$appends` on the `OrderModel` by @duncanmcclean
+
+
+
 ## v6.1.0 (2024-04-13)
 
 ### What's improved
