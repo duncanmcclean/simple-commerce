@@ -34,6 +34,10 @@ class OrderModel extends Model
         'data' => 'json',
     ];
 
+    protected $appends = [
+        'order_date',
+    ];
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(CustomerModel::class);
