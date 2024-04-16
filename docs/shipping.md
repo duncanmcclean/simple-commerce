@@ -139,7 +139,7 @@ namespace App\ShippingMethods;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
-use DuncanMcClean\SimpleCommerce\Data\Address;
+use DuncanMcClean\SimpleCommerce\Orders\Address;
 use DuncanMcClean\SimpleCommerce\Shipping\BaseShippingMethod;
 
 class FirstClass extends BaseShippingMethod implements ShippingMethod
@@ -192,7 +192,7 @@ Then, inside your config file, setting configuration values looks like this:
 
         'shipping' => [
             'methods' => [
-                \App\ ShippingMethods\ FirstClass::class => [
+                \App\ShippingMethods\FirstClass::class => [
 	                'api_key' => 'blahblahblah',
                 ],
             ],
