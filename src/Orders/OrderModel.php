@@ -60,7 +60,18 @@ class OrderModel extends Model
         );
     }
 
-    public function scopeRunwaySearch(Builder $query, string $searchQuery)
+    public function scopeRunwayListing(Builder $query): Builder
+    {
+        return $query
+            ->leftJoin('status_log', function ($join) {
+                $join->on('status_log.order_id', '=', 'orders.id')
+                    ->where('status_log.status', 'placed');
+            })
+            ->orderByRaw('COALESCE(status_log.timestamp, orders.created_at) DESC')
+            ->select('orders.*');
+    }
+
+    public function scopeRunwaySearch(Builder $query, string $searchQuery): Builder
     {
         return $query
             ->where('order_number', 'like', "%$searchQuery%")
