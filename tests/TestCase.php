@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
-use Statamic\Extend\AddonTestCase;
+use Statamic\Testing\AddonTestCase;
 use Statamic\Facades\AssetContainer;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Site;
