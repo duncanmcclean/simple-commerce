@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.2.1 (2024-04-22)
+
+### What's fixed
+* Fixed an issue when address has a region, but no available tax zones have a region, just a country #1061 by @duncanmcclean
+
+
+
 ## v6.2.0 (2024-04-16)
 
 ### What's improved
