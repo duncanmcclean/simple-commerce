@@ -1,5 +1,15 @@
 # Changelog
 
+## v6.3.0 (2024-04-27)
+
+### What's new
+* When storing customers as users, the customer will now be removed from their order when they logout #1068 by @duncanmcclean
+
+### What's fixed
+* Fixed roles & groups being overwritten when updating customer information #1067 by @duncanmcclean
+
+
+
 ## v6.2.1 (2024-04-22)
 
 ### What's fixed
