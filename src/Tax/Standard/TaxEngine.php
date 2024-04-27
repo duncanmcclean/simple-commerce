@@ -79,6 +79,10 @@ class TaxEngine implements Contract
 
             if ($address->region()) {
                 $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
+                    if (! $taxZone->region()) {
+                        return true;
+                    }
+
                     return $taxZone->region() === $address->region();
                 });
             }
@@ -150,6 +154,10 @@ class TaxEngine implements Contract
 
             if ($address->region()) {
                 $taxZoneQuery = $taxZoneQuery->filter(function ($taxZone) use ($address) {
+                    if (! $taxZone->region()) {
+                        return true;
+                    }
+
                     return $taxZone->region() === $address->region();
                 });
             }

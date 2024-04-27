@@ -62,7 +62,7 @@ use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway; // [tl! remove]
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway; // [tl! add]
 ```
 
-## High: References to gateways & shipping methods have changed
+### High: References to gateways & shipping methods have changed
 
 Previously, when referencing a Payment Gateway or Shipping method, for example in order data, its FQCL (fully-qualified class name) would have been used, like this:
 
@@ -78,18 +78,18 @@ shipping_method: free_shipping
 
 This change may require you to make some code changes. Please read through the following steps:
 
-### In your orders
+#### In your orders
 
 When running the `php please sc:run-update-scripts` command, your orders should be automatically updated to reference handles instead. You don't need to update order data manually.
 
-### In your templates
+#### In your templates
 
 If you're manually referencing class names anywhere in your templates, you should update them to instead reference the handles. Your code editor's "Find All & Replace" feature is helpful for this:
 
 * `{{ class }}` -> `{{ handle }}`
 * `{{ formatted_class }}` -> `{{ handle }}`
 
-### In your config files
+#### In your config files
 
 If you have a [default shipping method configured](/shipping#content-default-shipping-method), you should reference the shipping method's handle, instead of its class name.
 

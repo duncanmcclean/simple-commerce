@@ -173,6 +173,170 @@ test('can correctly calculate line item tax rate based on region', function () {
     expect(130)->toBe($recalculate->taxTotal());
 });
 
+test('can correctly calculate line item tax rate when address has region but no addresses have a region', function () {
+    Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+    Config::set('simple-commerce.tax_engine_config', [
+        'address' => 'billing',
+        'behaviour' => [
+            'no_rate_available' => 'prevent_checkout',
+        ],
+    ]);
+
+    TaxZone::make()->id('everywhere')->save();
+
+    $taxCategory = TaxCategory::make()
+        ->id('standard-vat')
+        ->name('Standard VAT');
+
+    $taxCategory->save();
+
+    $taxZone = TaxZone::make()
+        ->id('uk')
+        ->name('United Kingdom')
+        ->country('GB');
+
+    $taxZone->save();
+
+    // Just so we can tell this rate apart
+    $taxRate = TaxRate::make()
+        ->id('scottish-15-vat')
+        ->name('15% Scottish VAT')
+        ->rate(15)
+        ->category($taxCategory->id())
+        ->zone($taxZone->id());
+
+    $taxRate->save();
+
+    $product = Product::make()
+        ->price(1000)
+        ->taxCategory($taxCategory->id())
+        ->data([
+            'title' => 'Cat Food',
+        ]);
+
+    $product->save();
+
+    $order = Order::make()->lineItems([
+        [
+            'id' => app('stache')->generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 1000,
+        ],
+    ])->merge([
+        'billing_address' => '1 Test Street',
+        'billing_country' => 'GB',
+        'billing_region' => 'gb-sct',
+        'use_shipping_address_for_billing' => false,
+    ]);
+
+    $order->save();
+
+    $recalculate = $order->recalculate();
+
+    // Ensure tax on line items are right
+    $this->assertSame($recalculate->lineItems()->first()->tax(), [
+        'amount' => 130,
+        'rate' => 15,
+        'price_includes_tax' => false,
+    ]);
+
+    // Ensure global order tax is right
+    expect(130)->toBe($recalculate->taxTotal());
+});
+
+test('can correctly calculate line item tax zones when tax rates exists both with and without region', function () {
+    Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+    Config::set('simple-commerce.tax_engine_config', [
+        'address' => 'billing',
+        'behaviour' => [
+            'no_rate_available' => 'prevent_checkout',
+        ],
+    ]);
+
+    TaxZone::make()->id('everywhere')->save();
+
+    $taxCategory = TaxCategory::make()
+        ->id('standard-vat')
+        ->name('Standard VAT');
+
+    $taxCategory->save();
+
+    // The first tax rate, the one with no region set.
+    $taxZoneA = TaxZone::make()
+        ->id('uk')
+        ->name('United Kingdom')
+        ->country('GB');
+
+    $taxZoneA->save();
+
+    $taxRateA = TaxRate::make()
+        ->id('uk-15-vat')
+        ->name('20% UK VAT')
+        ->rate(15)
+        ->category($taxCategory->id())
+        ->zone($taxZoneA->id());
+
+    $taxRateA->save();
+
+    // The second tax rate, the one with a region set.
+    $taxZoneB = TaxZone::make()
+        ->id('uk')
+        ->name('United Kingdom')
+        ->region('gb-sct')
+        ->country('GB');
+
+    $taxZoneB->save();
+
+    $taxRateB = TaxRate::make()
+        ->id('scottish-15-vat')
+        ->name('15% Scottish VAT')
+        ->rate(15)
+        ->category($taxCategory->id())
+        ->zone($taxZoneB->id());
+
+    $taxRateB->save();
+
+    $product = Product::make()
+        ->price(1000)
+        ->taxCategory($taxCategory->id())
+        ->data([
+            'title' => 'Cat Food',
+        ]);
+
+    $product->save();
+
+    $order = Order::make()->lineItems([
+        [
+            'id' => app('stache')->generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 1000,
+        ],
+    ])->merge([
+        'billing_address' => '1 Test Street',
+        'billing_country' => 'GB',
+        'billing_region' => 'gb-sct',
+        'use_shipping_address_for_billing' => false,
+    ]);
+
+    $order->save();
+
+    $recalculate = $order->recalculate();
+
+    // Ensure tax on line items are right
+    $this->assertSame($recalculate->lineItems()->first()->tax(), [
+        'amount' => 130,
+        'rate' => 15,
+        'price_includes_tax' => false,
+    ]);
+
+    // Ensure global order tax is right
+    expect(130)->toBe($recalculate->taxTotal());
+});
+
 test('can calculate line item tax rate when included in price', function () {
     Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
 

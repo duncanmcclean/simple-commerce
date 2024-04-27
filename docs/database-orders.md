@@ -58,11 +58,6 @@ If you receive an error running the `sc:migrate-to-database` command, please ens
 // config/simple-commerce.php
 
 'content' => [
-    'coupons' => [
-        'repository' => \DuncanMcClean\SimpleCommerce\Coupons\EntryCouponRepository::class,
-        'collection' => 'coupons',
-    ],
-
     'customers' => [
         'repository' => \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class,
         'model' => \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class,

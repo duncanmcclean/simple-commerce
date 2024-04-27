@@ -50,9 +50,17 @@ class UpdateClassReferences extends UpdateScript
     {
         Order::query()->whereNotNull('shipping_method')->chunk(100, function (Collection $orders) {
             $orders
-                ->filter(fn (OrderContract $order) => str_contains($order->get('shipping_method'), '\\'))
+                ->filter(function (OrderContract $order) {
+                    $shippingMethod = is_array($order->get('shipping_method'))
+                        ? Arr::first($order->get('shipping_method'))
+                        : $order->get('shipping_method');
+
+                    return str_contains($shippingMethod, '\\');
+                })
                 ->each(function (OrderContract $order) {
-                    $class = $order->get('shipping_method');
+                    $class = is_array($order->get('shipping_method'))
+                        ? Arr::first($order->get('shipping_method'))
+                        : $order->get('shipping_method');
 
                     // Adjust the class name before new'ing it up since the namespace has changed.
                     if (Str::startsWith($class, 'DoubleThreeDigital')) {

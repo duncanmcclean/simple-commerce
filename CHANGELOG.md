@@ -1,5 +1,45 @@
 # Changelog
 
+## v6.3.0 (2024-04-27)
+
+### What's new
+* When storing customers as users, the customer will now be removed from their order when they logout #1068 by @duncanmcclean
+
+### What's fixed
+* Fixed roles & groups being overwritten when updating customer information #1067 by @duncanmcclean
+
+
+
+## v6.2.1 (2024-04-22)
+
+### What's fixed
+* Fixed an issue when address has a region, but no available tax zones have a region, just a country #1061 by @duncanmcclean
+
+
+
+## v6.2.0 (2024-04-16)
+
+### What's improved
+* Improved the default ordering of database orders #1056 by @duncanmcclean
+* Added `order_date` to `$appends` on the `OrderModel` by @duncanmcclean
+
+
+
+## v6.1.0 (2024-04-13)
+
+### What's improved
+* UX Improvements to the `sc:switch-to-database` command #1050 by @duncanmcclean
+* Added "This could take a while" to `sc:run-update-scripts` command by @duncanmcclean
+* Added `ext-intl` PHP extension as an install requirement #1044 by @joshuablum
+
+### What's fixed
+* Fixed infinite loop when querying orders #1043 #1049 by @duncanmcclean
+* Fixed the "Order Date" field for database orders #1053 by @duncanmcclean
+* Fixed searching database orders #1045 #1051 by @duncanmcclean
+* Removed the `default` config option from the "Use Shipping Address for Billing" field #1052 by @duncanmcclean
+
+
+
 ## v6.0.11 (2024-04-02)
 
 ### What's fixed

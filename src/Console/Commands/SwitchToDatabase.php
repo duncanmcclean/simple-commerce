@@ -28,14 +28,12 @@ class SwitchToDatabase extends Command
 
     public function handle()
     {
-        $this->line('Switching to a database...');
-
         if (app()->environment('production')) {
-            return $this->error('You should not run this command in production. Please switch locally first, then deploy the changes.');
+            return $this->components->error('You should not run this command in production. Please switch locally first, then deploy the changes.');
         }
 
         if (! Composer::create()->isInstalled('statamic-rad-pack/runway')) {
-            return $this->error('You need to install Runway before running this command. Run `composer require statamic-rad-pack/runway` first.');
+            return $this->components->error('You need to install Runway before running this command. Run `composer require statamic-rad-pack/runway` first.');
         }
 
         $this
@@ -44,17 +42,16 @@ class SwitchToDatabase extends Command
             ->publishRunwayConfig()
             ->switchRepositories();
 
-        $this->line('');
-        $this->info('Next steps:');
-        $this->line('- Run `php artisan migrate`');
-        $this->line('- Test your site');
-        $this->line('- Run the migrator command to migrate any existing customers & orders');
+        $this->line('Next steps...');
+        $this->components->bulletList([
+            'Run `php artisan migrate`',
+            'Test your site thoroughly',
+            'Run the migrator command to migrate any existing customers & orders',
+        ]);
     }
 
     protected function copyMigrationStubs(): self
     {
-        $this->info('Copying migration stubs...');
-
         if (count(File::glob(database_path('migrations').'/*_create_customers_table.php')) < 1) {
             File::copy($this->stubsPath.'/create_customers_table.php', database_path('migrations/'.date('Y_m_d_His').'_create_customers_table.php'));
         }
@@ -67,13 +64,13 @@ class SwitchToDatabase extends Command
             File::copy($this->stubsPath.'/create_status_log_table.php', database_path('migrations/'.date('Y_m_d_His').'_create_status_log_table.php'));
         }
 
+        $this->components->info('Copied migration stubs successfully');
+
         return $this;
     }
 
     protected function copyBlueprintStubs(): self
     {
-        $this->info('Copying blueprint stubs...');
-
         File::ensureDirectoryExists(resource_path('blueprints/vendor/runway'));
 
         if (! File::exists(resource_path('blueprints/vendor/runway/customers.yaml'))) {
@@ -84,24 +81,24 @@ class SwitchToDatabase extends Command
             File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/vendor/runway/orders.yaml'));
         }
 
+        $this->components->info('Copied blueprint stubs successfully');
+
         return $this;
     }
 
     protected function publishRunwayConfig(): self
     {
-        $this->info('Publishing Runway config file...');
-
         if (! File::exists(config_path('runway.php'))) {
             File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
         }
+
+        $this->components->info('Published Runway config file successfully');
 
         return $this;
     }
 
     protected function switchRepositories(): self
     {
-        $this->info('Switching content repositories...');
-
         if (isset(SimpleCommerce::orderDriver()['model'])) {
             return $this;
         }
@@ -116,6 +113,8 @@ class SwitchToDatabase extends Command
                 'model' => \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class,
             ])
             ->save();
+
+        $this->components->info('Switched to database repositories successfully');
 
         return $this;
     }

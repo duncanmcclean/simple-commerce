@@ -90,6 +90,9 @@ class ServiceProvider extends AddonServiceProvider
         Events\DigitalDownloadReady::class => [
             Listeners\SendConfiguredNotifications::class,
         ],
+        \Illuminate\Auth\Events\Logout::class => [
+            Listeners\RemoveCustomerFromOrder::class,
+        ],
     ];
 
     protected $modifiers = [

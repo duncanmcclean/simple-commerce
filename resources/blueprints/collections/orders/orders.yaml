@@ -178,7 +178,6 @@ tabs:
               type: toggle
               listable: false
               display: "Use Shipping Address for Billing?"
-              default: true
               instructions_position: above
               visibility: read_only
           - handle: billing_name

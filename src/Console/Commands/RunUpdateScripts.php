@@ -16,6 +16,7 @@ class RunUpdateScripts extends Command
     public function handle()
     {
         $this->info('Running update scripts...');
+        $this->info('This could take a while if you have lots of orders.');
 
         // For some reason, the "proper" way of doing this didn't work so we're
         // doing it manually here.
