@@ -2,12 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce\Listeners;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Auth\Events\Logout;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
 
 class RemoveCustomerFromOrder
 {
