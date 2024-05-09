@@ -1,6 +1,6 @@
 # Changelog
 
-## v7.0.0 (2024-xx-xx)
+## v7.0.0 (2024-05-09)
 
 ### Read First 👀
 Be sure to read the [Upgrade Guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v6-to-v7) first as manual changes may be necessary.
