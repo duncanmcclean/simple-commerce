@@ -185,8 +185,8 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($data['metadata']['order_id']);
 
-            $order->gatewayData(data: ['id' => $data['id']]);
-            $order->save();
+            // $order->gatewayData(data: ['id' => $data['id']]);
+            // $order->save();
 
             $this->markOrderAsPaid($order);
 
