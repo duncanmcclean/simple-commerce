@@ -6,6 +6,7 @@
 * Fixed Stripe Payment Intent not being saved to order gateway data #1071 #1072 by @duncanmcclean
 
 
+
 ## v6.3.0 (2024-04-27)
 
 ### What's new
