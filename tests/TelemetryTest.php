@@ -10,6 +10,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
 use function PHPUnit\Framework\assertFileDoesNotExist;
 use function PHPUnit\Framework\assertNotNull;
@@ -18,6 +19,7 @@ use function PHPUnit\Framework\assertNotSame;
 uses(DuncanMcClean\SimpleCommerce\Tests\TestCase::class);
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+uses(PreventsSavingStacheItemsToDisk::class);
 
 beforeEach(function () {
     $this->setupCollections();

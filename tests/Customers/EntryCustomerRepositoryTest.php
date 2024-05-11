@@ -8,6 +8,9 @@ use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+
+uses(PreventsSavingStacheItemsToDisk::class);
 
 afterEach(function () {
     Collection::find('customers')->queryEntries()->get()->each->delete();
