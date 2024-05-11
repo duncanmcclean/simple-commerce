@@ -4,9 +4,11 @@ namespace DuncanMcClean\SimpleCommerce\Tax;
 
 class TaxCalculation
 {
-    public function __construct(protected int $amount = 0, protected $rate = 0, protected bool $priceIncludesTax = false)
-    {
-    }
+    public function __construct(
+        protected int $amount = 0,
+        protected $rate = 0,
+        protected bool $priceIncludesTax = false
+    ) {}
 
     public function amount(): int
     {
