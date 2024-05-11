@@ -14,9 +14,12 @@ use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+
+uses(PreventsSavingStacheItemsToDisk::class);
 
 beforeEach(function () {
     $this->repository = new EntryOrderRepository;
