@@ -4,6 +4,9 @@ use DuncanMcClean\SimpleCommerce\Contracts\Product as ProductContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\EntryQueryBuilder;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+
+uses(PreventsSavingStacheItemsToDisk::class);
 
 it('can get all products', function () {
     Product::make()->id('one')->price(1500)->save();

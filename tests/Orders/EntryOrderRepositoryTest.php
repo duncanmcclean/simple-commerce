@@ -18,7 +18,6 @@ use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
-
 uses(PreventsSavingStacheItemsToDisk::class);
 
 beforeEach(function () {

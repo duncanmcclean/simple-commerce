@@ -4,6 +4,9 @@ use DuncanMcClean\SimpleCommerce\UpdateScripts\v6_0\MigrateProductType;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+
+uses(PreventsSavingStacheItemsToDisk::class);
 
 afterEach(function () {
     Blueprint::find('collections.products.test')?->delete();

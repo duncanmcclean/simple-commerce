@@ -27,9 +27,11 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
+uses(PreventsSavingStacheItemsToDisk::class);
 
 beforeEach(function () {
     $this->useBasicTaxEngine();
