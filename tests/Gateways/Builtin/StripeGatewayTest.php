@@ -424,6 +424,7 @@ test('can hit webhook with payment intent succeeded event', function () {
         'type' => 'payment_intent.succeeded',
         'data' => [
             'object' => [
+                'id' => $paymentIntent = 'pi_123456789122345',
                 'metadata' => [
                     'order_id' => $order->id(),
                 ],
@@ -439,6 +440,14 @@ test('can hit webhook with payment intent succeeded event', function () {
 
     expect(OrderStatus::Placed)->toBe($order->status());
     expect(PaymentStatus::Paid)->toBe($order->paymentStatus());
+
+    expect($order->gatewayData()->toArray())->toBe([
+        'use' => StripeGateway::handle(),
+        'data' => [
+            'id' => $paymentIntent,
+        ],
+        'refund' => null,
+    ]);
 });
 
 test('returns array from payment display', function () {
