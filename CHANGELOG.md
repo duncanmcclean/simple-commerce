@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.1.0 (2024-05-18)
+
+### What's new
+* Both v3 and v4 of `stillat/proteus` are now supported #1074 by @duncanmcclean
+
+
+
 ## v7.0.1 (2024-05-11)
 
 ### What's fixed
