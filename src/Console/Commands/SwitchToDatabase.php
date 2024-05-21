@@ -105,7 +105,7 @@ class SwitchToDatabase extends Command
 
         ConfigWriter::edit('simple-commerce')
             ->replace('content.orders', [
-                'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
+                'repository' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository::class,
                 'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
             ])
             ->replace('content.customers', [

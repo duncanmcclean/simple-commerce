@@ -2,6 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+
 interface CartDriver
 {
     public function getCartKey(): string;

@@ -10,7 +10,6 @@ import PaymentStatusFieldtype from './components/Fieldtypes/PaymentStatusFieldty
 import PaymentStatusIndexFieldtype from './components/Fieldtypes/PaymentStatusIndexFieldtype.vue'
 import ProductVariantFieldtype from './components/Fieldtypes/ProductVariantFieldtype.vue'
 import ProductVariantsFieldtype from './components/Fieldtypes/ProductVariants/ProductVariantsFieldtype.vue'
-import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
 
 Statamic.$components.register('coupon-code-fieldtype', CouponCodeFieldtype)
 Statamic.$components.register(
@@ -41,7 +40,6 @@ Statamic.$components.register(
     'product-variants-fieldtype',
     ProductVariantsFieldtype
 )
-Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)
 
 // Inputs
 import RegionSelector from './components/Inputs/RegionSelector.vue'
@@ -54,3 +52,11 @@ Statamic.$components.register('coupon-listing', CouponListing)
 // Widgets
 import OrdersChart from './components/Widgets/OrdersChart.vue'
 Statamic.$components.register('orders-chart', OrdersChart)
+
+
+// Fresh... todo: tidy up this file
+import OrdersListing from './components/orders/Listing.vue'
+import OrdersPublishForm from './components/orders/PublishForm.vue'
+
+Statamic.$components.register('orders-listing', OrdersListing)
+Statamic.$components.register('orders-publish-form', OrdersPublishForm)

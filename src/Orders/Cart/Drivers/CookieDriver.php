@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers;
 
 use DuncanMcClean\SimpleCommerce\Contracts\CartDriver;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderAPI;
 use Illuminate\Support\Facades\Config;

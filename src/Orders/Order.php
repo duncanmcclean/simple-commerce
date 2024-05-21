@@ -2,83 +2,54 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Coupon as CouponContract;
+use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DuncanMcClean\SimpleCommerce\Contracts\Order as Contract;
-use DuncanMcClean\SimpleCommerce\Data\HasData;
-use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
-use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
-use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
-use DuncanMcClean\SimpleCommerce\Events\PaymentStatusUpdated;
-use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
-use DuncanMcClean\SimpleCommerce\Http\Resources\BaseResource;
-use DuncanMcClean\SimpleCommerce\Orders\Calculator\Calculator;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
-use Statamic\Facades\Site as FacadesSite;
-use Statamic\Http\Resources\API\EntryResource;
-use Statamic\Sites\Site;
+use Illuminate\Contracts\Support\Arrayable;
+use Statamic\Contracts\Data\Augmentable;
+use Statamic\Contracts\Data\Augmented;
+use Statamic\Contracts\Data\BulkAugmentable;
+use Statamic\Data\ContainsData;
+use Statamic\Data\ExistsAsFile;
+use Statamic\Data\HasAugmentedInstance;
+use Statamic\Data\HasDirtyState;
+use Statamic\Data\TracksQueriedColumns;
+use Statamic\Data\TracksQueriedRelations;
+use Statamic\Facades\Stache;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class Order implements Contract
+class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 {
-    use HasData, HasLineItems;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations;
 
-    public $id;
+    use HasDirtyState;
 
-    public $orderNumber;
-
-    public $status;
-
-    public $paymentStatus;
-
-    public $lineItems;
-
-    public $grandTotal;
-
-    public $itemsTotal;
-
-    public $taxTotal;
-
-    public $shippingTotal;
-
-    public $couponTotal;
-
-    public $customer;
-
-    public $coupon;
-
-    public $gateway;
-
-    public $data;
-
-    public $resource;
-
-    protected $withoutRecalculating = false;
+    protected $orderNumber;
+    protected $status;
+    protected $paymentStatus;
+    protected $customer;
+    protected $lineItems;
+    protected $grandTotal;
+    protected $subTotal;
+    protected $discountTotal;
+    protected $taxTotal;
+    protected $shippingTotal;
+    protected $paymentGateway;
+    protected $paymentData;
+    protected $shippingMethod;
+    protected $initialPath;
 
     public function __construct()
     {
-        $this->status = OrderStatus::Cart;
-        $this->paymentStatus = PaymentStatus::Unpaid;
-        $this->lineItems = collect();
-
-        $this->grandTotal = 0;
-        $this->itemsTotal = 0;
-        $this->taxTotal = 0;
-        $this->shippingTotal = 0;
-        $this->couponTotal = 0;
-
         $this->data = collect();
+        $this->supplements = collect();
     }
 
-    public function id($id = null)
+    public function id()
     {
-        return $this
-            ->fluentlyGetOrSet('id')
-            ->args(func_get_args());
+        return $this->orderNumber();
     }
 
     public function orderNumber($orderNumber = null)
@@ -88,30 +59,44 @@ class Order implements Contract
             ->args(func_get_args());
     }
 
+    // todo: should be an enum in the object
     public function status($status = null)
     {
         return $this
             ->fluentlyGetOrSet('status')
-            ->setter(function ($value) {
-                if (is_string($value)) {
-                    return OrderStatus::from($value);
-                }
-
-                return $value;
-            })
             ->args(func_get_args());
     }
 
+    // todo: should be an enum in the object
     public function paymentStatus($paymentStatus = null)
     {
         return $this
             ->fluentlyGetOrSet('paymentStatus')
-            ->setter(function ($value) {
-                if (is_string($value)) {
-                    return PaymentStatus::from($value);
-                }
+            ->args(func_get_args());
+    }
 
-                return $value;
+    public function customer($customer = null)
+    {
+        // todo: refactor to support user ID or array of customer data
+        return $this
+            ->fluentlyGetOrSet('customer')
+//            ->setter(function ($customer) {
+//                if ($customer instanceof CustomerContract) {
+//                    return $customer;
+//                }
+//
+//                return Customer::find($customer);
+//            })
+            ->args(func_get_args());
+    }
+
+    public function lineItems($lineItems = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('lineItems')
+            ->setter(function ($lineItems) {
+                // todo: refactor LineItem object
+                return collect($lineItems)->mapInto(LineItem::class);
             })
             ->args(func_get_args());
     }
@@ -120,27 +105,39 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('grandTotal')
+            ->getter(function ($grandTotal) {
+                return $grandTotal ?? 0;
+            })
             ->args(func_get_args());
     }
 
-    public function itemsTotal($itemsTotal = null)
+    public function subTotal($subTotal = null)
     {
         return $this
-            ->fluentlyGetOrSet('itemsTotal')
+            ->fluentlyGetOrSet('subTotal')
+            ->getter(function ($subTotal) {
+                return $subTotal ?? 0;
+            })
             ->args(func_get_args());
     }
 
-    public function itemsTotalWithTax(): int
+    public function discountTotal($discountTotal = null)
     {
-        return $this->lineItems()->sum(function (LineItem $lineItem) {
-            return $lineItem->totalIncludingTax();
-        });
+        return $this
+            ->fluentlyGetOrSet('discountTotal')
+            ->getter(function ($discountTotal) {
+                return $discountTotal ?? 0;
+            })
+            ->args(func_get_args());
     }
 
     public function taxTotal($taxTotal = null)
     {
         return $this
             ->fluentlyGetOrSet('taxTotal')
+            ->getter(function ($taxTotal) {
+                return $taxTotal ?? 0;
+            })
             ->args(func_get_args());
     }
 
@@ -148,331 +145,134 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('shippingTotal')
-            ->args(func_get_args());
-    }
-
-    public function shippingTotalWithTax(): int
-    {
-        $shippingTotal = $this->shippingTotal();
-        $shippingTax = $this->get('shipping_tax');
-
-        if (isset($shippingTax) && ! $shippingTax['price_includes_tax']) {
-            return $shippingTotal + $shippingTax['amount'];
-        }
-
-        return $shippingTotal;
-    }
-
-    public function couponTotal($couponTotal = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('couponTotal')
-            ->args(func_get_args());
-    }
-
-    public function customer($customer = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('customer')
-            ->setter(function ($value) {
-                if (! $value) {
-                    return null;
-                }
-
-                if ($value instanceof CustomerContract) {
-                    return $value;
-                }
-
-                return Customer::find($value);
+            ->getter(function ($shippingTotal) {
+                return $shippingTotal ?? 0;
             })
             ->args(func_get_args());
     }
 
-    public function coupon($coupon = null)
+    public function paymentGateway($paymentGateway = null)
     {
         return $this
-            ->fluentlyGetOrSet('coupon')
-            ->setter(function ($value) {
-                if (! $value) {
-                    return null;
-                }
-
-                if ($value instanceof CouponContract) {
-                    return $value;
-                }
-
-                return Coupon::find($value);
-            })
+            ->fluentlyGetOrSet('paymentGateway')
             ->args(func_get_args());
     }
 
-    public function gatewayData(?string $gateway = null, ?array $data = null, ?array $refund = null): ?GatewayData
-    {
-        if ($gateway) {
-            $this->gateway = array_merge($this->gateway ?? [], ['use' => $gateway]);
-        }
-
-        if ($data) {
-            $this->gateway = array_merge($this->gateway ?? [], ['data' => $data]);
-        }
-
-        if ($refund) {
-            $this->gateway = array_merge($this->gateway ?? [], ['refund' => $refund]);
-        }
-
-        if (! $this->gateway) {
-            return null;
-        }
-
-        return new GatewayData($this->gateway);
-    }
-
-    public function resource($resource = null)
+    public function paymentData($paymentData = null)
     {
         return $this
-            ->fluentlyGetOrSet('resource')
+            ->fluentlyGetOrSet('paymentData')
             ->args(func_get_args());
     }
 
-    public function site(): ?Site
+    public function shippingMethod($shippingMethod = null)
     {
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            return $this->resource()->site();
-        }
-
-        // We don't really know what site this order belongs to. For now, we'll just return the default site.
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
-            return FacadesSite::current();
-        }
-
-        return null;
+        return $this
+            ->fluentlyGetOrSet('shippingMethod')
+            ->args(func_get_args());
     }
 
-    public function billingAddress(): ?Address
+    public function save(): bool
     {
-        if ($this->get('use_shipping_address_for_billing', false)) {
-            return $this->shippingAddress();
-        }
-
-        if (
-            ! $this->has('billing_address')
-            && ! $this->has('billing_address_line1')
-            && ! $this->has('billing_address_line2')
-            && ! $this->has('billing_city')
-        ) {
-            return null;
-        }
-
-        return Address::from('billing', $this);
-    }
-
-    public function shippingAddress(): ?Address
-    {
-        if (
-            ! $this->has('shipping_address')
-            && ! $this->has('shipping_address_line1')
-            && ! $this->has('shipping_address_line2')
-            && ! $this->has('shipping_city')
-        ) {
-            return null;
-        }
-
-        return Address::from('shipping', $this);
-    }
-
-    public function redeemCoupon(string $code): bool
-    {
-        $coupon = Coupon::findByCode($code);
-
-        if ($coupon->isValid($this)) {
-            $this->coupon($coupon);
-            $this->save();
-
-            event(new CouponRedeemed($coupon));
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function updateOrderStatus(OrderStatus $orderStatus, array $data = []): self
-    {
-        $this
-            ->status($orderStatus)
-            ->appendToStatusLog($orderStatus, $data)
-            ->save();
-
-        event(new OrderStatusUpdated($this, $orderStatus));
-
-        return $this;
-    }
-
-    public function updatePaymentStatus(PaymentStatus $paymentStatus, array $data = []): self
-    {
-        $this
-            ->paymentStatus($paymentStatus)
-            ->appendToStatusLog($paymentStatus, $data)
-            ->save();
-
-        event(new PaymentStatusUpdated($this, $paymentStatus));
-
-        return $this;
-    }
-
-    public function statusLog(): Collection|string|null
-    {
-        // Convert the old format to the new format. We can probably remove this in the future.
-        if (! empty($this->get('status_log')) && ! is_array(Arr::first($this->get('status_log')))) {
-            $this->set('status_log', collect($this->get('status_log'))->map(function ($date, $status) {
-                return new StatusLogEvent(
-                    status: $status,
-                    timestamp: Carbon::parse($date)->timestamp
-                );
-            })->values()->toArray());
-        }
-
-        return collect($this->get('status_log'))->map(function (array $statusLogEvent) {
-            return new StatusLogEvent(
-                status: $statusLogEvent['status'],
-                timestamp: $statusLogEvent['timestamp'],
-                data: $statusLogEvent['data'] ?? [],
-            );
-        });
-    }
-
-    public function statusLogIncludes(OrderStatus|PaymentStatus $status): bool
-    {
-        return $this->statusLog()->contains(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is($status));
-    }
-
-    public function appendToStatusLog(OrderStatus|PaymentStatus $status, array $data = []): self
-    {
-        $statusLog = $this->statusLog()->push(new StatusLogEvent(
-            status: $status,
-            timestamp: Carbon::now()->timestamp,
-            data: $data,
-        ));
-
-        $this->set('status_log', $statusLog->toArray());
-
-        return $this;
-    }
-
-    public function refund($refundData): self
-    {
-        $this->updatePaymentStatus(PaymentStatus::Refunded);
-
-        $this->gatewayData(refund: $refundData);
-
-        return $this;
-    }
-
-    public function recalculate(): self
-    {
-        if ($this->paymentStatus()->is(PaymentStatus::Paid)) {
-            return $this;
-        }
-
-        $calculation = tap(Calculator::calculate($this))->save();
-
-        return $calculation->fresh();
-    }
-
-    public function withoutRecalculating(callable $callback)
-    {
-        $this->withoutRecalculating = true;
-
-        $return = $callback();
-
-        $this->withoutRecalculating = false;
-
-        return $return;
-    }
-
-    public function beforeSaved()
-    {
-        //
-    }
-
-    public function afterSaved()
-    {
-        event(new OrderSaved($this));
-    }
-
-    public function save(): self
-    {
-        if (method_exists($this, 'beforeSaved')) {
-            $this->beforeSaved();
-        }
-
         OrderFacade::save($this);
 
-        if (method_exists($this, 'afterSaved')) {
-            $this->afterSaved();
-        }
-
-        return $this;
+        return true;
     }
 
-    public function delete(): void
+    public function delete(): bool
     {
         OrderFacade::delete($this);
+
+        return true;
     }
 
-    public function fresh(): self
+    public function path(): string
     {
-        $freshOrder = OrderFacade::find($this->id());
-
-        $this->id = $freshOrder->id;
-        $this->status = $freshOrder->status;
-        $this->paymentStatus = $freshOrder->paymentStatus;
-        $this->lineItems = $freshOrder->lineItems;
-        $this->grandTotal = $freshOrder->grandTotal;
-        $this->itemsTotal = $freshOrder->itemsTotal;
-        $this->taxTotal = $freshOrder->taxTotal;
-        $this->shippingTotal = $freshOrder->shippingTotal;
-        $this->couponTotal = $freshOrder->couponTotal;
-        $this->customer = $freshOrder->customer;
-        $this->coupon = $freshOrder->coupon;
-        $this->gateway = $freshOrder->gateway;
-        $this->data = $freshOrder->data;
-        $this->resource = $freshOrder->resource;
-
-        return $this;
+        return $this->initialPath ?? $this->buildPath();
     }
 
-    public function toArray(): array
+    public function buildPath(): string
     {
-        $toArray = $this->data->toArray();
-
-        $toArray['id'] = $this->id();
-
-        return $toArray;
+        return vsprintf('%s/%s.yaml', [
+            rtrim(Stache::store('orders')->directory(), '/'),
+            $this->orderNumber(),
+        ]);
     }
 
-    public function toResource()
+    public function fileData(): array
     {
-        if (isset(SimpleCommerce::orderDriver()['collection'])) {
-            return new EntryResource($this->resource());
-        }
-
-        return new BaseResource($this);
+        return array_merge([
+            'status' => $this->status(),
+            'payment_status' => $this->paymentStatus(),
+            'customer' => $this->customer(),
+            'line_items' => $this->lineItems(),
+            'grand_total' => $this->grandTotal(),
+            'sub_total' => $this->subTotal(),
+            'discount_total' => $this->discountTotal(),
+            'tax_total' => $this->taxTotal(),
+            'shipping_total' => $this->shippingTotal(),
+            'payment_gateway' => $this->paymentGateway(),
+            'payment_data' => $this->paymentData(),
+            'shipping_method' => $this->shippingMethod(),
+        ], $this->data->all());
     }
 
-    public function toAugmentedArray($keys = null): array
+    public function fresh(): Order
     {
-        return $this->resource()->toAugmentedArray($keys);
+        return OrderFacade::find($this->orderNumber());
     }
 
-    public function toAugmentedCollection($keys = null): Collection
+    public function defaultAugmentedArrayKeys()
     {
-        return $this->resource()->toAugmentedCollection($keys);
+        return $this->selectedQueryColumns;
     }
 
-    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
+    public function shallowAugmentedArrayKeys()
     {
-        return is_subclass_of($class, $classToCheckAgainst)
-            || $class === $classToCheckAgainst;
+        return ['order_number', 'status', 'payment_status', 'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
+    }
+
+    public function newAugmentedInstance(): Augmented
+    {
+        return new AugmentedOrder($this);
+    }
+
+    public function getCurrentDirtyStateAttributes(): array
+    {
+        return array_merge([
+            'order_number' => $this->orderNumber(),
+            'status' => $this->status(),
+            'payment_status' => $this->paymentStatus(),
+            'customer' => $this->customer(),
+            'line_items' => $this->lineItems(),
+            'grand_total' => $this->grandTotal(),
+            'sub_total' => $this->subTotal(),
+            'discount_total' => $this->discountTotal(),
+            'tax_total' => $this->taxTotal(),
+            'shipping_total' => $this->shippingTotal(),
+            'payment_gateway' => $this->paymentGateway(),
+            'payment_data' => $this->paymentData(),
+            'shipping_method' => $this->shippingMethod(),
+        ], $this->data()->toArray());
+    }
+
+    public function editUrl(): string
+    {
+        return cp_route('simple-commerce.orders.edit', $this->orderNumber());
+    }
+
+    public function updateUrl(): string
+    {
+        return cp_route('simple-commerce.orders.update', $this->orderNumber());
+    }
+
+    public function reference(): string
+    {
+        return "order::{$this->orderNumber()}";
+    }
+
+    public function value($key)
+    {
+        return $this->get($key);
     }
 }

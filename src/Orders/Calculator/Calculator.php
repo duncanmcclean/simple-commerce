@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Calculator as Contract;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use Illuminate\Support\Facades\Pipeline;
 
 class Calculator implements Contract

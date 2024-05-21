@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Tests\Helpers;
 
 use DuncanMcClean\SimpleCommerce\Contracts\CartDriver;
-use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 
 class StaticCartDriver implements CartDriver

@@ -166,7 +166,7 @@ return [
         ],
 
         'orders' => [
-            'repository' => \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository::class,
             'collection' => 'orders',
         ],
 

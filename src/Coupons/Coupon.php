@@ -4,8 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use Carbon\Carbon;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupon as Contract;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Support\Str;
@@ -282,7 +282,7 @@ class Coupon implements Contract
         }
 
         if ($this->type() === CouponType::Fixed) {
-            return Currency::parse($this->value(), Site::current());
+            return Money::format($this->value(), Site::current());
         }
 
         return null;

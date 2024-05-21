@@ -2,13 +2,13 @@
 
 namespace DuncanMcClean\SimpleCommerce\Widgets;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
-use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Orders\StatusLogEvent;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository;
 use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Site;
 use Statamic\Widgets\Widget;
@@ -27,7 +27,7 @@ class RecentOrders extends Widget
             ->map(function ($order) {
                 return [
                     'order_number' => $order->orderNumber,
-                    'grand_total' => Currency::parse($order->grandTotal(), Site::selected()),
+                    'grand_total' => Money::format($order->grandTotal(), Site::selected()),
                     'edit_url' => $this->getEditUrl($order),
                     'date' => $order->statusLog()
                         ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
@@ -46,7 +46,7 @@ class RecentOrders extends Widget
 
     protected function getIndexUrl(): string
     {
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], OrderRepository::class)) {
             return cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
         }
 
@@ -57,7 +57,7 @@ class RecentOrders extends Widget
 
     protected function getEditUrl($order): string
     {
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], OrderRepository::class)) {
             return $order->resource()->editUrl();
         }
 

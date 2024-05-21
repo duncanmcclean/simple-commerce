@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Gateways;
 
 use DuncanMcClean\SimpleCommerce\Contracts\GatewayManager as Contract;
-use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;

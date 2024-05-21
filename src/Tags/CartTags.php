@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Collection;
@@ -98,7 +98,7 @@ class CartTags extends SubTag
     public function itemsTotalWithTax()
     {
         if ($this->hasCart()) {
-            return Currency::parse($this->getCart()->itemsTotalWithTax(), Site::current());
+            return Money::format($this->getCart()->itemsTotalWithTax(), Site::current());
         }
 
         return 0;
@@ -125,7 +125,7 @@ class CartTags extends SubTag
     public function shippingTotalWithTax()
     {
         if ($this->hasCart()) {
-            return Currency::parse($this->getCart()->shippingTotalWithTax(), Site::current());
+            return Money::format($this->getCart()->shippingTotalWithTax(), Site::current());
         }
 
         return 0;
@@ -152,7 +152,7 @@ class CartTags extends SubTag
     public function taxTotalSplit(): Collection
     {
         return $this->rawTaxTotalSplit()->map(function ($tax) {
-            $tax['amount'] = Currency::parse($tax['amount'], Site::current());
+            $tax['amount'] = Money::format($tax['amount'], Site::current());
 
             return $tax;
         });

@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
-use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 

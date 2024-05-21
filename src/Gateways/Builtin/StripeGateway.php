@@ -3,8 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
-use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\RefundFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\StripeSecretMissing;
@@ -45,7 +45,7 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $intentData = [
             'amount' => $order->grandTotal(),
-            'currency' => Currency::get(Site::current())['code'],
+            'currency' => Money::get(Site::current())['code'],
             'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
             'setup_future_usage' => 'off_session',
         ];

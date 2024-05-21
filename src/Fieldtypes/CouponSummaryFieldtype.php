@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
@@ -15,7 +15,7 @@ class CouponSummaryFieldtype extends Fieldtype
     public function preload()
     {
         return [
-            'currency' => Currency::get(Site::current()),
+            'currency' => Money::get(Site::current()),
         ];
     }
 }

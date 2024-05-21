@@ -137,7 +137,7 @@ That command will create a Shipping Method class in your `app\ShippingMethods` f
 
 namespace App\ShippingMethods;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\Address;
 use DuncanMcClean\SimpleCommerce\Shipping\BaseShippingMethod;

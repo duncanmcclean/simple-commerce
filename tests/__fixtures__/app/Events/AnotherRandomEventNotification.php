@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Events;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 

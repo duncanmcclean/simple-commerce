@@ -1,7 +1,7 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
-use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as ContractsOrder;
 use DuncanMcClean\SimpleCommerce\Customers\StacheUserQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;

@@ -3,12 +3,12 @@
 namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use Carbon\Carbon;
-use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
-use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Artisan;
@@ -39,7 +39,7 @@ class MigrateOrderStatuses extends Command
             return 1;
         }
 
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], OrderRepository::class)) {
             $this->migrateForOrderEntries();
 
             return $this->info('Migration complete!');

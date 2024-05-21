@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Notifications;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

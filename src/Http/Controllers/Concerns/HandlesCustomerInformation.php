@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;

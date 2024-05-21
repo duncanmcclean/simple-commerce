@@ -2,10 +2,10 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts;
 
-use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
-use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Statamic\Facades\Entry;
@@ -18,7 +18,7 @@ class VerificationController extends Controller
             'license_key' => ['required', 'string'],
         ]);
 
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], OrderRepository::class)) {
             $orderQuery = Entry::query()
                 ->where('collection', SimpleCommerce::orderDriver()['collection'])
                 ->whereIn('order_status', [

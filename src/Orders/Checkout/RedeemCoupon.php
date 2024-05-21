@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Closure;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 
 class RedeemCoupon
 {

@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Customers\CustomerModel;
 use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Orders\Eloquent\StatusLogModel;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;

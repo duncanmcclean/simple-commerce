@@ -2,11 +2,11 @@
 
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DuncanMcClean\SimpleCommerce\Contracts\OrderRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DuncanMcClean\SimpleCommerce\Contracts\OrderRepository
+ * @see \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository
  */
 class Order extends Facade
 {

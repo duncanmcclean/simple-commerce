@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tax;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Contracts\TaxEngine;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;

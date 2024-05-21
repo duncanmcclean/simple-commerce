@@ -4,8 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Actions\RefundAction;
 use DuncanMcClean\SimpleCommerce\Facades\Gateway;
-use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository;
 use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Statamic\Facades\Action;
 use Statamic\Fields\Fieldtype;
@@ -47,7 +47,7 @@ class GatewayFieldtype extends Fieldtype
             })
             ->values();
 
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], OrderRepository::class)) {
             $actionUrl = cp_route(
                 'collections.entries.actions.run',
                 $this->field->parent()->collection->handle()

@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;

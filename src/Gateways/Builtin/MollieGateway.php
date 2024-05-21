@@ -3,8 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
@@ -40,7 +40,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
         $payment = $this->mollie->payments->create([
             'amount' => [
-                'currency' => Currency::get(Site::current())['code'],
+                'currency' => Money::get(Site::current())['code'],
                 'value' => (string) substr_replace($order->grandTotal(), '.', -2, 0),
             ],
             'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),

@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Closure;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;

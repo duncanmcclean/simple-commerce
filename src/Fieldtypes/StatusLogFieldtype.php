@@ -3,10 +3,10 @@
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use Carbon\Carbon;
+use DuncanMcClean\SimpleCommerce\Orders\Eloquent\StatusLogModel;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Orders\StatusLogEvent;
-use DuncanMcClean\SimpleCommerce\Orders\StatusLogModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Statamic\Fields\Fieldtype;

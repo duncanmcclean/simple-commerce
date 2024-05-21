@@ -3,8 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
@@ -51,7 +51,7 @@ class PayPalGateway extends BaseGateway implements Gateway
                 [
                     'amount' => [
                         'value' => (string) substr_replace($order->grandTotal(), '.', -2, 0),
-                        'currency_code' => Currency::get(Site::current())['code'],
+                        'currency_code' => Money::get(Site::current())['code'],
                     ],
                     'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
                     'custom_id' => $order->id(),

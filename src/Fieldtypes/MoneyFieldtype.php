@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
@@ -29,7 +29,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function preload()
     {
-        return Currency::get(Site::selected());
+        return Money::get(Site::selected());
     }
 
     public function preProcess($data)
@@ -77,21 +77,21 @@ class MoneyFieldtype extends Fieldtype
     {
         if (empty($value)) {
             return $this->config('save_zero_value', false)
-                ? Currency::parse(0, Site::selected())
+                ? Money::format(0, Site::selected())
                 : null;
         }
 
-        return Currency::parse($value, Site::current());
+        return Money::format($value, Site::current());
     }
 
     public function preProcessIndex($value)
     {
         if (! $value) {
             return $this->config('save_zero_value', false)
-                ? Currency::parse(0, Site::selected())
+                ? Money::format(0, Site::selected())
                 : null;
         }
 
-        return Currency::parse($value, Site::selected());
+        return Money::format($value, Site::selected());
     }
 }

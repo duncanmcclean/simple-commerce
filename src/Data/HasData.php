@@ -4,6 +4,9 @@ namespace DuncanMcClean\SimpleCommerce\Data;
 
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
+/**
+ * @deprecated
+ */
 trait HasData
 {
     use FluentlyGetsAndSets;

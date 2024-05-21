@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes\Variables;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use Statamic\Facades\Site;
 
 class LineItemTax extends VariableFieldtype
@@ -20,7 +20,7 @@ class LineItemTax extends VariableFieldtype
             return $value;
         }
 
-        $value['amount'] = Currency::parse($value['amount'], Site::current());
+        $value['amount'] = Money::format($value['amount'], Site::current());
 
         return $value;
     }

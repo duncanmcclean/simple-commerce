@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Facades\Shipping;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
@@ -35,7 +35,7 @@ class ShippingTags extends SubTag
                     'handle' => $shippingMethod['handle'],
                     'name' => $instance->name(),
                     'description' => $instance->description(),
-                    'cost' => Currency::parse($cost, Site::current()),
+                    'cost' => Money::format($cost, Site::current()),
                 ];
             })
             ->whereNotNull()

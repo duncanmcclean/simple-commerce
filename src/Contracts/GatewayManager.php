@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use Illuminate\Http\Request;
 
 interface GatewayManager

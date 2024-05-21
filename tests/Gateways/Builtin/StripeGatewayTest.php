@@ -1,6 +1,6 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as ContractsOrder;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;

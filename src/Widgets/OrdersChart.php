@@ -4,10 +4,10 @@ namespace DuncanMcClean\SimpleCommerce\Widgets;
 
 use Carbon\CarbonPeriod;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
-use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository;
 use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Illuminate\Support\Carbon;
 use Statamic\Widgets\Widget;
@@ -18,7 +18,7 @@ class OrdersChart extends Widget
     {
         $indexUrl = null;
 
-        if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
+        if ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], OrderRepository::class)) {
             $indexUrl = cp_route('collections.show', SimpleCommerce::orderDriver()['collection']);
         } elseif ((new self)->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EloquentOrderRepository::class)) {
             $indexUrl = cp_route('runway.index', ['resource' => Runway::orderModel()->handle()]);

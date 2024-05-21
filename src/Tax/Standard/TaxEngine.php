@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tax\Standard;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Contracts\TaxEngine as Contract;
 use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;

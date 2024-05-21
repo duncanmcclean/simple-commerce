@@ -64,7 +64,7 @@ If you receive an error running the `sc:migrate-to-database` command, please ens
     ],
 
     'orders' => [
-        'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository::class,
         'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
     ],
 

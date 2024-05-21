@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers;
 
 use DuncanMcClean\SimpleCommerce\Contracts\CartDriver as CartDriverContract;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 
 trait CartDriver

@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Gateways;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Events\PostCheckout;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DuncanMcClean\SimpleCommerce\Orders\Checkout\CheckoutPipeline;

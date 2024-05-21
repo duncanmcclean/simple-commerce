@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use Statamic\Facades\Site;
 use Statamic\Tags\Tags;
 
@@ -15,6 +15,6 @@ class TotalIncludingTax extends Tags
 
         $totalIncludingTax = $total + $taxAmount;
 
-        return Currency::parse($totalIncludingTax, Site::current());
+        return Money::format($totalIncludingTax, Site::current());
     }
 }

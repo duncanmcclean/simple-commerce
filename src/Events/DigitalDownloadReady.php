@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Events;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 
 class DigitalDownloadReady
 {

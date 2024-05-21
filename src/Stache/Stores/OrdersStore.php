@@ -1,0 +1,44 @@
+<?php
+
+namespace DuncanMcClean\SimpleCommerce\Stache\Stores;
+
+use DuncanMcClean\SimpleCommerce\Facades\Order;
+use Statamic\Facades\YAML;
+use Statamic\Stache\Stores\BasicStore;
+use Statamic\Support\Arr;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
+
+class OrdersStore extends BasicStore
+{
+    public function key()
+    {
+        return 'orders';
+    }
+
+    public function getItemKey($item)
+    {
+        return $item->orderNumber();
+    }
+
+    public function makeItemFromFile($path, $contents): OrderContract
+    {
+        $orderNumber = pathinfo($path, PATHINFO_FILENAME);
+        $data = YAML::file($path)->parse($contents);
+
+        return Order::make()
+            ->orderNumber($orderNumber)
+            ->status(Arr::pull($data, 'status'))
+            ->paymentStatus(Arr::pull($data, 'payment_status'))
+            ->customer(Arr::pull($data, 'customer'))
+            ->lineItems(Arr::pull($data, 'line_items'))
+            ->grandTotal(Arr::pull($data, 'grand_total'))
+            ->subTotal(Arr::pull($data, 'sub_total'))
+            ->discountTotal(Arr::pull($data, 'discount_total'))
+            ->taxTotal(Arr::pull($data, 'tax_total'))
+            ->shippingTotal(Arr::pull($data, 'shipping_total'))
+            ->paymentGateway(Arr::pull($data, 'payment_gateway'))
+            ->paymentData(Arr::pull($data, 'payment_info'))
+            ->shippingMethod(Arr::pull($data, 'shipping_method'))
+            ->data($data);
+    }
+}

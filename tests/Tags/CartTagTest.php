@@ -1,6 +1,6 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
@@ -421,13 +421,13 @@ test('can get cart tax total split', function () {
     $cartProduct2 = $cart->lineItems()->slice(1, 1)->first();
 
     $taxDefault = $cartProduct1->tax()['amount'] + $cartProduct2->tax()['amount'];
-    $taxDefaultFormatted = Currency::parse($taxDefault, Site::default());
+    $taxDefaultFormatted = Money::format($taxDefault, Site::default());
 
     // Get tax sum for products with reduced tax rate
     $cartProduct3 = $cart->lineItems()->slice(2, 1)->first();
 
     $taxReduced = $cartProduct3->tax()['amount'];
-    $taxReducedFormatted = Currency::parse($taxReduced, Site::default());
+    $taxReducedFormatted = Money::format($taxReduced, Site::default());
 
     // Expected tag output format = '19:1234|7:5678'
     $renderedTag = (string) tag('{{ sc:cart:rawTaxTotalSplit }}{{ rate }}:{{ amount }}|{{ /sc:cart:rawTaxTotalSplit }}');

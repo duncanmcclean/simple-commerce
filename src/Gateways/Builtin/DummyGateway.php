@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 

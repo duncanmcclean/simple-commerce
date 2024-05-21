@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\Address;
 

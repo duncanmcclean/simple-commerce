@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Rules;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Exceptions\CouponNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Illuminate\Contracts\Validation\Rule;

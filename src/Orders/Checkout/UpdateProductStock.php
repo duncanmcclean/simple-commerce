@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 
 use Closure;
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Events\StockRunningLow;
 use DuncanMcClean\SimpleCommerce\Events\StockRunOut;
 use DuncanMcClean\SimpleCommerce\Facades\Product;

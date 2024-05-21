@@ -30,7 +30,7 @@ trait UseDatabaseContentDrivers
         ]);
 
         $this->app['config']->set('simple-commerce.content.orders', [
-            'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository::class,
             'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
         ]);
 
@@ -40,7 +40,7 @@ trait UseDatabaseContentDrivers
         );
 
         $this->app->bind(
-            \DuncanMcClean\SimpleCommerce\Contracts\OrderRepository::class,
+            \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class,
             $this->app['config']->get('simple-commerce.content.orders.repository')
         );
     }
