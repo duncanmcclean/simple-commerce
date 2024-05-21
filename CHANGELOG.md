@@ -1,5 +1,13 @@
 # Changelog
 
+## v7.2.0 (2024-05-21)
+
+### What's improved
+
+* Dark Mode support #1077 by @duncanmcclean
+
+
+
 ## v7.1.0 (2024-05-18)
 
 ### What's new
