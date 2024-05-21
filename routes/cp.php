@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderActionController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderController;
+use Illuminate\Support\Facades\Route;
 
 Route::name('simple-commerce.')->group(function () {
     Route::resource('orders', OrderController::class)->only(['index', 'edit', 'update']);

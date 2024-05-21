@@ -3,10 +3,10 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Order as OrderResource;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use Statamic\Facades\Action;
 use Statamic\Http\Controllers\CP\ActionController;
-use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Order as OrderResource;
 
 class OrderActionController extends ActionController
 {

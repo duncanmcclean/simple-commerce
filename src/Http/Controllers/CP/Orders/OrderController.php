@@ -15,7 +15,7 @@ use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
 
 class OrderController extends CpController
 {
-    use QueriesFilters, ExtractsFromOrderFields;
+    use ExtractsFromOrderFields, QueriesFilters;
 
     public function index(Request $request)
     {

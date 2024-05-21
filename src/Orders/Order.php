@@ -10,7 +10,6 @@ use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Contracts\Data\Augmented;
-use Statamic\Contracts\Data\BulkAugmentable;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\HasAugmentedInstance;
@@ -23,22 +22,34 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 {
     use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations;
-
     use HasDirtyState;
 
     protected $orderNumber;
+
     protected $status;
+
     protected $paymentStatus;
+
     protected $customer;
+
     protected $lineItems;
+
     protected $grandTotal;
+
     protected $subTotal;
+
     protected $discountTotal;
+
     protected $taxTotal;
+
     protected $shippingTotal;
+
     protected $paymentGateway;
+
     protected $paymentData;
+
     protected $shippingMethod;
+
     protected $initialPath;
 
     public function __construct()

@@ -2,8 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Policies;
 
-use Statamic\Facades\User;
-
 class OrderPolicy
 {
     public function index($user)

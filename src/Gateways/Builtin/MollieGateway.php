@@ -4,11 +4,11 @@ namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;

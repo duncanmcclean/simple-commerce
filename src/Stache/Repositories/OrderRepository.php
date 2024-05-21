@@ -12,6 +12,7 @@ use Statamic\Stache\Stache;
 class OrderRepository implements RepositoryContract
 {
     protected $stache;
+
     protected $store;
 
     public function __construct(Stache $stache)

@@ -4,7 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Gateways\Builtin;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\PayPalDetailsMissingOnOrderException;
@@ -12,6 +11,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use DuncanMcClean\SimpleCommerce\Gateways\Response;
+use DuncanMcClean\SimpleCommerce\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;

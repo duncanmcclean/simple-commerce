@@ -7,11 +7,11 @@ use Illuminate\Support\Str;
 use Statamic\Facades\Action;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;
-use Statamic\Fields\Fields;
 
 class ListedOrder extends JsonResource
 {
     protected $blueprint;
+
     protected $columns;
 
     public function blueprint($blueprint)
@@ -47,7 +47,7 @@ class ListedOrder extends JsonResource
 
     protected function values($extra = [])
     {
-        return $this->columns->mapWithKeys(function ($column) use ($extra) {
+        return $this->columns->mapWithKeys(function ($column) {
             $key = $column->field;
             $field = $this->blueprint->field($key);
 

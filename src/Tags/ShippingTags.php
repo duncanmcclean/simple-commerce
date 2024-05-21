@@ -2,8 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Facades\Shipping;
+use DuncanMcClean\SimpleCommerce\Money;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Site;

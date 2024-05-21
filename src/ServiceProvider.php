@@ -2,20 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
-use Barryvdh\Debugbar\Facade as Debugbar;
-use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
-use DuncanMcClean\SimpleCommerce\Support\Runway;
-use Illuminate\Foundation\Console\AboutCommand;
-use Illuminate\Support\Carbon;
-use Statamic\CP\Navigation\NavItem;
-use Statamic\Events\EntryBlueprintFound;
-use Statamic\Events\UserBlueprintFound;
-use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
-use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Stache\Stache;
 use Statamic\Statamic;

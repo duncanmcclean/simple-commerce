@@ -2,11 +2,11 @@
 
 namespace DuncanMcClean\SimpleCommerce\Stache\Stores;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
 use Statamic\Support\Arr;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 
 class OrdersStore extends BasicStore
 {

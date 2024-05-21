@@ -8,11 +8,10 @@ use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Support\Arr;
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\progress;
 use function Laravel\Prompts\select;
-use function Laravel\Prompts\spin;
-use function Laravel\Prompts\text;
 
 class MigrateOrders extends Command
 {
@@ -39,7 +38,7 @@ class MigrateOrders extends Command
      */
     public function handle()
     {
-        $previousDriver = select("How were you storing orders in Simple Commerce v7?", [
+        $previousDriver = select('How were you storing orders in Simple Commerce v7?', [
             'Entries',
             'Database',
         ]);
@@ -105,7 +104,7 @@ class MigrateOrders extends Command
         // todo
     }
 
-    private function migrateCustomer(string $customer = null)
+    private function migrateCustomer(?string $customer = null)
     {
         if (! $customer) {
             return null;
