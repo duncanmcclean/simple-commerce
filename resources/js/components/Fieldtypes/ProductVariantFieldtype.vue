@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white">
+    <div>
         <div
             v-if="initializing"
             class="flex flex-col items-center justify-center text-center p-1"

@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center p-4">
         <h2>
             <a class="flex items-center" href="{{ $url }}">
-                <div class="h-6 w-6 mr-2 text-gray-800">
+                <div class="h-6 w-6 mr-2 text-gray-800 dark:text-dark-100">
                     {!! \DuncanMcClean\SimpleCommerce\SimpleCommerce::svg('shop') !!}
                 </div>
                 <span>{{ __('Recent Orders') }}</span>
