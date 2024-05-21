@@ -1,7 +1,11 @@
 <template>
-    <div class="bg-grey-10 shadow-sm mb-4 rounded border variants-sortable-item">
-        <div class="grid-item-header rounded-t">
-            {{ option.variant || __('Variants') }}
+    <div class="replicator-set shadow-sm mb-4 rounded border dark:border-dark-900 testing-sortable-item variants-sortable-item">
+        <div class="replicator-set-header">
+            <div class="py-2 rtl:pr-2 ltr:pl-2 replicator-set-header-inner flex justify-between items-end w-full">
+                <label class="text-xs whitespace-nowrap rtl:ml-2 ltr:mr-2 cursor-pointer">
+                    {{ option.variant || __('Variants') }}
+                </label>
+            </div>
         </div>
 
         <publish-fields-container>

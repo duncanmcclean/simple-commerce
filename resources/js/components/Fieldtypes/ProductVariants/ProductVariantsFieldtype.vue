@@ -6,18 +6,22 @@
                 <div
                     v-for="(variant, variantIndex) in variants"
                     :key="variantIndex"
-                    class="bg-grey-10 shadow-sm mb-4 rounded border variants-sortable-item"
+                    class="replicator-set shadow-sm mb-4 rounded border dark:border-dark-900 testing-sortable-item variants-sortable-item"
                 >
-                    <div class="grid-item-header rounded-t">
-                        {{ variant.name || 'Variant' }}
-                        <button
-                            v-if="variants.length > 1"
-                            class="icon icon-cross cursor-pointer"
-                            @click="deleteVariant(variantIndex)"
-                            :aria-label="__('Delete Variant')"
-                        >
-                            <svg-icon name="micro/trash" class="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
-                        </button>
+                    <div class="replicator-set-header">
+                        <div class="py-2 rtl:pr-2 ltr:pl-2 replicator-set-header-inner flex justify-between items-end w-full">
+                            <label class="text-xs whitespace-nowrap rtl:ml-2 ltr:mr-2 cursor-pointer">
+                                {{ variant.name || 'Variant' }}
+                            </label>
+                            <button
+                                v-if="variants.length > 1"
+                                class="icon icon-cross cursor-pointer"
+                                @click="deleteVariant(variantIndex)"
+                                :aria-label="__('Delete Variant')"
+                            >
+                                <svg-icon name="micro/trash" class="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                            </button>
+                        </div>
                     </div>
                     <publish-fields-container>
                         <publish-field
