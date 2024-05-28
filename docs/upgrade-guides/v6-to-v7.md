@@ -38,7 +38,7 @@ php artisan view:clear
 ## High: Statamic support
 **Affects all apps using Simple Commerce**
 
-The minimum version of Statamic is now 5. Please review the [Statamic 5 upgrade guide](https://statamic.dev/upgrade-guide/4-0-to-5-0).
+The minimum version of Statamic is now 5. Please review the [Statamic 5 upgrade guide](https://statamic.dev/upgrade-guide/4-to-5).
 
 ### PHP support
 **Affects apps using PHP 8.1**
