@@ -40,6 +40,6 @@ class CustomerTags extends SubTag
 
     public function order()
     {
-        return OrderAPI::find($this->params->get('id'));
+        return OrderAPI::find($this->params->get('id'))->toAugmentedArray();
     }
 }
