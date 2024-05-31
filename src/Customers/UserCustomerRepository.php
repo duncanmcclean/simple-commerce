@@ -99,7 +99,7 @@ class UserCustomerRepository implements RepositoryContract
             $ignoredKeys = array_merge($ignoredKeys, $user->model()->getAppends());
         }
 
-        $user->merge(Arr::except($customer->data()->all(), $ignoredKeys));
+        $user->data(Arr::except($customer->data()->all(), $ignoredKeys));
 
         $user->save();
 
