@@ -33,9 +33,9 @@ class QueryBuilder extends EntryQueryBuilder
             $product->stock($entry->value('stock'));
         }
 
-//        if (SimpleCommerce::isUsingStandardTaxEngine() && ($entry->has('tax_category') || $entry->originValues()->has('tax_category'))) {
-//            $product->taxCategory($entry->value('tax_category'));
-//        }
+        //        if (SimpleCommerce::isUsingStandardTaxEngine() && ($entry->has('tax_category') || $entry->originValues()->has('tax_category'))) {
+        //            $product->taxCategory($entry->value('tax_category'));
+        //        }
 
         return $product->data(array_merge(
             Arr::except(

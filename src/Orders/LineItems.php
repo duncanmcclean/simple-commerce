@@ -13,18 +13,18 @@ class LineItems extends Collection
     {
         $product = Product::find(Arr::pull($data, 'product'));
 
-         $lineItem = (new LineItem)
-             ->id(Stache::generateId())
-             ->product($product)
-             ->quantity(Arr::pull($data, 'quantity'))
-             ->total(Arr::pull($data, 'total', 0))
-             ->variant(Arr::pull($data, 'variant'))
-             ->tax(Arr::pull($data, 'tax'))
-             ->metadata(collect($data));
+        $lineItem = (new LineItem)
+            ->id(Stache::generateId())
+            ->product($product)
+            ->quantity(Arr::pull($data, 'quantity'))
+            ->total(Arr::pull($data, 'total', 0))
+            ->variant(Arr::pull($data, 'variant'))
+            ->tax(Arr::pull($data, 'tax'))
+            ->metadata(collect($data));
 
-         $this->push($lineItem);
+        $this->push($lineItem);
 
-         return $this;
+        return $this;
     }
 
     public function find(string $id): ?LineItem

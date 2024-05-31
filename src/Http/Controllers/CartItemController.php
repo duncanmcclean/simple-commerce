@@ -27,7 +27,7 @@ class CartItemController extends BaseActionController
 
         $items = $cart->lineItems();
 
-//        $cart = $this->handleCustomerInformation($request, $cart);
+        //        $cart = $this->handleCustomerInformation($request, $cart);
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::Product) {
@@ -123,7 +123,7 @@ class CartItemController extends BaseActionController
     public function update(UpdateRequest $request, string $requestItem)
     {
         $cart = Cart::get();
-        $lineItem = $cart->lineItems()->find($requestItem);;
+        $lineItem = $cart->lineItems()->find($requestItem);
 
         $data = Arr::only($request->all(), 'quantity', 'variant');
 

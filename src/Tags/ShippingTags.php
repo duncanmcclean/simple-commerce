@@ -4,8 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Shipping;
-use DuncanMcClean\SimpleCommerce\Support\Money;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag

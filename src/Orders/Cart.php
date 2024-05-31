@@ -2,13 +2,13 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Statamic\Facades\Blink;
 use Statamic\Facades\Site;
-use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 
 class Cart
 {

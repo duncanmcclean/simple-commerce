@@ -5,7 +5,6 @@ namespace DuncanMcClean\SimpleCommerce\Products;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
-use Illuminate\Support\Arr;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
@@ -86,7 +85,7 @@ class ProductRepository implements RepositoryContract
                     'price' => $product->price(),
                     'product_variants' => $product->productVariants(),
                     'stock' => $product->stock(),
-//                    'tax_category' => SimpleCommerce::isUsingStandardTaxEngine() ? $product->taxCategory() : null,
+                    //                    'tax_category' => SimpleCommerce::isUsingStandardTaxEngine() ? $product->taxCategory() : null,
                 ]
             )
         );

@@ -7,9 +7,6 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInform
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
-use Illuminate\Support\Str;
-use Statamic\Facades\Site;
-use Statamic\Sites\Site as SitesSite;
 
 class CartController extends BaseActionController
 {

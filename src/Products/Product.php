@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 use DuncanMcClean\SimpleCommerce\Data\HasData;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

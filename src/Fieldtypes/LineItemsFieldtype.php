@@ -32,8 +32,6 @@ class LineItemsFieldtype extends Grid
      * The code for this method is pretty much exactly the same as the original method in the Grid fieldtype.
      * Just we need to do some stuff to map the value and we can't extend the Grid fieldtype's implementation since the method is private.
      *
-     * @param $value
-     * @param $shallow
      * @return array
      */
     private function performAugmentation($value, $shallow)
