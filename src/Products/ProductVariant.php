@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Products;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Data\HasData;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;

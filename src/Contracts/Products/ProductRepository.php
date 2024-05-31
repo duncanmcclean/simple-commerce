@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Contracts;
+namespace DuncanMcClean\SimpleCommerce\Contracts\Products;
 
 interface ProductRepository
 {

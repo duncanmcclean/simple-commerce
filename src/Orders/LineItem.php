@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -11,17 +11,11 @@ class LineItem
     use FluentlyGetsAndSets;
 
     public $id;
-
     public $product;
-
     public $variant;
-
     public $quantity;
-
     public $total;
-
     public $tax;
-
     public $metadata;
 
     public function __construct()
@@ -41,11 +35,11 @@ class LineItem
         return $this
             ->fluentlyGetOrSet('product')
             ->setter(function ($product) {
-                if ($product instanceof Product) {
-                    return $product;
+                if (! $product instanceof Product) {
+                    $product = ProductFacade::find($product);
                 }
 
-                return ProductFacade::find($product);
+                return $product;
             })
             ->args(func_get_args());
     }
@@ -87,26 +81,26 @@ class LineItem
     {
         return $this
             ->fluentlyGetOrSet('metadata')
-            ->setter(function ($value) {
-                if (is_array($value)) {
-                    $value = collect($value);
+            ->setter(function ($metadata) {
+                if (is_array($metadata)) {
+                    $metadata = collect($metadata);
                 }
 
-                return $value;
+                return $metadata;
             })
             ->args(func_get_args());
     }
 
     public function toArray(): array
     {
-        return [
+        // todo: null values shouldn't be returned
+        return array_merge($this->metadata->all(), [
             'id' => $this->id,
-            'product' => optional($this->product)->id(),
+            'product' => $this->product->id(),
             'variant' => $this->variant,
             'quantity' => $this->quantity,
             'total' => $this->total,
             'tax' => $this->tax,
-            'metadata' => $this->metadata->toArray(),
-        ];
+        ]);
     }
 }

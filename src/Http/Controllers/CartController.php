@@ -2,27 +2,27 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Statamic\Sites\Site as SitesSite;
 
 class CartController extends BaseActionController
 {
-    use CartDriver, HandlesCustomerInformation;
+    use HandlesCustomerInformation;
 
     public function index(IndexRequest $request)
     {
-        if (! $this->hasCart()) {
+        if (! Cart::exists()) {
             return [];
         }
 
         return [
-            'data' => $this->getCart()
+            'data' => Cart::get()
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()
@@ -32,7 +32,7 @@ class CartController extends BaseActionController
 
     public function update(UpdateRequest $request)
     {
-        $cart = $this->getCart();
+        $cart = Cart::get();
         $cart = $this->handleCustomerInformation($request, $cart);
 
         $data = collect($request->all())
@@ -69,7 +69,7 @@ class CartController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $cart = $this->getCart();
+        $cart = Cart::get();
 
         $cart->clearLineItems();
 
@@ -78,29 +78,6 @@ class CartController extends BaseActionController
         return $this->withSuccess($request, [
             'message' => __('Cart Deleted'),
         ]);
-    }
-
-    protected function guessSiteFromRequest(): SitesSite
-    {
-        if ($site = request()->get('site')) {
-            return Site::get($site);
-        }
-
-        if ($referer = request()->header('referer')) {
-            foreach (Site::all() as $site) {
-                if (Str::contains($referer, $site->url())) {
-                    return $site;
-                }
-            }
-        }
-
-        foreach (Site::all() as $site) {
-            if (Str::contains(request()->url(), $site->url())) {
-                return $site;
-            }
-        }
-
-        return Site::current();
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool

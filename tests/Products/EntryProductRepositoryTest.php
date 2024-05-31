@@ -1,9 +1,9 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Contracts\Product as ProductContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
-use DuncanMcClean\SimpleCommerce\Products\EntryQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Products\QueryBuilder;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
 uses(PreventsSavingStacheItemsToDisk::class);
@@ -25,7 +25,7 @@ it('can query products', function () {
     Product::make()->id('three')->price(3000)->save();
 
     $query = Product::query();
-    expect($query)->toBeInstanceOf(EntryQueryBuilder::class);
+    expect($query)->toBeInstanceOf(QueryBuilder::class);
     expect($query->count(), 3);
 
     $query = Product::query()->where('price', '>=', 2000);

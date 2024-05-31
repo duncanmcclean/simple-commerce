@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Exceptions;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 
 class CheckoutProductHasNoStockException extends PreventCheckout
 {

@@ -9,7 +9,7 @@ use DuncanMcClean\SimpleCommerce\Exceptions\RefundFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
-use DuncanMcClean\SimpleCommerce\Money;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;

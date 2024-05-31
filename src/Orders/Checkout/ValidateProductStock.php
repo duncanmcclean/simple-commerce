@@ -7,7 +7,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Exceptions\CheckoutProductHasNoStockException;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
-use DuncanMcClean\SimpleCommerce\Products\EntryProductRepository;
+use DuncanMcClean\SimpleCommerce\Products\ProductRepository;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
@@ -22,7 +22,7 @@ class ValidateProductStock
                 // Multi-site: Is the Stock field not localised? If so, we want the origin
                 // version of the product for stock purposes.
                 if (
-                    $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], EntryProductRepository::class)
+                    $this->isOrExtendsClass(SimpleCommerce::productDriver()['repository'], ProductRepository::class)
                     && $product->resource()->hasOrigin()
                     && $product->resource()->blueprint()->hasField('stock')
                     && ! $product->resource()->blueprint()->field('stock')->isLocalizable()

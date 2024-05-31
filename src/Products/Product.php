@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Products;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Product as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 use DuncanMcClean\SimpleCommerce\Data\HasData;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
@@ -29,7 +29,7 @@ class Product implements Contract
 
     public $data;
 
-    public $resource;
+    public $entry;
 
     public function __construct()
     {
@@ -99,20 +99,16 @@ class Product implements Contract
             ->args(func_get_args());
     }
 
-    public function resource($resource = null)
+    public function entry($entry = null)
     {
         return $this
-            ->fluentlyGetOrSet('resource')
+            ->fluentlyGetOrSet('entry')
             ->args(func_get_args());
     }
 
     public function site(): ?Site
     {
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
-            return $this->resource()->site();
-        }
-
-        return null;
+        return $this->entry()->site();
     }
 
     public function purchasableType(): ProductType
@@ -194,24 +190,24 @@ class Product implements Contract
         $this->stock = $freshProduct->stock;
         $this->taxCategory = $freshProduct->taxCategory;
         $this->data = $freshProduct->data;
-        $this->resource = $freshProduct->resource;
+        $this->entry = $freshProduct->entry;
 
         return $this;
     }
 
     public function toResource()
     {
-        return new EntryResource($this->resource());
+        return new EntryResource($this->entry());
     }
 
     public function toAugmentedArray($keys = null): array
     {
-        return $this->resource()->toAugmentedArray($keys);
+        return $this->entry()->toAugmentedArray($keys);
     }
 
     public function toAugmentedCollection($keys = null): Collection
     {
-        return $this->resource()->toAugmentedCollection($keys);
+        return $this->entry()->toAugmentedCollection($keys);
     }
 
     protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool

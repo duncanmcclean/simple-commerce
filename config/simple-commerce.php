@@ -171,7 +171,7 @@ return [
         ],
 
         'products' => [
-            'repository' => \DuncanMcClean\SimpleCommerce\Products\EntryProductRepository::class,
+            'repository' => \DuncanMcClean\SimpleCommerce\Products\ProductRepository::class,
             'collection' => 'products',
         ],
     ],

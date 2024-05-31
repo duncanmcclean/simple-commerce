@@ -69,7 +69,7 @@ If you receive an error running the `sc:migrate-to-database` command, please ens
     ],
 
     'products' => [
-        'repository' => \DuncanMcClean\SimpleCommerce\Products\EntryProductRepository::class,
+        'repository' => \DuncanMcClean\SimpleCommerce\Products\ProductRepository::class,
         'collection' => 'products',
     ],
 ],

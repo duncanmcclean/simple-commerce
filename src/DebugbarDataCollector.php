@@ -2,22 +2,21 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Facades\Site;
 
 class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implements \DebugBar\DataCollector\Renderable
 {
-    use CartDriver;
-
     public function collect()
     {
-        if (! $this->hasCart()) {
+        if (! Cart::exists()) {
             return [
                 'Cart ID' => 'No cart found.',
             ];
         }
 
-        $cart = $this->getCart();
+        $cart = Cart::get();
 
         return [
             'Cart ID' => $cart->id,

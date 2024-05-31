@@ -25,7 +25,7 @@ class Blueprint
                         'instructions' => 'The customer who placed the order.',
                     ],
                     'line_items' => [
-                        'type' => 'grid',
+                        'type' => 'line_items',
                         'display' => 'Line Items',
                         'listable' => false,
                         'fields' => [

@@ -2,11 +2,11 @@
 
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DuncanMcClean\SimpleCommerce\Contracts\ProductRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DuncanMcClean\SimpleCommerce\Contracts\ProductRepository
+ * @see \DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository
  */
 class Product extends Facade
 {

@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Money;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Facades\Site;
 use Statamic\Tags\Tags;
 

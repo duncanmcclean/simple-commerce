@@ -2,19 +2,17 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Shipping;
-use DuncanMcClean\SimpleCommerce\Money;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Site;
 
 class ShippingTags extends SubTag
 {
-    use CartDriver;
-
     public function methods()
     {
-        $order = $this->getCart();
+        $order = Cart::get();
 
         return SimpleCommerce::shippingMethods(Site::current()->handle())
             ->map(function ($shippingMethod) use ($order) {

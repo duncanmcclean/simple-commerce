@@ -11,7 +11,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use DuncanMcClean\SimpleCommerce\Gateways\Response;
-use DuncanMcClean\SimpleCommerce\Money;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;

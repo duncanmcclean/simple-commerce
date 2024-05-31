@@ -2,19 +2,17 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Coupon\DestroyRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Coupon\StoreRequest;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 
 class CouponController extends BaseActionController
 {
-    use CartDriver;
-
     public function store(StoreRequest $request)
     {
-        $redeem = $this->getCart()->redeemCoupon($request->code);
+        $redeem = Cart::get()->redeemCoupon($request->code);
 
-        $cart = $this->getCart();
+        $cart = Cart::get();
 
         $cart->fresh();
         $cart->recalculate();
@@ -35,7 +33,7 @@ class CouponController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $cart = $this->getCart();
+        $cart = Cart::get();
 
         $cart->coupon = null;
 

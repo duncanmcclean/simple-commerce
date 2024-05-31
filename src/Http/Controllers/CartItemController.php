@@ -2,22 +2,19 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Statamic\Facades\Site;
-use Statamic\Sites\Site as SitesSite;
 
 class CartItemController extends BaseActionController
 {
-    use CartDriver, HandlesCustomerInformation;
+    use HandlesCustomerInformation;
 
     protected $reservedKeys = [
         'product', 'quantity', 'variant', '_token', '_redirect', '_error_redirect', '_request',
@@ -25,12 +22,12 @@ class CartItemController extends BaseActionController
 
     public function store(StoreRequest $request)
     {
-        $cart = $this->hasCart() ? $this->getCart() : $this->makeCart();
+        $cart = Cart::get();
         $product = Product::find($request->product);
 
         $items = $cart->lineItems();
 
-        $cart = $this->handleCustomerInformation($request, $cart);
+//        $cart = $this->handleCustomerInformation($request, $cart);
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::Product) {
@@ -107,14 +104,10 @@ class CartItemController extends BaseActionController
                 ];
             }
 
-            $item = array_merge(
-                $item,
-                [
-                    'metadata' => $metadata,
-                ]
-            );
+            $item = array_merge($item, $metadata);
 
-            $cart->addLineItem($item);
+            $cart->lineItems()->create($item);
+            $cart->save();
         }
 
         return $this->withSuccess($request, [
@@ -129,8 +122,8 @@ class CartItemController extends BaseActionController
 
     public function update(UpdateRequest $request, string $requestItem)
     {
-        $cart = $this->getCart();
-        $lineItem = $cart->lineItem($requestItem);
+        $cart = Cart::get();
+        $lineItem = $cart->lineItems()->find($requestItem);;
 
         $data = Arr::only($request->all(), 'quantity', 'variant');
 
@@ -155,15 +148,14 @@ class CartItemController extends BaseActionController
             }
         }
 
-        $cart->updateLineItem(
-            $requestItem,
-            array_merge(
-                $data,
-                [
-                    'metadata' => $lineItem->metadata()->merge(Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items')))->toArray(),
-                ]
-            ),
+        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
+
+        $cart->lineItems()->update(
+            id: $requestItem,
+            data: array_merge($data, $lineItem->metadata()->merge($metadata)->all())
         );
+
+        $cart->save();
 
         return $this->withSuccess($request, [
             'message' => __('Line Item Updated'),
@@ -177,9 +169,10 @@ class CartItemController extends BaseActionController
 
     public function destroy(DestroyRequest $request, string $item)
     {
-        $cart = $this->getCart();
+        $cart = Cart::get();
 
-        $cart->removeLineItem($item);
+        $cart->lineItems()->remove($item);
+        $cart->save();
 
         return $this->withSuccess($request, [
             'message' => __('Item Removed from Cart'),
@@ -189,28 +182,5 @@ class CartItemController extends BaseActionController
                 ->withShallowNesting()
                 ->toArray(),
         ]);
-    }
-
-    protected function guessSiteFromRequest(): SitesSite
-    {
-        if ($site = request()->get('site')) {
-            return Site::get($site);
-        }
-
-        if ($referer = request()->header('referer')) {
-            foreach (Site::all() as $site) {
-                if (Str::contains($referer, $site->url())) {
-                    return $site;
-                }
-            }
-        }
-
-        foreach (Site::all() as $site) {
-            if (Str::contains(request()->url(), $site->url())) {
-                return $site;
-            }
-        }
-
-        return Site::current();
     }
 }

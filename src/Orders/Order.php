@@ -3,9 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use ArrayAccess;
-use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
-use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Contracts\Data\Augmentable;
@@ -56,6 +54,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         $this->data = collect();
         $this->supplements = collect();
+        $this->lineItems = new LineItems;
     }
 
     public function id()
@@ -106,8 +105,11 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
         return $this
             ->fluentlyGetOrSet('lineItems')
             ->setter(function ($lineItems) {
-                // todo: refactor LineItem object
-                return collect($lineItems)->mapInto(LineItem::class);
+                $items = new LineItems;
+
+                collect($lineItems)->each(fn (array $lineItem) => $items->create($lineItem));
+
+                return $items;
             })
             ->args(func_get_args());
     }
@@ -216,7 +218,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
             'status' => $this->status(),
             'payment_status' => $this->paymentStatus(),
             'customer' => $this->customer(),
-            'line_items' => $this->lineItems(),
+            'line_items' => $this->lineItems()->map->toArray()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
             'discount_total' => $this->discountTotal(),
@@ -231,6 +233,11 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     public function fresh(): Order
     {
         return OrderFacade::find($this->orderNumber());
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::getBlueprint();
     }
 
     public function defaultAugmentedArrayKeys()
@@ -280,6 +287,11 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     public function reference(): string
     {
         return "order::{$this->orderNumber()}";
+    }
+
+    public function keys()
+    {
+        return $this->data->keys();
     }
 
     public function value($key)

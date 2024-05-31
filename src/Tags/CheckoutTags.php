@@ -4,8 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Gateway;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\Orders\Checkout\CheckoutValidationPipeline;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
@@ -16,12 +16,11 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
 {
-    use CartDriver;
     use Concerns\FormBuilder;
 
     public function index()
     {
-        $cart = $this->getCart();
+        $cart = Cart::get();
         $data = $cart->data()->toArray();
 
         if ($cart->grandTotal() > 0) {
@@ -65,7 +64,7 @@ class CheckoutTags extends SubTag
             return $this->index();
         }
 
-        $cart = $this->getCart();
+        $cart = Cart::get();
         $gatewayHandle = last(explode(':', $tag));
 
         $gateway = SimpleCommerce::gateways()->firstWhere('handle', $gatewayHandle);
@@ -90,7 +89,7 @@ class CheckoutTags extends SubTag
             $cart->updateOrderStatus(OrderStatus::Placed);
             $cart->updatePaymentStatus(PaymentStatus::Paid);
 
-            $this->forgetCart();
+            Cart::forget();
 
             Session::put('simple-commerce.checkout.success', [
                 'order_id' => $cart->id(),

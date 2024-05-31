@@ -11,17 +11,17 @@
         | {{ __('Items') }}       | {{ __('Quantity') }}         | {{ __('Total') }} |
         | :--------- | :------------- | :----- |
         @foreach ($order->lineItems() as $lineItem)
-            | [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DuncanMcClean\SimpleCommerce\Money::format($taxIncludedInPrices ? $lineItem->totalIncludingTax() : $lineItem->total(), $site) }} |
+            | [{{ $lineItem->product()->get('title') }}]({{ optional($lineItem->product()->resource())->absoluteUrl() }}) | {{ $lineItem->quantity() }} | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $lineItem->totalIncludingTax() : $lineItem->total(), $site) }} |
         @endforeach
-        | | {{ __('Subtotal') }}: | {{ \DuncanMcClean\SimpleCommerce\Money::format($taxIncludedInPrices ? $order->itemsTotalWithTax() : $order->itemsTotal(), $site) }}
+        | | {{ __('Subtotal') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $order->itemsTotalWithTax() : $order->itemsTotal(), $site) }}
         @if($order->coupon())
-            | | {{ __('Coupon') }}: | -{{ \DuncanMcClean\SimpleCommerce\Money::format($order->couponTotal(), $site) }}
+            | | {{ __('Coupon') }}: | -{{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->couponTotal(), $site) }}
         @endif
-        | | {{ __('Shipping') }}: | {{ \DuncanMcClean\SimpleCommerce\Money::format($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
+        | | {{ __('Shipping') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
         @if(!$taxIncludedInPrices)
-            | | {{ __('Tax') }}: | {{ \DuncanMcClean\SimpleCommerce\Money::format($order->taxTotal(), $site) }}
+            | | {{ __('Tax') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->taxTotal(), $site) }}
         @endif
-        | | **{{ __('Total') }}:** | {{ \DuncanMcClean\SimpleCommerce\Money::format($order->grandTotal(), $site) }}
+        | | **{{ __('Total') }}:** | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->grandTotal(), $site) }}
         | | |
     @endcomponent
 

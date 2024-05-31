@@ -65,9 +65,9 @@ class StoreRequest extends FormRequest
             );
         }
 
-        if (SimpleCommerce::orderDriver() === EntryOrder::class) {
-            $rules['product'][] = new ProductExists;
-        }
+//        if (SimpleCommerce::orderDriver() === EntryOrder::class) {
+//            $rules['product'][] = new ProductExists;
+//        }
 
         return $rules;
     }

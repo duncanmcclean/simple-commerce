@@ -25,7 +25,7 @@ class LowStockProducts extends Widget
                     'id' => $product->id(),
                     'title' => $product->get('title'),
                     'stock' => $product->stock(),
-                    'edit_url' => $product->resource()->editUrl(),
+                    'edit_url' => $product->entry()->editUrl(),
                 ];
             });
 

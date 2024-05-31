@@ -5,7 +5,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
 use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
-use DuncanMcClean\SimpleCommerce\Money;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use DuncanMcClean\SimpleCommerce\Tags\CartTags;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;

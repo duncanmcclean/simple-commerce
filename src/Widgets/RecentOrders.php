@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Widgets;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Money;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use DuncanMcClean\SimpleCommerce\Orders\Eloquent\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Orders\StatusLogEvent;

@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Events;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Product;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 

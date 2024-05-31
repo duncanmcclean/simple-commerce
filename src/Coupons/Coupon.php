@@ -7,7 +7,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Coupon as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
-use DuncanMcClean\SimpleCommerce\Money;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Str;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;

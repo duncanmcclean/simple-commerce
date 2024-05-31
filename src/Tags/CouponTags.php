@@ -3,11 +3,10 @@
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Coupon;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 
 class CouponTags extends SubTag
 {
-    use CartDriver;
     use Concerns\FormBuilder;
 
     public function index(): array
@@ -69,11 +68,14 @@ class CouponTags extends SubTag
 
     protected function getCartCoupon(): ?Coupon
     {
-        if (! $this->hasCart()) {
+        // todo: add coupons back to orders
+        return null;
+
+        if (! Cart::exists()) {
             return null;
         }
 
-        $coupon = $this->getCart()->coupon();
+        $coupon = Cart::get()->coupon();
 
         if (! $coupon) {
             return null;
