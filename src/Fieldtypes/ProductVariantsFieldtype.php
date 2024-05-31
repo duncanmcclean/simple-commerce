@@ -117,8 +117,16 @@ class ProductVariantsFieldtype extends Fieldtype
         }
 
         return [
-            'variants' => $this->processInsideFields(isset($value['variants']) ? $value['variants'] : [], $this->preload()['variant_fields'], 'augment'),
-            'options' => $this->processInsideFields(isset($value['options']) ? $value['options'] : [], $this->preload()['option_fields'], 'augment'),
+            'variants' => $this->processInsideFields(
+                fieldValues: Arr::get($value, 'variants', []),
+                fields: $this->variantFields()->toPublishArray(),
+                method: 'augment'
+            ),
+            'options' => $this->processInsideFields(
+                fieldValues: Arr::get($value, 'options', []),
+                fields: $this->optionFields()->toPublishArray(),
+                method: 'augment'
+            ),
         ];
     }
 
