@@ -1,5 +1,16 @@
 # Changelog
 
+## v7.2.1 (2024-05-31)
+
+### What's fixed
+* Fixed error when querying customers stored as database users #1082 #1088 by @duncanmcclean
+* Fixed error when saving user customer data #1083 #1087 by @duncanmcclean
+* Fixed `{{ sc:customer:order }}` tag #1081 #1086 by @duncanmcclean
+* Prevented `preload` method from being called when augmenting product variants #1076 #1085 by @duncanmcclean
+* Fixed broken link to the Statamic 5 upgrade guide in the docs #1080 by @Afan417
+
+
+
 ## v7.2.0 (2024-05-21)
 
 ### What's improved
