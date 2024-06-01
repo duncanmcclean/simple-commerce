@@ -57,6 +57,62 @@ test('can store coupon', function () {
     Event::assertDispatched(CouponRedeemed::class);
 });
 
+test('emits order in CouponRedeemed event', function () {
+    Event::fake();
+
+    [$product, $cart] = buildCartWithProducts();
+
+    $coupon = Coupon::make()
+        ->code('hof-price')
+        ->value(50)
+        ->type('percentage')
+        ->data([
+            'description' => 'Half Price',
+            'redeemed' => 0,
+            'minimum_cart_value' => null,
+        ]);
+
+    $coupon->save();
+    $coupon->fresh();
+
+    $data = [
+        'code' => 'hof-price',
+    ];
+
+    $response = $this
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.coupon.store'), $data);
+
+    $response->assertRedirect('/cart');
+
+    $cart = $cart->fresh();
+
+    expect($coupon->id())->toBe($cart->coupon()->id());
+    $this->assertNotSame($cart->couponTotal(), 0);
+
+    Event::assertDispatched(function (CouponRedeemed $event) use ($cart) {
+        return $event->order->id() === $cart->id();
+    });
+});
+
+test('Order is required in CouponRedeemed event', function () {
+    expect(function () {
+        $coupon = Coupon::make()
+            ->code('hof-price')
+            ->value(50)
+            ->type('percentage')
+            ->data([
+                'description' => 'Half Price',
+                'redeemed' => 0,
+                'minimum_cart_value' => null,
+            ]);
+
+        new CouponRedeemed($coupon);
+    })
+        ->toThrow(\ArgumentCountError::class);
+});
+
 test('can store coupon and request json response', function () {
     Event::fake();
 
