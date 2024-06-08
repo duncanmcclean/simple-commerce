@@ -288,7 +288,7 @@ class Order implements Contract
             $this->coupon($coupon);
             $this->save();
 
-            event(new CouponRedeemed($coupon));
+            event(new CouponRedeemed($coupon, $this));
 
             return true;
         }

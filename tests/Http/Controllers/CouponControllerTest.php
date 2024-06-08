@@ -54,7 +54,10 @@ test('can store coupon', function () {
     expect($coupon->id())->toBe($cart->coupon()->id());
     $this->assertNotSame($cart->couponTotal(), 0);
 
-    Event::assertDispatched(CouponRedeemed::class);
+    Event::assertDispatched(function (CouponRedeemed $event) use ($cart) {
+        return $event->coupon->id() === $cart->coupon()->id()
+            && $event->order->id() === $cart->id();
+    });
 });
 
 test('can store coupon and request json response', function () {
