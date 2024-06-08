@@ -16,7 +16,11 @@ class CartTags extends SubTag
 
     public function index()
     {
-        return $this->getOrMakeCart()->toAugmentedArray();
+        if ($this->hasCart()) {
+            return $this->getOrMakeCart()->toAugmentedArray();
+        }
+
+        return [];
     }
 
     public function has()
@@ -26,27 +30,31 @@ class CartTags extends SubTag
 
     public function items()
     {
-        $cart = $this->getOrMakeCart();
+        if ($this->hasCart()) {
+            $cart = $this->getOrMakeCart();
 
-        return $cart->toAugmentedArray('items')['items']->value();
+            return $cart->toAugmentedArray('items')['items']->value();
+        }
+
+        return [];
     }
 
     public function count()
     {
-        if (! $this->hasCart()) {
-            return 0;
+        if ($this->hasCart()) {
+            return $this->getCart()->lineItems()->count();
         }
 
-        return $this->getCart()->lineItems()->count();
+        return 0;
     }
 
     public function quantityTotal()
     {
-        if (! $this->hasCart()) {
-            return 0;
+        if ($this->hasCart()) {
+            return $this->getCart()->lineItems()->sum('quantity');
         }
 
-        return $this->getCart()->lineItems()->sum('quantity');
+        return 0;
     }
 
     public function total()
@@ -160,19 +168,19 @@ class CartTags extends SubTag
 
     public function rawTaxTotalSplit(): Collection
     {
-        if (! $this->hasCart()) {
-            return collect();
+        if ($this->hasCart()) {
+            return $this->getCart()->lineItems()
+                ->groupBy(fn ($lineItem) => $lineItem->tax()['rate'])
+                ->map(function ($group, $rate) {
+                    return [
+                        'rate' => $rate,
+                        'amount' => $group->sum(fn ($lineItem) => $lineItem->tax()['amount']),
+                    ];
+                })
+                ->values();
         }
 
-        return $this->getCart()->lineItems()
-            ->groupBy(fn ($lineItem) => $lineItem->tax()['rate'])
-            ->map(function ($group, $rate) {
-                return [
-                    'rate' => $rate,
-                    'amount' => $group->sum(fn ($lineItem) => $lineItem->tax()['amount']),
-                ];
-            })
-            ->values();
+        return collect();
     }
 
     public function couponTotal()
@@ -276,14 +284,14 @@ class CartTags extends SubTag
 
     public function alreadyExists()
     {
-        if (! $this->hasCart()) {
-            return false;
+        if ($this->hasCart()) {
+            return $this->getCart()->lineItems()
+                ->where('product', Product::find($this->params->get('product')))
+                ->where('variant', $this->params->get('variant'))
+                ->count() >= 1;
         }
 
-        return $this->getCart()->lineItems()
-            ->where('product', Product::find($this->params->get('product')))
-            ->where('variant', $this->params->get('variant'))
-            ->count() >= 1;
+        return false;
     }
 
     public function wildcard($method)
