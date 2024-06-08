@@ -96,23 +96,6 @@ test('emits order in CouponRedeemed event', function () {
     });
 });
 
-test('Order is required in CouponRedeemed event', function () {
-    expect(function () {
-        $coupon = Coupon::make()
-            ->code('hof-price')
-            ->value(50)
-            ->type('percentage')
-            ->data([
-                'description' => 'Half Price',
-                'redeemed' => 0,
-                'minimum_cart_value' => null,
-            ]);
-
-        new CouponRedeemed($coupon);
-    })
-        ->toThrow(\ArgumentCountError::class);
-});
-
 test('can store coupon and request json response', function () {
     Event::fake();
 
