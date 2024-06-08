@@ -48,6 +48,7 @@ This event is fired when a customer adds a coupon to their cart/order.
 public function handle(CouponRedeemed $event)
 {
 	$event->coupon;
+	$event->order;
 }
 ```
 
