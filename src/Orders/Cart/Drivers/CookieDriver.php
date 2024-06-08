@@ -52,7 +52,11 @@ class CookieDriver implements CartDriver
         $cart->set('site', $this->guessSiteFromRequest()->handle());
         $cart->save();
 
-        Cookie::queue($this->getKey(), $cart->id);
+        Cookie::queue(
+            $this->getKey(),
+            $cart->id,
+            Config::get('simple-commerce.cart.expiration', 0)
+        );
 
         // Because the cookie won't be set until the end of the request,
         // we need to set it somewhere for the remainder of the request.
