@@ -1,6 +1,6 @@
 # Changelog
 
-## v7.3.0 (2024-07-08)
+## v7.3.0 (2024-06-08)
 
 ### What's new
 * The `CouponRedeemed` event now includes the order #1091 by @sbrow
