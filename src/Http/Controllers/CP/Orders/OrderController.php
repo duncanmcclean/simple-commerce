@@ -6,6 +6,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Orders;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint as OrderBlueprint;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Http\Request;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Action;
@@ -68,7 +69,7 @@ class OrderController extends CpController
 
     protected function indexQuery()
     {
-        $query = Order::query();
+        $query = Order::query()->whereNotStatus(OrderStatus::Cart);
 
         // todo: make this more useful
         if ($search = request('search')) {

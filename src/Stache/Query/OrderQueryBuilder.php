@@ -3,10 +3,33 @@
 namespace DuncanMcClean\SimpleCommerce\Stache\Query;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Statamic\Stache\Query\Builder;
 
 class OrderQueryBuilder extends Builder implements QueryBuilder
 {
+    public function whereStatus(string|OrderStatus $status): self
+    {
+        if ($status instanceof OrderStatus) {
+            $status = $status->value;
+        }
+
+        $this->where('status', $status);
+
+        return $this;
+    }
+
+    public function whereNotStatus(string|OrderStatus $status): self
+    {
+        if ($status instanceof OrderStatus) {
+            $status = $status->value;
+        }
+
+        $this->where('status', '!=', $status);
+
+        return $this;
+    }
+
     protected function getFilteredKeys()
     {
         if (! empty($this->wheres)) {

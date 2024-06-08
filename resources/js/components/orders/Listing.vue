@@ -78,7 +78,7 @@
                         >
                             <template slot="cell-order_number" slot-scope="{ row: order }">
                                 <a class="title-index-field inline-flex items-center" :href="order.edit_url" @click.stop>
-                                    <span v-text="order.order_number" />
+                                    <span v-text="`#${order.order_number}`" />
                                 </a>
                             </template>
                             <template slot="actions" slot-scope="{ row: order, index }">

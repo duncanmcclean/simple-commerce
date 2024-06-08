@@ -6,9 +6,6 @@ class Blueprint
 {
     public static function getBlueprint(): \Statamic\Fields\Blueprint
     {
-        // todo: allow configuring some of the blueprint fields
-        // todo: read only status for line items field should depend on order status (ensure the calculations are re-done though)
-
         return \Statamic\Facades\Blueprint::makeFromTabs([
             'details' => [
                 'display' => 'Details',
