@@ -1,5 +1,17 @@
 # Changelog
 
+## v7.3.0 (2024-07-08)
+
+### What's new
+* The `CouponRedeemed` event now includes the order #1091 by @sbrow
+* You can now set the expiry date for the cookie cart driver #1089 by @Web10-Joris
+
+### What's fixed
+* Added additional "has cart" checks to the cart tag, to prevent empty carts #1096 by @duncanmcclean
+* Fixed the `{{ sc:cart:shipping_total_with_tax }}` tag when the tax rate has "Price includes tax" enabled #1095 by @duncanmcclean
+
+
+
 ## v7.2.1 (2024-05-31)
 
 ### What's fixed
