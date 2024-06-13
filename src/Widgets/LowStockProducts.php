@@ -3,6 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Widgets;
 
 use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
+use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Widgets\Widget;
 
@@ -10,12 +12,10 @@ class LowStockProducts extends Widget
 {
     public function html()
     {
-        $indexUrl = null;
-        $lowStockProducts = null;
-
         $indexUrl = cp_route('collections.show', SimpleCommerce::productDriver()['collection']);
 
-        $lowStockProducts = Product::query()
+        $standardLowStockProducts = Product::query()
+            ->wherePurchaseableType(ProductType::Product)
             ->orderBy('stock', 'asc')
             ->get()
             ->reject(fn ($product) => $product->stock() === null)
@@ -29,9 +29,25 @@ class LowStockProducts extends Widget
                 ];
             });
 
+        $variantProductsWithLowStock = Product::query()
+            ->wherePurchaseableType(ProductType::Variant)
+            ->get()
+            ->flatMap->variantOptions()
+            ->reject(fn ($variant) => $variant->stock() === null)
+            ->sortBy(fn ($variant) => $variant->stock())
+            ->take($this->config('limit', 5))
+            ->map(function (ProductVariant $variant) {
+                return [
+                    'id' => $variant->key(),
+                    'title' => "{$variant->product()->get('title')} - {$variant->name()}",
+                    'stock' => $variant->stock(),
+                    'edit_url' => $variant->product()->resource()->editUrl(),
+                ];
+            });
+
         return view('simple-commerce::cp.widgets.low-stock-products', [
             'url' => $indexUrl,
-            'lowStockProducts' => $lowStockProducts,
+            'lowStockProducts' => collect($standardLowStockProducts)->merge($variantProductsWithLowStock),
         ]);
     }
 
