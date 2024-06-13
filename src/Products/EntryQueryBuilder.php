@@ -13,4 +13,14 @@ class EntryQueryBuilder extends QueryEntryQueryBuilder
 
         return $get->map(fn ($entry) => Product::fromEntry($entry));
     }
+
+    public function wherePurchaseableType(ProductType $type): self
+    {
+        match ($type) {
+            ProductType::Product => $this->whereNull('product_variants'),
+            ProductType::Variant => $this->whereNotNull('product_variants'),
+        };
+
+        return $this;
+    }
 }
