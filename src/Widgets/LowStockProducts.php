@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
-use Statamic\Support\Arr;
 use Statamic\Widgets\Widget;
 
 class LowStockProducts extends Widget
