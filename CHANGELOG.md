@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.3.1 (2024-06-13)
+
+### What's fixed
+* Fixed the Low Stock Products widget with Variant Products #1100 #1101 by @duncanmcclean
+
+
+
 ## v7.3.0 (2024-06-08)
 
 ### What's new
