@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="list-disc pl-6">
+        <ul class="list-disc ltr:pl-3">
             <li v-if="values.type === 'fixed' && values.value && values.value.value !== null" class="text-sm mb-1.5">
                 <span class="font-semibold" v-text="formatCurrency(values.value.value)"></span> off entire order
             </li>
