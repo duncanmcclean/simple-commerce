@@ -122,7 +122,7 @@ class EntryProductRepository implements RepositoryContract
                     'price' => $product->price(),
                     'product_variants' => $product->productVariants(),
                     'stock' => $product->stock(),
-                    'tax_category' => SimpleCommerce::isUsingStandardTaxEngine() ? $product->taxCategory() : null,
+                    'tax_category' => SimpleCommerce::isUsingStandardTaxEngine() ? $product->taxCategory()->id() : null,
                 ]
             )
         );
