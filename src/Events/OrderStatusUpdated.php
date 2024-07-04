@@ -12,7 +12,5 @@ class OrderStatusUpdated
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(public Order $order, public OrderStatus $orderStatus)
-    {
-    }
+    public function __construct(public Order $order, public OrderStatus $orderStatus) {}
 }

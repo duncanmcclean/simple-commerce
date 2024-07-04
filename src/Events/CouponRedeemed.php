@@ -12,7 +12,5 @@ class CouponRedeemed
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(public Coupon $coupon, public Order $order)
-    {
-    }
+    public function __construct(public Coupon $coupon, public Order $order) {}
 }

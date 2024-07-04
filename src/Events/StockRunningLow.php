@@ -11,7 +11,5 @@ class StockRunningLow
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(public Product $product, public $variant, public int $stock)
-    {
-    }
+    public function __construct(public Product $product, public $variant, public int $stock) {}
 }
