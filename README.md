@@ -65,7 +65,7 @@ If you're selling digital products, like software or e-books, Simple Commerce al
 
 ### And lots more...
 
-Simple Commerce might be simple but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
+Simple Commerce might be simple, but it's not basic - there's dozens of handy features to help you build small-medium e-commerce stores.
 
 ## Support
 
