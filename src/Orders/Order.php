@@ -156,6 +156,10 @@ class Order implements Contract
         $shippingTotal = $this->shippingTotal();
         $shippingTax = $this->get('shipping_tax');
 
+        if (! $shippingTax) {
+            return 0;
+        }
+
         return $shippingTotal + $shippingTax['amount'];
     }
 
