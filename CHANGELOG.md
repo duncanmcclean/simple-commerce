@@ -1,5 +1,13 @@
 # Changelog
 
+## v7.3.2 (2024-07-04)
+
+### What's fixed
+* Fixed issue where the value of the `tax_category` field was being saved incorrectly #1104 by @duncanmcclean
+* When the order has no shipping tax, `Order@shippingTotalWithTax` should return zero.
+
+
+
 ## v7.3.1 (2024-06-13)
 
 ### What's fixed
