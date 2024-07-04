@@ -10,9 +10,7 @@ class BaseShippingMethod
 {
     use HasHandle;
 
-    public function __construct(protected array $config = [])
-    {
-    }
+    public function __construct(protected array $config = []) {}
 
     public function config(): Collection
     {

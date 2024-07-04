@@ -8,8 +8,7 @@ class TaxCalculation
         protected int $amount = 0,
         protected $rate = 0,
         protected bool $priceIncludesTax = false
-    ) {
-    }
+    ) {}
 
     public function amount(): int
     {
