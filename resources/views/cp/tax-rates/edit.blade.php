@@ -33,7 +33,7 @@
                     <label class="block mb-1">{{ __('Rate') }} <i class="required">*</i></label>
 
                     <div class="input-group">
-                        <input type="number" name="rate" class="input-text" value="{{ $taxRate->rate() }}">
+                        <input type="number" step="0.1" name="rate" class="input-text" value="{{ $taxRate->rate() }}">
                         <div class="input-group-append">%</div>
                     </div>
 
