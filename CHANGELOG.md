@@ -1,5 +1,13 @@
 # Changelog
 
+## v7.4.0 (2024-07-20)
+
+### What's new
+* Floats can now be used in tax rates #1109 by @sdussaut
+
+
+
+
 ## v7.3.2 (2024-07-04)
 
 ### What's fixed
