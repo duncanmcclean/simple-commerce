@@ -8,9 +8,7 @@ use Illuminate\Notifications\Notification;
 
 class AnotherRandomEventNotification extends Notification
 {
-    public function __construct(public OrderContract $order, public bool $somethingElseThatIsAProperty)
-    {
-    }
+    public function __construct(public OrderContract $order, public bool $somethingElseThatIsAProperty) {}
 
     public function via($notifiable)
     {

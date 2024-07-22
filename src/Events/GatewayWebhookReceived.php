@@ -10,7 +10,5 @@ class GatewayWebhookReceived
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(public array $payload)
-    {
-    }
+    public function __construct(public array $payload) {}
 }

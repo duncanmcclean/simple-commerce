@@ -16,9 +16,7 @@ class BackOfficeOrderPaid extends Notification
      *
      * @return void
      */
-    public function __construct(protected Order $order)
-    {
-    }
+    public function __construct(protected Order $order) {}
 
     /**
      * Get the notification's delivery channels.

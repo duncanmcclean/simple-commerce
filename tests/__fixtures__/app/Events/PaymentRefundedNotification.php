@@ -8,9 +8,7 @@ use Illuminate\Notifications\Notification;
 
 class PaymentRefundedNotification extends Notification
 {
-    public function __construct(protected OrderContract $order)
-    {
-    }
+    public function __construct(protected OrderContract $order) {}
 
     public function via($notifiable)
     {

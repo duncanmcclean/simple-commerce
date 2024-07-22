@@ -21,8 +21,7 @@ abstract class BaseGateway
         protected array $config = [],
         protected string $redirectUrl = '/',
         protected string $errorRedirectUrl = '/'
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {

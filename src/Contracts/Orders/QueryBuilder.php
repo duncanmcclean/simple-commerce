@@ -2,6 +2,4 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts\Orders;
 
-interface QueryBuilder
-{
-}
+interface QueryBuilder {}

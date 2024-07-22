@@ -11,7 +11,5 @@ class PostCheckout
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(public Order $order, public $request)
-    {
-    }
+    public function __construct(public Order $order, public $request) {}
 }
