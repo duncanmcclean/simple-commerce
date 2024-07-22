@@ -26,7 +26,6 @@ class AugmentedOrder extends AbstractAugmented
         return [
             'order_number',
             'status',
-            'payment_status',
             'customer',
             'line_items',
             'grand_total',
@@ -40,7 +39,7 @@ class AugmentedOrder extends AbstractAugmented
         ];
     }
 
-    // todo: status & payment status
+    // todo: status status
 
     public function grandTotal(): string
     {

@@ -31,17 +31,17 @@ class OrderRepository implements RepositoryContract
         return app(QueryBuilder::class);
     }
 
-    public function find($orderNumber): ?Order
+    public function find($id): ?Order
     {
-        return $this->query()->where('order_number', $orderNumber)->first();
+        return $this->query()->where('id', $id)->first();
     }
 
-    public function findOrFail($orderNumber): Order
+    public function findOrFail($id): Order
     {
-        $order = $this->find($orderNumber);
+        $order = $this->find($id);
 
         if (! $order) {
-            throw new OrderNotFound("Order [{$orderNumber}] could not be found.");
+            throw new OrderNotFound("Order [{$id}] could not be found.");
         }
 
         return $order;
@@ -54,9 +54,13 @@ class OrderRepository implements RepositoryContract
 
     public function save(Order $order): void
     {
-        if (! $order->orderNumber()) {
-            $order->orderNumber($this->generateOrderNumber());
+        if (! $order->id()) {
+            $order->id($this->stache->generateId());
         }
+
+//        if (! $order->orderNumber()) {
+//            $order->orderNumber($this->generateOrderNumber());
+//        }
 
         $this->store->save($order);
     }
@@ -66,7 +70,7 @@ class OrderRepository implements RepositoryContract
         $this->store->delete($order);
     }
 
-    protected function generateOrderNumber(): int
+    public function generateOrderNumber(): int
     {
         $lastOrder = $this->query()->where('order_number', '!=', null)->orderByDesc('order_number')->first();
 

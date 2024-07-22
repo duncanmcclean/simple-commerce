@@ -18,7 +18,7 @@ class Cart
             return $this->make();
         }
 
-        return OrderFacade::find(Cookie::has($this->getKey()));
+        return OrderFacade::find(Cookie::get($this->getKey()));
     }
 
     public function exists(): bool
@@ -31,12 +31,12 @@ class Cart
         $order = OrderFacade::make();
         $order->save();
 
-        Cookie::queue($this->getKey(), $order->orderNumber());
+        Cookie::queue($this->getKey(), $order->id());
 
         // Because the cookie won't be set until the end of the request,
         // we need to set it somewhere for the remainder of the request.
         // And that somewhere is Blink.
-        Blink::put($this->getKey(), $order->orderNumber());
+        Blink::put($this->getKey(), $order->id());
 
         return $order;
     }

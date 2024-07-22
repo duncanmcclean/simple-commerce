@@ -10,7 +10,6 @@ trait ExtractsFromOrderFields
             ->merge([
                 'order_number' => $order->orderNumber(),
                 'status' => $order->status(),
-                'payment_status' => $order->paymentStatus(),
                 'line_items' => $order->lineItems()->map->toArray()->all(),
                 'grand_total' => $order->grandTotal(),
                 'sub_total' => $order->subTotal(),

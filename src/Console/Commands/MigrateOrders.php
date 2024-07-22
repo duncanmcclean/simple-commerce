@@ -75,8 +75,7 @@ class MigrateOrders extends Command
 
                         Order::make()
                             ->orderNumber(Arr::pull($data, 'order_number'))
-                            ->status(Arr::pull($data, 'order_status'))
-                            ->paymentStatus(Arr::pull($data, 'payment_status'))
+//                            ->status(Arr::pull($data, 'order_status'))
                             ->customer($this->migrateCustomer(Arr::pull($data, 'customer')))
                             ->lineItems(Arr::pull($data, 'items'))
                             ->grandTotal(Arr::pull($data, 'grand_total'))

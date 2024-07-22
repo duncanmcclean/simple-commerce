@@ -5,9 +5,8 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 enum OrderStatus: string
 {
     case Cart = 'cart';
-    case Placed = 'placed';
-    case Dispatched = 'dispatched';
-    case Delivered = 'delivered';
+    case PendingPayment = 'pending_payment';
+    case Completed = 'completed';
     case Cancelled = 'cancelled';
 
     public function is($orderStatus): bool

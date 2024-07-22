@@ -8,9 +8,9 @@ interface OrderRepository
 
     public function query();
 
-    public function find($orderNumber): ?Order;
+    public function find($id): ?Order;
 
-    public function findOrFail($orderNumber): Order;
+    public function findOrFail($id): Order;
 
     public function make(): Order;
 

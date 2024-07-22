@@ -22,32 +22,18 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations;
     use HasDirtyState;
 
+    protected $id;
     protected $orderNumber;
-
-    protected $status;
-
-    protected $paymentStatus;
-
     protected $customer;
-
     protected $lineItems;
-
     protected $grandTotal;
-
     protected $subTotal;
-
     protected $discountTotal;
-
     protected $taxTotal;
-
     protected $shippingTotal;
-
     protected $paymentGateway;
-
     protected $paymentData;
-
     protected $shippingMethod;
-
     protected $initialPath;
 
     public function __construct()
@@ -57,9 +43,11 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
         $this->lineItems = new LineItems;
     }
 
-    public function id()
+    public function id($id = null)
     {
-        return $this->orderNumber();
+        return $this
+            ->fluentlyGetOrSet('id')
+            ->args(func_get_args());
     }
 
     public function orderNumber($orderNumber = null)
@@ -69,20 +57,14 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
             ->args(func_get_args());
     }
 
-    // todo: should be an enum in the object
-    public function status($status = null)
+    // TODO: This status should be dynamic, it shouldn't be stored on the order file.
+    public function status(): OrderStatus
     {
-        return $this
-            ->fluentlyGetOrSet('status')
-            ->args(func_get_args());
-    }
+        // TODO: When order has payment gateway data, but the payment is not completed, return OrderStatus::PendingPayment
+        // TODO: When order has payment gateway data, and the payment is completed, return OrderStatus::Completed
+        // TODO: When is_cancelled is true, return OrderStatus::Cancelled
 
-    // todo: should be an enum in the object
-    public function paymentStatus($paymentStatus = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('paymentStatus')
-            ->args(func_get_args());
+        return OrderStatus::Cart;
     }
 
     public function customer($customer = null)
@@ -208,15 +190,14 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         return vsprintf('%s/%s.yaml', [
             rtrim(Stache::store('orders')->directory(), '/'),
-            $this->orderNumber(),
+            $this->orderNumber() ?? $this->id(),
         ]);
     }
 
     public function fileData(): array
     {
         return array_merge([
-            'status' => $this->status(),
-            'payment_status' => $this->paymentStatus(),
+            'id' => $this->id(),
             'customer' => $this->customer(),
             'line_items' => $this->lineItems()->map->toArray()->all(),
             'grand_total' => $this->grandTotal(),
@@ -247,7 +228,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function shallowAugmentedArrayKeys()
     {
-        return ['order_number', 'status', 'payment_status', 'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
+        return ['id', 'order_number', 'status', 'payment_status', 'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
     }
 
     public function newAugmentedInstance(): Augmented
@@ -259,8 +240,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         return array_merge([
             'order_number' => $this->orderNumber(),
-            'status' => $this->status(),
-            'payment_status' => $this->paymentStatus(),
             'customer' => $this->customer(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
@@ -276,17 +255,17 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function editUrl(): string
     {
-        return cp_route('simple-commerce.orders.edit', $this->orderNumber());
+        return cp_route('simple-commerce.orders.edit', $this->id());
     }
 
     public function updateUrl(): string
     {
-        return cp_route('simple-commerce.orders.update', $this->orderNumber());
+        return cp_route('simple-commerce.orders.update', $this->id());
     }
 
     public function reference(): string
     {
-        return "order::{$this->orderNumber()}";
+        return "order::{$this->id()}";
     }
 
     public function keys()

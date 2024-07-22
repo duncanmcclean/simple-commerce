@@ -61,6 +61,8 @@ class Money
 
             return $moneyFormatter->format($money);
         } catch (\ErrorException $e) {
+            dd($e);
+
             throw new CurrencyFormatterNotWorking('Extension PHP-intl not installed.');
         }
     }

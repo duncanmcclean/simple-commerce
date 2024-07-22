@@ -17,7 +17,7 @@ class OrdersStore extends BasicStore
 
     public function getItemKey($item)
     {
-        return $item->orderNumber();
+        return $item->id();
     }
 
     public function makeItemFromFile($path, $contents): OrderContract
@@ -26,9 +26,8 @@ class OrdersStore extends BasicStore
         $data = YAML::file($path)->parse($contents);
 
         return Order::make()
-            ->orderNumber($orderNumber)
-            ->status(Arr::pull($data, 'status'))
-            ->paymentStatus(Arr::pull($data, 'payment_status'))
+            ->id($id = Arr::pull($data, 'id'))
+            ->orderNumber($id !== $orderNumber ? $orderNumber : null)
             ->customer(Arr::pull($data, 'customer'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))

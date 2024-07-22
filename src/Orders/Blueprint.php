@@ -53,13 +53,6 @@ class Blueprint
                         'visibility' => 'read_only',
                         'listable' => true,
                     ],
-                    'payment_status' => [
-                        'type' => 'select',
-                        'display' => 'Payment Status',
-                        'options' => collect(PaymentStatus::cases())->pluck('name', 'value')->all(),
-                        'visibility' => 'read_only',
-                        'listable' => true,
-                    ],
                 ],
             ],
         ]);

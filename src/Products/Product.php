@@ -28,8 +28,6 @@ class Product implements Contract
 
     public $taxCategory;
 
-    public $data;
-
     public $entry;
 
     public function __construct()
