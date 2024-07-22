@@ -41,6 +41,5 @@ Route::name('simple-commerce.')->group(function () {
 
     Route::prefix('digital-products')->name('digital-products.')->group(function () {
         Route::get('download/{orderId}/{lineItemId}', DownloadController::class)->name('download');
-        Route::post('verification', VerificationController::class)->name('verification');
     });
 });

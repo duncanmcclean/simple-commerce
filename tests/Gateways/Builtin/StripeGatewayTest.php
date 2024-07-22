@@ -5,7 +5,7 @@ use DuncanMcClean\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
-use DuncanMcClean\SimpleCommerce\Gateways\Builtin\StripeGateway;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\StripeGateway;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;

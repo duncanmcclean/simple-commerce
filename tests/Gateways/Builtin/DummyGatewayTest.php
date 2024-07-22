@@ -1,7 +1,7 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\DummyGateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Spatie\TestTime\TestTime;

@@ -20,7 +20,7 @@ You can configure the gateway in your `config/simple-commerce.php` config file.
 */
 
 'gateways' => [
-    \DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [],
+    \DuncanMcClean\SimpleCommerce\Payments\Gateways\DummyGateway::class => [],
 ],
 ```
 

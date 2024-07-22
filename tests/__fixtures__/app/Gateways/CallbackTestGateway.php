@@ -4,7 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as ContractsOrder;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
-use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
 class CallbackTestGateway extends BaseGateway

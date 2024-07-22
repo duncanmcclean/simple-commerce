@@ -2,9 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
-use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Payments\Gateway;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\BaseGateway;
 use Illuminate\Http\Request;
 
 class TestValidationGateway extends BaseGateway implements Gateway

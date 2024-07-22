@@ -19,11 +19,9 @@ class HandleDigitalProducts
             ->each(function ($lineItem) use ($order) {
                 $order->updateLineItem($lineItem->id(), [
                     'metadata' => array_merge($lineItem->metadata()->toArray(), [
-                        'license_key' => $licenseKey = LicenseKey::generate(),
                         'download_url' => URL::signedRoute('statamic.simple-commerce.digital-products.download', [
                             'orderId' => $order->id,
                             'lineItemId' => $lineItem->id(),
-                            'license_key' => $licenseKey,
                         ]),
                         'download_history' => [],
                     ]),

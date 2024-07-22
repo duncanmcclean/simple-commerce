@@ -5,11 +5,12 @@ namespace DuncanMcClean\SimpleCommerce\Products;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Data\HasData;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
+use Statamic\Data\ContainsData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant
 {
-    use FluentlyGetsAndSets, HasData;
+    use FluentlyGetsAndSets, ContainsData;
 
     protected $key;
 

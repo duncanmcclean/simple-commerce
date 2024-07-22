@@ -9,12 +9,14 @@ use DuncanMcClean\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
 use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Statamic\Data\ContainsData;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Product implements Contract
 {
-    use HasData;
+    use ContainsData, FluentlyGetsAndSets;
 
     public $id;
 

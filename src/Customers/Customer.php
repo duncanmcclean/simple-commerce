@@ -11,12 +11,14 @@ use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Statamic\Data\ContainsData;
 use Statamic\Http\Resources\API\EntryResource;
 use Statamic\Sites\Site;
+use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Customer implements Contract
 {
-    use HasData, Notifiable;
+    use ContainsData, FluentlyGetsAndSets, Notifiable;
 
     public $id;
 

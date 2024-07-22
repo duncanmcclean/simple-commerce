@@ -14,11 +14,9 @@ class Calculator implements Contract
             ->through([
                 ResetTotals::class,
                 LineItemCalculator::class,
-                LineItemTaxCalculator::class,
                 CalculateItemsTotal::class,
                 CouponCalculator::class,
                 ShippingCalculator::class,
-                ShippingTaxCalculator::class,
                 CalculateGrandTotal::class,
             ])
             ->thenReturn();

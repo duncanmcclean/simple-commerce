@@ -58,8 +58,7 @@ During the update steps, you will have updated any references in your config fil
 For example:
 
 ```php
-use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway; // [tl! remove]
-use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway; // [tl! add]
+use DoubleThreeDigital\SimpleCommerce\Gateways\BaseGateway; // [tl! remove] // [tl! add]
 ```
 
 ### High: References to gateways & shipping methods have changed

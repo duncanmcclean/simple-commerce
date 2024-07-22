@@ -78,6 +78,8 @@ class Telemetry
 
     protected static function ordersSinceLastTelemetry(?Carbon $lastSentAt = null): array
     {
+        // TODO: Re-implement this method.
+
         $query = Order::query()
             ->wherePaymentStatus(PaymentStatus::Paid)
             ->when($lastSentAt, function ($query) use ($lastSentAt) {

@@ -41,7 +41,7 @@ class CartTags extends SubTag
     public function count()
     {
         if (! Cart::exists()) {
-            return [];
+            return 0;
         }
 
         return Cart::get()->lineItems()->count();

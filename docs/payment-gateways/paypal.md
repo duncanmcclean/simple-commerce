@@ -14,7 +14,7 @@ You can then create a sandbox/live application. At the end of the app creation p
 
 ```php
 'gateways' => [
-	\DuncanMcClean\SimpleCommerce\Gateways\Builtin\PayPalGateway::class => [
+	\DuncanMcClean\SimpleCommerce\Payments\Gateways\PayPalGateway::class => [
         'client_id' => env('PAYPAL_CLIENT_ID'),
         'client_secret' => env('PAYPAL_CLIENT_SECRET'),
         'environment' => env('PAYPAL_ENVIRONMENT', 'production'),

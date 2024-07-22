@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Contracts\ShippingManager as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingManager as Contract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Orders\Address;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;

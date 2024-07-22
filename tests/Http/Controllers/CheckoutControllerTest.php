@@ -10,7 +10,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
-use DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\DummyGateway;
 use DuncanMcClean\SimpleCommerce\Notifications\BackOfficeOrderPaid;
 use DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;

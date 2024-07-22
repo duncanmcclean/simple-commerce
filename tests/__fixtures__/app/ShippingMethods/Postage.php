@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Tests\Fixtures\ShippingMethods;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
-use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\Address;
 use DuncanMcClean\SimpleCommerce\Shipping\BaseShippingMethod;
 

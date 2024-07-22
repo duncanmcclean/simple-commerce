@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Contracts\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\Address;
 
 class FreeShipping extends BaseShippingMethod implements ShippingMethod
