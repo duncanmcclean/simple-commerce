@@ -20,7 +20,7 @@ class CheckoutTags extends SubTag
 
     public function index()
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
         $data = $cart->data()->toArray();
 
         if ($cart->grandTotal() > 0) {
@@ -64,7 +64,7 @@ class CheckoutTags extends SubTag
             return $this->index();
         }
 
-        $cart = Cart::get();
+        $cart = Cart::current();
         $gatewayHandle = last(explode(':', $tag));
 
         $gateway = SimpleCommerce::gateways()->firstWhere('handle', $gatewayHandle);
@@ -89,7 +89,7 @@ class CheckoutTags extends SubTag
             $cart->updateOrderStatus(OrderStatus::Placed);
             $cart->updatePaymentStatus(PaymentStatus::Paid);
 
-            Cart::forget();
+            Cart::forgetCurrentCart();
 
             Session::put('simple-commerce.checkout.success', [
                 'order_id' => $cart->id(),

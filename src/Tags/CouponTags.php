@@ -71,11 +71,11 @@ class CouponTags extends SubTag
         // todo: add coupons back to orders
         return null;
 
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return null;
         }
 
-        $coupon = Cart::get()->coupon();
+        $coupon = Cart::current()->coupon();
 
         if (! $coupon) {
             return null;

@@ -9,8 +9,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DuncanMcClean\\SimpleCommerce\\Tests\\": "tests",
-            "DuncanMcClean\\SimpleCommerce\\Tests\\Fixtures\\": "tests/__fixtures__/app"
+            "Tests\\": "tests"
         }
     },
     "extra": {
@@ -42,10 +41,8 @@
         "stripe/stripe-php": "^7.7"
     },
     "require-dev": {
-        "statamic-rad-pack/runway": "dev-master",
+        "phpunit/phpunit": "^10.0",
         "orchestra/testbench": "^8.0 || ^9.0",
-        "pestphp/pest": "^2.2",
-        "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/ray": "^1.17",
         "spatie/test-time": "^1.3"
     },
@@ -56,8 +53,7 @@
         "process-timeout": 0,
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "pixelfear/composer-dist-plugin": true,
-            "pestphp/pest-plugin": true
+            "pixelfear/composer-dist-plugin": true
         }
     },
     "minimum-stability": "alpha"

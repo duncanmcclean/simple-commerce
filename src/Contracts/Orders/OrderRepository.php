@@ -2,6 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts\Orders;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+
 interface OrderRepository
 {
     public function all();
@@ -13,6 +15,8 @@ interface OrderRepository
     public function findOrFail($id): Order;
 
     public function make(): Order;
+
+    public function makeFromCart(Cart $cart): Order;
 
     public function save(Order $order): void;
 

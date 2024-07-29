@@ -22,7 +22,7 @@ class CartItemController extends BaseActionController
 
     public function store(StoreRequest $request)
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
         $product = Product::find($request->product);
 
         $items = $cart->lineItems();
@@ -122,7 +122,7 @@ class CartItemController extends BaseActionController
 
     public function update(UpdateRequest $request, string $requestItem)
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
         $lineItem = $cart->lineItems()->find($requestItem);
 
         $data = Arr::only($request->all(), 'quantity', 'variant');
@@ -169,7 +169,7 @@ class CartItemController extends BaseActionController
 
     public function destroy(DestroyRequest $request, string $item)
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
 
         $cart->lineItems()->remove($item);
         $cart->save();

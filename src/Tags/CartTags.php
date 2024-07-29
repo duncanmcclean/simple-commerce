@@ -15,45 +15,45 @@ class CartTags extends SubTag
 
     public function index()
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return [];
         }
 
-        return Cart::get()->toAugmentedArray();
+        return Cart::current()->toAugmentedArray();
     }
 
     public function has(): bool
     {
-        return Cart::exists();
+        return Cart::hasCurrentCart();
     }
 
     public function items()
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return [];
         }
 
-        $cart = Cart::get();
+        $cart = Cart::current();
 
-        return $cart->toAugmentedArray('items')['items']->value();
+        return $cart->augmentedValue('line_items');
     }
 
     public function count()
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return 0;
         }
 
-        return Cart::get()->lineItems()->count();
+        return Cart::current()->lineItems()->count();
     }
 
     public function quantityTotal()
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return 0;
         }
 
-        return Cart::get()->lineItems()->sum('quantity');
+        return Cart::current()->lineItems()->sum('quantity');
     }
 
     public function total()
@@ -68,8 +68,8 @@ class CartTags extends SubTag
 
     public function grandTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->toAugmentedArray()['grand_total']->value();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->toAugmentedArray()['grand_total']->value();
         }
 
         return 0;
@@ -77,8 +77,8 @@ class CartTags extends SubTag
 
     public function rawGrandTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->grandTotal();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->grandTotal();
         }
 
         return 0;
@@ -86,8 +86,8 @@ class CartTags extends SubTag
 
     public function subtotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->augmentedValue('sub_total');
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->augmentedValue('sub_total');
         }
 
         return 0;
@@ -95,8 +95,8 @@ class CartTags extends SubTag
 
     public function rawSubTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->itemsTotal();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->itemsTotal();
         }
 
         return 0;
@@ -104,8 +104,8 @@ class CartTags extends SubTag
 
     public function subTotalWithTax()
     {
-        if (Cart::exists()) {
-            return Money::format(Cart::get()->subTotalWithTax(), Site::current());
+        if (Cart::hasCurrentCart()) {
+            return Money::format(Cart::current()->subTotalWithTax(), Site::current());
         }
 
         return 0;
@@ -113,8 +113,8 @@ class CartTags extends SubTag
 
     public function shippingTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->toAugmentedArray()['shipping_total']->value();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->toAugmentedArray()['shipping_total']->value();
         }
 
         return 0;
@@ -122,8 +122,8 @@ class CartTags extends SubTag
 
     public function rawShippingTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->shippingTotal();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->shippingTotal();
         }
 
         return 0;
@@ -131,8 +131,8 @@ class CartTags extends SubTag
 
     public function shippingTotalWithTax()
     {
-        if (Cart::exists()) {
-            return Money::format(Cart::get()->shippingTotalWithTax(), Site::current());
+        if (Cart::hasCurrentCart()) {
+            return Money::format(Cart::current()->shippingTotalWithTax(), Site::current());
         }
 
         return 0;
@@ -140,8 +140,8 @@ class CartTags extends SubTag
 
     public function taxTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->toAugmentedArray()['tax_total']->value();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->toAugmentedArray()['tax_total']->value();
         }
 
         return 0;
@@ -149,8 +149,8 @@ class CartTags extends SubTag
 
     public function rawTaxTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->taxTotal();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->taxTotal();
         }
 
         return 0;
@@ -167,11 +167,11 @@ class CartTags extends SubTag
 
     public function rawTaxTotalSplit(): Collection
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return collect();
         }
 
-        return Cart::get()->lineItems()
+        return Cart::current()->lineItems()
             ->groupBy(fn ($lineItem) => $lineItem->tax()['rate'])
             ->map(function ($group, $rate) {
                 return [
@@ -184,8 +184,8 @@ class CartTags extends SubTag
 
     public function couponTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->toAugmentedArray()['coupon_total']->value();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->toAugmentedArray()['coupon_total']->value();
         }
 
         return 0;
@@ -193,8 +193,8 @@ class CartTags extends SubTag
 
     public function rawCouponTotal()
     {
-        if (Cart::exists()) {
-            return Cart::get()->couponTotal();
+        if (Cart::hasCurrentCart()) {
+            return Cart::current()->couponTotal();
         }
 
         return 0;
@@ -214,7 +214,7 @@ class CartTags extends SubTag
         $lineItemId = $this->params->get('item');
 
         if ($product = $this->params->get('product')) {
-            $lineItemId = collect(Cart::get()->lineItems()->map->toArray())
+            $lineItemId = collect(Cart::current()->lineItems()->map->toArray())
                 ->where('product', $product)
                 ->when($this->params->get('variant'), function ($query, $variant) {
                     $query->where('variant', $variant);
@@ -223,7 +223,7 @@ class CartTags extends SubTag
                 ->first();
         }
 
-        $lineItem = Cart::get()->lineItems()->find($lineItemId);
+        $lineItem = Cart::current()->lineItems()->find($lineItemId);
 
         return $this->createForm(
             route('statamic.simple-commerce.cart-items.update', [
@@ -240,7 +240,7 @@ class CartTags extends SubTag
         $lineItemId = $this->params->get('item');
 
         if ($product = $this->params->get('product')) {
-            $lineItemId = collect(Cart::get()->lineItems()->map->toArray())
+            $lineItemId = collect(Cart::current()->lineItems()->map->toArray())
                 ->where('product', $product)
                 ->when($this->params->get('variant'), function ($query, $variant) {
                     $query->where('variant', $variant);
@@ -249,7 +249,7 @@ class CartTags extends SubTag
                 ->first();
         }
 
-        $lineItem = Cart::get()->lineItems()->find($lineItemId);
+        $lineItem = Cart::current()->lineItems()->find($lineItemId);
 
         return $this->createForm(
             route('statamic.simple-commerce.cart-items.destroy', [
@@ -263,7 +263,7 @@ class CartTags extends SubTag
 
     public function update()
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
 
         return $this->createForm(
             route('statamic.simple-commerce.cart.update'),
@@ -283,11 +283,11 @@ class CartTags extends SubTag
 
     public function alreadyExists()
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return false;
         }
 
-        return Cart::get()->lineItems()
+        return Cart::current()->lineItems()
             ->where('product', Product::find($this->params->get('product')))
             ->where('variant', $this->params->get('variant'))
             ->count() >= 1;
@@ -295,11 +295,11 @@ class CartTags extends SubTag
 
     public function wildcard($method)
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return null;
         }
 
-        $cart = Cart::get();
+        $cart = Cart::current();
 
         if (method_exists($this, $method)) {
             return $this->{$method}();

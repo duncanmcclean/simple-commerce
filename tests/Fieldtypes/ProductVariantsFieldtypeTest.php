@@ -1,202 +1,249 @@
 <?php
 
+namespace Tests\Fieldtypes;
+
 use DuncanMcClean\SimpleCommerce\Fieldtypes\ProductVariantsFieldtype;
 use Statamic\Fields\Field;
+use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
-it('can preload', function () {
-    $preload = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->preload();
+class ProductVariantsFieldtypeTest extends TestCase
+{
+    #[Test]
+    public function can_preload()
+    {
+        $preload = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->preload();
 
-    expect($preload)->toBeArray();
-    expect($preload['variant_fields'])->toBeArray()->toHaveCount(2);
-    expect($preload['option_fields'])->toBeArray()->toHaveCount(3);
-    expect($preload['option_fields'][0]['handle'])->toBe('key');
-    expect($preload['option_fields'][1]['handle'])->toBe('variant');
-    expect($preload['option_fields'][2]['handle'])->toBe('price');
-    expect($preload['option_field_defaults'])->toBe([]);
-    expect($preload['variant'])->toBeNull();
-    expect($preload['price'])->toBeArray();
-});
+        $this->assertIsArray($preload);
 
-it('can preload with configured option fields', function () {
-    $preload = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', [
-            'option_fields' => [
-                [
-                    'handle' => 'special_message',
-                    'field' => [
-                        'type' => 'text',
-                        'validate' => 'required',
+        $this->assertCount(2, $preload['variant_fields']);
+        $this->assertCount(3, $preload['option_fields']);
+
+        $this->assertEquals('key', $preload['option_fields'][0]['handle']);
+        $this->assertEquals('variant', $preload['option_fields'][1]['handle']);
+        $this->assertEquals('price', $preload['option_fields'][2]['handle']);
+
+        $this->assertEquals($preload['option_field_defaults'], []);
+        $this->assertNull($preload['variant']);
+        $this->assertIsArray($preload['price']);
+    }
+
+    #[Test]
+    public function can_preload_with_configured_option_fields()
+    {
+        $preload = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', [
+                'option_fields' => [
+                    [
+                        'handle' => 'special_message',
+                        'field' => [
+                            'type' => 'text',
+                            'validate' => 'required',
+                        ],
                     ],
                 ],
-            ],
-        ]))
-        ->preload();
+            ]))
+            ->preload();
 
-    expect($preload)->toBeArray();
-    expect($preload['variant_fields'])->toBeArray()->toHaveCount(2);
-    expect($preload['option_fields'])->toBeArray()->toHaveCount(4);
-    expect($preload['option_fields'][0]['handle'])->toBe('key');
-    expect($preload['option_fields'][1]['handle'])->toBe('variant');
-    expect($preload['option_fields'][2]['handle'])->toBe('price');
-    expect($preload['option_field_defaults'])->toBe([
-        'special_message' => null, // Only null because it's a `text` fieldtype.
-    ]);
-    expect($preload['variant'])->toBeNull();
-    expect($preload['price'])->toBeArray();
-    expect($preload['special_message'])->toBeNull(); // Only null because it's a `text` fieldtype.
-});
+        $this->assertIsArray($preload);
 
-it('can preprocess', function () {
-    $preProcess = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->preProcess([
-            'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
-            'options' => [
-                ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
-                ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => 1500],
-                ['key' => 'Blue', 'variant' => 'Blue', 'price' => 1799],
-            ],
+        $this->assertCount(2, $preload['variant_fields']);
+        $this->assertCount(4, $preload['option_fields']);
+
+        $this->assertEquals('key', $preload['option_fields'][0]['handle']);
+        $this->assertEquals('variant', $preload['option_fields'][1]['handle']);
+        $this->assertEquals('price', $preload['option_fields'][2]['handle']);
+
+        $this->assertEquals($preload['option_field_defaults'], [
+            'special_message' => null, // Only null because it's a `text` fieldtype.
         ]);
 
-    expect($preProcess)->toBeArray();
-    expect($preProcess['variants'])->toBeArray()->toHaveCount(1);
+        $this->assertNull($preload['variant']);
+        $this->assertIsArray($preload['price']);
+        $this->assertNull($preload['special_message']); // Only null because it's a `text` fieldtype.
+    }
 
-    // Ensures the 'Price' field has been pre-processed.
-    expect($preProcess['options'][0]['price'])->toBeString()->toBe('10.00');
-    expect($preProcess['options'][1]['price'])->toBeString()->toBe('15.00');
-    expect($preProcess['options'][2]['price'])->toBeString()->toBe('17.99');
-});
+    #[Test]
+    public function can_pre_process()
+    {
+        $preProcess = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->preProcess([
+                'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
+                'options' => [
+                    ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
+                    ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => 1500],
+                    ['key' => 'Blue', 'variant' => 'Blue', 'price' => 1799],
+                ],
+            ]);
 
-it('can process', function () {
-    $process = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->process([
-            'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
-            'options' => [
-                ['key' => 'Red', 'variant' => 'Red', 'price' => '10.00'],
-                ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => '15.00'],
-                ['key' => 'Blue', 'variant' => 'Blue', 'price' => '17.99'],
-            ],
-        ]);
+        $this->assertIsArray($preProcess);
 
-    expect($process)->toBeArray();
-    expect($process['variants'])->toBeArray()->toHaveCount(1);
+        $this->assertIsArray($preProcess['variants']);
+        $this->assertCount(1, $preProcess['variants']);
 
-    // Ensures the 'Price' field has been processed.
-    expect($process['options'][0]['price'])->toBeInt()->toBe(1000);
-    expect($process['options'][1]['price'])->toBeInt()->toBe(1500);
-    expect($process['options'][2]['price'])->toBeInt()->toBe(1799);
-});
+        // Ensures the 'Price' field has been processed.
+        $this->assertEquals($preProcess['options'][0]['price'], '10.00');
+        $this->assertEquals($preProcess['options'][1]['price'], '15.00');
+        $this->assertEquals($preProcess['options'][2]['price'], '17.99');
+    }
 
-it('can process with no variants and no options', function () {
-    $process = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->process([
-            'variants' => [],
-            'options' => [],
-        ]);
+    #[Test]
+    public function can_process()
+    {
+        $process = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->process([
+                'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
+                'options' => [
+                    ['key' => 'Red', 'variant' => 'Red', 'price' => '10.00'],
+                    ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => '15.00'],
+                    ['key' => 'Blue', 'variant' => 'Blue', 'price' => '17.99'],
+                ],
+            ]);
 
-    expect($process)->toBeNull();
-});
+        $this->assertIsArray($process);
 
-it('can augment', function () {
-    $augment = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->augment([
-            'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
-            'options' => [
-                ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
-                ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => 1500],
-                ['key' => 'Blue', 'variant' => 'Blue', 'price' => 1799],
-            ],
-        ]);
+        $this->assertIsArray($process['variants']);
+        $this->assertCount(1, $process['variants']);
 
-    expect($augment)->toBeArray();
-    expect($augment['variants'][0])->toBeArray()->toBe([
-        'name' => 'Colour',
-        'values' => ['Red', 'Yellow', 'Blue'],
-    ]);
-    expect($augment['options'][0])->toBeArray()->toBe([
-        'key' => 'Red',
-        'variant' => 'Red',
-        'price' => '£10.00',
-    ]);
-    expect($augment['options'][1])->toBeArray()->toBe([
-        'key' => 'Yellow',
-        'variant' => 'Yellow',
-        'price' => '£15.00',
-    ]);
-    expect($augment['options'][2])->toBeArray()->toBe([
-        'key' => 'Blue',
-        'variant' => 'Blue',
-        'price' => '£17.99',
-    ]);
-});
+        // Ensures the 'Price' field has been processed.
+        $this->assertEquals($process['options'][0]['price'], 1000);
+        $this->assertEquals($process['options'][1]['price'], 1500);
+        $this->assertEquals($process['options'][2]['price'], 1799);
+    }
 
-it('can preProcessIndex with no variants', function () {
-    $preProcessIndex = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->preProcessIndex([
-            'variants' => [],
-            'options' => [],
-        ]);
+    #[Test]
+    public function can_process_with_no_variants_and_no_options()
+    {
+        $process = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->process([
+                'variants' => [],
+                'options' => [],
+            ]);
 
-    expect($preProcessIndex)->toBeString()->toBe('No variants.');
-});
+        $this->assertNull($process);
+    }
 
-it('can preProcessIndex with one variant', function () {
-    $preProcessIndex = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->preProcessIndex([
-            'variants' => ['name' => 'Colour', 'values' => ['Red']],
-            'options' => [
-                ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
-            ],
-        ]);
+    #[Test]
+    public function can_augment()
+    {
+        $augment = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->augment([
+                'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
+                'options' => [
+                    ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
+                    ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => 1500],
+                    ['key' => 'Blue', 'variant' => 'Blue', 'price' => 1799],
+                ],
+            ]);
 
-    expect($preProcessIndex)->toBeString()->toBe('1 variant');
-});
+        $this->assertIsArray($augment);
 
-it('can preProcessIndex with multiple variants', function () {
-    $preProcessIndex = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', []))
-        ->preProcessIndex([
-            'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
-            'options' => [
-                ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
-                ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => 1500],
-                ['key' => 'Blue', 'variant' => 'Blue', 'price' => 1799],
-            ],
-        ]);
+        $this->assertEquals([
+            'name' => 'Colour',
+            'values' => ['Red', 'Yellow', 'Blue'],
+        ], $augment['variants'][0]);
 
-    expect($preProcessIndex)->toBeString()->toBe('3 variants');
-});
+        $this->assertEquals([
+            'key' => 'Red',
+            'variant' => 'Red',
+            'price' => '£10.00',
+        ], $augment['options'][0]);
 
-it('returns extra validation rules', function () {
-    $extraRules = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', [
-            'option_fields' => [
-                [
-                    'handle' => 'size',
-                    'field' => [
-                        'type' => 'text',
-                        'validate' => 'required,min:10,max:20',
+        $this->assertEquals([
+            'key' => 'Yellow',
+            'variant' => 'Yellow',
+            'price' => '£15.00',
+        ], $augment['options'][1]);
+
+        $this->assertEquals([
+            'key' => 'Blue',
+            'variant' => 'Blue',
+            'price' => '£17.99',
+        ], $augment['options'][2]);
+    }
+
+    #[Test]
+    public function can_pre_process_index_with_no_variants()
+    {
+        $preProcessIndex = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->preProcessIndex([
+                'variants' => [],
+                'options' => [],
+            ]);
+
+        $this->assertIsString($preProcessIndex);
+        $this->assertEquals('No variants.', $preProcessIndex);
+    }
+
+    #[Test]
+    public function can_pre_process_index_with_one_variant()
+    {
+        $preProcessIndex = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->preProcessIndex([
+                'variants' => ['name' => 'Colour', 'values' => ['Red']],
+                'options' => [
+                    ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
+                ],
+            ]);
+
+        $this->assertIsString($preProcessIndex);
+        $this->assertEquals('1 variant', $preProcessIndex);
+    }
+
+    #[Test]
+    public function can_pre_process_index_with_multiple_variants()
+    {
+        $preProcessIndex = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', []))
+            ->preProcessIndex([
+                'variants' => [['name' => 'Colour', 'values' => ['Red', 'Yellow', 'Blue']]],
+                'options' => [
+                    ['key' => 'Red', 'variant' => 'Red', 'price' => 1000],
+                    ['key' => 'Yellow', 'variant' => 'Yellow', 'price' => 1500],
+                    ['key' => 'Blue', 'variant' => 'Blue', 'price' => 1799],
+                ],
+            ]);
+
+        $this->assertIsString($preProcessIndex);
+        $this->assertEquals('3 variants', $preProcessIndex);
+    }
+
+    #[Test]
+    public function returns_extra_validation_rules()
+    {
+        $extraRules = (new ProductVariantsFieldtype)
+            ->setField(new Field('product_variants', [
+                'option_fields' => [
+                    [
+                        'handle' => 'size',
+                        'field' => [
+                            'type' => 'text',
+                            'validate' => 'required,min:10,max:20',
+                        ],
                     ],
                 ],
-            ],
-        ]))
-        ->extraRules();
+            ]))
+            ->extraRules();
 
-    expect($extraRules)->toBeArray()->toBe([
-        'variants' => ['array'],
-        'options' => ['array'],
-        'variants.*.name' => ['required'],
-        'variants.*.values' => ['required'],
-        'options.*.key' => ['required'],
-        'options.*.variant' => ['required'],
-        'options.*.price' => ['required'],
-        'options.*.size' => ['required,min:10,max:20'],
-    ]);
-});
+        $this->assertIsArray($extraRules);
+
+        $this->assertEquals([
+            'variants' => ['array'],
+            'options' => ['array'],
+            'variants.*.name' => ['required'],
+            'variants.*.values' => ['required'],
+            'options.*.key' => ['required'],
+            'options.*.variant' => ['required'],
+            'options.*.price' => ['required'],
+            'options.*.size' => ['required,min:10,max:20'],
+        ], $extraRules);
+    }
+}

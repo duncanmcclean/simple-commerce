@@ -69,7 +69,7 @@ class OrderController extends CpController
 
     protected function indexQuery()
     {
-        $query = Order::query()->whereNotStatus(OrderStatus::Cart);
+        $query = Order::query();
 
         // todo: make this more useful
         if ($search = request('search')) {

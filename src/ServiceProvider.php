@@ -2,7 +2,10 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository;
+use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
 use Statamic\Facades\CP\Nav;
 use Statamic\Providers\AddonServiceProvider;
@@ -41,15 +44,22 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
-        $this->app['stache']->registerStore(
-            (new OrdersStore)->directory(base_path('content/orders')) // todo: make this configurable
-        );
+        // TODO: Make these paths configurable.
+        $this->app['stache']->registerStores([
+            (new CartsStore)->directory(storage_path('statamic/simple-commerce/carts')),
+            (new OrdersStore)->directory(base_path('content/orders'))
+        ]);
+
+        $this->app->bind(CartQueryBuilder::class, function () {
+            return new CartQueryBuilder($this->app->make(Stache::class)->store('carts'));
+        });
 
         $this->app->bind(OrderQueryBuilder::class, function () {
             return new OrderQueryBuilder($this->app->make(Stache::class)->store('orders'));
         });
 
         collect([
+            \DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\CartRepository::class,
             \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository::class,
             \DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository::class => \DuncanMcClean\SimpleCommerce\Products\ProductRepository::class,
         ])->each(function ($concrete, $abstract) {

@@ -12,7 +12,7 @@ class ShippingTags extends SubTag
 {
     public function methods()
     {
-        $order = Cart::get();
+        $order = Cart::current();
 
         return SimpleCommerce::shippingMethods(Site::current()->handle())
             ->map(function ($shippingMethod) use ($order) {

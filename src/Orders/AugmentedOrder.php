@@ -65,4 +65,14 @@ class AugmentedOrder extends AbstractAugmented
     {
         return Money::format($this->data->shippingTotal(), Site::selected());
     }
+
+    public function lineItems()
+    {
+        // TODO: Refactor into an AugmentedLineItem class
+        return $this->data->lineItems()->map(function ($lineItem) {
+            return array_merge($lineItem->toArray(), [
+                'product' => $lineItem->product()->toAugmentedArray(),
+            ]);
+        });
+    }
 }

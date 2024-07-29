@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Stache\Repositories;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
@@ -52,15 +53,30 @@ class OrderRepository implements RepositoryContract
         return app(Order::class);
     }
 
+    public function makeFromCart(Cart $cart): Order
+    {
+        return self::make()
+            ->cart($cart->id())
+//            ->customer()
+            ->lineItems($cart->lineItems())
+            ->grandTotal($cart->grandTotal())
+            ->subTotal($cart->subTotal())
+            ->discountTotal($cart->discountTotal())
+            ->taxTotal($cart->taxTotal())
+            ->shippingTotal($cart->shippingTotal())
+//            ->shippingMethod($cart->shippingMethod())
+            ->data($cart->data()->toArray());
+    }
+
     public function save(Order $order): void
     {
         if (! $order->id()) {
             $order->id($this->stache->generateId());
         }
 
-//        if (! $order->orderNumber()) {
-//            $order->orderNumber($this->generateOrderNumber());
-//        }
+        if (! $order->orderNumber()) {
+            $order->orderNumber($this->generateOrderNumber());
+        }
 
         $this->store->save($order);
     }

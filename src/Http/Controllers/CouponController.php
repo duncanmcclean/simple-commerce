@@ -10,9 +10,9 @@ class CouponController extends BaseActionController
 {
     public function store(StoreRequest $request)
     {
-        $redeem = Cart::get()->redeemCoupon($request->code);
+        $redeem = Cart::current()->redeemCoupon($request->code);
 
-        $cart = Cart::get();
+        $cart = Cart::current();
 
         $cart->fresh();
         $cart->recalculate();
@@ -33,7 +33,7 @@ class CouponController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
 
         $cart->coupon = null;
 

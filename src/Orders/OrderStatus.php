@@ -4,8 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 enum OrderStatus: string
 {
-    case Cart = 'cart';
-    case PendingPayment = 'pending_payment';
+    case Pending = 'pending';
     case Completed = 'completed';
     case Cancelled = 'cancelled';
 

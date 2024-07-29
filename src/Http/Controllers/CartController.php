@@ -14,12 +14,12 @@ class CartController extends BaseActionController
 
     public function index(IndexRequest $request)
     {
-        if (! Cart::exists()) {
+        if (! Cart::hasCurrentCart()) {
             return [];
         }
 
         return [
-            'data' => Cart::get()
+            'data' => Cart::current()
                 ->toAugmentedCollection()
                 ->withRelations(['customer', 'customer_id'])
                 ->withShallowNesting()
@@ -29,7 +29,7 @@ class CartController extends BaseActionController
 
     public function update(UpdateRequest $request)
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
         $cart = $this->handleCustomerInformation($request, $cart);
 
         $data = collect($request->all())
@@ -66,7 +66,7 @@ class CartController extends BaseActionController
 
     public function destroy(DestroyRequest $request)
     {
-        $cart = Cart::get();
+        $cart = Cart::current();
 
         $cart->clearLineItems();
 
