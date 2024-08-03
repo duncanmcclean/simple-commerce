@@ -71,7 +71,7 @@ To enable, change `\DuncanMcClean\SimpleCommerce\Customers\EntryCustomerReposito
 
     'customers' => [
         'repository' => \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class, // [tl! --]
-        'repository' => \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class, // [tl! ++]
+        'repository' => \DuncanMcClean\SimpleCommerce\Customers\CustomerRepository::class, // [tl! ++]
     ],
 ],
 ```

@@ -2,11 +2,11 @@
 
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\Customers\CustomerRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository
+ * @see \DuncanMcClean\SimpleCommerce\Contracts\Customers\CustomerRepository
  */
 class Customer extends Facade
 {

@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
+use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
@@ -17,8 +18,8 @@ use Statamic\Data\HasAugmentedInstance;
 use Statamic\Data\HasDirtyState;
 use Statamic\Data\TracksQueriedColumns;
 use Statamic\Data\TracksQueriedRelations;
-use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, Contract
@@ -108,16 +109,23 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function customer($customer = null)
     {
-        // todo: refactor to support user ID or array of customer data
         return $this
             ->fluentlyGetOrSet('customer')
-//            ->setter(function ($customer) {
-//                if ($customer instanceof CustomerContract) {
-//                    return $customer;
-//                }
-//
-//                return Customer::find($customer);
-//            })
+            ->setter(function ($customer) {
+                if (is_null($customer)) {
+                    return null;
+                }
+
+                if (is_array($customer)) {
+                    return (new GuestCustomer)->data($customer);
+                }
+
+                if (! is_object($customer)) {
+                    return User::find($customer);
+                }
+
+                return $customer;
+            })
             ->args(func_get_args());
     }
 
@@ -193,10 +201,14 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function fileData(): array
     {
+        $customer = $this->customer() instanceof GuestCustomer
+            ? $this->customer()->toArray()
+            : $this->customer()?->id();
+
         return array_merge([
             'id' => $this->id(),
             'cart' => $this->cart(),
-            'customer' => $this->customer(),
+            'customer' => $customer,
             'line_items' => $this->lineItems()->map->toArray()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

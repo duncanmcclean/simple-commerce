@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Data\AbstractAugmented;
 use Statamic\Facades\Site;
@@ -39,7 +40,18 @@ class AugmentedOrder extends AbstractAugmented
         ];
     }
 
-    // todo: status status
+    // todo: status
+
+    public function customer()
+    {
+        $customer = $this->data->customer();
+
+        if ($customer instanceof GuestCustomer) {
+            return $customer->toArray();
+        }
+
+        return $customer->toAugmentedCollection();
+    }
 
     public function grandTotal(): string
     {

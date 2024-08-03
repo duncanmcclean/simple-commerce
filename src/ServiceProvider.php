@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
@@ -22,6 +21,15 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\LineItemsFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
+    ];
+
+    protected $listen = [
+        \Illuminate\Auth\Events\Login::class => [
+            Listeners\AssignUserAsCustomer::class,
+        ],
+        \Illuminate\Auth\Events\Logout::class => [
+            Listeners\RemoveUserAsCustomer::class,
+        ],
     ];
 
     protected $routes = [

@@ -8,7 +8,6 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository as RepositoryC
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 use Statamic\Stache\Stache;
-use Statamic\Support\Traits\Hookable;
 
 class OrderRepository implements RepositoryContract
 {

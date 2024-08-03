@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
-use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Customers\CustomerRepository;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 use Statamic\Fields\Blueprint as FieldsBlueprint;
@@ -25,7 +25,7 @@ class CouponBlueprint
             ],
         ];
 
-        if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], UserCustomerRepository::class)) {
+        if (self::isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], CustomerRepository::class)) {
             $customerField = [
                 'mode' => 'default',
                 'display' => __('Specific Customers'),

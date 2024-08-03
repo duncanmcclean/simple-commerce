@@ -32,6 +32,10 @@ class CartController extends BaseActionController
         $cart = Cart::current();
         $cart = $this->handleCustomerInformation($request, $cart);
 
+        $cart->save();
+
+        return back();
+
         $data = collect($request->all())
             ->except(['_token', '_params', '_redirect', '_request', 'customer', 'email'])
             ->only(config('simple-commerce.field_whitelist.orders'))
@@ -52,7 +56,7 @@ class CartController extends BaseActionController
         }
 
         $cart->save();
-        $cart->recalculate();
+//        $cart->recalculate();
 
         return $this->withSuccess($request, [
             'message' => __('Cart Updated'),

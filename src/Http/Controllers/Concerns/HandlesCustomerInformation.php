@@ -2,92 +2,49 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
-use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
-use DuncanMcClean\SimpleCommerce\Facades\Customer;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
+use Statamic\Facades\User;
+use Statamic\Support\Arr;
 
 trait HandlesCustomerInformation
 {
-    protected function handleCustomerInformation(Request $request, OrderContract $cart): OrderContract
+    protected function handleCustomerInformation(Request $request, Cart $cart): Cart
     {
-        // When the customer driver is set to users, a user is logged in, and the cart doesn't have a customer,
-        // we'll set the customer to the logged in user.
-        if (
-            $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class)
-            && Auth::check()
-            && ! $cart->customer()
-        ) {
-            $cart->customer(Auth::id());
-        } elseif (! $request->has('customer') && ! $request->has('email')) {
-            return $cart;
-        }
+        $customerData = $request->get('customer', collect([
+            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+        ])->filter()->all());
 
-        // When the customer is a string, we'll assume it's a customer ID.
-        if (is_string($request->customer)) {
-            $customer = Customer::find($request->customer);
-            $cart->customer($customer->id());
-        }
-
-        // When an email is passed, we'll assume it's a new customer.
-        if (is_string($request->email)) {
-            $cart = $this->findOrCreateCustomer($cart, $request->email);
-
-            $cart = $this->updateCustomer($cart, [
-                'name' => $request->name,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-            ]);
-        }
-
-        // When the customer is an array, we'll first check if a customer exists with
-        // the provided email. Then we'll update the customer with any other provided data.
-        if (is_array($request->customer)) {
-            // Do we have an email key, if so, create/update the customer.
-            if ($email = Arr::get($request->customer, 'email')) {
-                $cart = $this->findOrCreateCustomer($cart, $email);
+        if ($user = User::current()) {
+            // When a customer is missing from the order, we'll set it to the logged-in user.
+            if (! $cart->customer()) {
+                $cart->customer($user);
             }
 
-            $cart = $this->updateCustomer($cart, $request->customer);
-        }
-
-        return $cart;
-    }
-
-    private function findOrCreateCustomer(OrderContract $cart, string $email): OrderContract
-    {
-        // If the order already has a customer assigned, update the email on the existing customer.
-        if ($customer = $cart->customer()) {
-            $customer->email($email)->save();
+            // When the request contains customer data, update the user.
+            if ($customerData) {
+                $user
+                    ->email(Arr::get($customerData, 'email', $user->email()))
+                    ->merge(Arr::except($customerData, ['email', 'super', 'roles', 'groups']))
+                    ->save();
+            }
 
             return $cart;
         }
 
-        // Otherwise, find or create a customer with the provided email.
-        try {
-            $customer = Customer::findByEmail($email);
-            $cart->customer($customer->id());
-        } catch (CustomerNotFound $e) {
-            $customer = Customer::make()->email($email)->data(['published' => true])->save();
-            $cart->customer($customer->id());
+        // When the request contains customer data, create or update a guest customer.
+        if ($customerData) {
+            if (! $cart->customer()) {
+                $guest = (new GuestCustomer)->data($customerData);
+                $cart->customer($guest);
+            }
+
+            $cart->customer()->merge($customerData);
         }
-
-        return $cart;
-    }
-
-    private function updateCustomer(OrderContract $cart, array $data): OrderContract
-    {
-        $whitelist = array_merge(
-            ['name', 'first_name', 'last_name'],
-            config('simple-commerce.field_whitelist.customers')
-        );
-
-        $cart->customer()
-            ->merge(collect($data)->only($whitelist)->filter()->toArray())
-            ->save();
 
         return $cart;
     }

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
-    use AcceptsFormRequests, CartDriver;
+    use AcceptsFormRequests;
 
     public function authorize()
     {

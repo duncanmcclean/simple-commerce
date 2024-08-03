@@ -27,7 +27,7 @@ class CartItemController extends BaseActionController
 
         $items = $cart->lineItems();
 
-        //        $cart = $this->handleCustomerInformation($request, $cart);
+        $cart = $this->handleCustomerInformation($request, $cart);
 
         // Ensure there's enough stock to fulfill the customer's quantity
         if ($product->purchasableType() === ProductType::Product) {
@@ -44,7 +44,6 @@ class CartItemController extends BaseActionController
 
         // If this product requires another one, ensure the customer has already purchased it...
         if ($product->has('prerequisite_product')) {
-            /** @var \DuncanMcClean\SimpleCommerce\Contracts\Customer $customer */
             $customer = $cart->customer();
 
             if (! $customer) {

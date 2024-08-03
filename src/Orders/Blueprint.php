@@ -16,11 +16,11 @@ class Blueprint
                         'visibility' => 'hidden',
                         'listable' => true,
                     ],
-                    'customer' => [ // todo
-                        'type' => 'text',
-                        'display' => 'Customer',
-                        'instructions' => 'The customer who placed the order.',
-                    ],
+//                    'customer' => [ // todo
+//                        'type' => 'text',
+//                        'display' => 'Customer',
+//                        'instructions' => 'The customer who placed the order.',
+//                    ],
                     'line_items' => [
                         'type' => 'line_items',
                         'display' => 'Line Items',
