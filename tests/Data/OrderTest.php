@@ -5,6 +5,7 @@ namespace Tests\Data;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -123,5 +124,18 @@ class OrderTest extends TestCase
         $this->assertCount(1, $order->lineItems());
         $this->assertNull($order->lineItems()->find('abc123'));
         $this->assertNotNull($order->lineItems()->find('def456'));
+    }
+
+    #[Test]
+    public function can_build_path()
+    {
+        $order = Order::make()
+            ->orderNumber(1234)
+            ->date(Carbon::parse('2024-01-01 10:35:10'));
+
+        $this->assertEquals(
+            base_path('content/orders/2024-01-01-103510.1234.yaml'),
+            $order->buildPath()
+        );
     }
 }

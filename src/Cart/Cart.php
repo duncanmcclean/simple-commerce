@@ -28,7 +28,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
     protected $id;
     protected $customer;
     protected $lineItems;
-    protected $shippingMethod;
     protected $initialPath;
 
     public function __construct()
@@ -74,13 +73,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
             ->args(func_get_args());
     }
 
-    public function shippingMethod($shippingMethod = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('shippingMethod')
-            ->args(func_get_args());
-    }
-
     public function save(): bool
     {
         CartFacade::save($this);
@@ -119,7 +111,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
             'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
-            'shipping_method' => $this->shippingMethod(),
         ], $this->data->all());
     }
 
@@ -159,7 +150,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
             'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
-            'shipping_method' => $this->shippingMethod(),
         ], $this->data()->toArray());
     }
 

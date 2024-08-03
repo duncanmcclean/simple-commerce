@@ -25,7 +25,7 @@ class CartsStore extends BasicStore
         $data = YAML::file($path)->parse($contents);
 
         return Cart::make()
-            ->id($id = Arr::pull($data, 'id'))
+            ->id(Arr::pull($data, 'id'))
             ->customer(Arr::pull($data, 'customer'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))
@@ -33,7 +33,6 @@ class CartsStore extends BasicStore
             ->discountTotal(Arr::pull($data, 'discount_total'))
             ->taxTotal(Arr::pull($data, 'tax_total'))
             ->shippingTotal(Arr::pull($data, 'shipping_total'))
-            ->shippingMethod(Arr::pull($data, 'shipping_method'))
             ->data($data);
     }
 }

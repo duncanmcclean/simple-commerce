@@ -5,20 +5,15 @@ namespace DuncanMcClean\SimpleCommerce\Stache\Repositories;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\QueryBuilder;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\CartNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
-use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Statamic\Facades\Blink;
-use Statamic\Facades\Site;
 use Statamic\Stache\Stache;
 
 class CartRepository implements RepositoryContract
 {
     protected $stache;
-
     protected $store;
 
     public function __construct(Stache $stache)

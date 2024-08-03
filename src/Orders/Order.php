@@ -6,6 +6,7 @@ use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Carbon;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
@@ -14,6 +15,7 @@ use Statamic\Data\HasAugmentedInstance;
 use Statamic\Data\HasDirtyState;
 use Statamic\Data\TracksQueriedColumns;
 use Statamic\Data\TracksQueriedRelations;
+use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -23,6 +25,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     protected $id;
     protected $orderNumber;
+    protected $date;
     protected $cart;
     protected $customer;
     protected $lineItems;
@@ -46,6 +49,32 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         return $this
             ->fluentlyGetOrSet('orderNumber')
+            ->args(func_get_args());
+    }
+
+    public function date($date = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('date')
+            ->setter(function ($date) {
+                if ($date === null) {
+                    return null;
+                }
+
+                if ($date instanceof \Carbon\CarbonInterface) {
+                    return $date;
+                }
+
+                if (strlen($date) === 10) {
+                    return Carbon::createFromFormat('Y-m-d', $date)->startOfDay();
+                }
+
+                if (strlen($date) === 15) {
+                    return Carbon::createFromFormat('Y-m-d-Hi', $date)->startOfMinute();
+                }
+
+                return Carbon::createFromFormat('Y-m-d-His', $date);
+            })
             ->args(func_get_args());
     }
 
@@ -110,13 +139,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
             ->args(func_get_args());
     }
 
-    public function shippingMethod($shippingMethod = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('shippingMethod')
-            ->args(func_get_args());
-    }
-
     public function paymentGateway($paymentGateway = null)
     {
         return $this
@@ -152,9 +174,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function buildPath(): string
     {
-        return vsprintf('%s/%s.yaml', [
+        return vsprintf('%s/%s.%s.yaml', [
             rtrim(Stache::store('orders')->directory(), '/'),
-            $this->orderNumber() ?? $this->id(),
+            $this->date()->format('Y-m-d-His'),
+            $this->orderNumber(),
         ]);
     }
 
@@ -190,7 +213,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function shallowAugmentedArrayKeys()
     {
-        return ['id', 'order_number', 'status', 'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
+        return ['id', 'order_number', 'date', 'status', 'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
     }
 
     public function newAugmentedInstance(): Augmented
@@ -202,6 +225,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         return array_merge([
             'order_number' => $this->orderNumber(),
+            'date' => $this->date(),
             'customer' => $this->customer(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
