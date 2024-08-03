@@ -4,6 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
+use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
+use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
@@ -155,7 +157,15 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function save(): bool
     {
+        $isNew = is_null(\DuncanMcClean\SimpleCommerce\Facades\Order::find($this->id()));
+
         OrderFacade::save($this);
+
+        if ($isNew) {
+            event(new OrderCreated($this));
+        }
+
+        event(new OrderSaved($this));
 
         return true;
     }
