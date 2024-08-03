@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use ArrayAccess;
-use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Contracts\Support\Arrayable;
@@ -27,9 +26,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     protected $cart;
     protected $customer;
     protected $lineItems;
-    protected $paymentGateway;
-    protected $paymentData;
-    protected $shippingMethod;
     protected $initialPath;
 
     public function __construct()
@@ -174,9 +170,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
             'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
-            'payment_gateway' => $this->paymentGateway(),
-            'payment_data' => $this->paymentData(),
-            'shipping_method' => $this->shippingMethod(),
         ], $this->data->all());
     }
 
@@ -216,9 +209,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
             'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
-            'payment_gateway' => $this->paymentGateway(),
-            'payment_data' => $this->paymentData(),
-            'shipping_method' => $this->shippingMethod(),
         ], $this->data()->toArray());
     }
 

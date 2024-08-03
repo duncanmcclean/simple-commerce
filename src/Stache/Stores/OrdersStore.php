@@ -10,6 +10,10 @@ use Statamic\Support\Arr;
 
 class OrdersStore extends BasicStore
 {
+    protected $storeIndexes = [
+        'order_number',
+    ];
+
     public function key()
     {
         return 'orders';
@@ -27,7 +31,7 @@ class OrdersStore extends BasicStore
 
         return Order::make()
             ->id($id = Arr::pull($data, 'id'))
-            ->orderNumber($id !== $orderNumber ? $orderNumber : null)
+            ->orderNumber((int) $id !== $orderNumber ? $orderNumber : null)
             ->customer(Arr::pull($data, 'customer'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))
@@ -35,9 +39,6 @@ class OrdersStore extends BasicStore
             ->discountTotal(Arr::pull($data, 'discount_total'))
             ->taxTotal(Arr::pull($data, 'tax_total'))
             ->shippingTotal(Arr::pull($data, 'shipping_total'))
-            ->paymentGateway(Arr::pull($data, 'payment_gateway'))
-            ->paymentData(Arr::pull($data, 'payment_info'))
-            ->shippingMethod(Arr::pull($data, 'shipping_method'))
             ->data($data);
     }
 }

@@ -5,10 +5,13 @@ namespace Tests\Feature\Orders;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use PHPUnit\Framework\Attributes\Test;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
+    use PreventsSavingStacheItemsToDisk;
+
     #[Test]
     public function can_make_order_from_cart()
     {
@@ -38,5 +41,17 @@ class OrderTest extends TestCase
         $this->assertEquals(0, $order->shippingTotal());
         $this->assertEquals('bar', $order->get('foo'));
         $this->assertEquals('foobar', $order->get('baz'));
+    }
+
+    #[Test]
+    public function can_generate_order_number()
+    {
+        Order::make()->orderNumber(1000)->save();
+        Order::make()->orderNumber(1001)->save();
+        Order::make()->orderNumber(1002)->save();
+
+        $order = tap(Order::make())->save();
+
+        $this->assertEquals(1003, $order->orderNumber());
     }
 }

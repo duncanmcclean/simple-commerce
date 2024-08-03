@@ -7,13 +7,12 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
-use Illuminate\Support\Str;
 use Statamic\Stache\Stache;
+use Statamic\Support\Traits\Hookable;
 
 class OrderRepository implements RepositoryContract
 {
     protected $stache;
-
     protected $store;
 
     public function __construct(Stache $stache)
@@ -63,8 +62,6 @@ class OrderRepository implements RepositoryContract
             ->subTotal($cart->subTotal())
             ->discountTotal($cart->discountTotal())
             ->taxTotal($cart->taxTotal())
-            ->shippingTotal($cart->shippingTotal())
-//            ->shippingMethod($cart->shippingMethod())
             ->data($cart->data()->toArray());
     }
 
@@ -88,26 +85,14 @@ class OrderRepository implements RepositoryContract
 
     public function generateOrderNumber(): int
     {
-        $lastOrder = $this->query()->where('order_number', '!=', null)->orderByDesc('order_number')->first();
+        $lastOrder = $this->query()->orderByDesc('order_number')->first();
 
-        // Fallback to get order number from title (otherwise: start from the start..)
+        // When we have no orders, start from the start.
         if (! $lastOrder) {
-            $lastOrder = $this->query()->where('title', '!=', null)->orderByDesc('title')->first();
-
-            // And if we don't have any orders with the old title format, start from the start.
-            if (! $lastOrder) {
-                return config('simple-commerce.minimum_order_number', 1000);
-            }
-
-            $lastOrderNumber = (int) Str::of($lastOrder->get('title'))
-                ->replace('Order ', '')
-                ->replace('#', '')
-                ->__toString();
-        } else {
-            $lastOrderNumber = $lastOrder->get('order_number');
+            return config('simple-commerce.minimum_order_number', 1000);
         }
 
-        return (int) $lastOrderNumber + 1;
+        return (int) $lastOrder->orderNumber() + 1;
     }
 
     public static function bindings(): array
