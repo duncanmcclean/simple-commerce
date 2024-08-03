@@ -14,13 +14,12 @@ class LineItems extends Collection
         $product = Product::find(Arr::pull($data, 'product'));
 
         $lineItem = (new LineItem)
-            ->id(Stache::generateId())
+            ->id(Arr::pull($data, 'id', Stache::generateId()))
             ->product($product)
             ->quantity(Arr::pull($data, 'quantity'))
             ->total(Arr::pull($data, 'total', 0))
             ->variant(Arr::pull($data, 'variant'))
-            ->tax(Arr::pull($data, 'tax'))
-            ->metadata(collect($data));
+            ->data(collect($data));
 
         $this->push($lineItem);
 
@@ -43,15 +42,14 @@ class LineItems extends Collection
             ->quantity(Arr::pull($data, 'quantity', $lineItem->quantity()))
             ->total(Arr::pull($data, 'total', $lineItem->total()))
             ->variant(Arr::pull($data, 'variant', $lineItem->variant()))
-            ->tax(Arr::pull($data, 'tax', $lineItem->tax()))
-            ->metadata(collect($data));
+            ->data(collect($data));
 
         return $this;
     }
 
     public function remove(string $id): self
     {
-        $this->reject(fn (LineItem $lineItem) => $lineItem->id() === $id);
+        $this->items = $this->reject(fn (LineItem $lineItem) => $lineItem->id() === $id)->values()->all();
 
         return $this;
     }

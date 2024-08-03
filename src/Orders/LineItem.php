@@ -4,29 +4,23 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
+use Statamic\Data\ContainsData;
+use Statamic\Support\Arr;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class LineItem
 {
-    use FluentlyGetsAndSets;
+    use FluentlyGetsAndSets, ContainsData;
 
     public $id;
-
     public $product;
-
     public $variant;
-
     public $quantity;
-
     public $total;
-
-    public $tax;
-
-    public $metadata;
 
     public function __construct()
     {
-        $this->metadata = collect();
+        $this->data = collect();
     }
 
     public function id($id = null)
@@ -73,40 +67,20 @@ class LineItem
 
     public function totalIncludingTax(): int
     {
-        return $this->total() + $this->tax()['amount'];
-    }
-
-    public function tax($tax = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('tax')
-            ->args(func_get_args());
-    }
-
-    public function metadata($metadata = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('metadata')
-            ->setter(function ($metadata) {
-                if (is_array($metadata)) {
-                    $metadata = collect($metadata);
-                }
-
-                return $metadata;
-            })
-            ->args(func_get_args());
+        return $this->total() + Arr::get($this->data()->get('tax'), 'amount', 0);
     }
 
     public function toArray(): array
     {
-        // todo: null values shouldn't be returned
-        return array_merge($this->metadata->all(), [
-            'id' => $this->id,
-            'product' => $this->product->id(),
-            'variant' => $this->variant,
-            'quantity' => $this->quantity,
-            'total' => $this->total,
-            'tax' => $this->tax,
-        ]);
+        return $this->data()
+            ->merge([
+                'id' => $this->id,
+                'product' => $this->product->id(),
+                'variant' => $this->variant,
+                'quantity' => $this->quantity,
+                'total' => $this->total,
+            ])
+            ->filter()
+            ->all();
     }
 }
