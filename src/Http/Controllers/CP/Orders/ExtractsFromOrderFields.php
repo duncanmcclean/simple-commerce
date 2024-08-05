@@ -21,6 +21,7 @@ trait ExtractsFromOrderFields
 
         $fields = $blueprint
             ->fields()
+            ->setParent($order)
             ->addValues($values->all())
             ->preProcess();
 

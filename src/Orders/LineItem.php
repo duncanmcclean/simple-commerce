@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
 use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
@@ -79,6 +80,15 @@ class LineItem
         return $this
             ->fluentlyGetOrSet('quantity')
             ->args(func_get_args());
+    }
+
+    // TODO: We should really be storing the unit price, not just the total
+    // (otherwise, things will get messed up when the product's price gets updated).
+    public function unitPrice()
+    {
+        return $this->variant
+            ? $this->variant()->price()
+            : $this->product()->price();
     }
 
     public function total($total = null)

@@ -1,3 +1,32 @@
-.sc_line_items_tax-fieldtype {
-  display: none;
+@tailwind components;
+@tailwind utilities;
+
+.receipt-table {
+    .receipt-table-header {
+        @apply grid grid-cols-6 py-2 border-b dark:border-dark-500 font-medium;
+    }
+
+    .receipt-line-item {
+        @apply grid grid-cols-6 py-4;
+
+        div {
+            @apply text-right;
+        }
+
+        :first-child {
+            @apply col-span-3 text-left;
+        }
+    }
+
+    .receipt-total {
+        @apply grid grid-cols-6 py-2;
+
+        :first-child {
+            @apply col-span-5 text-right flex flex-col gap-y-1;
+        }
+
+        :last-child {
+            @apply col-span-1 text-right;
+        }
+    }
 }

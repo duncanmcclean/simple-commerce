@@ -75,16 +75,16 @@
                         @focus="container.$emit('focus', $event)"
                         @blur="container.$emit('blur', $event)"
                     >
-                        <template #actions="{ shouldShowSidebar }">
-                            <div class="card p-0 mb-5">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2"
-                                    :class="{ 'border-t dark:border-dark-900': true }"
-                                >
-                                    TODO: show order statuses here
-                                </div>
-                            </div>
-                        </template>
+<!--                        <template #actions="{ shouldShowSidebar }">-->
+<!--                            <div class="card p-0 mb-5">-->
+<!--                                <div-->
+<!--                                    class="flex items-center justify-between px-4 py-2"-->
+<!--                                    :class="{ 'border-t dark:border-dark-900': true }"-->
+<!--                                >-->
+<!--                                    TODO: show order statuses here-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </template>-->
                     </publish-tabs>
                 </transition>
             </div>
@@ -117,11 +117,11 @@
 
 
 <script>
-import PublishActions from './PublishActions.vue';
-import SaveButtonOptions from '../../../../vendor/statamic/cms/resources/js/components/publish/SaveButtonOptions.vue';
-import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences';
-import HasHiddenFields from '../../../../vendor/statamic/cms/resources/js/components/publish/HasHiddenFields';
-import HasActions from '../../../../vendor/statamic/cms/resources/js/components/publish/HasActions';
+import PublishActions from './PublishActions.vue'
+import SaveButtonOptions from '../../../../vendor/statamic/cms/resources/js/components/publish/SaveButtonOptions.vue'
+import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences'
+import HasHiddenFields from '../../../../vendor/statamic/cms/resources/js/components/publish/HasHiddenFields'
+import HasActions from '../../../../vendor/statamic/cms/resources/js/components/publish/HasActions'
 
 export default {
 

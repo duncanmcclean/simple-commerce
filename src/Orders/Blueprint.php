@@ -18,7 +18,7 @@ class Blueprint
                             'fields' => [
                                 [
                                     'handle' => 'order_number',
-                                    'field' => ['type' => 'text', 'display' => __('Order Number'), 'visibility' => 'read_only', 'listable' => true],
+                                    'field' => ['type' => 'text', 'display' => __('Order Number'), 'visibility' => 'hidden', 'listable' => true],
                                 ],
                                 [
                                     'handle' => 'line_items',
@@ -49,7 +49,10 @@ class Blueprint
                         [
                             'display' => __('Receipt'),
                             'fields' => [
-                                // TODO: Receipt field - this might not even need to be a field
+                                [
+                                    'handle' => 'receipt',
+                                    'field' => ['type' => 'order_receipt', 'hide_display' => true, 'listable' => false],
+                                ]
                             ],
                         ]
                     ],

@@ -23,6 +23,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $fieldtypes = [
         Fieldtypes\LineItemsFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
+        Fieldtypes\OrderReceiptFieldtype::class,
         Fieldtypes\OrdersFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
     ];
@@ -49,7 +50,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $vite = [
-        'hotFile' => 'vendor/simple-commerce/hot',
+        'hotFile' => 'vendor/simple-commerce/dist/hot',
         'publicDirectory' => 'dist',
         'input' => [
             'resources/js/cp.js',
