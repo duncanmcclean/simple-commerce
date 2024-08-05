@@ -282,7 +282,7 @@ test('can checkout when in card elements mode', function () {
         'card' => [
             'number' => '4242424242424242',
             'exp_month' => 7,
-            'exp_year' => 2024,
+            'exp_year' => 2026,
             'cvc' => '314',
         ],
     ]);
@@ -345,7 +345,7 @@ test('cant checkout when in payment elements mode', function () {
         'card' => [
             'number' => '4242424242424242',
             'exp_month' => 7,
-            'exp_year' => 2024,
+            'exp_year' => 2026,
             'cvc' => '314',
         ],
     ]);
@@ -398,7 +398,7 @@ test('can refund charge', function () {
         'card' => [
             'number' => '4242424242424242',
             'exp_month' => 7,
-            'exp_year' => 2024,
+            'exp_year' => 2026,
             'cvc' => '314',
         ],
     ]);
