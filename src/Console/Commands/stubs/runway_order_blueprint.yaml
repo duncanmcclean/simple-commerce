@@ -38,7 +38,7 @@ tabs:
               display: Coupon
               width: 50
               visibility: read_only
-          - handle: shipping_method
+          - handle: data->shipping_method
             field:
               display: "Shipping Method"
               type: shipping_method
