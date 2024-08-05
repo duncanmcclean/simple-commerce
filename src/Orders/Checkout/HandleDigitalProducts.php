@@ -5,7 +5,6 @@ namespace DuncanMcClean\SimpleCommerce\Orders\Checkout;
 use Closure;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Events\DigitalDownloadReady;
-use DuncanMcClean\SimpleCommerce\Facades\LicenseKey;
 use Illuminate\Support\Facades\URL;
 
 class HandleDigitalProducts

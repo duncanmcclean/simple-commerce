@@ -17,10 +17,6 @@ class DownloadController extends Controller
         $order = Order::find($request->orderId);
         $item = $order->lineItems()->firstWhere('id', $request->lineItemId);
 
-        if (! $item->metadata()->has('license_key') || $item->metadata()->get('license_key') !== $request->get('license_key')) {
-            abort(401);
-        }
-
         $product = $item->product();
 
         $zip = new ZipArchive;
