@@ -38,7 +38,7 @@ class GatewayData
         return Gateway::use($this->gateway);
     }
 
-    public function data(): Collection
+    public function data(): ?Collection
     {
         return $this->data;
     }
