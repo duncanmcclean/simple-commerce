@@ -22,7 +22,7 @@ class CheckoutController extends BaseActionController
             $values['use_shipping_address_for_billing'] = $values['use_shipping_address_for_billing'] === 'on';
         }
 
-        $validated = Blueprint::getBlueprint()->fields()->addValues($values)->validate();
+        $validated = Order::blueprint()->fields()->addValues($values)->validate();
 
         $cart = Cart::current();
         $cart = $this->handleCustomerInformation($request, $cart);

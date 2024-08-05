@@ -7,6 +7,7 @@ use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
+use Statamic\Facades\Blueprint;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\User;
 use Statamic\Providers\AddonServiceProvider;
@@ -92,5 +93,11 @@ class ServiceProvider extends AddonServiceProvider
         User::computed('orders', function ($user) {
             return Order::query()->pluck('id')->all(); // TODO: how can we filter by customer if $customer is a User instance?
         });
+
+        Blueprint::addNamespace('simple-commerce', __DIR__.'/../resources/blueprints');
+
+        if (! Blueprint::find("simple-commerce::order")) {
+            Blueprint::make('order')->setNamespace('simple-commerce')->save();
+        }
     }
 }

@@ -7,7 +7,9 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
+use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use Illuminate\Support\Carbon;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Stache\Stache;
 
 class OrderRepository implements RepositoryContract
@@ -96,6 +98,11 @@ class OrderRepository implements RepositoryContract
         }
 
         return (int) $lastOrder->orderNumber() + 1;
+    }
+
+    public function blueprint(): StatamicBlueprint
+    {
+        return (new Blueprint)();
     }
 
     public static function bindings(): array

@@ -11,6 +11,7 @@ use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
+use DuncanMcClean\SimpleCommerce\Orders\Order as OrderFacade;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Contracts\Data\Augmentable;
@@ -24,6 +25,7 @@ use Statamic\Data\TracksQueriedColumns;
 use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
@@ -147,9 +149,9 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
         return CartFacade::find($this->id());
     }
 
-    public function blueprint(): \Statamic\Fields\Blueprint
+    public function blueprint(): StatamicBlueprint
     {
-        return Blueprint::getBlueprint();
+        return OrderFacade::blueprint();
     }
 
     public function defaultAugmentedArrayKeys()

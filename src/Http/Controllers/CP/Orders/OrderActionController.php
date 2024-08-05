@@ -20,7 +20,7 @@ class OrderActionController extends ActionController
     protected function getItemData($order, $context): array
     {
         $order = $order->fresh();
-        $blueprint = Blueprint::getBlueprint();
+        $blueprint = Order::blueprint();
 
         return array_merge((new OrderResource($order))->resolve()['data'], [
             'itemActions' => Action::for($order, $context),

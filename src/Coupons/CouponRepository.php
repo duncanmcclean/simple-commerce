@@ -3,7 +3,9 @@
 namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use DuncanMcClean\SimpleCommerce\Contracts\CouponRepository as ContractsCouponRepository;
+use DuncanMcClean\SimpleCommerce\Coupons\Blueprint;
 use Statamic\Data\DataCollection;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Stache\Stache;
 
 class CouponRepository implements ContractsCouponRepository
@@ -46,6 +48,11 @@ class CouponRepository implements ContractsCouponRepository
     public function query(): CouponQueryBuilder
     {
         return new CouponQueryBuilder($this->store);
+    }
+
+    public function blueprint(): StatamicBlueprint
+    {
+        return (new Blueprint)();
     }
 
     public function make(): Coupon

@@ -247,7 +247,7 @@ class Coupon implements Contract
 
     public function toAugmentedArray($keys = null)
     {
-        $blueprint = CouponBlueprint::getBlueprint();
+        $blueprint = \DuncanMcClean\SimpleCommerce\Facades\Coupon::blueprint();
 
         return $blueprint->fields()->addValues($this->toArray())->all()->map->augment($keys)->mapWithKeys(function ($field) {
             return [$field->handle() => $field->value()];

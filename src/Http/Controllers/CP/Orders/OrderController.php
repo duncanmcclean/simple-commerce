@@ -42,14 +42,14 @@ class OrderController extends CpController
             $orders = $query->paginate(request('perPage'));
 
             return (new Orders($orders))
-                ->blueprint(OrderBlueprint::getBlueprint())
+                ->blueprint(Order::blueprint())
                 ->columnPreferenceKey('simple-commerce.orders.columns')
                 ->additional(['meta' => [
                     'additionalFilterBadges' => $activeFilterBadges,
                 ]]);
         }
 
-        $blueprint = OrderBlueprint::getBlueprint();
+        $blueprint = Order::blueprint();
 
         $columns = $blueprint->columns()
             ->setPreferred('simple-commerce.orders.columns')
@@ -85,7 +85,7 @@ class OrderController extends CpController
 
         $this->authorize('edit', $order);
 
-        $blueprint = OrderBlueprint::getBlueprint();
+        $blueprint = Order::blueprint();
 
         [$values, $meta] = $this->extractFromFields($order, $blueprint);
 

@@ -21,6 +21,7 @@ use Statamic\Data\TracksQueriedColumns;
 use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, Contract
@@ -213,9 +214,9 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
         return OrderFacade::find($this->id());
     }
 
-    public function blueprint(): \Statamic\Fields\Blueprint
+    public function blueprint(): StatamicBlueprint
     {
-        return Blueprint::getBlueprint();
+        return OrderFacade::blueprint();
     }
 
     public function defaultAugmentedArrayKeys()

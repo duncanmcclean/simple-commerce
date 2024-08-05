@@ -2,152 +2,156 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use Statamic\Facades\Blueprint as BlueprintFacade;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
+
 class Blueprint
 {
-    public static function getBlueprint(): \Statamic\Fields\Blueprint
+    public function __invoke(): StatamicBlueprint
     {
-        return \Statamic\Facades\Blueprint::makeFromTabs([
-            'details' => [
-                'display' => 'Details',
-                'fields' => [
-                    'order_number' => [
-                        'type' => 'text',
-                        'display' => 'Order Number',
-                        'visibility' => 'hidden',
-                        'listable' => true,
-                    ],
-//                    'customer' => [ // todo
-//                        'type' => 'text',
-//                        'display' => 'Customer',
-//                        'instructions' => 'The customer who placed the order.',
-//                    ],
-                    'line_items' => [
-                        'type' => 'line_items',
-                        'display' => 'Line Items',
-                        'listable' => false,
-                        'fields' => [
-                            ['handle' => 'id', 'field' => ['type' => 'hidden']],
-                            ['handle' => 'product', 'field' => ['type' => 'entries', 'max_items' => 1, 'display' => 'Product', 'collection' => 'products']], // todo: make the collection configurable
-                            ['handle' => 'variant', 'field' => ['type' => 'text', 'display' => 'Variant']],
-                            ['handle' => 'quantity', 'field' => ['type' => 'integer', 'display' => 'Quantity']],
-                            ['handle' => 'total', 'field' => ['type' => 'money', 'display' => 'Total', 'visibility' => 'read_only']],
-                            ['handle' => 'metadata', 'field' => ['type', 'array']],
+        return BlueprintFacade::make()->setContents(array_merge_recursive([
+            'tabs' => [
+                'details' => [
+                    'display' => __('Details'),
+                    'sections' => [
+                        [
+                            'fields' => [
+                                [
+                                    'handle' => 'order_number',
+                                    'field' => ['type' => 'text', 'display' => __('Order Number'), 'visibility' => 'read_only', 'listable' => true],
+                                ],
+                                [
+                                    'handle' => 'line_items',
+                                    'field' => ['type' => 'line_items', 'display' => __('Line Items'), 'visibility' => 'hidden', 'listable' => false],
+                                ],
+                                [
+                                    'handle' => 'grand_total',
+                                    'field' => ['type' => 'money', 'display' => __('Grand Total'), 'visibility' => 'hidden', 'listable' => true],
+                                ],
+                                [
+                                    'handle' => 'sub_total',
+                                    'field' => ['type' => 'money', 'display' => __('Subtotal'), 'visibility' => 'hidden', 'listable' => true],
+                                ],
+                                [
+                                    'handle' => 'discount_total',
+                                    'field' => ['type' => 'money', 'display' => __('Discount Total'), 'visibility' => 'hidden', 'listable' => true],
+                                ],
+                                [
+                                    'handle' => 'shipping_total',
+                                    'field' => ['type' => 'money', 'display' => __('Shipping Total'), 'visibility' => 'hidden', 'listable' => true],
+                                ],
+                                [
+                                    'handle' => 'tax_total',
+                                    'field' => ['type' => 'money', 'display' => __('Tax Total'), 'visibility' => 'hidden', 'listable' => true],
+                                ],
+                            ],
                         ],
-                    ],
-                    'grand_total' => ['type' => 'money', 'display' => 'Grand Total', 'visibility' => 'read_only', 'listable' => true],
-                    'sub_total' => ['type' => 'money', 'display' => 'Sub Total', 'visibility' => 'read_only'],
-                    'discount_total' => ['type' => 'money', 'display' => 'Discount Total', 'visibility' => 'read_only'],
-                    'tax_total' => ['type' => 'money', 'display' => 'Tax Total', 'visibility' => 'read_only'],
-                    'shipping_total' => ['type' => 'money', 'display' => 'Shipping Total', 'visibility' => 'read_only'],
-                    'payment_gateway' => ['type' => 'text', 'display' => 'Payment Gateway'], // todo: select options
-                    'payment_data' => ['type' => 'array', 'display' => 'Payment Data'],
-                    'shipping_method' => ['type' => 'text', 'display' => 'Shipping Method'], // todo: select options
-                ],
-            ],
-            'shipping' => [
-                'fields' => [
-                    'shipping_line_1' => [
-                        'type' => 'text',
-                        'display' => 'Address Line 1',
-                        'listable' => false,
-                        'width' => 50,
-                    ],
-                    'shipping_line_2' => [
-                        'type' => 'text',
-                        'display' => 'Address Line 2',
-                        'listable' => false,
-                        'width' => 50,
-                    ],
-                    'shipping_city' => [
-                        'type' => 'text',
-                        'display' => 'Town/City',
-                        'listable' => false,
-                        'width' => 50,
-                    ],
-                    'shipping_postcode' => [
-                        'type' => 'text',
-                        'display' => 'Postcode',
-                        'listable' => false,
-                        'width' => 50,
-                    ],
-                    'shipping_country' => [
-                        'type' => 'dictionary',
-                        'dictionary' => 'countries',
-                        'display' => 'Country',
-                        'listable' => false,
-                        'max_items' => 1,
-                        'width' => 50,
+                        [
+                            'display' => __('Receipt'),
+                            'fields' => [
+                                // TODO: Receipt field - this might not even need to be a field
+                            ],
+                        ]
                     ],
                 ],
-            ],
-            'billing' => [
-                'fields' => [
-                    'use_shipping_address_for_billing' => [
-                        'type' => 'toggle',
-                        'display' => 'Use Shipping Address for Billing',
-                        'listable' => false,
-                        'validate' => 'boolean',
-                    ],
-                    'billing_line_1' => [
-                        'type' => 'text',
-                        'display' => 'Address Line 1',
-                        'listable' => false,
-                        'width' => 50,
-                        'if' => [
-                            'use_shipping_address_for_billing' => 'equals false',
+                'shipping' => [
+                    'display' => __('Shipping'),
+                    'sections' => [
+                        [
+                            'display' => __('Shipping Method'),
+                            'fields' => [
+                                // TODO: Special shipping field
+                                [
+                                    'handle' => 'shipping_method',
+                                    'field' => ['type' => 'text', 'display' => __('Shipping Method'), 'visibility' => 'read_only', 'listable' => true],
+                                ],
+                            ],
                         ],
-                    ],
-                    'billing_line_2' => [
-                        'type' => 'text',
-                        'display' => 'Address Line 2',
-                        'listable' => false,
-                        'width' => 50,
-                        'if' => [
-                            'use_shipping_address_for_billing' => 'equals false',
-                        ],
-                    ],
-                    'billing_city' => [
-                        'type' => 'text',
-                        'display' => 'Town/City',
-                        'listable' => false,
-                        'width' => 50,
-                        'if' => [
-                            'use_shipping_address_for_billing' => 'equals false',
-                        ],
-                    ],
-                    'billing_postcode' => [
-                        'type' => 'text',
-                        'display' => 'Postcode',
-                        'listable' => false,
-                        'width' => 50,
-                        'if' => [
-                            'use_shipping_address_for_billing' => 'equals false',
-                        ],
-                    ],
-                    'billing_country' => [
-                        'type' => 'dictionary',
-                        'dictionary' => 'countries',
-                        'display' => 'Country',
-                        'listable' => false,
-                        'max_items' => 1,
-                        'width' => 50,
-                        'if' => [
-                            'use_shipping_address_for_billing' => 'equals false',
+                        [
+                            'display' => __('Shipping Address'),
+                            'fields' => [
+                                [
+                                    'handle' => 'shipping_line_1',
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                ],
+                                [
+                                    'handle' => 'shipping_line_2',
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                ],
+                                [
+                                    'handle' => 'shipping_city',
+                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                ],
+                                [
+                                    'handle' => 'shipping_postcode',
+                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                ],
+                                [
+                                    'handle' => 'shipping_country',
+                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'max_items' => 1, 'display' => __('Country'), 'listable' => false, 'visibility' => 'read_only', 'width' => 50],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
-            'sidebar' => [
-                'fields' => [
-                    'date' => [
-                        'type' => 'date',
-                        'display' => 'Date',
-                        'visibility' => 'read_only',
-                        'listable' => true,
-                        'time_enabled' => true,
+                'payment' => [
+                    'display' => __('Payment'),
+                    'sections' => [
+                        [
+                            'display' => __('Payment'),
+                            'fields' => [
+                                // TODO: Special payment field
+                                [
+                                    'handle' => 'payment_gateway',
+                                    'field' => ['type' => 'text', 'display' => __('Payment Gateway'), 'visibility' => 'read_only', 'listable' => true],
+                                ],
+                            ],
+                        ],
+                        [
+                            'display' => __('Billing Address'),
+                            'fields' => [
+                                [
+                                    'handle' => 'use_shipping_address_for_billing',
+                                    'field' => ['type' => 'toggle', 'display' => __('Use Shipping Address for Billing'), 'visibility' => 'read_only', 'listable' => false, 'validate' => 'boolean'],
+                                ],
+                                [
+                                    'handle' => 'billing_line_1',
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                ],
+                                [
+                                    'handle' => 'billing_line_2',
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                ],
+                                [
+                                    'handle' => 'billing_city',
+                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                ],
+                                [
+                                    'handle' => 'billing_postcode',
+                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                ],
+                                [
+                                    'handle' => 'billing_country',
+                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'display' => __('Country'), 'listable' => false, 'visibility' => 'read_only', 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'sidebar' => [
+                    'sections' => [
+                        [
+                            'fields' => [
+                                [
+                                    'handle' => 'date',
+                                    'field' => ['type' => 'date', 'display' => __('Date'), 'visibility' => 'read_only', 'listable' => true, 'time_enabled' => true],
+                                ],
+                                // TODO: Customer field
+                            ],
+                        ],
                     ],
                 ],
             ],
-        ]);
+        ], BlueprintFacade::find('simple-commerce::order')->contents()));
     }
 }

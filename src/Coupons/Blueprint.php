@@ -8,9 +8,9 @@ use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 use Statamic\Fields\Blueprint as FieldsBlueprint;
 
-class CouponBlueprint
+class Blueprint
 {
-    public static function getBlueprint(): FieldsBlueprint
+    public function __invoke(): FieldsBlueprint
     {
         $customerField = [
             'mode' => 'default',
