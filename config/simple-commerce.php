@@ -6,7 +6,6 @@ return [
         'collections' => ['products'],
     ],
 
-
     'sites' => [
         'default' => [
             'currency' => 'GBP',
@@ -19,9 +18,11 @@ return [
         ],
     ],
 
-    'gateways' => [
-        \DuncanMcClean\SimpleCommerce\Payments\Gateways\DummyGateway::class => [
-            'display' => 'Card',
+    'payments' => [
+        'gateways' => [
+            \DuncanMcClean\SimpleCommerce\Payments\Gateways\DummyGateway::class => [
+                'display' => 'Card',
+            ],
         ],
     ],
 
