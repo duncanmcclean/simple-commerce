@@ -9,7 +9,7 @@ trait ExtractsFromOrderFields
         $values = $order->data()
             ->merge([
                 'order_number' => $order->orderNumber(),
-                'status' => $order->status(),
+                'date' => $order->date(),
                 'line_items' => $order->lineItems()->map->toArray()->all(),
                 'grand_total' => $order->grandTotal(),
                 'sub_total' => $order->subTotal(),

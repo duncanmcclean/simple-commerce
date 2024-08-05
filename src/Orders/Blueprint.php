@@ -144,6 +144,7 @@ class Blueprint
                         'display' => 'Date',
                         'visibility' => 'read_only',
                         'listable' => true,
+                        'time_enabled' => true,
                     ],
                 ],
             ],
