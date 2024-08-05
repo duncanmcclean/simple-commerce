@@ -202,3 +202,28 @@ Sometimes you'll want to know if a certain product (or product variant) exists i
   This product is already in your cart.
 {{ /if }}
 ```
+## Adding the same product multiple times
+
+By default, a product (or variant) can only be added to the cart once. When a customer attempts to add a product which is already in their cart, instead of adding it again, Simple Commerce will increase the line item's quantity.
+
+However, there are some situations where you may wish a product to be "add-able" to the cart multiple times. In this case, you may use the `unique_metadata` option which will add a product to the cart multiple times as long as the line item's metadata is different.
+
+```php
+// config/simple-commerce.php
+
+/*
+|--------------------------------------------------------------------------
+| Cart
+|--------------------------------------------------------------------------
+|
+| Configure the Cart Driver in use on your site. It's what stores/gets the
+| Cart ID from the user's browser on every request.
+|
+*/
+
+'cart' => [
+    'repository' => \DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CookieDriver::class,
+    'key' => 'simple-commerce-cart',
+    'unique_metadata' => true,
+],
+```
