@@ -18,7 +18,7 @@ beforeEach(function () {
 test('can mark order as paid with offsite gateway', function () {
     Event::fake();
 
-    $fakeGateway = new FakeOffsiteGateway();
+    $fakeGateway = new FakeOffsiteGateway;
 
     $product = Product::make()
         ->price(1500)
@@ -55,7 +55,7 @@ test('can mark order as paid with offsite gateway', function () {
 test('can mark order as paid with offsite gateway and ensure gateway is set in order paid event', function () {
     Event::fake();
 
-    $fakeGateway = new FakeOffsiteGateway();
+    $fakeGateway = new FakeOffsiteGateway;
 
     $product = Product::make()
         ->price(1500)
@@ -94,7 +94,7 @@ test('can mark order as paid with offsite gateway and ensure gateway is set in o
 test('can mark order as paid with onsite gateway', function () {
     Event::fake();
 
-    $fakeGateway = new FakeOnsiteGateway();
+    $fakeGateway = new FakeOnsiteGateway;
 
     $product = Product::make()
         ->price(1500)
@@ -127,7 +127,7 @@ test('can mark order as paid with onsite gateway', function () {
 test('can mark order as paid with onsite gateway and ensure gateway is set in order paid event', function () {
     Event::fake();
 
-    $fakeGateway = new FakeOnsiteGateway();
+    $fakeGateway = new FakeOnsiteGateway;
 
     $product = Product::make()
         ->price(1500)

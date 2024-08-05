@@ -3,7 +3,7 @@
 use DuncanMcClean\SimpleCommerce\Tests\Data\TraitAccess;
 
 beforeEach(function () {
-    $this->trait = new TraitAccess();
+    $this->trait = new TraitAccess;
 });
 
 test('can get all data', function () {

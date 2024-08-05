@@ -39,7 +39,7 @@ test('can send configured notification to customer', function () {
         OrderStatus::Placed
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         OrderPlacedNotification::class,
@@ -68,7 +68,7 @@ test('can send configured notification to order email', function () {
         OrderStatus::Placed
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         OrderPlacedNotification::class,
@@ -97,7 +97,7 @@ test('cant send configured notification to customer when no customer exists on t
         OrderStatus::Placed
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemandTimes(
         OrderPlacedNotification::class,
@@ -124,7 +124,7 @@ test('can send configured notification to hard coded email address', function ()
         OrderStatus::Placed
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         OrderPlacedNotification::class,
@@ -153,7 +153,7 @@ test('can send configured notification to hard coded email address with antlers'
         OrderStatus::Placed
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         OrderPlacedNotification::class,
@@ -185,7 +185,7 @@ test('can send configured notification for order status event', function () {
         OrderStatus::Dispatched
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         OrderDispatchedNotification::class,
@@ -217,7 +217,7 @@ test('can send configured notification for payment status event', function () {
         PaymentStatus::Refunded
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         PaymentRefundedNotification::class,
@@ -248,7 +248,7 @@ test('can send configured notification for some random event', function () {
         $order
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         SomeRandomEventNotification::class,
@@ -281,7 +281,7 @@ test('can send configured notification and ensure all events defined in notifica
         true
     );
 
-    (new SendConfiguredNotifications())->handle($event);
+    (new SendConfiguredNotifications)->handle($event);
 
     NotificationFacade::assertSentOnDemand(
         AnotherRandomEventNotification::class,

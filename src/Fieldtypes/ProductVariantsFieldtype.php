@@ -143,7 +143,7 @@ class ProductVariantsFieldtype extends Fieldtype
                         $fieldValue = collect($fields)
                             ->where('handle', $fieldHandle)
                             ->map(function ($field) use ($value, $method) {
-                                return (new FieldtypeRepository())
+                                return (new FieldtypeRepository)
                                     ->find($field['type'])
                                     ->setField(new Field($field['handle'], Arr::except($field, ['handle'])))
                                     ->{$method}($value);

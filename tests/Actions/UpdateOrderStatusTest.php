@@ -14,7 +14,7 @@ use function Pest\Laravel\actingAs;
 beforeEach(function () {
     $this->setupCollections();
 
-    $this->action = new UpdateOrderStatus();
+    $this->action = new UpdateOrderStatus;
 
     $user = User::make()->id('one')->makeSuper()->save();
     actingAs($user);

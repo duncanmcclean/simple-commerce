@@ -215,7 +215,7 @@ class StripeGateway extends BaseGateway implements Gateway
             return new Response('Webhook handled', 200);
         }
 
-        return new Response();
+        return new Response;
     }
 
     public function fieldtypeDisplay($value): array

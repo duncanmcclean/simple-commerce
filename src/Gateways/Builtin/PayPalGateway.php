@@ -43,7 +43,7 @@ class PayPalGateway extends BaseGateway implements Gateway
     {
         $this->setupPayPal();
 
-        $request = new OrdersCreateRequest();
+        $request = new OrdersCreateRequest;
         $request->prefer('return=representation');
         $request->body = [
             'intent' => 'CAPTURE',
@@ -216,7 +216,7 @@ class PayPalGateway extends BaseGateway implements Gateway
             $this->markOrderAsPaid($order);
         }
 
-        return new HttpResponse();
+        return new HttpResponse;
     }
 
     public function fieldtypeDisplay($value): array

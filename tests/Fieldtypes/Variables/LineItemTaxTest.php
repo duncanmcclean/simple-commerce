@@ -9,7 +9,7 @@ test('can augment line item tax', function () {
         'price_includes_tax' => true,
     ];
 
-    $augment = (new LineItemTax())->augment($value);
+    $augment = (new LineItemTax)->augment($value);
 
     expect($augment)->toBeArray();
 

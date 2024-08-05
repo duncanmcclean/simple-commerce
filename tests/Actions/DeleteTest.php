@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use Statamic\Facades\Entry;
 
 beforeEach(function () {
-    $this->action = new Delete();
+    $this->action = new Delete;
 });
 
 test('is visible to coupons', function () {

@@ -46,6 +46,6 @@ class TaxZoneRepository implements Contract
 
     public function make(): TaxZone
     {
-        return new TaxZone();
+        return new TaxZone;
     }
 }

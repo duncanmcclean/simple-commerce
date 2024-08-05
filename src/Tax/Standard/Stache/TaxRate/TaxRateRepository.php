@@ -46,6 +46,6 @@ class TaxRateRepository implements Contract
 
     public function make(): TaxRate
     {
-        return new TaxRate();
+        return new TaxRate;
     }
 }

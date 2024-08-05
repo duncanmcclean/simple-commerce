@@ -96,7 +96,7 @@ class EloquentCustomerRepository implements RepositoryContract
         $model = $customer->resource();
 
         if (! $model) {
-            $model = new $this->model();
+            $model = new $this->model;
         }
 
         $model->email = $customer->email();

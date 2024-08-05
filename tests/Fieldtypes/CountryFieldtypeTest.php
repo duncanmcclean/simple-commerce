@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 test('can get index items', function () {
-    $getIndexItems = $this->fieldtype->getIndexItems(new Request());
+    $getIndexItems = $this->fieldtype->getIndexItems(new Request);
 
     expect($getIndexItems instanceof Collection)->toBeTrue();
 

@@ -136,7 +136,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model = $order->resource();
 
         if (! $model) {
-            $model = new $this->model();
+            $model = new $this->model;
         }
 
         $model->order_number = $order->orderNumber() ?? $this->generateOrderNumber();
