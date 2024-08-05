@@ -86,7 +86,6 @@ class OrderRepository implements RepositoryContract
     {
         $lastOrder = $this->query()->orderByDesc('order_number')->first();
 
-        // When we have no orders, start from the start.
         if (! $lastOrder) {
             return config('simple-commerce.minimum_order_number', 1000);
         }

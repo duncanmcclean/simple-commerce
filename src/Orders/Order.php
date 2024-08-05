@@ -149,20 +149,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
             ->args(func_get_args());
     }
 
-    public function paymentGateway($paymentGateway = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('paymentGateway')
-            ->args(func_get_args());
-    }
-
-    public function paymentData($paymentData = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('paymentData')
-            ->args(func_get_args());
-    }
-
     public function save(): bool
     {
         $isNew = is_null(\DuncanMcClean\SimpleCommerce\Facades\Order::find($this->id()));

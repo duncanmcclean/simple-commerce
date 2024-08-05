@@ -17,7 +17,14 @@ class AugmentedOrder extends AbstractAugmented
             return $this->cachedKeys;
         }
 
-        return $this->cachedKeys = $this->data->keys()
+        return $this->cachedKeys = $this->data->data()->keys()
+            ->merge($this->data->supplements()->keys())
+            ->merge($this->commonKeys())
+            ->merge($this->blueprintFields()->keys())
+            ->unique()->sort()->values()->all();
+
+
+        return $this->cachedKeys = $this->data->data()->keys()
             ->merge($this->commonKeys())
             ->unique()->sort()->values()->all();
     }
@@ -29,14 +36,6 @@ class AugmentedOrder extends AbstractAugmented
             'status',
             'customer',
             'line_items',
-            'grand_total',
-            'sub_total',
-            'discount_total',
-            'tax_total',
-            'shipping_total',
-            'payment_gateway',
-            'payment_data',
-            'shipping_method',
         ];
     }
 
@@ -50,38 +49,15 @@ class AugmentedOrder extends AbstractAugmented
             return $customer->toArray();
         }
 
-        return $customer->toAugmentedCollection();
-    }
-
-    public function grandTotal(): string
-    {
-        return Money::format($this->data->grandTotal(), Site::selected());
-    }
-
-    public function subTotal(): string
-    {
-        return Money::format($this->data->subTotal(), Site::selected());
-    }
-
-    public function discountTotal(): string
-    {
-        return Money::format($this->data->discountTotal(), Site::selected());
-    }
-
-    public function taxTotal(): string
-    {
-        return Money::format($this->data->taxTotal(), Site::selected());
-    }
-
-    public function shippingTotal(): string
-    {
-        return Money::format($this->data->shippingTotal(), Site::selected());
+        return $customer?->toAugmentedCollection();
     }
 
     public function lineItems()
     {
         // TODO: Refactor into an AugmentedLineItem class
         return $this->data->lineItems()->map(function ($lineItem) {
+            return [];
+
             return array_merge($lineItem->toArray(), [
                 'product' => $lineItem->product()->toAugmentedArray(),
             ]);

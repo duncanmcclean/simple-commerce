@@ -22,7 +22,7 @@ class Blueprint
 //                        'instructions' => 'The customer who placed the order.',
 //                    ],
                     'line_items' => [
-                        'type' => 'line_items',
+                        'type' => 'grid',
                         'display' => 'Line Items',
                         'listable' => false,
                         'fields' => [

@@ -2,11 +2,13 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
 use Statamic\Facades\CP\Nav;
+use Statamic\Facades\User;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Stache\Stache;
 use Statamic\Statamic;
@@ -19,7 +21,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $fieldtypes = [
         Fieldtypes\MoneyFieldtype::class,
-        Fieldtypes\LineItemsFieldtype::class,
+        Fieldtypes\OrdersFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
     ];
 
@@ -29,6 +31,9 @@ class ServiceProvider extends AddonServiceProvider
         ],
         \Illuminate\Auth\Events\Logout::class => [
             Listeners\RemoveUserAsCustomer::class,
+        ],
+        \Statamic\Events\UserBlueprintFound::class => [
+            Listeners\EnsureUserFields::class,
         ],
     ];
 
@@ -81,6 +86,10 @@ class ServiceProvider extends AddonServiceProvider
                 ->section(__('Simple Commerce'))
                 ->route('simple-commerce.orders.index')
                 ->icon(SimpleCommerce::svg('shop'));
+        });
+
+        User::computed('orders', function ($user) {
+            return Order::query()->pluck('id')->all(); // TODO: how can we filter by customer if $customer is a User instance?
         });
     }
 }

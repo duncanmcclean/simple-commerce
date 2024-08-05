@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Stache\Query;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use Statamic\Contracts\Auth\User;
 use Statamic\Stache\Query\Builder;
 
 class OrderQueryBuilder extends Builder implements QueryBuilder
