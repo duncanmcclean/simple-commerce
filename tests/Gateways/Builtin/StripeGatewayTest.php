@@ -65,7 +65,7 @@ test('can prepare', function () {
     $order->save();
 
     $prepare = $this->cardElementsGateway->prepare(
-        new Request(),
+        new Request,
         $order
     );
 
@@ -109,7 +109,7 @@ test('can prepare with customer', function () {
     $order->save();
 
     $prepare = $this->cardElementsGateway->prepare(
-        new Request(),
+        new Request,
         $order
     );
 
@@ -164,7 +164,7 @@ test('can prepare with receipt email', function () {
     $order->save();
 
     $prepare = $this->cardElementsGateway->prepare(
-        new Request(),
+        new Request,
         $order
     );
 
@@ -223,7 +223,7 @@ test('can prepare with payment intent data closure', function () {
     $order->save();
 
     $prepare = $this->cardElementsGateway->prepare(
-        new Request(),
+        new Request,
         $order
     );
 
@@ -367,7 +367,7 @@ test('cant checkout when in payment elements mode', function () {
 })->skip(! env('STRIPE_SECRET'));
 
 test('has checkout rules', function () {
-    $rules = (new StripeGateway())->checkoutRules();
+    $rules = (new StripeGateway)->checkoutRules();
 
     expect($rules)->toBeArray();
 

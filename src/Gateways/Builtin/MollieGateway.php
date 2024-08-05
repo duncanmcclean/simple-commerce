@@ -132,7 +132,7 @@ class MollieGateway extends BaseGateway implements Gateway
 
     protected function setupMollie()
     {
-        $this->mollie = new MollieApiClient();
+        $this->mollie = new MollieApiClient;
         $this->mollie->setApiKey($this->config()->get('key'));
 
         $this->mollie->addVersionString('Statamic/'.Statamic::version());

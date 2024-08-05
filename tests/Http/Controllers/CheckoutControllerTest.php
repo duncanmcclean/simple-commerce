@@ -2269,12 +2269,12 @@ test('can post checkout and ensure order paid notifications are sent', function 
 
     // Asset notifications have been sent
     Notification::assertSentTo(
-        (new AnonymousNotifiable())->route('mail', 'guvna.b@example.com'),
+        (new AnonymousNotifiable)->route('mail', 'guvna.b@example.com'),
         CustomerOrderPaid::class
     );
 
     Notification::assertSentTo(
-        (new AnonymousNotifiable())->route('mail', 'duncan@example.com'),
+        (new AnonymousNotifiable)->route('mail', 'duncan@example.com'),
         BackOfficeOrderPaid::class
     );
 

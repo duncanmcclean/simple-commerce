@@ -11,7 +11,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
 beforeEach(function () {
-    $this->action = new RefundAction();
+    $this->action = new RefundAction;
 });
 
 test('is visible to paid and non refunded order', function () {

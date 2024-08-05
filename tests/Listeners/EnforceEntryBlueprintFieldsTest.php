@@ -11,7 +11,7 @@ test('fields can be added to customer blueprint', function () {
 
     $event = new EntryBlueprintFound($blueprint);
 
-    $handle = (new EnforceEntryBlueprintFields())->handle($event);
+    $handle = (new EnforceEntryBlueprintFields)->handle($event);
 
     $this->assertTrue($handle->hasField('orders'));
 });
@@ -23,7 +23,7 @@ test('fields can be added to product blueprint', function () {
 
     $event = new EntryBlueprintFound($blueprint);
 
-    $handle = (new EnforceEntryBlueprintFields())->handle($event);
+    $handle = (new EnforceEntryBlueprintFields)->handle($event);
 
     $this->assertTrue($handle->hasField('product_type'));
     $this->assertTrue($handle->hasField('download_limit'));
@@ -47,7 +47,7 @@ test('fields can be added to product blueprint with product variants', function 
 
     $event = new EntryBlueprintFound($blueprint);
 
-    $handle = (new EnforceEntryBlueprintFields())->handle($event);
+    $handle = (new EnforceEntryBlueprintFields)->handle($event);
 
     $this->assertTrue($handle->hasField('product_type'));
     $this->assertFalse($handle->hasField('download_limit'));
@@ -69,7 +69,7 @@ test('digital product fields are not added to another blueprint', function () {
 
     $event = new EntryBlueprintFound($blueprint);
 
-    $handle = (new EnforceEntryBlueprintFields())->handle($event);
+    $handle = (new EnforceEntryBlueprintFields)->handle($event);
 
     $this->assertFalse($handle->hasField('product_type'));
     $this->assertFalse($handle->hasField('download_limit'));
@@ -83,7 +83,7 @@ test('fields can be added to order blueprint', function () {
 
     $event = new EntryBlueprintFound($blueprint);
 
-    $handle = (new EnforceEntryBlueprintFields())->handle($event);
+    $handle = (new EnforceEntryBlueprintFields)->handle($event);
 
     $this->assertTrue($handle->hasField('grand_total'));
     $this->assertTrue($handle->hasField('items_total'));

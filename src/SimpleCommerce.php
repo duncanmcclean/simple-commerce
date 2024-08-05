@@ -46,7 +46,7 @@ class SimpleCommerce
                 }
             }
 
-            return new static();
+            return new static;
         });
     }
 
@@ -57,7 +57,7 @@ class SimpleCommerce
                 $class = $gateway[0];
 
                 /** @var Contracts\Gateway $instance */
-                $instance = new $class();
+                $instance = new $class;
 
                 return [
                     'name' => $instance->name(),
@@ -101,7 +101,7 @@ class SimpleCommerce
                             $config = [];
                         }
 
-                        $instance = new $key();
+                        $instance = new $key;
 
                         return [
                             'name' => $instance->name(),
@@ -114,7 +114,7 @@ class SimpleCommerce
                     ->toArray();
             }
 
-            return new static();
+            return new static;
         });
     }
 
@@ -148,7 +148,7 @@ class SimpleCommerce
 
     public static function registerShippingMethod(string $site, string $shippingMethod, array $config = [])
     {
-        $instance = new $shippingMethod();
+        $instance = new $shippingMethod;
 
         static::$shippingMethods[$site][] = [
             'name' => $instance->name(),

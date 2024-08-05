@@ -30,7 +30,7 @@ test('fields can be added to user blueprint', function () {
 
     $event = new UserBlueprintFound($blueprint);
 
-    $handle = (new EnforceUserBlueprintFields())->handle($event);
+    $handle = (new EnforceUserBlueprintFields)->handle($event);
 
     $this->assertTrue($handle->hasField('orders'));
 
@@ -45,7 +45,7 @@ test('fields can not be added to user blueprint when customer driver is not user
 
     $event = new UserBlueprintFound($blueprint);
 
-    $handle = (new EnforceUserBlueprintFields())->handle($event);
+    $handle = (new EnforceUserBlueprintFields)->handle($event);
 
     $this->assertFalse($handle->hasField('orders'));
 });

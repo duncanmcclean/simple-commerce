@@ -50,6 +50,6 @@ class CouponRepository implements ContractsCouponRepository
 
     public function make(): Coupon
     {
-        return new Coupon();
+        return new Coupon;
     }
 }

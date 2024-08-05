@@ -8,7 +8,7 @@ use Spatie\TestTime\TestTime;
 use Statamic\Facades\Collection;
 
 beforeEach(function () {
-    $this->gateway = new DummyGateway();
+    $this->gateway = new DummyGateway;
 
     Collection::make('orders')->title('Order')->save();
 });
@@ -22,7 +22,7 @@ test('has a name', function () {
 
 test('can prepare', function () {
     $prepare = $this->gateway->prepare(
-        new Request(),
+        new Request,
         Order::make()
     );
 
@@ -36,7 +36,7 @@ test('can checkout', function () {
     TestTime::freeze();
 
     $checkout = $this->gateway->checkout(
-        new Request(),
+        new Request,
         Order::make()
     );
 

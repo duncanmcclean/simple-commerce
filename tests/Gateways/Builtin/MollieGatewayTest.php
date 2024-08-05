@@ -48,7 +48,7 @@ test('can prepare', function () {
     $order->save();
 
     $prepare = $this->gateway->prepare(
-        new Request(),
+        new Request,
         $order
     );
 

@@ -14,14 +14,14 @@ class StaticCartDriver implements CartDriver
     {
         app()->bind(CartDriver::class, static::class);
 
-        return new static();
+        return new static;
     }
 
     public static function setCart(OrderContract $order): self
     {
         static::$cart = $order;
 
-        return new static();
+        return new static;
     }
 
     public function getCartKey(): string

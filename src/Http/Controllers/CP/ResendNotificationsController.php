@@ -30,7 +30,7 @@ class ResendNotificationsController
             $event = new PaymentStatusUpdated($order, $status);
         }
 
-        (new SendConfiguredNotifications())->handle($event);
+        (new SendConfiguredNotifications)->handle($event);
 
         return response()->json();
     }

@@ -52,7 +52,7 @@ class TaxCategoryRepository implements Contract
 
     public function make(): TaxCategory
     {
-        return new TaxCategory();
+        return new TaxCategory;
     }
 
     protected function makeDefaultCategory()

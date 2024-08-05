@@ -16,7 +16,7 @@ it('passes if entry exists', function () {
     $validate = Validator::make([
         'entry' => $entry->id(),
     ], [
-        'entry' => [new ProductExists()],
+        'entry' => [new ProductExists],
     ]);
 
     expect($validate->fails())->toBeFalse();
@@ -26,7 +26,7 @@ it('fails if entry does not exist', function () {
     $validate = Validator::make([
         'entry' => 'wippers',
     ], [
-        'entry' => [new ProductExists()],
+        'entry' => [new ProductExists],
     ]);
 
     expect($validate->fails())->toBeTrue();

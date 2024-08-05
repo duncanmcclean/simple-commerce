@@ -9,7 +9,7 @@ it('passes for matching iso code', function () {
     ];
 
     $validate = Validator::make($data, [
-        'country' => [new CountryExists()],
+        'country' => [new CountryExists],
     ]);
 
     expect($validate->fails())->toBeFalse();
@@ -21,7 +21,7 @@ it('fails for made up country', function () {
     ];
 
     $validate = Validator::make($data, [
-        'country' => [new CountryExists()],
+        'country' => [new CountryExists],
     ]);
 
     expect($validate->fails())->toBeTrue();
