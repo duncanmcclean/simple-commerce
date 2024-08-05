@@ -9,10 +9,13 @@ use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
+    use PreventsSavingStacheItemsToDisk;
+
     #[Test]
     public function can_get_status()
     {

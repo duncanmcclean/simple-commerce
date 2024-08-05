@@ -8,6 +8,7 @@ use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
 use Statamic\Contracts\Data\Augmentable;
@@ -111,8 +112,8 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         return $this
             ->fluentlyGetOrSet('customer')
-            ->setter(function ($customer) {
-                if (is_null($customer)) {
+            ->getter(function ($customer) {
+                if (! $customer) {
                     return null;
                 }
 
@@ -120,8 +121,15 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
                     return (new GuestCustomer)->data($customer);
                 }
 
-                if (! is_object($customer)) {
-                    return User::find($customer);
+                return User::find($customer);
+            })
+            ->setter(function ($customer) {
+                if (! $customer) {
+                    return null;
+                }
+
+                if ($customer instanceof Authenticatable) {
+                    return $customer->getKey();
                 }
 
                 return $customer;
@@ -187,14 +195,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function fileData(): array
     {
-        $customer = $this->customer() instanceof GuestCustomer
-            ? $this->customer()->toArray()
-            : $this->customer()?->id();
-
         return array_merge([
             'id' => $this->id(),
             'cart' => $this->cart(),
-            'customer' => $customer,
+            'customer' => $this->customer,
             'line_items' => $this->lineItems()->map->toArray()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

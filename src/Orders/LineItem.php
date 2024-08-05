@@ -108,7 +108,7 @@ class LineItem
         return $this->data()
             ->merge([
                 'id' => $this->id,
-                'product' => $this->product->id(),
+                'product' => $this->product()->id(),
                 'variant' => $this->variant,
                 'quantity' => $this->quantity,
                 'total' => $this->total,

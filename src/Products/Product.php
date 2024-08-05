@@ -34,7 +34,7 @@ class Product extends Entry implements Contract
             return null;
         }
 
-        return (int) $this->value('stock');
+        return $this->value('stock');
     }
 
     public function variantOptions(): Collection

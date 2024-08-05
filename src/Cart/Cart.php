@@ -11,6 +11,7 @@ use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Contracts\Data\Augmentable;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
@@ -52,8 +53,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
     {
         return $this
             ->fluentlyGetOrSet('customer')
-            ->setter(function ($customer) {
-                if (is_null($customer)) {
+            ->getter(function ($customer) {
+                if (! $customer) {
                     return null;
                 }
 
@@ -61,8 +62,15 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
                     return (new GuestCustomer)->data($customer);
                 }
 
-                if (! is_object($customer)) {
-                    return User::find($customer);
+                return User::find($customer);
+            })
+            ->setter(function ($customer) {
+                if (! $customer) {
+                    return null;
+                }
+
+                if ($customer instanceof Authenticatable) {
+                    return $customer->getKey();
                 }
 
                 return $customer;
@@ -122,13 +130,9 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
 
     public function fileData(): array
     {
-        $customer = $this->customer() instanceof GuestCustomer
-            ? $this->customer()->toArray()
-            : $this->customer()?->id();
-
         return array_merge([
             'id' => $this->id(),
-            'customer' => $customer,
+            'customer' => $this->customer,
             'line_items' => $this->lineItems()->map->toArray()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

@@ -55,7 +55,6 @@ class OrderRepository implements RepositoryContract
     public function makeFromCart(Cart $cart): Order
     {
         return self::make()
-            ->date(Carbon::now())
             ->cart($cart->id())
             ->customer($cart->customer())
             ->lineItems($cart->lineItems())
@@ -70,6 +69,10 @@ class OrderRepository implements RepositoryContract
     {
         if (! $order->id()) {
             $order->id($this->stache->generateId());
+        }
+
+        if (! $order->date()) {
+            $order->date(Carbon::now());
         }
 
         if (! $order->orderNumber()) {

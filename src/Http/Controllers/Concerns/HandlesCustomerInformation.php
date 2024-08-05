@@ -39,8 +39,7 @@ trait HandlesCustomerInformation
         // When the request contains customer data, create or update a guest customer.
         if ($customerData) {
             if (! $cart->customer()) {
-                $guest = (new GuestCustomer)->data($customerData);
-                $cart->customer($guest);
+                $cart->customer($customerData);
             }
 
             $cart->customer()->merge($customerData);
