@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -288,8 +289,8 @@ class CartTags extends SubTag
         }
 
         return Cart::current()->lineItems()
-            ->where('product', Product::find($this->params->get('product')))
-            ->where('variant', $this->params->get('variant'))
+            ->filter(fn (LineItem $lineItem) => $lineItem->product()->id() === $this->params->get('product'))
+            ->when($this->params->get('variant'), fn ($query) => $query->where('variant', $this->params->get('variant')))
             ->count() >= 1;
     }
 

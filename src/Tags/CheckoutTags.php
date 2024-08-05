@@ -21,7 +21,7 @@ class CheckoutTags extends SubTag
     public function index()
     {
         $cart = Cart::current();
-        $data = $cart->data()->toArray();
+        $data = $cart->toAugmentedArray();
 
         if ($cart->grandTotal() > 0) {
             SimpleCommerce::gateways()

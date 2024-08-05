@@ -75,6 +75,6 @@ class ListedOrder extends JsonResource
             return $this->resource->$method();
         }
 
-        return $extra[$key] ?? $this->resource->value($key) ?? $field?->defaultValue();
+        return $extra[$key] ?? $this->resource->get($key) ?? $field?->defaultValue();
     }
 }

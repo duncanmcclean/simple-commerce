@@ -7,6 +7,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
+use Illuminate\Support\Carbon;
 use Statamic\Stache\Stache;
 
 class OrderRepository implements RepositoryContract
@@ -54,8 +55,9 @@ class OrderRepository implements RepositoryContract
     public function makeFromCart(Cart $cart): Order
     {
         return self::make()
+            ->date(Carbon::now())
             ->cart($cart->id())
-//            ->customer()
+            ->customer($cart->customer())
             ->lineItems($cart->lineItems())
             ->grandTotal($cart->grandTotal())
             ->subTotal($cart->subTotal())

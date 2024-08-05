@@ -9,6 +9,11 @@ use Spatie\Ignition\Contracts\Solution;
 
 class CurrencyFormatterNotWorking extends Exception implements ProvidesSolution
 {
+    public function __construct()
+    {
+        parent::__construct("The PHP-intl extension is missing.");
+    }
+
     public function getSolution(): Solution
     {
         return BaseSolution::create('Simple Commerce requires this extension to preform currency formatting.')

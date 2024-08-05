@@ -2,15 +2,17 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
-use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
+use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
-use Statamic\Support\Arr;
+use Statamic\Data\HasAugmentedInstance;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class LineItem
 {
-    use FluentlyGetsAndSets, ContainsData;
+    use FluentlyGetsAndSets, ContainsData, HasAugmentedInstance;
 
     public $id;
     public $product;
@@ -34,9 +36,16 @@ class LineItem
     {
         return $this
             ->fluentlyGetOrSet('product')
+            ->getter(function ($product) {
+                if (! $product) {
+                    return null;
+                }
+
+                return Product::find($product);
+            })
             ->setter(function ($product) {
-                if (! $product instanceof Product) {
-                    $product = ProductFacade::find($product);
+                if ($product instanceof ProductContract) {
+                    return $product->id();
                 }
 
                 return $product;
@@ -48,6 +57,20 @@ class LineItem
     {
         return $this
             ->fluentlyGetOrSet('variant')
+            ->getter(function ($variant) {
+                if (! $variant) {
+                    return null;
+                }
+
+                return $this->product()->variant($variant);
+            })
+            ->setter(function ($variant) {
+                if ($variant instanceof ProductVariant) {
+                    return $variant->id();
+                }
+
+                return $variant;
+            })
             ->args(func_get_args());
     }
 
@@ -65,9 +88,19 @@ class LineItem
             ->args(func_get_args());
     }
 
-    public function totalIncludingTax(): int
+    public function defaultAugmentedArrayKeys()
     {
-        return $this->total() + Arr::get($this->data()->get('tax'), 'amount', 0);
+        return [];
+    }
+
+    public function shallowAugmentedArrayKeys()
+    {
+        return ['id', 'product', 'variant', 'quantity', 'total'];
+    }
+
+    public function newAugmentedInstance(): Augmented
+    {
+        return new AugmentedLineItem($this);
     }
 
     public function toArray(): array

@@ -4,7 +4,9 @@ namespace DuncanMcClean\SimpleCommerce\Cart;
 
 use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
+use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
@@ -82,8 +84,17 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
             ->args(func_get_args());
     }
 
+    protected function hasBeenConvertedToOrder(): bool
+    {
+        return Order::query()->where('data->cart', $this->id())->count() > 0;
+    }
+
     public function save(): bool
     {
+        if ($this->hasBeenConvertedToOrder()) {
+            throw new CartHasBeenConvertedToOrderException;
+        }
+
         CartFacade::save($this);
 
         return true;

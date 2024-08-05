@@ -5,16 +5,15 @@ namespace DuncanMcClean\SimpleCommerce\Products;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
-use Statamic\Facades\Entry;
-use Statamic\Facades\Stache;
+use Statamic\Contracts\Entries\Entry as EntryContract;
 
 class ProductRepository implements RepositoryContract
 {
-    protected $collection;
+    protected array $collections = [];
 
     public function __construct()
     {
-        $this->collection = 'products'; // todo: make this configurable
+        $this->collections = config('simple-commerce.products.collections', ['products']);
     }
 
     public function all()
@@ -26,12 +25,12 @@ class ProductRepository implements RepositoryContract
     {
         return app(QueryBuilder::class, [
             'store' => app('stache')->store('entries'),
-        ])->where('collection', $this->collection);
+        ])->whereIn('collection', $this->collections);
     }
 
     public function find($id): ?Product
     {
-        $product = $this->query()->where('id', $id)->first();
+        $product = $this->query()->find($id);
 
         if (! $product) {
             return null;
@@ -51,58 +50,22 @@ class ProductRepository implements RepositoryContract
         return $product;
     }
 
-    public function make(): Product
+    public function fromEntry(EntryContract $entry): Product
     {
-        return app(Product::class);
-    }
+        $product = app(Product::class)
+            ->id($entry->id())
+            ->collection($entry->collection())
+            ->blueprint($entry->blueprint())
+            ->data($entry->data())
+            ->locale($entry->locale())
+            ->template($entry->template())
+            ->layout($entry->layout());
 
-    public function save(Product $product): void
-    {
-        $entry = $product->entry();
-
-        if (! $entry) {
-            $entry = Entry::make()
-                ->id($product->id() ?? Stache::generateId())
-                ->collection($this->collection);
+        if ($entry->hasDate()) {
+            $product->date($entry->date());
         }
 
-        if ($product->get('site')) {
-            $entry->site($product->get('site'));
-        }
-
-        if ($product->get('slug')) {
-            $entry->slug($product->get('slug'));
-        }
-
-        if ($product->get('published')) {
-            $entry->published($product->get('published'));
-        }
-
-        $entry->data(
-            array_merge(
-                $product->data()->except(['id', 'site', 'slug', 'published'])->toArray(),
-                [
-                    'price' => $product->price(),
-                    'product_variants' => $product->productVariants(),
-                    'stock' => $product->stock(),
-                    //                    'tax_category' => SimpleCommerce::isUsingStandardTaxEngine() ? $product->taxCategory() : null,
-                ]
-            )
-        );
-
-        $entry->save();
-
-        $product->id = $entry->id();
-        $product->price = $entry->get('price');
-        $product->productVariants = $entry->get('product_variants');
-        $product->stock = $entry->get('stock');
-        $product->data = $entry->data();
-        $product->entry = $entry;
-    }
-
-    public function delete(Product $product): void
-    {
-        $product->entry()->delete();
+        return $product;
     }
 
     public static function bindings(): array

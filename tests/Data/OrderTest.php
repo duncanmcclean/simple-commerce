@@ -7,6 +7,8 @@ use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
+use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -26,13 +28,17 @@ class OrderTest extends TestCase
     #[Test]
     public function can_add_line_item()
     {
-        $this->markTestIncomplete('Need to implement the product repositories before this test can be completed.');
+        Collection::make('products')->save();
+        Entry::make()->id('product-id')->collection('products')->set('product_variants', [
+            'variants' => [['name' => 'Sizes', 'values' => ['small']]],
+            'options' => [['key' => 'small', 'variant' => 'Small', 'price' => 500]],
+        ])->save();
 
         $order = Order::make();
 
         $order->lineItems()->create([
             'product' => 'product-id',
-            'variant' => 'variant-id',
+            'variant' => 'small',
             'quantity' => 2,
             'total' => 1000,
             'foo' => 'bar',
@@ -45,8 +51,8 @@ class OrderTest extends TestCase
 
         $this->assertInstanceOf(LineItem::class, $lineItem);
         $this->assertNotNull($lineItem->id());
-//        $this->assertEquals('product-id', $lineItem->product()->id());
-//        $this->assertEquals('variant-id', $lineItem->variant()->id());
+        $this->assertEquals('product-id', $lineItem->product()->id());
+        $this->assertEquals('small', $lineItem->variant()->key());
         $this->assertEquals(2, $lineItem->quantity());
         $this->assertEquals(1000, $lineItem->total());
         $this->assertEquals('bar', $lineItem->data()->get('foo'));
@@ -56,13 +62,13 @@ class OrderTest extends TestCase
     #[Test]
     public function can_update_line_item()
     {
-        $this->markTestIncomplete('Need to implement the product repositories before this test can be completed.');
+        Collection::make('products')->save();
+        Entry::make()->id('product-id')->collection('products')->data(['price' => 500])->save();
 
         $order = Order::make()->lineItems([
             [
                 'id' => 'abc123',
                 'product' => 'product-id',
-                'variant' => 'variant-id',
                 'quantity' => 2,
                 'total' => 1000,
                 'foo' => 'bar',
@@ -71,6 +77,7 @@ class OrderTest extends TestCase
             [
                 'id' => 'def456',
                 'product' => 'another-product-id',
+                'variant' => 'another-variant-id',
                 'quantity' => 1,
                 'total' => 2500,
                 'bar' => 'baz',
@@ -79,7 +86,6 @@ class OrderTest extends TestCase
 
         $order->lineItems()->update('abc123', [
             'product' => 'product-id',
-            'variant' => 'variant-id',
             'quantity' => 1, // This changed...
             'total' => 500, // This changed too...
             'barz' => 'foo', // This is new...
@@ -102,7 +108,6 @@ class OrderTest extends TestCase
             [
                 'id' => 'abc123',
                 'product' => 'product-id',
-                'variant' => 'variant-id',
                 'quantity' => 2,
                 'total' => 1000,
                 'foo' => 'bar',
@@ -111,6 +116,7 @@ class OrderTest extends TestCase
             [
                 'id' => 'def456',
                 'product' => 'another-product-id',
+                'variant' => 'another-variant-id',
                 'quantity' => 1,
                 'total' => 2500,
                 'bar' => 'baz',

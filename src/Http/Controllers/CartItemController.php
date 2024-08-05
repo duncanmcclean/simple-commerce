@@ -147,11 +147,11 @@ class CartItemController extends BaseActionController
             }
         }
 
-        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
+//        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
 
         $cart->lineItems()->update(
             id: $requestItem,
-            data: array_merge($data, $lineItem->metadata()->merge($metadata)->all())
+            data: $data
         );
 
         $cart->save();

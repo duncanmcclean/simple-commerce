@@ -2,130 +2,48 @@
 
 namespace DuncanMcClean\SimpleCommerce\Products;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
-use DuncanMcClean\SimpleCommerce\Data\HasData;
-use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
-use DuncanMcClean\SimpleCommerce\Facades\TaxCategory as TaxCategoryFacade;
-use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxCategory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Statamic\Data\ContainsData;
-use Statamic\Http\Resources\API\EntryResource;
-use Statamic\Sites\Site;
-use Statamic\Support\Traits\FluentlyGetsAndSets;
+use Statamic\Entries\Entry;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 
-class Product implements Contract
+class Product extends Entry implements Contract
 {
-    use ContainsData, FluentlyGetsAndSets;
-
-    public $id;
-
-    public $price;
-
-    public $productVariants;
-
-    public $stock;
-
-    public $taxCategory;
-
-    public $entry;
-
-    public function __construct()
-    {
-        $this->data = collect();
-    }
-
-    public function id($id = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('id')
-            ->args(func_get_args());
-    }
-
-    public function price($price = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('price')
-            ->args(func_get_args());
-    }
-
-    public function productVariants($productVariants = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('productVariants')
-            ->args(func_get_args());
-    }
-
-    public function stock($stock = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('stock')
-            ->getter(function ($value) {
-                if ($this->purchasableType() === ProductType::Variant) {
-                    return null;
-                }
-
-                return $value;
-            })
-            ->setter(function ($value) {
-                if ($value === null) {
-                    return null;
-                }
-
-                return (int) $value;
-            })
-            ->args(func_get_args());
-    }
-
-    public function taxCategory($taxCategory = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('taxCategory')
-            ->getter(function ($value) {
-                if (! $value) {
-                    return TaxCategoryFacade::find('default');
-                }
-
-                return $value;
-            })
-            ->setter(function ($taxCategory) {
-                if ($taxCategory instanceof TaxCategory) {
-                    return $taxCategory;
-                }
-
-                return TaxCategoryFacade::find($taxCategory);
-            })
-            ->args(func_get_args());
-    }
-
-    public function entry($entry = null)
-    {
-        return $this
-            ->fluentlyGetOrSet('entry')
-            ->args(func_get_args());
-    }
-
-    public function site(): ?Site
-    {
-        return $this->entry()->site();
-    }
-
     public function purchasableType(): ProductType
     {
-        if ($this->productVariants) {
+        if ($this->value('product_variants')) {
             return ProductType::Variant;
         }
 
         return ProductType::Product;
     }
 
+    public function price(): int
+    {
+        return $this->value('price', 0);
+    }
+
+    public function productVariants(): array
+    {
+        return $this->value('product_variants', []);
+    }
+
+    public function stock(): ?int
+    {
+        if ($this->purchasableType() === ProductType::Variant) {
+            return null;
+        }
+
+        return (int) $this->value('stock');
+    }
+
     public function variantOptions(): Collection
     {
-        if (! $this->productVariants) {
+        if (! $this->value('product_variants')) {
             return collect();
         }
 
-        return collect($this->productVariants()['options'])
+        return collect(Arr::get($this->value('product_variants'), 'options'))
             ->map(function ($variantOption) {
                 $productVariant = (new ProductVariant)
                     ->key($variantOption['key'])
@@ -149,69 +67,8 @@ class Product implements Contract
         })->first();
     }
 
-    public function beforeSaved()
-    {
-        return null;
-    }
-
-    public function afterSaved()
-    {
-        return null;
-    }
-
-    public function save(): self
-    {
-        if (method_exists($this, 'beforeSaved')) {
-            $this->beforeSaved();
-        }
-
-        ProductFacade::save($this);
-
-        if (method_exists($this, 'afterSaved')) {
-            $this->afterSaved();
-        }
-
-        return $this;
-    }
-
-    public function delete(): void
-    {
-        ProductFacade::delete($this);
-    }
-
     public function fresh(): self
     {
-        $freshProduct = ProductFacade::find($this->id());
-
-        $this->id = $freshProduct->id;
-        $this->price = $freshProduct->price;
-        $this->productVariants = $freshProduct->productVariants;
-        $this->stock = $freshProduct->stock;
-        $this->taxCategory = $freshProduct->taxCategory;
-        $this->data = $freshProduct->data;
-        $this->entry = $freshProduct->entry;
-
-        return $this;
-    }
-
-    public function toResource()
-    {
-        return new EntryResource($this->entry());
-    }
-
-    public function toAugmentedArray($keys = null): array
-    {
-        return $this->entry()->toAugmentedArray($keys);
-    }
-
-    public function toAugmentedCollection($keys = null): Collection
-    {
-        return $this->entry()->toAugmentedCollection($keys);
-    }
-
-    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
-    {
-        return is_subclass_of($class, $classToCheckAgainst)
-            || $class === $classToCheckAgainst;
+        return \DuncanMcClean\SimpleCommerce\Facades\Product::find($this->id);
     }
 }

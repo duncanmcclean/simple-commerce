@@ -2,6 +2,11 @@
 
 return [
 
+    'products' => [
+        'collections' => ['products'],
+    ],
+
+
     'sites' => [
         'default' => [
             'currency' => 'GBP',

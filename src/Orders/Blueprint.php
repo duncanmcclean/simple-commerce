@@ -22,7 +22,7 @@ class Blueprint
 //                        'instructions' => 'The customer who placed the order.',
 //                    ],
                     'line_items' => [
-                        'type' => 'grid',
+                        'type' => 'line_items',
                         'display' => 'Line Items',
                         'listable' => false,
                         'fields' => [
@@ -44,12 +44,77 @@ class Blueprint
                     'shipping_method' => ['type' => 'text', 'display' => 'Shipping Method'], // todo: select options
                 ],
             ],
+            'shipping' => [
+                'fields' => [
+                    'shipping_line_1' => [
+                        'type' => 'text',
+                        'display' => 'Address Line 1',
+                        'listable' => false,
+                    ],
+                    'shipping_line_2' => [
+                        'type' => 'text',
+                        'display' => 'Address Line 2',
+                        'listable' => false,
+                    ],
+                    'shipping_city' => [
+                        'type' => 'text',
+                        'display' => 'Town/City',
+                        'listable' => false,
+                    ],
+                    'shipping_postcode' => [
+                        'type' => 'text',
+                        'display' => 'Postcode',
+                        'listable' => false,
+                    ],
+                    'shipping_country' => [
+                        'type' => 'dictionary',
+                        'dictionary' => 'countries',
+                        'display' => 'Country',
+                        'listable' => false,
+                    ],
+                ],
+            ],
+            'billing' => [
+                'fields' => [
+                    'use_shipping_address_for_billing' => [
+                        'type' => 'toggle',
+                        'display' => 'Use Shipping Address for Billing',
+                        'listable' => false,
+                        'validate' => 'boolean',
+                    ],
+                    'billing_line_1' => [
+                        'type' => 'text',
+                        'display' => 'Address Line 1',
+                        'listable' => false,
+                    ],
+                    'billing_line_2' => [
+                        'type' => 'text',
+                        'display' => 'Address Line 2',
+                        'listable' => false,
+                    ],
+                    'billing_city' => [
+                        'type' => 'text',
+                        'display' => 'Town/City',
+                        'listable' => false,
+                    ],
+                    'billing_postcode' => [
+                        'type' => 'text',
+                        'display' => 'Postcode',
+                        'listable' => false,
+                    ],
+                    'billing_country' => [
+                        'type' => 'dictionary',
+                        'dictionary' => 'countries',
+                        'display' => 'Country',
+                        'listable' => false,
+                    ],
+                ],
+            ],
             'sidebar' => [
                 'fields' => [
-                    'status' => [
-                        'type' => 'select',
-                        'display' => 'Status',
-                        'options' => collect(OrderStatus::cases())->pluck('name', 'value')->all(),
+                    'date' => [
+                        'type' => 'date',
+                        'display' => 'Date',
                         'visibility' => 'read_only',
                         'listable' => true,
                     ],
