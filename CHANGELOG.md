@@ -1,5 +1,16 @@
 # Changelog
 
+## v7.4.1 (2024-08-05)
+
+### What's fixed
+* Ensure status log timestamps are always in UTC #1113 #1120 by @duncanmcclean
+* Fixed empty `Address` objects being returned #1116 by @duncanmcclean
+* Fixed empty Shipping Method field when storing orders in the database #1106 by @duncanmcclean
+* Fixed issue where product variants weren't showing properly #1117 #1118 by @duncanmcclean
+* Adjusted type hint of `GatewayData::data()` method #1111 by @duncanmcclean
+
+
+
 ## v7.4.0 (2024-07-20)
 
 ### What's new
