@@ -109,7 +109,10 @@ class EloquentOrderRepository implements RepositoryContract
                     ->merge([
                         'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
                             'status' => $statusLog->status,
-                            'timestamp' => $statusLog->timestamp->timestamp,
+                            'timestamp' => $statusLog->timestamp
+                                ->shiftTimezone('UTC')
+                                ->setTimezone('UTC')
+                                ->timestamp,
                             'data' => $statusLog->data ?? [],
                         ]),
                     ])
@@ -238,7 +241,10 @@ class EloquentOrderRepository implements RepositoryContract
             ->merge([
                 'status_log' => $model->statusLog()->get()->map(fn ($statusLog) => [
                     'status' => $statusLog->status,
-                    'timestamp' => $statusLog->timestamp->timestamp,
+                    'timestamp' => $statusLog->timestamp
+                        ->shiftTimezone('UTC')
+                        ->setTimezone('UTC')
+                        ->timestamp,
                     'data' => $statusLog->data ?? [],
                 ]),
             ]);

@@ -350,7 +350,7 @@ class Order implements Contract
     {
         $statusLog = $this->statusLog()->push(new StatusLogEvent(
             status: $status,
-            timestamp: Carbon::now()->timestamp,
+            timestamp: Carbon::now('UTC')->timestamp,
             data: $data,
         ));
 
