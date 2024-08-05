@@ -29,7 +29,7 @@
                             :key="field.handle"
                             :config="field"
                             :value="variant[field.handle]"
-                            :meta="meta[field.handle]"
+                            :meta="meta.variant_fields[field.handle]"
                             :errors="errors(field.handle)"
                             class="p-3 w-1/2"
                             @input="updated(variantIndex, field.handle, $event)"
