@@ -16,7 +16,9 @@ class StatusLogEvent implements Arrayable
 
     public function date(): Carbon
     {
-        return Carbon::parse($this->timestamp);
+        return Carbon::parse($this->timestamp)
+            ->shiftTimezone('UTC')
+            ->setTimezone('UTC');
     }
 
     public function toArray(): array
