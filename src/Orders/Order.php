@@ -255,10 +255,10 @@ class Order implements Contract
         }
 
         if (
-            ! $this->has('billing_address')
-            && ! $this->has('billing_address_line1')
-            && ! $this->has('billing_address_line2')
-            && ! $this->has('billing_city')
+            ! $this->get('billing_address')
+            && ! $this->get('billing_address_line1')
+            && ! $this->get('billing_address_line2')
+            && ! $this->get('billing_city')
         ) {
             return null;
         }
@@ -269,10 +269,10 @@ class Order implements Contract
     public function shippingAddress(): ?Address
     {
         if (
-            ! $this->has('shipping_address')
-            && ! $this->has('shipping_address_line1')
-            && ! $this->has('shipping_address_line2')
-            && ! $this->has('shipping_city')
+            ! $this->get('shipping_address')
+            && ! $this->get('shipping_address_line1')
+            && ! $this->get('shipping_address_line2')
+            && ! $this->get('shipping_city')
         ) {
             return null;
         }
