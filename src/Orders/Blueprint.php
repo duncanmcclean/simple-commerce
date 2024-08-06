@@ -26,23 +26,23 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'grand_total',
-                                    'field' => ['type' => 'money', 'display' => __('Grand Total'), 'visibility' => 'hidden', 'listable' => true],
+                                    'field' => ['type' => 'money', 'display' => __('Grand Total'), 'visibility' => 'hidden', 'listable' => false],
                                 ],
                                 [
                                     'handle' => 'sub_total',
-                                    'field' => ['type' => 'money', 'display' => __('Subtotal'), 'visibility' => 'hidden', 'listable' => true],
+                                    'field' => ['type' => 'money', 'display' => __('Subtotal'), 'visibility' => 'hidden', 'listable' => false],
                                 ],
                                 [
                                     'handle' => 'discount_total',
-                                    'field' => ['type' => 'money', 'display' => __('Discount Total'), 'visibility' => 'hidden', 'listable' => true],
+                                    'field' => ['type' => 'money', 'display' => __('Discount Total'), 'visibility' => 'hidden', 'listable' => false],
                                 ],
                                 [
                                     'handle' => 'shipping_total',
-                                    'field' => ['type' => 'money', 'display' => __('Shipping Total'), 'visibility' => 'hidden', 'listable' => true],
+                                    'field' => ['type' => 'money', 'display' => __('Shipping Total'), 'visibility' => 'hidden', 'listable' => false],
                                 ],
                                 [
                                     'handle' => 'tax_total',
-                                    'field' => ['type' => 'money', 'display' => __('Tax Total'), 'visibility' => 'hidden', 'listable' => true],
+                                    'field' => ['type' => 'money', 'display' => __('Tax Total'), 'visibility' => 'hidden', 'listable' => false],
                                 ],
                             ],
                         ],
@@ -66,7 +66,7 @@ class Blueprint
                                 // TODO: Special shipping field
                                 [
                                     'handle' => 'shipping_method',
-                                    'field' => ['type' => 'text', 'display' => __('Shipping Method'), 'visibility' => 'read_only', 'listable' => true],
+                                    'field' => ['type' => 'text', 'display' => __('Shipping Method'), 'visibility' => 'read_only', 'listable' => false],
                                 ],
                             ],
                         ],
@@ -106,7 +106,7 @@ class Blueprint
                                 // TODO: Special payment field
                                 [
                                     'handle' => 'payment_gateway',
-                                    'field' => ['type' => 'text', 'display' => __('Payment Gateway'), 'visibility' => 'read_only', 'listable' => true],
+                                    'field' => ['type' => 'text', 'display' => __('Payment Gateway'), 'visibility' => 'read_only', 'listable' => false],
                                 ],
                             ],
                         ],
