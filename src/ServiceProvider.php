@@ -92,7 +92,7 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         User::computed('orders', function ($user) {
-            return Order::query()->pluck('id')->all(); // TODO: how can we filter by customer if $customer is a User instance?
+            return Order::query()->where('customer', $user->getKey())->pluck('id')->all();
         });
 
         Blueprint::addNamespace('simple-commerce', __DIR__.'/../resources/blueprints');

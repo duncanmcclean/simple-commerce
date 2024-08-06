@@ -13,7 +13,7 @@ use Statamic\Support\Arr;
 class OrdersStore extends BasicStore
 {
     protected $storeIndexes = [
-        'order_number',
+        'order_number', 'date', 'cart', 'customer',
     ];
 
     public function key()
@@ -32,8 +32,9 @@ class OrdersStore extends BasicStore
 
         return Order::make()
             ->id(Arr::pull($data, 'id'))
-            ->date((new GetDateFromPath)($path))
             ->orderNumber((new GetSlugFromPath)($path))
+            ->date((new GetDateFromPath)($path))
+            ->cart(Arr::pull($data, 'cart'))
             ->customer(Arr::pull($data, 'customer'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))

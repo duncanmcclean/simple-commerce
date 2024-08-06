@@ -10,6 +10,10 @@ use Statamic\Support\Arr;
 
 class CartsStore extends BasicStore
 {
+    protected $storeIndexes = [
+        'customer',
+    ];
+
     public function key()
     {
         return 'carts';

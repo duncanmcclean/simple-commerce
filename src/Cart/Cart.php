@@ -17,6 +17,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Contracts\Data\Augmentable;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use Statamic\Contracts\Data\Augmented;
+use Statamic\Contracts\Query\ContainsQueryableValues;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\HasAugmentedInstance;
@@ -26,9 +27,10 @@ use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
+use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
+class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
     use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, Calculable;
 
@@ -196,5 +198,24 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, Contract
     public function value($key)
     {
         return $this->get($key);
+    }
+
+    public function getQueryableValue(string $field)
+    {
+        if ($field === 'customer') {
+            return $this->customer;
+        }
+
+        if (method_exists($this, $method = Str::camel($field))) {
+            return $this->{$method}();
+        }
+
+        $value = $this->get($field);
+
+        if (! $field = $this->blueprint()->field($field)) {
+            return $value;
+        }
+
+        return $field->fieldtype()->toQueryableValue($value);
     }
 }

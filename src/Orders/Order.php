@@ -13,6 +13,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Contracts\Data\Augmented;
+use Statamic\Contracts\Query\ContainsQueryableValues;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
 use Statamic\Data\HasAugmentedInstance;
@@ -22,9 +23,10 @@ use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
+use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class Order implements Arrayable, ArrayAccess, Augmentable, Contract
+class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
     use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, Calculable;
 
@@ -262,5 +264,24 @@ class Order implements Arrayable, ArrayAccess, Augmentable, Contract
     public function reference(): string
     {
         return "order::{$this->id()}";
+    }
+
+    public function getQueryableValue(string $field)
+    {
+        if ($field === 'customer') {
+            return $this->customer;
+        }
+
+        if (method_exists($this, $method = Str::camel($field))) {
+            return $this->{$method}();
+        }
+
+        $value = $this->get($field);
+
+        if (! $field = $this->blueprint()->field($field)) {
+            return $value;
+        }
+
+        return $field->fieldtype()->toQueryableValue($value);
     }
 }
