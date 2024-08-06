@@ -31,6 +31,7 @@ class AugmentedLineItem extends AbstractAugmented
             'product',
             'variant',
             'quantity',
+            'unit_price',
             'total',
             'total_including_tax',
         ];
@@ -44,6 +45,11 @@ class AugmentedLineItem extends AbstractAugmented
     public function variant()
     {
         //
+    }
+
+    public function unitPrice()
+    {
+        return Money::format($this->data->unitPrice(), Site::current());
     }
 
     public function total()

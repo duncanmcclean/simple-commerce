@@ -8,10 +8,8 @@ use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
-use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
-use DuncanMcClean\SimpleCommerce\Orders\Order as OrderFacade;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Statamic\Contracts\Data\Augmentable;
@@ -153,7 +151,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
 
     public function blueprint(): StatamicBlueprint
     {
-        return OrderFacade::blueprint();
+        return Order::blueprint();
     }
 
     public function defaultAugmentedArrayKeys()

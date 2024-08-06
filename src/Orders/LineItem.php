@@ -4,7 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
-use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
 use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
@@ -19,6 +18,7 @@ class LineItem
     public $product;
     public $variant;
     public $quantity;
+    public $unitPrice;
     public $total;
 
     public function __construct()
@@ -82,13 +82,11 @@ class LineItem
             ->args(func_get_args());
     }
 
-    // TODO: We should really be storing the unit price, not just the total
-    // (otherwise, things will get messed up when the product's price gets updated).
     public function unitPrice()
     {
-        return $this->variant
-            ? $this->variant()->price()
-            : $this->product()->price();
+        return $this
+            ->fluentlyGetOrSet('unitPrice')
+            ->args(func_get_args());
     }
 
     public function total($total = null)
@@ -105,7 +103,7 @@ class LineItem
 
     public function shallowAugmentedArrayKeys()
     {
-        return ['id', 'product', 'variant', 'quantity', 'total'];
+        return ['id', 'product', 'variant', 'quantity', 'unit_price', 'total'];
     }
 
     public function newAugmentedInstance(): Augmented
@@ -121,6 +119,7 @@ class LineItem
                 'product' => $this->product()->id(),
                 'variant' => $this->variant,
                 'quantity' => $this->quantity,
+                'unit_price' => $this->unitPrice(),
                 'total' => $this->total,
             ])
             ->filter()

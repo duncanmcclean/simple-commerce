@@ -16,9 +16,10 @@ class LineItems extends Collection
         $lineItem = (new LineItem)
             ->id(Arr::pull($data, 'id', Stache::generateId()))
             ->product($product)
-            ->quantity(Arr::pull($data, 'quantity'))
-            ->total(Arr::pull($data, 'total', 0))
             ->variant(Arr::pull($data, 'variant'))
+            ->quantity(Arr::pull($data, 'quantity'))
+            ->unitPrice(Arr::pull($data, 'unit_price', $product->price()))
+            ->total(Arr::pull($data, 'total', 0))
             ->data(collect($data));
 
         $this->push($lineItem);

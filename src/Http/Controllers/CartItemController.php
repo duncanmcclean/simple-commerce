@@ -93,10 +93,12 @@ class CartItemController extends BaseActionController
             $item = [
                 'product' => $request->product,
                 'quantity' => (int) $request->quantity,
-                'total' => 0000,
+                'unit_price' => $product->price(),
+                'total' => 0,
             ];
 
             if ($request->has('variant')) {
+                $item['unit_price'] = $product->variant($request->variant)->price();
                 $item['variant'] = [
                     'variant' => $request->variant,
                     'product' => $request->product,

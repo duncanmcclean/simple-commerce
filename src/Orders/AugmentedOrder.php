@@ -25,6 +25,7 @@ class AugmentedOrder extends AbstractAugmented
     private function commonKeys(): array
     {
         return [
+            'id',
             'order_number',
             'status',
             'customer',
