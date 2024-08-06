@@ -18,7 +18,6 @@ class SimpleCommerceTag extends Tags
         'cart' => CartTags::class,
         'checkout' => CheckoutTags::class,
         'coupon' => CouponTags::class,
-        'customer' => CustomerTags::class,
         'gateways' => GatewayTags::class,
         'shipping' => ShippingTags::class,
     ];
