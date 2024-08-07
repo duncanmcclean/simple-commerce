@@ -1,7 +1,6 @@
 <template>
     <div class="receipt-line-item">
         <div>
-            <!-- TODO: Open product in stack -->
             <!-- TODO: Support for product variants -->
             <template v-if="!lineItem.product.invalid">
                 <a @click.prevent="edit" :href="lineItem.product.edit_url">
