@@ -36,7 +36,7 @@
                 <div>Taxes</div>
                 <div>{{ receipt.totals.tax_total }}</div>
             </div>
-            <div class="receipt-total font-bold text-lg">
+            <div class="receipt-total font-bold">
                 <div>Grand Total</div>
                 <div>{{ receipt.totals.grand_total }}</div>
             </div>
