@@ -11,14 +11,12 @@ class LineItems extends Collection
 {
     public function create(array $data): self
     {
-        $product = Product::find(Arr::pull($data, 'product'));
-
         $lineItem = (new LineItem)
             ->id(Arr::pull($data, 'id', Stache::generateId()))
-            ->product($product)
+            ->product(Arr::pull($data, 'product'))
             ->variant(Arr::pull($data, 'variant'))
             ->quantity(Arr::pull($data, 'quantity'))
-            ->unitPrice(Arr::pull($data, 'unit_price', $product->price()))
+            ->unitPrice(Arr::pull($data, 'unit_price'))
             ->total(Arr::pull($data, 'total', 0))
             ->data(collect($data));
 
@@ -36,13 +34,11 @@ class LineItems extends Collection
     {
         $lineItem = $this->find($id);
 
-        $product = Product::find(Arr::pull($data, 'product', $lineItem->product()->id()));
-
         $lineItem
-            ->product($product)
+            ->product(Arr::pull($data, 'product', $lineItem->product))
             ->quantity(Arr::pull($data, 'quantity', $lineItem->quantity()))
             ->total(Arr::pull($data, 'total', $lineItem->total()))
-            ->variant(Arr::pull($data, 'variant', $lineItem->variant()))
+            ->variant(Arr::pull($data, 'variant', $lineItem->variant))
             ->data(collect($data));
 
         return $this;

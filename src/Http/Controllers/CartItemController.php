@@ -99,25 +99,23 @@ class CartItemController extends BaseActionController
 
             if ($request->has('variant')) {
                 $item['unit_price'] = $product->variant($request->variant)->price();
-                $item['variant'] = [
-                    'variant' => $request->variant,
-                    'product' => $request->product,
-                ];
+                $item['variant'] = $request->variant;
             }
 
             $item = array_merge($item, $metadata);
 
             $cart->lineItems()->create($item);
+
             $cart->save();
         }
 
         return $this->withSuccess($request, [
             'message' => __('Added to Cart'),
-            'cart' => $cart
-                ->toAugmentedCollection()
-                ->withRelations(['customer', 'customer_id'])
-                ->withShallowNesting()
-                ->toArray(),
+//            'cart' => $cart
+//                ->toAugmentedCollection()
+//                ->withRelations(['customer', 'customer_id'])
+//                ->withShallowNesting()
+//                ->toArray(),
         ]);
     }
 

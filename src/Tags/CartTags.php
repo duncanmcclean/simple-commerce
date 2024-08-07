@@ -215,12 +215,12 @@ class CartTags extends SubTag
         $lineItemId = $this->params->get('item');
 
         if ($product = $this->params->get('product')) {
-            $lineItemId = collect(Cart::current()->lineItems()->map->toArray())
+            $lineItemId = Cart::current()->lineItems()
                 ->where('product', $product)
                 ->when($this->params->get('variant'), function ($query, $variant) {
                     $query->where('variant', $variant);
                 })
-                ->pluck('id')
+                ->map->id()
                 ->first();
         }
 

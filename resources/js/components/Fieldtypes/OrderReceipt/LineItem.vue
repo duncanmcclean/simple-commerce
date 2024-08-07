@@ -1,12 +1,12 @@
 <template>
     <div class="receipt-line-item">
         <div>
-            <!-- TODO: Support for product variants -->
-            <template v-if="!lineItem.product.invalid">
-                <a @click.prevent="edit" :href="lineItem.product.edit_url">
-                    {{ lineItem.product.title }}
-                </a>
-            </template>
+            <div v-if="lineItem.product.invalid" v-tooltip.top="__('A product with this ID could not be found')" v-text="lineItem.product.title" />
+
+            <a v-else @click.prevent="edit" :href="lineItem.product.edit_url">
+                {{ lineItem.product.title }}
+                <span v-if="lineItem.variant" class="text-sm" v-text="`(${lineItem.variant.name})`"></span>
+            </a>
         </div>
         <div>{{ lineItem.unit_price }}</div>
         <div>{{ lineItem.quantity }}</div>

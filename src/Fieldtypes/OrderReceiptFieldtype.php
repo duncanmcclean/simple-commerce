@@ -9,6 +9,7 @@ use Facades\Statamic\Fields\FieldtypeRepository;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Facades\Site;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 
 class OrderReceiptFieldtype extends Fieldtype
 {
@@ -25,15 +26,15 @@ class OrderReceiptFieldtype extends Fieldtype
 
         return [
             'line_items' => $order->lineItems()->map(fn (LineItem $lineItem) => [
-                'product' => [
+                'product' => $lineItem->product() ? [
                     'id' => $lineItem->product()->id(),
                     'reference' => $lineItem->product()->reference(),
                     'title' => $lineItem->product()->value('title'),
                     'edit_url' => $lineItem->product()->editUrl(),
-                ],
+                ] : ['id' => $lineItem->product, 'title' => $lineItem->product, 'invalid' => true],
                 'variant' => $lineItem->variant() ? [
-                    'id' => $lineItem->variant()->id(),
-                    'title' => $lineItem->variant()->name(),
+                    'key' => $lineItem->variant()->key(),
+                    'name' => $lineItem->variant()->name(),
                 ] : null,
                 'unit_price' => Money::format($lineItem->unitPrice(), Site::selected()),
                 'quantity' => $lineItem->quantity(),

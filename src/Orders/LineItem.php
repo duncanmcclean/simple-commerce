@@ -65,7 +65,7 @@ class LineItem
                     return null;
                 }
 
-                return $this->product()->variant($variant);
+                return $this->product()?->variant($variant);
             })
             ->setter(function ($variant) {
                 if ($variant instanceof ProductVariant) {

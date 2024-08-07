@@ -18,8 +18,12 @@ class Product extends Entry implements Contract
         return ProductType::Product;
     }
 
-    public function price(): int
+    public function price(): ?int
     {
+        if ($this->purchasableType() === ProductType::Variant) {
+            return null;
+        }
+
         return $this->value('price', 0);
     }
 
