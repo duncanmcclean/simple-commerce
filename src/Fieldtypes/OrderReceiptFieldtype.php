@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Facades\Statamic\Fields\FieldtypeRepository;
 use Statamic\Fields\Field;
@@ -15,13 +16,7 @@ class OrderReceiptFieldtype extends Fieldtype
 
     public function preload()
     {
-        $entriesFieldtype = FieldtypeRepository::find('entries');
-
-        $productField = new Field('product', ['type' => 'entries']);
-
-        return [
-            'productsField' => $productField->fieldtype()->preload(),
-        ];
+        return LineItems::blueprint()->fields()->meta();
     }
 
     public function preProcess($data)

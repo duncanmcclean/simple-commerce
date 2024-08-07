@@ -9,7 +9,7 @@ class Blueprint
 {
     public function __invoke(): StatamicBlueprint
     {
-        return BlueprintFacade::make()->setContents(array_merge_recursive([
+        return BlueprintFacade::make()->setHandle('orders')->setContents(array_merge_recursive([
             'tabs' => [
                 'details' => [
                     'display' => __('Details'),

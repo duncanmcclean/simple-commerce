@@ -6,7 +6,9 @@ use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Data\AbstractAugmented;
 use Statamic\Facades\Site;
+use Statamic\Fields\Value;
 use Statamic\Support\Arr;
+use Statamic\Support\Str;
 
 class AugmentedLineItem extends AbstractAugmented
 {
@@ -21,6 +23,7 @@ class AugmentedLineItem extends AbstractAugmented
         return $this->cachedKeys = $this->data->data()->keys()
 //            ->merge($this->data->supplements()->keys())
             ->merge($this->commonKeys())
+            ->merge($this->blueprintFields()->keys())
             ->unique()->sort()->values()->all();
     }
 
@@ -28,33 +31,26 @@ class AugmentedLineItem extends AbstractAugmented
     {
         return [
             'id',
-            'product',
-            'variant',
-            'quantity',
-            'unit_price',
-            'total',
             'total_including_tax',
         ];
     }
 
-    public function product()
+    public function get($handle): Value
     {
-        return $this->data->product()->toAugmentedCollection();
-    }
+        // These fields have methods on the LineItem class. However, we don't want to call those methods,
+        // we want to use the underlying properties.
+        if (in_array($handle, ['product', 'variant', 'quantity', 'unit_price', 'total'])) {
+            $value = new Value(
+                fn () => $this->data->{Str::camel($handle)},
+                $handle,
+                $this->blueprintFields()->get($handle)?->fieldtype(),
+                $this->data
+            );
 
-    public function variant()
-    {
-        //
-    }
+            return $value->resolve();
+        }
 
-    public function unitPrice()
-    {
-        return Money::format($this->data->unitPrice(), Site::current());
-    }
-
-    public function total()
-    {
-        return Money::format($this->data->total(), Site::current());
+        return parent::get($handle);
     }
 
     public function totalIncludingTax(): int

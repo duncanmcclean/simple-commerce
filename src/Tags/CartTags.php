@@ -230,7 +230,7 @@ class CartTags extends SubTag
             route('statamic.simple-commerce.cart-items.update', [
                 'item' => $lineItemId,
             ]),
-            optional($lineItem)->toArray() ?? [],
+            $lineItem->toAugmentedArray(),
             'POST',
             ['product', 'item']
         );
@@ -241,12 +241,12 @@ class CartTags extends SubTag
         $lineItemId = $this->params->get('item');
 
         if ($product = $this->params->get('product')) {
-            $lineItemId = collect(Cart::current()->lineItems()->map->toArray())
+            $lineItemId = Cart::current()->lineItems()
                 ->where('product', $product)
                 ->when($this->params->get('variant'), function ($query, $variant) {
                     $query->where('variant', $variant);
                 })
-                ->pluck('id')
+                ->map->id()
                 ->first();
         }
 
@@ -256,7 +256,7 @@ class CartTags extends SubTag
             route('statamic.simple-commerce.cart-items.destroy', [
                 'item' => $lineItemId,
             ]),
-            optional($lineItem)->toArray() ?? [],
+            $lineItem->toAugmentedArray(),
             'DELETE',
             ['product', 'item']
         );
@@ -294,7 +294,7 @@ class CartTags extends SubTag
             ->count() >= 1;
     }
 
-    public function wildcard($method)
+    public function wildcard($field)
     {
         if (! Cart::hasCurrentCart()) {
             return null;
@@ -302,28 +302,10 @@ class CartTags extends SubTag
 
         $cart = Cart::current();
 
-        if (method_exists($this, $method)) {
+        if (method_exists($this, $method = Str::camel($field))) {
             return $this->{$method}();
         }
 
-        $camelCaseMethod = Str::camel($method);
-
-        if ($camelCaseMethod != $method && method_exists($this, $camelCaseMethod)) {
-            return $this->{$camelCaseMethod}();
-        }
-
-        if (property_exists($cart, $method)) {
-            return $cart->{$method};
-        }
-
-        if (array_key_exists($method, $cart->toAugmentedArray())) {
-            return $cart->toAugmentedArray()[$method];
-        }
-
-        if ($cart->has($method)) {
-            return $cart->get($method);
-        }
-
-        return null;
+        return $cart->augmentedValue($field);
     }
 }

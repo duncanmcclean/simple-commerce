@@ -3,11 +3,13 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
+use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
 use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
 use Statamic\Data\HasAugmentedInstance;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class LineItem
@@ -111,18 +113,20 @@ class LineItem
         return new AugmentedLineItem($this);
     }
 
-    public function toArray(): array
+    public function blueprint(): StatamicBlueprint
     {
-        return $this->data()
-            ->merge([
-                'id' => $this->id,
-                'product' => $this->product()->id(),
-                'variant' => $this->variant,
-                'quantity' => $this->quantity,
-                'unit_price' => $this->unitPrice(),
-                'total' => $this->total,
-            ])
-            ->filter()
-            ->all();
+        return LineItems::blueprint();
+    }
+
+    public function fileData(): array
+    {
+        return array_merge([
+            'id' => $this->id,
+            'product' => $this->product,
+            'variant' => $this->variant,
+            'quantity' => $this->quantity,
+            'unit_price' => $this->unitPrice,
+            'total' => $this->total,
+        ], $this->data->all());
     }
 }

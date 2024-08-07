@@ -53,7 +53,7 @@
             :track-dirty-state="trackDirtyState"
             @updated="values = $event"
         >
-            <div>
+            <div slot-scope="{ container, components, setFieldMeta }">
                 <component
                     v-for="component in components"
                     :key="component.id"

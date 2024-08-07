@@ -11,6 +11,6 @@ class LineItemsFieldtype extends Fieldtype
 
     public function augment($value): array
     {
-        return $value->map(fn (LineItem $lineItem) => $lineItem->toAugmentedCollection())->all();
+        return $value->map->toAugmentedArray()->all();
     }
 }

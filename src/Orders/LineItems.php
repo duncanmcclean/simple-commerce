@@ -54,4 +54,9 @@ class LineItems extends Collection
 
         return $this;
     }
+
+    public static function blueprint()
+    {
+        return (new LineItemBlueprint)();
+    }
 }

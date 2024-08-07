@@ -6,6 +6,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
 use Statamic\Contracts\Entries\Entry as EntryContract;
+use Statamic\Facades\Entry;
 
 class ProductRepository implements RepositoryContract
 {
@@ -21,22 +22,18 @@ class ProductRepository implements RepositoryContract
         return $this->query()->get();
     }
 
-    public function query()
-    {
-        return app(QueryBuilder::class, [
-            'store' => app('stache')->store('entries'),
-        ])->whereIn('collection', $this->collections);
-    }
-
     public function find($id): ?Product
     {
-        $product = $this->query()->find($id);
+        $entry = Entry::query()
+            ->whereIn('collection', $this->collections)
+            ->where('id', $id)
+            ->find($id);
 
-        if (! $product) {
+        if (! $entry) {
             return null;
         }
 
-        return $product;
+        return $this->fromEntry($entry);
     }
 
     public function findOrFail($id): Product

@@ -11,8 +11,8 @@
                 v-for="lineItem in receipt.line_items"
                 :lineItem="lineItem"
                 :key="lineItem.id"
-                :form-component="meta.productsField.formComponent"
-                :form-component-props="meta.productsField.formComponentProps"
+                :form-component="meta.product.formComponent"
+                :form-component-props="meta.product.formComponentProps"
                 @updated="lineItemUpdated" />
             <div class="receipt-total font-semibold border-t dark:border-dark-500">
                 <div>Subtotal</div>
