@@ -4,12 +4,25 @@ namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
+use Facades\Statamic\Fields\FieldtypeRepository;
+use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Facades\Site;
 
 class OrderReceiptFieldtype extends Fieldtype
 {
     protected $selectable = false;
+
+    public function preload()
+    {
+        $entriesFieldtype = FieldtypeRepository::find('entries');
+
+        $productField = new Field('product', ['type' => 'entries']);
+
+        return [
+            'productsField' => $productField->fieldtype()->preload(),
+        ];
+    }
 
     public function preProcess($data)
     {
@@ -19,6 +32,7 @@ class OrderReceiptFieldtype extends Fieldtype
             'line_items' => $order->lineItems()->map(fn (LineItem $lineItem) => [
                 'product' => [
                     'id' => $lineItem->product()->id(),
+                    'reference' => $lineItem->product()->reference(),
                     'title' => $lineItem->product()->value('title'),
                     'edit_url' => $lineItem->product()->editUrl(),
                 ],

@@ -1,5 +1,4 @@
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/utilities";
 
 .receipt-table {
     .receipt-table-header {

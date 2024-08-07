@@ -7,52 +7,69 @@
                 <div class="text-right">Quantity</div>
                 <div class="text-right">Total</div>
             </div>
-            <div class="receipt-line-item" v-for="lineItem in value.line_items">
-                <div>
-                    <!-- TODO: Open product in stack -->
-                    <!-- TODO: Support for product variants -->
-                    <a :href="lineItem.product.edit_url" target="_blank">
-                        {{ lineItem.product.title }}
-                    </a>
-                </div>
-                <div>{{ lineItem.unit_price }}</div>
-                <div>{{ lineItem.quantity }}</div>
-                <div>{{ lineItem.total }}</div>
-            </div>
+            <LineItem
+                v-for="lineItem in receipt.line_items"
+                :lineItem="lineItem"
+                :key="lineItem.id"
+                :form-component="meta.productsField.formComponent"
+                :form-component-props="meta.productsField.formComponentProps"
+                @updated="lineItemUpdated" />
             <div class="receipt-total font-semibold border-t dark:border-dark-500">
                 <div>Subtotal</div>
-                <div>{{ value.totals.sub_total }}</div>
+                <div>{{ receipt.totals.sub_total }}</div>
             </div>
-            <div v-if="value.discount" class="receipt-total">
+            <div v-if="receipt.discount" class="receipt-total">
                 <div>
                     <span>Coupon Discount (COUPONCODE)</span>
                     <span class="help-block">50% off</span>
                 </div>
-                <div>{{ value.totals.discount_total }}</div>
+                <div>{{ receipt.totals.discount_total }}</div>
             </div>
-            <div v-if="value.shipping" class="receipt-total">
+            <div v-if="receipt.shipping" class="receipt-total">
                 <div>
                     <span>Shipping</span>
                     <span class="help-block">Royal Mail</span>
                 </div>
-                <div>{{ value.totals.shipping_total }}</div>
+                <div>{{ receipt.totals.shipping_total }}</div>
             </div>
             <div class="receipt-total">
                 <div>Taxes</div>
-                <div>{{ value.totals.tax_total }}</div>
+                <div>{{ receipt.totals.tax_total }}</div>
             </div>
             <div class="receipt-total font-bold text-lg">
                 <div>Grand Total</div>
-                <div>{{ value.totals.grand_total }}</div>
+                <div>{{ receipt.totals.grand_total }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import LineItem from './OrderReceipt/LineItem.vue'
+
 export default {
+    components: { LineItem },
+
     mixins: [Fieldtype],
 
     inject: ['storeName'],
+
+    data() {
+        return {
+            receipt: this.value,
+        }
+    },
+
+    methods: {
+        lineItemUpdated(lineItem) {
+            this.receipt.line_items = this.receipt.line_items.map(item => {
+                if (item.id === lineItem.id) {
+                    return lineItem
+                }
+
+                return item
+            })
+        },
+    },
 }
 </script>
