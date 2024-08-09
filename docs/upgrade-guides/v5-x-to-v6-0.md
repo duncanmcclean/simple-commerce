@@ -89,6 +89,13 @@ If you're manually referencing class names anywhere in your templates, you shoul
 * `{{ class }}` -> `{{ handle }}`
 * `{{ formatted_class }}` -> `{{ handle }}`
 
+Also, if you're hardcoding a gateway's handle in your template, you should ensure the handle is lowercase:
+
+```javascript
+if (this.gateway.includes('Stripe') || this.gateway.includes('Dummy')) { // [tl! remove]
+if (this.gateway.includes('stripe') || this.gateway.includes('dummy')) { // [tl! add]
+```
+
 #### In your config files
 
 If you have a [default shipping method configured](/shipping#content-default-shipping-method), you should reference the shipping method's handle, instead of its class name.
