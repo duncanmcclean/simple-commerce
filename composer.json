@@ -39,7 +39,7 @@
         "spatie/ignition": "^1.13",
         "statamic/cms": "^5.0",
         "stillat/proteus": "^3.0 || ^4.0",
-        "stripe/stripe-php": "^7.7"
+        "stripe/stripe-php": "^13.0"
     },
     "require-dev": {
         "statamic-rad-pack/runway": "dev-master",
