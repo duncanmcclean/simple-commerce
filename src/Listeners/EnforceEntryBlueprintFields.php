@@ -79,6 +79,15 @@ class EnforceEntryBlueprintFields
             'default' => 'physical',
         ], 'sidebar', true);
 
+        if (SimpleCommerce::isUsingStandardTaxEngine()) {
+            $event->blueprint->ensureField('tax_category', [
+                'type' => 'tax_category',
+                'display' => __('Tax Category'),
+                'max_items' => 1,
+                'mode' => 'select',
+            ], 'sidebar');
+        }
+
         if (! $event->blueprint->hasField('product_variants')) {
             $event->blueprint->ensureField('price', [
                 'type' => 'money',
@@ -127,15 +136,6 @@ class EnforceEntryBlueprintFields
                 ->each(function ($value, $key) use (&$event) {
                     $event->blueprint->ensureFieldInTab($key, $value, 'sidebar');
                 });
-        }
-
-        if (SimpleCommerce::isUsingStandardTaxEngine()) {
-            $event->blueprint->ensureField('tax_category', [
-                'type' => 'tax_category',
-                'display' => __('Tax Category'),
-                'max_items' => 1,
-                'mode' => 'select',
-            ], 'sidebar');
         }
 
         return $event->blueprint;
