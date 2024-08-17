@@ -88,9 +88,13 @@ class SwitchToDatabase extends Command
 
     protected function publishRunwayConfig(): self
     {
-        if (! File::exists(config_path('runway.php'))) {
-            File::copy($this->stubsPath.'/runway_config.php', config_path('runway.php'));
+        if (File::exists($path = config_path('runway.php'))) {
+            $this->components->warn("You already have Runway installed. Please copy the config from {$this->stubsPath}/runway_config.php into your existing config file.");
+
+            return $this;
         }
+
+        File::copy($this->stubsPath.'/runway_config.php', $path);
 
         $this->components->info('Published Runway config file successfully');
 
