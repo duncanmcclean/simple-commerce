@@ -37,10 +37,10 @@ class SwitchToDatabase extends Command
         }
 
         $this
-//            ->copyMigrationStubs()
-//            ->copyBlueprintStubs()
-            ->publishRunwayConfig();
-//            ->switchRepositories();
+            ->copyMigrationStubs()
+            ->copyBlueprintStubs()
+            ->publishRunwayConfig()
+            ->switchRepositories();
 
         $this->line('Next steps...');
         $this->components->bulletList([
