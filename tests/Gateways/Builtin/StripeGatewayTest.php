@@ -271,6 +271,7 @@ test('can checkout when in card elements mode', function () {
             'intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
                 'currency' => 'GBP',
+                'automatic_payment_methods' => ['enabled' => true, 'allow_redirects' => 'never'],
             ])->id,
         ],
     ]);
@@ -334,6 +335,7 @@ test('cant checkout when in payment elements mode', function () {
             'intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
                 'currency' => 'GBP',
+                'automatic_payment_methods' => ['enabled' => true, 'allow_redirects' => 'never'],
             ])->id,
         ],
     ]);
@@ -387,6 +389,7 @@ test('can refund charge', function () {
             'payment_intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
                 'currency' => 'GBP',
+                'automatic_payment_methods' => ['enabled' => true, 'allow_redirects' => 'never'],
             ])->id,
         ]
     );
@@ -459,6 +462,7 @@ test('returns array from payment display', function () {
             'payment_intent' => $paymentIntent = PaymentIntent::create([
                 'amount' => 1234,
                 'currency' => 'GBP',
+                'automatic_payment_methods' => ['enabled' => true, 'allow_redirects' => 'never'],
             ])->id,
         ],
     ]);
