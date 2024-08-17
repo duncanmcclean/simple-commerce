@@ -300,6 +300,26 @@ tabs:
               listable: false
               display: "Shipping Postal Code"
               visibility: read_only
+          - handle: shipping_region
+            field:
+              max_items: 1
+              mode: default
+              display: "Shipping Region"
+              type: region
+              icon: region
+              width: 50
+              listable: hidden
+              visibility: read_only
+          - handle: shipping_country
+            field:
+              max_items: 1
+              mode: default
+              display: "Shipping Country"
+              type: country
+              icon: country
+              listable: hidden
+              width: 50
+              visibility: read_only
   sidebar:
     display: Sidebar
     sections:
