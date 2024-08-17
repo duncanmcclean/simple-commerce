@@ -1,5 +1,18 @@
 # Changelog
 
+## v7.4.2 (2024-08-17)
+
+### What's improved
+* A warning is now thrown when the Runway config file already exists #1126 by @duncanmcclean
+
+### What's fixed
+* Fixed issue where fields were being wiped on users #1122 #1132 by @duncanmcclean
+* Fixed issue where the `tax_category` field wasn't being added to variant products by @duncanmcclean
+* Added back missing Region & Country fields to order bleprint by @duncanmcclean
+* Updated `stripe/stripe-php` dependency #1125 #1127 by @david-lobo
+
+
+
 ## v7.4.1 (2024-08-05)
 
 ### What's fixed
