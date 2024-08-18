@@ -176,4 +176,19 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Shipment Tracking Providers
+    |--------------------------------------------------------------------------
+    |
+    | This is where you can configure the providers which that update the status
+    | of tracked packges.
+    */
+
+    'shipment_tracking_providers' => [
+        /*
+        'ups' => \DuncanMcClean\SimpleCommerce\Shipping\Tracking\UpsShipmentTracking::class
+        'fedex' => \DuncanMcClean\SimpleCommerce\Shipping\Tracking\FedExShipmentTracking::class
+        */
+    ],
 ];

@@ -245,6 +245,16 @@ class ServiceProvider extends AddonServiceProvider
             });
         }
 
+        $this->app->bind(
+            Contracts\ShipmentTrackingRepository::class,
+            Shipping\Tracking\ShipmentTrackingConfigRepository::class
+        );
+        $this
+            ->app
+            ->when(Contracts\ShipmentTrackingRepository::class)
+            ->needs('$providers')
+            ->giveConfig('simple-commerce.shipment_tracking_providers');
+
         $this->app->bind(Contracts\GatewayManager::class, Gateways\Manager::class);
         $this->app->bind(Contracts\ShippingManager::class, Shipping\Manager::class);
 
