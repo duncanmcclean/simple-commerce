@@ -2,6 +2,7 @@
 import OrderReceiptFieldtype from './components/Fieldtypes/OrderReceiptFieldtype.vue'
 import MoneyFieldtype from './components/Fieldtypes/MoneyFieldtype.vue'
 import ProductVariantsFieldtype from './components/Fieldtypes/ProductVariants/ProductVariantsFieldtype.vue'
+import CustomerFieldtype from './components/Fieldtypes/CustomerFieldtype.vue'
 
 Statamic.$components.register('order_receipt-fieldtype', OrderReceiptFieldtype)
 Statamic.$components.register('money-fieldtype', MoneyFieldtype)
@@ -9,6 +10,7 @@ Statamic.$components.register(
     'product-variants-fieldtype',
     ProductVariantsFieldtype
 )
+Statamic.$components.register('customer-fieldtype', CustomerFieldtype)
 
 // Inputs
 import RegionSelector from './components/Inputs/RegionSelector.vue'

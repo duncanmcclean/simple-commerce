@@ -75,6 +75,10 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
                     return $customer->getKey();
                 }
 
+                if ($customer instanceof GuestCustomer) {
+                    return $customer->toArray();
+                }
+
                 return $customer;
             })
             ->args(func_get_args());
@@ -94,17 +98,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
-    protected function hasBeenConvertedToOrder(): bool
-    {
-        return Order::query()->where('data->cart', $this->id())->count() > 0;
-    }
-
     public function save(): bool
     {
-        if ($this->hasBeenConvertedToOrder()) {
-            throw new CartHasBeenConvertedToOrderException;
-        }
-
         CartFacade::save($this);
 
         return true;

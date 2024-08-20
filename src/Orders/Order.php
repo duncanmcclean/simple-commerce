@@ -135,6 +135,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
                     return $customer->getKey();
                 }
 
+                if ($customer instanceof GuestCustomer) {
+                    return $customer->toArray();
+                }
+
                 return $customer;
             })
             ->args(func_get_args());
@@ -269,6 +273,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     public function getQueryableValue(string $field)
     {
         if ($field === 'customer') {
+            if (is_array($this->customer)) {
+                return $this->customer()->id();
+            }
+
             return $this->customer;
         }
 

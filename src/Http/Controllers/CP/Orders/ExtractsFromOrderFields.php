@@ -16,7 +16,7 @@ trait ExtractsFromOrderFields
                 'discount_total' => $order->discountTotal(),
                 'tax_total' => $order->taxTotal(),
                 'shipping_total' => $order->shippingTotal(),
-                // todo: other stuff probably needs to be merged in here too
+                'customer' => $order->customer(),
             ]);
 
         $fields = $blueprint

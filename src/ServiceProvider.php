@@ -21,6 +21,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $fieldtypes = [
+        Fieldtypes\CustomerFieldtype::class,
         Fieldtypes\LineItemsFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\OrderReceiptFieldtype::class,

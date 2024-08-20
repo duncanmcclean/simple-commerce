@@ -149,7 +149,10 @@ class Blueprint
                                     'handle' => 'date',
                                     'field' => ['type' => 'date', 'display' => __('Date'), 'visibility' => 'read_only', 'listable' => true, 'time_enabled' => true],
                                 ],
-                                // TODO: Customer field
+                                [
+                                    'handle' => 'customer',
+                                    'field' => ['type' => 'customer', 'display' => __('Customer'), 'visibility' => 'read_only', 'listable' => true],
+                                ]
                             ],
                         ],
                     ],

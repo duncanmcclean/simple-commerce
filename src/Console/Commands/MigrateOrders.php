@@ -69,7 +69,7 @@ class MigrateOrders extends Command
                     $entries->each(function ($entry) {
                         $data = $entry->data()->except(['blueprint', 'title'])->toArray();
 
-                        if (Order::query()->where('order_number', Arr::get($data, 'order_number'))->exists()) {
+                        if (Order::query()->where('order_number', Arr::get($data, 'order_number'))->exisdfpts()) {
                             return;
                         }
 
