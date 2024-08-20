@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
-use Statamic\Facades\Blueprint;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
@@ -55,5 +54,19 @@ class CustomerFieldtype extends Fieldtype
             'editable' => User::current()->can('view', $data),
             'edit_url' => $data->editUrl(),
         ];
+    }
+
+    public function preProcessIndex($data)
+    {
+        return $this->preProcess($data);
+    }
+
+    public function augment($value)
+    {
+        if (! $value) {
+            return;
+        }
+
+        return $value;
     }
 }

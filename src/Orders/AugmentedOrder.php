@@ -33,15 +33,4 @@ class AugmentedOrder extends AbstractAugmented
     }
 
     // todo: status
-
-    public function customer()
-    {
-        $customer = $this->data->customer();
-
-        if ($customer instanceof GuestCustomer) {
-            return $customer->toArray();
-        }
-
-        return $customer?->toAugmentedCollection();
-    }
 }
