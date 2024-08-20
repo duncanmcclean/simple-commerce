@@ -11,10 +11,10 @@
                     {{ value.name }}
                 </a>
 
-                <a v-else-if="value.type === 'guest' && value.viewable" @click.prevent="edit" class="truncate v-popper--has-tooltip">
+                <div v-else-if="value.type === 'guest'" class="truncate v-popper--has-tooltip">
                     {{ value.name }}
                     <div class="status-index-field select-none status-draft ml-1">Guest</div>
-                </a>
+                </div>
 
                 <div v-else v-text="value.name" />
 
@@ -30,8 +30,9 @@
                 <div class="flex items-center flex-1 justify-end">
                     <div class="flex items-center">
                         <dropdown-list>
-                            <dropdown-item v-if="value.editable" :text="__('Edit')" @click="edit" />
-                            <dropdown-item v-else-if="value.viewable" :text="__('View')" @click="edit" />
+                            <dropdown-item v-if="value.type === 'user' && value.editable" :text="__('Edit')" @click="edit" />
+                            <dropdown-item v-else-if="value.type === 'user' && value.viewable" :text="__('View')" @click="edit" />
+                            <dropdown-item v-else-if="value.type === 'guest' && meta.canCreateUsers" :text="__('Convert to User')" @click="convertToUser" />
                         </dropdown-list>
                     </div>
                 </div>
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import InlineEditForm from '../../../../vendor/statamic/cms/resources/js/components/inputs/relationship/InlineEditForm.vue'
 
 export default {
@@ -49,6 +51,8 @@ export default {
     },
 
     mixins: [Fieldtype],
+
+    inject: ['storeName'],
 
     data() {
         return {
@@ -66,18 +70,27 @@ export default {
                 return;
             }
 
-            if (this.value.type === 'user') {
-                this.isEditingUser = true;
-                return;
-            }
+            this.isEditingUser = true;
         },
 
         itemUpdated(responseData) {
-            this.$emit('updated', {
+            this.$emit('input', {
                 ...this.value,
                 // in case we need to merge anything in here
             })
         },
+
+        convertToUser() {
+            axios.post(this.meta.convertGuestToUserUrl, {
+                email: this.value.email,
+                order_id: this.$store.state.publish[this.storeName].values.id,
+            }).then(response => {
+                this.$emit('input', response.data);
+                this.$toast.success(__('Guest has been converted to a user.'));
+            }).catch(error => {
+                this.$toast.error(error.response.data.message);
+            });
+        }
     }
 }
 </script>

@@ -52,8 +52,6 @@ export default {
 
     mixins: [Fieldtype],
 
-    inject: ['storeName'],
-
     data() {
         return {
             receipt: this.value,

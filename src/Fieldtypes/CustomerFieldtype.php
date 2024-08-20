@@ -17,14 +17,10 @@ class CustomerFieldtype extends Fieldtype
             'max_items' => 1,
         ]);
 
-        $guestBlueprint = Blueprint::makeFromFields([
-            'name' => ['type' => 'text'],
-            'email' => ['type' => 'text'],
-        ]);
-
         return [
             'user' => $userField->meta(),
-            'guest' => $guestBlueprint->fields()->meta(),
+            'canCreateUsers' => User::current()->isSuper() || User::current()->hasPermission('create users'),
+            'convertGuestToUserUrl' => cp_route('simple-commerce.convert-guest-to-user'),
         ];
     }
 
