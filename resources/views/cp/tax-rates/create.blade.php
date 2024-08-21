@@ -22,7 +22,7 @@
         <div class="publish-form card p-0 flex flex-wrap">
             <div class="flex flex-col md:flex-row items-center w-full">
                 <div class="form-group w-full md:w-1/2">
-                    <label class="block mb-1">Na{{ __('Name') }}me <i class="required">*</i></label>
+                    <label class="block mb-1">{{ __('Name') }} <i class="required">*</i></label>
 
                     <input type="text" name="name" autofocus="autofocus" class="input-text" value="{{ old('name') }}">
 
