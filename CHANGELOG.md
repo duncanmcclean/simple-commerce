@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.4.3 (2024-08-21)
+
+### What's fixed
+* Mollie: Check for the payment ID under the `gateway` key too #1136 #1138 by @duncanmcclean
+
+
+
 ## v7.4.2 (2024-08-17)
 
 ### What's improved
