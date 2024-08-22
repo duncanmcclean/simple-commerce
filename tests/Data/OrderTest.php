@@ -2,6 +2,7 @@
 
 namespace Tests\Data;
 
+use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
@@ -9,6 +10,7 @@ use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
+use Statamic\Facades\User;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
 
@@ -26,6 +28,31 @@ class OrderTest extends TestCase
 
         $order = Order::make();
         $this->assertEquals(OrderStatus::Pending, $order->status());
+    }
+
+    #[Test]
+    public function can_get_and_set_guest_customer()
+    {
+        $order = Order::make();
+
+        $order->customer(['name' => 'CJ Cregg', 'email' => 'cj.cregg@example.com']);
+
+        $this->assertInstanceof(GuestCustomer::class, $order->customer());
+        $this->assertEquals('CJ Cregg', $order->customer()->name());
+        $this->assertEquals('cj.cregg@example.com', $order->customer()->email());
+    }
+
+    #[Test]
+    public function can_get_and_set_customer()
+    {
+        $order = Order::make();
+        $user = User::make()->email('cj.cregg@example.com')->set('name', 'CJ Cregg')->save();
+
+        $order->customer($user);
+
+        $this->assertInstanceof(\Statamic\Contracts\Auth\User::class, $order->customer());
+        $this->assertEquals('CJ Cregg', $order->customer()->name());
+        $this->assertEquals('cj.cregg@example.com', $order->customer()->email());
     }
 
     #[Test]
