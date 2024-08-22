@@ -7,16 +7,20 @@
                     v-tooltip.top="__('An item with this ID could not be found')"
                     v-text="value.id" />
 
-                <a v-if="value.type === 'user' && value.viewable" :href="value.edit_url" @click.prevent="edit" class="truncate v-popper--has-tooltip">
-                    {{ value.name }}
-                </a>
+                <div v-else>
+                    <a v-if="value.type === 'user' && value.viewable" :href="value.edit_url" @click.prevent="edit" class="truncate v-popper--has-tooltip">
+                        {{ value.name }}
+                    </a>
 
-                <div v-else-if="value.type === 'guest'" class="truncate v-popper--has-tooltip">
-                    {{ value.name }}
-                    <div class="status-index-field select-none status-draft ml-1">Guest</div>
+                    <div v-else-if="value.type === 'guest'" class="truncate v-popper--has-tooltip">
+                        {{ value.name }}
+                        <div class="status-index-field select-none status-draft ml-1">Guest</div>
+                    </div>
+
+                    <div v-else v-text="value.name" />
+
+                    <div v-if="value.email" class="text-xs mt-1 truncate text-gray-800 dark:text-dark-150" v-text="value.email"></div>
                 </div>
-
-                <div v-else v-text="value.name" />
 
                 <inline-edit-form
                     v-if="isEditingUser"
