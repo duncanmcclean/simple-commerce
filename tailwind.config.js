@@ -1,8 +1,22 @@
+const statamic = require('./vendor/statamic/cms/tailwind.config.js');
+
 module.exports = {
-    ...require('./vendor/statamic/cms/tailwind.config.js'),
+    darkMode: 'class',
 
     content: [
-        './resources/**/*.{html,js,vue,blade.php}',
-        './tests/**/*.{html,vue,blade.php}',
+        './resources/js/components/**/*.vue',
+        './resources/views/**/*.blade.php',
     ],
+
+    theme: {
+        colors: {
+            ...statamic.theme.colors,
+        },
+    },
+
+    extend: {
+        boxShadow: {
+            ...statamic.theme.boxShadow,
+        },
+    },
 }
