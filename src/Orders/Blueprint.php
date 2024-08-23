@@ -103,10 +103,9 @@ class Blueprint
                         [
                             'display' => __('Payment'),
                             'fields' => [
-                                // TODO: Special payment field
                                 [
-                                    'handle' => 'payment_gateway',
-                                    'field' => ['type' => 'text', 'display' => __('Payment Gateway'), 'visibility' => 'read_only', 'listable' => false],
+                                    'handle' => 'payment_details',
+                                    'field' => ['type' => 'payment_details', 'hide_display' => true, 'listable' => false],
                                 ],
                             ],
                         ],

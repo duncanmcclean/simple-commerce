@@ -26,6 +26,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\OrderReceiptFieldtype::class,
         Fieldtypes\OrdersFieldtype::class,
+        Fieldtypes\PaymentDetailsFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
     ];
 

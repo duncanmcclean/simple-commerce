@@ -4,6 +4,7 @@ import CustomerFieldtypeIndex from './components/fieldtypes/CustomerFieldtypeInd
 import MoneyFieldtype from './components/fieldtypes/MoneyFieldtype.vue'
 import OrderReceiptFieldtype from './components/fieldtypes/OrderReceiptFieldtype.vue'
 import ProductVariantsFieldtype from './components/fieldtypes/ProductVariants/ProductVariantsFieldtype.vue'
+import PaymentDetailsFieldtype from './components/fieldtypes/PaymentDetailsFieldtype.vue'
 import OrdersListing from './components/orders/Listing.vue'
 import OrdersPublishForm from './components/orders/PublishForm.vue'
 import OrdersChart from './components/widgets/OrdersChart.vue'
@@ -17,6 +18,7 @@ Statamic.$components.register('customer-fieldtype-index', CustomerFieldtypeIndex
 Statamic.$components.register('money-fieldtype', MoneyFieldtype)
 Statamic.$components.register('order_receipt-fieldtype', OrderReceiptFieldtype)
 Statamic.$components.register('product-variants-fieldtype', ProductVariantsFieldtype)
+Statamic.$components.register('payment_details-fieldtype', PaymentDetailsFieldtype)
 
 // Orders
 Statamic.$components.register('orders-listing', OrdersListing)
