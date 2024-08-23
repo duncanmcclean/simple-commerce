@@ -19,8 +19,6 @@ export default {
 
     mounted() {
         this.icon = this.evaluateIcon();
-
-        console.log(this.icon)
     },
 
     watch: {

@@ -28,6 +28,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\OrdersFieldtype::class,
         Fieldtypes\PaymentDetailsFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
+        Fieldtypes\ShippingDetailsFieldtype::class,
     ];
 
     protected $listen = [

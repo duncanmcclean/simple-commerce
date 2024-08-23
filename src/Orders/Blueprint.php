@@ -63,10 +63,9 @@ class Blueprint
                         [
                             'display' => __('Shipping Method'),
                             'fields' => [
-                                // TODO: Special shipping field
                                 [
-                                    'handle' => 'shipping_method',
-                                    'field' => ['type' => 'text', 'display' => __('Shipping Method'), 'visibility' => 'read_only', 'listable' => false],
+                                    'handle' => 'shipping_details',
+                                    'field' => ['type' => 'shipping_details', 'hide_display' => true, 'listable' => false],
                                 ],
                             ],
                         ],
