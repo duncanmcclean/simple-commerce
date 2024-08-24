@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use Statamic\Data\AbstractAugmented;
 
@@ -24,12 +25,21 @@ class AugmentedOrder extends AbstractAugmented
 
     private function commonKeys(): array
     {
-        return [
+        $keys = [
             'id',
-            'order_number',
-            'status',
             'customer',
         ];
+
+        if ($this->data instanceof Order) {
+            $keys = [
+                ...$keys,
+                'order_number',
+                'date',
+                'status',
+            ];
+        }
+
+        return $keys;
     }
 
     // todo: status

@@ -1,40 +1,39 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartController;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\CartItemController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CartLineItemsController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CheckoutController;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\CouponController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\GatewayCallbackController;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\GatewayWebhookController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\CallbackController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\WebhookController;
 use DuncanMcClean\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::name('simple-commerce.')->group(function () {
-    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
-
     Route::middleware(EnsureFormParametersArriveIntact::class)->group(function () {
-        Route::post('cart', [CartController::class, 'update'])->name('cart.update');
-        Route::delete('cart', [CartController::class, 'destroy'])->name('cart.empty');
+        Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+        Route::patch('cart', [CartController::class, 'update'])->name('cart.update');
+        Route::delete('cart', [CartController::class, 'destroy'])->name('cart.update');
 
-        Route::post('cart-items', [CartItemController::class, 'store'])->name('cart-items.store');
-        Route::post('cart-items/{item}', [CartItemController::class, 'update'])->name('cart-items.update');
-        Route::delete('cart-items/{item}', [CartItemController::class, 'destroy'])->name('cart-items.destroy');
+        Route::post('cart/line-items', [CartLineItemsController::class, 'store'])->name('cart.line-items.store');
+        Route::patch('cart/line-items/{lineItem}', [CartLineItemsController::class, 'update'])->name('cart.line-items.update');
+        Route::delete('cart/line-items/{lineItem}', [CartLineItemsController::class, 'destroy'])->name('cart.line-items.destroy');
 
-        Route::post('checkout', [CheckoutController::class, '__invoke'])->name('checkout.store');
-
-        Route::post('coupon', [CouponController::class, 'store'])->name('coupon.store');
-        Route::delete('coupon', [CouponController::class, 'destroy'])->name('coupon.destroy');
+        Route::post('checkout', CheckoutController::class)->name('checkout');
     });
 
-    Route::get('gateways/{gateway}/callback', [GatewayCallbackController::class, 'index'])->name('gateways.callback');
+    Route::name('payments.')
+        ->prefix('payments')
+        ->withoutMiddleware(VerifyCsrfToken::class)
+        ->group(function () {
+            Route::get('{gateway}/callback', CallbackController::class)->name('callback');
+            Route::post('{gateway}/webhook', WebhookController::class)->name('webhook');
+        });
 
-    Route::post('gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])
-        ->name('gateways.webhook')
-        ->withoutMiddleware([VerifyCsrfToken::class]);
-
-    Route::prefix('digital-products')->name('digital-products.')->group(function () {
-        Route::get('download/{orderId}/{lineItemId}', DownloadController::class)->name('download');
-    });
+    Route::name('digital-products')
+        ->prefix('digital-products')
+        ->group(function () {
+            Route::get('download/{order}/{lineItem}', DownloadController::class)->name('download');
+        });
 });

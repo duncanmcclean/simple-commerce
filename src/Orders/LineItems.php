@@ -51,6 +51,13 @@ class LineItems extends Collection
         return $this;
     }
 
+    public function flush()
+    {
+        $this->items = [];
+
+        return $this;
+    }
+
     public static function blueprint()
     {
         return (new LineItemBlueprint)();

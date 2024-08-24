@@ -15,6 +15,7 @@ class CartRepository implements RepositoryContract
 {
     protected $stache;
     protected $store;
+    protected static $current;
 
     public function __construct(Stache $stache)
     {
@@ -54,12 +55,21 @@ class CartRepository implements RepositoryContract
             return $this->make();
         }
 
+        if (self::$current) {
+            return self::$current;
+        }
+
         return CartFacade::find(Cookie::get($this->getKey()));
+    }
+
+    public function setCurrent(Cart $cart): void
+    {
+        self::$current = $cart;
     }
 
     public function hasCurrentCart(): bool
     {
-        return Blink::has($this->getKey()) || Cookie::has($this->getKey());
+        return self::$current || Blink::has($this->getKey()) || Cookie::has($this->getKey());
     }
 
     public function forgetCurrentCart(): void
@@ -68,6 +78,7 @@ class CartRepository implements RepositoryContract
 
         Cookie::queue(Cookie::forget($this->getKey()));
         Blink::forget($this->getKey());
+        self::$current = null;
     }
 
     private function getKey(): string

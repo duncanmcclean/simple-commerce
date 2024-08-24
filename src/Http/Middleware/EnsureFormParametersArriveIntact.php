@@ -18,6 +18,11 @@ class EnsureFormParametersArriveIntact
      */
     public function handle($request, Closure $next)
     {
+        // When it's a GET request, we don't need to worry about form parameters.
+        if ($request->isMethod('get')) {
+            return $next($request);
+        }
+
         // In a test environment, we don't want to worry about having to pass in form
         // parameters. So, before this test, we'll set some fallbacks for the params
         // if they're not set in the request.

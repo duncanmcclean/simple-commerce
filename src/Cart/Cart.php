@@ -149,6 +149,13 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         return Order::blueprint();
     }
 
+    public function updateableFields(): array
+    {
+        return $this->blueprint()->fields()->all()->map->handle()->except([
+            'id', 'line_items', 'discount_total', 'grand_total', 'shipping_total', 'sub_total', 'tax_total',
+        ])->all();
+    }
+
     public function defaultAugmentedArrayKeys()
     {
         return $this->selectedQueryColumns;

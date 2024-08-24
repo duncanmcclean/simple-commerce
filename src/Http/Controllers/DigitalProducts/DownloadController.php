@@ -12,6 +12,7 @@ use ZipArchive;
 
 class DownloadController extends Controller
 {
+    // TODO: Ensure this still works.
     public function __invoke(Request $request)
     {
         $order = Order::find($request->orderId);

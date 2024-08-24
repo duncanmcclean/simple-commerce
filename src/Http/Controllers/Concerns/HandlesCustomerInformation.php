@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
-use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use Illuminate\Http\Request;
 use Statamic\Facades\User;
 use Statamic\Support\Arr;
@@ -42,15 +41,9 @@ trait HandlesCustomerInformation
                 $cart->customer($customerData);
             }
 
-            $cart->customer()->merge($customerData);
+            $cart->customer($cart->customer()->merge($customerData));
         }
 
         return $cart;
-    }
-
-    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
-    {
-        return is_subclass_of($class, $classToCheckAgainst)
-            || $class === $classToCheckAgainst;
     }
 }

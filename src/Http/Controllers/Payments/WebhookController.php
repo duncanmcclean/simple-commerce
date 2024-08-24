@@ -1,16 +1,17 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Payments;
 
 use DuncanMcClean\SimpleCommerce\Events\GatewayWebhookReceived;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\BaseActionController;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
-class GatewayWebhookController extends BaseActionController
+class WebhookController extends BaseActionController
 {
-    public function index(Request $request, $gateway)
+    public function __invoke(Request $request, $gateway)
     {
         $gatewayName = $gateway;
 

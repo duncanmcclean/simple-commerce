@@ -151,6 +151,10 @@ class Blueprint
                                     'handle' => 'tax_total',
                                     'field' => ['type' => 'money', 'display' => __('Tax Total'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
                                 ],
+                                [
+                                    'handle' => 'coupon',
+                                    'field' => ['type' => 'text', 'display' => __('Coupon'), 'visibility' => 'hidden', 'listable' => 'hidden'],
+                                ],
                             ],
                         ],
                     ],

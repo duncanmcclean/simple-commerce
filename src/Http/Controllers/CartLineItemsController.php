@@ -12,7 +12,7 @@ use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Arr;
 
-class CartItemController extends BaseActionController
+class CartLineItemsController extends BaseActionController
 {
     use HandlesCustomerInformation;
 

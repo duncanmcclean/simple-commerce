@@ -1,22 +1,21 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Payments;
 
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Facades\Gateway;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\BaseActionController;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 
-class GatewayCallbackController extends BaseActionController
+class CallbackController extends BaseActionController
 {
-    use CartDriver;
-
-    public function index(Request $request, $gateway)
+    public function __invoke(Request $request, $gateway)
     {
         if ($request->has('_order_id')) {
             $order = Order::find($request->get('_order_id'));

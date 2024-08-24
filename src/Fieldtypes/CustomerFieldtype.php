@@ -6,6 +6,7 @@ use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use Statamic\Facades\User;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
+use Statamic\Statamic;
 
 class CustomerFieldtype extends Fieldtype
 {
@@ -18,7 +19,7 @@ class CustomerFieldtype extends Fieldtype
 
         return [
             'user' => $userField->meta(),
-            'canCreateUsers' => User::current()->isSuper() || User::current()->hasPermission('create users'),
+            'canCreateUsers' => Statamic::pro() && (User::current()->isSuper() || User::current()->hasPermission('create users')),
             'convertGuestToUserUrl' => cp_route('simple-commerce.convert-guest-to-user'),
         ];
     }

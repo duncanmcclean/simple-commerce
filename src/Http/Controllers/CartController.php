@@ -6,84 +6,48 @@ use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\IndexRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\UpdateCartRequest;
+use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Statamic\Exceptions\NotFoundHttpException;
 
 class CartController extends BaseActionController
 {
     use HandlesCustomerInformation;
 
-    public function index(IndexRequest $request)
+    public function index(Request $request)
     {
-        if (! Cart::hasCurrentCart()) {
-            return [];
-        }
+        throw_if(! Cart::hasCurrentCart(), NotFoundHttpException::class);
 
-        return [
-            'data' => Cart::current()
-                ->toAugmentedCollection()
-                ->withRelations(['customer', 'customer_id'])
-                ->withShallowNesting()
-                ->toArray(),
-        ];
+        return new CartResource(Cart::current());
     }
 
-    public function update(UpdateRequest $request)
+    public function update(UpdateCartRequest $request)
     {
+        throw_if(! Cart::hasCurrentCart(), NotFoundHttpException::class);
+
         $cart = Cart::current();
-        $cart = $this->handleCustomerInformation($request, $cart);
+        $validated = $request->validated();
 
-        $cart->save();
-
-        return back();
-
-        $data = collect($request->all())
-            ->except(['_token', '_params', '_redirect', '_request', 'customer', 'email'])
-//            ->only(config('simple-commerce.field_whitelist.orders'))
-            ->map(function ($value) {
-                if ($value === 'on') {
-                    return true;
-                }
-
-                if ($value === 'off') {
-                    return false;
-                }
-
-                return $value;
-            });
-
-        if ($data->isNotEmpty()) {
-            $cart->merge($data->toArray());
+        if ($validated['coupon'] ?? false) {
+            // TODO: Add the coupon to the cart.
         }
 
-        $cart->save();
-//        $cart->recalculate();
+        $cart = $this->handleCustomerInformation($request, $cart);
+        $cart->merge(Arr::except($validated, ['coupon', 'customer']));
 
-        return $this->withSuccess($request, [
-            'message' => __('Cart Updated'),
-            'cart' => $cart
-                ->toAugmentedCollection()
-                ->withRelations(['customer', 'customer_id'])
-                ->withShallowNesting()
-                ->toArray(),
-        ]);
+        $cart->save();
+
+        return new CartResource($cart->fresh());
     }
 
     public function destroy(DestroyRequest $request)
     {
-        $cart = Cart::current();
+        throw_if(! Cart::hasCurrentCart(), NotFoundHttpException::class);
 
-        $cart->clearLineItems();
+        Cart::forgetCurrentCart();
 
-        $cart->save()->recalculate();
-
-        return $this->withSuccess($request, [
-            'message' => __('Cart Deleted'),
-        ]);
-    }
-
-    protected function isOrExtendsClass(string $class, string $classToCheckAgainst): bool
-    {
-        return is_subclass_of($class, $classToCheckAgainst)
-            || $class === $classToCheckAgainst;
+        return [];
     }
 }
