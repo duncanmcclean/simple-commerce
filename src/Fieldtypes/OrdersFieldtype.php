@@ -4,10 +4,26 @@ namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use Statamic\Fieldtypes\Relationship;
+use Statamic\Statamic;
 
 class OrdersFieldtype extends Relationship
 {
+    protected $canEdit = true;
     protected $canCreate = false;
+    protected $canSearch = false;
+
+    protected $formComponent = 'orders-publish-form';
+
+    protected $formComponentProps = [
+        'initialActions' => 'actions',
+        'initialTitle' => 'title',
+        'initialReference' => 'reference',
+        'initialFieldset' => 'blueprint',
+        'initialValues' => 'values',
+        'initialMeta' => 'meta',
+        'initialReadOnly' => 'readOnly',
+        'breadcrumbs' => 'breadcrumbs',
+    ];
 
     protected function toItemArray($id)
     {
@@ -16,6 +32,8 @@ class OrdersFieldtype extends Relationship
         return [
             'id' => $order->id(),
             'title' => "#{$order->orderNumber()}",
+            'hint' => $order->date()->format(Statamic::cpDateFormat()),
+            'edit_url' => cp_route('simple-commerce.orders.edit', $order->id()),
         ];
     }
 

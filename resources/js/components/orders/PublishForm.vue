@@ -10,7 +10,7 @@
                 </div>
             </h1>
 
-            <dropdown-list class="rtl:ml-4 ltr:mr-4">
+            <dropdown-list v-if="itemActions.length" class="rtl:ml-4 ltr:mr-4">
                 <data-list-inline-actions
                     :item="values.id"
                     :url="itemActionUrl"
@@ -143,6 +143,7 @@ export default {
         initialValues: Object,
         initialMeta: Object,
         initialTitle: String,
+        initialReadOnly: Boolean,
         collectionHandle: String,
         breadcrumbs: Array,
         initialActions: Object,

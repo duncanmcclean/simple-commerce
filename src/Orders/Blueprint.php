@@ -22,27 +22,7 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'line_items',
-                                    'field' => ['type' => 'line_items', 'display' => __('Line Items'), 'visibility' => 'hidden', 'listable' => false],
-                                ],
-                                [
-                                    'handle' => 'grand_total',
-                                    'field' => ['type' => 'money', 'display' => __('Grand Total'), 'visibility' => 'hidden', 'listable' => false],
-                                ],
-                                [
-                                    'handle' => 'sub_total',
-                                    'field' => ['type' => 'money', 'display' => __('Subtotal'), 'visibility' => 'hidden', 'listable' => false],
-                                ],
-                                [
-                                    'handle' => 'discount_total',
-                                    'field' => ['type' => 'money', 'display' => __('Discount Total'), 'visibility' => 'hidden', 'listable' => false],
-                                ],
-                                [
-                                    'handle' => 'shipping_total',
-                                    'field' => ['type' => 'money', 'display' => __('Shipping Total'), 'visibility' => 'hidden', 'listable' => false],
-                                ],
-                                [
-                                    'handle' => 'tax_total',
-                                    'field' => ['type' => 'money', 'display' => __('Tax Total'), 'visibility' => 'hidden', 'listable' => false],
+                                    'field' => ['type' => 'line_items', 'display' => __('Line Items'), 'visibility' => 'hidden', 'listable' => 'hidden', 'sortable' => false],
                                 ],
                             ],
                         ],
@@ -74,23 +54,23 @@ class Blueprint
                             'fields' => [
                                 [
                                     'handle' => 'shipping_line_1',
-                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'shipping_line_2',
-                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'shipping_city',
-                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'shipping_postcode',
-                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50],
+                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'shipping_country',
-                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'max_items' => 1, 'display' => __('Country'), 'listable' => false, 'visibility' => 'read_only', 'width' => 50],
+                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'max_items' => 1, 'display' => __('Country'), 'listable' => false, 'width' => 50],
                                 ],
                             ],
                         ],
@@ -113,27 +93,27 @@ class Blueprint
                             'fields' => [
                                 [
                                     'handle' => 'use_shipping_address_for_billing',
-                                    'field' => ['type' => 'toggle', 'display' => __('Use Shipping Address for Billing'), 'visibility' => 'read_only', 'listable' => false, 'validate' => 'boolean'],
+                                    'field' => ['type' => 'toggle', 'display' => __('Use Shipping Address for Billing'), 'listable' => false, 'validate' => 'boolean'],
                                 ],
                                 [
                                     'handle' => 'billing_line_1',
-                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                                 [
                                     'handle' => 'billing_line_2',
-                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                                 [
                                     'handle' => 'billing_city',
-                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                                 [
                                     'handle' => 'billing_postcode',
-                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'visibility' => 'read_only', 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                                 [
                                     'handle' => 'billing_country',
-                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'display' => __('Country'), 'listable' => false, 'visibility' => 'read_only', 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'display' => __('Country'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                             ],
                         ],
@@ -149,8 +129,28 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'customer',
-                                    'field' => ['type' => 'customer', 'display' => __('Customer'), 'visibility' => 'read_only', 'listable' => true],
-                                ]
+                                    'field' => ['type' => 'customer', 'display' => __('Customer'), 'listable' => true],
+                                ],
+                                [
+                                    'handle' => 'grand_total',
+                                    'field' => ['type' => 'money', 'display' => __('Grand Total'), 'visibility' => 'hidden', 'listable' => true, 'save_zero_value' => true],
+                                ],
+                                [
+                                    'handle' => 'sub_total',
+                                    'field' => ['type' => 'money', 'display' => __('Subtotal'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
+                                ],
+                                [
+                                    'handle' => 'discount_total',
+                                    'field' => ['type' => 'money', 'display' => __('Discount Total'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
+                                ],
+                                [
+                                    'handle' => 'shipping_total',
+                                    'field' => ['type' => 'money', 'display' => __('Shipping Total'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
+                                ],
+                                [
+                                    'handle' => 'tax_total',
+                                    'field' => ['type' => 'money', 'display' => __('Tax Total'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
+                                ],
                             ],
                         ],
                     ],

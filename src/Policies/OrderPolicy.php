@@ -4,33 +4,23 @@ namespace DuncanMcClean\SimpleCommerce\Policies;
 
 class OrderPolicy
 {
-    public function index($user)
+    public function index($user): bool
     {
-        return true; // todo
+        return $this->view($user);
     }
 
-    public function create($user)
+    public function view($user): bool
     {
-        return true; // todo
+        return $user->can('view orders');
     }
 
-    public function store($user)
+    public function edit($user): bool
     {
-        return true; // todo
+        return $user->can('view orders');
     }
 
-    public function edit($user)
+    public function update($user): bool
     {
-        return true; // todo
-    }
-
-    public function update($user)
-    {
-        return true; // todo
-    }
-
-    public function delete($user)
-    {
-        return false; // todo
+        return $user->can('edit orders');
     }
 }

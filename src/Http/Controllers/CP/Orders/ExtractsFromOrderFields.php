@@ -25,6 +25,10 @@ trait ExtractsFromOrderFields
             ->addValues($values->all())
             ->preProcess();
 
-        return [$fields->values()->merge(['id' => $order->id()])->all(), $fields->meta()->all()];
+        $values = $fields->values()->merge([
+            'id' => $order->id(),
+        ]);
+
+        return [$values->all(), $fields->meta()->all()];
     }
 }

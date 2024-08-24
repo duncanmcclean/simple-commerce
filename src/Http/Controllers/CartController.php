@@ -38,7 +38,7 @@ class CartController extends BaseActionController
 
         $data = collect($request->all())
             ->except(['_token', '_params', '_redirect', '_request', 'customer', 'email'])
-            ->only(config('simple-commerce.field_whitelist.orders'))
+//            ->only(config('simple-commerce.field_whitelist.orders'))
             ->map(function ($value) {
                 if ($value === 'on') {
                     return true;

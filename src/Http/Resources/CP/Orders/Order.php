@@ -10,6 +10,7 @@ class Order extends JsonResource
     public function toArray(Request $request)
     {
         $data = [
+            'title' => __('Order #:number', ['number' => $this->orderNumber()]),
             'order_number' => $this->orderNumber(),
         ];
 

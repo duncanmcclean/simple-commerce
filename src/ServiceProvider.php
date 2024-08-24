@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\CP\Nav;
+use Statamic\Facades\Permission;
 use Statamic\Facades\User;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Stache\Stache;
@@ -63,10 +64,9 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
-        // TODO: Make these paths configurable.
         $this->app['stache']->registerStores([
-            (new CartsStore)->directory(storage_path('statamic/simple-commerce/carts')),
-            (new OrdersStore)->directory(base_path('content/orders'))
+            (new CartsStore)->directory(config('simple-commerce.carts.directory')),
+            (new OrdersStore)->directory(config('simple-commerce.orders.directory')),
         ]);
 
         $this->app->bind(CartQueryBuilder::class, function () {
@@ -88,10 +88,23 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         Nav::extend(function ($nav) {
-            $nav->create('Orders')
+            $nav->create(__('Orders'))
                 ->section(__('Simple Commerce'))
                 ->route('simple-commerce.orders.index')
-                ->icon(SimpleCommerce::svg('shop'));
+                ->icon(SimpleCommerce::svg('shop'))
+                ->can('view orders');
+        });
+
+        Permission::extend(function () {
+            Permission::group('simple-commerce', __('Simple Commerce'), function () {
+                Permission::register('view orders', function ($permission) {
+                    $permission->label(__('View Orders'));
+
+                    $permission->children([
+                        Permission::make('edit orders')->label(__('Edit Orders')),
+                    ]);
+                });
+            });
         });
 
         User::computed('orders', function ($user) {

@@ -70,7 +70,8 @@ class CartItemController extends BaseActionController
 
         // Ensure the product doesn't already exist in the cart
         $alreadyExistsQuery = $items;
-        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
+//        $metadata = Arr::only($request->all(), config('simple-commerce.field_whitelist.line_items'));
+        $metadata = $request->all();
 
         if ($request->has('variant')) {
             $alreadyExistsQuery = $alreadyExistsQuery->where('variant', [

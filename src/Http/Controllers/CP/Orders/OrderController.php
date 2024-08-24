@@ -5,14 +5,15 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Orders;
-use DuncanMcClean\SimpleCommerce\Orders\Blueprint as OrderBlueprint;
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Action;
 use Statamic\Facades\Scope;
+use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
 use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
+use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Order as OrderResource;
 
 class OrderController extends CpController
 {
@@ -71,9 +72,11 @@ class OrderController extends CpController
     {
         $query = Order::query();
 
-        // todo: make this more useful
         if ($search = request('search')) {
-            $query->where('order_number', 'like', '%'.$search.'%');
+            $query
+                ->where('order_number', 'LIKE', '%'.Str::remove('#', $search).'%')
+                ->orWhere('date', 'LIKE', '%'.$search.'%')
+                ->orWhere('grand_total', 'LIKE', '%'.$search.'%');
         }
 
         return $query;
@@ -101,6 +104,7 @@ class OrderController extends CpController
                 ['text' => __('Orders'), 'url' => cp_route('simple-commerce.orders.index')],
             ]),
             'itemActions' => Action::for($order, ['view' => 'form']),
+            'readOnly' => User::current()->cant('update', $order),
         ];
 
         if ($request->wantsJson()) {
@@ -114,6 +118,39 @@ class OrderController extends CpController
 
     public function update(Request $request, $order)
     {
-        dd($request);
+        $order = Order::find($order);
+
+        $this->authorize('update', $order);
+
+        $blueprint = Order::blueprint();
+
+        $data = $request->except($except = [
+            'id', 'customer', 'date', 'discount_total', 'grand_total', 'line_items', 'order_number',
+            'payment_details', 'receipt', 'shipping_total', 'sub_total', 'tax_total'
+        ]);
+
+        $fields = $blueprint->fields()->addValues($data);
+
+        $fields
+            ->validator()
+            ->withReplacements([
+                'id' => $order->id(),
+            ])
+            ->validate();
+
+        $values = $fields->process()->values()->except($except);
+
+        $order->data($values->all());
+
+        $saved = $order->save();
+
+        [$values] = $this->extractFromFields($order, $blueprint);
+
+        return [
+            'data' => array_merge((new OrderResource($order->fresh()))->resolve()['data'], [
+                'values' => $values,
+            ]),
+            'saved' => $saved,
+        ];
     }
 }

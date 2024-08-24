@@ -72,7 +72,7 @@ class CartRepository implements RepositoryContract
 
     private function getKey(): string
     {
-        return 'simple-commerce-cart'; // TODO: Make this configurable.
+        return config('simple-commerce.carts.cookie_name');
     }
 
     public function make(): Cart

@@ -27,7 +27,7 @@
                     <div class="mt-6">
                         <ul class="list-none text-xs space-y-3">
                             <li><span class="font-semibold">Payment ID:</span> pi_1234567889abcefhkl</li>
-                            <li><span class="font-semibold">Confirmed At:</span> 09/09/2024 12:46:12</li>
+                            <li><span class="font-semibold">Confirmed At:</span> 09/09/2024 12:46:12</li> <!-- TODO: Ensure this is output in the CP date/time format -->
                             <li><span class="font-semibold">Amount:</span> £200.99</li>
                         </ul>
                     </div>
