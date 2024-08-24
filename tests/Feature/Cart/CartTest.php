@@ -4,7 +4,6 @@ namespace Tests\Feature\Cart;
 
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
-use DuncanMcClean\SimpleCommerce\Facades\Product;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;

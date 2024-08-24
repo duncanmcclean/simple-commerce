@@ -3,9 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
-use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\DestroyRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\IndexRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\Cart\UpdateCartRequest;
 use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
 use Illuminate\Http\Request;
@@ -14,7 +11,7 @@ use Statamic\Exceptions\NotFoundHttpException;
 
 class CartController extends BaseActionController
 {
-    use HandlesCustomerInformation;
+    use Concerns\HandlesCustomerInformation;
 
     public function index(Request $request)
     {
@@ -42,7 +39,7 @@ class CartController extends BaseActionController
         return new CartResource($cart->fresh());
     }
 
-    public function destroy(DestroyRequest $request)
+    public function destroy(Request $request)
     {
         throw_if(! Cart::hasCurrentCart(), NotFoundHttpException::class);
 
