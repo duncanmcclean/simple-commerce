@@ -157,7 +157,7 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         return OrderFacade::query()
             ->where('mollie->id', $request->get('id'))
-            ->orWhere('gateway', 'like', "%tr_{$request->get('id')}%")
+            ->orWhere('gateway', 'like', "%{$request->get('id')}%")
             ->first();
     }
 }
