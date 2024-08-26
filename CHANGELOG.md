@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.4.4 (2024-08-26)
+
+### What's fixed
+* Removed `tr_` prefix from Mollie webhook code #1148 by @Web10-Joris
+
+
+
 ## v7.4.3 (2024-08-21)
 
 ### What's fixed
