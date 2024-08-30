@@ -18,6 +18,12 @@
 
 [Read the docs](https://simple-commerce.duncanmcclean.com).
 
+## Future of Simple Commerce
+
+I'm currently working hard on the next version of Simple Commerce, which I'm hoping to have in beta (or even fully released) by the end of the year. You can find out more about [the next version](https://duncanmcclean.com/future-of-simple-commerce) on my blog. 
+
+Since it's just me working on Simple Commerce in my free time, I'm currently only looking into show stopping bugs and PRs. This is so I can maximise the amount of time I'm spending on the next version. I hope you understand!
+
 ## Features
 
 ### Everything's just an entry
