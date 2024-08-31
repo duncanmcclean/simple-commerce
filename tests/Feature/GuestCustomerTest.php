@@ -38,7 +38,7 @@ class GuestCustomerTest extends TestCase
     {
         $order = tap(Order::make()->customer(['name' => 'CJ Cregg', 'email' => 'cj.cregg@example.com']))->save();
 
-        $user = User::make()->email('cj,cregg@example.com')->save();
+        $user = User::make()->email('cj.cregg@example.com')->save();
 
         $this
             ->actingAs(User::make()->makeSuper()->save())
