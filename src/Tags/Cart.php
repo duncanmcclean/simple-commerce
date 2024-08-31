@@ -41,7 +41,7 @@ class Cart extends SubTag
         return $cart->augmentedValue($field);
     }
 
-    public function has(): bool
+    public function exists(): bool
     {
         return CartFacade::hasCurrentCart();
     }
@@ -59,7 +59,10 @@ class Cart extends SubTag
 
         return CartFacade::current()->lineItems()
             ->filter(fn (LineItem $lineItem) => $lineItem->product()->id() === $this->params->get('product'))
-            ->when($this->params->get('variant'), fn ($query) => $query->where('variant', $this->params->get('variant')))
+            ->when(
+                $this->params->get('variant'),
+                fn ($collection) => $collection->filter(fn (LineItem $lineItem) => $lineItem->variant()->key() === $this->params->get('variant'))
+            )
             ->count() >= 1;
     }
 
@@ -114,7 +117,7 @@ class Cart extends SubTag
         return $this->createForm(
             action: route('statamic.simple-commerce.cart.line-items.destroy', $lineItem->id()),
             data: $lineItem->toAugmentedArray(),
-            method: 'PATCH'
+            method: 'DELETE'
         );
     }
 
