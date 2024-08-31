@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
-use Illuminate\Validation\Rule;
 use Statamic\CP\Column;
 use Statamic\Facades\Site;
 use Statamic\Fieldtypes\Relationship;
