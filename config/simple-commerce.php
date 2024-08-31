@@ -16,6 +16,8 @@ return [
         'cookie_name' => 'simple-commerce-cart',
 
         'directory' => storage_path('statamic/simple-commerce/carts'),
+
+        'unique_metadata' => false,
     ],
 
     'orders' => [
