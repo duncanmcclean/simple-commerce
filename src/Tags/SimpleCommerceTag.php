@@ -2,9 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Countries;
 use DuncanMcClean\SimpleCommerce\Currencies;
-use DuncanMcClean\SimpleCommerce\Regions;
 use Statamic\Tags\TagNotFoundException;
 use Statamic\Tags\Tags;
 
@@ -17,7 +15,6 @@ class SimpleCommerceTag extends Tags
     protected $tagClasses = [
         'cart' => CartTags::class,
         'checkout' => CheckoutTags::class,
-        'coupon' => CouponTags::class,
         'gateways' => GatewayTags::class,
         'shipping' => ShippingTags::class,
     ];
@@ -57,29 +54,5 @@ class SimpleCommerceTag extends Tags
     public function currencies()
     {
         return Currencies::toArray();
-    }
-
-    public function errors()
-    {
-        if (! $this->hasErrors()) {
-            return null;
-        }
-
-        $errors = [];
-
-        foreach (session('errors')->getBag('default')->all() as $error) {
-            $errors[]['value'] = $error;
-        }
-
-        return $errors;
-    }
-
-    public function hasErrors(): bool
-    {
-        if (! session()->has('errors')) {
-            return false;
-        }
-
-        return session()->get('errors')->hasBag('default');
     }
 }

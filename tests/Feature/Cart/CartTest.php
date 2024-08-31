@@ -60,6 +60,7 @@ class CartTest extends TestCase
         $cart = $this->makeCart();
 
         $this
+            ->from('/cart')
             ->patch('/!/simple-commerce/cart', [
                 'customer' => [
                     'name' => 'Jane Doe',
@@ -75,9 +76,7 @@ class CartTest extends TestCase
                 // This field shouldn't get updated.
                 'grand_total' => 1000,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect('/cart');
 
         $cart = $cart->fresh();
 
@@ -97,15 +96,39 @@ class CartTest extends TestCase
     }
 
     #[Test]
+    public function it_updates_the_cart_and_expects_a_json_response()
+    {
+        $cart = $this->makeCart();
+
+        $this
+            ->patchJson('/!/simple-commerce/cart')
+            ->assertOk()
+            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
+            ->assertJsonPath('data.id', $cart->id());
+    }
+
+    #[Test]
     public function it_deletes_the_cart()
     {
         $cart = $this->makeCart();
 
         $this
+            ->from('/cart')
             ->delete('/!/simple-commerce/cart')
-            ->assertOk();
+            ->assertRedirect('/cart');
 
         $this->assertNull(Cart::find($cart->id()));
+    }
+
+    #[Test]
+    public function it_deletes_the_cart_and_expects_a_json_response()
+    {
+        $cart = $this->makeCart();
+
+        $this
+            ->deleteJson('/!/simple-commerce/cart')
+            ->assertOk()
+            ->assertJson([]);
     }
 
     protected function makeCart()

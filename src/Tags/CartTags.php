@@ -3,10 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
-use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 
@@ -23,266 +21,37 @@ class CartTags extends SubTag
         return Cart::current()->toAugmentedArray();
     }
 
+    public function wildcard($field)
+    {
+        if (! Cart::hasCurrentCart()) {
+            // To prevent empty carts, we'll return default values for some fields.
+            if (in_array($field, ['grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'])) {
+                return Money::format(0, Site::current());
+            }
+
+            return null;
+        }
+
+        $cart = Cart::current();
+
+        if (method_exists($this, $method = Str::camel($field))) {
+            return $this->{$method}();
+        }
+
+        return $cart->augmentedValue($field);
+    }
+
     public function has(): bool
     {
         return Cart::hasCurrentCart();
     }
 
-    public function items()
+    public function isEmpty(): bool
     {
-        if (! Cart::hasCurrentCart()) {
-            return [];
-        }
-
-        $cart = Cart::current();
-
-        return $cart->augmentedValue('line_items');
+        return ! Cart::hasCurrentCart() || Cart::current()->lineItems()->isEmpty();
     }
 
-    public function count()
-    {
-        if (! Cart::hasCurrentCart()) {
-            return 0;
-        }
-
-        return Cart::current()->lineItems()->count();
-    }
-
-    public function quantityTotal()
-    {
-        if (! Cart::hasCurrentCart()) {
-            return 0;
-        }
-
-        return Cart::current()->lineItems()->sum('quantity');
-    }
-
-    public function total()
-    {
-        return $this->grandTotal();
-    }
-
-    public function free()
-    {
-        return $this->rawGrandTotal() === 0;
-    }
-
-    public function grandTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->toAugmentedArray()['grand_total']->value();
-        }
-
-        return 0;
-    }
-
-    public function rawGrandTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->grandTotal();
-        }
-
-        return 0;
-    }
-
-    public function subtotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->augmentedValue('sub_total');
-        }
-
-        return 0;
-    }
-
-    public function rawSubTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->itemsTotal();
-        }
-
-        return 0;
-    }
-
-    public function subTotalWithTax()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Money::format(Cart::current()->subTotalWithTax(), Site::current());
-        }
-
-        return 0;
-    }
-
-    public function shippingTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->toAugmentedArray()['shipping_total']->value();
-        }
-
-        return 0;
-    }
-
-    public function rawShippingTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->shippingTotal();
-        }
-
-        return 0;
-    }
-
-    public function shippingTotalWithTax()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Money::format(Cart::current()->shippingTotalWithTax(), Site::current());
-        }
-
-        return 0;
-    }
-
-    public function taxTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->toAugmentedArray()['tax_total']->value();
-        }
-
-        return 0;
-    }
-
-    public function rawTaxTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->taxTotal();
-        }
-
-        return 0;
-    }
-
-    public function taxTotalSplit(): Collection
-    {
-        return $this->rawTaxTotalSplit()->map(function ($tax) {
-            $tax['amount'] = Money::format($tax['amount'], Site::current());
-
-            return $tax;
-        });
-    }
-
-    public function rawTaxTotalSplit(): Collection
-    {
-        if (! Cart::hasCurrentCart()) {
-            return collect();
-        }
-
-        return Cart::current()->lineItems()
-            ->groupBy(fn ($lineItem) => $lineItem->tax()['rate'])
-            ->map(function ($group, $rate) {
-                return [
-                    'rate' => $rate,
-                    'amount' => $group->sum(fn ($lineItem) => $lineItem->tax()['amount']),
-                ];
-            })
-            ->values();
-    }
-
-    public function couponTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->toAugmentedArray()['coupon_total']->value();
-        }
-
-        return 0;
-    }
-
-    public function rawCouponTotal()
-    {
-        if (Cart::hasCurrentCart()) {
-            return Cart::current()->couponTotal();
-        }
-
-        return 0;
-    }
-
-    public function addItem()
-    {
-        return $this->createForm(
-            route('statamic.simple-commerce.cart-items.store'),
-            [],
-            'POST'
-        );
-    }
-
-    public function updateItem()
-    {
-        $lineItemId = $this->params->get('item');
-
-        if ($product = $this->params->get('product')) {
-            $lineItemId = Cart::current()->lineItems()
-                ->where('product', $product)
-                ->when($this->params->get('variant'), function ($query, $variant) {
-                    $query->where('variant', $variant);
-                })
-                ->map->id()
-                ->first();
-        }
-
-        $lineItem = Cart::current()->lineItems()->find($lineItemId);
-
-        return $this->createForm(
-            route('statamic.simple-commerce.cart-items.update', [
-                'item' => $lineItemId,
-            ]),
-            $lineItem->toAugmentedArray(),
-            'POST',
-            ['product', 'item']
-        );
-    }
-
-    public function removeItem()
-    {
-        $lineItemId = $this->params->get('item');
-
-        if ($product = $this->params->get('product')) {
-            $lineItemId = Cart::current()->lineItems()
-                ->where('product', $product)
-                ->when($this->params->get('variant'), function ($query, $variant) {
-                    $query->where('variant', $variant);
-                })
-                ->map->id()
-                ->first();
-        }
-
-        $lineItem = Cart::current()->lineItems()->find($lineItemId);
-
-        return $this->createForm(
-            route('statamic.simple-commerce.cart-items.destroy', [
-                'item' => $lineItemId,
-            ]),
-            $lineItem->toAugmentedArray(),
-            'DELETE',
-            ['product', 'item']
-        );
-    }
-
-    public function update()
-    {
-        $cart = Cart::current();
-
-        return $this->createForm(
-            route('statamic.simple-commerce.cart.update'),
-            $cart->toAugmentedArray(),
-            'POST'
-        );
-    }
-
-    public function empty()
-    {
-        return $this->createForm(
-            route('statamic.simple-commerce.cart.empty'),
-            [],
-            'DELETE'
-        );
-    }
-
-    public function alreadyExists()
+    public function alreadyExists(): bool
     {
         if (! Cart::hasCurrentCart()) {
             return false;
@@ -294,18 +63,76 @@ class CartTags extends SubTag
             ->count() >= 1;
     }
 
-    public function wildcard($field)
+    public function add()
     {
-        if (! Cart::hasCurrentCart()) {
-            return null;
+        return $this->createForm(route('statamic.simple-commerce.cart.line-items.store'));
+    }
+
+    public function updateLineItem()
+    {
+        if (! $this->params->has('line_item') && ! $this->params->has('product')) {
+            throw new \Exception("You must provide a `line_item` or `product` parameter to the sc:cart:update_line_item tag.");
         }
 
+        $lineItem = Cart::current()->lineItems()
+            ->when($this->params->get('line_item'), function ($collection, $lineItem) {
+                return $collection->where('id', $lineItem);
+            })
+            ->when($this->params->get('product'), function ($collection, $product) {
+                return $collection->where('product', $product);
+            })
+            ->when($this->params->get('variant'), function ($collection, $variant) {
+                return $collection->where('variant', $variant);
+            })
+            ->first();
+
+        return $this->createForm(
+            action: route('statamic.simple-commerce.cart.line-items.update', $lineItem->id()),
+            data: $lineItem->toAugmentedArray(),
+            method: 'PATCH'
+        );
+    }
+
+    public function remove()
+    {
+        if (! $this->params->has('line_item') && ! $this->params->has('product')) {
+            throw new \Exception("You must provide a `line_item` or `product` parameter to the sc:cart:remove tag.");
+        }
+
+        $lineItem = Cart::current()->lineItems()
+            ->when($this->params->get('line_item'), function ($collection, $lineItem) {
+                return $collection->where('id', $lineItem);
+            })
+            ->when($this->params->get('product'), function ($collection, $product) {
+                return $collection->where('product', $product);
+            })
+            ->when($this->params->get('variant'), function ($collection, $variant) {
+                return $collection->where('variant', $variant);
+            })
+            ->first();
+
+        return $this->createForm(
+            action: route('statamic.simple-commerce.cart.line-items.destroy', $lineItem->id()),
+            data: $lineItem->toAugmentedArray(),
+            method: 'PATCH'
+        );
+    }
+
+    public function update()
+    {
         $cart = Cart::current();
 
-        if (method_exists($this, $method = Str::camel($field))) {
-            return $this->{$method}();
-        }
+        return $this->createForm(
+            action: route('statamic.simple-commerce.cart.update'),
+            data: $cart->toAugmentedArray(),
+        );
+    }
 
-        return $cart->augmentedValue($field);
+    public function empty()
+    {
+        return $this->createForm(
+            action: route('statamic.simple-commerce.cart.destroy'),
+            method: 'DELETE'
+        );
     }
 }

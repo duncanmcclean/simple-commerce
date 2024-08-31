@@ -51,7 +51,7 @@ class CheckoutTags extends SubTag
         }
 
         return $this->createForm(
-            route('statamic.simple-commerce.checkout.store'),
+            route('statamic.simple-commerce.checkout'),
             $data,
             'POST'
         );

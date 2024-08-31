@@ -25,14 +25,6 @@ class CartLineItemsTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_a_not_found_exception_when_no_current_cart_is_set()
-    {
-        $this
-            ->post('/!/simple-commerce/cart/line-items')
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_adds_a_product_to_the_cart()
     {
         $cart = $this->makeCart();
@@ -40,6 +32,27 @@ class CartLineItemsTest extends TestCase
 
         $this
             ->post('/!/simple-commerce/cart/line-items', [
+                'product' => $product->id(),
+                'quantity' => 1,
+            ])
+            ->assertRedirect();
+
+        $cart = $cart->fresh();
+
+        $this->assertCount(1, $cart->lineItems());
+
+        $this->assertEquals($product->id(), $cart->lineItems()->first()->product()->id());
+        $this->assertEquals(1, $cart->lineItems()->first()->quantity());
+    }
+
+    #[Test]
+    public function it_adds_a_product_to_the_cart_and_expects_json_response()
+    {
+        $cart = $this->makeCart();
+        $product = $this->makeProduct();
+
+        $this
+            ->postJson('/!/simple-commerce/cart/line-items', [
                 'product' => $product->id(),
                 'quantity' => 1,
             ])
@@ -68,9 +81,7 @@ class CartLineItemsTest extends TestCase
                 'note' => 'This is a present for my friend. Please wrap it in birthday paper.',
                 'message' => 'Happy Birthday, friend!',
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -97,9 +108,7 @@ class CartLineItemsTest extends TestCase
                 'variant' => 'Red',
                 'quantity' => 1,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -155,9 +164,7 @@ class CartLineItemsTest extends TestCase
                 'product' => $product->id(),
                 'quantity' => 5,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -206,9 +213,7 @@ class CartLineItemsTest extends TestCase
                 'variant' => 'Red',
                 'quantity' => 5,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -288,9 +293,7 @@ class CartLineItemsTest extends TestCase
                 'product' => $product->id(),
                 'quantity' => 1,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -318,9 +321,7 @@ class CartLineItemsTest extends TestCase
                 'product' => $product->id(),
                 'quantity' => 1,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -351,9 +352,7 @@ class CartLineItemsTest extends TestCase
                 'quantity' => 1,
                 'foo' => 'baz',
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -385,9 +384,7 @@ class CartLineItemsTest extends TestCase
                 'variant' => 'Red',
                 'quantity' => 1,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -420,9 +417,7 @@ class CartLineItemsTest extends TestCase
                 'quantity' => 1,
                 'foo' => 'baz',
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -454,9 +449,7 @@ class CartLineItemsTest extends TestCase
             ->patch('/!/simple-commerce/cart/line-items/line-item-1', [
                 'quantity' => 3,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -483,9 +476,7 @@ class CartLineItemsTest extends TestCase
                 'variant' => 'Yellow',
                 'quantity' => 1,
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -505,9 +496,7 @@ class CartLineItemsTest extends TestCase
                 'quantity' => 1,
                 'foo' => 'baz',
             ])
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
-            ->assertJsonPath('data.id', $cart->id());
+            ->assertRedirect();
 
         $cart = $cart->fresh();
 
@@ -525,6 +514,18 @@ class CartLineItemsTest extends TestCase
 
         $this
             ->delete('/!/simple-commerce/cart/line-items/line-item-1')
+            ->assertRedirect();
+
+        $this->assertCount(0, $cart->fresh()->lineItems());
+    }
+
+    #[Test]
+    public function it_removes_a_line_item_and_expects_json_response()
+    {
+        $cart = $this->makeCartWithLineItems();
+
+        $this
+            ->deleteJson('/!/simple-commerce/cart/line-items/line-item-1')
             ->assertOk()
             ->assertJsonStructure(['data' => ['id', 'customer', 'line_items']])
             ->assertJsonPath('data.id', $cart->id());

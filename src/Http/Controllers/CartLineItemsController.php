@@ -11,7 +11,7 @@ use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use Illuminate\Http\Request;
 use Statamic\Exceptions\NotFoundHttpException;
 
-class CartLineItemsController extends BaseActionController
+class CartLineItemsController
 {
     use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock, Concerns\HandlePrerequisiteProducts;
 
@@ -21,7 +21,7 @@ class CartLineItemsController extends BaseActionController
         $product = Product::find($request->product);
 
         $data = $request->collect()->except([
-            '_redirect', '_error_redirect', '_request', 'product', 'variant', 'quantity', 'first_name', 'last_name'. 'email', 'customer',
+            '_redirect', '_error_redirect', 'product', 'variant', 'quantity', 'first_name', 'last_name'. 'email', 'customer',
         ]);
 
         $this->validateStock($request, $cart);
@@ -63,7 +63,11 @@ class CartLineItemsController extends BaseActionController
 
         $cart->save();
 
-        return new CartResource($cart->fresh());
+        if ($request->ajax() || $request->wantsJson()) {
+            return new CartResource($cart->fresh());
+        }
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 
     public function update(UpdateLineItemRequest $request, string $lineItem)
@@ -74,7 +78,7 @@ class CartLineItemsController extends BaseActionController
         throw_if(! $lineItem, NotFoundHttpException::class);
 
         $data = $request->collect()->except([
-            '_redirect', '_error_redirect', '_request', 'product', 'variant', 'quantity', 'first_name', 'last_name'. 'email', 'customer',
+            '_redirect', '_error_redirect', 'product', 'variant', 'quantity', 'first_name', 'last_name'. 'email', 'customer',
         ]);
 
         $this->validateStock($request, $cart, $lineItem);
@@ -89,7 +93,11 @@ class CartLineItemsController extends BaseActionController
 
         $cart->save();
 
-        return new CartResource($cart->fresh());
+        if ($request->ajax() || $request->wantsJson()) {
+            return new CartResource($cart->fresh());
+        }
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 
     public function destroy(Request $request, string $lineItem)
@@ -104,6 +112,10 @@ class CartLineItemsController extends BaseActionController
         $cart->lineItems()->remove($lineItem->id());
         $cart->save();
 
-        return new CartResource($cart->fresh());
+        if ($request->ajax() || $request->wantsJson()) {
+            return new CartResource($cart->fresh());
+        }
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 }

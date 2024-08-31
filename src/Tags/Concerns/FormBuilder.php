@@ -9,9 +9,14 @@ trait FormBuilder
 {
     use RendersForms;
 
-    private static $knownParams = ['redirect', 'error_redirect', 'request'];
+    private static array $knownParams = ['redirect', 'error_redirect'];
 
-    protected function createForm(string $action, array $data = [], string $method = 'POST', array $knownParams = []): string|array
+    protected function createForm(
+        string $action,
+        array $data = [],
+        string $method = 'POST',
+        array $knownParams = []
+    ): string|array
     {
         $knownParams = array_merge(static::$knownParams, $knownParams);
 
@@ -20,7 +25,6 @@ trait FormBuilder
             $params = $this->formParams($method, [
                 'redirect' => $this->redirectValue(),
                 'error_redirect' => $this->errorRedirectValue(),
-                'request' => $this->requestValue(),
             ]);
 
             return array_merge([
@@ -35,7 +39,6 @@ trait FormBuilder
 
         $html .= $this->redirectField();
         $html .= $this->errorRedirectField();
-        $html .= $this->requestField();
 
         $html .= $this->parse($this->sessionData($data));
 
@@ -61,9 +64,7 @@ trait FormBuilder
             $redirectUrl = Str::start($redirectUrl, '/');
         }
 
-        return config('simple-commerce.disable_form_parameter_validation')
-            ? $redirectUrl
-            : encrypt($redirectUrl);
+        return $redirectUrl;
     }
 
     private function errorRedirectValue()
@@ -74,18 +75,7 @@ trait FormBuilder
             $errorRedirectUrl = Str::start($errorRedirectUrl, '/');
         }
 
-        return config('simple-commerce.disable_form_parameter_validation')
-            ? $errorRedirectUrl
-            : encrypt($errorRedirectUrl);
-    }
-
-    private function requestValue()
-    {
-        $request = $this->params->get('request', 'Empty');
-
-        return config('simple-commerce.disable_form_parameter_validation')
-            ? $request
-            : encrypt($request);
+        return $errorRedirectUrl;
     }
 
     private function redirectField()
@@ -96,11 +86,6 @@ trait FormBuilder
     private function errorRedirectField()
     {
         return '<input type="hidden" name="_error_redirect" value="'.$this->errorRedirectValue().'" />';
-    }
-
-    private function requestField()
-    {
-        return '<input type="hidden" name="_request" value="'.$this->requestValue().'" />';
     }
 
     /**

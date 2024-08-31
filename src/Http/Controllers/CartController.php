@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Statamic\Exceptions\NotFoundHttpException;
 
-class CartController extends BaseActionController
+class CartController
 {
     use Concerns\HandlesCustomerInformation;
 
@@ -36,7 +36,11 @@ class CartController extends BaseActionController
 
         $cart->save();
 
-        return new CartResource($cart->fresh());
+        if ($request->ajax() || $request->wantsJson()) {
+            return new CartResource($cart->fresh());
+        }
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 
     public function destroy(Request $request)
@@ -45,6 +49,10 @@ class CartController extends BaseActionController
 
         Cart::forgetCurrentCart();
 
-        return [];
+        if ($request->ajax() || $request->wantsJson()) {
+            return [];
+        }
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 }

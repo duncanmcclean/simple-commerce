@@ -2,19 +2,15 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Requests\Cart;
 
-use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Statamic\Exceptions\NotFoundHttpException;
 
 class AddLineItemRequest extends FormRequest
 {
     public function authorize()
     {
-        throw_if(! Cart::hasCurrentCart(), NotFoundHttpException::class);
-
         return true;
     }
 

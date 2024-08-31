@@ -11,7 +11,7 @@ use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use Illuminate\Http\Request;
 
-class CheckoutController extends BaseActionController
+class CheckoutController
 {
     use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock;
 
@@ -42,6 +42,10 @@ class CheckoutController extends BaseActionController
 
         Cart::forgetCurrentCart();
 
-        return $this->formSuccess($request, new CartResource(Cart::current()));
+        if ($request->ajax() || $request->wantsJson()) {
+            return new CartResource($cart);
+        }
+
+        return $request->_redirect ? redirect($request->_redirect) : back();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use Illuminate\Support\Collection;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait Calculable
@@ -40,6 +41,17 @@ trait Calculable
         return $this->fluentlyGetOrSet('taxTotal')
             ->getter(fn ($taxTotal) => $taxTotal ?? 0)
             ->args(func_get_args());
+    }
+
+    public function taxTotals(): Collection
+    {
+        return $this->lineItems()
+            ->groupBy(fn (LineItem $lineItem) => $lineItem->get('tax_rate'))
+            ->map(fn ($group, $taxRate) => [
+                'rate' => $taxRate,
+                'amount' => $group->sum->get('tax_total'),
+            ])
+            ->values();
     }
 
     public function shippingTotal($shippingTotal = null)

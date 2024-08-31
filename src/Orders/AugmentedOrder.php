@@ -4,7 +4,10 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
+use DuncanMcClean\SimpleCommerce\Support\Money;
+use Illuminate\Support\Collection;
 use Statamic\Data\AbstractAugmented;
+use Statamic\Facades\Site;
 
 class AugmentedOrder extends AbstractAugmented
 {
@@ -27,7 +30,9 @@ class AugmentedOrder extends AbstractAugmented
     {
         $keys = [
             'id',
+            'free',
             'customer',
+            'tax_totals',
         ];
 
         if ($this->data instanceof Order) {
@@ -40,6 +45,18 @@ class AugmentedOrder extends AbstractAugmented
         }
 
         return $keys;
+    }
+
+    public function free(): bool
+    {
+        return $this->data->grandTotal() == 0;
+    }
+
+    public function taxTotals(): Collection
+    {
+        return $this->data->taxTotals()->map(fn ($item) => array_merge($item, [
+            'amount' => Money::format($item['amount'], Site::current()),
+        ]));
     }
 
     // todo: status
