@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Cart;
 
 use ArrayAccess;
+use Carbon\CarbonInterface;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
@@ -12,6 +13,7 @@ use DuncanMcClean\SimpleCommerce\Orders\Calculable;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Carbon;
 use Statamic\Contracts\Data\Augmentable;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use Statamic\Contracts\Data\Augmented;
@@ -100,6 +102,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
 
     public function save(): bool
     {
+        $this->set('updated_at', Carbon::now()->timestamp);
+
         CartFacade::save($this);
 
         return true;
@@ -203,6 +207,10 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     public function getQueryableValue(string $field)
     {
         if ($field === 'customer') {
+            if (is_array($this->customer)) {
+                return $this->customer()->id();
+            }
+
             return $this->customer;
         }
 

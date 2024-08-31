@@ -19,6 +19,7 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $commands = [
         Console\Commands\MigrateOrders::class,
+        Console\Commands\PurgeAbandonedCarts::class,
     ];
 
     protected $fieldtypes = [

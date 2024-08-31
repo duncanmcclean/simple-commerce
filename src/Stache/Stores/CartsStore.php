@@ -12,6 +12,7 @@ class CartsStore extends BasicStore
 {
     protected $storeIndexes = [
         'customer',
+        'updated_at',
     ];
 
     public function key()
