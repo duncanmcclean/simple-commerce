@@ -93,18 +93,4 @@ class ShippingMethodFieldtype extends Relationship
             return $shippingMethod['name'];
         })->join(', ');
     }
-
-    public function rules(): array
-    {
-        if ($this->config('max_items') === 1) {
-            $site = Site::selected();
-
-            return [
-                'string',
-                Rule::in(SimpleCommerce::shippingMethods($site->handle())->pluck('class')->toArray()),
-            ];
-        }
-
-        return parent::rules();
-    }
 }
