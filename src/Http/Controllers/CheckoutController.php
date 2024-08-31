@@ -4,17 +4,20 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use Illuminate\Http\Request;
 
 class CheckoutController extends BaseActionController
 {
-    use AcceptsFormRequests, HandlesCustomerInformation;
+    use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock;
 
     public function __invoke(Request $request)
     {
+        $cart = Cart::current();
         $values = $request->all();
 
         // TODO: This is dumb. Find a better way.
@@ -24,8 +27,13 @@ class CheckoutController extends BaseActionController
 
         $validated = Order::blueprint()->fields()->addValues($values)->validate();
 
-        $cart = Cart::current();
+        // TODO: handle this better, instead of one exception per product, collect them all and return them all
+        $cart->lineItems()->each(function ($lineItem) use ($request, $cart) {
+            $this->validateStock($request, $cart, $lineItem);
+        });
+
         $cart = $this->handleCustomerInformation($request, $cart);
+
         $cart->merge($validated);
         $cart->save();
 
@@ -34,8 +42,6 @@ class CheckoutController extends BaseActionController
 
         Cart::forgetCurrentCart();
 
-        return $this->withSuccess($request, [
-            'message' => __('Checkout Complete!'),
-        ]);
+        return $this->formSuccess($request, new CartResource(Cart::current()));
     }
 }

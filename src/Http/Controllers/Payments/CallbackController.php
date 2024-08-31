@@ -47,7 +47,7 @@ class CallbackController extends BaseActionController
 
         $this->forgetCart();
 
-        return $this->withSuccess($request, [
+        return $this->formSuccess($request, [
             'success' => __('Checkout Complete!'),
             'cart' => $order->toAugmentedArray(),
             'is_checkout_request' => true,
