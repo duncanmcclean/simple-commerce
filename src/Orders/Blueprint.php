@@ -140,8 +140,8 @@ class Blueprint
                                     'field' => ['type' => 'money', 'display' => __('Subtotal'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
                                 ],
                                 [
-                                    'handle' => 'discount_total',
-                                    'field' => ['type' => 'money', 'display' => __('Discount Total'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
+                                    'handle' => 'coupon_total',
+                                    'field' => ['type' => 'money', 'display' => __('Coupon Total'), 'visibility' => 'hidden', 'listable' => 'hidden', 'save_zero_value' => true],
                                 ],
                                 [
                                     'handle' => 'shipping_total',

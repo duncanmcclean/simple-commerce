@@ -18,12 +18,12 @@
                 <div>Subtotal</div>
                 <div>{{ receipt.totals.sub_total }}</div>
             </div>
-            <div v-if="receipt.discount" class="receipt-total">
+            <div v-if="receipt.coupon" class="receipt-total">
                 <div>
                     <span>Coupon Discount (COUPONCODE)</span>
                     <span class="help-block">50% off</span>
                 </div>
-                <div>{{ receipt.totals.discount_total }}</div>
+                <div>{{ receipt.totals.coupon_total }}</div>
             </div>
             <div v-if="receipt.shipping" class="receipt-total">
                 <div>

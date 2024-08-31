@@ -2,37 +2,37 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 
-class CartTags extends SubTag
+class Cart extends SubTag
 {
     use Concerns\FormBuilder;
 
     public function index()
     {
-        if (! Cart::hasCurrentCart()) {
+        if (! CartFacade::hasCurrentCart()) {
             return [];
         }
 
-        return Cart::current()->toAugmentedArray();
+        return CartFacade::current()->toAugmentedArray();
     }
 
     public function wildcard($field)
     {
-        if (! Cart::hasCurrentCart()) {
+        if (! CartFacade::hasCurrentCart()) {
             // To prevent empty carts, we'll return default values for some fields.
-            if (in_array($field, ['grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'])) {
+            if (in_array($field, ['grand_total', 'sub_total', 'coupon_total', 'tax_total', 'shipping_total'])) {
                 return Money::format(0, Site::current());
             }
 
             return null;
         }
 
-        $cart = Cart::current();
+        $cart = CartFacade::current();
 
         if (method_exists($this, $method = Str::camel($field))) {
             return $this->{$method}();
@@ -43,21 +43,21 @@ class CartTags extends SubTag
 
     public function has(): bool
     {
-        return Cart::hasCurrentCart();
+        return CartFacade::hasCurrentCart();
     }
 
     public function isEmpty(): bool
     {
-        return ! Cart::hasCurrentCart() || Cart::current()->lineItems()->isEmpty();
+        return ! CartFacade::hasCurrentCart() || CartFacade::current()->lineItems()->isEmpty();
     }
 
     public function alreadyExists(): bool
     {
-        if (! Cart::hasCurrentCart()) {
+        if (! CartFacade::hasCurrentCart()) {
             return false;
         }
 
-        return Cart::current()->lineItems()
+        return CartFacade::current()->lineItems()
             ->filter(fn (LineItem $lineItem) => $lineItem->product()->id() === $this->params->get('product'))
             ->when($this->params->get('variant'), fn ($query) => $query->where('variant', $this->params->get('variant')))
             ->count() >= 1;
@@ -74,7 +74,7 @@ class CartTags extends SubTag
             throw new \Exception("You must provide a `line_item` or `product` parameter to the sc:cart:update_line_item tag.");
         }
 
-        $lineItem = Cart::current()->lineItems()
+        $lineItem = CartFacade::current()->lineItems()
             ->when($this->params->get('line_item'), function ($collection, $lineItem) {
                 return $collection->where('id', $lineItem);
             })
@@ -99,7 +99,7 @@ class CartTags extends SubTag
             throw new \Exception("You must provide a `line_item` or `product` parameter to the sc:cart:remove tag.");
         }
 
-        $lineItem = Cart::current()->lineItems()
+        $lineItem = CartFacade::current()->lineItems()
             ->when($this->params->get('line_item'), function ($collection, $lineItem) {
                 return $collection->where('id', $lineItem);
             })
@@ -120,7 +120,7 @@ class CartTags extends SubTag
 
     public function update()
     {
-        $cart = Cart::current();
+        $cart = CartFacade::current();
 
         return $this->createForm(
             action: route('statamic.simple-commerce.cart.update'),

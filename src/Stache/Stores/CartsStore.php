@@ -34,7 +34,7 @@ class CartsStore extends BasicStore
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))
             ->subTotal(Arr::pull($data, 'sub_total'))
-            ->discountTotal(Arr::pull($data, 'discount_total'))
+            ->couponTotal(Arr::pull($data, 'coupon_total'))
             ->taxTotal(Arr::pull($data, 'tax_total'))
             ->shippingTotal(Arr::pull($data, 'shipping_total'))
             ->data($data);

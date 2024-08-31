@@ -8,7 +8,7 @@ use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Facades\Site;
 
-class ShippingTags extends SubTag
+class Shipping extends SubTag
 {
     public function methods()
     {

@@ -13,10 +13,10 @@ class SimpleCommerceTag extends Tags
     protected static $aliases = ['simple-commerce'];
 
     protected $tagClasses = [
-        'cart' => CartTags::class,
-        'checkout' => CheckoutTags::class,
-        'gateways' => GatewayTags::class,
-        'shipping' => ShippingTags::class,
+        'cart' => Cart::class,
+        'checkout' => Checkout::class,
+        'gateways' => Gateways::class,
+        'shipping' => Shipping::class,
     ];
 
     public function wildcard(string $tag)

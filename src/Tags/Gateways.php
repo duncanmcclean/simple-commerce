@@ -4,7 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
-class GatewayTags extends SubTag
+class Gateways extends SubTag
 {
     public function index()
     {

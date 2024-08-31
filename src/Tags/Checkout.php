@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class CheckoutTags extends SubTag
+class Checkout extends SubTag
 {
     use Concerns\FormBuilder;
 

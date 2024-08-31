@@ -80,7 +80,7 @@ class MigrateOrders extends Command
                             ->lineItems(Arr::pull($data, 'items'))
                             ->grandTotal(Arr::pull($data, 'grand_total'))
                             ->subTotal(Arr::pull($data, 'items_total'))
-                            ->discountTotal(Arr::pull($data, 'coupon_total'))
+                            ->couponTotal(Arr::pull($data, 'coupon_total'))
                             ->taxTotal(Arr::pull($data, 'tax_total'))
                             ->shippingTotal(Arr::pull($data, 'shipping_total'))
                             ->paymentGateway(Arr::pull($data, 'gateway.use'))

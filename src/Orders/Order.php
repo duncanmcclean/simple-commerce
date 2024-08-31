@@ -209,7 +209,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
-            'discount_total' => $this->discountTotal(),
+            'coupon_total' => $this->couponTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
         ], $this->data->all());
@@ -232,7 +232,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
 
     public function shallowAugmentedArrayKeys()
     {
-        return ['id', 'order_number', 'date', 'status', 'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
+        return ['id', 'order_number', 'date', 'status', 'grand_total', 'sub_total', 'coupon_total', 'tax_total', 'shipping_total'];
     }
 
     public function newAugmentedInstance(): Augmented
@@ -249,7 +249,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
-            'discount_total' => $this->discountTotal(),
+            'coupon_total' => $this->couponTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
         ], $this->data()->toArray());
