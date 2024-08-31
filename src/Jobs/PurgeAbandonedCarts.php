@@ -16,7 +16,7 @@ class PurgeAbandonedCarts implements ShouldQueue
     public function handle()
     {
         Cart::query()
-            ->where('updated_at', '<', Carbon::now()->subDays(90)->timestamp)
+            ->where('updated_at', '<', Carbon::now()->subDays(config('simple-commerce.carts.purge_abandoned_carts_after'))->timestamp)
             ->chunk(100, fn ($carts) => $carts->each->delete());
     }
 }

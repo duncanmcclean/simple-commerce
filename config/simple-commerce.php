@@ -18,6 +18,8 @@ return [
         'directory' => storage_path('statamic/simple-commerce/carts'),
 
         'unique_metadata' => false,
+
+        'purge_abandoned_carts_after' => 90,
     ],
 
     'orders' => [
