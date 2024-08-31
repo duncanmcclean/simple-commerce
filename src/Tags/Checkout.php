@@ -23,32 +23,32 @@ class Checkout extends SubTag
         $cart = Cart::current();
         $data = $cart->toAugmentedArray();
 
-        if ($cart->grandTotal() > 0) {
-            SimpleCommerce::gateways()
-                ->filter(function ($gateway) {
-                    if ($specifiedGateway = $this->params->get('gateway')) {
-                        return $gateway['handle'] === $specifiedGateway;
-                    }
-
-                    return true;
-                })
-                ->each(function ($gateway) use (&$cart, &$data) {
-                    $config = Gateway::use($gateway['handle'])->config();
-                    $prepare = Gateway::use($gateway['handle'])->prepare(request(), $cart);
-
-                    $callbackUrl = Gateway::use($gateway['handle'])
-                        ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
-                        ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
-                        ->callbackUrl();
-
-                    $data[$gateway['handle']] = array_merge($prepare, [
-                        'config' => $config,
-                        'callback_url' => $callbackUrl,
-                    ]);
-
-                    $cart->set($gateway['handle'], $prepare)->save();
-                });
-        }
+//        if ($cart->grandTotal() > 0) {
+//            SimpleCommerce::gateways()
+//                ->filter(function ($gateway) {
+//                    if ($specifiedGateway = $this->params->get('gateway')) {
+//                        return $gateway['handle'] === $specifiedGateway;
+//                    }
+//
+//                    return true;
+//                })
+//                ->each(function ($gateway) use (&$cart, &$data) {
+//                    $config = Gateway::use($gateway['handle'])->config();
+//                    $prepare = Gateway::use($gateway['handle'])->prepare(request(), $cart);
+//
+//                    $callbackUrl = Gateway::use($gateway['handle'])
+//                        ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
+//                        ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
+//                        ->callbackUrl();
+//
+//                    $data[$gateway['handle']] = array_merge($prepare, [
+//                        'config' => $config,
+//                        'callback_url' => $callbackUrl,
+//                    ]);
+//
+//                    $cart->set($gateway['handle'], $prepare)->save();
+//                });
+//        }
 
         return $this->createForm(
             route('statamic.simple-commerce.checkout'),

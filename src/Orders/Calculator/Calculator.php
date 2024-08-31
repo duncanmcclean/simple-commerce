@@ -2,21 +2,19 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Calculator as Contract;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use Illuminate\Support\Facades\Pipeline;
 
-class Calculator implements Contract
+class Calculator
 {
-    public static function calculate(Order $order): Order
+    public static function calculate(Cart $cart): Cart
     {
-        return Pipeline::send($order)
+        return Pipeline::send($cart)
             ->through([
                 ResetTotals::class,
-                LineItemCalculator::class,
-                CalculateItemsTotal::class,
-                CouponCalculator::class,
-                ShippingCalculator::class,
+                CalculateLineItems::class,
+//                ApplyCoupon::class,
+//                ApplyShipping::class,
                 CalculateGrandTotal::class,
             ])
             ->thenReturn();

@@ -19,7 +19,10 @@ class ProductRepository implements RepositoryContract
 
     public function all()
     {
-        return $this->query()->get();
+        return Entry::query()
+            ->whereIn('collection', $this->collections)
+            ->get()
+            ->map(fn ($entry) => $this->fromEntry($entry));
     }
 
     public function find($id): ?Product

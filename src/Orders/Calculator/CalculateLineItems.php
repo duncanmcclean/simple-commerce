@@ -3,29 +3,22 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
-class LineItemCalculator
+class CalculateLineItems
 {
-    public function handle(Order $order, Closure $next)
+    public function handle(Cart $cart, Closure $next)
     {
-        $order->lineItems()
-            ->transform(function (LineItem $lineItem) use ($order) {
+        $cart->lineItems()
+            ->transform(function (LineItem $lineItem) use ($cart) {
                 $product = $lineItem->product();
 
-                if ($product->purchasableType() === ProductType::Variant) {
-                    $variant = $product->variant(
-                        isset($lineItem->variant()['variant']) ? $lineItem->variant()['variant'] : $lineItem->variant()
-                    );
-
-                    if (SimpleCommerce::$productVariantPriceHook) {
-                        $productPrice = (SimpleCommerce::$productVariantPriceHook)($order, $product, $variant);
-                    } else {
-                        $productPrice = $variant->price();
-                    }
+                if ($product->purchasableType() === ProductType::Product) {
+                    $productPrice = $product->price();
 
                     // If $productPrice contains a decimal, we need to strip it & ensure we have two decimal places.
                     if (str_contains($productPrice, '.')) {
@@ -38,12 +31,10 @@ class LineItemCalculator
                     );
                 }
 
-                if ($product->purchasableType() === ProductType::Product) {
-                    if (SimpleCommerce::$productPriceHook) {
-                        $productPrice = (SimpleCommerce::$productPriceHook)($order, $product);
-                    } else {
-                        $productPrice = $product->price();
-                    }
+                if ($product->purchasableType() === ProductType::Variant) {
+                    $variant = $product->variant($lineItem->variant()->key());
+
+                    $productPrice = $variant->price();
 
                     // If $productPrice contains a decimal, we need to strip it & ensure we have two decimal places.
                     if (str_contains($productPrice, '.')) {
@@ -59,6 +50,8 @@ class LineItemCalculator
                 return $lineItem;
             });
 
-        return $next($order);
+        $cart->subTotal($cart->lineItems()->map->total()->sum());
+
+        return $next($cart);
     }
 }

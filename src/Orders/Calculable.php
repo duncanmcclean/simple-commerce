@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\Calculator;
 use Illuminate\Support\Collection;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -63,8 +64,6 @@ trait Calculable
 
     public function recalculate(): self
     {
-        // TODO
-
-        return $this;
+        return app(Calculator::class)->calculate($this);
     }
 }

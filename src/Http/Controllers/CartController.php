@@ -34,7 +34,7 @@ class CartController
         $cart = $this->handleCustomerInformation($request, $cart);
         $cart->merge(Arr::except($validated, ['coupon', 'customer']));
 
-        $cart->save();
+        $cart->recalculate()->save();
 
         if ($request->ajax() || $request->wantsJson()) {
             return new CartResource($cart->fresh());

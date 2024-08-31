@@ -3,20 +3,19 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
+use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 
 class CalculateGrandTotal
 {
-    public function handle(Order $order, Closure $next)
+    public function handle(Cart $cart, Closure $next)
     {
-        $order->grandTotal(
-            (($order->itemsTotal() + $order->taxTotal()) - $order->couponTotal()) + $order->shippingTotal()
+        $cart->grandTotal(
+            (($cart->subTotal() + $cart->taxTotal()) - $cart->couponTotal()) + $cart->shippingTotal()
         );
 
-        $order->grandTotal(
-            (int) $order->grandTotal()
-        );
+        $cart->grandTotal((int) $cart->grandTotal());
 
-        return $next($order);
+        return $next($cart);
     }
 }

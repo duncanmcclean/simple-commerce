@@ -61,7 +61,7 @@ class CartLineItemsController
             ])->all());
         }
 
-        $cart->save();
+        $cart->recalculate()->save();
 
         if ($request->ajax() || $request->wantsJson()) {
             return new CartResource($cart->fresh());
@@ -91,7 +91,7 @@ class CartLineItemsController
             ])->all()
         );
 
-        $cart->save();
+        $cart->recalculate()->save();
 
         if ($request->ajax() || $request->wantsJson()) {
             return new CartResource($cart->fresh());
@@ -110,7 +110,7 @@ class CartLineItemsController
         throw_if(! $lineItem, NotFoundHttpException::class);
 
         $cart->lineItems()->remove($lineItem->id());
-        $cart->save();
+        $cart->recalculate()->save();
 
         if ($request->ajax() || $request->wantsJson()) {
             return new CartResource($cart->fresh());

@@ -5,10 +5,13 @@ namespace Tests\Feature;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\User;
+use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
 
 class GuestCustomerTest extends TestCase
 {
+    use PreventsSavingStacheItemsToDisk;
+
     #[Test]
     public function it_can_convert_a_guest_customer_to_a_user(): void
     {
@@ -48,6 +51,6 @@ class GuestCustomerTest extends TestCase
             ])
             ->assertOk();
 
-        $this->assertEquals($user, $order->fresh()->customer());
+        $this->assertEquals($user->id(), $order->fresh()->customer()->id());
     }
 }

@@ -7,7 +7,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Shipping;
 use Statamic\Facades\Site;
 
-class ShippingCalculator
+class ApplyShipping
 {
     public function handle(Order $order, Closure $next)
     {

@@ -6,7 +6,7 @@ use Closure;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 
-class CouponCalculator
+class ApplyCoupon
 {
     public function handle(Order $order, Closure $next)
     {
