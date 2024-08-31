@@ -100,7 +100,7 @@ class UserCustomerRepository implements RepositoryContract
         }
 
         if ($this->isUsingEloquentUsers()) {
-
+            $user->data(Arr::except($customer->data()->all(), $ignoredKeys));
         } else {
             $user->data(array_merge(
                 $user->data()->all(),
