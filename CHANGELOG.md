@@ -1,5 +1,13 @@
 # Changelog
 
+## v7.4.5 (2024-08-31)
+
+* Workaround error when refunding Stripe payments
+* Remove validation of Shipping Method fields #1147 by @duncanmcclean
+* Worked around a weird issue when merging user data between flat-file and database users #1083 by @duncanmcclean
+
+
+
 ## v7.4.4 (2024-08-26)
 
 ### What's fixed
