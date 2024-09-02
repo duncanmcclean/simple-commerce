@@ -57,7 +57,7 @@ class Telemetry
         ];
 
         try {
-            $request = Http::post('https://doublethree.digital/api/telemetry/simple-commerce', $payload);
+            $request = Http::post('https://duncanmcclean.com/api/telemetry/simple-commerce', $payload);
         } catch (\Exception $e) {
             Log::warning("Simple Commerce was unable to phone home. Error: {$e->getMessage()}");
 
