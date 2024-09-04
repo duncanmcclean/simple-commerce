@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.4.6 (2024-09-04)
+
+### What's fixed
+* Differentiate subject from first order confirmation email #1152 by @jesseleite
+
+
+
 ## v7.4.5 (2024-08-31)
 
 * Workaround error when refunding Stripe payments
