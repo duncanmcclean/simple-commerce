@@ -40,7 +40,7 @@ class CustomerOrderShipped extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(__(':siteName: Order Confirmation', ['siteName' => config('app.name')]))
+            ->subject(__(':siteName: Order Shipped', ['siteName' => config('app.name')]))
             ->markdown('simple-commerce::emails.customer_order_shipped', [
                 'order' => $this->order,
                 'site' => $this->order->site(),
