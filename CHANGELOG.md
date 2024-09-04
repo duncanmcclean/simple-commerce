@@ -9,6 +9,7 @@
 
 ## v7.4.5 (2024-08-31)
 
+### What's fixed
 * Workaround error when refunding Stripe payments
 * Remove validation of Shipping Method fields #1147 by @duncanmcclean
 * Worked around a weird issue when merging user data between flat-file and database users #1083 by @duncanmcclean
