@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.4.7 (2024-09-06)
+
+### What's fixed
+* Fixed an issue where an exception would be thrown when redeeming invalid coupon #1153 by @jesseleite
+
+
+
 ## v7.4.6 (2024-09-04)
 
 ### What's fixed
