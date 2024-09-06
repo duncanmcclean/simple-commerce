@@ -284,7 +284,7 @@ class Order implements Contract
     {
         $coupon = Coupon::findByCode($code);
 
-        if ($coupon->isValid($this)) {
+        if ($coupon?->isValid($this)) {
             $this->coupon($coupon);
             $this->save();
 
