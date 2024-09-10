@@ -31,6 +31,7 @@ class OrdersFieldtype extends Relationship
 
         return [
             'id' => $order->id(),
+            'reference' => $order->reference(),
             'title' => "#{$order->orderNumber()}",
             'hint' => $order->date()->format(Statamic::cpDateFormat()),
             'edit_url' => cp_route('simple-commerce.orders.edit', $order->id()),
