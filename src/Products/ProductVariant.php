@@ -2,9 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Products;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Products\Product;
-use DuncanMcClean\SimpleCommerce\Data\HasData;
-use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 use Statamic\Data\ContainsData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -12,17 +11,11 @@ class ProductVariant
 {
     use FluentlyGetsAndSets, ContainsData;
 
-    protected $key;
-
-    protected $product;
-
-    protected $name;
-
-    protected $price;
-
-    protected $stock;
-
-    protected $data;
+    public $key;
+    public $product;
+    public $name;
+    public $price;
+    public $stock;
 
     public function key($key = null)
     {
@@ -35,9 +28,16 @@ class ProductVariant
     {
         return $this
             ->fluentlyGetOrSet('product')
+            ->getter(function ($product) {
+                if (! $product) {
+                    return null;
+                }
+
+                return Product::find($product);
+            })
             ->setter(function ($product) {
-                if (! $product instanceof Product) {
-                    return ProductFacade::find($product);
+                if ($product instanceof ProductContract) {
+                    return $product->id();
                 }
 
                 return $product;
@@ -64,47 +64,12 @@ class ProductVariant
         return $this
             ->fluentlyGetOrSet('stock')
             ->setter(function ($value) {
-                if ($value === null) {
+                if (is_null($value)) {
                     return null;
                 }
 
                 return (int) $value;
             })
             ->args(func_get_args());
-    }
-
-    public function save(): self
-    {
-        $this->product->productVariants(
-            collect($this->product->productVariants())
-                ->map(function ($itemValue, $itemKey) {
-                    if ($itemKey === 'options') {
-                        foreach ($itemValue as $i => $option) {
-                            if ($itemValue[$i]['key'] === $this->key()) {
-                                $variantData = [
-                                    'key' => $this->key(),
-                                    'variant' => $this->name(),
-                                    'price' => $this->price(),
-                                    'stock' => $this->stock(),
-                                ];
-
-                                $variantData = array_merge(
-                                    $variantData,
-                                    $this->data()->except(['key', 'name', 'price', 'stock'])->toArray()
-                                );
-
-                                $itemValue[$i] = $variantData;
-                            }
-                        }
-                    }
-
-                    return $itemValue;
-                })
-                ->toArray()
-        );
-
-        $this->product->save();
-
-        return $this;
     }
 }
