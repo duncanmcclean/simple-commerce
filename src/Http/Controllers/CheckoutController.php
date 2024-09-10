@@ -10,6 +10,7 @@ use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
 use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CheckoutController
 {
@@ -33,6 +34,12 @@ class CheckoutController
         });
 
         $cart = $this->handleCustomerInformation($request, $cart);
+
+        if (! $cart->customer()) {
+            throw ValidationException::withMessages([
+                'customer' => __("Order cannot be created without customer information."),
+            ]);
+        }
 
         $cart->merge($validated);
         $cart->recalculate()->save();

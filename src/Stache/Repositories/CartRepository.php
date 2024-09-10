@@ -78,6 +78,7 @@ class CartRepository implements RepositoryContract
 
         Cookie::queue(Cookie::forget($this->getKey()));
         Blink::forget($this->getKey());
+
         self::$current = null;
     }
 

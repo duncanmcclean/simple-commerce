@@ -215,7 +215,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         ], $this->data->all());
     }
 
-    public function fresh(): Order
+    public function fresh(): ?Order
     {
         return OrderFacade::find($this->id());
     }

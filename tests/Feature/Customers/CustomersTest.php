@@ -1,16 +1,17 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Customers;
 
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Role;
 use Statamic\Facades\User;
 use Statamic\Facades\UserGroup;
 use Tests\TestCase;
 
-class HandlesCustomerInformationTest extends TestCase
+class CustomersTest extends TestCase
 {
     public function setUp(): void
     {

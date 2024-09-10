@@ -143,7 +143,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         ], $this->data->all());
     }
 
-    public function fresh(): Cart
+    public function fresh(): ?Cart
     {
         return CartFacade::find($this->id());
     }

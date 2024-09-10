@@ -35,10 +35,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $listen = [
         \Illuminate\Auth\Events\Login::class => [
-            Listeners\AssignUserAsCustomer::class,
-        ],
-        \Illuminate\Auth\Events\Logout::class => [
-            Listeners\RemoveUserAsCustomer::class,
+            Listeners\AssignUserToCart::class,
         ],
         \Statamic\Events\UserBlueprintFound::class => [
             Listeners\EnsureUserFields::class,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Customers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use PHPUnit\Framework\Attributes\Test;

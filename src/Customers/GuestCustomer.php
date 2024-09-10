@@ -9,9 +9,13 @@ class GuestCustomer
 {
     use FluentlyGetsAndSets, ContainsData;
 
-    public function id(): string
+    public function id(): ?string
     {
-        return "guest::{$this->email()}";
+        if (! $email = $this->email()) {
+            return null;
+        }
+
+        return "guest::{$email}";
     }
 
     public function name(): ?string
@@ -31,7 +35,7 @@ class GuestCustomer
         return $this->email();
     }
 
-    public function email(): string
+    public function email(): ?string
     {
         return $this->get('email');
     }
