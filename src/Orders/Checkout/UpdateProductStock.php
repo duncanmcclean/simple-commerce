@@ -31,7 +31,7 @@ class UpdateProductStock
                     $product = Product::find($product->resource()->origin()->id());
                 }
 
-                if ($product->purchasableType() === ProductType::Product) {
+                if ($product->type() === ProductType::Product) {
                     if (is_int($product->stock())) {
                         $stock = $product->stock() - $lineItem->quantity();
 
@@ -59,7 +59,7 @@ class UpdateProductStock
                     }
                 }
 
-                if ($product->purchasableType() === ProductType::Variant) {
+                if ($product->type() === ProductType::Variant) {
                     $variant = $product->variant($lineItem->variant()['variant'] ?? $lineItem->variant());
 
                     if ($variant !== null && is_int($variant->stock())) {

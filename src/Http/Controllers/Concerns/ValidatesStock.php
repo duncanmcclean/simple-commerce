@@ -17,7 +17,7 @@ trait ValidatesStock
         $quantity = $request->quantity ?? $lineItem->quantity();
 
         if (
-            $product->purchasableType() === ProductType::Product
+            $product->type() === ProductType::Product
             && is_int($product->stock())
             && $quantity > $product->stock()
         ) {
@@ -26,7 +26,7 @@ trait ValidatesStock
             ]);
         }
 
-        if ($product->purchasableType() === ProductType::Variant) {
+        if ($product->type() === ProductType::Variant) {
             $variant = $product->variant($request->variant ?? $lineItem->variant);
 
             if (is_int($variant->stock()) && $quantity > $variant->stock()) {

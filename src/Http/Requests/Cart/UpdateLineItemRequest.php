@@ -26,7 +26,7 @@ class UpdateLineItemRequest extends FormRequest
 //                function ($attribute, $value, $fail) {
 //                    $product = Product::find($this->product);
 //
-//                    if ($product->purchasableType() === ProductType::Variant) {
+//                    if ($product->type() === ProductType::Variant) {
 //                        $variant = $product->variant($value);
 //
 //                        if (! $variant) {

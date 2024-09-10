@@ -9,7 +9,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 
 class Product extends Entry implements Contract
 {
-    public function purchasableType(): ProductType
+    public function type(): ProductType
     {
         if ($this->value('product_variants')) {
             return ProductType::Variant;
@@ -20,7 +20,7 @@ class Product extends Entry implements Contract
 
     public function price(): ?int
     {
-        if ($this->purchasableType() === ProductType::Variant) {
+        if ($this->type() === ProductType::Variant) {
             return null;
         }
 
@@ -34,7 +34,7 @@ class Product extends Entry implements Contract
 
     public function stock(): ?int
     {
-        if ($this->purchasableType() === ProductType::Variant) {
+        if ($this->type() === ProductType::Variant) {
             return null;
         }
 

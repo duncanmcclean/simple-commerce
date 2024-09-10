@@ -17,7 +17,7 @@ class CalculateLineItems
             ->transform(function (LineItem $lineItem) use ($cart) {
                 $product = $lineItem->product();
 
-                if ($product->purchasableType() === ProductType::Product) {
+                if ($product->type() === ProductType::Product) {
                     $productPrice = $product->price();
 
                     // If $productPrice contains a decimal, we need to strip it & ensure we have two decimal places.
@@ -31,7 +31,7 @@ class CalculateLineItems
                     );
                 }
 
-                if ($product->purchasableType() === ProductType::Variant) {
+                if ($product->type() === ProductType::Variant) {
                     $variant = $product->variant($lineItem->variant()->key());
 
                     $productPrice = $variant->price();
