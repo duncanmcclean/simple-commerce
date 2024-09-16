@@ -35,6 +35,7 @@ class OrdersStore extends BasicStore
             ->orderNumber((new GetSlugFromPath)($path))
             ->date((new GetDateFromPath)($path))
             ->cart(Arr::pull($data, 'cart'))
+            ->status(Arr::pull($data, 'status'))
             ->customer(Arr::pull($data, 'customer'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))

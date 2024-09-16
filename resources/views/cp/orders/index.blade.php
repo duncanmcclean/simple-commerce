@@ -10,7 +10,7 @@
     <orders-listing
         sort-column="order_number"
         sort-direction="desc"
-        :columns="{{ $columns->toJson() }}"
+        :initial-columns="{{ $columns->toJson() }}"
         :filters="{{ $filters->toJson() }}"
         :action-url="{{ json_encode(cp_route('simple-commerce.orders.actions.run')) }}"
     ></orders-listing>

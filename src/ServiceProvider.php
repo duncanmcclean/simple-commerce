@@ -28,6 +28,7 @@ class ServiceProvider extends AddonServiceProvider
         Fieldtypes\MoneyFieldtype::class,
         Fieldtypes\OrderReceiptFieldtype::class,
         Fieldtypes\OrdersFieldtype::class,
+        Fieldtypes\OrderStatusFieldtype::class,
         Fieldtypes\PaymentDetailsFieldtype::class,
         Fieldtypes\ProductVariantsFieldtype::class,
         Fieldtypes\ShippingDetailsFieldtype::class,
@@ -47,12 +48,17 @@ class ServiceProvider extends AddonServiceProvider
         'cp' => __DIR__.'/../routes/cp.php',
     ];
 
+    protected $scopes = [
+        Query\Scopes\Filters\OrderStatus::class,
+    ];
+
     protected $tags = [
         Tags\SimpleCommerceTag::class,
     ];
 
     protected $vite = [
-        'hotFile' => 'vendor/simple-commerce/dist/hot',
+//        'hotFile' => 'vendor/simple-commerce/dist/hot',
+        'hotFile' => 'vendor/simple-commerce/hot',
         'publicDirectory' => 'dist',
         'input' => [
             'resources/js/cp.js',

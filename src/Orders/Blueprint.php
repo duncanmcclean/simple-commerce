@@ -17,6 +17,10 @@ class Blueprint
                         [
                             'fields' => [
                                 [
+                                    'handle' => 'status',
+                                    'field' => ['type' => 'order_status', 'display' => __('Order Status'), 'visibility' => 'hidden', 'listable' => true],
+                                ],
+                                [
                                     'handle' => 'order_number',
                                     'field' => ['type' => 'text', 'display' => __('Order Number'), 'visibility' => 'hidden', 'listable' => true],
                                 ],

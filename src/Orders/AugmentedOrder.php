@@ -59,5 +59,8 @@ class AugmentedOrder extends AbstractAugmented
         ]));
     }
 
-    // todo: status
+    public function status()
+    {
+        return $this->data->status()->value;
+    }
 }

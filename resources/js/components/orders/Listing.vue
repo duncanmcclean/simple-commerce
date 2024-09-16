@@ -121,7 +121,7 @@ export default {
             listingKey: 'orders',
             preferencesPrefix: `simple-commerce.orders`,
             requestUrl: cp_url(`orders`),
-            // pushQuery: true, // todo: reenable this at some point
+            pushQuery: true,
         }
     },
 

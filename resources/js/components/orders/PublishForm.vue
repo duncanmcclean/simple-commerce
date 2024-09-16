@@ -22,7 +22,6 @@
             </dropdown-list>
 
             <div class="hidden md:flex items-center">
-
                 <save-button-options
                     v-if="!readOnly"
                     :show-options="!revisionsEnabled && !isInline"
@@ -33,7 +32,7 @@
                         class="btn-primary"
                         :disabled="!canSave"
                         @click.prevent="save"
-                        v-text="saveText"
+                        v-text="`Save`"
                     />
                 </save-button-options>
             </div>
@@ -75,16 +74,36 @@
                         @focus="container.$emit('focus', $event)"
                         @blur="container.$emit('blur', $event)"
                     >
-<!--                        <template #actions="{ shouldShowSidebar }">-->
-<!--                            <div class="card p-0 mb-5">-->
-<!--                                <div-->
-<!--                                    class="flex items-center justify-between px-4 py-2"-->
-<!--                                    :class="{ 'border-t dark:border-dark-900': true }"-->
-<!--                                >-->
-<!--                                    TODO: show order statuses here-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </template>-->
+                        <template #actions="{ shouldShowSidebar }">
+                            <div class="card p-0 mb-5">
+                                <div v-if="!updatingStatus" class="p-4 flex items-center justify-between text-md">
+                                    <div class="flex items-center gap-x-2">
+                                        <span class="little-dot size-2.5" v-tooltip="statusLabel" :class="statusClass" />
+                                        {{ statusLabel }}
+                                    </div>
+
+                                    <button class="btn btn-sm" type="button" @click="updatingStatus = true">
+                                        {{ __('Change') }}
+                                    </button>
+                                </div>
+
+                                <div v-if="updatingStatus" class="publish-field form-group">
+                                    <div class="field-inner flex flex-col dark:border-dark-900">
+                                        <label for="field_status" class="publish-field-label mb-1.5">{{ __('Status') }}</label>
+                                        <select-input
+                                            class="w-full"
+                                            name="field_status"
+                                            :options="meta.status.options"
+                                            :value="values.status"
+                                            @input="setFieldValue('status', $event)"
+                                        />
+                                        <div v-if="values.status === 'cancelled'" class="help-block mt-3 mb-0">
+                                            <p class="mb-0"><span class="font-semibold">{{ __('Note') }}:</span> {{ __('You will still need to refund the payment manually.') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                     </publish-tabs>
                 </transition>
             </div>
@@ -173,6 +192,8 @@ export default {
             saveKeyBinding: null,
             quickSaveKeyBinding: null,
             quickSave: false,
+
+            updatingStatus: false,
         }
     },
 
@@ -202,19 +223,27 @@ export default {
             return this.$dirty.has(this.publishContainer);
         },
 
-        saveText() {
-            switch(true) {
-                default:
-                    return __('Save & Publish');
-            }
-        },
-
         afterSaveOption() {
             return this.getPreference('after_save');
         },
 
         direction() {
             return this.$config.get('direction', 'ltr');
+        },
+
+        statusLabel() {
+            return this.meta.status.options.find(option => option.value === this.values.status).label;
+        },
+
+        statusClass() {
+            switch (this.values.status) {
+                case 'payment_pending':
+                    return 'bg-gray-500';
+                case 'cancelled':
+                    return 'bg-red-500';
+                default:
+                    return 'bg-green-500';
+            }
         },
 
     },
@@ -314,6 +343,7 @@ export default {
                     else {
                         clearTimeout(this.trackDirtyStateTimeout);
                         this.trackDirtyState = false;
+                        this.updatingStatus = false;
                         this.values = this.resetValuesFromResponse(response.data.data.values);
                         this.trackDirtyStateTimeout = setTimeout(() => (this.trackDirtyState = true), 350);
                         this.$nextTick(() => this.$emit('saved', response));

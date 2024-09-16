@@ -3,7 +3,7 @@
         <div class="flex items-center">
             <div class="flex-1">
                 <div class="truncate">
-                    <a v-if="value.type === 'user' && value.viewable" :href="value.edit_url" class="truncate v-popper--has-tooltip">
+                    <a v-if="value.type === 'user' && value.viewable" :href="value.edit_url" target="_blank" class="truncate v-popper--has-tooltip">
                         {{ value.name }}
                     </a>
                     <div v-else-if="value.type === 'guest'" class="truncate v-popper--has-tooltip">

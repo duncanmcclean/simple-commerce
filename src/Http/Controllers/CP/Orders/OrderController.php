@@ -12,6 +12,7 @@ use Statamic\Facades\Action;
 use Statamic\Facades\Scope;
 use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
+use Statamic\Http\Requests\FilteredRequest;
 use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
 use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Order as OrderResource;
 
@@ -19,7 +20,7 @@ class OrderController extends CpController
 {
     use ExtractsFromOrderFields, QueriesFilters;
 
-    public function index(Request $request)
+    public function index(FilteredRequest $request)
     {
         $this->authorize('index', OrderContract::class, __('You are not authorized to view orders.'));
 
@@ -46,7 +47,7 @@ class OrderController extends CpController
                 ->blueprint(Order::blueprint())
                 ->columnPreferenceKey('simple-commerce.orders.columns')
                 ->additional(['meta' => [
-                    'additionalFilterBadges' => $activeFilterBadges,
+                    'activeFilterBadges' => $activeFilterBadges,
                 ]]);
         }
 
@@ -125,7 +126,7 @@ class OrderController extends CpController
         $blueprint = Order::blueprint();
 
         $data = $request->except($except = [
-            'id', 'customer', 'date', 'coupon_total', 'grand_total', 'line_items', 'order_number',
+            'id', 'customer', 'date', 'status', 'coupon_total', 'grand_total', 'line_items', 'order_number',
             'payment_details', 'receipt', 'shipping_total', 'sub_total', 'tax_total'
         ]);
 
@@ -139,6 +140,10 @@ class OrderController extends CpController
             ->validate();
 
         $values = $fields->process()->values()->except($except);
+
+        if ($request->status) {
+            $order->status($request->status);
+        }
 
         $order->data($values->all());
 

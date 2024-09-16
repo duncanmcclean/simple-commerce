@@ -3,10 +3,12 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use ArrayAccess;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
+use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -34,6 +36,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     protected $orderNumber;
     protected $date;
     protected $cart;
+    protected $status;
     protected $customer;
     protected $lineItems;
     protected $initialPath;
@@ -43,6 +46,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         $this->data = collect();
         $this->supplements = collect();
         $this->lineItems = new LineItems;
+        $this->status = OrderStatus::PaymentPending->value;
     }
 
     public function id($id = null)
@@ -90,7 +94,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         return $this
             ->fluentlyGetOrSet('cart')
             ->setter(function ($cart) {
-                if ($cart instanceof \DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart) {
+                if ($cart instanceof Cart) {
                     return $cart->id();
                 }
 
@@ -99,16 +103,21 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             ->args(func_get_args());
     }
 
-    public function status(): OrderStatus
+    public function status($status = null)
     {
-        // TODO: When order has payment gateway data, but the payment is not completed, return OrderStatus::PendingPayment
-        // TODO: When order has payment gateway data, and the payment is completed, return OrderStatus::Completed
+        return $this
+            ->fluentlyGetOrSet('status')
+            ->getter(function ($status) {
+                return OrderStatus::from($status);
+            })
+            ->setter(function ($status) {
+                if ($status instanceof OrderStatus) {
+                    return $status->value;
+                }
 
-        if ($this->get('is_cancelled')) {
-            return OrderStatus::Cancelled;
-        }
-
-        return OrderStatus::Pending;
+                return $status;
+            })
+            ->args(func_get_args());
     }
 
     public function customer($customer = null)
@@ -166,7 +175,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
 
     public function save(): bool
     {
-        $isNew = is_null(\DuncanMcClean\SimpleCommerce\Facades\Order::find($this->id()));
+        $isNew = is_null(OrderFacade::find($this->id()));
 
         OrderFacade::save($this);
 
@@ -175,6 +184,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         }
 
         event(new OrderSaved($this));
+
+        if ($this->isDirty('status')) {
+            event(new OrderStatusUpdated($this, OrderStatus::from($this->getOriginal('status')), $this->status()));
+        }
 
         return true;
     }
@@ -205,6 +218,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         return array_merge([
             'id' => $this->id(),
             'cart' => $this->cart(),
+            'status' => $this->status()->value,
             'customer' => $this->customer,
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
@@ -245,6 +259,8 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         return array_merge([
             'order_number' => $this->orderNumber(),
             'date' => $this->date(),
+            'cart' => $this->cart(),
+            'status' => $this->status()->value,
             'customer' => $this->customer(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
@@ -272,6 +288,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
 
     public function getQueryableValue(string $field)
     {
+        if ($field === 'status') {
+            return $this->status()->value;
+        }
+
         if ($field === 'customer') {
             if (is_array($this->customer)) {
                 return $this->customer()->id();
