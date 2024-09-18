@@ -202,7 +202,7 @@ class SimpleCommerce
 
         return new static;
     }
-    
+
     public static function lineItemPriceHook(Closure $callback): self
     {
         static::$lineItemPriceHook = $callback;
