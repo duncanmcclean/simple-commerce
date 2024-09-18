@@ -41,6 +41,8 @@ class LineItemCalculator
                 if ($product->purchasableType() === ProductType::Product) {
                     if (SimpleCommerce::$productPriceHook) {
                         $productPrice = (SimpleCommerce::$productPriceHook)($order, $product);
+                    } elseif (SimpleCommerce::$lineItemPriceHook) {
+                        $productPrice = (SimpleCommerce::$lineItemPriceHook)($lineItem);
                     } else {
                         $productPrice = $product->price();
                     }

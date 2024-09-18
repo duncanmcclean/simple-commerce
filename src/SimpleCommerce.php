@@ -23,6 +23,8 @@ class SimpleCommerce
 
     public static $productVariantPriceHook;
 
+    public static $lineItemPriceHook;
+
     public static function version(): string
     {
         if (app()->environment('testing')) {
@@ -197,6 +199,13 @@ class SimpleCommerce
     public static function productVariantPriceHook(Closure $callback): self
     {
         static::$productVariantPriceHook = $callback;
+
+        return new static;
+    }
+    
+    public static function lineItemPriceHook(Closure $callback): self
+    {
+        static::$lineItemPriceHook = $callback;
 
         return new static;
     }

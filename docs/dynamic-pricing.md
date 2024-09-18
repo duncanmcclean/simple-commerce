@@ -37,6 +37,20 @@ SimpleCommerce::productVariantPriceHook(function (Order $order, Product $product
 });
 ```
 
+Another alternative method is available to calculate from a lineItem perspective.
+
+```php
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+
+SimpleCommerce::lineItemPriceHook(function (LineItem $lineItem) {
+    if ($lineItem->product()->get('sale')) {
+        return $lineItem->product()->get('price') * 0.9; // 10% discount
+    }
+
+    return $lineItem->product()->get('price');
+});
+```
+
 :::note Note!
 These methods will not make any change to the price displayed to customers or stored in your products. They're only used when 'calculating' line items (eg. when an item is added to the cart, quantity changed, etc).
 :::
