@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.5.0 (2024-09-18)
+
+### What's new
+* Added `lineItemPriceHook` hook #1157 by @SteJW
+
+
+
 ## v7.4.7 (2024-09-06)
 
 ### What's fixed
