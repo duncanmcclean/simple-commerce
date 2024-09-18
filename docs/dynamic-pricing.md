@@ -21,22 +21,6 @@ SimpleCommerce::productPriceHook(function (Order $order, Product $product) {
 
 Remember that you'll need to return the price as an integer. The above example returns `£17.50` or `£15.00` as prices.
 
-An alternative method is also available for [variant products](/product-variants).
-
-```php
-use DuncanMcClean\SimpleCommerce\Contracts\Order;
-use DuncanMcClean\SimpleCommerce\Contracts\Product;
-use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
-
-SimpleCommerce::productVariantPriceHook(function (Order $order, Product $product, ProductVariant $variant) {
-    if (now()->isWeekend()) {
-        return 1750;
-    }
-
-    return 1500;
-});
-```
-
 Another alternative method is available to calculate from a lineItem perspective.
 
 ```php
