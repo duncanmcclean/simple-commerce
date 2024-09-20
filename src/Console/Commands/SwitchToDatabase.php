@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Statamic\Console\Processes\Composer;
 use Statamic\Console\RunsInPlease;
+use Statamic\Facades\Blueprint;
+use Statamic\Facades\YAML;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
 
 class SwitchToDatabase extends Command
@@ -71,15 +73,15 @@ class SwitchToDatabase extends Command
 
     protected function copyBlueprintStubs(): self
     {
-        File::ensureDirectoryExists(resource_path('blueprints/vendor/runway'));
+        Blueprint::make('customers')
+            ->setNamespace('runway')
+            ->setContents(YAML::file($this->stubsPath.'/runway_customer_blueprint.yaml')->parse())
+            ->save();
 
-        if (! File::exists(resource_path('blueprints/vendor/runway/customers.yaml'))) {
-            File::copy($this->stubsPath.'/runway_customer_blueprint.yaml', resource_path('blueprints/vendor/runway/customers.yaml'));
-        }
-
-        if (! File::exists(resource_path('blueprints/vendor/runway/orders.yaml'))) {
-            File::copy($this->stubsPath.'/runway_order_blueprint.yaml', resource_path('blueprints/vendor/runway/orders.yaml'));
-        }
+        Blueprint::make('orders')
+            ->setNamespace('runway')
+            ->setContents(YAML::file($this->stubsPath.'/runway_order_blueprint.yaml')->parse())
+            ->save();
 
         $this->components->info('Copied blueprint stubs successfully');
 
