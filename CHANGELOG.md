@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.5.1 (2024-09-20)
+
+### What's fixed
+* Ensure Runway blueprint are configured correctly when blueprints are stored in the database by @duncanmcclean
+
+
+
 ## v7.5.0 (2024-09-18)
 
 ### What's new
