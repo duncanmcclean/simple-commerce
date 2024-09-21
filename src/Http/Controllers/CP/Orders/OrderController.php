@@ -58,10 +58,6 @@ class OrderController extends CpController
             ->rejectUnlisted()
             ->values();
 
-        if (Order::query()->count() === 0) {
-            return view('simple-commerce::cp.orders.empty');
-        }
-
         return view('simple-commerce::cp.orders.index', [
             'blueprint' => $blueprint,
             'columns' => $columns,
@@ -90,6 +86,7 @@ class OrderController extends CpController
         $this->authorize('edit', $order);
 
         $blueprint = Order::blueprint();
+        $blueprint->setParent($order);
 
         [$values, $meta] = $this->extractFromFields($order, $blueprint);
 
@@ -98,14 +95,17 @@ class OrderController extends CpController
             'actions' => [
                 'save' => $order->updateUrl(),
             ],
-            'values' => $values,
+            'values' => array_merge($values, [
+                'id' => $order->id(),
+                'status' => $order->status()->value,
+            ]),
             'meta' => $meta,
             'blueprint' => $blueprint->toPublishArray(),
+            'readOnly' => User::current()->cant('update', $order),
             'breadcrumbs' => new Breadcrumbs([
                 ['text' => __('Orders'), 'url' => cp_route('simple-commerce.orders.index')],
             ]),
             'itemActions' => Action::for($order, ['view' => 'form']),
-            'readOnly' => User::current()->cant('update', $order),
         ];
 
         if ($request->wantsJson()) {
@@ -130,7 +130,9 @@ class OrderController extends CpController
             'payment_details', 'receipt', 'shipping_total', 'sub_total', 'tax_total'
         ]);
 
-        $fields = $blueprint->fields()->addValues($data);
+        $fields = $blueprint
+            ->fields()
+            ->addValues($data);
 
         $fields
             ->validator()

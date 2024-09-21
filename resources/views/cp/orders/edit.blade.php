@@ -1,11 +1,10 @@
-@inject('str', 'Statamic\Support\Str')
 @extends('statamic::layout')
 @section('title', $breadcrumbs->title($title))
 @section('wrapper_class', 'max-w-3xl')
 
 @section('content')
 
-    <orders-publish-form
+    <order-publish-form
         publish-container="base"
         :initial-actions="{{ json_encode($actions) }}"
         method="patch"
@@ -19,6 +18,6 @@
         initial-listing-url="{{ cp_route('simple-commerce.orders.index',) }}"
         :initial-item-actions="{{ json_encode($itemActions) }}"
         item-action-url="{{ cp_route('simple-commerce.orders.actions.run') }}"
-    ></orders-publish-form>
+    ></order-publish-form>
 
 @endsection

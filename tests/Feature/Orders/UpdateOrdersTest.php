@@ -22,7 +22,7 @@ class UpdateOrdersTest extends TestCase
     }
 
     #[Test]
-    public function can_update_orders()
+    public function can_update_order()
     {
         $order = tap(Order::make()->orderNumber(1002))->save();
 
@@ -48,7 +48,7 @@ class UpdateOrdersTest extends TestCase
     }
 
     #[Test]
-    public function cant_update_orders_without_permissions()
+    public function cant_update_order_without_permissions()
     {
         $order = tap(Order::make())->save();
 

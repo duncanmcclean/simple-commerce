@@ -30,27 +30,29 @@ class ListedCoupon extends JsonResource
     {
         $coupon = $this->resource;
 
-        return array_merge(
-            [
-                'id' => $coupon->id(),
-                'discount_text' => $coupon->discountText(),
-                'edit_url' => cp_route('simple-commerce.coupons.edit', ['coupon' => $coupon->id()]),
-                'editable' => User::current()->can('edit coupons'),
-                'viewable' => User::current()->can('view coupons'),
-                'actions' => Action::for($coupon),
-            ],
-            $this->values(['type' => $coupon->type()->value])->toArray(),
-        );
+        return [
+            'id' => $coupon->id(),
+            'code' => $coupon->code(),
+            'type' => $coupon->type()->value,
+            'amount' => $coupon->amount(),
+            'discount_text' => $coupon->discountText(),
+
+            $this->merge($this->values()),
+
+            'edit_url' => $coupon->editUrl(),
+            'editable' => User::current()->can('edit coupons'),
+            'viewable' => User::current()->can('view coupons'),
+            'actions' => Action::for($coupon),
+        ];
     }
 
     protected function values($extra = [])
     {
         return $this->columns->mapWithKeys(function ($column) use ($extra) {
             $key = $column->field;
-
             $field = $this->blueprint->field($key);
 
-            $value = $extra[$key] ?? $this->resource->toArray()[$key] ?? $this->resource->get($key);
+            $value = $extra[$key] ?? $this->resource->get($key);
 
             if (! $field) {
                 return [$key => $value];

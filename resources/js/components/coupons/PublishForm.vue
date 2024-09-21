@@ -76,31 +76,54 @@
                     >
                         <template #actions="{ shouldShowSidebar }">
                             <div class="card p-0 mb-5">
-                                <div v-if="!updatingStatus" class="p-4 flex items-center justify-between text-md">
-                                    <div class="flex items-center gap-x-2">
-                                        <span class="little-dot size-2.5" v-tooltip="statusLabel" :class="statusClass" />
-                                        {{ statusLabel }}
+                                <header class="publish-section-header @container">
+                                    <div class="publish-section-header-inner">
+                                        <label class="text-base font-semibold">Summary</label>
                                     </div>
+                                </header>
+                                <div class="px-4 @lg:px-6 pt-4 pb-3">
+<!--                                    TODO: Make these translatable-->
+                                    <ul class="list-disc ltr:pl-3 flex flex-col gap-y-1.5 text-sm">
+                                        <li v-if="values.type === 'fixed' && values.value?.value">
+                                            <span class="font-semibold" v-text="formatCurrency(values.value.value)"></span> off entire order
+                                        </li>
 
-                                    <button class="btn btn-sm" type="button" @click="updatingStatus = true">
-                                        {{ __('Change') }}
-                                    </button>
-                                </div>
+                                        <li v-if="values.type === 'percentage' && values.value?.value">
+                                            <span class="font-semibold" v-text="`${values.value.value}%`"></span> off entire order
+                                        </li>
 
-                                <div v-if="updatingStatus" class="publish-field form-group">
-                                    <div class="field-inner flex flex-col dark:border-dark-900">
-                                        <label for="field_status" class="publish-field-label mb-1.5">{{ __('Status') }}</label>
-                                        <select-input
-                                            class="w-full"
-                                            name="field_status"
-                                            :options="meta.status.options"
-                                            :value="values.status"
-                                            @input="setFieldValue('status', $event)"
-                                        />
-                                        <div v-if="values.status === 'cancelled'" class="help-block mt-3 mb-0">
-                                            <p class="mb-0"><span class="font-semibold">{{ __('Note') }}:</span> {{ __('You will still need to refund the payment manually.') }}</p>
-                                        </div>
-                                    </div>
+                                        <li v-if="values.minimum_cart_value">
+                                            Redeemable when items total is above <span v-text="formatCurrency(this.values.minimum_cart_value)"></span>
+                                        </li>
+
+                                        <li v-if="values.customer_eligibility === 'all'">
+                                            {{ __(`Redeemable by all customers`) }}
+                                        </li>
+
+                                        <li v-if="values.customer_eligibility === 'specific_customers'">
+                                            Only redeemable by specific customers
+                                        </li>
+
+                                        <li v-if="values.maximum_uses">
+                                            Can only be used {{ values.maximum_uses }} times
+                                        </li>
+
+                                        <li v-if="values.products.length > 0">
+                                            Can only be used when certain products are part of the order
+                                        </li>
+
+                                        <li v-if="values.valid_from?.date">
+                                            Redeemable after {{ values.valid_from.date }}
+                                        </li>
+
+                                        <li v-if="values.expires_at?.date">
+                                            Redeemable until {{ values.expires_at.date }}
+                                        </li>
+                                    </ul>
+
+                                    <ul v-if="!isCreating" class="list-disc ltr:pl-3 flex flex-col gap-y-1.5 text-sm mt-3 pt-3 border-t dark:border-dark-900">
+                                        <li>Redeemed {{ values.redeemed_count }} times</li>
+                                    </ul>
                                 </div>
                             </div>
                         </template>
@@ -171,14 +194,12 @@ export default {
             errors: {},
             tabsVisible: true,
             state: 'new',
-            preferencesPrefix: `simple-commerce.orders`,
+            preferencesPrefix: `simple-commerce.coupons`,
             readOnly: this.initialReadOnly,
 
             saveKeyBinding: null,
             quickSaveKeyBinding: null,
             quickSave: false,
-
-            updatingStatus: false,
         }
     },
 
@@ -189,7 +210,7 @@ export default {
         },
 
         somethingIsLoading() {
-            return ! this.$progress.isComplete();
+            return !this.$progress.isComplete();
         },
 
         canSave() {
@@ -216,27 +237,12 @@ export default {
             return this.$config.get('direction', 'ltr');
         },
 
-        statusLabel() {
-            return this.meta.status.options.find(option => option.value === this.values.status).label;
-        },
-
-        statusClass() {
-            switch (this.values.status) {
-                case 'payment_pending':
-                    return 'bg-gray-500';
-                case 'cancelled':
-                    return 'bg-red-500';
-                default:
-                    return 'bg-green-500';
-            }
-        },
-
     },
 
     watch: {
 
         saving(saving) {
-            this.$progress.loading(`${this.publishContainer}-order-publish-form`, saving);
+            this.$progress.loading(`${this.publishContainer}-coupon-publish-form`, saving);
         },
 
         title(title) {
@@ -256,7 +262,7 @@ export default {
         },
 
         save() {
-            if (! this.canSave) {
+            if (!this.canSave) {
                 this.quickSave = false;
                 return;
             }
@@ -270,7 +276,7 @@ export default {
         runBeforeSaveHook() {
             this.$refs.container.saving();
 
-            Statamic.$hooks.run('order.saving', {
+            Statamic.$hooks.run('coupon.saving', {
                 values: this.values,
                 container: this.$refs.container,
                 storeName: this.publishContainer,
@@ -285,14 +291,16 @@ export default {
         performSaveRequest() {
             // Once the hook has completed, we need to make the actual request.
             // We build the payload here because the before hook may have modified values.
-            const payload = { ...this.visibleValues, ...{
+            const payload = {
+                ...this.visibleValues, ...{
                     _blueprint: this.fieldset.handle,
-                }};
+                }
+            };
 
             this.$axios[this.method](this.actions.save, payload).then(response => {
                 this.saving = false;
-                if (! response.data.saved) {
-                    return this.$toast.error(__(`Couldn't save order`));
+                if (!response.data.saved) {
+                    return this.$toast.error(__(`Couldn't save coupon`));
                 }
                 this.title = response.data.data.title;
                 this.$toast.success(__('Saved'));
@@ -305,14 +313,14 @@ export default {
             // Once the save request has completed, we want to run the "after" hook.
             // Devs can do what they need and we'll wait for them, but they can't cancel anything.
             Statamic.$hooks
-                .run('order.saved', {
+                .run('coupon.saved', {
                     reference: this.initialReference,
                     response
                 })
                 .then(() => {
                     let nextAction = this.quickSave ? 'continue_editing' : this.afterSaveOption;
 
-                    // If the user has opted to create another order, redirect them to create page.
+                    // If the user has opted to create another coupon, redirect them to create page.
                     if (!this.isInline && nextAction === 'create_another') {
                         window.location = this.createAnotherUrl;
                     }
@@ -322,13 +330,12 @@ export default {
                         window.location = this.listingUrl;
                     }
 
-                    // Otherwise, leave them on the edit form and emit an event. We need to wait until after
-                    // the hooks are resolved because if this form is being shown in a stack, we only
+                        // Otherwise, leave them on the edit form and emit an event. We need to wait until after
+                        // the hooks are resolved because if this form is being shown in a stack, we only
                     // want to close it once everything's done.
                     else {
                         clearTimeout(this.trackDirtyStateTimeout);
                         this.trackDirtyState = false;
-                        this.updatingStatus = false;
                         this.values = this.resetValuesFromResponse(response.data.data.values);
                         this.trackDirtyStateTimeout = setTimeout(() => (this.trackDirtyState = true), 350);
                         this.$nextTick(() => this.$emit('saved', response));
@@ -363,6 +370,13 @@ export default {
                 this.values = this.resetValuesFromResponse(response.data.values);
                 this.itemActions = response.data.itemActions;
             }
+        },
+
+        formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'GBP',
+            }).format(amount);
         },
 
     },

@@ -6,6 +6,7 @@
 
         <data-list
             v-if="!initializing"
+            ref="dataList"
             :rows="items"
             :columns="columns"
             :sort="false"
@@ -15,12 +16,10 @@
         >
             <div slot-scope="{ hasSelections }">
                 <div class="card overflow-hidden p-0 relative">
-                    <div
-                        class="flex flex-wrap items-center justify-between px-2 pb-2 text-sm border-b"
-                    >
+                    <div class="flex flex-wrap items-center justify-between px-2 pb-2 text-sm border-b dark:border-dark-900">
+
                         <data-list-filter-presets
                             ref="presets"
-                            v-show="alwaysShowFilters || !showFilters"
                             :active-preset="activePreset"
                             :active-preset-payload="activePresetPayload"
                             :active-filters="activeFilters"
@@ -29,38 +28,19 @@
                             :search-query="searchQuery"
                             @selected="selectPreset"
                             @reset="filtersReset"
-                            @hide-filters="filtersHide"
-                            @show-filters="filtersShow"
                         />
 
-                        <data-list-search
-                            class="h-8 mt-2 min-w-[240px] w-full"
-                            ref="search"
-                            v-model="searchQuery"
-                            :placeholder="searchPlaceholder"
-                        />
+                        <data-list-search class="h-8 mt-2 min-w-[240px] w-full" ref="search" v-model="searchQuery" :placeholder="searchPlaceholder" />
 
                         <div class="flex space-x-2 mt-2">
-                            <button
-                                class="btn btn-sm ml-2"
-                                v-text="__('Reset')"
-                                v-show="isDirty"
-                                @click="$refs.presets.refreshPreset()"
-                            />
-                            <button
-                                class="btn btn-sm ml-2"
-                                v-text="__('Save')"
-                                v-show="isDirty"
-                                @click="$refs.presets.savePreset()"
-                            />
-                            <data-list-column-picker
-                                :preferences-key="preferencesKey('columns')"
-                            />
+                            <button class="btn btn-sm rtl:mr-2 ltr:ml-2" v-text="__('Reset')" v-show="isDirty" @click="$refs.presets.refreshPreset()" />
+                            <button class="btn btn-sm rtl:mr-2 ltr:ml-2" v-text="__('Save')" v-show="isDirty" @click="$refs.presets.savePreset()" />
+                            <data-list-column-picker :preferences-key="preferencesKey('columns')" />
                         </div>
                     </div>
-
                     <div>
                         <data-list-filters
+                            ref="filters"
                             :filters="filters"
                             :active-preset="activePreset"
                             :active-preset-payload="activePresetPayload"
@@ -77,33 +57,28 @@
                         />
                     </div>
 
-                    <div
-                        v-show="items.length === 0"
-                        class="p-6 text-center text-gray-500"
-                        v-text="__('No results')"
-                    />
+                    <div v-show="items.length === 0" class="p-6 text-center text-gray-500" v-text="__('No results')" />
 
                     <data-list-bulk-actions
                         :url="actionUrl"
+                        :context="actionContext"
                         @started="actionStarted"
                         @completed="actionCompleted"
                     />
-
                     <div class="overflow-x-auto overflow-y-hidden">
                         <data-list-table
                             v-show="items.length"
                             :allow-bulk-actions="true"
                             :loading="loading"
-                            :reorderable="false"
                             :sortable="true"
                             :toggle-selection-on-row-click="true"
-                            :allow-column-picker="true"
-                            :column-preferences-key="preferencesKey('simple-commerce.columns')"
                             @sorted="sorted"
                         >
                             <template slot="cell-code" slot-scope="{ row, value }">
                                 <div class="title-index-field">
-                                    <a :href="row.edit_url" @click.stop>{{ row.code }}</a>
+                                    <a class="title-index-field inline-flex items-center" :href="row.edit_url" @click.stop>
+                                        {{ row.code }}
+                                    </a>
                                 </div>
                             </template>
 
@@ -113,45 +88,27 @@
                                 </div>
                             </template>
 
-                            <template
-                                slot="actions"
-                                slot-scope="{ row, index }"
-                            >
-                                <dropdown-list
-                                    v-if="
-                                        canEditRow(row) ||
-                                        row.actions.length
-                                    "
-                                >
-                                    <dropdown-item
-                                        v-if="canEditRow(row)"
-                                        :text="__('Edit')"
-                                        :redirect="row.edit_url"
-                                    />
-
-                                    <div
-                                        class="divider"
-                                        v-if="canEditRow(row) && row.actions.length"
-                                    />
-
+                            <template slot="actions" slot-scope="{ row: coupon, index }">
+                                <dropdown-list placement="left-start">
+                                    <dropdown-item :text="__('Edit')" :redirect="coupon.edit_url" v-if="coupon.editable" />
+                                    <div class="divider" v-if="coupon.actions.length" />
                                     <data-list-inline-actions
-                                        :item="row.id"
+                                        :item="coupon.id"
                                         :url="actionUrl"
-                                        :actions="row.actions"
+                                        :actions="coupon.actions"
                                         @started="actionStarted"
                                         @completed="actionCompleted"
                                     />
                                 </dropdown-list>
-                                <div v-else class="w-10 block"></div>
                             </template>
                         </data-list-table>
                     </div>
                 </div>
-
                 <data-list-pagination
-                    class="mt-3"
+                    class="mt-6"
                     :resource-meta="meta"
                     :per-page="perPage"
+                    :show-totals="true"
                     @page-selected="selectPage"
                     @per-page-changed="changePerPage"
                 />
@@ -166,27 +123,16 @@ import Listing from '../../../../vendor/statamic/cms/resources/js/components/Lis
 export default {
     mixins: [Listing],
 
-    props: {
-        listingConfig: Object,
-        initialColumns: Array,
-        actionUrl: String,
-    },
-
     data() {
         return {
-            listingKey: 'code',
-            preferencesPrefix: this.listingConfig.preferencesPrefix ?? 'simple-commerce.coupons',
-            requestUrl: this.listingConfig.requestUrl,
-            columns: this.initialColumns,
-            meta: {},
+            listingKey: 'coupons',
+            preferencesPrefix: `simple-commerce.coupons`,
+            requestUrl: cp_url(`coupons`),
+            pushQuery: true,
         }
     },
 
     methods: {
-        canEditRow(row) {
-            return row.editable
-        },
-
         columnShowing(column) {
             return this.visibleColumns.find(c => c.field === column);
         },

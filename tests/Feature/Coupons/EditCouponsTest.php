@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Orders;
+namespace Tests\Feature\Coupons;
 
-use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Role;
@@ -10,7 +10,7 @@ use Statamic\Facades\User;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
 
-class EditOrdersTest extends TestCase
+class EditCouponsTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
@@ -22,27 +22,27 @@ class EditOrdersTest extends TestCase
     }
 
     #[Test]
-    public function can_edit_order()
+    public function can_edit_coupon()
     {
-        $order = tap(Order::make()->orderNumber(1002))->save();
+        $coupon = tap(Coupon::make()->code('FOOBAR25'))->save();
 
         $this
             ->actingAs(User::make()->makeSuper()->save())
-            ->get(cp_route('simple-commerce.orders.edit', $order->id()))
+            ->get(cp_route('simple-commerce.coupons.edit', $coupon->id()))
             ->assertOk()
-            ->assertSee('Order #1002');
+            ->assertSee('FOOBAR25');
     }
 
     #[Test]
-    public function cant_edit_order_without_permissions()
+    public function cant_edit_coupon_without_permissions()
     {
-        $order = tap(Order::make())->save();
+        $coupon = tap(Coupon::make()->code('FOOBAR25'))->save();
 
         Role::make('test')->addPermission('access cp')->save();
 
         $this
             ->actingAs(User::make()->assignRole('test')->save())
-            ->get(cp_route('simple-commerce.orders.edit', $order->id()))
+            ->get(cp_route('simple-commerce.coupons.edit', $coupon->id()))
             ->assertRedirect('/cp');
     }
 }

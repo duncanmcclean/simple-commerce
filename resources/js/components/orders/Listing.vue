@@ -16,7 +16,7 @@
         >
             <div slot-scope="{ hasSelections }">
                 <div class="card overflow-hidden p-0 relative">
-                    <div v-if="!reordering" class="flex flex-wrap items-center justify-between px-2 pb-2 text-sm border-b">
+                    <div class="flex flex-wrap items-center justify-between px-2 pb-2 text-sm border-b dark:border-dark-900">
 
                         <data-list-filter-presets
                             ref="presets"
@@ -38,7 +38,7 @@
                             <data-list-column-picker :preferences-key="preferencesKey('columns')" />
                         </div>
                     </div>
-                    <div v-show="!reordering">
+                    <div>
                         <data-list-filters
                             ref="filters"
                             :filters="filters"
@@ -68,13 +68,11 @@
                     <div class="overflow-x-auto overflow-y-hidden">
                         <data-list-table
                             v-show="items.length"
-                            :allow-bulk-actions="!reordering"
+                            :allow-bulk-actions="true"
                             :loading="loading"
-                            :reorderable="reordering"
-                            :sortable="!reordering"
+                            :sortable="true"
                             :toggle-selection-on-row-click="true"
                             @sorted="sorted"
-                            @reordered="reordered"
                         >
                             <template slot="cell-order_number" slot-scope="{ row: order }">
                                 <a class="title-index-field inline-flex items-center" :href="order.edit_url" @click.stop>
@@ -86,7 +84,7 @@
                                     <dropdown-item :text="__('Edit')" :redirect="order.edit_url" v-if="order.editable" />
                                     <div class="divider" v-if="order.actions.length" />
                                     <data-list-inline-actions
-                                        :item="order.order_number"
+                                        :item="order.id"
                                         :url="actionUrl"
                                         :actions="order.actions"
                                         @started="actionStarted"

@@ -2,10 +2,14 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
+use DuncanMcClean\SimpleCommerce\Coupons\CouponStore;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Stache\Query\CouponQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Stache\Repositories\CouponRepository;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
+use DuncanMcClean\SimpleCommerce\Stache\Stores\CouponsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\CP\Nav;
@@ -17,12 +21,18 @@ use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $actions = [
+        Actions\Delete::class,
+    ];
+
     protected $commands = [
         Console\Commands\MigrateOrders::class,
         Console\Commands\PurgeAbandonedCarts::class,
     ];
 
     protected $fieldtypes = [
+        Fieldtypes\CouponAmountFieldtype::class,
+        Fieldtypes\CouponCodeFieldtype::class,
         Fieldtypes\CustomerFieldtype::class,
         Fieldtypes\LineItemsFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,
@@ -49,6 +59,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $scopes = [
+        Query\Scopes\Filters\CouponType::class,
         Query\Scopes\Filters\OrderStatus::class,
     ];
 
@@ -70,11 +81,16 @@ class ServiceProvider extends AddonServiceProvider
     {
         $this->app['stache']->registerStores([
             (new CartsStore)->directory(config('simple-commerce.carts.directory')),
+            (new CouponsStore)->directory(config('simple-commerce.coupons.directory')),
             (new OrdersStore)->directory(config('simple-commerce.orders.directory')),
         ]);
 
         $this->app->bind(CartQueryBuilder::class, function () {
             return new CartQueryBuilder($this->app->make(Stache::class)->store('carts'));
+        });
+
+        $this->app->bind(CouponQueryBuilder::class, function () {
+            return new CouponQueryBuilder($this->app->make(Stache::class)->store('coupons'));
         });
 
         $this->app->bind(OrderQueryBuilder::class, function () {
@@ -83,6 +99,7 @@ class ServiceProvider extends AddonServiceProvider
 
         collect([
             \DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\CartRepository::class,
+            \DuncanMcClean\SimpleCommerce\Contracts\Coupons\CouponRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\CouponRepository::class,
             \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository::class,
             \DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository::class => \DuncanMcClean\SimpleCommerce\Products\ProductRepository::class,
         ])->each(function ($concrete, $abstract) {
@@ -97,10 +114,27 @@ class ServiceProvider extends AddonServiceProvider
                 ->route('simple-commerce.orders.index')
                 ->icon(SimpleCommerce::svg('shop'))
                 ->can('view orders');
+
+            $nav->create(__('Coupons'))
+                ->section(__('Simple Commerce'))
+                ->route('simple-commerce.coupons.index')
+                ->icon('tags')
+                ->can('view coupons');
         });
 
         Permission::extend(function () {
             Permission::group('simple-commerce', __('Simple Commerce'), function () {
+                Permission::register('view coupons', function ($permission) {
+                    $permission->label(__('View Coupons'));
+
+                    $permission->children([
+                        Permission::make('edit coupons')->label(__('Edit Coupons'))->children([
+                            Permission::make('create coupons')->label(__('Create Coupons')),
+                            Permission::make('delete coupons')->label(__('Delete Coupons')),
+                        ]),
+                    ]);
+                });
+
                 Permission::register('view orders', function ($permission) {
                     $permission->label(__('View Orders'));
 

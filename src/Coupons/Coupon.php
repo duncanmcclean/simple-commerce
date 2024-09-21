@@ -2,37 +2,42 @@
 
 namespace DuncanMcClean\SimpleCommerce\Coupons;
 
+use ArrayAccess;
 use Carbon\Carbon;
-use DuncanMcClean\SimpleCommerce\Contracts\Coupon as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Events\CouponSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Support\Money;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
+use Statamic\Contracts\Data\Augmentable;
+use Statamic\Contracts\Data\Augmented;
+use Statamic\Contracts\Query\ContainsQueryableValues;
 use Statamic\Data\ContainsData;
 use Statamic\Data\ExistsAsFile;
+use Statamic\Data\HasAugmentedInstance;
+use Statamic\Data\HasDirtyState;
 use Statamic\Data\TracksQueriedColumns;
+use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class Coupon implements Contract
+class Coupon implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
-    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, TracksQueriedColumns;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState;
 
-    public $id;
-
-    public $code;
-
-    public $value;
-
-    public $type;
-
-    protected $selectedQueryRelations = [];
+    protected $id;
+    protected $code;
+    protected $amount;
+    protected $type;
 
     public function __construct()
     {
         $this->data = collect();
+        $this->supplements = collect();
     }
 
     public function id($id = null)
@@ -46,6 +51,9 @@ class Coupon implements Contract
     {
         return $this
             ->fluentlyGetOrSet('code')
+            ->setter(function ($code) {
+                return Str::upper($code);
+            })
             ->args(func_get_args());
     }
 
@@ -54,41 +62,36 @@ class Coupon implements Contract
         return $this
             ->fluentlyGetOrSet('type')
             ->getter(function ($type) {
+                if (! $type) {
+                    return null;
+                }
+
                 return CouponType::from($type);
             })
-            ->setter(function ($value) {
-                if ($value === 'fixed') {
-                    $value = CouponType::Fixed;
+            ->setter(function ($type) {
+                if ($type instanceof CouponType) {
+                    return $type->value;
                 }
 
-                if ($value === 'percentage') {
-                    $value = CouponType::Percentage;
-                }
-
-                // If the value is already set, it's over 100 and it's a percentage, we want to divide it by 100...
-                if ($value === CouponType::Percentage && $this->value > 100) {
-                    $this->value = $this->value / 100;
-                }
-
-                return $value?->value;
+                return $type;
             })
             ->args(func_get_args());
     }
 
-    public function value($value = null)
+    public function amount($amount = null)
     {
         return $this
-            ->fluentlyGetOrSet('value')
-            ->setter(function ($value) {
-                if (is_string($value) && str_contains($value, '.')) {
-                    $value = (int) str_replace('.', '', $value);
+            ->fluentlyGetOrSet('amount')
+            ->setter(function ($amount) {
+                if (is_string($amount) && str_contains($amount, '.')) {
+                    $amount = (int) str_replace('.', '', $amount);
                 }
 
-                if ($this->type === CouponType::Percentage && $value > 100) {
-                    return $value / 100;
+                if ($this->type() === CouponType::Percentage && $amount > 100) {
+                    return (int) $amount / 100;
                 }
 
-                return $value;
+                return (int) $amount;
             })
             ->args(func_get_args());
     }
@@ -115,8 +118,8 @@ class Coupon implements Contract
             }
         }
 
-        if ($this->has('redeemed') && $this->has('maximum_uses') && $this->get('maximum_uses') !== null) {
-            if ($this->get('redeemed') >= $this->get('maximum_uses')) {
+        if ($this->has('maximum_uses') && $this->get('maximum_uses') !== null) {
+            if ($this->redeemedCount() >= $this->get('maximum_uses')) {
                 return false;
             }
         }
@@ -154,20 +157,9 @@ class Coupon implements Contract
         return true;
     }
 
-    public function redeem(): self
-    {
-        $redeemed = $this->has('redeemed') ? $this->get('redeemed') : 0;
-
-        $this->set('redeemed', $redeemed + 1);
-        $this->save();
-
-        return $this;
-    }
-
     protected function isProductSpecific(): bool
     {
-        return $this->has('products')
-            && collect($this->get('products'))->count() >= 1;
+        return $this->has('products') && collect($this->get('products'))->count() >= 1;
     }
 
     protected function customerEligibility(): string
@@ -183,125 +175,124 @@ class Coupon implements Contract
             && collect($this->get('customers'))->count() >= 1;
     }
 
-    public function beforeSaved()
+    public function redeemedCount(): int
     {
-        return null;
-    }
-
-    public function afterSaved()
-    {
-        return null;
-    }
-
-    public function save(): self
-    {
-        if (! $this->id) {
-            $this->id = app('stache')->generateId();
-        }
-
-        if (method_exists($this, 'beforeSaved')) {
-            $this->beforeSaved();
-        }
-
-        CouponFacade::save($this);
-
-        if (method_exists($this, 'afterSaved')) {
-            $this->afterSaved();
-        }
-
-        return $this;
-    }
-
-    public function delete(): void
-    {
-        CouponFacade::delete($this);
-    }
-
-    public function fresh(): self
-    {
-        $freshCoupon = CouponFacade::find($this->id());
-
-        $this->id = $freshCoupon->id;
-        $this->code = $freshCoupon->code;
-        $this->value = $freshCoupon->value;
-        $this->type = $freshCoupon->type;
-        $this->data = $freshCoupon->data();
-
-        return $this;
-    }
-
-    public function toArray(): array
-    {
-        return array_merge($this->data()->toArray(), [
-            'id' => $this->id,
-            'code' => $this->code,
-            'value' => $this->value,
-            'type' => $this->type,
-        ]);
-    }
-
-    public function toResource()
-    {
-        return $this->toArray();
-    }
-
-    public function toAugmentedArray($keys = null)
-    {
-        $blueprint = \DuncanMcClean\SimpleCommerce\Facades\Coupon::blueprint();
-
-        return $blueprint->fields()->addValues($this->toArray())->all()->map->augment($keys)->mapWithKeys(function ($field) {
-            return [$field->handle() => $field->value()];
-        })->all();
-    }
-
-    public function editUrl()
-    {
-        return cp_route('simple-commerce.coupons.edit', [
-            'coupon' => $this->id(),
-        ]);
-    }
-
-    public function updateUrl()
-    {
-        return cp_route('simple-commerce.coupons.update', [
-            'coupon' => $this->id(),
-        ]);
-    }
-
-    public function deleteUrl()
-    {
-        return cp_route('simple-commerce.coupons.destroy', [
-            'coupon' => $this->id(),
-        ]);
+        return OrderFacade::query()
+            ->where('coupon', $this->id())
+            ->count();
     }
 
     public function discountText(): string
     {
-        if ($this->type() === CouponType::Percentage) {
-            return "{$this->value()}%";
+        return match ($this->type()) {
+            CouponType::Percentage => __('simple-commerce::messages.coupon_discount_text', ['amount' => "{$this->amount()}%"]),
+            CouponType::Fixed => __('simple-commerce::messages.coupon_discount_text', ['amount' => Money::format($this->amount(), Site::current())]),
+        };
+    }
+
+    public function save(): bool
+    {
+        CouponFacade::save($this);
+
+        event(new CouponSaved($this));
+
+        return true;
+    }
+
+    public function delete(): bool
+    {
+        CouponFacade::delete($this);
+
+        return true;
+    }
+
+    public function path(): string
+    {
+        return $this->initialPath ?? $this->buildPath();
+    }
+
+    public function buildPath(): string
+    {
+        return vsprintf('%s/%s.yaml', [
+            rtrim(Stache::store('coupons')->directory(), '/'),
+            $this->code(),
+        ]);
+    }
+
+    public function fileData(): array
+    {
+        return array_merge([
+            'id' => $this->id(),
+            'amount' => $this->amount(),
+            'type' => $this->type()?->value,
+        ], $this->data->all());
+    }
+
+    public function fresh(): ?Coupon
+    {
+        return CouponFacade::find($this->id());
+    }
+
+    public function blueprint()
+    {
+        return CouponFacade::blueprint();
+    }
+
+    public function defaultAugmentedArrayKeys()
+    {
+        return $this->selectedQueryColumns;
+    }
+
+    public function shallowAugmentedArrayKeys()
+    {
+        return ['id', 'code', 'type', 'amount'];
+    }
+
+    public function newAugmentedInstance(): Augmented
+    {
+        return new AugmentedCoupon($this);
+    }
+
+    public function getCurrentDirtyStateAttributes(): array
+    {
+        return array_merge([
+            'code' => $this->code(),
+            'amount' => $this->amount(),
+            'type' => $this->type()?->value,
+        ], $this->data()->toArray());
+    }
+
+    public function editUrl()
+    {
+        return cp_route('simple-commerce.coupons.edit', $this->id());
+    }
+
+    public function updateUrl()
+    {
+        return cp_route('simple-commerce.coupons.update', $this->id());
+    }
+
+    public function reference(): string
+    {
+        return "coupon::{$this->id()}";
+    }
+
+    public function getQueryableValue(string $field)
+    {
+        if ($field === 'type') {
+            return $this->type()->value;
         }
 
-        if ($this->type() === CouponType::Fixed) {
-            return Money::format($this->value(), Site::current());
+        if (method_exists($this, $method = Str::camel($field))) {
+            return $this->{$method}();
         }
 
-        return null;
-    }
+        $value = $this->get($field);
 
-    public function path()
-    {
-        return Stache::store('simple-commerce-coupons')->directory().Str::slug($this->code()).'.yaml';
-    }
+        if (! $field = $this->blueprint()->field($field)) {
+            return $value;
+        }
 
-    public function fileData()
-    {
-        return $this->toArray();
-    }
-
-    public function selectedQueryRelations($relations)
-    {
-        $this->selectedQueryRelations = $relations;
-
-        return $this;
+        return $field->fieldtype()->toQueryableValue($value);
     }
 }

@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Contracts\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use Statamic\Fields\Blueprint;
 
 interface OrderRepository
 {
@@ -21,6 +22,8 @@ interface OrderRepository
     public function save(Order $order): void;
 
     public function delete(Order $order): void;
+
+    public function blueprint(): Blueprint;
 
     public static function bindings(): array;
 }

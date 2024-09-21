@@ -12,7 +12,7 @@ class Coupons extends ResourceCollection
     public $collects = ListedCoupon::class;
 
     protected $blueprint;
-
+    protected $columns;
     protected $columnPreferenceKey;
 
     public function blueprint($blueprint)

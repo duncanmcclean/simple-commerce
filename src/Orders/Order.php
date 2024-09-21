@@ -108,6 +108,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         return $this
             ->fluentlyGetOrSet('status')
             ->getter(function ($status) {
+                if (! $status) {
+                    return null;
+                }
+
                 return OrderStatus::from($status);
             })
             ->setter(function ($status) {
@@ -260,7 +264,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'order_number' => $this->orderNumber(),
             'date' => $this->date(),
             'cart' => $this->cart(),
-            'status' => $this->status()->value,
+            'status' => $this->status()?->value,
             'customer' => $this->customer(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),

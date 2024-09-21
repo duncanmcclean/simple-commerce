@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Contracts\Cart;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use Statamic\Fields\Blueprint;
 
 interface CartRepository
 {

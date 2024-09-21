@@ -29,6 +29,10 @@ return [
         'directory' => base_path('content/orders'),
     ],
 
+    'coupons' => [
+        'directory' => base_path('content/coupons'),
+    ],
+
     'shipping' => [
         'methods' => [
             \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],

@@ -1,4 +1,8 @@
-import CouponListing from './components/coupons/Listing.vue'
+import BaseCouponCreateForm from './components/coupons/BaseCreateForm.vue'
+import CouponsListing from './components/coupons/Listing.vue'
+import CouponPublishForm from './components/coupons/PublishForm.vue'
+import CouponAmountFieldtype from './components/fieldtypes/CouponAmountFieldtype.vue'
+import CouponCodeFieldtype from './components/fieldtypes/CouponCodeFieldtype.vue'
 import CustomerFieldtype from './components/fieldtypes/CustomerFieldtype.vue'
 import CustomerFieldtypeIndex from './components/fieldtypes/CustomerFieldtypeIndex.vue'
 import MoneyFieldtype from './components/fieldtypes/MoneyFieldtype.vue'
@@ -8,13 +12,17 @@ import OrderStatusFieldtypeIndex from './components/fieldtypes/OrderStatusFieldt
 import PaymentDetailsFieldtype from './components/fieldtypes/PaymentDetailsFieldtype.vue'
 import ShippingDetailsFieldtype from './components/fieldtypes/ShippingDetailsFieldtype.vue'
 import OrdersListing from './components/orders/Listing.vue'
-import OrdersPublishForm from './components/orders/PublishForm.vue'
+import OrderPublishForm from './components/orders/PublishForm.vue'
 import OrdersChart from './components/widgets/OrdersChart.vue'
 
 // Coupons
-// Statamic.$components.register('coupon-listing', CouponListing)
+Statamic.$components.register('base-coupon-create-form', BaseCouponCreateForm)
+Statamic.$components.register('coupons-listing', CouponsListing)
+Statamic.$components.register('coupon-publish-form', CouponPublishForm)
 
 // Fieldtypes
+Statamic.$components.register('coupon_amount-fieldtype', CouponAmountFieldtype)
+Statamic.$components.register('coupon_code-fieldtype', CouponCodeFieldtype)
 Statamic.$components.register('customer-fieldtype', CustomerFieldtype)
 Statamic.$components.register('customer-fieldtype-index', CustomerFieldtypeIndex)
 Statamic.$components.register('money-fieldtype', MoneyFieldtype)
@@ -26,7 +34,7 @@ Statamic.$components.register('shipping_details-fieldtype', ShippingDetailsField
 
 // Orders
 Statamic.$components.register('orders-listing', OrdersListing)
-Statamic.$components.register('orders-publish-form', OrdersPublishForm)
+Statamic.$components.register('order-publish-form', OrderPublishForm)
 
 // Widgets
 // Statamic.$components.register('orders-chart', OrdersChart)
