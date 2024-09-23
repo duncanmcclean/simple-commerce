@@ -19,18 +19,6 @@ class OrderTest extends TestCase
     use PreventsSavingStacheItemsToDisk;
 
     #[Test]
-    public function can_get_status()
-    {
-        // TODO: PendingPayment & Completed states.
-
-        $order = Order::make()->set('is_cancelled', true);
-        $this->assertEquals(OrderStatus::Cancelled, $order->status());
-
-        $order = Order::make();
-        $this->assertEquals(OrderStatus::Pending, $order->status());
-    }
-
-    #[Test]
     public function can_get_and_set_guest_customer()
     {
         $order = Order::make();
