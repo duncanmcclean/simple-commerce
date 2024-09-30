@@ -18,4 +18,6 @@ class GeneratorCommand extends StatamicGeneratorCommand
 
         return __DIR__.'/stubs/'.$stub;
     }
+
+    protected $name = "simple-commerce";
 }
