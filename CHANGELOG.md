@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.5.2 (2024-10-01)
+
+### What's fixed
+* Made the `GeneratorCommand` class abstract, to prevent Statamic from autoloading it @duncanmcclean
+
+
+
 ## v7.5.1 (2024-09-20)
 
 ### What's fixed
