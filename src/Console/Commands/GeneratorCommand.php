@@ -4,7 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use Statamic\Console\Commands\GeneratorCommand as StatamicGeneratorCommand;
 
-class GeneratorCommand extends StatamicGeneratorCommand
+abstract class GeneratorCommand extends StatamicGeneratorCommand
 {
     /**
      * We need to do this ourselves so it uses the
