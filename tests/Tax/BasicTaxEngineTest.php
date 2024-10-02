@@ -156,7 +156,7 @@ test('can calculate shipping tax when included in price', function () {
     $order = Order::make()
         ->status(OrderStatus::Cart)
         ->merge(['shipping_method' => DummyShippingMethod::handle()])
-        ->shippingTotal(500);
+        ->shippingTotal(250);
 
     $order->save();
 
@@ -164,7 +164,7 @@ test('can calculate shipping tax when included in price', function () {
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    expect(100)->toBe($taxCalculation->amount());
+    expect(42)->toBe($taxCalculation->amount());
     expect(true)->toBe($taxCalculation->priceIncludesTax());
     expect(20)->toBe($taxCalculation->rate());
 });
