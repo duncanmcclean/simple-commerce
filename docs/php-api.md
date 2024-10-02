@@ -35,7 +35,7 @@ $product->variant('Red_Large');
 $product->productVariants([
     'variants' => [
         ['name' => 'Colours', 'values' => ['Red', 'Green', 'Blue']],
-        ['name' => 'Size', 'value' => ['Small', 'Medium']],
+        ['name' => 'Size', 'values' => ['Small', 'Medium']],
     ],
     'options' => [
         ['key' => 'Red_Small', 'variant' => 'Red Small', 'price' => 2500],
