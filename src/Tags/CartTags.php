@@ -316,14 +316,14 @@ class CartTags extends SubTag
             return $cart->{$method};
         }
 
-        if (array_key_exists($method, $cart->toAugmentedArray())) {
-            return $cart->toAugmentedArray()[$method];
-        }
-
         if ($cart->has($method)) {
             return $cart->get($method);
         }
-
+        
+        if (array_key_exists($method, $cart->toAugmentedArray())) {
+            return $cart->toAugmentedArray()[$method];
+        }
+        
         return null;
     }
 }
