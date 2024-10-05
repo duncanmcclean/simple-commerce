@@ -20,10 +20,10 @@ class AugmentedCoupon extends AbstractAugmented
             return $this->cachedKeys;
         }
 
-        return $this->cachedKeys = $this->data->data()->keys()
+        return $this->cachedKeys = collect()
             ->merge($this->data->supplements()->keys())
             ->merge($this->commonKeys())
-            ->merge($this->blueprintFields()->keys())
+//            ->merge($this->blueprintFields()->keys())
             ->unique()->sort()->values()->all();
     }
 

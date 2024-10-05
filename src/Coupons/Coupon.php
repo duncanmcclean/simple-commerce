@@ -6,7 +6,6 @@ use ArrayAccess;
 use Carbon\Carbon;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon as Contract;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Events\CouponSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;

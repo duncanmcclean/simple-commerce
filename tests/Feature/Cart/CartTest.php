@@ -66,7 +66,6 @@ class CartTest extends TestCase
                     'name' => 'Jane Doe',
                     'email' => 'jane.doe@example.com',
                 ],
-                'coupon' => 'ABC123',
                 'shipping_line_1' => '123 Shipping St',
                 'shipping_line_2' => 'Apt 1',
                 'shipping_city' => 'Shippingville',

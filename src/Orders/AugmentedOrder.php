@@ -32,6 +32,7 @@ class AugmentedOrder extends AbstractAugmented
             'id',
             'free',
             'customer',
+            'coupon',
             'tax_totals',
         ];
 
@@ -57,6 +58,15 @@ class AugmentedOrder extends AbstractAugmented
         return $this->data->taxTotals()->map(fn ($item) => array_merge($item, [
             'amount' => Money::format($item['amount'], Site::current()),
         ]));
+    }
+
+    public function coupon()
+    {
+        if (! $this->data->coupon()) {
+            return null;
+        }
+
+        return $this->data->coupon()->toShallowAugmentedArray();
     }
 
     public function status()

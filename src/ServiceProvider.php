@@ -33,6 +33,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $fieldtypes = [
         Fieldtypes\CouponAmountFieldtype::class,
         Fieldtypes\CouponCodeFieldtype::class,
+        Fieldtypes\CouponFieldtype::class,
         Fieldtypes\CustomerFieldtype::class,
         Fieldtypes\LineItemsFieldtype::class,
         Fieldtypes\MoneyFieldtype::class,

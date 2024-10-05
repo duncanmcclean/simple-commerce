@@ -49,7 +49,7 @@ class CouponRepository implements RepositoryContract
 
     public function findByCode(string $code): ?Coupon
     {
-        return $this->query()->where('code', $code)->first();
+        return $this->query()->where('code', strtoupper($code))->first();
     }
 
     public function make(): Coupon

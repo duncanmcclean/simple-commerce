@@ -2,10 +2,10 @@
     <div>
         <div class="receipt-table w-full">
             <div class="receipt-table-header">
-                <div class="col-span-3">Product</div>
-                <div class="text-right">Unit Price</div>
-                <div class="text-right">Quantity</div>
-                <div class="text-right">Total</div>
+                <div class="col-span-3 text-sm">Product</div>
+                <div class="text-right text-sm">Unit Price</div>
+                <div class="text-right text-sm">Quantity</div>
+                <div class="text-right text-sm">Total</div>
             </div>
             <LineItem
                 v-for="lineItem in receipt.line_items"

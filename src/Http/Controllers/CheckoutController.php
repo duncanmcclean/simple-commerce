@@ -2,20 +2,16 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
+use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
-use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Facades\Product;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
-use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
-use DuncanMcClean\SimpleCommerce\Orders\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class CheckoutController
 {
-    use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock;
+    use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock, Concerns\RedeemsCoupons;
 
     public function __invoke(Request $request)
     {
@@ -27,7 +23,7 @@ class CheckoutController
             $values['use_shipping_address_for_billing'] = $values['use_shipping_address_for_billing'] === 'on';
         }
 
-        $validated = Order::blueprint()->fields()->addValues($values)->validate();
+        $validated = Order::blueprint()->fields()->except(['customer', 'coupon'])->addValues($values)->validate();
 
         // TODO: handle this better, instead of one exception per product, collect them all and return them all
         $cart->lineItems()->each(function ($lineItem) use ($request, $cart) {
@@ -35,6 +31,7 @@ class CheckoutController
         });
 
         $cart = $this->handleCustomerInformation($request, $cart);
+        $cart = $this->redeemCoupon($request, $cart);
 
         if (! $cart->customer()) {
             throw ValidationException::withMessages([
@@ -42,24 +39,15 @@ class CheckoutController
             ]);
         }
 
-        // TODO: Refactor when I want to.
-        if ($coupon = $request->coupon) {
-            $coupon = Coupon::findByCode($coupon);
-
-            if (! $coupon->isValid($cart)) {
-                throw ValidationException::withMessages([
-                    'coupon' => __("This coupon isn't valid for this cart."),
-                ]);
-            }
-
-            $cart->set('coupon', $coupon);
-        }
-
         $cart->merge($validated);
         $cart->recalculate()->save();
 
         $order = Order::makeFromCart($cart);
         $order->save();
+
+        if ($order->coupon()) {
+            event(new CouponRedeemed($order->coupon(), $order));
+        }
 
         Cart::forgetCurrentCart();
 

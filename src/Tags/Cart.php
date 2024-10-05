@@ -128,6 +128,7 @@ class Cart extends SubTag
         return $this->createForm(
             action: route('statamic.simple-commerce.cart.update'),
             data: $cart->toAugmentedArray(),
+            method: 'PATCH',
         );
     }
 

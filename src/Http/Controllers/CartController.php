@@ -11,7 +11,7 @@ use Statamic\Exceptions\NotFoundHttpException;
 
 class CartController
 {
-    use Concerns\HandlesCustomerInformation;
+    use Concerns\HandlesCustomerInformation, Concerns\RedeemsCoupons;
 
     public function index(Request $request)
     {
@@ -27,11 +27,9 @@ class CartController
         $cart = Cart::current();
         $validated = $request->validated();
 
-        if ($validated['coupon'] ?? false) {
-            // TODO: Add the coupon to the cart.
-        }
-
         $cart = $this->handleCustomerInformation($request, $cart);
+        $cart = $this->redeemCoupon($request, $cart);
+
         $cart->merge(Arr::except($validated, ['coupon', 'customer']));
 
         $cart->recalculate()->save();
@@ -47,6 +45,7 @@ class CartController
     {
         throw_if(! Cart::hasCurrentCart(), NotFoundHttpException::class);
 
+        Cart::current()->delete();
         Cart::forgetCurrentCart();
 
         if ($request->ajax() || $request->wantsJson()) {

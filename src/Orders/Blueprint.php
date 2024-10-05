@@ -157,7 +157,7 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'coupon',
-                                    'field' => ['type' => 'text', 'display' => __('Coupon'), 'visibility' => 'hidden', 'listable' => 'hidden'],
+                                    'field' => ['type' => 'coupon', 'display' => __('Coupon'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
                                 ],
                             ],
                         ],

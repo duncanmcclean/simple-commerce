@@ -74,8 +74,6 @@ class CartRepository implements RepositoryContract
 
     public function forgetCurrentCart(): void
     {
-        $this->current()->delete();
-
         Cookie::queue(Cookie::forget($this->getKey()));
         Blink::forget($this->getKey());
 

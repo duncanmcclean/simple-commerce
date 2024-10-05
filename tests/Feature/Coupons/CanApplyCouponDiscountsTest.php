@@ -6,13 +6,14 @@ use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Orders\Calculator\ApplyCouponDiscounts;
+use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Tests\TestCase;
 
 class CanApplyCouponDiscountsTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function applies_percentage_discount()
     {
         $this->makeProduct('123')->set('price', 2500)->save();
@@ -29,7 +30,7 @@ class CanApplyCouponDiscountsTest extends TestCase
         $this->assertEquals($cart->lineItems()->find('abc')->get('discount_amount'), 1250);
     }
 
-    /** @test */
+    #[Test]
     public function applies_fixed_discount()
     {
         $this->makeProduct('123')->set('price', 2500)->save();
@@ -46,7 +47,7 @@ class CanApplyCouponDiscountsTest extends TestCase
         $this->assertEquals($cart->lineItems()->find('abc')->get('discount_amount'), 450);
     }
 
-    /** @test */
+    #[Test]
     public function only_applies_discount_to_valid_line_items()
     {
         $this->makeProduct('123')->set('price', 2500)->save();
@@ -66,7 +67,7 @@ class CanApplyCouponDiscountsTest extends TestCase
         $this->assertNull($cart->lineItems()->find('def')->get('discount_amount'));
     }
 
-    /** @test */
+    #[Test]
     public function discount_is_removed_from_line_items_when_no_longer_eligible()
     {
         $this->makeProduct('123')->set('price', 2500)->save();
@@ -86,7 +87,7 @@ class CanApplyCouponDiscountsTest extends TestCase
         $this->assertNull($cart->lineItems()->find('def')->get('discount_amount'));
     }
 
-    /** @test */
+    #[Test]
     public function coupon_is_removed_when_there_is_no_discount()
     {
         $this->makeProduct('123')->set('price', 2500)->save();
