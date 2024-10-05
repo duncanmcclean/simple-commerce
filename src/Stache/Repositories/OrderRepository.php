@@ -59,6 +59,7 @@ class OrderRepository implements RepositoryContract
         return self::make()
             ->cart($cart->id())
             ->customer($cart->customer())
+            ->coupon($cart->coupon())
             ->lineItems($cart->lineItems())
             ->grandTotal($cart->grandTotal())
             ->subTotal($cart->subTotal())

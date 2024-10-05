@@ -16,5 +16,11 @@
 <script>
 export default {
     mixins: [Fieldtype],
+
+    methods: {
+        updateDebounced: _.debounce(function (value) {
+            this.$emit('input', value.toUpperCase())
+        }, 500),
+    }
 }
 </script>

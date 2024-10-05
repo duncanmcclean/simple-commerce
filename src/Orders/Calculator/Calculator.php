@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
-use DuncanMcClean\SimpleCommerce\Cart\Cart;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use Illuminate\Support\Facades\Pipeline;
 
 class Calculator
@@ -13,7 +13,7 @@ class Calculator
             ->through([
                 ResetTotals::class,
                 CalculateLineItems::class,
-//                ApplyCoupon::class,
+                ApplyCouponDiscounts::class,
 //                ApplyShipping::class,
                 CalculateGrandTotal::class,
             ])

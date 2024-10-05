@@ -61,6 +61,10 @@ class AugmentedOrder extends AbstractAugmented
 
     public function status()
     {
+        if (! $this->data instanceof Order) {
+            return null;
+        }
+
         return $this->data->status()->value;
     }
 }

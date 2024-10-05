@@ -4,11 +4,13 @@ namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use ArrayAccess;
 use Carbon\Carbon;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Events\CouponSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
@@ -96,10 +98,8 @@ class Coupon implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVa
             ->args(func_get_args());
     }
 
-    public function isValid(Order $order): bool
+    public function isValid(Cart $cart, LineItem $lineItem): bool
     {
-        $order = OrderFacade::find($order->id());
-
         if ($this->get('valid_from') !== null) {
             if (Carbon::parse($this->get('valid_from'))->isFuture()) {
                 return false;
@@ -112,8 +112,8 @@ class Coupon implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVa
             }
         }
 
-        if ($this->has('minimum_cart_value') && $order->itemsTotal()) {
-            if ($order->itemsTotal() < $this->get('minimum_cart_value')) {
+        if ($this->has('minimum_cart_value') && $cart->itemsTotal()) {
+            if ($cart->itemsTotal() < $this->get('minimum_cart_value')) {
                 return false;
             }
         }
@@ -124,32 +124,26 @@ class Coupon implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVa
             }
         }
 
-        if ($this->isProductSpecific()) {
-            $couponProductsInOrder = $order->lineItems()->filter(function ($lineItem) {
-                return in_array($lineItem->product()->id(), $this->get('products'));
-            });
-
-            if ($couponProductsInOrder->count() === 0) {
-                return false;
-            }
+        if ($this->isProductSpecific() && ! in_array($lineItem->product()->id(), $this->get('products'))) {
+            return false;
         }
 
         if ($this->isCustomerSpecific()) {
-            $isCustomerAllowed = collect($this->get('customers'))->contains(optional($order->customer())->id());
+            if (! $cart->customer()) {
+                return false;
+            }
 
-            if (! $isCustomerAllowed) {
+            if (! collect($this->get('customers'))->contains($cart->customer()?->id())) {
                 return false;
             }
         }
 
         if ($this->customerEligibility() === 'customers_by_domain' && $domains = $this->get('customers_by_domain')) {
-            if (! $order->customer()) {
+            if (! $cart->customer()) {
                 return false;
             }
 
-            $isCustomerAllowed = collect($domains)->contains(Str::after($order->customer()->email(), '@'));
-
-            if (! $isCustomerAllowed) {
+            if (! collect($domains)->contains(Str::after($cart->customer()->email(), '@'))) {
                 return false;
             }
         }

@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
@@ -39,6 +40,19 @@ class CheckoutController
             throw ValidationException::withMessages([
                 'customer' => __("Order cannot be created without customer information."),
             ]);
+        }
+
+        // TODO: Refactor when I want to.
+        if ($coupon = $request->coupon) {
+            $coupon = Coupon::findByCode($coupon);
+
+            if (! $coupon->isValid($cart)) {
+                throw ValidationException::withMessages([
+                    'coupon' => __("This coupon isn't valid for this cart."),
+                ]);
+            }
+
+            $cart->set('coupon', $coupon);
         }
 
         $cart->merge($validated);

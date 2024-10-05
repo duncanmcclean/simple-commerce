@@ -4,9 +4,11 @@ namespace DuncanMcClean\SimpleCommerce\Cart;
 
 use ArrayAccess;
 use Carbon\CarbonInterface;
+use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
@@ -36,6 +38,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
 
     protected $id;
     protected $customer;
+    protected $coupon;
     protected $lineItems;
     protected $initialPath;
 
@@ -82,6 +85,31 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
                 }
 
                 return $customer;
+            })
+            ->args(func_get_args());
+    }
+
+    public function coupon($coupon = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('coupon')
+            ->getter(function ($coupon) {
+                if (! $coupon) {
+                    return null;
+                }
+
+                return CouponFacade::find($coupon);
+            })
+            ->setter(function ($coupon) {
+                if (! $coupon) {
+                    return null;
+                }
+
+                if ($coupon instanceof Coupon) {
+                    return $coupon->id();
+                }
+
+                return $coupon;
             })
             ->args(func_get_args());
     }
@@ -134,6 +162,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         return array_merge([
             'id' => $this->id(),
             'customer' => $this->customer,
+            'coupon' => $this->coupon,
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
@@ -180,6 +209,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     {
         return array_merge([
             'customer' => $this->customer(),
+            'coupon' => $this->coupon(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
@@ -212,6 +242,10 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             }
 
             return $this->customer;
+        }
+
+        if ($field === 'coupon') {
+            return $this->coupon;
         }
 
         if (method_exists($this, $method = Str::camel($field))) {
