@@ -31,8 +31,7 @@ class CartController
         $cart = $this->redeemCoupon($request, $cart);
 
         $cart->merge(Arr::except($validated, ['coupon', 'customer']));
-
-        $cart->recalculate()->save();
+        $cart->save();
 
         if ($request->ajax() || $request->wantsJson()) {
             return new CartResource($cart->fresh());

@@ -62,8 +62,5 @@ trait Calculable
             ->args(func_get_args());
     }
 
-    public function recalculate(): self
-    {
-        return app(Calculator::class)->calculate($this);
-    }
+    abstract function recalculate(): void;
 }

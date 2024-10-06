@@ -40,7 +40,7 @@ class CheckoutController
         }
 
         $cart->merge($validated);
-        $cart->recalculate()->save();
+        $cart->save();
 
         $order = Order::makeFromCart($cart);
         $order->save();

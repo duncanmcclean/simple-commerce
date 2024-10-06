@@ -13,10 +13,12 @@ use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
+use DuncanMcClean\SimpleCommerce\Orders\Calculator\Calculator;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Statamic\Contracts\Data\Augmentable;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use Statamic\Contracts\Data\Augmented;
@@ -42,6 +44,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     protected $coupon;
     protected $lineItems;
     protected $initialPath;
+    private bool $withoutRecalculating = false;
 
     public function __construct()
     {
@@ -129,13 +132,35 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
+    public function saveWithoutRecalculating(): bool
+    {
+        $this->withoutRecalculating = true;
+
+        return $this->save();
+    }
+
+    protected function shouldRecalculate(): bool
+    {
+        if ($this->withoutRecalculating) {
+            return false;
+        }
+
+        return $this->fingerprint() !== $this->get('fingerprint');
+    }
+
     public function save(): bool
     {
         $this->set('updated_at', Carbon::now()->timestamp);
 
+        if ($this->shouldRecalculate()) {
+            $this->recalculate();
+        }
+
         CartFacade::save($this);
 
         event(new CartSaved($this));
+
+        $this->withoutRecalculating = false;
 
         return true;
     }
@@ -190,6 +215,25 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         return $this->blueprint()->fields()->all()->map->handle()->except([
             'id', 'line_items', 'discount_total', 'grand_total', 'shipping_total', 'sub_total', 'tax_total',
         ])->all();
+    }
+
+    public function recalculate(): void
+    {
+        app(Calculator::class)->calculate($this);
+
+        $this->set('fingerprint', $this->fingerprint());
+    }
+
+    public function fingerprint(): string
+    {
+        $payload = [
+            'date' => Carbon::now()->timestamp,
+            'customer' => $this->customer(),
+            'coupon' => $this->coupon(),
+            'line_items' => $this->lineItems()->map->toArray()->all(),
+        ];
+
+        return sha1(json_encode($payload));
     }
 
     public function defaultAugmentedArrayKeys()

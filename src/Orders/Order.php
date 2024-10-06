@@ -271,6 +271,11 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         return OrderFacade::find($this->id());
     }
 
+    public function recalculate(): void
+    {
+        throw new \Exception("Orders can not be recalculated.");
+    }
+
     public function blueprint(): StatamicBlueprint
     {
         return OrderFacade::blueprint();
