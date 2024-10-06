@@ -30,7 +30,7 @@ class CartTest extends TestCase
 
         $this->assertEquals(
             '£15.23-bar',
-            (string) $this->tag('{{ sc:cart }}{{ grand_total }}-{{ foo }}{{ /sc:cart }}')
+            (string) $this->tag('{{ cart }}{{ grand_total }}-{{ foo }}{{ /cart }}')
         );
     }
 

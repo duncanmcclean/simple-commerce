@@ -147,25 +147,25 @@ class ProductVariantsFieldtypeTest extends TestCase
         $this->assertEquals([
             'name' => 'Colour',
             'values' => ['Red', 'Yellow', 'Blue'],
-        ], $augment['variants'][0]);
+        ], collect($augment['variants'][0])->map->value()->all());
 
         $this->assertEquals([
             'key' => 'Red',
             'variant' => 'Red',
             'price' => '£10.00',
-        ], $augment['options'][0]);
+        ], collect($augment['options'][0])->map->value()->all());
 
         $this->assertEquals([
             'key' => 'Yellow',
             'variant' => 'Yellow',
             'price' => '£15.00',
-        ], $augment['options'][1]);
+        ], collect($augment['options'][1])->map->value()->all());
 
         $this->assertEquals([
             'key' => 'Blue',
             'variant' => 'Blue',
             'price' => '£17.99',
-        ], $augment['options'][2]);
+        ], collect($augment['options'][2])->map->value()->all());
     }
 
     #[Test]

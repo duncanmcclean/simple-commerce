@@ -6,6 +6,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Str;
+use Statamic\Facades\Blink;
 use Statamic\Facades\Site;
 use Statamic\Tags\Tags;
 
@@ -33,7 +34,7 @@ class Cart extends Tags
             return null;
         }
 
-        $cart = CartFacade::current();
+        $cart = Blink::once("cart", fn () => CartFacade::current());
 
         if (method_exists($this, $method = Str::camel($field))) {
             return $this->{$method}();
