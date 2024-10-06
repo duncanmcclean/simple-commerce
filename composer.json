@@ -33,7 +33,6 @@
         "laravel/framework": "^10.34 || ^11.0",
         "mollie/mollie-api-php": "^2.30.0",
         "moneyphp/money": "^4.0",
-        "paypal/paypal-checkout-sdk": "^1.0",
         "pixelfear/composer-dist-plugin": "^0.1.0",
         "spatie/ignition": "^1.13",
         "statamic/cms": "^5.0",
