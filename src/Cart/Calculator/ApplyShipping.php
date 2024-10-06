@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 use Closure;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;

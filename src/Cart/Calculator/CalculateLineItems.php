@@ -1,13 +1,11 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 use Closure;
 use DuncanMcClean\SimpleCommerce\Cart\Cart;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 
 class CalculateLineItems
 {

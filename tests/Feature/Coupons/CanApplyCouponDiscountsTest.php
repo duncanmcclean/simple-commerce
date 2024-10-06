@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Coupons;
 
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyCouponDiscounts;
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
-use DuncanMcClean\SimpleCommerce\Orders\Calculator\ApplyCouponDiscounts;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;

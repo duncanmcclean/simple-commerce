@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
+namespace DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use Illuminate\Support\Facades\Pipeline;

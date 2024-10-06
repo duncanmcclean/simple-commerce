@@ -24,7 +24,7 @@ class CartTest extends TestCase
     #[Test]
     public function can_get_cart()
     {
-        $cart = tap(Cart::make()->grandTotal(1523)->set('foo', 'bar'))->save();
+        $cart = tap(Cart::make()->grandTotal(1523)->set('foo', 'bar'))->saveWithoutRecalculating();
 
         Cart::setCurrent($cart);
 
@@ -37,7 +37,7 @@ class CartTest extends TestCase
     #[Test]
     public function can_get_data_using_wildcard()
     {
-        $cart = tap(Cart::make()->grandTotal(1523)->set('foo', 'bar'))->save();
+        $cart = tap(Cart::make()->grandTotal(1523)->set('foo', 'bar'))->saveWithoutRecalculating();
 
         Cart::setCurrent($cart);
 

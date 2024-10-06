@@ -3,6 +3,8 @@
 namespace Tests\Feature\Customers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;

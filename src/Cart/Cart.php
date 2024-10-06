@@ -3,7 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Cart;
 
 use ArrayAccess;
-use Carbon\CarbonInterface;
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\Calculator;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Events\CartSaved;
@@ -13,14 +14,11 @@ use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
-use DuncanMcClean\SimpleCommerce\Orders\Calculator\Calculator;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
 use Statamic\Contracts\Data\Augmentable;
-use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use Statamic\Contracts\Data\Augmented;
 use Statamic\Contracts\Query\ContainsQueryableValues;
 use Statamic\Data\ContainsData;
