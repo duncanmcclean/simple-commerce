@@ -37,10 +37,11 @@ class OrdersStore extends BasicStore
             ->cart(Arr::pull($data, 'cart'))
             ->status(Arr::pull($data, 'status'))
             ->customer(Arr::pull($data, 'customer'))
+            ->coupon(Arr::pull($data, 'coupon'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))
             ->subTotal(Arr::pull($data, 'sub_total'))
-            ->couponTotal(Arr::pull($data, 'discount_total'))
+            ->discountTotal(Arr::pull($data, 'discount_total'))
             ->taxTotal(Arr::pull($data, 'tax_total'))
             ->shippingTotal(Arr::pull($data, 'shipping_total'))
             ->data($data);

@@ -15,7 +15,7 @@ class ResetTotals
         $cart->subTotal(0);
         $cart->taxTotal(0);
         $cart->shippingTotal(0);
-        $cart->couponTotal(0);
+        $cart->discountTotal(0);
 
         $cart->lineItems()->transform(function (LineItem $lineItem) {
             $lineItem->total(0);

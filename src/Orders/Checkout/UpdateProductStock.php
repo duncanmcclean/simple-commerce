@@ -49,7 +49,7 @@ class UpdateProductStock
                             ));
                         }
 
-                        if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
+                        if ($stock <= config('statamic.simple-commerce.low_stock_threshold', 10)) {
                             event(new StockRunningLow(
                                 product: $product,
                                 variant: null,
@@ -79,7 +79,7 @@ class UpdateProductStock
                             ));
                         }
 
-                        if ($stock <= config('simple-commerce.low_stock_threshold', 10)) {
+                        if ($stock <= config('statamic.simple-commerce.low_stock_threshold', 10)) {
                             event(new StockRunningLow(
                                 product: $product,
                                 variant: $variant,

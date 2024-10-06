@@ -166,7 +166,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
-            'coupon_total' => $this->couponTotal(),
+            'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
         ], $this->data->all());
@@ -185,7 +185,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     public function updateableFields(): array
     {
         return $this->blueprint()->fields()->all()->map->handle()->except([
-            'id', 'line_items', 'coupon_total', 'grand_total', 'shipping_total', 'sub_total', 'tax_total',
+            'id', 'line_items', 'discount_total', 'grand_total', 'shipping_total', 'sub_total', 'tax_total',
         ])->all();
     }
 
@@ -196,7 +196,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
 
     public function shallowAugmentedArrayKeys()
     {
-        return ['id',  'grand_total', 'sub_total', 'coupon_total', 'tax_total', 'shipping_total'];
+        return ['id',  'grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'];
     }
 
     public function newAugmentedInstance(): Augmented
@@ -213,7 +213,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
-            'coupon_total' => $this->couponTotal(),
+            'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
         ], $this->data()->toArray());

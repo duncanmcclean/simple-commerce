@@ -164,7 +164,7 @@ class Blueprint
                                     'handle' => 'products',
                                     'field' => [
                                         'mode' => 'default',
-                                        'collections' => config('simple-commerce.products.collections'),
+                                        'collections' => config('statamic.simple-commerce.products.collections'),
                                         'display' => __('Limit to certain products'),
                                         'instructions' => __('This coupon will only be redeemable when *any* of these products are present in the order.'),
                                         'type' => 'entries',

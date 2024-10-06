@@ -25,7 +25,7 @@ class Cart extends SubTag
     {
         if (! CartFacade::hasCurrentCart()) {
             // To prevent empty carts, we'll return default values for some fields.
-            if (in_array($field, ['grand_total', 'sub_total', 'coupon_total', 'tax_total', 'shipping_total'])) {
+            if (in_array($field, ['grand_total', 'sub_total', 'discount_total', 'tax_total', 'shipping_total'])) {
                 return Money::format(0, Site::current());
             }
 

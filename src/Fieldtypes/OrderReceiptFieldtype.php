@@ -40,17 +40,17 @@ class OrderReceiptFieldtype extends Fieldtype
                 'quantity' => $lineItem->quantity(),
                 'total' => Money::format($lineItem->total(), Site::selected()),
             ])->all(),
-//            'coupon' => $order->coupon() ? [
-//                'code' => $order->coupon()->code(),
-//                'value' => $order->coupon()->value(),
-//            ] : null,
+            'coupon' => $order->coupon() ? [
+                'code' => $order->coupon()->code(),
+                'discount' => $order->coupon()->discountText(),
+            ] : null,
 //            'shipping' => $order->shippingMethod() ? [
 //                'title' => $order->shippingMethod()->title(),
 //                'price' => $order->shippingMethod()->price(),
 //            ] : null,
             'totals' => [
                 'sub_total' => Money::format($order->subTotal(), Site::selected()),
-                'coupon_total' => Money::format($order->couponTotal(), Site::selected()),
+                'discount_total' => Money::format($order->discountTotal(), Site::selected()),
                 'shipping_total' => Money::format($order->shippingTotal(), Site::selected()),
                 'tax_total' => Money::format($order->taxTotal(), Site::selected()),
                 'grand_total' => Money::format($order->grandTotal(), Site::selected()),

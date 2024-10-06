@@ -51,14 +51,13 @@ class UpdateCartRequest extends FormRequest
     public function validator()
     {
         $cart = Cart::current();
-        $fields = $cart->blueprint()->fields();
+        $fields = $cart->blueprint()->fields()->except(['customer', 'coupon']);
 
         $this->submittedValues = $this->only($cart->updateableFields());
         $this->blueprintFields = $fields->addValues($this->submittedValues);
 
         return $this->blueprintFields
             ->validator()
-//            ->only($cart->updateableFields())
             ->withRules([
                 'customer' => ['nullable', 'array'],
                 'customer.name' => ['nullable', 'string'],

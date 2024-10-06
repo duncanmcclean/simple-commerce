@@ -12,7 +12,7 @@ class ApplyShipping
     public function handle(Order $order, Closure $next)
     {
         $shippingMethod = $order->get('shipping_method');
-        $defaultShippingMethod = config('simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
+        $defaultShippingMethod = config('statamic.simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
 
         if (! $shippingMethod && ! $defaultShippingMethod) {
             return $next($order);

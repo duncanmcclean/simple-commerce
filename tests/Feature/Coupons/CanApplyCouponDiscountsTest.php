@@ -26,7 +26,7 @@ class CanApplyCouponDiscountsTest extends TestCase
 
         $cart = app(ApplyCouponDiscounts::class)->handle($cart, fn ($cart) => $cart);
 
-        $this->assertEquals($cart->couponTotal(), 1250);
+        $this->assertEquals($cart->discountTotal(), 1250);
         $this->assertEquals($cart->lineItems()->find('abc')->get('discount_amount'), 1250);
     }
 
@@ -43,7 +43,7 @@ class CanApplyCouponDiscountsTest extends TestCase
 
         $cart = app(ApplyCouponDiscounts::class)->handle($cart, fn ($cart) => $cart);
 
-        $this->assertEquals($cart->couponTotal(), 450);
+        $this->assertEquals($cart->discountTotal(), 450);
         $this->assertEquals($cart->lineItems()->find('abc')->get('discount_amount'), 450);
     }
 
@@ -62,7 +62,7 @@ class CanApplyCouponDiscountsTest extends TestCase
 
         $cart = app(ApplyCouponDiscounts::class)->handle($cart, fn ($cart) => $cart);
 
-        $this->assertEquals($cart->couponTotal(), 1250);
+        $this->assertEquals($cart->discountTotal(), 1250);
         $this->assertEquals($cart->lineItems()->find('abc')->get('discount_amount'), 1250);
         $this->assertNull($cart->lineItems()->find('def')->get('discount_amount'));
     }
@@ -82,7 +82,7 @@ class CanApplyCouponDiscountsTest extends TestCase
 
         $cart = app(ApplyCouponDiscounts::class)->handle($cart, fn ($cart) => $cart);
 
-        $this->assertEquals($cart->couponTotal(), 1250);
+        $this->assertEquals($cart->discountTotal(), 1250);
         $this->assertEquals($cart->lineItems()->find('abc')->get('discount_amount'), 1250);
         $this->assertNull($cart->lineItems()->find('def')->get('discount_amount'));
     }
@@ -101,7 +101,7 @@ class CanApplyCouponDiscountsTest extends TestCase
         $cart = app(ApplyCouponDiscounts::class)->handle($cart, fn ($cart) => $cart);
 
         $this->assertNull($cart->coupon());
-        $this->assertEquals($cart->couponTotal(), 0);
+        $this->assertEquals($cart->discountTotal(), 0);
         $this->assertNull($cart->lineItems()->find('abc')->get('discount_amount'));
     }
 

@@ -10,7 +10,7 @@ class LineItemBlueprint
     public function __invoke(): StatamicBlueprint
     {
         return BlueprintFacade::makeFromFields([
-            'product' => ['type' => 'entries', 'max_items' => 1, 'collections' => config('simple-commerce.products.collections')],
+            'product' => ['type' => 'entries', 'max_items' => 1, 'collections' => config('statamic.simple-commerce.products.collections')],
             'variant' => ['type' => 'text'],
             'quantity' => ['type' => 'integer'],
             'unit_price' => ['type' => 'money', 'save_zero_value' => true],

@@ -399,7 +399,7 @@ class CartLineItemsTest extends TestCase
     #[Test]
     public function it_doesnt_update_the_quantity_when_a_product_is_already_in_the_cart_but_the_data_is_different()
     {
-        config(['simple-commerce.cart.unique_metadata' => true]);
+        config(['statamic.simple-commerce.cart.unique_metadata' => true]);
 
         $cart = $this->makeCart();
         $product = $this->makeProduct();

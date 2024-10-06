@@ -55,7 +55,7 @@ class CheckoutTest extends TestCase
             ->assertSessionHasNoErrors();
 
         $this->assertEquals($coupon->id(), $cart->fresh()->coupon()->id());
-        $this->assertEquals($cart->fresh()->couponTotal(), 1250);
+        $this->assertEquals($cart->fresh()->discountTotal(), 1250);
 
         Event::assertDispatched(CouponRedeemed::class);
     }
@@ -78,7 +78,7 @@ class CheckoutTest extends TestCase
             ->assertSessionHasErrors('coupon');
 
         $this->assertNull($cart->fresh()->coupon());
-        $this->assertEquals($cart->fresh()->couponTotal(), 0);
+        $this->assertEquals($cart->fresh()->discountTotal(), 0);
 
         Event::assertNotDispatched(CouponRedeemed::class);
     }
@@ -103,7 +103,7 @@ class CheckoutTest extends TestCase
             ->assertSessionHasErrors('coupon');
 
         $this->assertNull($cart->fresh()->coupon());
-        $this->assertEquals($cart->fresh()->couponTotal(), 0);
+        $this->assertEquals($cart->fresh()->discountTotal(), 0);
 
         Event::assertNotDispatched(CouponRedeemed::class);
     }

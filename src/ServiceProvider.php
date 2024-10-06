@@ -21,6 +21,8 @@ use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $config = false;
+
     protected $actions = [
         Actions\Delete::class,
     ];
@@ -80,10 +82,16 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/simple-commerce.php', 'statamic.simple-commerce');
+
+        $this->publishes([
+            __DIR__.'/../config/simple-commerce.php' => config_path('statamic/simple-commerce.php'),
+        ], 'simple-commerce-config');
+
         $this->app['stache']->registerStores([
-            (new CartsStore)->directory(config('simple-commerce.carts.directory')),
-            (new CouponsStore)->directory(config('simple-commerce.coupons.directory')),
-            (new OrdersStore)->directory(config('simple-commerce.orders.directory')),
+            (new CartsStore)->directory(config('statamic.simple-commerce.carts.directory')),
+            (new CouponsStore)->directory(config('statamic.simple-commerce.coupons.directory')),
+            (new OrdersStore)->directory(config('statamic.simple-commerce.orders.directory')),
         ]);
 
         $this->app->bind(CartQueryBuilder::class, function () {

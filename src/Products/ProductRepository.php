@@ -14,7 +14,7 @@ class ProductRepository implements RepositoryContract
 
     public function __construct()
     {
-        $this->collections = config('simple-commerce.products.collections', ['products']);
+        $this->collections = config('statamic.simple-commerce.products.collections', ['products']);
     }
 
     public function all()

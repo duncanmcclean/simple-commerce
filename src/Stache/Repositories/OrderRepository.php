@@ -63,7 +63,7 @@ class OrderRepository implements RepositoryContract
             ->lineItems($cart->lineItems())
             ->grandTotal($cart->grandTotal())
             ->subTotal($cart->subTotal())
-            ->couponTotal($cart->couponTotal())
+            ->discountTotal($cart->discountTotal())
             ->taxTotal($cart->taxTotal())
             ->data($cart->data()->toArray());
     }
@@ -95,7 +95,7 @@ class OrderRepository implements RepositoryContract
         $lastOrder = $this->query()->orderByDesc('order_number')->first();
 
         if (! $lastOrder) {
-            return config('simple-commerce.minimum_order_number', 1000);
+            return config('statamic.simple-commerce.minimum_order_number', 1000);
         }
 
         return (int) $lastOrder->orderNumber() + 1;

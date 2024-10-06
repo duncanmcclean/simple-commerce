@@ -17,7 +17,7 @@ class Money
 {
     public static function get(Site $site): array
     {
-        $siteSettings = collect(Config::get('simple-commerce.sites'))
+        $siteSettings = collect(Config::get('statamic.simple-commerce.sites'))
             ->get($site->handle());
 
         if (! $siteSettings) {

@@ -36,7 +36,7 @@ class OrderTest extends TestCase
         $this->assertEquals($cart->lineItems(), $order->lineItems());
         $this->assertEquals(2500, $order->grandTotal());
         $this->assertEquals(2500, $order->subTotal());
-        $this->assertEquals(0, $order->couponTotal());
+        $this->assertEquals(0, $order->discountTotal());
         $this->assertEquals(0, $order->taxTotal());
         $this->assertEquals(0, $order->shippingTotal());
         $this->assertEquals('bar', $order->get('foo'));

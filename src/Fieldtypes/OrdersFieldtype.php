@@ -12,7 +12,7 @@ class OrdersFieldtype extends Relationship
     protected $canCreate = false;
     protected $canSearch = false;
 
-    protected $formComponent = 'orders-publish-form';
+    protected $formComponent = 'order-publish-form';
 
     protected $formComponentProps = [
         'initialActions' => 'actions',

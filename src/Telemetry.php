@@ -14,7 +14,7 @@ class Telemetry
 {
     public static function send(): void
     {
-        if (! config('simple-commerce.enable_telemetry', true)) {
+        if (! config('statamic.simple-commerce.enable_telemetry', true)) {
             return;
         }
 

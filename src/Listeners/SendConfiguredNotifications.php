@@ -16,7 +16,7 @@ class SendConfiguredNotifications implements ShouldQueue
 {
     public function handle($event)
     {
-        $notifications = collect(Config::get('simple-commerce.notifications'))
+        $notifications = collect(Config::get('statamic.simple-commerce.notifications'))
             ->get($this->getEventName($event));
 
         if (! $notifications) {

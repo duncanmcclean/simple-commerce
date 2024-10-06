@@ -29,10 +29,9 @@ class ApplyCouponDiscounts
                 }
             });
 
-            // TODO: Rename to discountTotal
-            $cart->couponTotal($cart->lineItems()->sum('discount_amount'));
+            $cart->discountTotal($cart->lineItems()->sum('discount_amount'));
 
-            if ($cart->couponTotal() === 0) {
+            if ($cart->discountTotal() === 0) {
                 $cart->coupon(null);
             }
         }

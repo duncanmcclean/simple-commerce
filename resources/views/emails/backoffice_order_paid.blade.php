@@ -1,4 +1,4 @@
-{{ $taxIncludedInPrices = config('simple-commerce.tax_engine_config.included_in_prices') }}
+{{ $taxIncludedInPrices = config('statamic.simple-commerce.tax_engine_config.included_in_prices') }}
 
 @component('mail::message')
     # {{ __('New Order') }}
@@ -15,7 +15,7 @@
         @endforeach
         | | {{ __('Subtotal') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $order->itemsTotalWithTax() : $order->itemsTotal(), $site) }}
         @if($order->coupon())
-            | | {{ __('Coupon') }}: | -{{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->couponTotal(), $site) }}
+            | | {{ __('Coupon') }}: | -{{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->discountTotal(), $site) }}
         @endif
         | | {{ __('Shipping') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
         @if(!$taxIncludedInPrices)

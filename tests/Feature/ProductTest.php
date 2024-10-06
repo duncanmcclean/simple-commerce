@@ -37,7 +37,7 @@ class ProductTest extends TestCase
     #[Test]
     public function can_get_all_products_across_collections()
     {
-        Config::set('simple-commerce.products.collections', ['merch', 'courses']);
+        Config::set('statamic.simple-commerce.products.collections', ['merch', 'courses']);
 
         Collection::make('merch')->save();
         Collection::make('courses')->save();

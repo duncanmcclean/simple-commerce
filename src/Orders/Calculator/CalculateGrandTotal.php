@@ -11,7 +11,7 @@ class CalculateGrandTotal
     public function handle(Cart $cart, Closure $next)
     {
         $cart->grandTotal(
-            (($cart->subTotal() + $cart->taxTotal()) - $cart->couponTotal()) + $cart->shippingTotal()
+            (($cart->subTotal() + $cart->taxTotal()) - $cart->discountTotal()) + $cart->shippingTotal()
         );
 
         $cart->grandTotal((int) $cart->grandTotal());

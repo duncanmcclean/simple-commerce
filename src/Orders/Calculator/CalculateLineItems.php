@@ -26,9 +26,8 @@ class CalculateLineItems
                         $productPrice = (int) str_replace('.', '', (string) $productPrice);
                     }
 
-                    $lineItem->total(
-                        $productPrice * $lineItem->quantity()
-                    );
+                    $lineItem->unitPrice($productPrice);
+                    $lineItem->total($productPrice * $lineItem->quantity());
                 }
 
                 if ($product->type() === ProductType::Variant) {
@@ -42,9 +41,8 @@ class CalculateLineItems
                         $productPrice = (int) str_replace('.', '', (string) $productPrice);
                     }
 
-                    $lineItem->total(
-                        $productPrice * $lineItem->quantity()
-                    );
+                    $lineItem->unitPrice($productPrice);
+                    $lineItem->total($productPrice * $lineItem->quantity());
                 }
 
                 return $lineItem;

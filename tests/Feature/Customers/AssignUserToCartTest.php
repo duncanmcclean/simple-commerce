@@ -44,7 +44,7 @@ class AssignUserToCartTest extends TestCase
         $recentCart = tap(Cart::make()->customer($user))->save();
 
         // When the Cart is saved above, it'll set the current cart, which we don't want for this test.
-        Blink::forget(config('simple-commerce.carts.cookie_name'));
+        Blink::forget(config('statamic.simple-commerce.carts.cookie_name'));
 
         $this->assertFalse(Cart::hasCurrentCart());
 
@@ -56,7 +56,7 @@ class AssignUserToCartTest extends TestCase
     #[Test]
     public function the_current_cart_is_merged_into_the_recent_cart()
     {
-        Config::set('simple-commerce.carts.merge_on_login', true);
+        Config::set('statamic.simple-commerce.carts.merge_on_login', true);
 
         $user = User::make()->save();
 
@@ -85,7 +85,7 @@ class AssignUserToCartTest extends TestCase
     #[Test]
     public function the_recent_cart_is_deleted()
     {
-        Config::set('simple-commerce.carts.merge_on_login', false);
+        Config::set('statamic.simple-commerce.carts.merge_on_login', false);
 
         $user = User::make()->save();
 

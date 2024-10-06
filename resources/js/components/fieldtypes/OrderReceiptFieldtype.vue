@@ -2,10 +2,10 @@
     <div>
         <div class="receipt-table w-full">
             <div class="receipt-table-header">
-                <div class="col-span-3 text-sm">Product</div>
-                <div class="text-right text-sm">Unit Price</div>
-                <div class="text-right text-sm">Quantity</div>
-                <div class="text-right text-sm">Total</div>
+                <div class="col-span-3 text-sm">{{ __('Product') }}</div>
+                <div class="text-right text-sm">{{ __('Unit Price') }}</div>
+                <div class="text-right text-sm">{{ __('Quantity') }}</div>
+                <div class="text-right text-sm">{{ __('Total') }}</div>
             </div>
             <LineItem
                 v-for="lineItem in receipt.line_items"
@@ -13,31 +13,32 @@
                 :key="lineItem.id"
                 :form-component="meta.product.formComponent"
                 :form-component-props="meta.product.formComponentProps"
-                @updated="lineItemUpdated" />
+                @updated="lineItemUpdated"
+            />
             <div class="receipt-total font-semibold border-t dark:border-dark-500">
-                <div>Subtotal</div>
+                <div>{{ __('Subtotal') }}</div>
                 <div>{{ receipt.totals.sub_total }}</div>
             </div>
             <div v-if="receipt.coupon" class="receipt-total">
                 <div>
-                    <span>Coupon Discount (COUPONCODE)</span>
-                    <span class="help-block">50% off</span>
+                    <span>{{ __('Coupon Discount (:code)', {code: receipt.coupon.code}) }}</span>
+                    <span class="help-block mb-0">{{ receipt.coupon.discount }}</span>
                 </div>
-                <div>{{ receipt.totals.coupon_total }}</div>
+                <div>{{ receipt.totals.discount_total }}</div>
             </div>
             <div v-if="receipt.shipping" class="receipt-total">
                 <div>
-                    <span>Shipping</span>
-                    <span class="help-block">Royal Mail</span>
+                    <span>{{ __('Shipping') }}</span>
+                    <span class="help-block mb-0">Royal Mail</span>
                 </div>
                 <div>{{ receipt.totals.shipping_total }}</div>
             </div>
             <div class="receipt-total">
-                <div>Taxes</div>
+                <div>{{ __('Taxes') }}</div>
                 <div>{{ receipt.totals.tax_total }}</div>
             </div>
             <div class="receipt-total font-bold">
-                <div>Grand Total</div>
+                <div>{{ __('Grand Total') }}</div>
                 <div>{{ receipt.totals.grand_total }}</div>
             </div>
         </div>

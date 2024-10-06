@@ -12,7 +12,7 @@ trait Calculable
 
     protected $grandTotal;
     protected $subTotal;
-    protected $couponTotal;
+    protected $discountTotal;
     protected $taxTotal;
     protected $shippingTotal;
 
@@ -30,10 +30,10 @@ trait Calculable
             ->args(func_get_args());
     }
 
-    public function couponTotal($couponTotal = null)
+    public function discountTotal($couponTotal = null)
     {
-        return $this->fluentlyGetOrSet('couponTotal')
-            ->getter(fn ($couponTotal) => $couponTotal ?? 0)
+        return $this->fluentlyGetOrSet('discountTotal')
+            ->getter(fn ($discountTotal) => $discountTotal ?? 0)
             ->args(func_get_args());
     }
 

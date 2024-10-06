@@ -13,7 +13,7 @@ trait ExtractsFromOrderFields
                 'line_items' => $order->lineItems()->map->fileData()->all(),
                 'grand_total' => $order->grandTotal(),
                 'sub_total' => $order->subTotal(),
-                'coupon_total' => $order->couponTotal(),
+                'discount_total' => $order->discountTotal(),
                 'tax_total' => $order->taxTotal(),
                 'shipping_total' => $order->shippingTotal(),
                 'customer' => $order->customer(),

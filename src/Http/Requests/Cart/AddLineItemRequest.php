@@ -26,7 +26,7 @@ class AddLineItemRequest extends FormRequest
                         return $fail(__('The product is invalid.'));
                     }
 
-                    if (! in_array($product->collectionHandle(), config('simple-commerce.products.collections'))) {
+                    if (! in_array($product->collectionHandle(), config('statamic.simple-commerce.products.collections'))) {
                         $fail(__('The product is invalid.'));
                     }
                 },

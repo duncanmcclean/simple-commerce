@@ -28,7 +28,7 @@ class AssignUserToCart
             return;
         }
 
-        $shouldMerge = config('simple-commerce.carts.merge_on_login', true);
+        $shouldMerge = config('statamic.simple-commerce.carts.merge_on_login', true);
 
         if ($shouldMerge) {
             $currentCart = Cart::current();

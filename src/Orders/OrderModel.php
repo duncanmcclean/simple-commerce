@@ -29,7 +29,7 @@ class OrderModel extends Model
         'items_total' => 'integer',
         'tax_total' => 'integer',
         'shipping_total' => 'integer',
-        'coupon_total' => 'integer',
+        'discount_total' => 'integer',
         'use_shipping_address_for_billing' => 'boolean',
         'gateway' => 'json',
         'data' => 'json',
