@@ -26,7 +26,7 @@ class CheckoutTest extends TestCase
     {
         $this->makeCartWithLineItems();
 
-        $output = $this->tag('{{ sc:checkout }}<p>You are {{ customer:name }}.</p> <button>Checkout!</button>{{ /sc:checkout }}');
+        $output = $this->tag('{{ checkout }}<p>You are {{ customer:name }}.</p> <button>Checkout!</button>{{ /checkout }}');
 
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/checkout">', $output);
         $this->assertStringContainsString('<p>You are John Doe.</p>', $output);

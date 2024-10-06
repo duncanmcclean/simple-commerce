@@ -7,8 +7,9 @@ use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
+use Statamic\Tags\Tags;
 
-class Cart extends SubTag
+class Cart extends Tags
 {
     use Concerns\FormBuilder;
 
@@ -74,7 +75,7 @@ class Cart extends SubTag
     public function updateLineItem()
     {
         if (! $this->params->has('line_item') && ! $this->params->has('product')) {
-            throw new \Exception("You must provide a `line_item` or `product` parameter to the sc:cart:update_line_item tag.");
+            throw new \Exception("You must provide a `line_item` or `product` parameter to the cart:update_line_item tag.");
         }
 
         $lineItem = CartFacade::current()->lineItems()
@@ -99,7 +100,7 @@ class Cart extends SubTag
     public function remove()
     {
         if (! $this->params->has('line_item') && ! $this->params->has('product')) {
-            throw new \Exception("You must provide a `line_item` or `product` parameter to the sc:cart:remove tag.");
+            throw new \Exception("You must provide a `line_item` or `product` parameter to the cart:remove tag.");
         }
 
         $lineItem = CartFacade::current()->lineItems()

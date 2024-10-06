@@ -2,12 +2,10 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
-use DuncanMcClean\SimpleCommerce\Coupons\CouponStore;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CouponQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
-use DuncanMcClean\SimpleCommerce\Stache\Repositories\CouponRepository;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CouponsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
@@ -23,30 +21,7 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $config = false;
 
-    protected $actions = [
-        Actions\Delete::class,
-    ];
-
-    protected $commands = [
-        Console\Commands\MigrateOrders::class,
-        Console\Commands\PurgeAbandonedCarts::class,
-    ];
-
-    protected $fieldtypes = [
-        Fieldtypes\CouponAmountFieldtype::class,
-        Fieldtypes\CouponCodeFieldtype::class,
-        Fieldtypes\CouponFieldtype::class,
-        Fieldtypes\CustomerFieldtype::class,
-        Fieldtypes\LineItemsFieldtype::class,
-        Fieldtypes\MoneyFieldtype::class,
-        Fieldtypes\OrderReceiptFieldtype::class,
-        Fieldtypes\OrdersFieldtype::class,
-        Fieldtypes\OrderStatusFieldtype::class,
-        Fieldtypes\PaymentDetailsFieldtype::class,
-        Fieldtypes\ProductVariantsFieldtype::class,
-        Fieldtypes\ShippingDetailsFieldtype::class,
-    ];
-
+    // TODO: Can we make Statamic autoload event listeners based on typehints?
     protected $listen = [
         \Illuminate\Auth\Events\Login::class => [
             Listeners\AssignUserToCart::class,
@@ -56,18 +31,10 @@ class ServiceProvider extends AddonServiceProvider
         ],
     ];
 
-    protected $routes = [
-        'actions' => __DIR__.'/../routes/actions.php',
-        'cp' => __DIR__.'/../routes/cp.php',
-    ];
-
+    // TODO: AddonServiceProvider::bootScopes() only autoloads from src/Scopes, not src/Scopes/Filters.
     protected $scopes = [
-        Query\Scopes\Filters\CouponType::class,
-        Query\Scopes\Filters\OrderStatus::class,
-    ];
-
-    protected $tags = [
-        Tags\SimpleCommerceTag::class,
+        Scopes\Filters\CouponType::class,
+        Scopes\Filters\OrderStatus::class,
     ];
 
     protected $vite = [

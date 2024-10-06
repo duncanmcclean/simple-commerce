@@ -3,8 +3,9 @@
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use Statamic\Tags\Tags;
 
-class Gateways extends SubTag
+class Gateways extends Tags
 {
     public function index()
     {
@@ -16,7 +17,7 @@ class Gateways extends SubTag
         return SimpleCommerce::gateways()->count();
     }
 
-    // {{ sc:gateways:stripe }}
+    // {{ gateways:stripe }}
     public function wildcard(string $tag)
     {
         return SimpleCommerce::gateways()

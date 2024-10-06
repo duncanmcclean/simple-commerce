@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Query\Scopes\Filters;
+namespace DuncanMcClean\SimpleCommerce\Scopes\Filters;
 
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType as CouponTypeEnum;
 use Statamic\Query\Scopes\Filter;

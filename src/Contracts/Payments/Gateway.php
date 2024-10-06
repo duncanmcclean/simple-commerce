@@ -15,12 +15,12 @@ interface Gateway
 
     /**
      * If your payment gateway is off-site (eg. your customer doesn't have to submit the
-     * {{ sc:checkout }} form to confirm the payment), then you should return true here.
+     * {{ checkout }} form to confirm the payment), then you should return true here.
      */
     public function isOffsiteGateway(): bool;
 
     /**
-     * This method is called when the {{ sc:checkout }} tag is used. It should return any
+     * This method is called when the {{ checkout }} tag is used. It should return any
      * data you need in the front-end to handle a payment (like a Stripe Payment Intent).
      *
      * If you're building an off-site gateway, you should return a `checkout_url` key with the
@@ -29,7 +29,7 @@ interface Gateway
     public function prepare(Request $request, Order $order): array;
 
     /**
-     * This method is called when you submit the {{ sc:checkout }} form. It should return
+     * This method is called when you submit the {{ checkout }} form. It should return
      * an array of payment data that'll be saved onto the order.
      *
      * If you need to display an error message, you should throw a GatewayCheckoutFailed exception.
@@ -40,7 +40,7 @@ interface Gateway
 
     /**
      * This method should return an array of validation rules that'll be run whenever
-     * the {{ sc:checkout }} has been submitted.
+     * the {{ checkout }} has been submitted.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
      */
@@ -48,7 +48,7 @@ interface Gateway
 
     /**
      * This method should return an array of validation messages that'll be used whenever
-     * the {{ sc:checkout }} has been submitted. This method isn't mandatory.
+     * the {{ checkout }} has been submitted. This method isn't mandatory.
      *
      * If you're building an off-site gateway, you don't need to implement this method.
      */

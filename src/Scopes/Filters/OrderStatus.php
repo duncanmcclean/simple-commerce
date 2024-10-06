@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Query\Scopes\Filters;
+namespace DuncanMcClean\SimpleCommerce\Scopes\Filters;
 
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus as OrderStatusEnum;
 use Statamic\Query\Scopes\Filter;

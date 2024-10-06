@@ -117,8 +117,12 @@ class ProductVariantsFieldtype extends Fieldtype
         }
 
         return [
-            'variants' => $this->processInsideFields(isset($value['variants']) ? $value['variants'] : [], $this->preload()['variant_fields'], 'augment'),
-            'options' => $this->processInsideFields(isset($value['options']) ? $value['options'] : [], $this->preload()['option_fields'], 'augment'),
+            'variants' => collect($value['variants'] ?? [])
+                ->map(fn ($option) => $this->variantFields()->addValues($option)->augment()->values()->all())
+                ->all(),
+            'options' => collect($value['options'] ?? [])
+                ->map(fn ($option) => $this->optionFields()->addValues($option)->augment()->values()->all())
+                ->all(),
         ];
     }
 

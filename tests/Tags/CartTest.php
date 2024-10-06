@@ -41,25 +41,25 @@ class CartTest extends TestCase
 
         Cart::setCurrent($cart);
 
-        $this->assertEquals('£15.23', (string) $this->tag('{{ sc:cart:grand_total }}'));
-        $this->assertEquals('bar', (string) $this->tag('{{ sc:cart:foo }}'));
+        $this->assertEquals('£15.23', (string) $this->tag('{{ cart:grand_total }}'));
+        $this->assertEquals('bar', (string) $this->tag('{{ cart:foo }}'));
     }
 
     #[Test]
     public function doesnt_create_an_empty_cart_when_calling_wildcard()
     {
-        $this->assertEquals('£0.00', (string) $this->tag('{{ sc:cart:grand_total }}'));
-        $this->assertEmpty((string) $this->tag('{{ sc:cart:foo }}'));
+        $this->assertEquals('£0.00', (string) $this->tag('{{ cart:grand_total }}'));
+        $this->assertEmpty((string) $this->tag('{{ cart:foo }}'));
     }
 
     #[Test]
     public function can_check_if_cart_exists()
     {
-        $this->assertEquals('no', $this->tag('{{ if {sc:cart:exists} }}yes{{ else }}no{{ /if }}'));
+        $this->assertEquals('no', $this->tag('{{ if {cart:exists} }}yes{{ else }}no{{ /if }}'));
 
         Cart::setCurrent(Cart::make());
 
-        $this->assertEquals('yes', $this->tag('{{ if {sc:cart:exists} }}yes{{ else }}no{{ /if }}'));
+        $this->assertEquals('yes', $this->tag('{{ if {cart:exists} }}yes{{ else }}no{{ /if }}'));
     }
 
     #[Test]
@@ -67,14 +67,14 @@ class CartTest extends TestCase
     {
         $this->makeProduct('123');
 
-        $this->assertEquals('no', $this->tag('{{ if {sc:cart:already_exists product="123"} }}yes{{ else }}no{{ /if }}'));
+        $this->assertEquals('no', $this->tag('{{ if {cart:already_exists product="123"} }}yes{{ else }}no{{ /if }}'));
 
         $cart = Cart::make();
         $cart->lineItems()->create(['product' => '123', 'quantity' => 1]);
 
         Cart::setCurrent($cart);
 
-        $this->assertEquals('yes', $this->tag('{{ if {sc:cart:already_exists product="123"} }}yes{{ else }}no{{ /if }}'));
+        $this->assertEquals('yes', $this->tag('{{ if {cart:already_exists product="123"} }}yes{{ else }}no{{ /if }}'));
     }
 
     #[Test]
@@ -82,20 +82,20 @@ class CartTest extends TestCase
     {
         $this->makeVariantProduct('123');
 
-        $this->assertEquals('no', $this->tag('{{ if {sc:cart:already_exists product="123" variant="Red"} }}yes{{ else }}no{{ /if }}'));
+        $this->assertEquals('no', $this->tag('{{ if {cart:already_exists product="123" variant="Red"} }}yes{{ else }}no{{ /if }}'));
 
         $cart = Cart::make();
         $cart->lineItems()->create(['product' => '123', 'variant' => 'Red', 'quantity' => 1]);
 
         Cart::setCurrent($cart);
 
-        $this->assertEquals('yes', $this->tag('{{ if {sc:cart:already_exists product="123" variant="Red"} }}yes{{ else }}no{{ /if }}'));
+        $this->assertEquals('yes', $this->tag('{{ if {cart:already_exists product="123" variant="Red"} }}yes{{ else }}no{{ /if }}'));
     }
 
     #[Test]
     public function it_outputs_add_form()
     {
-        $output = $this->tag('{{ sc:cart:add class="add-to-cart" }}<button>Add to Cart</button>{{ /sc:cart:add }}');
+        $output = $this->tag('{{ cart:add class="add-to-cart" }}<button>Add to Cart</button>{{ /cart:add }}');
 
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/cart/line-items" class="add-to-cart">', $output);
         $this->assertStringContainsString('<button>Add to Cart</button>', $output);
@@ -106,7 +106,7 @@ class CartTest extends TestCase
     {
         $this->makeCartWithLineItems('123');
 
-        $output = $this->tag('{{ sc:cart:update_line_item product="123" }}<button>Update</button>{{ /sc:cart:update_line_item }}');
+        $output = $this->tag('{{ cart:update_line_item product="123" }}<button>Update</button>{{ /cart:update_line_item }}');
 
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/cart/line-items/line-item-1">', $output);
         $this->assertStringContainsString('<input type="hidden" name="_method" value="PATCH">', $output);
@@ -118,7 +118,7 @@ class CartTest extends TestCase
     {
         $this->makeCartWithLineItems('123');
 
-        $output = $this->tag('{{ sc:cart:remove product="123" }}<button>Remove</button>{{ /sc:cart:remove }}');
+        $output = $this->tag('{{ cart:remove product="123" }}<button>Remove</button>{{ /cart:remove }}');
 
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/cart/line-items/line-item-1">', $output);
         $this->assertStringContainsString('<input type="hidden" name="_method" value="DELETE">', $output);
@@ -128,7 +128,7 @@ class CartTest extends TestCase
     #[Test]
     public function it_outputs_update_form()
     {
-        $output = $this->tag('{{ sc:cart:update class="cart-form" }}<button>Update</button>{{ /sc:cart:update }}');
+        $output = $this->tag('{{ cart:update class="cart-form" }}<button>Update</button>{{ /cart:update }}');
 
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/cart" class="cart-form">', $output);
         $this->assertStringContainsString('<button>Update</button>', $output);
@@ -137,7 +137,7 @@ class CartTest extends TestCase
     #[Test]
     public function it_outputs_empty_form()
     {
-        $output = $this->tag('{{ sc:cart:empty class="get-rid-of-everything" }}<button>Empty the cart!</button>{{ /sc:cart:empty }}');
+        $output = $this->tag('{{ cart:empty class="get-rid-of-everything" }}<button>Empty the cart!</button>{{ /cart:empty }}');
 
         $this->assertStringContainsString('<form method="POST" action="http://localhost/!/simple-commerce/cart" class="get-rid-of-everything">', $output);
         $this->assertStringContainsString('<input type="hidden" name="_method" value="DELETE">', $output);

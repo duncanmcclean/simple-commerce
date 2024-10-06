@@ -13,8 +13,9 @@ use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Statamic\Tags\Tags;
 
-class Checkout extends SubTag
+class Checkout extends Tags
 {
     use Concerns\FormBuilder;
 
@@ -57,7 +58,7 @@ class Checkout extends SubTag
         );
     }
 
-    // {{ sc:checkout:mollie }}
+    // {{ checkout:mollie }}
     public function wildcard(string $tag)
     {
         if (! $tag || $tag === 'index') {
