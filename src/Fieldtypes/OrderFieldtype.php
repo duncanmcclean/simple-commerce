@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Order;
 use Statamic\Fieldtypes\Relationship;
 use Statamic\Statamic;
 
-class OrdersFieldtype extends Relationship
+class OrderFieldtype extends Relationship
 {
     protected $canEdit = true;
     protected $canCreate = false;

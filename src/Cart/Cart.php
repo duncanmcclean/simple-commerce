@@ -6,6 +6,7 @@ use ArrayAccess;
 use Carbon\CarbonInterface;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
+use DuncanMcClean\SimpleCommerce\Events\CartSaved;
 use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
@@ -133,6 +134,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         $this->set('updated_at', Carbon::now()->timestamp);
 
         CartFacade::save($this);
+
+        event(new CartSaved($this));
 
         return true;
     }
