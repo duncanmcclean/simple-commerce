@@ -18,7 +18,7 @@ To enable the Basic Tax Engine, your config should look like this:
 ```php
 // config/simple-commerce.php
 
-'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class,{
+'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class,
 
 'tax_engine_config' => [
     'rate'               => 20,
