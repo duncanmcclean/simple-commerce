@@ -18,7 +18,7 @@ To enable the Basic Tax Engine, your config should look like this:
 ```php
 // config/simple-commerce.php
 
-'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class,
+'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class,{
 
 'tax_engine_config' => [
     'rate'               => 20,
@@ -45,7 +45,9 @@ If you wish to enable tax for shipping costs, simply flick the toggle in your Si
 
 Now, the tax rate you have set for all products will also be applied to shipping costs.
 
-If you have set the option ```included_in_prices``` to be true, you must define your shipping costs with VAT.
+:::note Note!
+When `included_in_prices` is `true`, you should ensure that your shipping cost includes any taxes.
+:::
 
 ## Standard Tax Engine
 
