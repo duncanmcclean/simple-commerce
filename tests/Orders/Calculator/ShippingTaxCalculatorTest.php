@@ -50,6 +50,7 @@ it('calculates shipping tax when price does not include tax', function () {
     ]);
     expect($order->taxTotal())->toBe(50);
     expect($order->shippingTotal())->toBe(250);
+    expect($order->shippingTotalWithTax())->toBe(300);
 });
 
 it('calculates shipping tax when price includes tax', function () {
@@ -66,10 +67,11 @@ it('calculates shipping tax when price includes tax', function () {
     $order = Pipeline::send($order)->through([ShippingTaxCalculator::class])->thenReturn();
 
     expect($order->get('shipping_tax'))->toBeArray()->toBe([
-        'amount' => 50,
+        'amount' => 42,
         'rate' => 20,
         'price_includes_tax' => true,
     ]);
-    expect($order->taxTotal())->toBe(50);
-    expect($order->shippingTotal())->toBe(200);
+    expect($order->taxTotal())->toBe(42);
+    expect($order->shippingTotal())->toBe(208);
+    expect($order->shippingTotalWithTax())->toBe(250);
 });

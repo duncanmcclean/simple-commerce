@@ -156,7 +156,7 @@ test('can calculate shipping tax when included in price', function () {
     $order = Order::make()
         ->status(OrderStatus::Cart)
         ->merge(['shipping_method' => DummyShippingMethod::handle()])
-        ->shippingTotal(500);
+        ->shippingTotal(250);
 
     $order->save();
 
@@ -164,7 +164,30 @@ test('can calculate shipping tax when included in price', function () {
 
     expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
 
-    expect(100)->toBe($taxCalculation->amount());
+    expect(42)->toBe($taxCalculation->amount());
     expect(true)->toBe($taxCalculation->priceIncludesTax());
+    expect(20)->toBe($taxCalculation->rate());
+});
+
+test('can calculate shipping tax when is not included in price', function () {
+    Config::set('simple-commerce.tax_engine_config.rate', 20);
+    Config::set('simple-commerce.tax_engine_config.included_in_prices', false);
+    Config::set('simple-commerce.tax_engine_config.shipping_taxes', true);
+
+    SimpleCommerce::registerShippingMethod(Site::current()->handle(), DummyShippingMethod::class);
+
+    $order = Order::make()
+        ->status(OrderStatus::Cart)
+        ->merge(['shipping_method' => DummyShippingMethod::handle()])
+        ->shippingTotal(250);
+
+    $order->save();
+
+    $taxCalculation = (new BasicTaxEngine)->calculateForShipping($order, new DummyShippingMethod);
+
+    expect($taxCalculation instanceof TaxCalculation)->toBeTrue();
+
+    expect(50)->toBe($taxCalculation->amount());
+    expect(false)->toBe($taxCalculation->priceIncludesTax());
     expect(20)->toBe($taxCalculation->rate());
 });

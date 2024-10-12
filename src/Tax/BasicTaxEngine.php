@@ -54,7 +54,11 @@ class BasicTaxEngine implements TaxEngine
             return new TaxCalculation;
         }
 
-        $taxAmount = $order->shippingTotal() / 100 * $this->taxRate;
+        if ($this->includedInPrices) {
+            $taxAmount = $order->shippingTotal() / (100 + $this->taxRate) * $this->taxRate;
+        } else {
+            $taxAmount = $order->shippingTotal() / 100 * $this->taxRate;
+        }
 
         return new TaxCalculation(
             (int) round($taxAmount),

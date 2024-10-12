@@ -45,6 +45,10 @@ If you wish to enable tax for shipping costs, simply flick the toggle in your Si
 
 Now, the tax rate you have set for all products will also be applied to shipping costs.
 
+:::note Note!
+When `included_in_prices` is `true`, you should ensure that your shipping cost includes any taxes.
+:::
+
 ## Standard Tax Engine
 
 The Standard Tax Engine is enabled by default in new Simple Commerce sites. You may enable it if you're on an older site like so:
