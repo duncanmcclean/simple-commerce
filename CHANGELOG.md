@@ -1,5 +1,13 @@
 # Changelog
 
+## v7.5.3 (2024-10-12)
+
+### What's fixed
+* Fixed an issue with the `{{ sc:cart }}` tag when value is array #1165 #1170 by @darinlarimore
+* Fixed an issue with shipping tax calculations in the Basic Tax Engine when `included_in_prices` is enabled #1168 by @rolinbos
+
+
+
 ## v7.5.2 (2024-10-01)
 
 ### What's fixed
