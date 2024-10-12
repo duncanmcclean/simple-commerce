@@ -319,11 +319,11 @@ class CartTags extends SubTag
         if ($cart->has($method)) {
             return $cart->get($method);
         }
-        
+
         if (array_key_exists($method, $cart->toAugmentedArray())) {
             return $cart->toAugmentedArray()[$method];
         }
-        
+
         return null;
     }
 }
