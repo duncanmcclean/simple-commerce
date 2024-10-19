@@ -2,16 +2,13 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts\Shipping;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Orders\Address;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 
 interface ShippingMethod
 {
     public function name(): string;
 
-    public function description(): string;
+    public function isAvailable(Cart $cart): bool;
 
-    public function calculateCost(Order $order): int;
-
-    public function checkAvailability(Order $order, Address $address): bool;
+    public function cost(Cart $cart): int;
 }

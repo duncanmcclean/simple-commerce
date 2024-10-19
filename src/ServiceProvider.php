@@ -21,7 +21,7 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $config = false;
 
-    // TODO: Can we make Statamic autoload event listeners based on typehints?
+    // TODO: Remove when Core PR gets merged: https://github.com/statamic/cms/pull/10911
     protected $listen = [
         \Illuminate\Auth\Events\Login::class => [
             Listeners\AssignUserToCart::class,
@@ -45,6 +45,10 @@ class ServiceProvider extends AddonServiceProvider
             'resources/js/cp.js',
             'resources/css/cp.css',
         ],
+    ];
+
+    protected $shippingMethods = [
+        Shipping\FreeShipping::class,
     ];
 
     public function bootAddon()
@@ -83,6 +87,10 @@ class ServiceProvider extends AddonServiceProvider
                 Statamic::repository($abstract, $concrete);
             }
         });
+
+        foreach ($this->shippingMethods as $shippingMethod) {
+            $shippingMethod::register();
+        }
 
         Nav::extend(function ($nav) {
             $nav->create(__('Orders'))

@@ -2,29 +2,17 @@
 
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod;
-use DuncanMcClean\SimpleCommerce\Orders\Address;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 
-class FreeShipping extends BaseShippingMethod implements ShippingMethod
+class FreeShipping extends ShippingMethod
 {
     public function name(): string
     {
         return __('Free Shipping');
     }
 
-    public function description(): string
-    {
-        return __("You don't need to pay for shipping, since it's free!");
-    }
-
-    public function calculateCost(Order $order): int
+    public function cost(Cart $cart): int
     {
         return 0;
-    }
-
-    public function checkAvailability(Order $order, Address $address): bool
-    {
-        return true;
     }
 }
