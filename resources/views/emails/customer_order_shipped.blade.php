@@ -1,4 +1,6 @@
-{{ $taxIncludedInPrices = config('simple-commerce.tax_engine_config.included_in_prices') }}
+@php
+    $taxIncludedInPrices = config('simple-commerce.tax_engine_config.included_in_prices')
+@endphp
 
 @component('mail::message')
 # {{ __('Order Shipped') }}
