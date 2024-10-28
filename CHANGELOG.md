@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.5.4 (2024-10-28)
+
+### What's fixed
+* Fix variable being output in email template #1171 by @tobiv
+
+
+
 ## v7.5.3 (2024-10-12)
 
 ### What's fixed
