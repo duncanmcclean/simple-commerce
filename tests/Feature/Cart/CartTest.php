@@ -66,7 +66,7 @@ class CartTest extends TestCase
                     'name' => 'Jane Doe',
                     'email' => 'jane.doe@example.com',
                 ],
-                'shipping_line_1' => '123 Shipping St',
+                'shipping_line_1' => '123 ShippingMethod St',
                 'shipping_line_2' => 'Apt 1',
                 'shipping_city' => 'Shippingville',
                 'shipping_postcode' => '12345',
@@ -85,7 +85,7 @@ class CartTest extends TestCase
 
         // TODO: Assert the coupon was added to the cart.
 
-        $this->assertEquals('123 Shipping St', $cart->get('shipping_line_1'));
+        $this->assertEquals('123 ShippingMethod St', $cart->get('shipping_line_1'));
         $this->assertEquals('Apt 1', $cart->get('shipping_line_2'));
         $this->assertEquals('Shippingville', $cart->get('shipping_city'));
         $this->assertEquals('12345', $cart->get('shipping_postcode'));

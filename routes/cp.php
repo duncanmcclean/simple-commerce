@@ -5,6 +5,7 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionControl
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderActionController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\DownloadPackingSlipController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('simple-commerce.')->group(function () {
@@ -19,6 +20,8 @@ Route::name('simple-commerce.')->group(function () {
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::post('actions', [OrderActionController::class, 'run'])->name('actions.run');
         Route::post('actions/list', [OrderActionController::class, 'bulkActions'])->name('actions.bulk');
+
+        Route::get('{order}/download-packing-slip', DownloadPackingSlipController::class)->name('download-packing-slip');
     });
 
     Route::post('convert-guest-to-user', ConvertGuestToUserController::class)->name('convert-guest-to-user');

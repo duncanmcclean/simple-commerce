@@ -11,6 +11,14 @@ class OrderStatusFieldtype extends Fieldtype
 
     public function preProcessIndex($data)
     {
+        if (! $data) {
+            return null;
+        }
+
+        if (! $data instanceof OrderStatus) {
+            $data = OrderStatus::from($data);
+        }
+
         return [
             'value' => $data,
             'label' => OrderStatus::label($data)
@@ -20,10 +28,15 @@ class OrderStatusFieldtype extends Fieldtype
     public function preload()
     {
         return [
-            'options' => collect(OrderStatus::cases())->map(fn ($status) => [
-                'value' => $status,
-                'label' => OrderStatus::label($status)
-            ])->values(),
+            'options' => collect(OrderStatus::cases())
+                ->when(! $this->field()->parent()?->shippingMethod(), function ($collection) {
+                    return $collection->reject(OrderStatus::Shipped);
+                })
+                ->map(fn ($status) => [
+                    'value' => $status,
+                    'label' => OrderStatus::label($status),
+                ])
+                ->values(),
         ];
     }
 }

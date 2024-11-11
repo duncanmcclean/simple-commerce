@@ -6,12 +6,14 @@ use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\Calculator;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as ShippingMethodContract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Events\CartSaved;
 use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\Calculable;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
@@ -30,6 +32,7 @@ use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
+use Statamic\Sites\Site;
 use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -40,6 +43,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     protected $id;
     protected $customer;
     protected $coupon;
+    protected $shippingMethod;
     protected $lineItems;
     protected $initialPath;
     private bool $withoutRecalculating = false;
@@ -116,6 +120,26 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
+    public function shippingMethod($shippingMethod = null)
+    {
+        return $this->fluentlyGetOrSet('shippingMethod')
+            ->getter(function ($shippingMethod) {
+                if (! $shippingMethod) {
+                    return null;
+                }
+
+                return ShippingMethod::find($shippingMethod);
+            })
+            ->setter(function ($shippingMethod) {
+                if ($shippingMethod instanceof ShippingMethodContract) {
+                    return $shippingMethod->handle();
+                }
+
+                return $shippingMethod;
+            })
+            ->args(func_get_args());
+    }
+
     public function lineItems($lineItems = null)
     {
         return $this
@@ -128,6 +152,12 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
                 return $items;
             })
             ->args(func_get_args());
+    }
+
+    // TODO: Change this when we add support for multi-site.
+    public function site(): Site
+    {
+        return \Statamic\Facades\Site::default();
     }
 
     public function saveWithoutRecalculating(): bool
@@ -189,6 +219,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'id' => $this->id(),
             'customer' => $this->customer,
             'coupon' => $this->coupon,
+            'shipping_method' => $this->shippingMethod,
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
@@ -208,7 +239,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         return Order::blueprint();
     }
 
-    public function updateableFields(): array
+    public function updatableFields(): array
     {
         return $this->blueprint()->fields()->all()->map->handle()->except([
             'id', 'line_items', 'discount_total', 'grand_total', 'shipping_total', 'sub_total', 'tax_total',
@@ -229,6 +260,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
             'line_items' => $this->lineItems()->map->toArray()->all(),
+            'shipping_method' => $this->get('shipping_method'),
         ];
 
         return sha1(json_encode($payload));
@@ -255,6 +287,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         return array_merge([
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
+            'shipping_method' => $this->shippingMethod(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

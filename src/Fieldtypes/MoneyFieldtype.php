@@ -75,7 +75,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
-        if (empty($value)) {
+        if (is_null($value)) {
             return $this->config('save_zero_value', false)
                 ? Money::format(0, Site::selected())
                 : null;

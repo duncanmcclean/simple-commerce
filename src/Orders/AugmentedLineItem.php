@@ -32,6 +32,7 @@ class AugmentedLineItem extends AbstractAugmented
         return [
             'id',
             'total_including_tax',
+            'total_excluding_tax',
         ];
     }
 
@@ -56,5 +57,10 @@ class AugmentedLineItem extends AbstractAugmented
     public function totalIncludingTax(): int
     {
         return $this->data->total() + Arr::get($this->data->data()->get('tax'), 'amount', 0);
+    }
+
+    public function totalExcludingTax(): int
+    {
+        return $this->data->total();
     }
 }

@@ -33,11 +33,11 @@ Out-of-the-box, Simple Commerce ships with support for three of the big payment 
 -   [Documentation: Payment Gateways](https://simple-commerce.duncanmcclean.com/gateways)
 -   [Documentation: Building custom gateways](https://simple-commerce.duncanmcclean.com/extending/custom-gateways)
 
-### Flexible Shipping
+### Flexible ShippingMethod
 
 Provide your customers with different shipping options depending on their address.
 
--   [Documentation: Shipping](https://simple-commerce.duncanmcclean.com/shipping)
+-   [Documentation: ShippingMethod](https://simple-commerce.duncanmcclean.com/shipping)
 
 ### Discounting
 

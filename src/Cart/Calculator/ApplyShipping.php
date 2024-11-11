@@ -3,27 +3,21 @@
 namespace DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 use Closure;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Facades\Shipping;
-use Statamic\Facades\Site;
+use DuncanMcClean\SimpleCommerce\Cart\Cart;
+use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 
 class ApplyShipping
 {
-    public function handle(Order $order, Closure $next)
+    public function handle(Cart $cart, Closure $next)
     {
-        $shippingMethod = $order->get('shipping_method');
-        $defaultShippingMethod = config('statamic.simple-commerce.sites.'.Site::current()->handle().'.shipping.default_method');
+        $shippingMethod = $cart->get('shipping_method') ?? config('statamic.simple-commerce.shipping.default_method');
 
-        if (! $shippingMethod && ! $defaultShippingMethod) {
-            return $next($order);
+        if (! $shippingMethod) {
+            return $next($cart);
         }
 
-        $order->shippingTotal(
-            Shipping::site(Site::current()->handle())
-                ->use($shippingMethod ?? $defaultShippingMethod)
-                ->calculateCost($order)
-        );
+        $cart->shippingTotal(ShippingMethod::find($shippingMethod)->cost($cart));
 
-        return $next($order);
+        return $next($cart);
     }
 }

@@ -46,7 +46,7 @@ class StripeGateway extends BaseGateway implements Gateway
             'amount' => $order->grandTotal(),
             'currency' => Money::get(Site::current())['code'],
             'description' => __('Order :orderNumber', ['orderNumber' => $order->orderNumber()]),
-            'setup_future_usage' => 'off_session',
+//            'setup_future_usage' => 'off_session', // i don't think we need this in core anymore (people can add it if they need it)
         ];
 
         $customer = $order->customer();
@@ -65,6 +65,7 @@ class StripeGateway extends BaseGateway implements Gateway
             $intentData['receipt_email'] = $customer->email();
         }
 
+        // todo: replace with a hook
         if ($this->config()->has('payment_intent_data')) {
             $intentData = array_merge(
                 $intentData,

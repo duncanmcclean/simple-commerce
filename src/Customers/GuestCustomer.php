@@ -3,11 +3,12 @@
 namespace DuncanMcClean\SimpleCommerce\Customers;
 
 use Statamic\Data\ContainsData;
+use Statamic\Data\HasAugmentedData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class GuestCustomer
 {
-    use FluentlyGetsAndSets, ContainsData;
+    use FluentlyGetsAndSets, ContainsData, HasAugmentedData;
 
     public function id(): ?string
     {

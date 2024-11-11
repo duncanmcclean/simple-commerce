@@ -17,7 +17,7 @@
         @if($order->coupon())
             | | {{ __('Coupon') }}: | -{{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->discountTotal(), $site) }}
         @endif
-        | | {{ __('Shipping') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
+        | | {{ __('ShippingMethod') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($taxIncludedInPrices ? $order->shippingTotalWithTax() : $order->shippingTotal(), $site) }}
         @if(!$taxIncludedInPrices)
             | | {{ __('Tax') }}: | {{ \DuncanMcClean\SimpleCommerce\Support\Money::format($order->taxTotal(), $site) }}
         @endif
@@ -37,7 +37,7 @@
     @endif
 
     @if($order->shippingAddress())
-        * **{{ __('Shipping Address') }}:** {{ $order->shippingAddress()->__toString() }}
+        * **{{ __('ShippingMethod Address') }}:** {{ $order->shippingAddress()->__toString() }}
     @endif
 
     <br>

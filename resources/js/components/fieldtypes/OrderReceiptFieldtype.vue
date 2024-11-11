@@ -29,7 +29,7 @@
             <div v-if="receipt.shipping" class="receipt-total">
                 <div>
                     <span>{{ __('Shipping') }}</span>
-                    <span class="help-block mb-0">Royal Mail</span>
+                    <span class="help-block mb-0">{{ receipt.shipping.name }}</span>
                 </div>
                 <div>{{ receipt.totals.shipping_total }}</div>
             </div>

@@ -44,7 +44,7 @@ class UpdateCartRequest extends FormRequest
     public function processedValues()
     {
         return $this->blueprintFields->process()->values()
-            ->only(Cart::current()->updateableFields())
+            ->only(Cart::current()->updatableFields())
             ->only(array_keys($this->submittedValues));
     }
 
@@ -53,7 +53,7 @@ class UpdateCartRequest extends FormRequest
         $cart = Cart::current();
         $fields = $cart->blueprint()->fields()->except(['customer', 'coupon']);
 
-        $this->submittedValues = $this->only($cart->updateableFields());
+        $this->submittedValues = $this->only($cart->updatableFields());
         $this->blueprintFields = $fields->addValues($this->submittedValues);
 
         return $this->blueprintFields
@@ -69,6 +69,7 @@ class UpdateCartRequest extends FormRequest
                 'last_name' => ['nullable', 'string'],
                 'email' => ['nullable', 'email'],
                 'coupon' => ['nullable', 'string'], // TODO: Validate whether or not the coupon is valid.
+                'shipping_method' => ['nullable', 'string'],
             ])
             ->validator();
     }

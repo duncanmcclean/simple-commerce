@@ -14,7 +14,7 @@ class Calculator
                 ResetTotals::class,
                 CalculateLineItems::class,
                 ApplyCouponDiscounts::class,
-//                ApplyShipping::class,
+                ApplyShipping::class,
                 CalculateGrandTotal::class,
             ])
             ->thenReturn();

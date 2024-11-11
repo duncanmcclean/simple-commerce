@@ -97,6 +97,17 @@
                                             :value="values.status"
                                             @input="setFieldValue('status', $event)"
                                         />
+                                        <div v-if="values.status === 'shipped'" class="mt-4 mb-0 flex flex-col gap-y-4">
+                                            <div>
+                                                <label for="tracking_number" class="mb-1.5">{{ __('Tracking Number') }}</label>
+                                                <input type="text" class="input-text w-full" id="tracking_number" name="tracking_number" v-model="values.tracking_number">
+                                            </div>
+
+                                            <a :href="cp_url(`orders/${values.id}/download-packing-slip`)" target="_blank" class="text-blue text-sm flex items-center">
+                                                <SvgIcon name="printer" class="w-5 h-5 mr-2" />
+                                                {{ __('Print Packing Slip') }}
+                                            </a>
+                                        </div>
                                         <div v-if="values.status === 'cancelled'" class="help-block mt-3 mb-0">
                                             <p class="mb-0"><span class="font-semibold">{{ __('Note') }}:</span> {{ __('You will still need to refund the payment manually.') }}</p>
                                         </div>
@@ -128,6 +139,7 @@ import SaveButtonOptions from '../../../../vendor/statamic/cms/resources/js/comp
 import HasPreferences from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasPreferences'
 import HasHiddenFields from '../../../../vendor/statamic/cms/resources/js/components/publish/HasHiddenFields'
 import HasActions from '../../../../vendor/statamic/cms/resources/js/components/publish/HasActions'
+import SvgIcon from '../SvgIcon.vue'
 
 export default {
 
@@ -138,6 +150,7 @@ export default {
     ],
 
     components: {
+        SvgIcon,
         SaveButtonOptions,
     },
 

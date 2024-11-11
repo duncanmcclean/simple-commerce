@@ -2,6 +2,7 @@
 
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartLineItemsController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CartShippingController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CheckoutController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\CallbackController;
@@ -17,6 +18,8 @@ Route::name('simple-commerce.')->group(function () {
     Route::post('cart/line-items', [CartLineItemsController::class, 'store'])->name('cart.line-items.store');
     Route::patch('cart/line-items/{lineItem}', [CartLineItemsController::class, 'update'])->name('cart.line-items.update');
     Route::delete('cart/line-items/{lineItem}', [CartLineItemsController::class, 'destroy'])->name('cart.line-items.destroy');
+
+    Route::get('cart/shipping', CartShippingController::class)->name('cart.shipping');
 
     Route::post('checkout', CheckoutController::class)->name('checkout');
 

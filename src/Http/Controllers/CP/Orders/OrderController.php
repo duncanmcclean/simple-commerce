@@ -127,7 +127,7 @@ class OrderController extends CpController
 
         $data = $request->except($except = [
             'id', 'customer', 'date', 'status', 'discount_total', 'grand_total', 'line_items', 'order_number',
-            'payment_details', 'receipt', 'shipping_total', 'sub_total', 'tax_total'
+            'payment_details', 'receipt', 'shipping_total', 'sub_total', 'tax_total', 'coupon', 'shipping_method',
         ]);
 
         $fields = $blueprint

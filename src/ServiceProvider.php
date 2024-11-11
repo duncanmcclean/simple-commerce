@@ -47,7 +47,7 @@ class ServiceProvider extends AddonServiceProvider
         ],
     ];
 
-    protected $shippingMethods = [
+    protected array $shippingMethods = [
         Shipping\FreeShipping::class,
     ];
 

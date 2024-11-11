@@ -33,6 +33,7 @@ class CartsStore extends BasicStore
             ->id(Arr::pull($data, 'id'))
             ->customer(Arr::pull($data, 'customer'))
             ->coupon(Arr::pull($data, 'coupon'))
+            ->shippingMethod(Arr::pull($data, 'shipping_method'))
             ->lineItems(Arr::pull($data, 'line_items'))
             ->grandTotal(Arr::pull($data, 'grand_total'))
             ->subTotal(Arr::pull($data, 'sub_total'))

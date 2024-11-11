@@ -6,12 +6,14 @@ use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as ShippingMethodContract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
+use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
@@ -27,6 +29,7 @@ use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
+use Statamic\Sites\Site;
 use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -42,6 +45,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     protected $customer;
     protected $coupon;
     protected $lineItems;
+    protected $shippingMethod;
     protected $initialPath;
 
     public function __construct()
@@ -205,6 +209,32 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             ->args(func_get_args());
     }
 
+    public function shippingMethod($shippingMethod = null)
+    {
+        return $this->fluentlyGetOrSet('shippingMethod')
+            ->getter(function ($shippingMethod) {
+                if (! $shippingMethod) {
+                    return null;
+                }
+
+                return ShippingMethod::find($shippingMethod);
+            })
+            ->setter(function ($shippingMethod) {
+                if ($shippingMethod instanceof ShippingMethodContract) {
+                    return $shippingMethod->handle();
+                }
+
+                return $shippingMethod;
+            })
+            ->args(func_get_args());
+    }
+
+    // TODO: Change this when we add support for multi-site.
+    public function site(): Site
+    {
+        return \Statamic\Facades\Site::default();
+    }
+
     public function save(): bool
     {
         $isNew = is_null(OrderFacade::find($this->id()));
@@ -257,6 +287,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'status' => $this->status()->value,
             'customer' => $this->customer,
             'coupon' => $this->coupon,
+            'shipping_method' => $this->shippingMethod,
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
@@ -305,6 +336,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'status' => $this->status()?->value,
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
+            'shipping_method' => $this->shippingMethod(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

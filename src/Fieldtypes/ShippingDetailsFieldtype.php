@@ -20,7 +20,10 @@ class ShippingDetailsFieldtype extends Fieldtype
         $order = $this->field->parent();
 
         return [
-            //
+            'has_shipping_method' => $order->shippingMethod() ? true : false,
+            'name' => $order->shippingMethod()?->name(),
+            'logo' => $order->shippingMethod()?->logo(),
+            'total' => Money::format($order->shippingTotal(), $order->site()),
         ];
     }
 

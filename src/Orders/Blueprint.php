@@ -74,7 +74,7 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'shipping_country',
-                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'max_items' => 1, 'display' => __('Country'), 'listable' => false, 'width' => 50],
+                                    'field' => ['type' => 'dictionary', 'dictionary' => ['type' => 'countries', 'emojis' => false], 'max_items' => 1, 'display' => __('Country'), 'listable' => false, 'width' => 50],
                                 ],
                             ],
                         ],
@@ -95,10 +95,10 @@ class Blueprint
                         [
                             'display' => __('Billing Address'),
                             'fields' => [
-                                [
-                                    'handle' => 'use_shipping_address_for_billing',
-                                    'field' => ['type' => 'toggle', 'display' => __('Use Shipping Address for Billing'), 'listable' => false, 'validate' => 'boolean'],
-                                ],
+//                                [
+//                                    'handle' => 'use_shipping_address_for_billing',
+//                                    'field' => ['type' => 'toggle', 'display' => __('Use ShippingMethod Address for Billing'), 'listable' => false, 'validate' => 'boolean'],
+//                                ],
                                 [
                                     'handle' => 'billing_line_1',
                                     'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
@@ -117,7 +117,7 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'billing_country',
-                                    'field' => ['type' => 'dictionary', 'dictionary' => 'countries', 'display' => __('Country'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'dictionary', 'dictionary' => ['type' => 'countries', 'emojis' => false], 'display' => __('Country'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                             ],
                         ],
@@ -158,6 +158,14 @@ class Blueprint
                                 [
                                     'handle' => 'coupon',
                                     'field' => ['type' => 'coupon', 'display' => __('Coupon'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
+                                ],
+                                [
+                                    'handle' => 'shipping_method',
+                                    'field' => ['type' => 'shipping_method', 'display' => __('Shipping Method'), 'visibility' => 'hidden', 'listable' => 'hidden'],
+                                ],
+                                [
+                                    'handle' => 'tracking_number',
+                                    'field' => ['type' => 'text', 'display' => __('Tracking Number'), 'visibility' => 'hidden', 'listable' => 'hidden'],
                                 ],
                             ],
                         ],

@@ -1,16 +1,15 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Tags;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use Statamic\Fields\Value;
-use Statamic\Tags\Tags;
 
-class Shipping extends Tags
+class CartShippingController
 {
-    public function methods()
+    public function __invoke()
     {
         $cart = Cart::current();
 

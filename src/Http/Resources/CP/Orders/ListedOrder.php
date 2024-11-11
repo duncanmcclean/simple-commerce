@@ -36,7 +36,14 @@ class ListedOrder extends JsonResource
             'id' => $order->orderNumber(),
             'order_number' => $order->orderNumber(),
 
-            $this->merge($this->values()),
+            $this->merge($this->values([
+                'date' => $order->date(),
+                'status' => $order->status(),
+                'customer' => $order->customer(),
+                'coupon' => $order->coupon()?->id(),
+                'shipping_method' => $order->shippingMethod()?->handle(),
+                'line_items' => $order->lineItems(),
+            ])),
 
             'edit_url' => $order->editUrl(),
             'viewable' => User::current()->can('view', $order),
@@ -47,11 +54,11 @@ class ListedOrder extends JsonResource
 
     protected function values($extra = [])
     {
-        return $this->columns->mapWithKeys(function ($column) {
+        return $this->columns->mapWithKeys(function ($column) use ($extra) {
             $key = $column->field;
             $field = $this->blueprint->field($key);
 
-            $value = $this->value($field, $key);
+            $value = $extra[$key] ?? $this->resource->get($key) ?? $field?->defaultValue();
 
             if (! $field) {
                 return [$key => $value];
@@ -64,17 +71,5 @@ class ListedOrder extends JsonResource
 
             return [$key => $value];
         });
-    }
-
-    private function value(Field $field, string $key)
-    {
-        $method = Str::camel($key);
-
-        // todo: we can probably figure out something else clever, but to get totals etc, that are properties, this seems fine for now.
-        if (method_exists($this->resource, $method)) {
-            return $this->resource->$method();
-        }
-
-        return $extra[$key] ?? $this->resource->get($key) ?? $field?->defaultValue();
     }
 }

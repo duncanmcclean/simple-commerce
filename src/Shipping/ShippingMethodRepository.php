@@ -7,6 +7,11 @@ use Illuminate\Support\Collection;
 
 class ShippingMethodRepository
 {
+    public function all()
+    {
+        return $this->classes()->map(fn ($class) => app($class));
+    }
+
     public function find(string $handle)
     {
         if (! $this->classes()->has($handle)) {

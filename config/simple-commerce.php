@@ -34,9 +34,9 @@ return [
     ],
 
     'shipping' => [
-        'methods' => [
-            \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],
-        ],
+        'default_method' => 'free_shipping',
+
+        'methods' => ['free_shipping', 'dummy_shipping'],
     ],
 
     'payments' => [
