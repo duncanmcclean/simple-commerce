@@ -3,153 +3,103 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Packing Slip</title>
-
-    <style>
-        body {
-            background: #fff none;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-        }
-
-        .container {
-            padding-top: 30px;
-        }
-
-        table.main {
-            border-spacing: 0px 40px;
-        }
-
-        .table th {
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
-            padding: 8px 8px 8px 8px;
-            vertical-align: bottom;
-        }
-
-        .table tr.row td {
-            border-bottom: 1px solid #ddd;
-        }
-
-        .table td {
-            padding: 8px 8px 8px 8px;
-            vertical-align: top;
-        }
-
-        .table th:last-child,
-        .table td:last-child {
-            padding-right: 0;
-        }
-
-        .line-items-table tr:first-child {
-            background-color: black;
-            color: white;
-        }
-
-        .line-items-table tr:first-child th {
-            padding: 8px 8px 8px 8px;
-        }
-
-        .line-items-table tr {
-            background-color: #f9f9f9;
-        }
-
-        .line-items-table tr.row td {
-            padding: 8px 8px 8px 8px;
-        }
-    </style>
+    <title>Packing Slip for Order #{{ order:order_number }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>window.addEventListener('load', () => window.print());</script>
 </head>
 <body>
+    <main class="max-w-4xl mx-auto py-20 flex flex-col gap-y-8">
+        <h1 class="text-4xl font-bold">Packing Slip</h1>
 
-<div class="container">
-    <table class="main" style="margin-left: auto; margin-right: auto; width: 90%">
-        <tr valign="top">
-            <td colspan="2" width="50">
-                <h1>Packing Slip</h1>
+        {{# Company Address #}}
+        <div class="text-sm">
+            <p><strong>{{ config:app:name }}</strong></p>
+            <p>Company Address Line 1</p>
+            <p>Edit in <code>packing-slip.antlers.html</code>.</p>
+            <p>State 12345</p>
+        </div>
 
-                <!-- Invoice Info -->
-                <p>
-                    Order #{{ order:order_number }}<br>
-                    <strong>Date:</strong> {{ order:date }}<br>
-                    <strong>Shipping Method:</strong> {{ order:shipping_method:name }}<br>
-                </p>
-            </td>
+        <div class="border-2 border-black grid grid-cols-2 divide-x-2 divide-black">
+            {{# Billing Address #}}
+            <div>
+                <div class="bg-black text-white font-bold text-lg px-3 py-1">
+                    <span>Bill to:</span>
+                </div>
+                <div class="px-3 py-2 pr-6 text-sm">
+                    <p>{{ order:customer:name }}</p>
+                    {{ if order:use_shipping_address_for_billing }}
+                        <p>{{ order:shipping_line_1 }}</p>
+                        <p>{{ order:shipping_line_2 }}</p>
+                        <p>{{ order:shipping_city }}</p>
+                        <p>{{ order:shipping_postcode }}</p>
+                        <p>{{ order:shipping_country:label }}</p>
+                    {{ else }}
+                        <p>{{ order:billing_line_1 }}</p>
+                        <p>{{ order:billing_line_2 }}</p>
+                        <p>{{ order:billing_city }}</p>
+                        <p>{{ order:billing_postcode }}</p>
+                        <p>{{ order:billing_country:label }}</p>
+                    {{ /if }}
+                </div>
+            </div>
+            {{# Shipping Address #}}
+            <div>
+                <div class="bg-black text-white font-bold text-lg px-3 py-1">
+                    <span>Ship to:</span>
+                </div>
+                <div class="px-3 py-2 text-sm">
+                    <p>{{ order:customer:name }}</p>
+                    <p>{{ order:shipping_line_1 }}</p>
+                    <p>{{ order:shipping_line_2 }}</p>
+                    <p>{{ order:shipping_city }}</p>
+                    <p>{{ order:shipping_postcode }}</p>
+                    <p>{{ order:shipping_country:label }}</p>
+                </div>
+            </div>
+        </div>
 
-            <!-- Account Name / Header Image -->
-            <td align="right">
-                <span style="font-size: 20px; color: #ccc;">
-                    {{ config:app:name }}
-                </span>
-            </td>
-        </tr>
-        <tr valign="top">
-            <td width="33%">
-                <!-- Billing Details -->
-                <strong>Bill to:</strong><br>
+        {{# Order Details #}}
+        <div class="
+            border-2 border-black grid divide-x-2 divide-black
+            {{ ['grid-cols-3' => order:shipping_method, 'grid-cols-2' => !order_shipping_method] | classes }}
+        ">
+            <div class="text-center py-4">
+                <span class="text-sm mb-2">Order #</span>
+                <h3 class="text-xl font-semibold">{{ order:order_number }}</h3>
+            </div>
+            <div class="text-center py-4">
+                <span class="text-sm mb-2">Order Date</span>
+                <h3 class="text-xl font-semibold">{{ order:date format="Y-m-d" }}</h3>
+            </div>
+            {{ if order:shipping_method }}
+                <div class="text-center py-4">
+                    <span class="text-sm mb-2">Shipping Method</span>
+                    <h3 class="text-xl font-semibold">{{ order:shipping_method:name }}</h3>
+                </div>
+            {{ /if }}
+        </div>
 
-                {{ order:customer:name }}<br>
-                {{ order:billing_line_1 || order:shipping_line_1 }}<br>
-                {{ if order:billing_line_2 ?? order:shipping_line_2 }}
-                    {{ order:billing_line_2 ?? order:shipping_line_2 }}<br>
-                {{ /if }}
-                {{ billing_city ?? order:shipping_city }}<br>
-                {{ order:billing_postcode ?? order:shipping_postcode }}<br>
-                {{ order:billing_country:label ?? order:shipping_country:label }}<br>
-            </td>
-            <td width="33%">
-                <!-- Shipping Details -->
-                <strong>Ship to:</strong><br>
-
-                {{ order:customer:name }}<br>
-                {{ order:shipping_line_1 }}<br>
-                {{ if order:shipping_line_2 }}
-                    {{ order:shipping_line_2 }}<br>
-                {{ /if }}
-                {{ order:shipping_city }}<br>
-                {{ order:shipping_postcode }}<br>
-                {{ order:shipping_country:label }}<br>
-            </td>
-            <td width="33%">
-                <!-- Store Shipping Address -->
-                <strong>Shipped by:</strong><br>
-
-                {{ config:app:name }}<br>
-                {{ config:app:url }}<br>
-                <!-- Add your address here... -->
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <!-- Packing Slip Table -->
-                <table class="line-items-table" width="100%" class="table" border="0">
-                    <tr>
-                        <th align="left">Description</th>
-                        <th align="right">Qty</th>
+        {{# Line Items #}}
+        <table class="w-full border-2 border-black">
+            <thead class="bg-black text-white font-bold text-lg">
+                <tr>
+                    <th class="px-2 py-1 text-left">Description</th>
+                    <th class="px-2 py-1 text-left w-1/6">Quantity</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y-2 divide-black">
+                {{ order:line_items }}
+                    <tr class="divide-x-2 divide-black">
+                        <td class="px-2 py-1">{{ product:title }}</td>
+                        <td class="px-2 py-1">{{ quantity }}</td>
                     </tr>
-
-                    <!-- Display The Line Items -->
-                    {{ order:line_items }}
-                        <tr class="row">
-                            <td align="left">{{ product:title }}</td>
-                            <td align="right">{{ quantity }}</td>
-                        </tr>
-                    {{ /order:line_items }}
-
-                    <!-- Display The Total Quantity -->
-                    <tr class="row">
-                        <td style="font-weight: bold">
-                            Total Qty:
-                        </td>
-                        <td align="right">
-                            {{ order:line_items | pluck('quantity') | sum }}
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</div>
-
+                {{ /order:line_items }}
+                <tr class="divide-x-2 divide-black">
+                    <td class="px-2 py-1 font-bold">Total Quantity:</td>
+                    <td class="px-2 py-1">{{ order:line_items | pluck('quantity') | sum }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
 </body>
 </html>
