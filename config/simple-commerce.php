@@ -176,4 +176,16 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Telemetry
+    |--------------------------------------------------------------------------
+    |
+    | We collect information about your system and amount of orders this addon has processed.
+    | By default, this is opted-out but if you wish to help us improve the addon then feel free
+    | to change this to true.
+    |
+    */
+
+    'enable_telemetry' => false,
 ];
