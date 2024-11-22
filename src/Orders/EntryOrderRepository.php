@@ -140,8 +140,8 @@ class EntryOrderRepository implements RepositoryContract
                     'tax_total' => $order->taxTotal(),
                     'shipping_total' => $order->shippingTotal(),
                     'coupon_total' => $order->couponTotal(),
-                    'customer' => $order->customer() instanceof CustomerContract ? $order->customer()->id() : $order->customer(),
-                    'coupon' => $order->coupon() instanceof CouponContract ? $order->coupon()->id() : $order->coupon(),
+                    'customer' => $order->customer()?->id(),
+                    'coupon' => $order->coupon()?->id(),
                     'gateway' => $order->gatewayData()?->toArray(),
                 ],
             )
@@ -160,10 +160,10 @@ class EntryOrderRepository implements RepositoryContract
         $order->shippingTotal = $entry->get('shipping_total');
         $order->couponTotal = $entry->get('coupon_total');
         $order->customer = $entry->get('customer') !== null
-            ? Customer::find($entry->get('customer'))
+            ? Customer::find($entry->get('customer'))?->id()
             : null;
         $order->coupon = $entry->get('coupon') !== null
-            ? Coupon::find($entry->get('coupon'))
+            ? Coupon::find($entry->get('coupon'))?->id()
             : null;
         $order->gateway = $entry->get('gateway');
         $order->data = $entry->data();
