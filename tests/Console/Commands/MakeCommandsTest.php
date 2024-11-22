@@ -9,14 +9,14 @@ class MakeCommandsTest extends TestCase
 {
     public $testedPaths = [];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->files = app(Filesystem::class);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->cleanupPaths();
 
