@@ -174,7 +174,7 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('customer')
-            ->setter(function ($value) {
+            ->getter(function ($value) {
                 if (! $value) {
                     return null;
                 }

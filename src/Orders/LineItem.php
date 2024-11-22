@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Product;
 use DuncanMcClean\SimpleCommerce\Facades\Product as ProductFacade;
+use Statamic\Support\Blink;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class LineItem
@@ -40,7 +41,7 @@ class LineItem
     {
         return $this
             ->fluentlyGetOrSet('product')
-            ->setter(function ($product) {
+            ->getter(function ($product) {
                 if ($product instanceof Product) {
                     return $product;
                 }
