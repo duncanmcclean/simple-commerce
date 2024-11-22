@@ -8,7 +8,6 @@ use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
 use Statamic\Fields\Validator;
-use Statamic\Fields\Values;
 use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
