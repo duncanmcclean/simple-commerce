@@ -102,7 +102,7 @@ class LineItem
     {
         return [
             'id' => $this->id,
-            'product' => optional($this->product)->id(),
+            'product' => $this->product()->id(),
             'variant' => $this->variant,
             'quantity' => $this->quantity,
             'total' => $this->total,
