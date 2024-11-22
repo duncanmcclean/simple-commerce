@@ -8,6 +8,7 @@ use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fields\FieldtypeRepository;
 use Statamic\Fields\Validator;
+use Statamic\Fields\Values;
 use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
@@ -117,16 +118,12 @@ class ProductVariantsFieldtype extends Fieldtype
         }
 
         return [
-            'variants' => $this->processInsideFields(
-                fieldValues: Arr::get($value, 'variants', []),
-                fields: $this->variantFields()->toPublishArray(),
-                method: 'augment'
-            ),
-            'options' => $this->processInsideFields(
-                fieldValues: Arr::get($value, 'options', []),
-                fields: $this->optionFields()->toPublishArray(),
-                method: 'augment'
-            ),
+            'variants' => collect($value['variants'] ?? [])
+                ->map(fn ($option) => $this->variantFields()->addValues($option)->augment()->values()->all())
+                ->all(),
+            'options' => collect($value['options'] ?? [])
+                ->map(fn ($option) => $this->optionFields()->addValues($option)->augment()->values()->all())
+                ->all(),
         ];
     }
 
