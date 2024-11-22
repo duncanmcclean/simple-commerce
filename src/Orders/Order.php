@@ -192,16 +192,16 @@ class Order implements Contract
     {
         return $this
             ->fluentlyGetOrSet('coupon')
-            ->setter(function ($value) {
-                if (! $value) {
+            ->getter(function ($coupon) {
+                if (! $coupon) {
                     return null;
                 }
 
-                if ($value instanceof CouponContract) {
-                    return $value;
+                if ($coupon instanceof CouponContract) {
+                    return $coupon;
                 }
 
-                return Coupon::find($value);
+                return Coupon::find($coupon);
             })
             ->args(func_get_args());
     }
