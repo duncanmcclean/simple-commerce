@@ -30,36 +30,13 @@ class ProductVariantsFieldtype extends Fieldtype
             [
                 'variant_fields' => $this->variantFields()->toPublishArray(),
                 'option_fields' => $this->optionFields()->toPublishArray(),
-
-                'option_field_defaults' => collect($this->config('option_fields'))
-                    ->mapWithKeys(function ($field) {
-                        $field = (
-                            new Field($field['handle'], $field['field'])
-                        );
-
-                        return [
-                            $field->handle() => $field->fieldtype()->preProcess($field->defaultValue()),
-                        ];
-                    })
-                    ->toArray(),
-
+                'option_field_defaults' => $this->optionFields()->all()->mapWithKeys(function ($field) {
+                    return [$field->handle() => $field->fieldtype()->preProcess($field->defaultValue())];
+                })->all(),
                 'variant' => resolve(Textarea::class)->preload(),
                 'price' => resolve(MoneyFieldtype::class)->preload(),
             ],
-            collect($this->config('option_fields'))
-                ->mapWithKeys(function ($field) {
-                    $fieldMeta = (new Field($field['handle'], $field['field']))->meta();
-
-                    // Fix the assets fieldtype (for now!)
-                    if (isset($fieldMeta['data']) && collect($fieldMeta['data'])->count() === 0) {
-                        $fieldMeta['data'] = null;
-                    }
-
-                    return [
-                        $field['handle'] => $fieldMeta,
-                    ];
-                })
-                ->toArray(),
+            $this->optionFields()->meta()->all(),
         );
     }
 
