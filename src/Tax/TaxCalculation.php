@@ -6,7 +6,7 @@ class TaxCalculation
 {
     public function __construct(
         protected int $amount = 0,
-        protected $rate = 0,
+        protected int|float $rate = 0,
         protected bool $priceIncludesTax = false
     ) {}
 
@@ -15,7 +15,7 @@ class TaxCalculation
         return $this->amount;
     }
 
-    public function rate()
+    public function rate(): int|float
     {
         return $this->rate;
     }
@@ -28,8 +28,8 @@ class TaxCalculation
     public function toArray(): array
     {
         return [
-            'amount' => (int) $this->amount,
-            'rate' => (int) $this->rate,
+            'amount' => $this->amount,
+            'rate' => $this->rate,
             'price_includes_tax' => $this->priceIncludesTax,
         ];
     }

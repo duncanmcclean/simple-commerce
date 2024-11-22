@@ -697,3 +697,70 @@ test('can use default shipping tax rate if no rate available', function () {
     // Ensure tax total is 50
     expect($recalculate->taxTotal())->toBe(45);
 });
+
+// https://github.com/duncanmcclean/simple-commerce/issues/1154
+test('tax rate with a decimal place is stored correctly', function () {
+    Config::set('simple-commerce.tax_engine', StandardTaxEngine::class);
+
+    Config::set('simple-commerce.tax_engine_config', [
+        'address' => 'billing',
+    ]);
+
+    $taxCategory = TaxCategory::make()
+        ->id('standard-vat')
+        ->name('Standard VAT');
+
+    $taxCategory->save();
+
+    $taxZone = TaxZone::make()
+        ->id('uk')
+        ->name('United Kingdom')
+        ->country('GB');
+
+    $taxZone->save();
+
+    $taxRate = TaxRate::make()
+        ->id('uk-20-vat')
+        ->name('20% VAT')
+        ->rate(20.5)
+        ->category($taxCategory->id())
+        ->zone($taxZone->id());
+
+    $taxRate->save();
+
+    $product = Product::make()
+        ->price(1000)
+        ->taxCategory($taxCategory->id())
+        ->data([
+            'title' => 'Cat Food',
+        ]);
+
+    $product->save();
+
+    $order = Order::make()->lineItems([
+        [
+            'id' => app('stache')->generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 1000,
+        ],
+    ])->merge([
+        'billing_address' => '1 Test Street',
+        'billing_country' => 'GB',
+        'use_shipping_address_for_billing' => false,
+    ]);
+
+    $order->save();
+
+    $recalculate = $order->recalculate();
+
+    // Ensure tax on line items are right
+    $this->assertSame($recalculate->lineItems()->first()->tax(), [
+        'amount' => 170,
+        'rate' => 20.5,
+        'price_includes_tax' => false,
+    ]);
+
+    // Ensure global order tax is right
+    expect(170)->toBe($recalculate->taxTotal());
+});
