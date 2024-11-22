@@ -2,8 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Coupon as CouponContract;
-use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\OrderRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
