@@ -40,7 +40,7 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/pest --display-deprecation ${{ matrix.stability == 'prefer-stable' && '--fail-on-deprecation' || '' }}
         env:
-          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
-          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
-          MOLLIE_KEY: ${{ secrets.MOLLIE_KEY }}
-          MOLLIE_PROFILE: ${{ secrets.MOLLIE_PROFILE }}
+          STRIPE_KEY: ${{ matrix.php == '8.4' && secrets.STRIPE_KEY || '' }}
+          STRIPE_SECRET: ${{ matrix.php == '8.4' && secrets.STRIPE_SECRET || '' }}
+          MOLLIE_KEY: ${{ matrix.php == '8.4' && secrets.MOLLIE_KEY || '' }}
+          MOLLIE_PROFILE: ${{ matrix.php == '8.4' && secrets.MOLLIE_PROFILE || '' }}
