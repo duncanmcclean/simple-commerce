@@ -31,19 +31,20 @@
     "require": {
         "php": "^8.2",
         "ext-intl": "*",
-        "laravel/framework": "^10.34 || ^11.0",
+        "laravel/framework": "^10.34 || ^11.0.3",
         "mollie/mollie-api-php": "^2.30.0",
         "moneyphp/money": "^4.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "pixelfear/composer-dist-plugin": "^0.1.0",
         "spatie/ignition": "^1.13",
-        "statamic/cms": "^5.0",
+        "statamic/cms": "dev-php84",
         "stillat/proteus": "^3.0 || ^4.0",
         "stripe/stripe-php": "^13.0"
     },
     "require-dev": {
         "statamic-rad-pack/runway": "dev-master",
-        "orchestra/testbench": "^8.0 || ^9.0",
+        "orchestra/testbench": "^8.28 || ^9.6.1",
+        "phpunit/phpunit": "^10.5.35",
         "pestphp/pest": "^2.2",
         "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/ray": "^1.17",
