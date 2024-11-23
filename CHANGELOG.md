@@ -1,5 +1,18 @@
 # Changelog
 
+## v7.6.0 (2024-11-23)
+
+### What's fixed
+* Fixed tax rates with decimal places not being stored correctly #1154 by @duncanmcclean
+* Fixed error when using imported fields in Product Variant option fields #1162 by @duncanmcclean
+* Fixed augmentation issues with product variants #1178 by @duncanmcclean
+* Fixed error when Stripe webhook was triggered for non-SC payments #1176 #1181 by @Web10-Joris
+
+### Removed
+* Removed telemetry by @duncanmcclean
+
+
+
 ## v7.5.4 (2024-10-28)
 
 ### What's fixed
