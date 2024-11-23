@@ -286,7 +286,7 @@ class CartTags extends SubTag
     {
         if ($this->hasCart()) {
             return $this->getCart()->lineItems()
-                ->where('product', Product::find($this->params->get('product')))
+                ->where('product', $this->params->get('product'))
                 ->where('variant', $this->params->get('variant'))
                 ->count() >= 1;
         }
