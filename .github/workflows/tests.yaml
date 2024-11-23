@@ -12,12 +12,15 @@ jobs:
 
     strategy:
       matrix:
-        php: [8.3, 8.2]
-        laravel: [11.*, 10.*]
-        statamic: [^5.0]
+        php: [8.2, 8.3, 8.4]
+        laravel: [10.*, 11.*]
+        stability: [prefer-lowest, prefer-stable]
         os: [ubuntu-latest]
+        exclude:
+          - php: 8.4
+            laravel: 10.*
 
-    name: ${{ matrix.php }} - ${{ matrix.statamic }} - ${{ matrix.laravel }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
     steps:
       - name: Checkout code
@@ -27,16 +30,15 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v2
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "statamic/cms:${{ matrix.statamic }}" --no-interaction --no-update
-          composer install --no-interaction
+          composer require "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
 
       - name: Run PHPUnit
-        run: vendor/bin/pest
+        run: vendor/bin/pest --display-deprecation ${{ matrix.stability == 'prefer-stable' && '--fail-on-deprecation' || '' }}
         env:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
