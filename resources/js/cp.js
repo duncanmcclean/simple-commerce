@@ -14,6 +14,7 @@ import ShippingDetailsFieldtype from './components/fieldtypes/ShippingDetailsFie
 import OrdersListing from './components/orders/Listing.vue'
 import OrderPublishForm from './components/orders/PublishForm.vue'
 import OrdersChart from './components/widgets/OrdersChart.vue'
+import StateFieldtype from './components/fieldtypes/StateFieldtype.vue'
 
 // Coupons
 Statamic.$components.register('base-coupon-create-form', BaseCouponCreateForm)
@@ -31,6 +32,7 @@ Statamic.$components.register('product-variants-fieldtype', ProductVariantsField
 Statamic.$components.register('order_status-fieldtype-index', OrderStatusFieldtypeIndex)
 Statamic.$components.register('payment_details-fieldtype', PaymentDetailsFieldtype)
 Statamic.$components.register('shipping_details-fieldtype', ShippingDetailsFieldtype)
+Statamic.$components.register('state-fieldtype', StateFieldtype)
 
 // Orders
 Statamic.$components.register('orders-listing', OrdersListing)

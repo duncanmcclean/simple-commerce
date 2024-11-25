@@ -229,6 +229,34 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             ->args(func_get_args());
     }
 
+    public function shippingAddress(): Address
+    {
+        return new Address(
+            line1: $this->get('shipping_line_1'),
+            line2: $this->get('shipping_line_2'),
+            city: $this->get('shipping_city'),
+            postcode: $this->get('shipping_postcode'),
+            country: $this->get('shipping_country'),
+            region: $this->get('shipping_region'),
+        );
+    }
+
+    public function billingAddress(): Address
+    {
+        if ($this->get('use_shipping_address_for_billing')) {
+            return $this->shippingAddress();
+        }
+
+        return new Address(
+            line1: $this->get('billing_line_1'),
+            line2: $this->get('billing_line_2'),
+            city: $this->get('billing_city'),
+            postcode: $this->get('billing_postcode'),
+            country: $this->get('billing_country'),
+            region: $this->get('billing_region'),
+        );
+    }
+
     // TODO: Change this when we add support for multi-site.
     public function site(): Site
     {

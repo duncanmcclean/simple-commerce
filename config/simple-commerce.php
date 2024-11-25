@@ -1,5 +1,11 @@
 <?php
 
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyCouponDiscounts;
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyShipping;
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateGrandTotal;
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateLineItems;
+use DuncanMcClean\SimpleCommerce\Cart\Calculator\ResetTotals;
+
 return [
 
     'sites' => [
@@ -23,6 +29,14 @@ return [
 
         // When a user logs in, and they've already started a cart elsewhere, should the two carts be merged?
         'merge_on_login' => true,
+
+        'calculator_pipeline' => [
+            ResetTotals::class,
+            CalculateLineItems::class,
+            ApplyCouponDiscounts::class,
+            ApplyShipping::class,
+            CalculateGrandTotal::class,
+        ],
     ],
 
     'orders' => [

@@ -76,6 +76,10 @@ class Blueprint
                                     'handle' => 'shipping_country',
                                     'field' => ['type' => 'dictionary', 'dictionary' => ['type' => 'countries', 'emojis' => false], 'max_items' => 1, 'display' => __('Country'), 'listable' => false, 'width' => 50],
                                 ],
+                                [
+                                    'handle' => 'shipping_state',
+                                    'field' => ['type' => 'state', 'from' => 'shipping_country', 'display' => __('State'), 'listable' => false, 'max_items' => 1, 'width' => 50],
+                                ],
                             ],
                         ],
                     ],
@@ -118,6 +122,10 @@ class Blueprint
                                 [
                                     'handle' => 'billing_country',
                                     'field' => ['type' => 'dictionary', 'dictionary' => ['type' => 'countries', 'emojis' => false], 'display' => __('Country'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                ],
+                                [
+                                    'handle' => 'billing_state',
+                                    'field' => ['type' => 'state', 'from' => 'billing_country'], 'display' => __('State'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false'],
                                 ],
                             ],
                         ],

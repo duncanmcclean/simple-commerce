@@ -7,21 +7,24 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\CheckoutController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\CallbackController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\WebhookController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\StateController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::name('simple-commerce.')->group(function () {
-    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
-    Route::patch('cart', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::name('cart.')
+        ->prefix('cart')
+        ->group(function () {
+            Route::get('/', [CartController::class, 'index'])->name('index');
+            Route::patch('/', [CartController::class, 'update'])->name('update');
+            Route::delete('/', [CartController::class, 'destroy'])->name('destroy');
 
-    Route::post('cart/line-items', [CartLineItemsController::class, 'store'])->name('cart.line-items.store');
-    Route::patch('cart/line-items/{lineItem}', [CartLineItemsController::class, 'update'])->name('cart.line-items.update');
-    Route::delete('cart/line-items/{lineItem}', [CartLineItemsController::class, 'destroy'])->name('cart.line-items.destroy');
+            Route::post('line-items', [CartLineItemsController::class, 'store'])->name('line-items.store');
+            Route::patch('line-items/{lineItem}', [CartLineItemsController::class, 'update'])->name('line-items.update');
+            Route::delete('line-items/{lineItem}', [CartLineItemsController::class, 'destroy'])->name('line-items.destroy');
 
-    Route::get('cart/shipping', CartShippingController::class)->name('cart.shipping');
-
-    Route::post('checkout', CheckoutController::class)->name('checkout');
+            Route::get('shipping', CartShippingController::class)->name('shipping');
+        });
 
     Route::name('payments.')
         ->prefix('payments')
@@ -36,4 +39,7 @@ Route::name('simple-commerce.')->group(function () {
         ->group(function () {
             Route::get('download/{order}/{lineItem}', DownloadController::class)->name('download');
         });
+
+    Route::post('checkout', CheckoutController::class)->name('checkout');
+    Route::get('states', StateController::class)->name('states');
 });
