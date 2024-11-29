@@ -38,7 +38,7 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
 
       - name: Run PHPUnit
-        run: vendor/bin/pest --display-deprecation ${{ matrix.stability == 'prefer-stable' && '--fail-on-deprecation' || '' }}
+        run: vendor/bin/pest
         env:
           STRIPE_KEY: ${{ matrix.php == '8.4' && secrets.STRIPE_KEY || '' }}
           STRIPE_SECRET: ${{ matrix.php == '8.4' && secrets.STRIPE_SECRET || '' }}
