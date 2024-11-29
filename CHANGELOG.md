@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.6.0 (2024-11-29)
+
+### What's new
+* PHP 8.4 Support #1184 by @duncanmcclean
+
+
+
 ## v7.5.5 (2024-11-23)
 
 ### What's fixed
