@@ -2,18 +2,16 @@
 
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DuncanMcClean\SimpleCommerce\Contracts\TaxZoneRepository;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZoneRepository as Contract;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @see \DuncanMcClean\SimpleCommerce\Taxes\TaxZoneRepository
+ */
 class TaxZone extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        if (! SimpleCommerce::isUsingStandardTaxEngine()) {
-            throw new \Exception("Sorry, the `TaxZone` facade is only available when using the 'Standard' tax engine.");
-        }
-
-        return TaxZoneRepository::class;
+        return Contract::class;
     }
 }

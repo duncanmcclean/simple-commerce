@@ -1,6 +1,7 @@
 <?php
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
+
 use Illuminate\Support\Facades\File;
 use Statamic\Fields\Fieldtype;
 
@@ -18,7 +19,7 @@ class StateFieldtype extends Fieldtype
         ];
     }
 
-    public function getStates(string $country = null): array
+    public function getStates(string|array $country = null): array
     {
         if (! $country) {
             return [];
@@ -26,6 +27,8 @@ class StateFieldtype extends Fieldtype
 
         $states = File::json(__DIR__.'/../../resources/json/states.json');
 
-        return $states[$country] ?? [];
+        return is_array($country)
+            ? array_merge(...array_map(fn ($c) => $states[$c] ?? [], $country))
+            : $states[$country] ?? [];
     }
 }

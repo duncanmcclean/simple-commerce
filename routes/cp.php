@@ -7,11 +7,15 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Fieldtypes\StateFieldtypeCo
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderActionController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\DownloadPackingSlipController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Taxes\TaxClassController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Taxes\TaxZoneController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('simple-commerce.')->group(function () {
-    Route::resource('coupons', CouponController::class)->except(['destroy']);
+    Route::resource('coupons', CouponController::class)->except(['show', 'destroy']);
     Route::resource('orders', OrderController::class)->only(['index', 'edit', 'update']);
+    Route::resource('tax-classes', TaxClassController::class)->except('show');
+    Route::resource('tax-zones', TaxZoneController::class)->except('show');
 
     Route::prefix('coupons')->name('coupons.')->group(function () {
         Route::post('actions', [CouponActionController::class, 'run'])->name('actions.run');

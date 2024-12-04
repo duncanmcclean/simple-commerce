@@ -1,10 +1,6 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyCouponDiscounts;
-use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyShipping;
-use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateGrandTotal;
-use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateLineItems;
-use DuncanMcClean\SimpleCommerce\Cart\Calculator\ResetTotals;
+use DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 return [
 
@@ -31,12 +27,23 @@ return [
         'merge_on_login' => true,
 
         'calculator_pipeline' => [
-            ResetTotals::class,
-            CalculateLineItems::class,
-            ApplyCouponDiscounts::class,
-            ApplyShipping::class,
-            CalculateGrandTotal::class,
+            Calculator\ResetTotals::class,
+            Calculator\CalculateLineItems::class,
+            Calculator\ApplyCouponDiscounts::class,
+            Calculator\ApplyShipping::class,
+            Calculator\CalculateGrandTotal::class,
         ],
+    ],
+
+    'taxes' => [
+        // Enable this when product prices are entered inclusive of tax.
+        // When calculating taxes, the tax will be deducted from the product price, then added back on at the end.
+        'price_includes_tax' => true,
+
+        // Determines how tax is calculated on shipping costs. Options:
+        // - highest_tax_rate: Charge the highest tax rate from the products in the cart.
+        // - tax_class: When enabled, a new tax class will be created for shipping, allowing you to set a specific tax rate for shipping.
+        'shipping_tax_behaviour' => 'none',
     ],
 
     'orders' => [

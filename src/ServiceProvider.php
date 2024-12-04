@@ -21,16 +21,6 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $config = false;
 
-    // TODO: Remove when Core PR gets merged: https://github.com/statamic/cms/pull/10911
-    protected $listen = [
-        \Illuminate\Auth\Events\Login::class => [
-            Listeners\AssignUserToCart::class,
-        ],
-        \Statamic\Events\UserBlueprintFound::class => [
-            Listeners\EnsureUserFields::class,
-        ],
-    ];
-
     // TODO: AddonServiceProvider::bootScopes() only autoloads from src/Scopes, not src/Scopes/Filters.
     protected $scopes = [
         Scopes\Filters\CouponType::class,
@@ -82,6 +72,8 @@ class ServiceProvider extends AddonServiceProvider
             \DuncanMcClean\SimpleCommerce\Contracts\Coupons\CouponRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\CouponRepository::class,
             \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class => \DuncanMcClean\SimpleCommerce\Stache\Repositories\OrderRepository::class,
             \DuncanMcClean\SimpleCommerce\Contracts\Products\ProductRepository::class => \DuncanMcClean\SimpleCommerce\Products\ProductRepository::class,
+            \DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClassRepository::class => \DuncanMcClean\SimpleCommerce\Taxes\TaxClassRepository::class,
+            \DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZoneRepository::class => \DuncanMcClean\SimpleCommerce\Taxes\TaxZoneRepository::class,
         ])->each(function ($concrete, $abstract) {
             if (! $this->app->bound($abstract)) {
                 Statamic::repository($abstract, $concrete);
@@ -104,6 +96,18 @@ class ServiceProvider extends AddonServiceProvider
                 ->route('simple-commerce.coupons.index')
                 ->icon('tags')
                 ->can('view coupons');
+
+            $nav->create(__('Tax Classes'))
+                ->section(__('Simple Commerce'))
+                ->route('simple-commerce.tax-classes.index')
+                ->icon(SimpleCommerce::svg('money-cash-file-dollar'))
+                ->can('manage taxes');
+
+            $nav->create(__('Tax Zones'))
+                ->section(__('Simple Commerce'))
+                ->route('simple-commerce.tax-zones.index')
+                ->icon(SimpleCommerce::svg('money-cash-file-dollar'))
+                ->can('manage taxes');
         });
 
         Permission::extend(function () {
@@ -126,6 +130,8 @@ class ServiceProvider extends AddonServiceProvider
                         Permission::make('edit orders')->label(__('Edit Orders')),
                     ]);
                 });
+
+                Permission::register('manage taxes')->label(__('Manage Taxes'));
             });
         });
 
