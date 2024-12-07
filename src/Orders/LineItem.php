@@ -40,7 +40,7 @@ class LineItem
     {
         return $this
             ->fluentlyGetOrSet('product')
-            ->setter(function ($product) {
+            ->getter(function ($product) {
                 if ($product instanceof Product) {
                     return $product;
                 }
@@ -101,7 +101,7 @@ class LineItem
     {
         return [
             'id' => $this->id,
-            'product' => optional($this->product)->id(),
+            'product' => $this->product()?->id(),
             'variant' => $this->variant,
             'quantity' => $this->quantity,
             'total' => $this->total,

@@ -82,14 +82,11 @@ class Product implements Contract
     {
         return $this
             ->fluentlyGetOrSet('taxCategory')
-            ->getter(function ($value) {
-                if (! $value) {
+            ->getter(function ($taxCategory) {
+                if (! $taxCategory) {
                     return TaxCategoryFacade::find('default');
                 }
 
-                return $value;
-            })
-            ->setter(function ($taxCategory) {
                 if ($taxCategory instanceof TaxCategory) {
                     return $taxCategory;
                 }

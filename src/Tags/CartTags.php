@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Currency;
-use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -286,7 +285,7 @@ class CartTags extends SubTag
     {
         if ($this->hasCart()) {
             return $this->getCart()->lineItems()
-                ->where('product', Product::find($this->params->get('product')))
+                ->where('product', $this->params->get('product'))
                 ->where('variant', $this->params->get('variant'))
                 ->count() >= 1;
         }

@@ -82,7 +82,7 @@ class CartItemController extends BaseActionController
                 'product' => $request->get('product'),
             ]);
         } else {
-            $alreadyExistsQuery = $alreadyExistsQuery->where('product', Product::find($request->product));
+            $alreadyExistsQuery = $alreadyExistsQuery->where('product', $request->product);
         }
 
         if (config('simple-commerce.cart.unique_metadata', false)) {
