@@ -219,9 +219,9 @@ export default {
                     }
 
                     return {
+                        ...existingData,
                         key: key,
                         variant: variantName,
-                        ...existingData,
                     }
                 })
 
