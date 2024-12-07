@@ -1,5 +1,15 @@
 # Changelog
 
+## v7.6.1 (2024-12-07)
+
+### What's improved
+* Improved performance by preventing unnecessary queries #1183 by @duncanmcclean
+
+### What's fixed
+* Fixed variant options not being added correctly #1185 #1186 by @duncanmcclean
+
+
+
 ## v7.6.0 (2024-11-29)
 
 ### What's new
