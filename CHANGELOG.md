@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.6.2 (2024-12-09)
+
+### What's fixed
+* Fixed broken Assets fields in Product Variant options #1187 #1188 by @duncanmcclean
+
+
+
 ## v7.6.1 (2024-12-07)
 
 ### What's improved
