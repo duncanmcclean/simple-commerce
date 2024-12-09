@@ -35,7 +35,14 @@ class ProductVariantsFieldtype extends Fieldtype
                 'variant' => resolve(Textarea::class)->preload(),
                 'price' => resolve(MoneyFieldtype::class)->preload(),
             ],
-            $this->optionFields()->meta()->all(),
+            collect($this->optionFields()->meta()->all())->mapWithKeys(function ($value, $handle) {
+                // Fix the assets fieldtype (for now!)
+                if (isset($value['data']) && collect($value['data'])->count() === 0) {
+                    $value['data'] = null;
+                }
+
+                return [$handle => $value];
+            })->all(),
         );
     }
 
