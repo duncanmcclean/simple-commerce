@@ -91,6 +91,7 @@ class TaxZoneRepository implements Contract
                                     'field' => [
                                         'type' => 'select',
                                         'display' => __('Type'),
+                                        'instructions' => __('simple-commerce::messages.tax_zones_type_instructions'),
                                         'options' => [
                                             'countries' => __('Limit to countries'),
                                             'states' => __('Limit to states'),
@@ -139,6 +140,7 @@ class TaxZoneRepository implements Contract
                         ],
                         [
                             'display' => __('Tax Rates'),
+                            'instructions' => __('simple-commerce::messages.tax_zones_rates_instructions'),
                             'fields' => [
                                 [
                                     'handle' => 'rates',

@@ -18,7 +18,7 @@
 
         @include('statamic::partials.empty-state', [
             'title' => __('Tax Classes'),
-//            'description' => __('statamic::messages.fieldset_intro'),
+            'description' => __('simple-commerce::messages.tax_class_intro'),
             'svg' => 'empty/fieldsets',
             'button_text' => __('Create Tax Class'),
             'button_url' => cp_route('simple-commerce.tax-classes.create'),

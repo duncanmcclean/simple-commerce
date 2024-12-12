@@ -70,6 +70,7 @@ class TaxClassRepository implements Contract
                             'field' => [
                                 'type' => 'text',
                                 'display' => __('Name'),
+                                'instructions' => __('simple-commerce::messages.tax_classes_name_instructions'),
                                 'validate' => 'required',
                             ],
                         ],

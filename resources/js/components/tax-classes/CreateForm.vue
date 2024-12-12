@@ -4,14 +4,14 @@
         <div class="rounded p-6 lg:px-20 lg:py-10 shadow bg-white dark:bg-dark-600 dark:shadow-dark">
             <header class="text-center mb-16">
                 <h1 class="mb-6">{{ __('Create Tax Class') }}</h1>
-<!--                <p class="text-gray" v-text="__('messages.collection_configure_intro')" />-->
+                <p class="text-gray" v-text="__('simple-commerce::messages.tax_class_intro')" />
             </header>
             <div class="mb-10">
                 <label class="font-bold text-base mb-1" for="name">{{ __('Name') }}</label>
                 <input type="text" v-model="name" class="input-text" autofocus tabindex="1">
-<!--                <div class="text-2xs text-gray-600 mt-2 flex items-center">-->
-<!--                    {{ __('messages.collection_configure_title_instructions') }}-->
-<!--                </div>-->
+                <div class="text-2xs text-gray-600 mt-2 flex items-center">
+                    <span>{{ __('simple-commerce::messages.tax_classes_name_instructions') }}</span>
+                </div>
             </div>
         </div>
 

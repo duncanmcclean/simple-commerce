@@ -18,7 +18,7 @@
 
         @include('statamic::partials.empty-state', [
             'title' => __('Tax Zones'),
-//            'description' => __('statamic::messages.fieldset_intro'),
+            'description' => __('simple-commerce::messages.tax_zones_intro'),
             'svg' => 'empty/fieldsets',
             'button_text' => __('Create Tax Zones'),
             'button_url' => cp_route('simple-commerce.tax-zones.create'),
