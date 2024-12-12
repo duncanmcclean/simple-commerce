@@ -15,7 +15,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
-use DuncanMcClean\SimpleCommerce\Orders\Calculable;
+use DuncanMcClean\SimpleCommerce\Orders\HasTotals;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -38,7 +38,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
-    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, Calculable;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, HasTotals;
 
     protected $id;
     protected $customer;

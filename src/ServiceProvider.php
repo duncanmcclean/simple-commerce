@@ -84,6 +84,8 @@ class ServiceProvider extends AddonServiceProvider
             $shippingMethod::register();
         }
 
+        $this->app->bind(Contracts\Taxes\Driver::class, Taxes\DefaultDriver::class);
+
         Nav::extend(function ($nav) {
             $nav->create(__('Orders'))
                 ->section(__('Simple Commerce'))

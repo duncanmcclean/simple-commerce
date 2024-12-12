@@ -21,10 +21,17 @@ class Product extends Entry implements Contract
     public function price(): ?int
     {
         if ($this->type() === ProductType::Variant) {
-            return null;
+            throw new \Exception("The Product::price() method can not be called on a variant product.");
         }
 
-        return $this->value('price', 0);
+        $price = $this->value('price');
+
+        if (str_contains($price, '.')) {
+            $price = number_format($price, 2, '.', '');
+            $price = (int) str_replace('.', '', (string) $price);
+        }
+
+        return $price ?? 0;
     }
 
     public function productVariants(): array

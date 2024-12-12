@@ -5,7 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders;
 use Illuminate\Support\Collection;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-trait Calculable
+trait HasTotals
 {
     use FluentlyGetsAndSets;
 
@@ -18,38 +18,39 @@ trait Calculable
     public function grandTotal($grandTotal = null)
     {
         return $this->fluentlyGetOrSet('grandTotal')
-            ->getter(fn ($grandTotal) => $grandTotal ?? 0)
+            ->getter(fn ($grandTotal) => (int) $grandTotal ?? 0)
             ->args(func_get_args());
     }
 
     public function subTotal($subTotal = null)
     {
         return $this->fluentlyGetOrSet('subTotal')
-            ->getter(fn ($subTotal) => $subTotal ?? 0)
+            ->getter(fn ($subTotal) => (int) $subTotal ?? 0)
             ->args(func_get_args());
     }
 
     public function discountTotal($couponTotal = null)
     {
         return $this->fluentlyGetOrSet('discountTotal')
-            ->getter(fn ($discountTotal) => $discountTotal ?? 0)
+            ->getter(fn ($discountTotal) => (int) $discountTotal ?? 0)
             ->args(func_get_args());
     }
 
     public function taxTotal($taxTotal = null)
     {
         return $this->fluentlyGetOrSet('taxTotal')
-            ->getter(fn ($taxTotal) => $taxTotal ?? 0)
+            ->getter(fn ($taxTotal) => (int) $taxTotal ?? 0)
             ->args(func_get_args());
     }
 
     public function taxTotals(): Collection
     {
+        // todo: add in shipping taxes here too
         return $this->lineItems()
             ->groupBy(fn (LineItem $lineItem) => $lineItem->get('tax_rate'))
             ->map(fn ($group, $taxRate) => [
                 'rate' => $taxRate,
-                'amount' => $group->sum->get('tax_total'),
+                'amount' => (int) $group->sum->get('tax_total'),
             ])
             ->values();
     }
@@ -57,9 +58,7 @@ trait Calculable
     public function shippingTotal($shippingTotal = null)
     {
         return $this->fluentlyGetOrSet('shippingTotal')
-            ->getter(fn ($shippingTotal) => $shippingTotal ?? 0)
+            ->getter(fn ($shippingTotal) => (int) $shippingTotal ?? 0)
             ->args(func_get_args());
     }
-
-    abstract function recalculate(): void;
 }

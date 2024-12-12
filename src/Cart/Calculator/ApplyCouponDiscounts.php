@@ -12,14 +12,6 @@ class ApplyCouponDiscounts
     public function handle(Cart $cart, Closure $next)
     {
         if ($coupon = $cart->coupon()) {
-            $isValid = $cart->lineItems()->every(fn (LineItem $lineItem) => $coupon->isValid($cart, $lineItem));
-
-            if (! $isValid) {
-                $cart->coupon(null);
-
-                return $next($cart);
-            }
-
             $cart->lineItems()->each(function (LineItem $lineItem) use ($cart, $coupon) {
                 if (! $coupon->isValid($cart, $lineItem)) {
                     $lineItem->remove('discount_amount');

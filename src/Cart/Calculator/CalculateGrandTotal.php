@@ -13,8 +13,6 @@ class CalculateGrandTotal
             (($cart->subTotal() + $cart->taxTotal()) - $cart->discountTotal()) + $cart->shippingTotal()
         );
 
-        $cart->grandTotal((int) $cart->grandTotal());
-
         return $next($cart);
     }
 }

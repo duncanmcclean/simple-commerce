@@ -56,6 +56,14 @@ class ProductVariant
     {
         return $this
             ->fluentlyGetOrSet('price')
+            ->getter(function ($price) {
+                if (str_contains($price, '.')) {
+                    $price = number_format($price, 2, '.', '');
+                    $price = (int) str_replace('.', '', (string) $price);
+                }
+
+                return (int) $price ?? 0;
+            })
             ->args(func_get_args());
     }
 

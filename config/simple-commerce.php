@@ -31,6 +31,7 @@ return [
             Calculator\CalculateLineItems::class,
             Calculator\ApplyCouponDiscounts::class,
             Calculator\ApplyShipping::class,
+            Calculator\CalculateTaxes::class,
             Calculator\CalculateGrandTotal::class,
         ],
     ],

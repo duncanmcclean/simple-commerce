@@ -35,7 +35,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
-    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, Calculable;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, HasTotals;
 
     protected $id;
     protected $orderNumber;
@@ -328,11 +328,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     public function fresh(): ?Order
     {
         return OrderFacade::find($this->id());
-    }
-
-    public function recalculate(): void
-    {
-        throw new \Exception("Orders can not be recalculated.");
     }
 
     public function blueprint(): StatamicBlueprint
