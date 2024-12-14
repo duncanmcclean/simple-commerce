@@ -11,16 +11,16 @@ class ApplyShipping
 {
     public function handle(Cart $cart, Closure $next)
     {
-        $shippingMethod = $cart->get('shipping_method');
-        $shippingOption = $cart->get('shipping_option');
+        $shippingMethod = $cart->shippingMethod();
+        $shippingOption = $cart->shippingOption();
 
         if (! $shippingMethod || ! $shippingOption) {
+            $cart->shippingMethod(null)->remove('shipping_option');
+
             return $next($cart);
         }
 
-        $cart->shippingTotal(
-            ShippingMethod::find($shippingMethod)->options($cart)->firstWhere('handle', $shippingOption)->price()
-        );
+        $cart->shippingTotal($shippingOption->price());
 
         return $next($cart);
     }

@@ -225,7 +225,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
 
     public function fileData(): array
     {
-        return array_merge([
+        return $this->data()->merge([
             'id' => $this->id(),
             'customer' => $this->customer,
             'coupon' => $this->coupon,
@@ -236,7 +236,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'discount_total' => $this->discountTotal(),
             'tax_total' => $this->taxTotal(),
             'shipping_total' => $this->shippingTotal(),
-        ], $this->data->all());
+        ])->filter()->all();
     }
 
     public function fresh(): ?Cart

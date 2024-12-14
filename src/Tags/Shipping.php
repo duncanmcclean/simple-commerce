@@ -15,6 +15,7 @@ class Shipping extends Tags
         return ShippingMethod::all()
             ->flatMap->options($cart)
             ->filter()
+            ->map->toAugmentedArray()
             ->values()
             ->all();
     }

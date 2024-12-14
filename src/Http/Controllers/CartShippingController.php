@@ -14,7 +14,7 @@ class CartShippingController
         return ShippingMethod::all()
             ->flatMap->options($cart)
             ->filter()
-            ->map->toArray()
+            ->map->toAugmentedArray()
             ->values()
             ->all();
     }

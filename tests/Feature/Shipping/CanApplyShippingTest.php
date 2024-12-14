@@ -3,8 +3,11 @@
 namespace Feature\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyShipping;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,7 +23,7 @@ class CanApplyShippingTest extends TestCase
     #[Test]
     public function applies_shipping_cost_to_cart()
     {
-        $cart = Cart::make()->set('shipping_method', 'paid_shipping');
+        $cart = Cart::make()->shippingMethod('paid_shipping')->set('shipping_option', 'the_only_option');
 
         $cart = app(ApplyShipping::class)->handle($cart, fn ($cart) => $cart);
 
@@ -38,27 +41,27 @@ class CanApplyShippingTest extends TestCase
     }
 
     #[Test]
-    public function applies_shipping_cost_from_default_shipping_method_when_cart_is_missing_a_shipping_method()
+    public function removes_shipping_keys_when_shipping_option_is_no_longer_available()
     {
-        config(['statamic.simple-commerce.shipping.default_method' => 'paid_shipping']);
-
-        $cart = Cart::make();
+        $cart = Cart::make()->shippingMethod('paid_shipping')->set('shipping_option', 'a_non_existent_option');
 
         $cart = app(ApplyShipping::class)->handle($cart, fn ($cart) => $cart);
 
-        $this->assertEquals(500, $cart->shippingTotal());
+        $this->assertNull($cart->shippingMethod());
+        $this->assertFalse($cart->has('shipping_option'));
+
+        $this->assertEquals(0, $cart->shippingTotal());
     }
 }
 
 class PaidShipping extends ShippingMethod
 {
-    public function isAvailable(\DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart $cart): bool
+    public function options(CartContract $cart): Collection
     {
-        return true;
-    }
-
-    function cost(\DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart $cart): int
-    {
-        return 500;
+        return collect([
+            ShippingOption::make($this)
+                ->name('The Only Option')
+                ->price(500),
+        ]);
     }
 }

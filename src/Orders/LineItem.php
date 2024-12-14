@@ -120,13 +120,13 @@ class LineItem
 
     public function fileData(): array
     {
-        return array_merge([
+        return $this->data()->merge([
             'id' => $this->id,
             'product' => $this->product,
             'variant' => $this->variant,
             'quantity' => $this->quantity,
             'unit_price' => $this->unitPrice,
             'total' => $this->total,
-        ], $this->data->all());
+        ])->filter()->all();
     }
 }

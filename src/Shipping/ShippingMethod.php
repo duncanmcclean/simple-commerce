@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Extend\HasHandle;
